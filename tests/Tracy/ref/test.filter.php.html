@@ -1,0 +1,393 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="robots" content="noindex,noarchive">
+    <meta name="generator" content="Nette Framework">
+
+    <title>Fatal error</title>
+
+    <style type="text/css">
+    /* <![CDATA[ */
+        body {
+            font-family: Verdana, sans-serif;
+            font-size: 78%;
+            background: white;
+            color: #333;
+            line-height: 1.5;
+            margin: 0 0 2em;
+            padding: 0;
+        }
+
+        h1 {
+            font-weight: normal !important;
+            font-size: 18pt;
+            margin: .6em 0;
+        }
+
+        h2 {
+            font-family: sans-serif;
+            font-weight: normal;
+            font-size: 14pt;
+            color: #888;
+            margin: .6em 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4197E3;
+        }
+
+        a span {
+            color: #999;
+        }
+
+        h3 {
+            font-size: 110%;
+            font-weight: bold;
+            margin: 1em 0;
+        }
+
+        p { margin: .8em 0 }
+
+        pre, table {
+            background: #ffffcc;
+            padding: .4em .7em;
+            border: 1px dotted silver;
+            font-family: monospace;
+        }
+
+        table, pre, x:-moz-any-link { font-size: 115%; }
+
+        table pre {
+            padding: 0;
+            margin: 0;
+            border: none;
+            font-size: 100%;
+        }
+
+        pre.dump span {
+            color: #c16549;
+        }
+
+        div.panel {
+            border-bottom: 1px solid #eee;
+            padding: 1px 2em;
+        }
+
+        div.inner {
+            padding: 0.1em 1em 1em;
+            background: #f5f5f5;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            vertical-align: top;
+            padding: 2px 3px;
+            border: 1px solid #eeeebb;
+        }
+
+        ul {
+            font-size: 80%;
+        }
+
+        .highlight, #error {
+            background: red;
+            color: white;
+            font-weight: bold;
+            display: block;
+        }
+
+    /* ]]> */
+    </style>
+
+
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        document.write('<style> .collapsed { display: none; } </style>');
+
+        function toggle(link, panel)
+        {
+            var span = link.getElementsByTagName('span')[0];
+            var div = document.getElementById(panel);
+            var collapsed = div.currentStyle ? div.currentStyle.display == 'none' : getComputedStyle(div, null).display == 'none';
+
+            span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25b6);
+            div.style.display = collapsed ? 'block' : 'none';
+
+            return true;
+        }
+    /* ]]> */
+    </script>
+</head>
+
+
+
+<body>
+    <div id="error" class="panel">
+        <h1>Fatal error</h1>
+
+        <p>The my error</p>
+    </div>
+
+
+
+            <div class="panel">
+        <h2><a href="#" onclick="return !toggle(this, 'pnl1')">Source file <span>&#x25bc;</span></a></h2>
+
+        <div id="pnl1" class="inner">
+        <p><strong>File:</strong> D:\Web\nette\_trunk\tests\Debug\test.filter.php &nbsp; <strong>Line:</strong> 19</p>
+
+        <pre>Line 14:        $struct = (object) array(
+Line 15:            'arr' =&gt; array(
+Line 16:                'password' =&gt; 'druhe heslo',
+Line 17:            ),
+Line 18:        );
+<span class='highlight'>Line 19:        trigger_error('The my error', E_USER_ERROR);
+</span>Line 20:    }
+Line 21:    
+Line 22:    
+Line 23:    
+</pre>
+            </div>
+    </div>
+    
+
+
+
+        <div class="panel">
+        <h2><a href="#" onclick="return !toggle(this, 'pnl2')">Call stack <span>&#x25bc;</span></a></h2>
+
+        <div id="pnl2" class="inner">
+        <ol>
+                        <li><p>
+
+                                            Debug/<b>test.filter.php</b> (19)            
+            <a href="#" onclick="return !toggle(this, 'src0')">source <span>&#x25b6;</span></a> &nbsp; 
+                        trigger_error
+            (<a href="#" onclick="return !toggle(this, 'args0')">arguments <span>&#x25b6;</span></a>)
+            </p>
+
+                            <div class="collapsed" id="args0">
+                <table>
+                <tr><td>#0</td><td><pre class="dump"><span>string</span>(12) "The my error"
+</pre>
+</td></tr><tr><td>#1</td><td><pre class="dump"><span>int</span>(256)
+</pre>
+</td></tr>                </table>
+                </div>
+            
+
+                            <pre class="collapsed" id="src0">Line 14:        $struct = (object) array(
+Line 15:            'arr' =&gt; array(
+Line 16:                'password' =&gt; 'druhe heslo',
+Line 17:            ),
+Line 18:        );
+<span class='highlight'>Line 19:        trigger_error('The my error', E_USER_ERROR);
+</span>Line 20:    }
+Line 21:    
+Line 22:    
+Line 23:    
+</pre>
+            
+            </li>
+                        <li><p>
+
+                                            Debug/<b>test.filter.php</b> (24)            
+            <a href="#" onclick="return !toggle(this, 'src1')">source <span>&#x25b6;</span></a> &nbsp; 
+                        first
+            (<a href="#" onclick="return !toggle(this, 'args1')">arguments <span>&#x25b6;</span></a>)
+            </p>
+
+                            <div class="collapsed" id="args1">
+                <table>
+                <tr><td>$user</td><td><pre class="dump"><span>string</span>(4) "root"
+</pre>
+</td></tr><tr><td>$pass</td><td><i>*** hidden ***</i></td></tr>                </table>
+                </div>
+            
+
+                            <pre class="collapsed" id="src1">Line 19:        trigger_error('The my error', E_USER_ERROR);
+Line 20:    }
+Line 21:    
+Line 22:    
+Line 23:    
+<span class='highlight'>Line 24:    first('root', 'prvni heslo');
+</span></pre>
+            
+            </li>
+                    </ol>
+            </div>
+    </div>
+
+
+
+
+    
+
+
+        <div class="panel">
+        <h2><a href="#" onclick="return !toggle(this, 'pnl3')">Environment <span>&#x25b6;</span></a></h2>
+
+        <div id="pnl3" class="collapsed inner">
+                <h3><a href="#" onclick="return !toggle(this, 'pnl-env-context')">Variables <span>&#x25b6;</span></a></h3>
+        <table id="pnl-env-context" class="collapsed">
+        <tr><td>$user</td><td><pre class="dump"><span>string</span>(4) "root"
+</pre>
+</td></tr><tr><td>$pass</td><td><i>*** hidden ***</i></td></tr><tr><td>$struct</td><td><pre class="dump"><span>object</span>(stdClass)#1 (1) {
+  ["arr"] => <span>array</span>(1) {
+    ["password"] => <span>string</span> (?) <i>*** hidden ***</i>
+  }
+}
+</pre>
+</td></tr>        </table>
+        
+
+                <h3><a href="#" onclick="return !toggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
+        <table id="pnl-env-const">
+        <tr><td>PASS</td><td><i>*** hidden ***</i></td></tr>        </table>
+        
+
+        <h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a></h3>
+        <table id="pnl-env-files" class="collapsed">
+        <tr><td>D:\Web\nette\_trunk\tests\Debug\test.filter.php</td></tr><tr><td>D:\Web\_php\tools.debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Version.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.phtml</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.openpanel.phtml</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.closepanel.phtml</td></tr>        </table>
+
+
+        <h3>$_SERVER</h3>
+                <table>
+        <tr><td>ALLUSERSPROFILE</td><td><pre class="dump"><span>string</span>(22) "C:\Documents\All Users"
+</pre>
+</td></tr><tr><td>APPDATA</td><td><pre class="dump"><span>string</span>(40) "C:\Documents\Administrator\Data aplikací"
+</pre>
+</td></tr><tr><td>CLIENTNAME</td><td><pre class="dump"><span>string</span>(7) "Console"
+</pre>
+</td></tr><tr><td>CommonProgramFiles</td><td><pre class="dump"><span>string</span>(29) "C:\Program Files\Common Files"
+</pre>
+</td></tr><tr><td>COMPUTERNAME</td><td><pre class="dump"><span>string</span>(7) "JAMESON"
+</pre>
+</td></tr><tr><td>ComSpec</td><td><pre class="dump"><span>string</span>(27) "C:\WINDOWS\system32\cmd.exe"
+</pre>
+</td></tr><tr><td>FARHOME</td><td><pre class="dump"><span>string</span>(20) "C:\Program Files\Far"
+</pre>
+</td></tr><tr><td>FARLANG</td><td><pre class="dump"><span>string</span>(7) "English"
+</pre>
+</td></tr><tr><td>FP_NO_HOST_CHECK</td><td><pre class="dump"><span>string</span>(2) "NO"
+</pre>
+</td></tr><tr><td>HOMEDRIVE</td><td><pre class="dump"><span>string</span>(2) "C:"
+</pre>
+</td></tr><tr><td>HOMEPATH</td><td><pre class="dump"><span>string</span>(24) "\Documents\Administrator"
+</pre>
+</td></tr><tr><td>LOGONSERVER</td><td><pre class="dump"><span>string</span>(9) "\\JAMESON"
+</pre>
+</td></tr><tr><td>NUMBER_OF_PROCESSORS</td><td><pre class="dump"><span>string</span>(1) "2"
+</pre>
+</td></tr><tr><td>OPENSSL_CONF</td><td><pre class="dump"><span>string</span>(40) "C:\Program Files\OpenSSL\bin\openssl.cnf"
+</pre>
+</td></tr><tr><td>OS</td><td><pre class="dump"><span>string</span>(10) "Windows_NT"
+</pre>
+</td></tr><tr><td>Path</td><td><pre class="dump"><span>string</span>(115) "C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\NC;c:\PHP\PHP5;;C:\Program Files\Common Files\Ahead\Lib\"
+</pre>
+</td></tr><tr><td>PATHEXT</td><td><pre class="dump"><span>string</span>(48) ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH"
+</pre>
+</td></tr><tr><td>PROCESSOR_ARCHITECTURE</td><td><pre class="dump"><span>string</span>(3) "x86"
+</pre>
+</td></tr><tr><td>PROCESSOR_IDENTIFIER</td><td><pre class="dump"><span>string</span>(46) "x86 Family 6 Model 23 Stepping 6, GenuineIntel"
+</pre>
+</td></tr><tr><td>PROCESSOR_LEVEL</td><td><pre class="dump"><span>string</span>(1) "6"
+</pre>
+</td></tr><tr><td>PROCESSOR_REVISION</td><td><pre class="dump"><span>string</span>(4) "1706"
+</pre>
+</td></tr><tr><td>ProgramFiles</td><td><pre class="dump"><span>string</span>(16) "C:\Program Files"
+</pre>
+</td></tr><tr><td>PROMPT</td><td><pre class="dump"><span>string</span>(4) "$P$G"
+</pre>
+</td></tr><tr><td>SESSIONNAME</td><td><pre class="dump"><span>string</span>(7) "Console"
+</pre>
+</td></tr><tr><td>SystemDrive</td><td><pre class="dump"><span>string</span>(2) "C:"
+</pre>
+</td></tr><tr><td>SystemRoot</td><td><pre class="dump"><span>string</span>(10) "C:\WINDOWS"
+</pre>
+</td></tr><tr><td>TEMP</td><td><pre class="dump"><span>string</span>(7) "c:\Temp"
+</pre>
+</td></tr><tr><td>TMP</td><td><pre class="dump"><span>string</span>(7) "c:\Temp"
+</pre>
+</td></tr><tr><td>USERDOMAIN</td><td><pre class="dump"><span>string</span>(7) "JAMESON"
+</pre>
+</td></tr><tr><td>USERNAME</td><td><pre class="dump"><span>string</span>(13) "Administrator"
+</pre>
+</td></tr><tr><td>USERPROFILE</td><td><pre class="dump"><span>string</span>(26) "C:\Documents\Administrator"
+</pre>
+</td></tr><tr><td>windir</td><td><pre class="dump"><span>string</span>(10) "C:\WINDOWS"
+</pre>
+</td></tr><tr><td>PHP_SELF</td><td><pre class="dump"><span>string</span>(15) "test.filter.php"
+</pre>
+</td></tr><tr><td>SCRIPT_NAME</td><td><pre class="dump"><span>string</span>(15) "test.filter.php"
+</pre>
+</td></tr><tr><td>SCRIPT_FILENAME</td><td><pre class="dump"><span>string</span>(15) "test.filter.php"
+</pre>
+</td></tr><tr><td>PATH_TRANSLATED</td><td><pre class="dump"><span>string</span>(15) "test.filter.php"
+</pre>
+</td></tr><tr><td>DOCUMENT_ROOT</td><td><pre class="dump"><span>string</span>(0) ""
+</pre>
+</td></tr><tr><td>REQUEST_TIME</td><td><pre class="dump"><span>int</span>(1208356603)
+</pre>
+</td></tr><tr><td>argv</td><td><pre class="dump"><span>array</span>(1) {
+  [0] => <span>string</span>(15) "test.filter.php"
+}
+</pre>
+</td></tr><tr><td>argc</td><td><pre class="dump"><span>int</span>(1)
+</pre>
+</td></tr>        </table>
+                    </div>
+    </div>
+
+
+
+
+    
+
+
+
+        
+    
+    
+    
+        <div class="panel">
+        <h2><a href="#" onclick="return !toggle(this, 'pnl4')">HTTP request <span>&#x25b6;</span></a></h2>
+
+        <div id="pnl4" class="collapsed inner">
+        
+
+                <h3>$_GET</h3>
+                <p><i>empty</i></p>
+                        <h3>$_POST</h3>
+                <p><i>empty</i></p>
+                        <h3>$_COOKIE</h3>
+                <p><i>empty</i></p>
+                            </div>
+    </div>
+
+
+
+        <div class="panel">
+        <h2><a href="#" onclick="return !toggle(this, 'pnl5')">HTTP response <span>&#x25b6;</span></a></h2>
+
+        <div id="pnl5" class="collapsed inner">
+        <h3>Headers</h3>
+                <p><i>no headers</i></p>
+                    </div>
+    </div>
+
+
+    <ul>
+        <li>PHP version 5.2.5</li>
+                <li>Nette Framework version 0.7 (Revision: $WCREV$, Date: $WCDATE$)</li>
+                <li>Report generated at 04/16/08 16:36:43</li>
+    </ul>
+
+</body>
+</html>
