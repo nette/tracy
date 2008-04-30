@@ -273,14 +273,16 @@ Line 32:
 
                 <h3><a href="#" onclick="return !toggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
         <table id="pnl-env-const">
-        <tr><td>MY_CONST</td><td><pre class="dump"><span>int</span>(123)
+        <tr><td>E_DEPRECATED</td><td><pre class="dump"><span>int</span>(8192)
+</pre>
+</td></tr><tr><td>MY_CONST</td><td><pre class="dump"><span>int</span>(123)
 </pre>
 </td></tr>        </table>
         
 
         <h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a></h3>
         <table id="pnl-env-files" class="collapsed">
-        <tr><td>D:\Web\nette\_trunk\tests\Debug\test.exception.html.php</td></tr><tr><td>D:\Web\_php\tools.debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Version.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.phtml</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.openpanel.phtml</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.closepanel.phtml</td></tr>        </table>
+        <tr><td>D:\Web\nette\_trunk\tests\Debug\test.exception.html.php</td></tr><tr><td>D:\Web\_php\tools.debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\loader.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\exceptions.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Loaders\NetteLoader.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Loaders\AutoLoader.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Object.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Version.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.phtml</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.openpanel.phtml</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.closepanel.phtml</td></tr>        </table>
 
 
         <h3>$_SERVER</h3>
@@ -296,6 +298,8 @@ Line 32:
 </td></tr><tr><td>COMPUTERNAME</td><td><pre class="dump"><span>string</span>(7) "JAMESON"
 </pre>
 </td></tr><tr><td>ComSpec</td><td><pre class="dump"><span>string</span>(27) "C:\WINDOWS\system32\cmd.exe"
+</pre>
+</td></tr><tr><td>diff</td><td><pre class="dump"><span>string</span>(8) "diff.exe"
 </pre>
 </td></tr><tr><td>FARHOME</td><td><pre class="dump"><span>string</span>(20) "C:\Program Files\Far"
 </pre>
@@ -315,9 +319,11 @@ Line 32:
 </pre>
 </td></tr><tr><td>OS</td><td><pre class="dump"><span>string</span>(10) "Windows_NT"
 </pre>
-</td></tr><tr><td>Path</td><td><pre class="dump"><span>string</span>(74) "C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\NC;c:\PHP\PHP5;"
+</td></tr><tr><td>Path</td><td><pre class="dump"><span>string</span>(115) "C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\NC;c:\PHP\PHP5;;C:\Program Files\Common Files\Ahead\Lib\"
 </pre>
 </td></tr><tr><td>PATHEXT</td><td><pre class="dump"><span>string</span>(48) ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH"
+</pre>
+</td></tr><tr><td>php</td><td><pre class="dump"><span>string</span>(39) "C:\PHP\versions\php-5.2.5-Win32\php.exe"
 </pre>
 </td></tr><tr><td>PROCESSOR_ARCHITECTURE</td><td><pre class="dump"><span>string</span>(3) "x86"
 </pre>
@@ -339,6 +345,8 @@ Line 32:
 </pre>
 </td></tr><tr><td>TEMP</td><td><pre class="dump"><span>string</span>(7) "c:\Temp"
 </pre>
+</td></tr><tr><td>testUri</td><td><pre class="dump"><span>string</span>(35) "http://localHost/nette/_trunk/tests"
+</pre>
 </td></tr><tr><td>TMP</td><td><pre class="dump"><span>string</span>(7) "c:\Temp"
 </pre>
 </td></tr><tr><td>USERDOMAIN</td><td><pre class="dump"><span>string</span>(7) "JAMESON"
@@ -346,6 +354,8 @@ Line 32:
 </td></tr><tr><td>USERNAME</td><td><pre class="dump"><span>string</span>(13) "Administrator"
 </pre>
 </td></tr><tr><td>USERPROFILE</td><td><pre class="dump"><span>string</span>(26) "C:\Documents\Administrator"
+</pre>
+</td></tr><tr><td>wget</td><td><pre class="dump"><span>string</span>(8) "wget.exe"
 </pre>
 </td></tr><tr><td>windir</td><td><pre class="dump"><span>string</span>(10) "C:\WINDOWS"
 </pre>
@@ -359,7 +369,7 @@ Line 32:
 </pre>
 </td></tr><tr><td>DOCUMENT_ROOT</td><td><pre class="dump"><span>string</span>(0) ""
 </pre>
-</td></tr><tr><td>REQUEST_TIME</td><td><pre class="dump"><span>int</span>(1208551088)
+</td></tr><tr><td>REQUEST_TIME</td><td><pre class="dump"><span>int</span>(1209424480)
 </pre>
 </td></tr><tr><td>argv</td><td><pre class="dump"><span>array</span>(1) {
   [0] => <span>string</span>(23) "test.exception.html.php"
@@ -391,9 +401,9 @@ Stack trace:
 
 
         
-    
-    
-    
+
+
+
         <div class="panel">
         <h2><a href="#" onclick="return !toggle(this, 'pnl5')">HTTP request <span>&#x25b6;</span></a></h2>
 
@@ -424,7 +434,7 @@ Stack trace:
     <ul>
         <li>PHP version 5.2.5</li>
                 <li>Nette Framework version 0.7 (Revision: $WCREV$, Date: $WCDATE$)</li>
-                <li>Report generated at 04/18/08 22:38:08</li>
+                <li>Report generated at 04/29/08 01:14:40</li>
     </ul>
 
 </body>

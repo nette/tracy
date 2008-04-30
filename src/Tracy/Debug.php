@@ -21,6 +21,10 @@
 
 
 
+require_once dirname(__FILE__) . '/Version.php';
+
+
+
 /**
  * Debug static class.
  *
@@ -377,7 +381,6 @@ final class Debug
             $trace = $exception->getTrace();
         }
         $colophons = self::$colophons;
-        require_once dirname(__FILE__) . '/Version.php';
 
         ob_start();
         require dirname(__FILE__) . '/templates/Debug.phtml';
@@ -439,6 +442,17 @@ final class Debug
     private static function closePanel()
     {
         require dirname(__FILE__) . '/templates/Debug.closepanel.phtml';
+    }
+
+
+
+    /********************* profiler ****************d*g**/
+
+
+
+    public static function profiler()
+    {
+        require dirname(__FILE__) . '/templates/Debug.profiler.phtml';
     }
 
 }
