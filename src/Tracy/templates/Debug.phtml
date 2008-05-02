@@ -301,7 +301,7 @@ if (headers_sent()) {
         <?php endif ?>
 
 
-        <h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a></h3>
+        <h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a> (<?php echo count(get_included_files()) ?>)</h3>
         <table id="pnl-env-files" class="collapsed">
         <?php
         foreach (get_included_files() as $v) {

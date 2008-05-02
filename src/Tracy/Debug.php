@@ -44,6 +44,12 @@ final class Debug
     /** @var bool  send the error report to the browser? */
     public static $display = TRUE;
 
+    /** @var int  how many nested levels of array/object properties display Debug::dump()? */
+    public static $maxDepth = 3;
+
+    /** @var int  how long strings display Debug::dump()? */
+    public static $maxLen = 150;
+
     /** @var string  directory where reports are written to files */
     public static $logDir;  // TODO: or $logFileMask ?
 
@@ -148,12 +154,65 @@ final class Debug
     public static function dump($var, $return = FALSE)
     {
         ob_start();
-        var_dump($var);
+        if (extension_loaded('xdebug')) {
+            // or call xdebug_var_dump ?
+            $old = ini_set('html_errors', '0');
+            var_dump($var);
+            ini_set('html_errors', $old);
+        } else {
+            var_dump($var);
+        }
         $output = ob_get_clean();
 
+
+        // shorten long strings & limit nesting
+        if (self::$maxLen) {
+            $space = str_repeat('  ', self::$maxDepth);
+            $replace = "\n$space  ...";
+            $delta = $min = 0;
+            preg_match_all(
+                "#(string|\n$space&?array|\n$space&?object)\\((.+?)\\)[^{\"]*[{\"]#",
+                $output,
+                $matches,
+                PREG_OFFSET_CAPTURE | PREG_SET_ORDER
+            );
+            foreach ($matches as $m) {
+                $pos = $m[0][1] + strlen($m[0][0]) + $delta;
+                if ($pos < $min) continue;
+
+                if ($m[1][0] === 'string') {
+                    $len = (int) $m[2][0];
+                    if ($len > self::$maxLen) {
+                        $min = $pos + self::$maxLen;
+                        $output = substr_replace(
+                            $output,
+                            ' ... ',
+                            $pos + self::$maxLen,
+                            $len - self::$maxLen
+                        );
+                        $delta -= $len - self::$maxLen - 5;
+                    } else {
+                        $min = $pos + $len;
+                    }
+                } else {
+                    $len = strpos($output, "\n$space}\n", $pos) - $pos;
+                    $min = $pos;
+                    $output = substr_replace(
+                        $output,
+                        $replace,
+                        $pos,
+                        $len
+                    );
+                    $delta -= $len - strlen($replace);
+                }
+            }
+        }
+
+
+        // reformat
         if (self::$html) {
             $output = htmlspecialchars($output, ENT_NOQUOTES);
-            $output = preg_replace('#\]=&gt;\n\ +([a-z]+)#i', '] => <span>$1</span>', $output);
+            $output = preg_replace('#\[(.+?)\]=&gt;\n\ +([a-z]+)#i', '$1 => <span>$2</span>', $output);
             $output = preg_replace('#^([a-z]+)#i', '<span>$1</span>', $output);
             $output = "<pre class=\"dump\">$output</pre>\n";
         } else {
@@ -342,7 +401,7 @@ final class Debug
         }
 
         if (self::$display) {
-            while (ob_get_level() && ob_end_clean());
+            while (ob_get_level() && @ob_end_clean());
 
             echo $message;
 
@@ -416,7 +475,7 @@ final class Debug
         }
 
         return preg_replace(
-            '#^(\s*\["(' . implode('|', self::$keysToHide) . ')"\] => <span>string</span>).+#mi',
+            '#^(\s*"(' . implode('|', self::$keysToHide) . ')" => <span>string</span>).+#mi',
             '$1 (?) <i>*** hidden ***</i>',
             self::dump($var, TRUE)
         );
