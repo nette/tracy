@@ -68,6 +68,9 @@ final class Debug
     /** @var array  */
     private static $colophons = array();
 
+    /** @var array  */
+    private static $keyFilter = array();
+
 
 
     /**
@@ -153,75 +156,101 @@ final class Debug
      */
     public static function dump($var, $return = FALSE)
     {
-        ob_start();
-        if (extension_loaded('xdebug')) {
-            // or call xdebug_var_dump ?
-            $old = ini_set('html_errors', '0');
-            var_dump($var);
-            ini_set('html_errors', $old);
-        } else {
-            var_dump($var);
-        }
-        $output = ob_get_clean();
+        self::$keyFilter = FALSE;
+        $output = "<pre class=\"dump\">" . self::_dump($var, 0) . "</pre>\n";
 
-
-        // shorten long strings & limit nesting
-        if (self::$maxLen) {
-            $space = str_repeat('  ', self::$maxDepth);
-            $replace = "\n$space  ...";
-            $delta = $min = 0;
-            preg_match_all(
-                "#(string|\n$space&?array|\n$space&?object)\\((.+?)\\)[^{\"]*[{\"]#",
-                $output,
-                $matches,
-                PREG_OFFSET_CAPTURE | PREG_SET_ORDER
-            );
-            foreach ($matches as $m) {
-                $pos = $m[0][1] + strlen($m[0][0]) + $delta;
-                if ($pos < $min) continue;
-
-                if ($m[1][0] === 'string') {
-                    $len = (int) $m[2][0];
-                    if ($len > self::$maxLen) {
-                        $min = $pos + self::$maxLen;
-                        $output = substr_replace(
-                            $output,
-                            ' ... ',
-                            $pos + self::$maxLen,
-                            $len - self::$maxLen
-                        );
-                        $delta -= $len - self::$maxLen - 5;
-                    } else {
-                        $min = $pos + $len;
-                    }
-                } else {
-                    $len = strpos($output, "\n$space}\n", $pos) - $pos;
-                    $min = $pos;
-                    $output = substr_replace(
-                        $output,
-                        $replace,
-                        $pos,
-                        $len
-                    );
-                    $delta -= $len - strlen($replace);
-                }
-            }
-        }
-
-
-        // reformat
-        if (self::$html) {
-            $output = htmlspecialchars($output, ENT_NOQUOTES);
-            $output = preg_replace('#\[(.+?)\]=&gt;\n\ +([a-z]+)#i', '$1 => <span>$2</span>', $output);
-            $output = preg_replace('#^([a-z]+)#i', '<span>$1</span>', $output);
-            $output = "<pre class=\"dump\">$output</pre>\n";
-        } else {
-            $output = preg_replace('#\]=>\n\ +#i', '] => ', $output) . "\n";
+        if (!self::$html) {
+            $output = htmlspecialchars_decode(strip_tags($output), ENT_NOQUOTES);
         }
 
         if (!$return) echo $output;
 
         return $output;
+    }
+
+
+
+    private static function _dump(&$var, $level)
+    {
+        if (is_bool($var)) {
+            return "<span>bool</span>(" . ($var ? 'TRUE' : 'FALSE') . ")\n";
+
+        } elseif ($var === NULL) {
+            return "<span>NULL</span>\n";
+
+        } elseif (is_int($var)) {
+            return "<span>int</span>($var)\n";
+
+        } elseif (is_float($var)) {
+            return "<span>float</span>($var)\n";
+
+        } elseif (is_string($var)) {
+            if (strlen($var) > self::$maxLen) {
+                $s = htmlSpecialChars(substr($var, 0, self::$maxLen), ENT_NOQUOTES) . ' ... ';
+            } else {
+                $s = htmlSpecialChars($var, ENT_NOQUOTES);
+            }
+            return "<span>string</span>(" . strlen($var) . ") \"$s\"\n";
+
+        } elseif (is_array($var)) {
+            $s = "<span>array</span>(" . count($var) . ") {\n";
+            $space = str_repeat('  ', $level);
+
+            static $marker;
+            if ($marker === NULL) $marker = uniqid("\x00", TRUE);
+            if (isset($var[$marker])) {
+                $s .= "$space  *RECURSION*\n";
+
+            } elseif ($level < self::$maxDepth || !self::$maxDepth) {
+                $var[$marker] = 0;
+                foreach ($var as $k => &$v) {
+                    if ($k === $marker) continue;
+                    $s .= "$space  " . (is_int($k) ? $k : "\"$k\"") . " => ";
+                    if (self::$keyFilter && is_string($v) && isset(self::$keyFilter[strtolower($k)])) {
+                        $s .= "<span>string</span>(?) <i>*** hidden ***</i>\n";
+                    } else {
+                        $s .= self::_dump($v, $level + 1);
+                    }
+                }
+                unset($var[$marker]);
+            } else {
+               $s .= "$space  ...\n";
+            }
+            return $s . "$space}\n";
+
+        } elseif (is_object($var)) {
+            $arr = (array) $var;
+            $s = "<span>object</span>(" . get_class($var) . ") (" . count($arr) . ") {\n";
+            $space = str_repeat('  ', $level);
+
+            static $list = array();
+            if (in_array($var, $list, TRUE)) {
+                $s .= "$space  *RECURSION*\n";
+
+            } elseif ($level < self::$maxDepth || !self::$maxDepth) {
+                $list[] = $var;
+                foreach ($arr as $k => &$v) {
+                    $m = '';
+                    if ($k[0] === "\x00") {
+                        $m = $k[1] === '*' ? ' <span>protected</span>' : ' <span>private</span>';
+                        $k = substr($k, strrpos($k, "\x00") + 1);
+                    }
+                    $s .= "$space  \"$k\"$m => ";
+                    if (self::$keyFilter && is_string($v) && isset(self::$keyFilter[strtolower($k)])) {
+                        $s .= "<span>string</span>(?) <i>*** hidden ***</i>\n";
+                    } else {
+                        $s .= self::_dump($v, $level + 1);
+                    }
+                }
+                array_pop($list);
+            } else {
+                $s .= "$space  ...\n";
+            }
+            return $s . "$space}\n";
+
+        } elseif (is_resource($var)) {
+            return "<span>resource of type</span>(" . get_resource_type($var) . ")\n";
+        }
     }
 
 
@@ -470,15 +499,13 @@ final class Debug
      */
     private static function safedump($var, $key = NULL)
     {
-        if ($key !== NULL && array_search(strtolower($key), self::$keysToHide, TRUE)) {
+        self::$keyFilter = array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER);
+
+        if ($key !== NULL && isset(self::$keyFilter[strtolower($key)])) {
             return '<i>*** hidden ***</i>';
         }
 
-        return preg_replace(
-            '#^(\s*"(' . implode('|', self::$keysToHide) . ')" => <span>string</span>).+#mi',
-            '$1 (?) <i>*** hidden ***</i>',
-            self::dump($var, TRUE)
-        );
+        return "<pre class=\"dump\">" . self::_dump($var, 0) . "</pre>\n";
     }
 
 

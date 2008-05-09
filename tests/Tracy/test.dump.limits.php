@@ -29,6 +29,8 @@ $arr = array(
     ),
 );
 
+$arr[] = &$arr;
+
 Debug::dump($arr);
 
 
