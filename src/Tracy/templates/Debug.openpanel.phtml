@@ -24,7 +24,7 @@
  * @author     David Grudl
  * @copyright  Copyright (c) 2004, 2008 David Grudl
  * @package    Nette
- * @version    $Revision: 13 $ $Date: 2008-02-19 18:47:11 +0100 (út, 19 II 2008) $
+ * @version    $Revision$ $Date$
  */
 
 // passed parameters: $name, $collaped, $id
@@ -32,7 +32,7 @@
 
 
 ?>
-    <div class="panel">
-        <h2><a href="#" onclick="return !toggle(this, 'pnl<?php echo $id ?>')"><?php echo htmlSpecialChars($name) ?> <span><?php echo $collaped ? '&#x25b6;' : '&#x25bc;' ?></span></a></h2>
+	<div class="panel">
+		<h2><a href="#" onclick="return !toggle(this, 'pnl<?php echo $id ?>')"><?php echo htmlSpecialChars($name) ?> <span><?php echo $collaped ? '&#x25b6;' : '&#x25bc;' ?></span></a></h2>
 
-        <div id="pnl<?php echo $id ?>" class="<?php echo $collaped ? 'collapsed ' : '' ?>inner">
+		<div id="pnl<?php echo $id ?>" class="<?php echo $collaped ? 'collapsed ' : '' ?>inner">

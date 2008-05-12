@@ -12,21 +12,21 @@ require_once '../../Nette/loader.php';
 
 
 $arr = array(
-    'file' => file_get_contents(__FILE__),
+	'file' => file_get_contents(__FILE__),
 
-    array(
-        array(
-            array('hello' => 'world'),
-        ),
-    ),
+	array(
+		array(
+			array('hello' => 'world'),
+		),
+	),
 
-    'file2' => file_get_contents(__FILE__),
+	'file2' => file_get_contents(__FILE__),
 
-    (object) array(
-        (object) array(
-            (object) array('hello' => 'world'),
-        ),
-    ),
+	(object) array(
+		(object) array(
+			(object) array('hello' => 'world'),
+		),
+	),
 );
 
 $arr[] = &$arr;

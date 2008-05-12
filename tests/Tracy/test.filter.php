@@ -11,12 +11,12 @@ define('PASS', 'tajne heslo');
 
 function first($user, $pass)
 {
-    $struct = (object) array(
-        'arr' => array(
-            'password' => 'druhe heslo',
-        ),
-    );
-    trigger_error('The my error', E_USER_ERROR);
+	$struct = (object) array(
+		'arr' => array(
+			'password' => 'druhe heslo',
+		),
+	);
+	trigger_error('The my error', E_USER_ERROR);
 }
 
 
