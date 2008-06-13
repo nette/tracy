@@ -38,6 +38,9 @@ final class Debug
 	/** @var bool */
 	private static $enabled = FALSE;
 
+	/** @var bool  convert E_RECOVERABLE_ERROR to exceptions? */
+	public static $throwRecoverable = TRUE;
+
 	/** @var bool  format the error report as HTML? */
 	public static $html;
 
@@ -365,6 +368,15 @@ final class Debug
 		);
 
 		if (isset($fatals[$code])) {
+			if ($code === E_RECOVERABLE_ERROR && self::$throwRecoverable) {
+				if (preg_match('#^Argument .+ passed to .+\(\) must#', $message)) {
+					throw new InvalidArgumentException($message);
+
+				} else {
+					throw new Exception($message);
+				}
+			}
+
 			self::disable();
 
 			$trace = debug_backtrace();
