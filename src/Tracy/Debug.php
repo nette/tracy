@@ -291,10 +291,15 @@ final class Debug
 		}
 		*/
 
-		if ($level !== NULL) error_reporting($level);
+		if ($level !== NULL) {
+			error_reporting($level);
+		}
+
 		set_error_handler(array(__CLASS__, 'errorHandler'));
 		set_exception_handler(array(__CLASS__, 'exceptionHandler')); // buggy in PHP 5.2.1
 		self::$enabled = TRUE;
+
+		// Environment::setMode(Environment::DEBUG_MODE, TRUE);
 	}
 
 
@@ -370,10 +375,10 @@ final class Debug
 		if (isset($fatals[$code])) {
 			if ($code === E_RECOVERABLE_ERROR && self::$throwRecoverable) {
 				if (preg_match('#^Argument .+ passed to .+\(\) must#', $message)) {
-					throw new InvalidArgumentException($message);
+					throw new /*::*/InvalidArgumentException($message);
 
 				} else {
-					throw new Exception($message);
+					throw new /*::*/Exception($message);
 				}
 			}
 
