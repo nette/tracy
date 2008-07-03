@@ -488,7 +488,7 @@ final class Debug
 		$colophons = self::$colophons;
 
 		ob_start();
-		require dirname(__FILE__) . '/templates/Debug.phtml';
+		require dirname(__FILE__) . '/Debug.templates/bluescreen.phtml';
 		return ob_get_clean();
 	}
 
@@ -534,7 +534,7 @@ final class Debug
 	{
 		static $id;
 		$id++;
-		require dirname(__FILE__) . '/templates/Debug.openpanel.phtml';
+		require dirname(__FILE__) . '/Debug.templates/openpanel.phtml';
 	}
 
 
@@ -544,7 +544,7 @@ final class Debug
 	 */
 	private static function closePanel()
 	{
-		require dirname(__FILE__) . '/templates/Debug.closepanel.phtml';
+		require dirname(__FILE__) . '/Debug.templates/closepanel.phtml';
 	}
 
 
@@ -555,7 +555,7 @@ final class Debug
 
 	public static function profiler()
 	{
-		require dirname(__FILE__) . '/templates/Debug.profiler.phtml';
+		require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
 	}
 
 }
