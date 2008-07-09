@@ -30,6 +30,27 @@
 // passed parameters: $type, $code, $message, $file, $line, $colophons [, $context] [, $exception]
 
 
+function _netteDebugSourcecode($file, $line, $count = 13)
+{
+	$source = explode('<br />', @highlight_file($file, TRUE));
+	array_unshift($source, NULL);
+	$source = array_slice($source, max(1, $line - floor($count / 2)), $count, TRUE);
+	end($source);
+	$numWidth = strlen((string) key($source));
+
+	foreach ($source as $n => $s) {
+		$s = str_replace(array("\r", "\n"), array('', ''), $s);
+		if ($n === $line) {
+			preg_match('#.*(<span[^>]+>)#', $s, $m);
+			printf("<span class='highlight'>Line %{$numWidth}s:    %s\n</span>%s", $n, strip_tags($s), @$m[1]);
+		} else {
+			printf("<span class='line'>Line %{$numWidth}s:</span>    %s\n", $n, $s);
+		}
+	}
+	echo '</span></span></code>';
+}
+
+
 if (headers_sent()) {
 	echo '</pre></xmp>';
 }
@@ -138,6 +159,10 @@ if (headers_sent()) {
 			display: block;
 		}
 
+		.line {
+			color: black;
+		}
+
 	/* ]]> */
 	</style>
 
@@ -175,22 +200,7 @@ if (headers_sent()) {
 	<?php if ($file): ?>
 	<?php self::openPanel('Source file', FALSE) ?>
 		<p><strong>File:</strong> <?php echo htmlspecialchars($file) ?> &nbsp; <strong>Line:</strong> <?php echo $line ?></p>
-
-		<pre><?php
-		$source = (array) @file($file);
-		array_unshift($source, NULL);
-		$source = array_slice($source, max(0, $line - 5), 10, TRUE);
-
-		foreach ($source as $n => $s) {
-			$s = rtrim($s);
-			if (strlen($s) > 100) $s = substr($s, 0, 100) . '...';
-			if ($n === $line) {
-				printf("<span class='highlight'>Line %s:    %s\n</span>", $n, htmlSpecialChars($s));
-			} else {
-				printf("Line %s:    %s\n", $n, htmlSpecialChars($s));
-			}
-		}
-		?></pre>
+		<pre><?php _netteDebugSourcecode($file, $line) ?></pre>
 	<?php self::closePanel() ?>
 	<?php endif?>
 
@@ -203,14 +213,12 @@ if (headers_sent()) {
 			<li><p>
 
 			<?php if (isset($row['file'])): ?>
-				<?php $source = @file($row['file']); ?>
 				<?php echo htmlSpecialChars(basename(dirname($row['file']))), '/<b>', htmlSpecialChars(basename($row['file'])), '</b> (', $row['line'], ')' ?>
 			<?php else: ?>
-				<?php $source = NULL; ?>
 				&lt;PHP inner-code&gt;
 			<?php endif ?>
 
-			<?php if (!empty($source)): ?><a href="#" onclick="return !toggle(this, 'src<?php echo $key ?>')">source <span>&#x25b6;</span></a> &nbsp; <?php endif ?>
+			<?php if (isset($row['file'])): ?><a href="#" onclick="return !toggle(this, 'src<?php echo $key ?>')">source <span>&#x25b6;</span></a> &nbsp; <?php endif ?>
 
 			<?php if (isset($row['class'])) echo $row['class'] . $row['type'] ?>
 			<?php echo $row['function'] ?>
@@ -238,22 +246,8 @@ if (headers_sent()) {
 			<?php endif ?>
 
 
-			<?php if (!empty($source)): ?>
-				<pre class="collapsed" id="src<?php echo $key ?>"><?php
-				$line = $row['line'];
-				array_unshift($source, NULL);
-				$source = array_slice($source, max(0, $line - 5), 10, TRUE);
-
-				foreach ($source as $n => $s) {
-					$s = rtrim($s);
-					if (strlen($s) > 100) $s = substr($s, 0, 100) . '...';
-					if ($n === $line) {
-						printf("<span class='highlight'>Line %s:    %s\n</span>", $n, htmlSpecialChars($s));
-					} else {
-						printf("Line %s:    %s\n", $n, htmlSpecialChars($s));
-					}
-				}
-				?></pre>
+			<?php if (isset($row['file'])): ?>
+				<pre class="collapsed" id="src<?php echo $key ?>"><?php _netteDebugSourcecode($row['file'], $row['line']) ?></pre>
 			<?php endif ?>
 
 			</li>
