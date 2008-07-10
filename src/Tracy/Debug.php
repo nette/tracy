@@ -527,28 +527,6 @@ final class Debug
 
 
 
-	/**
-	 * Render template.
-	 */
-	private static function openPanel($name, $collaped)
-	{
-		static $id;
-		$id++;
-		require dirname(__FILE__) . '/Debug.templates/openpanel.phtml';
-	}
-
-
-
-	/**
-	 * Render template.
-	 */
-	private static function closePanel()
-	{
-		require dirname(__FILE__) . '/Debug.templates/closepanel.phtml';
-	}
-
-
-
 	/********************* profiler ****************d*g**/
 
 

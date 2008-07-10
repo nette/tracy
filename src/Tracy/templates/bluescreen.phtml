@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Nette Framework
+ * Nette Framework - Debugger bluescreen template.
  *
  * Copyright (c) 2004, 2008 David Grudl (http://davidgrudl.com)
  *
@@ -10,26 +10,33 @@
  *
  * For more information please see http://nettephp.com/
  *
+ * @author     David Grudl
  * @copyright  Copyright (c) 2004, 2008 David Grudl
  * @license    http://nettephp.com/license  Nette license
  * @link       http://nettephp.com/
  * @category   Nette
  * @package    Nette
+ * @version    $Revision$ $Date$
+ *
+ * @param  int       $type
+ * @param  int       $code
+ * @param  string    $message
+ * @param  string    $file
+ * @param  int       $line
+ * @param  array     $colophons
+ * @param  array     $context  (optional)
+ * @param  array     $exception (optional)
  */
+
 
 
 /**
- * Debugger template.
- *
- * @author     David Grudl
- * @copyright  Copyright (c) 2004, 2008 David Grudl
- * @package    Nette
- * @version    $Revision$ $Date$
+ * Prints source code.
+ * @param  string
+ * @param  int
+ * @param  int
+ * @return void
  */
-
-// passed parameters: $type, $code, $message, $file, $line, $colophons [, $context] [, $exception]
-
-
 function _netteDebugSourcecode($file, $line, $count = 13)
 {
 	$source = explode('<br />', @highlight_file($file, TRUE));
@@ -49,6 +56,41 @@ function _netteDebugSourcecode($file, $line, $count = 13)
 	}
 	echo '</span></span></code>';
 }
+
+
+
+/**
+ * Opens panel.
+ * @param  string
+ * @param  bool
+ * @return void
+ */
+function _netteOpenPanel($name, $collaped)
+{
+	static $id;
+	$id++;
+	?>
+	<div class="panel">
+		<h2><a href="#" onclick="return !toggle(this, 'pnl<?php echo $id ?>')"><?php echo htmlSpecialChars($name) ?> <span><?php echo $collaped ? '&#x25b6;' : '&#x25bc;' ?></span></a></h2>
+
+		<div id="pnl<?php echo $id ?>" class="<?php echo $collaped ? 'collapsed ' : '' ?>inner">
+	<?php
+}
+
+
+
+/**
+ * Closes panel.
+ * @return void
+ */
+function _netteClosePanel()
+{
+	?>
+		</div>
+	</div>
+	<?php
+}
+
 
 
 if (headers_sent()) {
@@ -198,16 +240,16 @@ if (headers_sent()) {
 
 
 	<?php if ($file): ?>
-	<?php self::openPanel('Source file', FALSE) ?>
+	<?php _netteOpenPanel('Source file', FALSE) ?>
 		<p><strong>File:</strong> <?php echo htmlspecialchars($file) ?> &nbsp; <strong>Line:</strong> <?php echo $line ?></p>
 		<pre><?php _netteDebugSourcecode($file, $line) ?></pre>
-	<?php self::closePanel() ?>
+	<?php _netteClosePanel() ?>
 	<?php endif?>
 
 
 
 
-	<?php self::openPanel('Call stack', FALSE) ?>
+	<?php _netteOpenPanel('Call stack', FALSE) ?>
 		<ol>
 			<?php foreach ($trace as $key => $row): ?>
 			<li><p>
@@ -253,22 +295,22 @@ if (headers_sent()) {
 			</li>
 			<?php endforeach ?>
 		</ol>
-	<?php self::closePanel() ?>
+	<?php _netteClosePanel() ?>
 
 
 
 
 	<?php if ($exception instanceof /*Nette::*/IDebuggable): ?>
 	<?php foreach ($exception->getPanels() as $name => $panel): ?>
-	<?php self::openPanel($name, empty($panel['expanded'])) ?>
+	<?php _netteOpenPanel($name, empty($panel['expanded'])) ?>
 		<?php echo $panel['content'] ?>
-	<?php self::closePanel() ?>
+	<?php _netteClosePanel() ?>
 	<?php endforeach ?>
 	<?php endif ?>
 
 
 
-	<?php self::openPanel('Environment', TRUE) ?>
+	<?php _netteOpenPanel('Environment', TRUE) ?>
 		<?php if (!empty($context)):?>
 		<h3><a href="#" onclick="return !toggle(this, 'pnl-env-context')">Variables <span>&#x25b6;</span></a></h3>
 		<table id="pnl-env-context" class="collapsed">
@@ -315,15 +357,15 @@ if (headers_sent()) {
 		?>
 		</table>
 		<?php endif ?>
-	<?php self::closePanel() ?>
+	<?php _netteClosePanel() ?>
 
 
 
 
 	<?php if ($exception):?>
-	<?php self::openPanel('Exception', TRUE) ?>
+	<?php _netteOpenPanel('Exception', TRUE) ?>
 			<pre><?php echo htmlspecialchars($exception->__toString()) ?></pre>
-	<?php self::closePanel() ?>
+	<?php _netteClosePanel() ?>
 	<?php endif ?>
 
 
@@ -331,15 +373,15 @@ if (headers_sent()) {
 
 	<?php $cause = $exception; ?>
 	<?php while ($cause instanceof /*Nette::*/ICausedException && $cause = $cause->getCause()): ?>
-	<?php self::openPanel('Caused by', TRUE) ?>
+	<?php _netteOpenPanel('Caused by', TRUE) ?>
 			<pre><?php echo htmlspecialchars($cause->__toString()) ?></pre>
-	<?php self::closePanel() ?>
+	<?php _netteClosePanel() ?>
 	<?php endwhile ?>
 
 
 
 
-	<?php self::openPanel('HTTP request', TRUE) ?>
+	<?php _netteOpenPanel('HTTP request', TRUE) ?>
 		<?php if (function_exists('apache_request_headers')): ?>
 		<h3>Headers</h3>
 		<table>
@@ -362,11 +404,11 @@ if (headers_sent()) {
 		</table>
 		<?php endif ?>
 		<?php endforeach ?>
-	<?php self::closePanel() ?>
+	<?php _netteClosePanel() ?>
 
 
 
-	<?php self::openPanel('HTTP response', TRUE) ?>
+	<?php _netteOpenPanel('HTTP response', TRUE) ?>
 		<h3>Headers</h3>
 		<?php if (headers_list()): ?>
 		<pre><?php
@@ -375,7 +417,7 @@ if (headers_sent()) {
 		<?php else: ?>
 		<p><i>no headers</i></p>
 		<?php endif ?>
-	<?php self::closePanel() ?>
+	<?php _netteClosePanel() ?>
 
 
 	<ul>

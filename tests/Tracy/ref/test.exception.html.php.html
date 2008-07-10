@@ -102,6 +102,10 @@
 			display: block;
 		}
 
+		.line {
+			color: black;
+		}
+
 	/* ]]> */
 	</style>
 
@@ -140,22 +144,22 @@
 		<h2><a href="#" onclick="return !toggle(this, 'pnl1')">Source file <span>&#x25bc;</span></a></h2>
 
 		<div id="pnl1" class="inner">
-		<p><strong>File:</strong> D:\Web\nette\_trunk\tests\Debug\test.exception.html.php &nbsp; <strong>Line:</strong> 29</p>
-
-		<pre>Line 24:    }
-Line 25:    
-Line 26:    
-Line 27:    function third($arg1)
-Line 28:    {
-<span class='highlight'>Line 29:    	throw new Exception('The my exception', 123);
-</span>Line 30:    }
-Line 31:    
-Line 32:    
-Line 33:    first(10, 'any string');
-</pre>
+			<p><strong>File:</strong> D:\Web\nette\_trunk\tests\Debug\test.exception.html.php &nbsp; <strong>Line:</strong> 29</p>
+		<pre><span class='line'>Line 23:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">third</span><span style="color: #007700">(array(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">));
+<span class='line'>Line 24:</span>    }
+<span class='line'>Line 25:</span>    
+<span class='line'>Line 26:</span>    
+<span class='line'>Line 27:</span>    function&nbsp;</span><span style="color: #0000BB">third</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">)
+<span class='line'>Line 28:</span>    {
+<span class='highlight'>Line 29:    &nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;Exception('The&nbsp;my&nbsp;exception',&nbsp;123);
+</span><span style="color: #007700"><span class='line'>Line 30:</span>    }
+<span class='line'>Line 31:</span>    
+<span class='line'>Line 32:</span>    
+<span class='line'>Line 33:</span>    </span><span style="color: #0000BB">first</span><span style="color: #007700">(</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'any&nbsp;string'</span><span style="color: #007700">);</span></span></code>
+</span></span></code></pre>
 			</div>
 	</div>
-	
+		
 
 
 
@@ -163,10 +167,10 @@ Line 33:    first(10, 'any string');
 		<h2><a href="#" onclick="return !toggle(this, 'pnl2')">Call stack <span>&#x25bc;</span></a></h2>
 
 		<div id="pnl2" class="inner">
-		<ol>
+			<ol>
 						<li><p>
 
-											Debug/<b>test.exception.html.php</b> (23)			
+							Debug/<b>test.exception.html.php</b> (23)			
 			<a href="#" onclick="return !toggle(this, 'src0')">source <span>&#x25b6;</span></a> &nbsp; 
 						third
 			(<a href="#" onclick="return !toggle(this, 'args0')">arguments <span>&#x25b6;</span></a>)
@@ -184,22 +188,25 @@ Line 33:    first(10, 'any string');
 				</div>
 			
 
-							<pre class="collapsed" id="src0">Line 18:    
-Line 19:    
-Line 20:    
-Line 21:    function second($arg1, $arg2)
-Line 22:    {
-<span class='highlight'>Line 23:    	third(array(1, 2, 3));
-</span>Line 24:    }
-Line 25:    
-Line 26:    
-Line 27:    function third($arg1)
-</pre>
+							<pre class="collapsed" id="src0"><span class='line'>Line 17:</span>    }
+<span class='line'>Line 18:</span>    
+<span class='line'>Line 19:</span>    
+<span class='line'>Line 20:</span>    
+<span class='line'>Line 21:</span>    function&nbsp;</span><span style="color: #0000BB">second</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$arg2</span><span style="color: #007700">)
+<span class='line'>Line 22:</span>    {
+<span class='highlight'>Line 23:    &nbsp;&nbsp;&nbsp;&nbsp;third(array(1,&nbsp;2,&nbsp;3));
+</span><span style="color: #007700"><span class='line'>Line 24:</span>    }
+<span class='line'>Line 25:</span>    
+<span class='line'>Line 26:</span>    
+<span class='line'>Line 27:</span>    function&nbsp;</span><span style="color: #0000BB">third</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">)
+<span class='line'>Line 28:</span>    {
+<span class='line'>Line 29:</span>    &nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;</span><span style="color: #0000BB">Exception</span><span style="color: #007700">(</span><span style="color: #DD0000">'The&nbsp;my&nbsp;exception'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">123</span><span style="color: #007700">);
+</span></span></code></pre>
 			
 			</li>
 						<li><p>
 
-											Debug/<b>test.exception.html.php</b> (16)			
+							Debug/<b>test.exception.html.php</b> (16)			
 			<a href="#" onclick="return !toggle(this, 'src1')">source <span>&#x25b6;</span></a> &nbsp; 
 						second
 			(<a href="#" onclick="return !toggle(this, 'args1')">arguments <span>&#x25b6;</span></a>)
@@ -215,22 +222,25 @@ Line 27:    function third($arg1)
 				</div>
 			
 
-							<pre class="collapsed" id="src1">Line 11:    
-Line 12:    define('MY_CONST', 123);
-Line 13:    
-Line 14:    function first($arg1, $arg2)
-Line 15:    {
-<span class='highlight'>Line 16:    	second(TRUE, FALSE);
-</span>Line 17:    }
-Line 18:    
-Line 19:    
-Line 20:    
-</pre>
+							<pre class="collapsed" id="src1"><span class='line'>Line 10:</span>    </span><span style="color: #FF8000">//Debug::$logDir&nbsp;=&nbsp;'compress.zlib://'&nbsp;.&nbsp;dirname(__FILE__)&nbsp;.&nbsp;'/log';
+<span class='line'>Line 11:</span>    
+<span class='line'>Line 12:</span>    </span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'MY_CONST'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">123</span><span style="color: #007700">);
+<span class='line'>Line 13:</span>    
+<span class='line'>Line 14:</span>    function&nbsp;</span><span style="color: #0000BB">first</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$arg2</span><span style="color: #007700">)
+<span class='line'>Line 15:</span>    {
+<span class='highlight'>Line 16:    &nbsp;&nbsp;&nbsp;&nbsp;second(TRUE,&nbsp;FALSE);
+</span><span style="color: #007700"><span class='line'>Line 17:</span>    }
+<span class='line'>Line 18:</span>    
+<span class='line'>Line 19:</span>    
+<span class='line'>Line 20:</span>    
+<span class='line'>Line 21:</span>    function&nbsp;</span><span style="color: #0000BB">second</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$arg2</span><span style="color: #007700">)
+<span class='line'>Line 22:</span>    {
+</span></span></code></pre>
 			
 			</li>
 						<li><p>
 
-											Debug/<b>test.exception.html.php</b> (33)			
+							Debug/<b>test.exception.html.php</b> (33)			
 			<a href="#" onclick="return !toggle(this, 'src2')">source <span>&#x25b6;</span></a> &nbsp; 
 						first
 			(<a href="#" onclick="return !toggle(this, 'args2')">arguments <span>&#x25b6;</span></a>)
@@ -246,19 +256,20 @@ Line 20:
 				</div>
 			
 
-							<pre class="collapsed" id="src2">Line 28:    {
-Line 29:    	throw new Exception('The my exception', 123);
-Line 30:    }
-Line 31:    
-Line 32:    
-<span class='highlight'>Line 33:    first(10, 'any string');
-</span></pre>
+							<pre class="collapsed" id="src2"><span class='line'>Line 27:</span>    function&nbsp;</span><span style="color: #0000BB">third</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">)
+<span class='line'>Line 28:</span>    {
+<span class='line'>Line 29:</span>    &nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;</span><span style="color: #0000BB">Exception</span><span style="color: #007700">(</span><span style="color: #DD0000">'The&nbsp;my&nbsp;exception'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">123</span><span style="color: #007700">);
+<span class='line'>Line 30:</span>    }
+<span class='line'>Line 31:</span>    
+<span class='line'>Line 32:</span>    
+<span class='highlight'>Line 33:    first(10,&nbsp;'any&nbsp;string');
+</span><span style="color: #007700"></span></span></code></pre>
 			
 			</li>
 					</ol>
 			</div>
 	</div>
-
+	
 
 
 
@@ -269,7 +280,7 @@ Line 32:
 		<h2><a href="#" onclick="return !toggle(this, 'pnl3')">Environment <span>&#x25b6;</span></a></h2>
 
 		<div id="pnl3" class="collapsed inner">
-		
+			
 
 				<h3><a href="#" onclick="return !toggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
 		<table id="pnl-env-const">
@@ -280,9 +291,9 @@ Line 32:
 </td></tr>		</table>
 		
 
-		<h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a> (12)</h3>
+		<h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a> (10)</h3>
 		<table id="pnl-env-files" class="collapsed">
-		<tr><td>D:\Web\nette\_trunk\tests\Debug\test.exception.html.php</td></tr><tr><td>D:\Web\_php\tools.debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\loader.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Loaders\NetteLoader.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Loaders\AutoLoader.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Object.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\exceptions.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Version.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.phtml</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.openpanel.phtml</td></tr><tr><td>D:\Web\nette\_trunk\Nette\templates\Debug.closepanel.phtml</td></tr>		</table>
+		<tr><td>D:\Web\nette\_trunk\tests\Debug\test.exception.html.php</td></tr><tr><td>D:\Web\_php\tools.debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\loader.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Loaders\NetteLoader.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Loaders\AutoLoader.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Object.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\exceptions.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Debug.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Version.php</td></tr><tr><td>D:\Web\nette\_trunk\Nette\Debug.templates\bluescreen.phtml</td></tr>		</table>
 
 
 		<h3>$_SERVER</h3>
@@ -319,7 +330,7 @@ Line 32:
 </pre>
 </td></tr><tr><td>OS</td><td><pre class="dump"><span>string</span>(10) "Windows_NT"
 </pre>
-</td></tr><tr><td>Path</td><td><pre class="dump"><span>string</span>(156) "C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\NC;c:\PHP\PHP5;;C:\Program Files\Common Files\Ahead\Lib\;C:\Program Files\Common Files\Ahea ... "
+</td></tr><tr><td>Path</td><td><pre class="dump"><span>string</span>(148) "C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\NC;c:\PHP\PHP5;C:\Program Files\TortoiseSVN\bin;;C:\Program Files\Common Files\Ahead\Lib\"
 </pre>
 </td></tr><tr><td>PATHEXT</td><td><pre class="dump"><span>string</span>(48) ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH"
 </pre>
@@ -369,7 +380,7 @@ Line 32:
 </pre>
 </td></tr><tr><td>DOCUMENT_ROOT</td><td><pre class="dump"><span>string</span>(0) ""
 </pre>
-</td></tr><tr><td>REQUEST_TIME</td><td><pre class="dump"><span>int</span>(1210555020)
+</td></tr><tr><td>REQUEST_TIME</td><td><pre class="dump"><span>int</span>(1215638337)
 </pre>
 </td></tr><tr><td>argv</td><td><pre class="dump"><span>array</span>(1) {
   0 => <span>string</span>(23) "test.exception.html.php"
@@ -380,7 +391,7 @@ Line 32:
 </td></tr>		</table>
 					</div>
 	</div>
-
+	
 
 
 
@@ -388,7 +399,7 @@ Line 32:
 		<h2><a href="#" onclick="return !toggle(this, 'pnl4')">Exception <span>&#x25b6;</span></a></h2>
 
 		<div id="pnl4" class="collapsed inner">
-			<pre>exception 'Exception' with message 'The my exception' in D:\Web\nette\_trunk\tests\Debug\test.exception.html.php:29
+				<pre>exception 'Exception' with message 'The my exception' in D:\Web\nette\_trunk\tests\Debug\test.exception.html.php:29
 Stack trace:
 #0 D:\Web\nette\_trunk\tests\Debug\test.exception.html.php(23): third(Array)
 #1 D:\Web\nette\_trunk\tests\Debug\test.exception.html.php(16): second(true, false)
@@ -396,7 +407,7 @@ Stack trace:
 #3 {main}</pre>
 			</div>
 	</div>
-	
+		
 
 
 
@@ -408,7 +419,7 @@ Stack trace:
 		<h2><a href="#" onclick="return !toggle(this, 'pnl5')">HTTP request <span>&#x25b6;</span></a></h2>
 
 		<div id="pnl5" class="collapsed inner">
-		
+			
 
 				<h3>$_GET</h3>
 				<p><i>empty</i></p>
@@ -418,23 +429,23 @@ Stack trace:
 				<p><i>empty</i></p>
 							</div>
 	</div>
-
+	
 
 
 		<div class="panel">
 		<h2><a href="#" onclick="return !toggle(this, 'pnl6')">HTTP response <span>&#x25b6;</span></a></h2>
 
 		<div id="pnl6" class="collapsed inner">
-		<h3>Headers</h3>
+			<h3>Headers</h3>
 				<p><i>no headers</i></p>
 					</div>
 	</div>
-
+	
 
 	<ul>
 		<li>PHP version 5.2.6</li>
-				<li>Nette Framework version 0.7 (Revision: $WCREV$, Date: $WCDATE$)</li>
-				<li>Report generated at 05/12/08 03:17:00</li>
+				<li>Nette Framework version 0.7.5 (Revision: $WCREV$, Date: $WCDATE$)</li>
+				<li>Report generated at 07/09/08 23:18:57</li>
 	</ul>
 
 </body>
