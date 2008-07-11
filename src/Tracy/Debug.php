@@ -397,33 +397,7 @@ final class Debug
 			exit;
 		}
 
-		if (($code & error_reporting()) === $code) {
-			$types = array(
-				E_WARNING => 'Warning',
-				E_CORE_WARNING => 'Core warning', // not catchable
-				E_COMPILE_WARNING => 'Compile warning', // not catchable
-				E_USER_WARNING => 'Warning',
-				E_NOTICE => 'Notice',
-				E_USER_NOTICE => 'Notice',
-				E_STRICT => 'Strict standards',
-				E_DEPRECATED => 'Deprecated',
-			);
-			$type = isset($types[$code]) ? $types[$code] : 'Unknown error';
-
-			if (self::$html) {
-				$message = "<b>$type:</b> $message in <b>$file</b> on line <b>$line</b>\n<br>";
-			} else {
-				$message = "$type: $message in $file on line $line\n";
-			}
-
-			if (self::$display) {
-				echo $message;
-			}
-
-			if (self::$logDir) {
-				error_log($message);
-			}
-		}
+		return FALSE; // normal error handler continues
 	}
 
 

@@ -50,14 +50,15 @@
 
 		p { margin: .8em 0 }
 
+		pre, code, table {
+			font-family: Consolas, monospace;
+		}
+
 		pre, table {
 			background: #ffffcc;
 			padding: .4em .7em;
 			border: 1px dotted silver;
-			font-family: monospace;
 		}
-
-		table, pre, x:-moz-any-link { font-size: 115%; }
 
 		table pre {
 			padding: 0;
@@ -103,7 +104,9 @@
 		}
 
 		.line {
-			color: black;
+			color: #9e9e7e;
+			font-style: normal;
+			font-weight: normal;
 		}
 
 	/* ]]> */
@@ -145,17 +148,18 @@
 
 		<div id="pnl1" class="inner">
 			<p><strong>File:</strong> D:\Web\nette\_trunk\tests\Debug\test.exception.html.php &nbsp; <strong>Line:</strong> 29</p>
-		<pre><span class='line'>Line 23:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">third</span><span style="color: #007700">(array(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">));
+		<pre><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 22:</span>    {
+<span class='line'>Line 23:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #d24; font-weight: bold">));
 <span class='line'>Line 24:</span>    }
 <span class='line'>Line 25:</span>    
 <span class='line'>Line 26:</span>    
-<span class='line'>Line 27:</span>    function&nbsp;</span><span style="color: #0000BB">third</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">)
+<span class='line'>Line 27:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line 28:</span>    {
 <span class='highlight'>Line 29:    &nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;Exception('The&nbsp;my&nbsp;exception',&nbsp;123);
-</span><span style="color: #007700"><span class='line'>Line 30:</span>    }
+</span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"><span class='line'>Line 30:</span>    }
 <span class='line'>Line 31:</span>    
 <span class='line'>Line 32:</span>    
-<span class='line'>Line 33:</span>    </span><span style="color: #0000BB">first</span><span style="color: #007700">(</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'any&nbsp;string'</span><span style="color: #007700">);</span></span></code>
+<span class='line'>Line 33:</span>    </span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #d24; font-weight: bold">);</span>
 </span></span></code></pre>
 			</div>
 	</div>
@@ -188,19 +192,21 @@
 				</div>
 			
 
-							<pre class="collapsed" id="src0"><span class='line'>Line 17:</span>    }
+							<pre class="collapsed" id="src0"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 16:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">second</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">TRUE</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">FALSE</span><span style="color: #d24; font-weight: bold">);
+<span class='line'>Line 17:</span>    }
 <span class='line'>Line 18:</span>    
 <span class='line'>Line 19:</span>    
 <span class='line'>Line 20:</span>    
-<span class='line'>Line 21:</span>    function&nbsp;</span><span style="color: #0000BB">second</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$arg2</span><span style="color: #007700">)
+<span class='line'>Line 21:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line 22:</span>    {
 <span class='highlight'>Line 23:    &nbsp;&nbsp;&nbsp;&nbsp;third(array(1,&nbsp;2,&nbsp;3));
-</span><span style="color: #007700"><span class='line'>Line 24:</span>    }
+</span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"><span class='line'>Line 24:</span>    }
 <span class='line'>Line 25:</span>    
 <span class='line'>Line 26:</span>    
-<span class='line'>Line 27:</span>    function&nbsp;</span><span style="color: #0000BB">third</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">)
+<span class='line'>Line 27:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line 28:</span>    {
-<span class='line'>Line 29:</span>    &nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;</span><span style="color: #0000BB">Exception</span><span style="color: #007700">(</span><span style="color: #DD0000">'The&nbsp;my&nbsp;exception'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">123</span><span style="color: #007700">);
+<span class='line'>Line 29:</span>    &nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;</span><span style="color: #000">Exception</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #080">'The&nbsp;my&nbsp;exception'</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">123</span><span style="color: #d24; font-weight: bold">);
+<span class='line'>Line 30:</span>    }
 </span></span></code></pre>
 			
 			</li>
@@ -222,19 +228,21 @@
 				</div>
 			
 
-							<pre class="collapsed" id="src1"><span class='line'>Line 10:</span>    </span><span style="color: #FF8000">//Debug::$logDir&nbsp;=&nbsp;'compress.zlib://'&nbsp;.&nbsp;dirname(__FILE__)&nbsp;.&nbsp;'/log';
+							<pre class="collapsed" id="src1"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line  9:</span>    
+<span class='line'>Line 10:</span>    </span><span style="color: #999; font-style: italic">//Debug::$logDir&nbsp;=&nbsp;'compress.zlib://'&nbsp;.&nbsp;dirname(__FILE__)&nbsp;.&nbsp;'/log';
 <span class='line'>Line 11:</span>    
-<span class='line'>Line 12:</span>    </span><span style="color: #0000BB">define</span><span style="color: #007700">(</span><span style="color: #DD0000">'MY_CONST'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">123</span><span style="color: #007700">);
+<span class='line'>Line 12:</span>    </span><span style="color: #000">define</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #080">'MY_CONST'</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">123</span><span style="color: #d24; font-weight: bold">);
 <span class='line'>Line 13:</span>    
-<span class='line'>Line 14:</span>    function&nbsp;</span><span style="color: #0000BB">first</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$arg2</span><span style="color: #007700">)
+<span class='line'>Line 14:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line 15:</span>    {
 <span class='highlight'>Line 16:    &nbsp;&nbsp;&nbsp;&nbsp;second(TRUE,&nbsp;FALSE);
-</span><span style="color: #007700"><span class='line'>Line 17:</span>    }
+</span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"><span class='line'>Line 17:</span>    }
 <span class='line'>Line 18:</span>    
 <span class='line'>Line 19:</span>    
 <span class='line'>Line 20:</span>    
-<span class='line'>Line 21:</span>    function&nbsp;</span><span style="color: #0000BB">second</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$arg2</span><span style="color: #007700">)
+<span class='line'>Line 21:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line 22:</span>    {
+<span class='line'>Line 23:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #d24; font-weight: bold">));
 </span></span></code></pre>
 			
 			</li>
@@ -256,14 +264,15 @@
 				</div>
 			
 
-							<pre class="collapsed" id="src2"><span class='line'>Line 27:</span>    function&nbsp;</span><span style="color: #0000BB">third</span><span style="color: #007700">(</span><span style="color: #0000BB">$arg1</span><span style="color: #007700">)
+							<pre class="collapsed" id="src2"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 26:</span>    
+<span class='line'>Line 27:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line 28:</span>    {
-<span class='line'>Line 29:</span>    &nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;</span><span style="color: #0000BB">Exception</span><span style="color: #007700">(</span><span style="color: #DD0000">'The&nbsp;my&nbsp;exception'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">123</span><span style="color: #007700">);
+<span class='line'>Line 29:</span>    &nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;</span><span style="color: #000">Exception</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #080">'The&nbsp;my&nbsp;exception'</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">123</span><span style="color: #d24; font-weight: bold">);
 <span class='line'>Line 30:</span>    }
 <span class='line'>Line 31:</span>    
 <span class='line'>Line 32:</span>    
 <span class='highlight'>Line 33:    first(10,&nbsp;'any&nbsp;string');
-</span><span style="color: #007700"></span></span></code></pre>
+</span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #d24; font-weight: bold"></span></span></span></code></pre>
 			
 			</li>
 					</ol>
@@ -302,6 +311,8 @@
 </pre>
 </td></tr><tr><td>APPDATA</td><td><pre class="dump"><span>string</span>(40) "C:\Documents\Administrator\Data aplikací"
 </pre>
+</td></tr><tr><td>CLASSPATH</td><td><pre class="dump"><span>string</span>(54) ".;C:\Program Files\Java\jre1.6.0_05\lib\ext\QTJava.zip"
+</pre>
 </td></tr><tr><td>CLIENTNAME</td><td><pre class="dump"><span>string</span>(7) "Console"
 </pre>
 </td></tr><tr><td>CommonProgramFiles</td><td><pre class="dump"><span>string</span>(29) "C:\Program Files\Common Files"
@@ -330,7 +341,7 @@
 </pre>
 </td></tr><tr><td>OS</td><td><pre class="dump"><span>string</span>(10) "Windows_NT"
 </pre>
-</td></tr><tr><td>Path</td><td><pre class="dump"><span>string</span>(148) "C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\NC;c:\PHP\PHP5;C:\Program Files\TortoiseSVN\bin;;C:\Program Files\Common Files\Ahead\Lib\"
+</td></tr><tr><td>Path</td><td><pre class="dump"><span>string</span>(184) "C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\NC;c:\PHP\PHP5;C:\Program Files\TortoiseSVN\bin;C:\Program Files\QuickTime\QTSystem\;C:\Pro ... "
 </pre>
 </td></tr><tr><td>PATHEXT</td><td><pre class="dump"><span>string</span>(48) ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH"
 </pre>
@@ -347,6 +358,8 @@
 </td></tr><tr><td>ProgramFiles</td><td><pre class="dump"><span>string</span>(16) "C:\Program Files"
 </pre>
 </td></tr><tr><td>PROMPT</td><td><pre class="dump"><span>string</span>(4) "$P$G"
+</pre>
+</td></tr><tr><td>QTJAVA</td><td><pre class="dump"><span>string</span>(52) "C:\Program Files\Java\jre1.6.0_05\lib\ext\QTJava.zip"
 </pre>
 </td></tr><tr><td>SESSIONNAME</td><td><pre class="dump"><span>string</span>(7) "Console"
 </pre>
@@ -380,7 +393,7 @@
 </pre>
 </td></tr><tr><td>DOCUMENT_ROOT</td><td><pre class="dump"><span>string</span>(0) ""
 </pre>
-</td></tr><tr><td>REQUEST_TIME</td><td><pre class="dump"><span>int</span>(1215638337)
+</td></tr><tr><td>REQUEST_TIME</td><td><pre class="dump"><span>int</span>(1215712904)
 </pre>
 </td></tr><tr><td>argv</td><td><pre class="dump"><span>array</span>(1) {
   0 => <span>string</span>(23) "test.exception.html.php"
@@ -445,7 +458,7 @@ Stack trace:
 	<ul>
 		<li>PHP version 5.2.6</li>
 				<li>Nette Framework version 0.7.5 (Revision: $WCREV$, Date: $WCDATE$)</li>
-				<li>Report generated at 07/09/08 23:18:57</li>
+				<li>Report generated at 07/10/08 20:01:44</li>
 	</ul>
 
 </body>

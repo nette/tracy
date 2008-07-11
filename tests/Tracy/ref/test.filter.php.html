@@ -50,14 +50,15 @@
 
 		p { margin: .8em 0 }
 
+		pre, code, table {
+			font-family: Consolas, monospace;
+		}
+
 		pre, table {
 			background: #ffffcc;
 			padding: .4em .7em;
 			border: 1px dotted silver;
-			font-family: monospace;
 		}
-
-		table, pre, x:-moz-any-link { font-size: 115%; }
 
 		table pre {
 			padding: 0;
@@ -103,7 +104,9 @@
 		}
 
 		.line {
-			color: black;
+			color: #9e9e7e;
+			font-style: normal;
+			font-weight: normal;
 		}
 
 	/* ]]> */
@@ -145,18 +148,19 @@
 
 		<div id="pnl1" class="inner">
 			<p><strong>File:</strong> D:\Web\nette\_trunk\tests\Debug\test.filter.php &nbsp; <strong>Line:</strong> 19</p>
-		<pre><span class='line'>Line 13:</span>    {
-<span class='line'>Line 14:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$struct&nbsp;</span><span style="color: #007700">=&nbsp;(object)&nbsp;array(
-<span class='line'>Line 15:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'arr'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(
-<span class='line'>Line 16:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'password'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'druhe&nbsp;heslo'</span><span style="color: #007700">,
+		<pre><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 12:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$user</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$pass</span><span style="color: #d24; font-weight: bold">)
+<span class='line'>Line 13:</span>    {
+<span class='line'>Line 14:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">$struct&nbsp;</span><span style="color: #d24; font-weight: bold">=&nbsp;(object)&nbsp;array(
+<span class='line'>Line 15:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #080">'arr'&nbsp;</span><span style="color: #d24; font-weight: bold">=&gt;&nbsp;array(
+<span class='line'>Line 16:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #080">'password'&nbsp;</span><span style="color: #d24; font-weight: bold">=&gt;&nbsp;</span><span style="color: #080">'druhe&nbsp;heslo'</span><span style="color: #d24; font-weight: bold">,
 <span class='line'>Line 17:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),
 <span class='line'>Line 18:</span>    &nbsp;&nbsp;&nbsp;&nbsp;);
 <span class='highlight'>Line 19:    &nbsp;&nbsp;&nbsp;&nbsp;trigger_error('The&nbsp;my&nbsp;error',&nbsp;E_USER_ERROR);
-</span><span style="color: #007700"><span class='line'>Line 20:</span>    }
+</span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"><span class='line'>Line 20:</span>    }
 <span class='line'>Line 21:</span>    
 <span class='line'>Line 22:</span>    
 <span class='line'>Line 23:</span>    
-<span class='line'>Line 24:</span>    </span><span style="color: #0000BB">first</span><span style="color: #007700">(</span><span style="color: #DD0000">'root'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'prvni&nbsp;heslo'</span><span style="color: #007700">);</span></span></code>
+<span class='line'>Line 24:</span>    </span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #080">'root'</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #080">'prvni&nbsp;heslo'</span><span style="color: #d24; font-weight: bold">);</span>
 </span></span></code></pre>
 			</div>
 	</div>
@@ -187,18 +191,19 @@
 				</div>
 			
 
-							<pre class="collapsed" id="src0"><span class='line'>Line 13:</span>    {
-<span class='line'>Line 14:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$struct&nbsp;</span><span style="color: #007700">=&nbsp;(object)&nbsp;array(
-<span class='line'>Line 15:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'arr'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(
-<span class='line'>Line 16:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'password'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'druhe&nbsp;heslo'</span><span style="color: #007700">,
+							<pre class="collapsed" id="src0"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 12:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$user</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$pass</span><span style="color: #d24; font-weight: bold">)
+<span class='line'>Line 13:</span>    {
+<span class='line'>Line 14:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">$struct&nbsp;</span><span style="color: #d24; font-weight: bold">=&nbsp;(object)&nbsp;array(
+<span class='line'>Line 15:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #080">'arr'&nbsp;</span><span style="color: #d24; font-weight: bold">=&gt;&nbsp;array(
+<span class='line'>Line 16:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #080">'password'&nbsp;</span><span style="color: #d24; font-weight: bold">=&gt;&nbsp;</span><span style="color: #080">'druhe&nbsp;heslo'</span><span style="color: #d24; font-weight: bold">,
 <span class='line'>Line 17:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),
 <span class='line'>Line 18:</span>    &nbsp;&nbsp;&nbsp;&nbsp;);
 <span class='highlight'>Line 19:    &nbsp;&nbsp;&nbsp;&nbsp;trigger_error('The&nbsp;my&nbsp;error',&nbsp;E_USER_ERROR);
-</span><span style="color: #007700"><span class='line'>Line 20:</span>    }
+</span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"><span class='line'>Line 20:</span>    }
 <span class='line'>Line 21:</span>    
 <span class='line'>Line 22:</span>    
 <span class='line'>Line 23:</span>    
-<span class='line'>Line 24:</span>    </span><span style="color: #0000BB">first</span><span style="color: #007700">(</span><span style="color: #DD0000">'root'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'prvni&nbsp;heslo'</span><span style="color: #007700">);</span></span></code>
+<span class='line'>Line 24:</span>    </span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #080">'root'</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #080">'prvni&nbsp;heslo'</span><span style="color: #d24; font-weight: bold">);</span>
 </span></span></code></pre>
 			
 			</li>
@@ -218,14 +223,15 @@
 				</div>
 			
 
-							<pre class="collapsed" id="src1"><span class='line'>Line 18:</span>    &nbsp;&nbsp;&nbsp;&nbsp;);
-<span class='line'>Line 19:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #DD0000">'The&nbsp;my&nbsp;error'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);
+							<pre class="collapsed" id="src1"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 17:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),
+<span class='line'>Line 18:</span>    &nbsp;&nbsp;&nbsp;&nbsp;);
+<span class='line'>Line 19:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">trigger_error</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #080">'The&nbsp;my&nbsp;error'</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">E_USER_ERROR</span><span style="color: #d24; font-weight: bold">);
 <span class='line'>Line 20:</span>    }
 <span class='line'>Line 21:</span>    
 <span class='line'>Line 22:</span>    
 <span class='line'>Line 23:</span>    
 <span class='highlight'>Line 24:    first('root',&nbsp;'prvni&nbsp;heslo');
-</span><span style="color: #007700"></span></span></code></pre>
+</span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #d24; font-weight: bold"></span></span></span></code></pre>
 			
 			</li>
 					</ol>
@@ -273,6 +279,8 @@
 </pre>
 </td></tr><tr><td>APPDATA</td><td><pre class="dump"><span>string</span>(40) "C:\Documents\Administrator\Data aplikací"
 </pre>
+</td></tr><tr><td>CLASSPATH</td><td><pre class="dump"><span>string</span>(54) ".;C:\Program Files\Java\jre1.6.0_05\lib\ext\QTJava.zip"
+</pre>
 </td></tr><tr><td>CLIENTNAME</td><td><pre class="dump"><span>string</span>(7) "Console"
 </pre>
 </td></tr><tr><td>CommonProgramFiles</td><td><pre class="dump"><span>string</span>(29) "C:\Program Files\Common Files"
@@ -301,7 +309,7 @@
 </pre>
 </td></tr><tr><td>OS</td><td><pre class="dump"><span>string</span>(10) "Windows_NT"
 </pre>
-</td></tr><tr><td>Path</td><td><pre class="dump"><span>string</span>(148) "C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\NC;c:\PHP\PHP5;C:\Program Files\TortoiseSVN\bin;;C:\Program Files\Common Files\Ahead\Lib\"
+</td></tr><tr><td>Path</td><td><pre class="dump"><span>string</span>(184) "C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\NC;c:\PHP\PHP5;C:\Program Files\TortoiseSVN\bin;C:\Program Files\QuickTime\QTSystem\;C:\Pro ... "
 </pre>
 </td></tr><tr><td>PATHEXT</td><td><pre class="dump"><span>string</span>(48) ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH"
 </pre>
@@ -318,6 +326,8 @@
 </td></tr><tr><td>ProgramFiles</td><td><pre class="dump"><span>string</span>(16) "C:\Program Files"
 </pre>
 </td></tr><tr><td>PROMPT</td><td><pre class="dump"><span>string</span>(4) "$P$G"
+</pre>
+</td></tr><tr><td>QTJAVA</td><td><pre class="dump"><span>string</span>(52) "C:\Program Files\Java\jre1.6.0_05\lib\ext\QTJava.zip"
 </pre>
 </td></tr><tr><td>SESSIONNAME</td><td><pre class="dump"><span>string</span>(7) "Console"
 </pre>
@@ -351,7 +361,7 @@
 </pre>
 </td></tr><tr><td>DOCUMENT_ROOT</td><td><pre class="dump"><span>string</span>(0) ""
 </pre>
-</td></tr><tr><td>REQUEST_TIME</td><td><pre class="dump"><span>int</span>(1215638337)
+</td></tr><tr><td>REQUEST_TIME</td><td><pre class="dump"><span>int</span>(1215712904)
 </pre>
 </td></tr><tr><td>argv</td><td><pre class="dump"><span>array</span>(1) {
   0 => <span>string</span>(15) "test.filter.php"
@@ -404,7 +414,7 @@
 	<ul>
 		<li>PHP version 5.2.6</li>
 				<li>Nette Framework version 0.7.5 (Revision: $WCREV$, Date: $WCDATE$)</li>
-				<li>Report generated at 07/09/08 23:18:57</li>
+				<li>Report generated at 07/10/08 20:01:44</li>
 	</ul>
 
 </body>

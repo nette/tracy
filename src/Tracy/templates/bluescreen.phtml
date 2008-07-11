@@ -37,19 +37,42 @@
  * @param  int
  * @return void
  */
-function _netteDebugSourcecode($file, $line, $count = 13)
+function _netteDebugSourcecode($file, $line, $count = 15)
 {
-	$source = explode('<br />', @highlight_file($file, TRUE));
+	ini_set('highlight.comment', '#999; font-style: italic');
+	ini_set('highlight.default', '#000');
+	ini_set('highlight.html', '#06b');
+	ini_set('highlight.keyword', '#d24; font-weight: bold');
+	ini_set('highlight.string', '#080');
+
+	$start = max(1, $line - floor($count / 2));
+
+	$source = explode("\n", @highlight_file($file, TRUE));
+	echo $source[0]; // <code><span color=highlight.html>
+	$source = explode('<br />', $source[1]);
 	array_unshift($source, NULL);
-	$source = array_slice($source, max(1, $line - floor($count / 2)), $count, TRUE);
+
+	$i = $start; // find last highlighted block
+	while (--$i >= 1) {
+		if (preg_match('#.*(</?span[^>]*>)#', $source[$i], $m)) {
+			if ($m[1] !== '</span>') echo $m[1];
+			break;
+		}
+	}
+
+	$source = array_slice($source, $start, $count, TRUE);
 	end($source);
 	$numWidth = strlen((string) key($source));
 
 	foreach ($source as $n => $s) {
 		$s = str_replace(array("\r", "\n"), array('', ''), $s);
 		if ($n === $line) {
-			preg_match('#.*(<span[^>]+>)#', $s, $m);
-			printf("<span class='highlight'>Line %{$numWidth}s:    %s\n</span>%s", $n, strip_tags($s), @$m[1]);
+			printf(
+				"<span class='highlight'>Line %{$numWidth}s:    %s\n</span>%s",
+				$n,
+				strip_tags($s),
+				preg_replace('#[^>]*(<[^>]+>)[^<]*#', '$1', $s)
+			);
 		} else {
 			printf("<span class='line'>Line %{$numWidth}s:</span>    %s\n", $n, $s);
 		}
@@ -100,7 +123,7 @@ if (headers_sent()) {
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="robots" content="noindex,noarchive">
 	<meta name="generator" content="Nette Framework">
 
@@ -149,14 +172,15 @@ if (headers_sent()) {
 
 		p { margin: .8em 0 }
 
+		pre, code, table {
+			font-family: Consolas, monospace;
+		}
+
 		pre, table {
 			background: #ffffcc;
 			padding: .4em .7em;
 			border: 1px dotted silver;
-			font-family: monospace;
 		}
-
-		table, pre, x:-moz-any-link { font-size: 115%; }
 
 		table pre {
 			padding: 0;
@@ -202,7 +226,9 @@ if (headers_sent()) {
 		}
 
 		.line {
-			color: black;
+			color: #9e9e7e;
+			font-style: normal;
+			font-weight: normal;
 		}
 
 	/* ]]> */
@@ -255,7 +281,7 @@ if (headers_sent()) {
 			<li><p>
 
 			<?php if (isset($row['file'])): ?>
-				<?php echo htmlSpecialChars(basename(dirname($row['file']))), '/<b>', htmlSpecialChars(basename($row['file'])), '</b> (', $row['line'], ')' ?>
+				<span title="<?php echo htmlSpecialChars($row['file'])?>"><?php echo htmlSpecialChars(basename(dirname($row['file']))), '/<b>', htmlSpecialChars(basename($row['file'])), '</b></span> (', $row['line'], ')' ?>
 			<?php else: ?>
 				&lt;PHP inner-code&gt;
 			<?php endif ?>
@@ -425,7 +451,7 @@ if (headers_sent()) {
 		<?php if (isset($_SERVER['SERVER_SOFTWARE'])): ?><li><?php echo $_SERVER['SERVER_SOFTWARE'] ?></li><?php endif ?>
 		<li>Nette Framework version <?php echo Nette::VERSION ?></li>
 		<?php foreach ($colophons as $callback): ?>
-		<?php foreach (call_user_func($callback) as $line): ?><li><?php echo htmlSpecialChars($line, ENT_NOQUOTES, 'ISO-8859-1', FALSE) ?></li><?php endforeach ?>
+		<?php foreach (call_user_func($callback) as $line): ?><li><?php echo htmlSpecialChars($line, ENT_NOQUOTES, 'UTF-8', FALSE) ?></li><?php endforeach ?>
 		<?php endforeach ?>
 		<li>Report generated at <?php echo @strftime('%c') ?></li>
 	</ul>
