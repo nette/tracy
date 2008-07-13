@@ -7,7 +7,8 @@ require_once '../../Nette/loader.php';
 
 /*use Nette::Debug;*/
 
-Debug::enable(E_ALL | E_STRICT);
+Debug::$html = TRUE;
+Debug::enable(E_ALL, FALSE);
 
 
 class TestClass
@@ -38,19 +39,19 @@ try {
 	echo "Invalid argument #1\n";
 	$obj->test1('hello');
 } catch (Exception $e) {
-	echo get_class($e), ': ', $e->getMessage(), "\n\n";
+	echo "$e\n\n";
 }
 
 try {
 	echo "Invalid argument #2\n";
 	$obj->test2('hello');
 } catch (Exception $e) {
-	echo get_class($e), ': ', $e->getMessage(), "\n\n";
+	echo "$e\n\n";
 }
 
 try {
 	echo "Invalid toString\n";
 	echo $obj;
 } catch (Exception $e) {
-	echo get_class($e), ': ', $e->getMessage(), "\n\n";
+	echo "$e\n\n";
 }

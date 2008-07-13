@@ -18,16 +18,9 @@
  * @package    Nette
  * @version    $Revision$ $Date$
  *
- * @param  int       $type
- * @param  int       $code
- * @param  string    $message
- * @param  string    $file
- * @param  int       $line
+ * @param  array     $exception
  * @param  array     $colophons
- * @param  array     $context  (optional)
- * @param  array     $exception (optional)
  */
-
 
 
 /**
@@ -127,7 +120,7 @@ if (headers_sent()) {
 	<meta name="robots" content="noindex,noarchive">
 	<meta name="generator" content="Nette Framework">
 
-	<title><?php echo htmlspecialchars($type) ?></title>
+	<title><?php echo htmlspecialchars(get_class($exception)) ?></title>
 
 	<style type="text/css">
 	/* <![CDATA[ */
@@ -222,13 +215,14 @@ if (headers_sent()) {
 			background: red;
 			color: white;
 			font-weight: bold;
+			font-style: normal;
 			display: block;
 		}
 
 		.line {
 			color: #9e9e7e;
-			font-style: normal;
 			font-weight: normal;
+			font-style: normal;
 		}
 
 	/* ]]> */
@@ -258,17 +252,17 @@ if (headers_sent()) {
 
 <body>
 	<div id="error" class="panel">
-		<h1><?php echo htmlspecialchars($type) ?></h1>
+		<h1><?php echo htmlspecialchars(get_class($exception)), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 
-		<p><?php echo htmlspecialchars($message) ?></p>
+		<p><?php echo htmlspecialchars($exception->getMessage()) ?></p>
 	</div>
 
 
 
-	<?php if ($file): ?>
+	<?php if (is_file($exception->getFile())): ?>
 	<?php _netteOpenPanel('Source file', FALSE) ?>
-		<p><strong>File:</strong> <?php echo htmlspecialchars($file) ?> &nbsp; <strong>Line:</strong> <?php echo $line ?></p>
-		<pre><?php _netteDebugSourcecode($file, $line) ?></pre>
+		<p><strong>File:</strong> <?php echo htmlspecialchars($exception->getFile()) ?> &nbsp; <strong>Line:</strong> <?php echo $exception->getLine() ?></p>
+		<pre><?php _netteDebugSourcecode($exception->getFile(), $exception->getLine()) ?></pre>
 	<?php _netteClosePanel() ?>
 	<?php endif?>
 
@@ -277,7 +271,7 @@ if (headers_sent()) {
 
 	<?php _netteOpenPanel('Call stack', FALSE) ?>
 		<ol>
-			<?php foreach ($trace as $key => $row): ?>
+			<?php foreach ($exception->getTrace() as $key => $row): ?>
 			<li><p>
 
 			<?php if (isset($row['file'])): ?>
@@ -286,7 +280,7 @@ if (headers_sent()) {
 				&lt;PHP inner-code&gt;
 			<?php endif ?>
 
-			<?php if (isset($row['file'])): ?><a href="#" onclick="return !toggle(this, 'src<?php echo $key ?>')">source <span>&#x25b6;</span></a> &nbsp; <?php endif ?>
+			<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#" onclick="return !toggle(this, 'src<?php echo $key ?>')">source <span>&#x25b6;</span></a> &nbsp; <?php endif ?>
 
 			<?php if (isset($row['class'])) echo $row['class'] . $row['type'] ?>
 			<?php echo $row['function'] ?>
@@ -306,7 +300,7 @@ if (headers_sent()) {
 				}
 				foreach ($row['args'] as $k => $v) {
 					echo '<tr><td>', (isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</td>';
-					echo '<td>', self::safedump($v, isset($params[$k]) ? $params[$k]->name : NULL), '</td></tr>';
+					echo '<td>', self::safedump($v, isset($params[$k]) ? $params[$k]->name : NULL), "</td></tr>\n";
 				}
 				?>
 				</table>
@@ -314,7 +308,7 @@ if (headers_sent()) {
 			<?php endif ?>
 
 
-			<?php if (isset($row['file'])): ?>
+			<?php if (isset($row['file']) && is_file($row['file'])): ?>
 				<pre class="collapsed" id="src<?php echo $key ?>"><?php _netteDebugSourcecode($row['file'], $row['line']) ?></pre>
 			<?php endif ?>
 
@@ -322,7 +316,6 @@ if (headers_sent()) {
 			<?php endforeach ?>
 		</ol>
 	<?php _netteClosePanel() ?>
-
 
 
 
@@ -336,19 +329,21 @@ if (headers_sent()) {
 
 
 
+	<?php if (isset($exception->context) && is_array($exception->context)):?>
+	<?php _netteOpenPanel('Variables', TRUE) ?>
+	<table>
+	<?php
+	foreach ($exception->context as $k => $v) {
+		echo '<tr><td>$', htmlspecialchars($k), '</td><td>', self::safedump($v, $k), "</td></tr>\n";
+	}
+	?>
+	</table>
+	<?php _netteClosePanel() ?>
+	<?php endif ?>
+
+
+
 	<?php _netteOpenPanel('Environment', TRUE) ?>
-		<?php if (!empty($context)):?>
-		<h3><a href="#" onclick="return !toggle(this, 'pnl-env-context')">Variables <span>&#x25b6;</span></a></h3>
-		<table id="pnl-env-context" class="collapsed">
-		<?php
-		foreach ($context as $k => $v) {
-			echo '<tr><td>$', htmlspecialchars($k), '</td><td>', self::safedump($v, $k), '</td></tr>';
-		}
-		?>
-		</table>
-		<?php endif ?>
-
-
 		<?php
 		$list = get_defined_constants(TRUE);
 		if (!empty($list['user'])):?>
@@ -356,7 +351,7 @@ if (headers_sent()) {
 		<table id="pnl-env-const">
 		<?php
 		foreach ($list['user'] as $k => $v) {
-			echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::safedump($v, $k), '</td></tr>';
+			echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::safedump($v, $k), "</td></tr>\n";
 		}
 		?>
 		</table>
@@ -367,7 +362,7 @@ if (headers_sent()) {
 		<table id="pnl-env-files" class="collapsed">
 		<?php
 		foreach (get_included_files() as $v) {
-			echo '<tr><td>', htmlspecialchars($v), '</td></tr>';
+			echo '<tr><td>', htmlspecialchars($v), "</td></tr>\n";
 		}
 		?>
 		</table>
@@ -379,7 +374,7 @@ if (headers_sent()) {
 		<?php else: ?>
 		<table>
 		<?php
-		foreach ($_SERVER as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::dump($v, TRUE), '</td></tr>';
+		foreach ($_SERVER as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::dump($v, TRUE), "</td></tr>\n";
 		?>
 		</table>
 		<?php endif ?>
@@ -390,7 +385,7 @@ if (headers_sent()) {
 
 	<?php if ($exception):?>
 	<?php _netteOpenPanel('Exception', TRUE) ?>
-			<pre><?php echo htmlspecialchars($exception->__toString()) ?></pre>
+		<pre><?php echo htmlspecialchars($exception->__toString()) ?></pre>
 	<?php _netteClosePanel() ?>
 	<?php endif ?>
 
@@ -412,7 +407,7 @@ if (headers_sent()) {
 		<h3>Headers</h3>
 		<table>
 		<?php
-		foreach (apache_request_headers() as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', htmlspecialchars($v), '</td></tr>';
+		foreach (apache_request_headers() as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', htmlspecialchars($v), "</td></tr>\n";
 		?>
 		</table>
 		<?php endif ?>
@@ -425,7 +420,7 @@ if (headers_sent()) {
 		<?php else: ?>
 		<table>
 		<?php
-		foreach ($GLOBALS[$name] as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::dump($v, TRUE), '</td></tr>';
+		foreach ($GLOBALS[$name] as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::dump($v, TRUE), "</td></tr>\n";
 		?>
 		</table>
 		<?php endif ?>
@@ -447,13 +442,9 @@ if (headers_sent()) {
 
 
 	<ul>
-		<li>PHP version <?php echo PHP_VERSION ?></li>
-		<?php if (isset($_SERVER['SERVER_SOFTWARE'])): ?><li><?php echo $_SERVER['SERVER_SOFTWARE'] ?></li><?php endif ?>
-		<li>Nette Framework version <?php echo Nette::VERSION ?></li>
 		<?php foreach ($colophons as $callback): ?>
-		<?php foreach (call_user_func($callback) as $line): ?><li><?php echo htmlSpecialChars($line, ENT_NOQUOTES, 'UTF-8', FALSE) ?></li><?php endforeach ?>
+		<?php foreach ((array) call_user_func($callback) as $line): ?><li><?php echo htmlSpecialChars($line), "\n" ?></li><?php endforeach ?>
 		<?php endforeach ?>
-		<li>Report generated at <?php echo @strftime('%c') ?></li>
 	</ul>
 
 </body>

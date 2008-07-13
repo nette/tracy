@@ -10,18 +10,11 @@ unset($_SERVER['HTTP_USER_AGENT'], $_SERVER['Path'], $_SERVER['PATH'], $_SERVER[
 Debug::$html = TRUE;
 Debug::enable(E_ALL, FALSE);
 
-define('PASS', 'tajne heslo');
 
 function first($user, $pass)
 {
-	$struct = (object) array(
-		'arr' => array(
-			'password' => 'druhe heslo',
-		),
-	);
-	trigger_error('The my error', E_USER_ERROR);
+	eval('trigger_error("The my error", E_USER_ERROR);');
 }
-
 
 
 first('root', 'prvni heslo');
