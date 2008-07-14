@@ -17,50 +17,84 @@
  * @category   Nette
  * @package    Nette
  * @version    $Revision$ $Date$
+ *
+ * @param  array     $colophons
  */
 
 ?>
-<table style="position: absolute; color: white; background: black; font-size: 10px; font-family: Arial; left: 0; bottom: 0; width: 200px;">
+<style type="text/css">
+/* <![CDATA[ */
+	#netteProfilerContainer {
+		position: absolute;
+		right: 5px;
+		bottom: 5px
+	}
+
+	#netteProfiler {
+		position: relative;
+		color: white;
+		background: black;
+		font-size: 10px;
+		text-align: left;
+		font-family: Arial;
+		width: 250px;
+		cursor: move
+	}
+/* ]]> */
+</style>
+
+
+<div id="netteProfilerContainer">
+<table id="netteProfiler">
 <tr>
-	<td>Time:</td>
-	<td><?php echo time() - $_SERVER['REQUEST_TIME'] ?> s</td>
+	<td>
+	<?php $list = get_included_files(); ?>
+	<?php $al = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ?  /*Nette::Loaders::*/AutoLoader::$count : 0; ?>
+	<span title="<?php echo implode("\n", $list) ?>"><?php echo count($list), '/', $al ?> files</span>,
+
+	<?php $list = array_diff(get_declared_classes(), spl_classes()); ?>
+	<span title="<?php echo implode(", ", $list) ?>"><?php echo count($list) ?> classes</span>,
+
+	<?php $list = get_declared_interfaces(); ?>
+	<span title="<?php echo implode(", ", $list) ?>"><?php echo count($list) ?> interfaces</span>,
+
+	<?php $list = get_defined_functions(); $list = (array) @$list['user']; ?>
+	<span title="<?php echo implode(", ", $list) ?>"><?php echo count($list) ?> functions</span>,
+
+	<?php $list = get_defined_constants(TRUE); $list = array_keys((array) @$list['user']); ?>
+	<span title="<?php echo implode(", ", $list) ?>"><?php echo count($list) ?> consts</span>
+	</td>
 </tr>
 
-<?php
-$list = get_included_files();
-$al = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ?  /*Nette::Loaders::*/AutoLoader::$count : 0;
-?><tr title="<?php echo implode("\n", $list) ?>">
-	<td>Included files:</td>
-	<td><?php echo count($list), ' (', $al ?> by autoloader)</td>
-</tr>
-
-<?php
-$list = array_diff(get_declared_classes(), spl_classes());
-?><tr title="<?php echo implode(", ", $list) ?>">
-	<td>Defined classes:</td>
-	<td><?php echo count($list) ?></td>
-</tr>
-
-<?php
-$list = get_declared_interfaces();
-?><tr title="<?php echo implode(", ", $list) ?>">
-	<td>Defined interfaces:</td>
-	<td><?php echo count($list) ?></td>
-</tr>
-
-<?php
-$list = get_defined_functions();
-$list = (array) @$list['user'];
-?><tr title="<?php echo implode(", ", $list) ?>">
-	<td>Defined functions:</td>
-	<td><?php echo count($list) ?></td>
-</tr>
-
-<?php
-$list = get_defined_constants(TRUE);
-$list = array_keys((array) @$list['user']);
-?><tr title="<?php echo implode(", ", $list) ?>">
-	<td>Defined constants:</td>
-	<td><?php echo count($list) ?></td>
-</tr>
+<?php foreach ($colophons as $callback): ?>
+<?php foreach ((array) call_user_func($callback, 'profiler') as $line): ?><tr><td><?php echo htmlSpecialChars($line), "\n" ?></td></tr><?php endforeach ?>
+<?php endforeach ?>
 </table>
+</div>
+
+
+<script type="text/javascript">
+/* <![CDATA[ */
+document.getElementById('netteProfiler').onmousedown = function(e) {
+	e = e || event;
+	/*this.style.position = "relative";*/
+	this.posX = parseInt(this.style.left + '0');
+	this.posY = parseInt(this.style.top + '0');
+	this.mouseX = e.clientX;
+	this.mouseY = e.clientY;
+
+	var thisObj = this;
+
+	document.documentElement.onmousemove = function(e) {
+		e = e || event;
+		thisObj.style.left = (e.clientX - thisObj.mouseX + thisObj.posX) + "px";
+		thisObj.style.top = (e.clientY - thisObj.mouseY + thisObj.posY) + "px";
+	};
+
+	document.documentElement.onmouseup = function(e) {
+		document.documentElement.onmousemove = null;
+		document.documentElement.onmouseup = null;
+	};
+};
+/* ]]> */
+</script>

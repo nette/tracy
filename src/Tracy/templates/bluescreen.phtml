@@ -443,7 +443,7 @@ if (headers_sent()) {
 
 	<ul>
 		<?php foreach ($colophons as $callback): ?>
-		<?php foreach ((array) call_user_func($callback) as $line): ?><li><?php echo htmlSpecialChars($line), "\n" ?></li><?php endforeach ?>
+		<?php foreach ((array) call_user_func($callback, 'exception') as $line): ?><li><?php echo htmlSpecialChars($line), "\n" ?></li><?php endforeach ?>
 		<?php endforeach ?>
 	</ul>
 

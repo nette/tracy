@@ -70,17 +70,20 @@ final class Debug
 	/** @var callback */
 	public static $mailer = array(__CLASS__, 'sendEmail');
 
+	/** @var float  probability that logfile will be checked */
+	public static $emailProbability = 0.01;
+
 	/** @var array  */
 	public static $keysToHide = array('password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin');
-
-	/** @var array (not uset yet) */
-	private static $panels = array();
 
 	/** @var array  */
 	private static $colophons = array(array(__CLASS__, 'getDefaultColophons'));
 
 	/** @var array  */
 	private static $keyFilter = array();
+
+	/** @var int */
+	public static $time;
 
 
 
@@ -242,10 +245,10 @@ final class Debug
 			throw new /*::*/NotSupportedException('Function ini_set() is not enabled.');
 		}
 
-        // Environment auto-detection
-        if ($logErrors === NULL) {
-        	$logErrors = Environment::getName() === Environment::DEVELOPMENT ? FALSE : '%logDir%/php_error.log';
-        }
+		// Environment auto-detection
+		if ($logErrors === NULL && class_exists(/*Nette::*/'Environment')) {
+			$logErrors = Environment::getName() !== Environment::DEVELOPMENT;
+		}
 
 		if ($level !== NULL) {
 			error_reporting($level);
@@ -256,11 +259,8 @@ final class Debug
 		ini_set('html_errors', self::$html);
 		ini_set('log_errors', (bool) $logErrors);
 
-
 		if ($logErrors) {
-			if (is_string($logErrors)) {
-				self::$logFile = $logErrors;
-			}
+			self::$logFile = is_string($logErrors) ? $logErrors : '%logDir%/php_error.log';
 			if (strpos(self::$logFile, '%') !== FALSE) {
 				self::$logFile = Environment::expand(self::$logFile);
 			}
@@ -275,8 +275,8 @@ final class Debug
 			} elseif (is_array($sendEmails)) {
 				self::$emailHeaders = $sendEmails + self::$emailHeaders;
 			}
-			if (mt_rand() / mt_getrandmax() < 0.01) {
-				self::notifyByEmail();
+			if (mt_rand() / mt_getrandmax() < self::$emailProbability) {
+				self::observeErrorLog();
 			}
 		}
 
@@ -316,8 +316,8 @@ final class Debug
 		while (ob_get_level() && @ob_end_clean());
 
 		if (self::$logFile) {
-			self::notifyByEmail();
-			$file = dirname(self::$logFile) . '/exception ' . date('Y-m-d H-i-s ') . substr(microtime(FALSE), 2, 6) . '.html';
+			$file = @date('Y-m-d H-i-s', Debug::$time) . strstr(number_format(Debug::$time, 4, '.', ''), '.');
+			$file = dirname(self::$logFile) . "/exception $file.html";
 			self::$logHandle = @fopen($file, 'x');
 			if (self::$logHandle) {
 				ob_start(array(__CLASS__, 'writeFile'));
@@ -331,7 +331,7 @@ final class Debug
 			} else {
 				error_log("PHP Fatal error:  Uncaught $exception");
 			}
-			self::notifyByEmail();
+			self::observeErrorLog();
 
 		} elseif (self::$html) {
 			self::blueScreen($exception);
@@ -339,7 +339,7 @@ final class Debug
 		} else {
 			echo "$exception\n";
 			foreach (self::$colophons as $callback) {
-				foreach ((array) call_user_func($callback) as $line) echo "$line\n";
+				foreach ((array) call_user_func($callback, 'exception') as $line) echo "$line\n";
 			}
 		}
 
@@ -404,7 +404,7 @@ final class Debug
 	/**
 	 * Paint blue screen.
 	 * @param  Exception
-	 * @return string
+	 * @return void
 	 */
 	public static function blueScreen(Exception $exception)
 	{
@@ -430,15 +430,21 @@ final class Debug
 
 	/**
 	 * Returns default colophons.
+	 * @return string
 	 * @return array
 	 */
-	public static function getDefaultColophons()
+	public static function getDefaultColophons($mode)
 	{
-		$arr[] = 'PHP version ' . PHP_VERSION;
-		if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = $_SERVER['SERVER_SOFTWARE'];
-		$arr[] = 'Nette Framework version 0.7';
-		$time = isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] : time();
-		$arr[] = 'Report generated at ' . @strftime('%c', $time); // intentionally @
+		if ($mode === 'profiler') {
+			$arr[] = 'Elapsed time: ' . round((microtime(TRUE) - Debug::$time) * 1000, 2) . 'ms';
+		}
+
+		if ($mode === 'exception') {
+			$arr[] = 'PHP version ' . PHP_VERSION;
+			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = $_SERVER['SERVER_SOFTWARE'];
+			$arr[] = 'Nette Framework version 0.7';
+			$arr[] = 'Report generated at ' . @strftime('%c', Debug::$time); // intentionally @
+		}
 		return $arr;
 	}
 
@@ -460,7 +466,7 @@ final class Debug
 	 * Notify admin by e-mail if error log changed.
 	 * @return void
 	 */
-	private static function notifyByEmail()
+	private static function observeErrorLog()
 	{
 		if (!self::$sendEmails) return;
 
@@ -471,8 +477,9 @@ final class Debug
 			file_put_contents($monitorFile, $actual);
 
 		} elseif (is_numeric($saved) && $saved != $actual) { // intentionally ==
-			file_put_contents($monitorFile, 'e-mail has been sent');
-			call_user_func(self::$mailer);
+			if (file_put_contents($monitorFile, 'e-mail has been sent')) {
+				call_user_func(self::$mailer);
+			}
 		}
 	}
 
@@ -486,13 +493,12 @@ final class Debug
 	{
 		$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] :
 				(isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '');
-		$time = isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] : time();
 
 		$headers = array();
 		foreach (self::$emailHeaders as $key => $value) {
 			$headers[$key] = str_replace(
 				array('%host%', '%date%'),
-				array($host, @date('Y-m-d H:i:s', $time)), // intentionally @
+				array($host, @date('Y-m-d H:i:s', Debug::$time)), // intentionally @
 				$value
 			);
 		}
@@ -543,8 +549,24 @@ final class Debug
 
 
 
+	/**
+	 * Enables profiler.
+	 * @return void
+	 */
+	public static function enableProfiler()
+	{
+		register_shutdown_function(array(__CLASS__, 'profiler'));
+	}
+
+
+
+	/**
+	 * Paint profiler window.
+	 * @return void
+	 */
 	public static function profiler()
 	{
+		$colophons = self::$colophons;
 		require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
 	}
 
@@ -556,3 +578,4 @@ final class Debug
  * Static class constructor.
  */
 Debug::$html = PHP_SAPI !== 'cli';
+Debug::$time = microtime(TRUE);
