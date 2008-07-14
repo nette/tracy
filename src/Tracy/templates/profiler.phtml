@@ -22,54 +22,96 @@
  */
 
 ?>
+</pre></xmp>
+
 <style type="text/css">
 /* <![CDATA[ */
 	#netteProfilerContainer {
 		position: absolute;
 		right: 5px;
-		bottom: 5px
+		bottom: 5px;
 	}
 
 	#netteProfiler {
 		position: relative;
+		margin: 0;
+		padding: 1px;
+		width: 300px;
 		color: white;
 		background: black;
-		font-size: 10px;
+		cursor: move;
+		opacity: .70;
+		=filter: alpha(opacity=70);
+	}
+
+	#netteProfiler:hover {
+		opacity: 1;
+		=filter: none;
+	}
+
+	#netteProfiler li {
+		margin: 0;
+		padding: 1px;
+		font-weight: normal;
+		font-style: normal;
+		font-size: 11px;
 		text-align: left;
-		font-family: Arial;
-		width: 250px;
-		cursor: move
+		font-family: Consolas, Arial;
+	}
+
+	#netteProfiler span[title] {
+		border-bottom: 1px dotted gray;
+		cursor: help;
 	}
 /* ]]> */
 </style>
 
 
 <div id="netteProfilerContainer">
-<table id="netteProfiler">
-<tr>
-	<td>
-	<?php $list = get_included_files(); ?>
-	<?php $al = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ?  /*Nette::Loaders::*/AutoLoader::$count : 0; ?>
-	<span title="<?php echo implode("\n", $list) ?>"><?php echo count($list), '/', $al ?> files</span>,
+<ul id="netteProfiler">
+	<?php foreach ($colophons as $callback): ?>
+	<?php foreach ((array) call_user_func($callback, 'profiler') as $line): ?><li><?php echo $line, "\n" ?></li><?php endforeach ?>
+	<?php endforeach ?>
+	<li>
+	<?php
+		$list = get_included_files();
+		$same = explode(DIRECTORY_SEPARATOR, $list[0]);
+		foreach ($list as $file) {
+			foreach (explode(DIRECTORY_SEPARATOR, $file) as $key => $value) {
+				if (@$same[$key] !== $value) {
+					array_splice($same, $key);
+					break;
+				}
+			}
+		}
+		$same = strlen(implode(DIRECTORY_SEPARATOR, $same)) + 1;
+		foreach ($list as $key => $file) {
+			$list[$key] = substr($file, $same);
+		}
+		$al = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ?  /*Nette::Loaders::*/AutoLoader::$count : 0;
+	?>
+	<span title="<?php echo implode(" \n", $list) ?>"><?php echo count($list), '/', $al ?> files</span>,
 
-	<?php $list = array_diff(get_declared_classes(), spl_classes()); ?>
-	<span title="<?php echo implode(", ", $list) ?>"><?php echo count($list) ?> classes</span>,
+	<?php
+		$extClasses = array('stdClass', 'Exception', 'ErrorException', 'Traversable', 'IteratorAggregate', 'Iterator', 'ArrayAccess', 'Serializable');
+		foreach (get_loaded_extensions() as $ext) {
+			$ref = new ReflectionExtension($ext);
+			$extClasses = array_merge($extClasses, $ref->getClassNames());
+		}
+	?>
+	<?php $list = array_diff(get_declared_classes(), $extClasses); ?>
+	<span <?php if ($list) echo 'title="', implode(", ", $list), '"' ?>><?php echo count($list) ?> classes</span>,
 
-	<?php $list = get_declared_interfaces(); ?>
-	<span title="<?php echo implode(", ", $list) ?>"><?php echo count($list) ?> interfaces</span>,
+	<?php $list = array_diff(get_declared_interfaces(), $extClasses); ?>
+	<span <?php if ($list) echo 'title="',  implode(", ", $list), '"' ?>><?php echo count($list) ?> intf</span>,
 
 	<?php $list = get_defined_functions(); $list = (array) @$list['user']; ?>
-	<span title="<?php echo implode(", ", $list) ?>"><?php echo count($list) ?> functions</span>,
+	<span <?php if ($list) echo 'title="', implode(", ", $list), '"' ?>><?php echo count($list) ?> func</span>,
 
 	<?php $list = get_defined_constants(TRUE); $list = array_keys((array) @$list['user']); ?>
-	<span title="<?php echo implode(", ", $list) ?>"><?php echo count($list) ?> consts</span>
-	</td>
-</tr>
-
-<?php foreach ($colophons as $callback): ?>
-<?php foreach ((array) call_user_func($callback, 'profiler') as $line): ?><tr><td><?php echo htmlSpecialChars($line), "\n" ?></td></tr><?php endforeach ?>
-<?php endforeach ?>
-</table>
+	<span <?php if ($list) echo 'title="', implode(", ", $list), '"' ?>><?php echo count($list) ?> consts</span>
+	</li>
+</ul>
 </div>
 
 
@@ -77,7 +119,6 @@
 /* <![CDATA[ */
 document.getElementById('netteProfiler').onmousedown = function(e) {
 	e = e || event;
-	/*this.style.position = "relative";*/
 	this.posX = parseInt(this.style.left + '0');
 	this.posY = parseInt(this.style.top + '0');
 	this.mouseX = e.clientX;

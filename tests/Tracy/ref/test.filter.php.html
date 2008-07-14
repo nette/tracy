@@ -176,13 +176,53 @@
 			<ol>
 						<li><p>
 
-							<span title="D:\Web\nette\_trunk\tests\Debug\test.filter.php">Debug/<b>test.filter.php</b></span> (22)			
-			<a href="#" onclick="return !toggle(this, 'src0')">source <span>&#x25b6;</span></a> &nbsp; 
-						trigger_error
+							&lt;PHP inner-code&gt;
+			
+			
+			Debug::			errorHandler
 			(<a href="#" onclick="return !toggle(this, 'args0')">arguments <span>&#x25b6;</span></a>)
 			</p>
 
 							<div class="collapsed" id="args0">
+				<table>
+				<tr><td>$severity</td><td><pre class="dump"><span>int</span>(256)
+</pre>
+</td></tr>
+<tr><td>$message</td><td><pre class="dump"><span>string</span>(12) "The my error"
+</pre>
+</td></tr>
+<tr><td>$file</td><td><pre class="dump"><span>string</span>(47) "D:\Web\nette\_trunk\tests\Debug\test.filter.php"
+</pre>
+</td></tr>
+<tr><td>$line</td><td><pre class="dump"><span>int</span>(22)
+</pre>
+</td></tr>
+<tr><td>$context</td><td><pre class="dump"><span>array</span>(3) {
+  "user" => <span>string</span>(4) "root"
+  "pass" => <span>string</span>(?) <i>*** hidden ***</i>
+  "struct" => <span>object</span>(stdClass) (1) {
+    "arr" => <span>array</span>(1) {
+      "password" => <span>string</span>(?) <i>*** hidden ***</i>
+    }
+  }
+}
+</pre>
+</td></tr>
+				</table>
+				</div>
+			
+
+			
+			</li>
+						<li><p>
+
+							<span title="D:\Web\nette\_trunk\tests\Debug\test.filter.php">Debug/<b>test.filter.php</b></span> (22)			
+			<a href="#" onclick="return !toggle(this, 'src1')">source <span>&#x25b6;</span></a> &nbsp; 
+						trigger_error
+			(<a href="#" onclick="return !toggle(this, 'args1')">arguments <span>&#x25b6;</span></a>)
+			</p>
+
+							<div class="collapsed" id="args1">
 				<table>
 				<tr><td>#0</td><td><pre class="dump"><span>string</span>(12) "The my error"
 </pre>
@@ -194,7 +234,7 @@
 				</div>
 			
 
-							<pre class="collapsed" id="src0"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 15:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$user</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$pass</span><span style="color: #d24; font-weight: bold">)
+							<pre class="collapsed" id="src1"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 15:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$user</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$pass</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line 16:</span>    {
 <span class='line'>Line 17:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">$struct&nbsp;</span><span style="color: #d24; font-weight: bold">=&nbsp;(object)&nbsp;array(
 <span class='line'>Line 18:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #080">'arr'&nbsp;</span><span style="color: #d24; font-weight: bold">=&gt;&nbsp;array(
@@ -213,12 +253,12 @@
 						<li><p>
 
 							<span title="D:\Web\nette\_trunk\tests\Debug\test.filter.php">Debug/<b>test.filter.php</b></span> (27)			
-			<a href="#" onclick="return !toggle(this, 'src1')">source <span>&#x25b6;</span></a> &nbsp; 
+			<a href="#" onclick="return !toggle(this, 'src2')">source <span>&#x25b6;</span></a> &nbsp; 
 						first
-			(<a href="#" onclick="return !toggle(this, 'args1')">arguments <span>&#x25b6;</span></a>)
+			(<a href="#" onclick="return !toggle(this, 'args2')">arguments <span>&#x25b6;</span></a>)
 			</p>
 
-							<div class="collapsed" id="args1">
+							<div class="collapsed" id="args2">
 				<table>
 				<tr><td>$user</td><td><pre class="dump"><span>string</span>(4) "root"
 </pre>
@@ -228,7 +268,7 @@
 				</div>
 			
 
-							<pre class="collapsed" id="src1"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 20:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),
+							<pre class="collapsed" id="src2"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 20:</span>    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),
 <span class='line'>Line 21:</span>    &nbsp;&nbsp;&nbsp;&nbsp;);
 <span class='line'>Line 22:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">trigger_error</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #080">'The&nbsp;my&nbsp;error'</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">E_USER_ERROR</span><span style="color: #d24; font-weight: bold">);
 <span class='line'>Line 23:</span>    }
@@ -441,9 +481,10 @@
 		<div id="pnl5" class="collapsed inner">
 			<pre>exception 'FatalErrorException' with message 'The my error' in D:\Web\nette\_trunk\tests\Debug\test.filter.php:22
 Stack trace:
-#0 D:\Web\nette\_trunk\tests\Debug\test.filter.php(22): trigger_error('The my error', 256)
-#1 D:\Web\nette\_trunk\tests\Debug\test.filter.php(27): first('root', 'prvni heslo')
-#2 {main}</pre>
+#0 [internal function]: Debug::errorHandler(256, 'The my error', 'D:\Web\nette\_t...', 22, Array)
+#1 D:\Web\nette\_trunk\tests\Debug\test.filter.php(22): trigger_error('The my error', 256)
+#2 D:\Web\nette\_trunk\tests\Debug\test.filter.php(27): first('root', 'prvni heslo')
+#3 {main}</pre>
 			</div>
 	</div>
 		

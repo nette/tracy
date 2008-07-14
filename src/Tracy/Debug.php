@@ -339,7 +339,7 @@ final class Debug
 		} else {
 			echo "$exception\n";
 			foreach (self::$colophons as $callback) {
-				foreach ((array) call_user_func($callback, 'exception') as $line) echo "$line\n";
+				foreach ((array) call_user_func($callback, 'bluescreen') as $line) echo "$line\n";
 			}
 		}
 
@@ -357,45 +357,42 @@ final class Debug
 	 * @param  int    line number the error was raised at
 	 * @param  array  an array of variables that existed in the scope the error was triggered in
 	 * @return void
+     * @throws FatalErrorException
 	 */
-	public static function errorHandler($code, $message, $file, $line, $context)
+	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
 		if (!defined('E_RECOVERABLE_ERROR')) {
 			define('E_RECOVERABLE_ERROR', 4096);
 		}
 
 		static $fatals = array(
-			E_ERROR, // unfortunately not catchable
-			E_CORE_ERROR, // not catchable
-			E_COMPILE_ERROR, // unfortunately not catchable
-			E_USER_ERROR,
-			E_PARSE, // unfortunately not catchable
-			E_RECOVERABLE_ERROR, // since PHP 5.2
+			E_ERROR => 1, // unfortunately not catchable
+			E_CORE_ERROR => 1, // not catchable
+			E_COMPILE_ERROR => 1, // unfortunately not catchable
+			E_USER_ERROR => 1,
+			E_PARSE => 1, // unfortunately not catchable
+			E_RECOVERABLE_ERROR => 1, // since PHP 5.2
 		);
 
-		if (!in_array($code, $fatals, TRUE)) {
+		if (!isset($fatals[$severity])) {
 			return FALSE; // normal error handler continues
 		}
 
-		if ($code === E_RECOVERABLE_ERROR && preg_match('#^Argument .+ passed to .+\(\) must#', $message)) {
-			$exception = new /*::*/InvalidArgumentException($message);
-		} else {
-			$exception = new /*::*/FatalErrorException($message);
-		}
-
-		// remove this method from exception - the most ugly code in the otherwise beautiful framework :-)
-		$data = serialize($exception);
-		$header = 'O:' . strlen(get_class($exception)) . ':"' . get_class($exception) . '"';
-		$data = substr_replace($data, 'a', 0, strlen($header));
-		$arr = unserialize($data);
-		$arr["\x00*\x00file"] = $file;
-		$arr["\x00*\x00line"] = $line;
-		array_shift($arr["\x00Exception\x00trace"]);
-		$data = serialize($arr);
-		$data = substr_replace($data, $header, 0, 1);
-		$exception = unserialize($data);
+		$exception = new /*::*/FatalErrorException($message, 0, $severity, $file, $line);
 		$exception->context = $context;
-
+		/**/
+		if (version_compare(PHP_VERSION, '5.3') === -1) {
+			// fix invalid trace in ErrorException - the most ugly code in the otherwise beautiful framework :-)
+			$data = serialize($exception);
+			$header = 'O:' . strlen(get_class($exception)) . ':"' . get_class($exception) . '"';
+			$data = substr_replace($data, 'a', 0, strlen($header));
+			$arr = unserialize($data);
+			$arr["\x00Exception\x00trace"] = debug_backtrace();
+			$data = serialize($arr);
+			$data = substr_replace($data, $header, 0, 1);
+			$exception = unserialize($data);
+		}
+		/**/
 		throw $exception;
 	}
 
@@ -433,15 +430,15 @@ final class Debug
 	 * @return string
 	 * @return array
 	 */
-	public static function getDefaultColophons($mode)
+	public static function getDefaultColophons($sender)
 	{
-		if ($mode === 'profiler') {
+		if ($sender === 'profiler') {
 			$arr[] = 'Elapsed time: ' . round((microtime(TRUE) - Debug::$time) * 1000, 2) . 'ms';
 		}
 
-		if ($mode === 'exception') {
+		if ($sender === 'bluescreen') {
 			$arr[] = 'PHP version ' . PHP_VERSION;
-			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = $_SERVER['SERVER_SOFTWARE'];
+			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = htmlSpecialChars($_SERVER['SERVER_SOFTWARE']);
 			$arr[] = 'Nette Framework version 0.7';
 			$arr[] = 'Report generated at ' . @strftime('%c', Debug::$time); // intentionally @
 		}

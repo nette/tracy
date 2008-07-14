@@ -3,19 +3,22 @@
 
 <pre>
 Invalid argument #1
-exception 'InvalidArgumentException' with message 'Argument 1 passed to TestClass::test1() must be an array, string given, called in D:\Web\nette\_trunk\tests\Debug\test.recoverable.php on line 40 and defined' in D:\Web\nette\_trunk\tests\Debug\test.recoverable.php:17
+exception 'FatalErrorException' with message 'Argument 1 passed to TestClass::test1() must be an array, string given, called in D:\Web\nette\_trunk\tests\Debug\test.recoverable.php on line 40 and defined' in D:\Web\nette\_trunk\tests\Debug\test.recoverable.php:17
 Stack trace:
-#0 D:\Web\nette\_trunk\tests\Debug\test.recoverable.php(40): TestClass->test1('hello')
-#1 {main}
+#0 D:\Web\nette\_trunk\tests\Debug\test.recoverable.php(17): Debug::errorHandler(4096, 'Argument 1 pass...', 'D:\Web\nette\_t...', 17, Array)
+#1 D:\Web\nette\_trunk\tests\Debug\test.recoverable.php(40): TestClass->test1('hello')
+#2 {main}
 
 Invalid argument #2
-exception 'InvalidArgumentException' with message 'Argument 1 passed to TestClass::test2() must be an instance of TestClass, string given, called in D:\Web\nette\_trunk\tests\Debug\test.recoverable.php on line 47 and defined' in D:\Web\nette\_trunk\tests\Debug\test.recoverable.php:22
+exception 'FatalErrorException' with message 'Argument 1 passed to TestClass::test2() must be an instance of TestClass, string given, called in D:\Web\nette\_trunk\tests\Debug\test.recoverable.php on line 47 and defined' in D:\Web\nette\_trunk\tests\Debug\test.recoverable.php:22
 Stack trace:
-#0 D:\Web\nette\_trunk\tests\Debug\test.recoverable.php(47): TestClass->test2('hello')
-#1 {main}
+#0 D:\Web\nette\_trunk\tests\Debug\test.recoverable.php(22): Debug::errorHandler(4096, 'Argument 1 pass...', 'D:\Web\nette\_t...', 22, Array)
+#1 D:\Web\nette\_trunk\tests\Debug\test.recoverable.php(47): TestClass->test2('hello')
+#2 {main}
 
 Invalid toString
 exception 'FatalErrorException' with message 'Method TestClass::__toString() must return a string value' in D:\Web\nette\_trunk\tests\Debug\test.recoverable.php:54
 Stack trace:
-#0 {main}
+#0 D:\Web\nette\_trunk\tests\Debug\test.recoverable.php(54): Debug::errorHandler(4096, 'Method TestClas...', 'D:\Web\nette\_t...', 54, Array)
+#1 {main}
 

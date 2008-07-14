@@ -155,13 +155,48 @@
 			<ol>
 						<li><p>
 
-							<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php(16) : eval()'d code">Debug/<b>test.eval.php(16) : eval()'d code</b></span> (1)			
+							&lt;PHP inner-code&gt;
 			
-						trigger_error
+			
+			Debug::			errorHandler
 			(<a href="#" onclick="return !toggle(this, 'args0')">arguments <span>&#x25b6;</span></a>)
 			</p>
 
 							<div class="collapsed" id="args0">
+				<table>
+				<tr><td>$severity</td><td><pre class="dump"><span>int</span>(256)
+</pre>
+</td></tr>
+<tr><td>$message</td><td><pre class="dump"><span>string</span>(12) "The my error"
+</pre>
+</td></tr>
+<tr><td>$file</td><td><pre class="dump"><span>string</span>(65) "D:\Web\nette\_trunk\tests\Debug\test.eval.php(16) : eval()'d code"
+</pre>
+</td></tr>
+<tr><td>$line</td><td><pre class="dump"><span>int</span>(1)
+</pre>
+</td></tr>
+<tr><td>$context</td><td><pre class="dump"><span>array</span>(2) {
+  "user" => <span>string</span>(4) "root"
+  "pass" => <span>string</span>(?) <i>*** hidden ***</i>
+}
+</pre>
+</td></tr>
+				</table>
+				</div>
+			
+
+			
+			</li>
+						<li><p>
+
+							<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php(16) : eval()'d code">Debug/<b>test.eval.php(16) : eval()'d code</b></span> (1)			
+			
+						trigger_error
+			(<a href="#" onclick="return !toggle(this, 'args1')">arguments <span>&#x25b6;</span></a>)
+			</p>
+
+							<div class="collapsed" id="args1">
 				<table>
 				<tr><td>#0</td><td><pre class="dump"><span>string</span>(12) "The my error"
 </pre>
@@ -178,14 +213,14 @@
 						<li><p>
 
 							<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php">Debug/<b>test.eval.php</b></span> (16)			
-			<a href="#" onclick="return !toggle(this, 'src1')">source <span>&#x25b6;</span></a> &nbsp; 
+			<a href="#" onclick="return !toggle(this, 'src2')">source <span>&#x25b6;</span></a> &nbsp; 
 						eval
 			()
 			</p>
 
 			
 
-							<pre class="collapsed" id="src1"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line  9:</span>    
+							<pre class="collapsed" id="src2"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line  9:</span>    
 <span class='line'>Line 10:</span>    </span><span style="color: #000">Debug</span><span style="color: #d24; font-weight: bold">::</span><span style="color: #000">$html&nbsp;</span><span style="color: #d24; font-weight: bold">=&nbsp;</span><span style="color: #000">TRUE</span><span style="color: #d24; font-weight: bold">;
 <span class='line'>Line 11:</span>    </span><span style="color: #000">Debug</span><span style="color: #d24; font-weight: bold">::</span><span style="color: #000">enable</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">E_ALL</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">FALSE</span><span style="color: #d24; font-weight: bold">);
 <span class='line'>Line 12:</span>    
@@ -203,12 +238,12 @@
 						<li><p>
 
 							<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php">Debug/<b>test.eval.php</b></span> (20)			
-			<a href="#" onclick="return !toggle(this, 'src2')">source <span>&#x25b6;</span></a> &nbsp; 
+			<a href="#" onclick="return !toggle(this, 'src3')">source <span>&#x25b6;</span></a> &nbsp; 
 						first
-			(<a href="#" onclick="return !toggle(this, 'args2')">arguments <span>&#x25b6;</span></a>)
+			(<a href="#" onclick="return !toggle(this, 'args3')">arguments <span>&#x25b6;</span></a>)
 			</p>
 
-							<div class="collapsed" id="args2">
+							<div class="collapsed" id="args3">
 				<table>
 				<tr><td>$user</td><td><pre class="dump"><span>string</span>(4) "root"
 </pre>
@@ -218,7 +253,7 @@
 				</div>
 			
 
-							<pre class="collapsed" id="src2"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 13:</span>    
+							<pre class="collapsed" id="src3"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 13:</span>    
 <span class='line'>Line 14:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$user</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$pass</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line 15:</span>    {
 <span class='line'>Line 16:</span>    &nbsp;&nbsp;&nbsp;&nbsp;eval(</span><span style="color: #080">'trigger_error("The&nbsp;my&nbsp;error",&nbsp;E_USER_ERROR);'</span><span style="color: #d24; font-weight: bold">);
@@ -420,10 +455,11 @@
 		<div id="pnl4" class="collapsed inner">
 			<pre>exception 'FatalErrorException' with message 'The my error' in D:\Web\nette\_trunk\tests\Debug\test.eval.php(16) : eval()'d code:1
 Stack trace:
-#0 D:\Web\nette\_trunk\tests\Debug\test.eval.php(16) : eval()'d code(1): trigger_error('The my error', 256)
-#1 D:\Web\nette\_trunk\tests\Debug\test.eval.php(16): eval()
-#2 D:\Web\nette\_trunk\tests\Debug\test.eval.php(20): first('root', 'prvni heslo')
-#3 {main}</pre>
+#0 [internal function]: Debug::errorHandler(256, 'The my error', 'D:\Web\nette\_t...', 1, Array)
+#1 D:\Web\nette\_trunk\tests\Debug\test.eval.php(16) : eval()'d code(1): trigger_error('The my error', 256)
+#2 D:\Web\nette\_trunk\tests\Debug\test.eval.php(16): eval()
+#3 D:\Web\nette\_trunk\tests\Debug\test.eval.php(20): first('root', 'prvni heslo')
+#4 {main}</pre>
 			</div>
 	</div>
 		

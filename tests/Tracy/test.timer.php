@@ -10,4 +10,4 @@ Debug::timer();
 
 sleep(2);
 
-echo round(Debug::timer(), 2);
+echo round(Debug::timer(), 1);
