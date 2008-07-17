@@ -8,13 +8,14 @@
  * This source file is subject to the "Nette license" that is bundled
  * with this package in the file license.txt.
  *
- * For more information please see http://nettephp.com/
+ * For more information please see http://nettephp.com
  *
  * @copyright  Copyright (c) 2004, 2008 David Grudl
  * @license    http://nettephp.com/license  Nette license
- * @link       http://nettephp.com/
+ * @link       http://nettephp.com
  * @category   Nette
  * @package    Nette
+ * @version    $Id$
  */
 
 /*namespace Nette;*/
@@ -33,7 +34,6 @@ require_once dirname(__FILE__) . '/Version.php';
  * @author     David Grudl
  * @copyright  Copyright (c) 2004, 2008 David Grudl
  * @package    Nette
- * @version    $Revision$ $Date$
  */
 final class Debug
 {
@@ -241,10 +241,6 @@ final class Debug
 			throw new /*::*/NotSupportedException(__METHOD__ . ' is not supported in PHP 5.2.1'); // PHP bug #40815
 		}
 
-		if (!function_exists('ini_set')) {
-			throw new /*::*/NotSupportedException('Function ini_set() is not enabled.');
-		}
-
 		// Environment auto-detection
 		if ($logErrors === NULL && class_exists(/*Nette::*/'Environment')) {
 			$logErrors = Environment::getName() !== Environment::DEVELOPMENT;
@@ -264,7 +260,12 @@ final class Debug
 			if (strpos(self::$logFile, '%') !== FALSE) {
 				self::$logFile = Environment::expand(self::$logFile);
 			}
+
 			ini_set('error_log', self::$logFile);
+			if (ini_get('error_log') !== self::$logFile) {
+				// this verifies the previous ini_set
+				throw new /*::*/NotSupportedException('Function ini_set() is not enabled.');
+			}
 		}
 
 		self::$sendEmails = $logErrors && $sendEmails;
@@ -433,13 +434,13 @@ final class Debug
 	public static function getDefaultColophons($sender)
 	{
 		if ($sender === 'profiler') {
-			$arr[] = 'Elapsed time: ' . round((microtime(TRUE) - Debug::$time) * 1000, 2) . 'ms';
+			$arr[] = 'Elapsed time: ' . sprintf('%0.3f', (microtime(TRUE) - Debug::$time) * 1000) . ' ms';
 		}
 
 		if ($sender === 'bluescreen') {
-			$arr[] = 'PHP version ' . PHP_VERSION;
+			$arr[] = 'PHP ' . PHP_VERSION;
 			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = htmlSpecialChars($_SERVER['SERVER_SOFTWARE']);
-			$arr[] = 'Nette Framework version 0.7';
+			$arr[] = 'Nette Framework ' . Version::VERSION . ' (revision ' . Version::REVISION . ')';
 			$arr[] = 'Report generated at ' . @strftime('%c', Debug::$time); // intentionally @
 		}
 		return $arr;
@@ -491,14 +492,11 @@ final class Debug
 		$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] :
 				(isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '');
 
-		$headers = array();
-		foreach (self::$emailHeaders as $key => $value) {
-			$headers[$key] = str_replace(
-				array('%host%', '%date%'),
-				array($host, @date('Y-m-d H:i:s', Debug::$time)), // intentionally @
-				$value
-			);
-		}
+		$headers = str_replace(
+			array('%host%', '%date%'),
+			array($host, @date('Y-m-d H:i:s', Debug::$time)), // intentionally @
+			self::$emailHeaders
+		);
 
 		$subject = $headers['Subject'];
 		$to = $headers['To'];

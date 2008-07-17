@@ -8,12 +8,12 @@
  * This source file is subject to the "Nette license" that is bundled
  * with this package in the file license.txt.
  *
- * For more information please see http://nettephp.com/
+ * For more information please see http://nettephp.com
  *
  * @author     David Grudl
  * @copyright  Copyright (c) 2004, 2008 David Grudl
  * @license    http://nettephp.com/license  Nette license
- * @link       http://nettephp.com/
+ * @link       http://nettephp.com
  * @category   Nette
  * @package    Nette
  * @version    $Revision$ $Date$
@@ -36,9 +36,10 @@
 		position: relative;
 		margin: 0;
 		padding: 1px;
-		width: 300px;
-		color: white;
-		background: black;
+		width: 350px;
+		color: black;
+		background: #EEE;
+		border: 1px dotted gray;
 		cursor: move;
 		opacity: .70;
 		=filter: alpha(opacity=70);
@@ -52,11 +53,9 @@
 	#netteProfiler li {
 		margin: 0;
 		padding: 1px;
-		font-weight: normal;
-		font-style: normal;
-		font-size: 11px;
+		font: normal normal 11px/1.4 Consolas, Arial;
 		text-align: left;
-		font-family: Consolas, Arial;
+		list-style: none;
 	}
 
 	#netteProfiler span[title] {
