@@ -77,10 +77,9 @@
 		$same = explode(DIRECTORY_SEPARATOR, $list[0]);
 		foreach ($list as $file) {
 			foreach (explode(DIRECTORY_SEPARATOR, $file) as $key => $value) {
-				if (@$same[$key] !== $value) {
-					array_splice($same, $key);
-					break;
-				}
+				if (isset($same[$key]) && $same[$key] === $value) continue;
+				array_splice($same, $key);
+				break;
 			}
 		}
 		$same = strlen(implode(DIRECTORY_SEPARATOR, $same)) + 1;

@@ -24,7 +24,7 @@
 
 require_once dirname(__FILE__) . '/exceptions.php';
 
-require_once dirname(__FILE__) . '/Version.php';
+require_once dirname(__FILE__) . '/Framework.php';
 
 
 
@@ -243,7 +243,7 @@ final class Debug
 
 		// Environment auto-detection
 		if ($logErrors === NULL && class_exists(/*Nette::*/'Environment')) {
-			$logErrors = Environment::getName() !== Environment::DEVELOPMENT;
+			$logErrors = Environment::isLive();
 		}
 
 		if ($level !== NULL) {
@@ -281,8 +281,13 @@ final class Debug
 			}
 		}
 
+		if (!defined('E_RECOVERABLE_ERROR')) {
+			define('E_RECOVERABLE_ERROR', 4096);
+		}
+
 		set_exception_handler(array(__CLASS__, 'exceptionHandler'));
-		set_error_handler(array(__CLASS__, 'errorHandler'));
+        // E_PARSE & E_ERROR are unfortunately not catchable
+		set_error_handler(array(__CLASS__, 'errorHandler'), E_RECOVERABLE_ERROR | E_USER_ERROR | E_PARSE | E_ERROR);
 		self::$enabled = TRUE;
 	}
 
@@ -322,7 +327,7 @@ final class Debug
 			self::$logHandle = @fopen($file, 'x');
 			if (self::$logHandle) {
 				ob_start(array(__CLASS__, 'writeFile'));
-				self::blueScreen($exception);
+				self::paintBlueScreen($exception);
 				ob_end_flush();
 				fclose(self::$logHandle);
 
@@ -335,12 +340,12 @@ final class Debug
 			self::observeErrorLog();
 
 		} elseif (self::$html) {
-			self::blueScreen($exception);
+			self::paintBlueScreen($exception);
 
 		} else {
 			echo "$exception\n";
 			foreach (self::$colophons as $callback) {
-				foreach ((array) call_user_func($callback, 'bluescreen') as $line) echo "$line\n";
+				foreach ((array) call_user_func($callback, 'bluescreen') as $line) echo strip_tags($line) . "\n";
 			}
 		}
 
@@ -362,23 +367,6 @@ final class Debug
 	 */
 	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
-		if (!defined('E_RECOVERABLE_ERROR')) {
-			define('E_RECOVERABLE_ERROR', 4096);
-		}
-
-		static $fatals = array(
-			E_ERROR => 1, // unfortunately not catchable
-			E_CORE_ERROR => 1, // not catchable
-			E_COMPILE_ERROR => 1, // unfortunately not catchable
-			E_USER_ERROR => 1,
-			E_PARSE => 1, // unfortunately not catchable
-			E_RECOVERABLE_ERROR => 1, // since PHP 5.2
-		);
-
-		if (!isset($fatals[$severity])) {
-			return FALSE; // normal error handler continues
-		}
-
 		$exception = new /*::*/FatalErrorException($message, 0, $severity, $file, $line);
 		$exception->context = $context;
 		/**/
@@ -404,7 +392,7 @@ final class Debug
 	 * @param  Exception
 	 * @return void
 	 */
-	public static function blueScreen(Exception $exception)
+	public static function paintBlueScreen(Exception $exception)
 	{
 		$colophons = self::$colophons;
 		require dirname(__FILE__) . '/Debug.templates/bluescreen.phtml';
@@ -440,7 +428,7 @@ final class Debug
 		if ($sender === 'bluescreen') {
 			$arr[] = 'PHP ' . PHP_VERSION;
 			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = htmlSpecialChars($_SERVER['SERVER_SOFTWARE']);
-			$arr[] = 'Nette Framework ' . Version::VERSION . ' (revision ' . Version::REVISION . ')';
+			$arr[] = 'Nette Framework ' . Framework::VERSION . ' (revision ' . Framework::REVISION . ')';
 			$arr[] = 'Report generated at ' . @strftime('%c', Debug::$time); // intentionally @
 		}
 		return $arr;
@@ -527,7 +515,7 @@ final class Debug
 	 * @param  string  additional key
 	 * @return string
 	 */
-	private static function safedump($var, $key = NULL)
+	private static function safeDump($var, $key = NULL)
 	{
 		self::$keyFilter = array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER);
 
@@ -550,7 +538,7 @@ final class Debug
 	 */
 	public static function enableProfiler()
 	{
-		register_shutdown_function(array(__CLASS__, 'profiler'));
+		register_shutdown_function(array(__CLASS__, 'paintProfiler'));
 	}
 
 
@@ -559,7 +547,7 @@ final class Debug
 	 * Paint profiler window.
 	 * @return void
 	 */
-	public static function profiler()
+	public static function paintProfiler()
 	{
 		$colophons = self::$colophons;
 		require dirname(__FILE__) . '/Debug.templates/profiler.phtml';

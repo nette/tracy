@@ -30,7 +30,7 @@
  * @param  int
  * @return void
  */
-function _netteDebugSourcecode($file, $line, $count = 15)
+function _netteDebugPrintCode($file, $line, $count = 15)
 {
 	ini_set('highlight.comment', '#999; font-style: italic');
 	ini_set('highlight.default', '#000');
@@ -260,7 +260,7 @@ if (headers_sent()) {
 	<?php if (is_file($exception->getFile())): ?>
 	<?php _netteOpenPanel('Source file', FALSE) ?>
 		<p><strong>File:</strong> <?php echo htmlspecialchars($exception->getFile()) ?> &nbsp; <strong>Line:</strong> <?php echo $exception->getLine() ?></p>
-		<pre><?php _netteDebugSourcecode($exception->getFile(), $exception->getLine()) ?></pre>
+		<pre><?php _netteDebugPrintCode($exception->getFile(), $exception->getLine()) ?></pre>
 	<?php _netteClosePanel() ?>
 	<?php endif?>
 
@@ -298,7 +298,7 @@ if (headers_sent()) {
 				}
 				foreach ($row['args'] as $k => $v) {
 					echo '<tr><td>', (isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</td>';
-					echo '<td>', self::safedump($v, isset($params[$k]) ? $params[$k]->name : NULL), "</td></tr>\n";
+					echo '<td>', self::safeDump($v, isset($params[$k]) ? $params[$k]->name : NULL), "</td></tr>\n";
 				}
 				?>
 				</table>
@@ -307,7 +307,7 @@ if (headers_sent()) {
 
 
 			<?php if (isset($row['file']) && is_file($row['file'])): ?>
-				<pre class="collapsed" id="src<?php echo $key ?>"><?php _netteDebugSourcecode($row['file'], $row['line']) ?></pre>
+				<pre class="collapsed" id="src<?php echo $key ?>"><?php _netteDebugPrintCode($row['file'], $row['line']) ?></pre>
 			<?php endif ?>
 
 			</li>
@@ -332,7 +332,7 @@ if (headers_sent()) {
 	<table>
 	<?php
 	foreach ($exception->context as $k => $v) {
-		echo '<tr><td>$', htmlspecialchars($k), '</td><td>', self::safedump($v, $k), "</td></tr>\n";
+		echo '<tr><td>$', htmlspecialchars($k), '</td><td>', self::safeDump($v, $k), "</td></tr>\n";
 	}
 	?>
 	</table>
@@ -349,7 +349,7 @@ if (headers_sent()) {
 		<table id="pnl-env-const">
 		<?php
 		foreach ($list['user'] as $k => $v) {
-			echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::safedump($v, $k), "</td></tr>\n";
+			echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::safeDump($v, $k), "</td></tr>\n";
 		}
 		?>
 		</table>

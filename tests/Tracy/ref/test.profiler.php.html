@@ -14,9 +14,10 @@
 		position: relative;
 		margin: 0;
 		padding: 1px;
-		width: 300px;
-		color: white;
-		background: black;
+		width: 350px;
+		color: black;
+		background: #EEE;
+		border: 1px dotted gray;
 		cursor: move;
 		opacity: .70;
 		=filter: alpha(opacity=70);
@@ -30,11 +31,9 @@
 	#netteProfiler li {
 		margin: 0;
 		padding: 1px;
-		font-weight: normal;
-		font-style: normal;
-		font-size: 11px;
+		font: normal normal 11px/1.4 Consolas, Arial;
 		text-align: left;
-		font-family: Consolas, Arial;
+		list-style: none;
 	}
 
 	#netteProfiler span[title] {
@@ -47,7 +46,7 @@
 
 <div id="netteProfilerContainer">
 <ul id="netteProfiler">
-		<li>Elapsed time: 10.39ms
+		<li>Elapsed time: 10.717 ms
 </li>		<li>
 		<span title="nette\_trunk\tests\Debug\test.profiler.php 
 _php\tools.debug.php 
@@ -60,7 +59,7 @@ nette\_trunk\Nette\Debug.php
 nette\_trunk\Nette\Version.php 
 nette\_trunk\Nette\Debug.templates\profiler.phtml">10/1 files</span>,
 
-			<span title="Object, ArgumentOutOfRangeException, InvalidStateException, NotImplementedException, NotSupportedException, MemberAccessException, IOException, FileNotFoundException, DirectoryNotFoundException, FatalErrorException, AutoLoader, NetteLoader, Debug, Nette">14 classes</span>,
+			<span title="Object, ArgumentOutOfRangeException, InvalidStateException, NotImplementedException, NotSupportedException, MemberAccessException, IOException, FileNotFoundException, DirectoryNotFoundException, FatalErrorException, AutoLoader, NetteLoader, Debug, Version">14 classes</span>,
 
 		<span >0 intf</span>,
 
