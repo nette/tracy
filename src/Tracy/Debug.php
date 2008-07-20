@@ -85,6 +85,9 @@ final class Debug
 	/** @var int */
 	public static $time;
 
+	/** @var array */
+	private static $fireCounter;
+
 
 
 	/**
@@ -124,6 +127,13 @@ final class Debug
 
 
 
+	/**
+	 * Internal dump() implementation.
+	 *
+	 * @param  mixed  variable to dump
+	 * @param  int    current recursion level
+	 * @return string
+	 */
 	private static function _dump(&$var, $level)
 	{
 		if (is_bool($var)) {
@@ -139,7 +149,7 @@ final class Debug
 			return "<span>float</span>($var)\n";
 
 		} elseif (is_string($var)) {
-			if (strlen($var) > self::$maxLen) {
+			if (self::$maxLen && strlen($var) > self::$maxLen) {
 				$s = htmlSpecialChars(substr($var, 0, self::$maxLen), ENT_NOQUOTES) . ' ... ';
 			} else {
 				$s = htmlSpecialChars($var, ENT_NOQUOTES);
@@ -250,22 +260,23 @@ final class Debug
 			error_reporting($level);
 		}
 
-		ini_set('display_startup_errors', !$logErrors);
-		ini_set('display_errors', !$logErrors); // or 'stderr'
-		ini_set('html_errors', self::$html);
-		ini_set('log_errors', (bool) $logErrors);
+		if (function_exists('ini_set')) {
+			ini_set('display_startup_errors', !$logErrors);
+			ini_set('display_errors', !$logErrors); // or 'stderr'
+			ini_set('html_errors', self::$html);
+			ini_set('log_errors', (bool) $logErrors);
+
+		} elseif ($logErrors) {
+			// throws error only on production server
+			throw new /*::*/NotSupportedException('Function ini_set() is not enabled.');
+		}
 
 		if ($logErrors) {
 			self::$logFile = is_string($logErrors) ? $logErrors : '%logDir%/php_error.log';
 			if (strpos(self::$logFile, '%') !== FALSE) {
 				self::$logFile = Environment::expand(self::$logFile);
 			}
-
 			ini_set('error_log', self::$logFile);
-			if (ini_get('error_log') !== self::$logFile) {
-				// this verifies the previous ini_set
-				throw new /*::*/NotSupportedException('Function ini_set() is not enabled.');
-			}
 		}
 
 		self::$sendEmails = $logErrors && $sendEmails;
@@ -286,8 +297,7 @@ final class Debug
 		}
 
 		set_exception_handler(array(__CLASS__, 'exceptionHandler'));
-        // E_PARSE & E_ERROR are unfortunately not catchable
-		set_error_handler(array(__CLASS__, 'errorHandler'), E_RECOVERABLE_ERROR | E_USER_ERROR | E_PARSE | E_ERROR);
+		set_error_handler(array(__CLASS__, 'errorHandler'), E_RECOVERABLE_ERROR | E_USER_ERROR); // E_PARSE & E_ERROR are not catchable
 		self::$enabled = TRUE;
 	}
 
@@ -363,7 +373,7 @@ final class Debug
 	 * @param  int    line number the error was raised at
 	 * @param  array  an array of variables that existed in the scope the error was triggered in
 	 * @return void
-     * @throws FatalErrorException
+	 * @throws ::FatalErrorException
 	 */
 	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
@@ -551,6 +561,79 @@ final class Debug
 	{
 		$colophons = self::$colophons;
 		require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
+	}
+
+
+
+	/********************* Firebug extension ****************d*g**/
+
+
+
+	/**
+	 * Sends variable dump to Firebug tab request/server.
+	 * @param  mixed  variable to dump
+	 * @param  string unique key
+	 * @return void
+	 */
+	public static function fireDump($var, $key)
+	{
+		self::fireSend('FirePHP.Dump', array($key => $var));
+	}
+
+
+
+	/**
+	 * Sends message to Firebug console.
+	 * @param  mixed   message to log
+	 * @param  string  priority of message (LOG, INFO, WARN, ERROR)
+	 * @return void
+	 */
+	public static function fireLog($message, $priority = 'LOG')
+	{
+		self::fireSend('FirePHP.Firebug.Console', array($message instanceof Exception ?
+			array('TRACE', array(
+				'Class' => get_class($message),
+				'Message' => $message->getMessage(),
+				'File' => $message->getFile(),
+				'Line' => $message->getLine(),
+				'Trace' => $message->getTrace(),
+			)) : array($priority, $message)
+		));
+	}
+
+
+
+	/**
+	 * Performs Firebug output.
+     * @see http://www.firephp.org
+	 * @param  string  service
+	 * @param  mixed   arguments
+	 * @return void
+	 */
+	private static function fireSend($method, $arg)
+	{
+		if (headers_sent()) return; // or throw exception?
+
+		$counter = & self::$fireCounter['main'];
+		if (!$counter) {
+			header('X-FirePHP-Data-000000000000: {');
+			header('X-FirePHP-Data-999999999999: }');
+		}
+
+		$s = json_encode($arg);
+		$key = & self::$fireCounter[$method];
+		if (!$key) {
+			$key = str_pad(count(self::$fireCounter), 2, '0', STR_PAD_LEFT);
+			header("X-FirePHP-Data-{$key}0000000000: " . ($counter ? ',' : '') . "\"$method\":$s[0]");
+			header("X-FirePHP-Data-{$key}9999999999: " . substr($s, -1));
+			$s = substr($s, 1, -1);
+		} else {
+			$s = ',' . substr($s, 1, -1);
+		}
+
+		foreach (str_split($s, 5000) as $s) {
+			header('X-FirePHP-Data-' . $key . str_pad(++$counter, 10, '0', STR_PAD_LEFT) . ': ' . $s);
+		}
 	}
 
 }
