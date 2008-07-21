@@ -32,11 +32,13 @@
  */
 function _netteDebugPrintCode($file, $line, $count = 15)
 {
-	ini_set('highlight.comment', '#999; font-style: italic');
-	ini_set('highlight.default', '#000');
-	ini_set('highlight.html', '#06b');
-	ini_set('highlight.keyword', '#d24; font-weight: bold');
-	ini_set('highlight.string', '#080');
+	if (function_exists('ini_set')) {
+		ini_set('highlight.comment', '#999; font-style: italic');
+		ini_set('highlight.default', '#000');
+		ini_set('highlight.html', '#06b');
+		ini_set('highlight.keyword', '#d24; font-weight: bold');
+		ini_set('highlight.string', '#080');
+	}
 
 	$start = max(1, $line - floor($count / 2));
 

@@ -605,7 +605,7 @@ final class Debug
 
 	/**
 	 * Performs Firebug output.
-     * @see http://www.firephp.org
+	 * @see http://www.firephp.org
 	 * @param  string  service
 	 * @param  mixed   arguments
 	 * @return void
