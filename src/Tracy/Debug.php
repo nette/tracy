@@ -49,6 +49,9 @@ final class Debug
 	/** @var bool @see Debug::enable() */
 	private static $enabled = FALSE;
 
+	/** @var bool  send messages to Firebug? */
+	public static $useFirebug;
+
 	/** @var string  name of the file where script errors should be logged */
 	private static $logFile;
 
@@ -256,6 +259,11 @@ final class Debug
 			$logErrors = Environment::isLive();
 		}
 
+		// Firebug detection
+		if (self::$useFirebug === NULL) {
+			self::$useFirebug = !$logErrors && isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
+		}
+
 		if ($level !== NULL) {
 			error_reporting($level);
 		}
@@ -296,8 +304,12 @@ final class Debug
 			define('E_RECOVERABLE_ERROR', 4096);
 		}
 
+		if (!defined('E_DEPRECATED')) {
+			define('E_DEPRECATED', 8192);
+		}
+
 		set_exception_handler(array(__CLASS__, 'exceptionHandler'));
-		set_error_handler(array(__CLASS__, 'errorHandler'), E_RECOVERABLE_ERROR | E_USER_ERROR); // E_PARSE & E_ERROR are not catchable
+		set_error_handler(array(__CLASS__, 'errorHandler'));
 		self::$enabled = TRUE;
 	}
 
@@ -349,14 +361,20 @@ final class Debug
 			}
 			self::observeErrorLog();
 
-		} elseif (self::$html) {
-			self::paintBlueScreen($exception);
+		} elseif (!self::$html || isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+			// console or AJAX mode
+			if (self::$useFirebug && !headers_sent()) {
+				self::fireLog($exception);
+
+			} else {
+				echo "$exception\n";
+				foreach (self::$colophons as $callback) {
+					foreach ((array) call_user_func($callback, 'bluescreen') as $line) echo strip_tags($line) . "\n";
+				}
+			}
 
 		} else {
-			echo "$exception\n";
-			foreach (self::$colophons as $callback) {
-				foreach ((array) call_user_func($callback, 'bluescreen') as $line) echo strip_tags($line) . "\n";
-			}
+			self::paintBlueScreen($exception);
 		}
 
 		exit;
@@ -365,7 +383,7 @@ final class Debug
 
 
 	/**
-	 * Debug error handler.
+	 * Own error handler.
 	 *
 	 * @param  int    level of the error raised
 	 * @param  string error message
@@ -377,22 +395,53 @@ final class Debug
 	 */
 	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
-		$exception = new /*::*/FatalErrorException($message, 0, $severity, $file, $line);
-		$exception->context = $context;
-		/**/
-		if (version_compare(PHP_VERSION, '5.3') === -1) {
-			// fix invalid trace in ErrorException - the most ugly code in the otherwise beautiful framework :-)
-			$data = serialize($exception);
-			$header = 'O:' . strlen(get_class($exception)) . ':"' . get_class($exception) . '"';
-			$data = substr_replace($data, 'a', 0, strlen($header));
-			$arr = unserialize($data);
-			$arr["\x00Exception\x00trace"] = debug_backtrace();
-			$data = serialize($arr);
-			$data = substr_replace($data, $header, 0, 1);
-			$exception = unserialize($data);
+		static $fatals = array(
+			E_ERROR => 1, // unfortunately not catchable
+			E_CORE_ERROR => 1, // not catchable
+			E_COMPILE_ERROR => 1, // unfortunately not catchable
+			E_USER_ERROR => 1,
+			E_PARSE => 1, // unfortunately not catchable
+			E_RECOVERABLE_ERROR => 1, // since PHP 5.2
+		);
+
+		if (isset($fatals[$severity])) {
+			$exception = new /*::*/FatalErrorException($message, 0, $severity, $file, $line);
+			$exception->context = $context;
+			/**/
+			if (version_compare(PHP_VERSION, '5.3') === -1) {
+				// fix invalid trace in ErrorException - the most ugly code in the otherwise beautiful framework :-)
+				$data = serialize($exception);
+				$header = 'O:' . strlen(get_class($exception)) . ':"' . get_class($exception) . '"';
+				$data = substr_replace($data, 'a', 0, strlen($header));
+				$arr = unserialize($data);
+				$arr["\x00Exception\x00trace"] = debug_backtrace();
+				$data = serialize($arr);
+				$data = substr_replace($data, $header, 0, 1);
+				$exception = unserialize($data);
+			}
+			/**/
+			throw $exception;
+
+		} elseif (($severity & error_reporting()) !== $severity) {
+			return; // nothing to do
+
+		} elseif (self::$useFirebug && !headers_sent()) {
+			$types = array(
+				E_WARNING => 'Warning',
+				E_USER_WARNING => 'Warning',
+				E_NOTICE => 'Notice',
+				E_USER_NOTICE => 'Notice',
+				E_STRICT => 'Strict standards',
+				E_DEPRECATED => 'Deprecated',
+			);
+
+			$type = isset($types[$severity]) ? $types[$severity] : 'Unknown error';
+			$message = strip_tags($message);
+			self::fireLog("$type: $message in $file on line $line", 'WARN');
+			return;
 		}
-		/**/
-		throw $exception;
+
+		return FALSE; // call normal error handler
 	}
 
 
@@ -596,7 +645,7 @@ final class Debug
 				'Message' => $message->getMessage(),
 				'File' => $message->getFile(),
 				'Line' => $message->getLine(),
-				'Trace' => $message->getTrace(),
+				'Trace' => self::replaceObjects($message->getTrace()),
 			)) : array($priority, $message)
 		));
 	}
@@ -620,7 +669,7 @@ final class Debug
 			header('X-FirePHP-Data-999999999999: }');
 		}
 
-		$s = json_encode($arg);
+		$s = @json_encode($arg); // intentionally @, ignore recursion
 		$key = & self::$fireCounter[$method];
 		if (!$key) {
 			$key = str_pad(count(self::$fireCounter), 2, '0', STR_PAD_LEFT);
@@ -634,6 +683,25 @@ final class Debug
 		foreach (str_split($s, 5000) as $s) {
 			header('X-FirePHP-Data-' . $key . str_pad(++$counter, 10, '0', STR_PAD_LEFT) . ': ' . $s);
 		}
+	}
+
+
+
+	/**
+	 * fireLog helper
+	 * @param  array
+	 * @return array
+	 */
+	static private function replaceObjects($val)
+	{
+		foreach ($val as $k => $v) {
+			if (is_object($v)) {
+				$val[$k] = 'object ' . get_class($v) . '';
+			} elseif (is_array($v)) {
+				$val[$k] = self::replaceObjects($v);
+			}
+		}
+		return $val;
 	}
 
 }

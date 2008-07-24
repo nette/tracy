@@ -5,6 +5,7 @@ require_once '../../Nette/loader.php';
 /*use Nette::Debug;*/
 
 unset($_SERVER['REQUEST_TIME'], $_SERVER['HTTP_USER_AGENT'], $_SERVER['Path'], $_SERVER['PATH'], $_SERVER['PATHEXT'], $_SERVER['SERVER_SIGNATURE'], $_SERVER['SERVER_SOFTWARE']);
+$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 Gecko/2008070208 Firefox/3.0.1 FirePHP/0.1.0.3';
 
 
 $arr = array(10, 20, array('key1' => 'val1', 'key2' => TRUE));
