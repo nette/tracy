@@ -460,42 +460,6 @@ final class Debug
 
 
 	/**
-	 * Add custom descriptions.
-	 * @param  callback
-	 * @return void
-	 */
-	public static function addColophon($callback)
-	{
-		if (!in_array($callback, self::$colophons, TRUE) && is_callable($callback)) {
-			self::$colophons[] = $callback;
-		}
-	}
-
-
-
-	/**
-	 * Returns default colophons.
-	 * @return string
-	 * @return array
-	 */
-	public static function getDefaultColophons($sender)
-	{
-		if ($sender === 'profiler') {
-			$arr[] = 'Elapsed time: ' . sprintf('%0.3f', (microtime(TRUE) - Debug::$time) * 1000) . ' ms';
-		}
-
-		if ($sender === 'bluescreen') {
-			$arr[] = 'PHP ' . PHP_VERSION;
-			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = htmlSpecialChars($_SERVER['SERVER_SOFTWARE']);
-			$arr[] = 'Nette Framework ' . Framework::VERSION . ' (revision ' . Framework::REVISION . ')';
-			$arr[] = 'Report generated at ' . @strftime('%c', Debug::$time); // intentionally @
-		}
-		return $arr;
-	}
-
-
-
-	/**
 	 * Redirects output to file.
 	 * @param  string
 	 * @return string
@@ -609,7 +573,74 @@ final class Debug
 	public static function paintProfiler()
 	{
 		$colophons = self::$colophons;
-		require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
+		if (self::$useFirebug) {
+			foreach (self::$colophons as $callback) {
+				foreach ((array) call_user_func($callback, 'profiler') as $line) self::fireLog(strip_tags($line));
+			}
+		}
+		if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
+			// non AJAX mode
+			require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
+		}
+	}
+
+
+
+	/********************* colophons ****************d*g**/
+
+
+
+	/**
+	 * Add custom descriptions.
+	 * @param  callback
+	 * @return void
+	 */
+	public static function addColophon($callback)
+	{
+		if (!in_array($callback, self::$colophons, TRUE) && is_callable($callback)) {
+			self::$colophons[] = $callback;
+		}
+	}
+
+
+
+	/**
+	 * Returns default colophons.
+	 * @return string
+	 * @return array
+	 */
+	public static function getDefaultColophons($sender)
+	{
+		if ($sender === 'profiler') {
+			$arr[] = 'Elapsed time: ' . sprintf('%0.3f', (microtime(TRUE) - Debug::$time) * 1000) . ' ms';
+
+			$autoloaded = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ? /*Nette::Loaders::*/AutoLoader::$count : 0;
+			$s = '<span>' . count(get_included_files()) . '/' .  $autoloaded . ' files</span>, ';
+
+			$exclude = array('stdClass', 'Exception', 'ErrorException', 'Traversable', 'IteratorAggregate', 'Iterator', 'ArrayAccess', 'Serializable');
+			foreach (get_loaded_extensions() as $ext) {
+				$ref = new ReflectionExtension($ext);
+				$exclude = array_merge($exclude, $ref->getClassNames());
+			}
+			$classes = array_diff(get_declared_classes(), $exclude);
+			$intf = array_diff(get_declared_interfaces(), $exclude);
+			$func = get_defined_functions();
+			$func = (array) @$func['user'];
+			$consts = get_defined_constants(TRUE);
+			$consts = array_keys((array) @$consts['user']);
+			foreach (array('classes', 'intf', 'func', 'consts') as $item) {
+				$s .= '<span ' . ($$item ? 'title="' . implode(", ", $$item) . '"' : '') . '>' . count($$item) . ' ' . $item . '</span>, ';
+			}
+			$arr[] = $s;
+		}
+
+		if ($sender === 'bluescreen') {
+			$arr[] = 'PHP ' . PHP_VERSION;
+			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = htmlSpecialChars($_SERVER['SERVER_SOFTWARE']);
+			$arr[] = 'Nette Framework ' . Framework::VERSION . ' (revision ' . Framework::REVISION . ')';
+			$arr[] = 'Report generated at ' . @strftime('%c', Debug::$time); // intentionally @
+		}
+		return $arr;
 	}
 
 

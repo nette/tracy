@@ -71,44 +71,6 @@
 	<?php foreach ($colophons as $callback): ?>
 	<?php foreach ((array) call_user_func($callback, 'profiler') as $line): ?><li><?php echo $line, "\n" ?></li><?php endforeach ?>
 	<?php endforeach ?>
-	<li>
-	<?php
-		$list = get_included_files();
-		$same = explode(DIRECTORY_SEPARATOR, $list[0]);
-		foreach ($list as $file) {
-			foreach (explode(DIRECTORY_SEPARATOR, $file) as $key => $value) {
-				if (isset($same[$key]) && $same[$key] === $value) continue;
-				array_splice($same, $key);
-				break;
-			}
-		}
-		$same = strlen(implode(DIRECTORY_SEPARATOR, $same)) + 1;
-		foreach ($list as $key => $file) {
-			$list[$key] = substr($file, $same);
-		}
-		$al = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ?  /*Nette::Loaders::*/AutoLoader::$count : 0;
-	?>
-	<span title="<?php echo implode(" \n", $list) ?>"><?php echo count($list), '/', $al ?> files</span>,
-
-	<?php
-		$extClasses = array('stdClass', 'Exception', 'ErrorException', 'Traversable', 'IteratorAggregate', 'Iterator', 'ArrayAccess', 'Serializable');
-		foreach (get_loaded_extensions() as $ext) {
-			$ref = new ReflectionExtension($ext);
-			$extClasses = array_merge($extClasses, $ref->getClassNames());
-		}
-	?>
-	<?php $list = array_diff(get_declared_classes(), $extClasses); ?>
-	<span <?php if ($list) echo 'title="', implode(", ", $list), '"' ?>><?php echo count($list) ?> classes</span>,
-
-	<?php $list = array_diff(get_declared_interfaces(), $extClasses); ?>
-	<span <?php if ($list) echo 'title="',  implode(", ", $list), '"' ?>><?php echo count($list) ?> intf</span>,
-
-	<?php $list = get_defined_functions(); $list = (array) @$list['user']; ?>
-	<span <?php if ($list) echo 'title="', implode(", ", $list), '"' ?>><?php echo count($list) ?> func</span>,
-
-	<?php $list = get_defined_constants(TRUE); $list = array_keys((array) @$list['user']); ?>
-	<span <?php if ($list) echo 'title="', implode(", ", $list), '"' ?>><?php echo count($list) ?> consts</span>
-	</li>
 </ul>
 </div>
 
