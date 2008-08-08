@@ -392,10 +392,10 @@ if (headers_sent()) {
 
 
 
-	<?php $cause = $exception; ?>
-	<?php while ($cause instanceof /*Nette::*/ICausedException && $cause = $cause->getCause()): ?>
+	<?php $previous = $exception; ?>
+	<?php while (method_exists($previous, 'getPrevious') && $previous = $previous->getPrevious()): ?>
 	<?php _netteOpenPanel('Caused by', TRUE) ?>
-			<pre><?php echo htmlspecialchars($cause->__toString()) ?></pre>
+			<pre><?php echo htmlspecialchars($previous->__toString()) ?></pre>
 	<?php _netteClosePanel() ?>
 	<?php endwhile ?>
 

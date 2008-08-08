@@ -405,22 +405,7 @@ final class Debug
 		);
 
 		if (isset($fatals[$severity])) {
-			$exception = new /*::*/FatalErrorException($message, 0, $severity, $file, $line);
-			$exception->context = $context;
-			/**/
-			if (version_compare(PHP_VERSION, '5.3') === -1) {
-				// fix invalid trace in ErrorException - the most ugly code in the otherwise beautiful framework :-)
-				$data = serialize($exception);
-				$header = 'O:' . strlen(get_class($exception)) . ':"' . get_class($exception) . '"';
-				$data = substr_replace($data, 'a', 0, strlen($header));
-				$arr = unserialize($data);
-				$arr["\x00Exception\x00trace"] = debug_backtrace();
-				$data = serialize($arr);
-				$data = substr_replace($data, $header, 0, 1);
-				$exception = unserialize($data);
-			}
-			/**/
-			throw $exception;
+			throw new /*::*/FatalErrorException($message, 0, $severity, $file, $line, $context);
 
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return; // nothing to do
