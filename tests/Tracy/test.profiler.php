@@ -1,7 +1,8 @@
 <?php
 
 require_once '../../Nette/loader.php';
-// use Nette::Debug;
+
+/*use Nette::Debug;*/
 
 
 Debug::enableProfiler();
