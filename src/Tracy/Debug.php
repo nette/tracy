@@ -37,6 +37,9 @@ require_once dirname(__FILE__) . '/Framework.php';
  */
 final class Debug
 {
+	/** @var array  free counters for your usage */
+	public static $counters = array();
+
 	/** @var bool  use HTML tags in error messages and dump output? */
 	public static $html; // PHP_SAPI !== 'cli'
 
@@ -598,6 +601,11 @@ final class Debug
 	{
 		if ($sender === 'profiler') {
 			$arr[] = 'Elapsed time: ' . sprintf('%0.3f', (microtime(TRUE) - Debug::$time) * 1000) . ' ms';
+
+			foreach ((array) self::$counters as $name => $value) {
+				if (is_array($value)) $value = implode(', ', $value);
+				$arr[] = htmlSpecialChars("Counter $name = $value");
+			}
 
 			$autoloaded = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ? /*Nette::Loaders::*/AutoLoader::$count : 0;
 			$s = '<span>' . count(get_included_files()) . '/' .  $autoloaded . ' files</span>, ';
