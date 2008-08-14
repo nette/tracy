@@ -93,11 +93,13 @@ document.getElementById('netteProfiler').onmousedown = function(e) {
 		e = e || event;
 		thisObj.style.left = (e.clientX - thisObj.mouseX + thisObj.posX) + "px";
 		thisObj.style.top = (e.clientY - thisObj.mouseY + thisObj.posY) + "px";
+		return false;
 	};
 
 	document.documentElement.onmouseup = function(e) {
 		document.documentElement.onmousemove = null;
 		document.documentElement.onmouseup = null;
+		return false;
 	};
 };
 /* ]]> */
