@@ -46,7 +46,7 @@
 
 <div id="netteProfilerContainer">
 <ul id="netteProfiler">
-		<li>Elapsed time: 10.462 ms
+		<li>Elapsed time: 10.234 ms
 </li><li><span>10/1 files</span>, <span title="Object, ArgumentOutOfRangeException, InvalidStateException, NotImplementedException, NotSupportedException, MemberAccessException, IOException, FileNotFoundException, DirectoryNotFoundException, FatalErrorException, AutoLoader, NetteLoader, Debug, Framework">14 classes</span>, <span >0 intf</span>, <span title="dump, stopky, myautoload">3 func</span>, <span >0 consts</span>, 
 </li>	</ul>
 </div>
@@ -67,11 +67,13 @@ document.getElementById('netteProfiler').onmousedown = function(e) {
 		e = e || event;
 		thisObj.style.left = (e.clientX - thisObj.mouseX + thisObj.posX) + "px";
 		thisObj.style.top = (e.clientY - thisObj.mouseY + thisObj.posY) + "px";
+		return false;
 	};
 
 	document.documentElement.onmouseup = function(e) {
 		document.documentElement.onmousemove = null;
 		document.documentElement.onmouseup = null;
+		return false;
 	};
 };
 /* ]]> */
