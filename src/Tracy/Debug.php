@@ -644,13 +644,13 @@ final class Debug
 
 	/**
 	 * Sends variable dump to Firebug tab request/server.
-	 * @param  mixed  variable to dump
-	 * @param  string unique key
-	 * @return void
+	 * @param  mixed   variable to dump
+	 * @param  string  unique key
+	 * @return bool    was successful?
 	 */
 	public static function fireDump($var, $key)
 	{
-		self::fireSend('FirePHP.Dump', array($key => $var));
+		return self::fireSend('FirePHP.Dump', array($key => $var));
 	}
 
 
@@ -659,11 +659,11 @@ final class Debug
 	 * Sends message to Firebug console.
 	 * @param  mixed   message to log
 	 * @param  string  priority of message (LOG, INFO, WARN, ERROR)
-	 * @return void
+	 * @return bool    was successful?
 	 */
 	public static function fireLog($message, $priority = 'LOG')
 	{
-		self::fireSend('FirePHP.Firebug.Console', array($message instanceof Exception ?
+		return self::fireSend('FirePHP.Firebug.Console', array($message instanceof Exception ?
 			array('TRACE', array(
 				'Class' => get_class($message),
 				'Message' => $message->getMessage(),
@@ -681,11 +681,11 @@ final class Debug
 	 * @see http://www.firephp.org
 	 * @param  string  service
 	 * @param  mixed   arguments
-	 * @return void
+	 * @return bool    was successful?
 	 */
 	private static function fireSend($method, $arg)
 	{
-		if (headers_sent()) return; // or throw exception?
+		if (headers_sent()) return FALSE; // or throw exception?
 
 		$counter = & self::$fireCounter['main'];
 		if (!$counter) {
@@ -707,6 +707,8 @@ final class Debug
 		foreach (str_split($s, 5000) as $s) {
 			header('X-FirePHP-Data-' . $key . str_pad(++$counter, 10, '0', STR_PAD_LEFT) . ': ' . $s);
 		}
+
+		return TRUE;
 	}
 
 
