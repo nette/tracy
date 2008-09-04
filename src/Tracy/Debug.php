@@ -610,7 +610,7 @@ final class Debug
 			$autoloaded = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ? /*Nette::Loaders::*/AutoLoader::$count : 0;
 			$s = '<span>' . count(get_included_files()) . '/' .  $autoloaded . ' files</span>, ';
 
-			$exclude = array('stdClass', 'Exception', 'ErrorException', 'Traversable', 'IteratorAggregate', 'Iterator', 'ArrayAccess', 'Serializable');
+			$exclude = array('stdClass', 'Exception', 'ErrorException', 'Traversable', 'IteratorAggregate', 'Iterator', 'ArrayAccess', 'Serializable', 'Closure');
 			foreach (get_loaded_extensions() as $ext) {
 				$ref = new ReflectionExtension($ext);
 				$exclude = array_merge($exclude, $ref->getClassNames());
@@ -739,3 +739,5 @@ final class Debug
  */
 Debug::$html = PHP_SAPI !== 'cli';
 Debug::$time = microtime(TRUE);
+
+// if (!function_exists('dump')) { function dump($var, $return = FALSE) { /*Nette::*/Debug::dump($var, $return); } }
