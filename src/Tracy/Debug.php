@@ -604,7 +604,7 @@ final class Debug
 
 			foreach ((array) self::$counters as $name => $value) {
 				if (is_array($value)) $value = implode(', ', $value);
-				$arr[] = htmlSpecialChars("Counter $name = $value");
+				$arr[] = htmlSpecialChars($name) . ' = <strong>' . htmlSpecialChars($value) . '</strong>';
 			}
 
 			$autoloaded = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ? /*Nette::Loaders::*/AutoLoader::$count : 0;
