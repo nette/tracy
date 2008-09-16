@@ -378,9 +378,8 @@ final class Debug
 
 		} else {
 			self::paintBlueScreen($exception);
+			exit;
 		}
-
-		exit;
 	}
 
 
