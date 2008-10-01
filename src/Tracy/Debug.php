@@ -259,7 +259,7 @@ final class Debug
 
 		// Environment auto-detection
 		if ($logErrors === NULL && class_exists(/*Nette::*/'Environment')) {
-			$logErrors = Environment::isLive();
+			$logErrors = /*Nette::*/Environment::isLive();
 		}
 
 		// Firebug detection
@@ -283,9 +283,14 @@ final class Debug
 		}
 
 		if ($logErrors) {
-			self::$logFile = is_string($logErrors) ? $logErrors : '%logDir%/php_error.log';
-			if (strpos(self::$logFile, '%') !== FALSE) {
-				self::$logFile = Environment::expand(self::$logFile);
+			if (is_string($logErrors)) {
+				self::$logFile = strpos($logErrors, '%') === FALSE ? $logErrors : /*Nette::*/Environment::expand($logErrors);
+			} else {
+				try {
+					self::$logFile = /*Nette::*/Environment::expand('%logDir%/php_error.log');
+				} catch (/*::*/InvalidStateException $e) {
+					self::$logFile = 'php_error.log';
+				}
 			}
 			ini_set('error_log', self::$logFile);
 		}
