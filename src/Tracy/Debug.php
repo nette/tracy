@@ -49,7 +49,7 @@ final class Debug
 	/** @var int  Debug::dump() - how long strings display Debug::dump()? */
 	public static $maxLen = 150;
 
-	/** @var bool @see Debug::enable() */
+	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
 
 	/** @var bool  send messages to Firebug? */
@@ -598,7 +598,7 @@ final class Debug
 
 	/**
 	 * Returns default colophons.
-	 * @return string
+	 * @param  string  profiler | bluescreen
 	 * @return array
 	 */
 	public static function getDefaultColophons($sender)
