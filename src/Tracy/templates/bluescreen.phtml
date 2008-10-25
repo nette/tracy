@@ -355,7 +355,7 @@ if (headers_sent()) {
 		<?php _netteClosePanel() ?>
 		<?php endif ?>
 
-	<?php } while (method_exists($ex, 'getPrevious') && $ex = $ex->getPrevious()); ?>
+	<?php } while ((method_exists($ex, 'getPrevious') && $ex = $ex->getPrevious()) || (isset($ex->previous) && $ex = $ex->previous)); ?>
 	<?php while (--$level) _netteClosePanel() ?>
 
 

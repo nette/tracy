@@ -23,13 +23,14 @@ Debug::fireLog('Error message', 'ERROR');
 Debug::fireLog($arr);
 
 Debug::fireLog(
-	array('2 SQL queries took 0.06 seconds', // table title
 	array(
 		array('SQL Statement', 'Time', 'Result'), // table header
-		array('SELECT * FROM Foo', '0.02', array('row1', 'row2')), // 1. row
-		array('SELECT * FROM Bar', '0.04', array('row1', 'row2'))  // 2. row
-	)
-), 'TABLE');
+		array('SELECT * FROM foo', '0.02', array('field1', 'field2')), // 1. row
+		array('SELECT * FROM bar', '0.04', array('field1', 'field2')), // 2. row
+	),
+	'TABLE',
+	'2 SQL queries took 0.06 seconds' // table title
+);
 
 
 function first($arg1, $arg2)

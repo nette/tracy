@@ -94,6 +94,13 @@ final class Debug
 	/** @var array */
 	private static $fireCounter;
 
+	/**#@+ FirePHP log priority */
+	const LOG = 'LOG';
+	const INFO = 'INFO';
+	const WARN = 'WARN';
+	const ERROR = 'ERROR';
+	/**#@-*/
+
 
 
 	/**
@@ -115,7 +122,7 @@ final class Debug
 	 *
 	 * @param  mixed  variable to dump.
 	 * @param  bool   return output instead of printing it?
-	 * @return string
+	 * @return mixed  variable or dump
 	 */
 	public static function dump($var, $return = FALSE)
 	{
@@ -126,9 +133,13 @@ final class Debug
 			$output = htmlspecialchars_decode(strip_tags($output), ENT_NOQUOTES);
 		}
 
-		if (!$return) echo $output;
+		if ($return) {
+			return $output;
 
-		return $output;
+		} else {
+			echo $output;
+			return $var;
+		}
 	}
 
 
@@ -342,30 +353,20 @@ final class Debug
 	 */
 	public static function exceptionHandler(Exception $exception)
 	{
-		restore_exception_handler();
-		restore_error_handler();
-
 		if (!headers_sent()) {
 			header('HTTP/1.1 500 Internal Server Error');
 		}
 
-		while (ob_get_level() && @ob_end_clean());
-
-		if (self::$logFile) {
-			$file = @date('Y-m-d H-i-s', Debug::$time) . strstr(number_format(Debug::$time, 4, '.', ''), '.');
+		if (self::$logFile) { // log to file
+			error_log("PHP Fatal error:  Uncaught $exception");
+			$file = @strftime('%d-%b-%Y %H-%M-%S ', Debug::$time) . strstr(number_format(Debug::$time, 4, '~', ''), '~');
 			$file = dirname(self::$logFile) . "/exception $file.html";
 			self::$logHandle = @fopen($file, 'x');
 			if (self::$logHandle) {
-				ob_start(array(__CLASS__, 'writeFile'));
+				ob_start(array(__CLASS__, 'writeFile'), 1);
 				self::paintBlueScreen($exception);
 				ob_end_flush();
 				fclose(self::$logHandle);
-
-				$class = get_class($exception);
-				error_log("PHP Fatal error:  Uncaught exception '$class' with message '{$exception->getMessage()}' in {$exception->getFile()}:{$exception->getLine()}");
-
-			} else {
-				error_log("PHP Fatal error:  Uncaught $exception");
 			}
 			self::observeErrorLog();
 
@@ -381,7 +382,8 @@ final class Debug
 				}
 			}
 
-		} else {
+		} else { // dump to screen
+			while (ob_get_level() && @ob_end_clean());
 			self::paintBlueScreen($exception);
 			exit;
 		}
@@ -455,8 +457,9 @@ final class Debug
 	 * Redirects output to file.
 	 * @param  string
 	 * @return string
+	 * @internal
 	 */
-	private static function writeFile($buffer)
+	public static function writeFile($buffer)
 	{
 		fwrite(self::$logHandle, $buffer);
 	}
@@ -654,7 +657,7 @@ final class Debug
 	 */
 	public static function fireDump($var, $key)
 	{
-		return self::fireSend('FirePHP.Dump', array($key => $var));
+		return self::fireSend(2, array((string) $key => $var));
 	}
 
 
@@ -662,20 +665,26 @@ final class Debug
 	/**
 	 * Sends message to Firebug console.
 	 * @param  mixed   message to log
-	 * @param  string  priority of message (LOG, INFO, WARN, ERROR)
+	 * @param  string  priority of message (LOG, INFO, WARN, ERROR, GROUP_START, GROUP_END)
+	 * @param  string  optional label
 	 * @return bool    was successful?
 	 */
-	public static function fireLog($message, $priority = 'LOG')
+	public static function fireLog($message, $priority = self::LOG, $label = NULL)
 	{
-		return self::fireSend('FirePHP.Firebug.Console', array($message instanceof Exception ?
-			array('TRACE', array(
+		if ($message instanceof Exception) {
+			$priority = 'TRACE';
+			$message = array(
 				'Class' => get_class($message),
 				'Message' => $message->getMessage(),
 				'File' => $message->getFile(),
 				'Line' => $message->getLine(),
 				'Trace' => self::replaceObjects($message->getTrace()),
-			)) : array($priority, $message)
-		));
+			);
+		} elseif ($priority === 'GROUP_START') {
+			$label = $message;
+			$message = NULL;
+		}
+		return self::fireSend(1, array(array('Type' => $priority, 'Label' => $label), $message));
 	}
 
 
@@ -683,34 +692,28 @@ final class Debug
 	/**
 	 * Performs Firebug output.
 	 * @see http://www.firephp.org
-	 * @param  string  service
-	 * @param  mixed   arguments
+	 * @param  int     structure index
+	 * @param  array   payload
 	 * @return bool    was successful?
 	 */
-	private static function fireSend($method, $arg)
+	private static function fireSend($index, $payload)
 	{
 		if (headers_sent()) return FALSE; // or throw exception?
 
-		$counter = & self::$fireCounter['main'];
-		if (!$counter) {
-			header('X-FirePHP-Data-000000000000: {');
-			header('X-FirePHP-Data-999999999999: }');
+		if (!self::$fireCounter) {
+			header('X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2');
+			header('X-Wf-nette-Plugin-1: http://meta.firephp.org/Wildfire/Plugin/FirePHP/Library-FirePHPCore/0.2.0');
+			header('X-Wf-nette-Structure-1: http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1');
+			header('X-Wf-nette-Structure-2: http://meta.firephp.org/Wildfire/Structure/FirePHP/Dump/0.1');
 		}
 
-		$s = @json_encode($arg); // intentionally @, ignore recursion
-		$key = & self::$fireCounter[$method];
-		if (!$key) {
-			$key = str_pad(count(self::$fireCounter), 2, '0', STR_PAD_LEFT);
-			header("X-FirePHP-Data-{$key}0000000000: " . ($counter ? ',' : '') . "\"$method\":$s[0]");
-			header("X-FirePHP-Data-{$key}9999999999: " . substr($s, -1));
-			$s = substr($s, 1, -1);
-		} else {
-			$s = ',' . substr($s, 1, -1);
+		$payload = json_encode($payload);
+		foreach (str_split($payload, 4990) as $s) {
+			$num = ++self::$fireCounter;
+			header("X-Wf-nette-$index-1-$num: |$s|\\");
 		}
-
-		foreach (str_split($s, 5000) as $s) {
-			header('X-FirePHP-Data-' . $key . str_pad(++$counter, 10, '0', STR_PAD_LEFT) . ': ' . $s);
-		}
+		header("X-Wf-nette-$index-1-$num: |$s|");
+		header("X-Wf-nette-Index: $num");
 
 		return TRUE;
 	}
