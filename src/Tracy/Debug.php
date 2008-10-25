@@ -231,6 +231,9 @@ final class Debug
 
 		} elseif (is_resource($var)) {
 			return "<span>resource of type</span>(" . get_resource_type($var) . ")\n";
+
+		} else {
+			return "<span>unknown type</span>\n";
 		}
 	}
 
@@ -275,7 +278,7 @@ final class Debug
 
 		// Firebug detection
 		if (self::$useFirebug === NULL) {
-			self::$useFirebug = !$logErrors && isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
+			self::$useFirebug = function_exists('json_encode') && !$logErrors && isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
 		}
 
 		if ($level !== NULL) {
@@ -417,7 +420,7 @@ final class Debug
 			throw new /*::*/FatalErrorException($message, 0, $severity, $file, $line, $context);
 
 		} elseif (($severity & error_reporting()) !== $severity) {
-			return; // nothing to do
+			return NULL; // nothing to do
 
 		} elseif (self::$useFirebug && !headers_sent()) {
 			$types = array(
@@ -432,7 +435,7 @@ final class Debug
 			$type = isset($types[$severity]) ? $types[$severity] : 'Unknown error';
 			$message = strip_tags($message);
 			self::fireLog("$type: $message in $file on line $line", 'WARN');
-			return;
+			return NULL;
 		}
 
 		return FALSE; // call normal error handler
