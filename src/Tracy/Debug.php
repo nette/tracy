@@ -91,9 +91,6 @@ final class Debug
 	/** @var int */
 	public static $time;
 
-	/** @var array */
-	private static $fireCounter;
-
 	/**#@+ FirePHP log priority */
 	const LOG = 'LOG';
 	const INFO = 'INFO';
@@ -572,9 +569,11 @@ final class Debug
 	{
 		$colophons = self::$colophons;
 		if (self::$useFirebug) {
+			self::fireLog( 'Nette profiler', 'GROUP_START');
 			foreach (self::$colophons as $callback) {
 				foreach ((array) call_user_func($callback, 'profiler') as $line) self::fireLog(strip_tags($line));
 			}
+			self::fireLog( null, 'GROUP_END');
 		}
 		if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
 			// non AJAX mode
@@ -687,7 +686,7 @@ final class Debug
 			$label = $message;
 			$message = NULL;
 		}
-		return self::fireSend(1, array(array('Type' => $priority, 'Label' => $label), $message));
+		return self::fireSend(1, array(array('Type' => $priority, 'Label' => $label), self::replaceObjects($message)));
 	}
 
 
@@ -703,20 +702,23 @@ final class Debug
 	{
 		if (headers_sent()) return FALSE; // or throw exception?
 
-		if (!self::$fireCounter) {
-			header('X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2');
-			header('X-Wf-nette-Plugin-1: http://meta.firephp.org/Wildfire/Plugin/FirePHP/Library-FirePHPCore/0.2.0');
+		header('X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2');
+		header('X-Wf-nette-Plugin-1: http://meta.firephp.org/Wildfire/Plugin/FirePHP/Library-FirePHPCore/0.2.0');
+
+		if ($index === 1) {
 			header('X-Wf-nette-Structure-1: http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1');
+
+		} elseif ($index === 2) {
 			header('X-Wf-nette-Structure-2: http://meta.firephp.org/Wildfire/Structure/FirePHP/Dump/0.1');
 		}
 
 		$payload = json_encode($payload);
+		static $counter;
 		foreach (str_split($payload, 4990) as $s) {
-			$num = ++self::$fireCounter;
-			header("X-Wf-nette-$index-1-$num: |$s|\\");
+			$num = ++$counter;
+			header("X-Wf-nette-$index-1-n$num: |$s|\\");
 		}
-		header("X-Wf-nette-$index-1-$num: |$s|");
-		header("X-Wf-nette-Index: $num");
+		header("X-Wf-nette-$index-1-n$num: |$s|");
 
 		return TRUE;
 	}
@@ -725,15 +727,17 @@ final class Debug
 
 	/**
 	 * fireLog helper
-	 * @param  array
-	 * @return array
+	 * @param  mixed
+	 * @return mixed
 	 */
 	static private function replaceObjects($val)
 	{
-		foreach ($val as $k => $v) {
-			if (is_object($v)) {
-				$val[$k] = 'object ' . get_class($v) . '';
-			} elseif (is_array($v)) {
+		if (is_object($val)) {
+			return 'object ' . get_class($val) . '';
+
+		} elseif (is_array($val)) {
+			foreach ($val as $k => $v) {
+				unset($val[$k]);
 				$val[$k] = self::replaceObjects($v);
 			}
 		}
