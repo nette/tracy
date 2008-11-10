@@ -2,7 +2,7 @@
 
 require_once '../../Nette/loader.php';
 
-/*use Nette::Debug;*/
+/*use Nette\Debug;*/
 
 
 Debug::enableProfiler();
@@ -11,6 +11,6 @@ Debug::enableProfiler();
 usleep(10000);
 
 ?>
-<h1>Nette::Debug profiler demo</h1>
+<h1>Nette\Debug profiler demo</h1>
 
 <p>See profiler window in bottom right corner</p>

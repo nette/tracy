@@ -2,7 +2,7 @@
 
 require_once '../../Nette/loader.php';
 
-/*use Nette::Debug;*/
+/*use Nette\Debug;*/
 
 Debug::$time = 1201042800.1875;
 Debug::$emailProbability = 1;

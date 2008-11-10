@@ -1,11 +1,11 @@
-<h1>Nette::Debug recoverable error test</h1>
+<h1>Nette\Debug recoverable error test</h1>
 
 
 <pre>
 <?php
 require_once '../../Nette/loader.php';
 
-/*use Nette::Debug;*/
+/*use Nette\Debug;*/
 
 Debug::$html = TRUE;
 Debug::enable(E_ALL, FALSE);

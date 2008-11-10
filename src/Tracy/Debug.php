@@ -105,7 +105,7 @@ final class Debug
 	 */
 	final public function __construct()
 	{
-		throw new /*::*/LogicException("Cannot instantiate static class " . get_class($this));
+		throw new /*\*/LogicException("Cannot instantiate static class " . get_class($this));
 	}
 
 
@@ -265,12 +265,12 @@ final class Debug
 	public static function enable($level = E_ALL, $logErrors = NULL, $sendEmails = FALSE)
 	{
 		if (version_compare(PHP_VERSION, '5.2.1') === 0) {
-			throw new /*::*/NotSupportedException(__METHOD__ . ' is not supported in PHP 5.2.1'); // PHP bug #40815
+			throw new /*\*/NotSupportedException(__METHOD__ . ' is not supported in PHP 5.2.1'); // PHP bug #40815
 		}
 
 		// Environment auto-detection
-		if ($logErrors === NULL && class_exists(/*Nette::*/'Environment')) {
-			$logErrors = /*Nette::*/Environment::isLive();
+		if ($logErrors === NULL && class_exists(/*Nette\*/'Environment')) {
+			$logErrors = /*Nette\*/Environment::isLive();
 		}
 
 		// Firebug detection
@@ -290,16 +290,16 @@ final class Debug
 
 		} elseif ($logErrors) {
 			// throws error only on production server
-			throw new /*::*/NotSupportedException('Function ini_set() is not enabled.');
+			throw new /*\*/NotSupportedException('Function ini_set() is not enabled.');
 		}
 
 		if ($logErrors) {
 			if (is_string($logErrors)) {
-				self::$logFile = strpos($logErrors, '%') === FALSE ? $logErrors : /*Nette::*/Environment::expand($logErrors);
+				self::$logFile = strpos($logErrors, '%') === FALSE ? $logErrors : /*Nette\*/Environment::expand($logErrors);
 			} else {
 				try {
-					self::$logFile = /*Nette::*/Environment::expand('%logDir%/php_error.log');
-				} catch (/*::*/InvalidStateException $e) {
+					self::$logFile = /*Nette\*/Environment::expand('%logDir%/php_error.log');
+				} catch (/*\*/InvalidStateException $e) {
 					self::$logFile = 'php_error.log';
 				}
 			}
@@ -400,7 +400,7 @@ final class Debug
 	 * @param  int    line number the error was raised at
 	 * @param  array  an array of variables that existed in the scope the error was triggered in
 	 * @return void
-	 * @throws ::FatalErrorException
+	 * @throws \FatalErrorException
 	 */
 	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
@@ -414,7 +414,7 @@ final class Debug
 		);
 
 		if (isset($fatals[$severity])) {
-			throw new /*::*/FatalErrorException($message, 0, $severity, $file, $line, $context);
+			throw new /*\*/FatalErrorException($message, 0, $severity, $file, $line, $context);
 
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return NULL; // nothing to do
@@ -616,7 +616,7 @@ final class Debug
 				$arr[] = htmlSpecialChars($name) . ' = <strong>' . htmlSpecialChars($value) . '</strong>';
 			}
 
-			$autoloaded = class_exists(/*Nette::Loaders::*/'AutoLoader', FALSE) ? /*Nette::Loaders::*/AutoLoader::$count : 0;
+			$autoloaded = class_exists(/*Nette\Loaders\*/'AutoLoader', FALSE) ? /*Nette\Loaders\*/AutoLoader::$count : 0;
 			$s = '<span>' . count(get_included_files()) . '/' .  $autoloaded . ' files</span>, ';
 
 			$exclude = array('stdClass', 'Exception', 'ErrorException', 'Traversable', 'IteratorAggregate', 'Iterator', 'ArrayAccess', 'Serializable', 'Closure');
@@ -754,4 +754,4 @@ final class Debug
 Debug::$html = PHP_SAPI !== 'cli';
 Debug::$time = microtime(TRUE);
 
-// if (!function_exists('dump')) { function dump($var, $return = FALSE) { /*Nette::*/Debug::dump($var, $return); } }
+// if (!function_exists('dump')) { function dump($var, $return = FALSE) { /*Nette\*/Debug::dump($var, $return); } }

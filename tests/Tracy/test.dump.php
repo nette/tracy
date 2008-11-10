@@ -2,13 +2,13 @@
 .dump { color:black; background:white; font-size:12px; text-align:left } .dump span { color: gray }
 </style>
 
-<h1>Nette::Debug dump test</h1>
+<h1>Nette\Debug dump test</h1>
 
 
 <?php
 require_once '../../Nette/loader.php';
 
-/*use Nette::Debug;*/
+/*use Nette\Debug;*/
 
 
 $arr = array(10, 20.2, TRUE, NULL, 'hello');

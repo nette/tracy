@@ -333,7 +333,7 @@ if (headers_sent()) {
 
 
 
-		<?php if ($ex instanceof /*Nette::*/IDebuggable): ?>
+		<?php if ($ex instanceof /*Nette\*/IDebuggable): ?>
 		<?php foreach ($ex->getPanels() as $name => $panel): ?>
 		<?php _netteOpenPanel($name, empty($panel['expanded'])) ?>
 			<?php echo $panel['content'] ?>

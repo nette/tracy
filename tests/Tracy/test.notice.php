@@ -1,10 +1,10 @@
-<h1>Nette::Debug notice test</h1>
+<h1>Nette\Debug notice test</h1>
 
 
 <?php
 require_once '../../Nette/loader.php';
 
-/*use Nette::Debug;*/
+/*use Nette\Debug;*/
 
 Debug::$html = FALSE;
 Debug::enable(E_ALL, FALSE);
