@@ -6,8 +6,8 @@ require_once '../../Nette/loader.php';
 
 Debug::$time = 1201042800.1875;
 Debug::$emailProbability = 1;
+$_SERVER = array_intersect_key($_SERVER, array('PHP_SELF' => 1, 'SCRIPT_NAME' => 1, 'SERVER_ADDR' => 1, 'SERVER_SOFTWARE' => 1, 'HTTP_HOST' => 1, 'DOCUMENT_ROOT' => 1));
 $_SERVER['HTTP_HOST'] = 'nettephp.com';
-unset($_SERVER['REQUEST_TIME'], $_SERVER['HTTP_USER_AGENT'], $_SERVER['Path'], $_SERVER['PATH'], $_SERVER['PATHEXT'], $_SERVER['SERVER_SIGNATURE'], $_SERVER['SERVER_SOFTWARE']);
 
 $errorLog = dirname(__FILE__) . '/log/php_error.log';
 $email = 'debug';

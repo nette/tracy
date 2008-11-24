@@ -20,11 +20,15 @@
  *
  * @param      array     $exception
  * @param      array     $colophons
+ * @param      array     $keyFilter
  * @return     void
  */
 
 /*namespace Nette;*/
 
+
+
+if (!function_exists('_netteDebugPrintCode')) {
 
 /**
  * Prints source code.
@@ -112,6 +116,7 @@ function _netteClosePanel()
 	<?php
 }
 
+}
 
 
 if (headers_sent()) {
@@ -313,8 +318,13 @@ if (headers_sent()) {
 						$params = array();
 					}
 					foreach ($row['args'] as $k => $v) {
-						echo '<tr><td>', (isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</td>';
-						echo '<td>', self::safeDump($v, isset($params[$k]) ? $params[$k]->name : NULL), "</td></tr>\n";
+						echo '<tr><td>', (isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</td><td>';
+						if (isset($params[$k]) && isset($keyFilter[strtolower($params[$k]->name)])) {
+							echo '<i>*** hidden ***</i>';
+						} else {
+							self::dump($v);
+						}
+						echo "</td></tr>\n";
 					}
 					?>
 					</table>
@@ -348,7 +358,8 @@ if (headers_sent()) {
 		<table>
 		<?php
 		foreach ($ex->context as $k => $v) {
-			echo '<tr><td>$', htmlspecialchars($k), '</td><td>', self::safeDump($v, $k), "</td></tr>\n";
+			echo '<tr><td>$', htmlspecialchars($k), '</td>';
+			echo '<td>', (isset($keyFilter[strtolower($k)]) ? '<i>*** hidden ***</i>' : self::dump($v, TRUE)), "</td></tr>\n";
 		}
 		?>
 		</table>
@@ -370,7 +381,8 @@ if (headers_sent()) {
 		<table id="pnl-env-const">
 		<?php
 		foreach ($list['user'] as $k => $v) {
-			echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::safeDump($v, $k), "</td></tr>\n";
+			echo '<tr><td>', htmlspecialchars($k), '</td>';
+			echo '<td>', (isset($keyFilter[strtolower($k)]) ? '<i>*** hidden ***</i>' : self::dump($v, TRUE)), "</td></tr>\n";
 		}
 		?>
 		</table>

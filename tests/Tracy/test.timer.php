@@ -8,6 +8,12 @@ require_once '../../Nette/loader.php';
 
 Debug::timer();
 
-sleep(2);
+sleep(1);
 
-echo round(Debug::timer(), 1);
+Debug::timer('foo');
+
+sleep(1);
+
+Debug::dump( round(Debug::timer(), 1) );
+
+Debug::dump( round(Debug::timer('foo'), 1) );

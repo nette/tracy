@@ -6,7 +6,7 @@ require_once '../../Nette/loader.php';
 
 /*use Nette\Debug;*/
 
-Debug::$html = FALSE;
+Debug::$consoleMode = TRUE;
 Debug::enable(E_ALL, FALSE);
 
 

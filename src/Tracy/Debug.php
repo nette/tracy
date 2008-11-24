@@ -40,20 +40,29 @@ final class Debug
 	/** @var array  free counters for your usage */
 	public static $counters = array();
 
-	/** @var bool  use HTML tags in error messages and dump output? */
-	public static $html; // PHP_SAPI !== 'cli'
+	/** @deprecated {@link Debug::$consoleMode} */
+	public static $html;
 
-	/** @var int  Debug::dump() - how many nested levels of array/object properties display Debug::dump()? */
+	/** @var bool determines whether a server is running in production mode */
+	public static $productionMode;
+
+	/** @var bool determines whether a server is running in console mode */
+	public static $consoleMode;
+
+	/** @var int  how many nested levels of array/object properties display {@link Debug::dump()} */
 	public static $maxDepth = 3;
 
-	/** @var int  Debug::dump() - how long strings display Debug::dump()? */
+	/** @var int  how long strings display {@link Debug::dump()} */
 	public static $maxLen = 150;
+
+	/** @var int  sensitive keys not displayed by {@link Debug::dump()} when {@link Debug::$productionMode} in on */
+	public static $keysToHide = array('password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin');
 
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
 
-	/** @var bool  send messages to Firebug? */
-	public static $useFirebug;
+	/** @var bool send messages to Firebug? */
+	private static $useFirebug;
 
 	/** @var string  name of the file where script errors should be logged */
 	private static $logFile;
@@ -78,9 +87,6 @@ final class Debug
 
 	/** @var float  probability that logfile will be checked */
 	public static $emailProbability = 0.01;
-
-	/** @var array  */
-	public static $keysToHide = array('password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin');
 
 	/** @var array  */
 	private static $colophons = array(array(__CLASS__, 'getDefaultColophons'));
@@ -123,10 +129,11 @@ final class Debug
 	 */
 	public static function dump($var, $return = FALSE)
 	{
-		self::$keyFilter = FALSE;
+		self::$keyFilter = self::$productionMode ? array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER) : NULL;
+
 		$output = "<pre class=\"dump\">" . self::_dump($var, 0) . "</pre>\n";
 
-		if (!self::$html) {
+		if (self::$consoleMode) {
 			$output = htmlspecialchars_decode(strip_tags($output), ENT_NOQUOTES);
 		}
 
@@ -238,14 +245,15 @@ final class Debug
 
 	/**
 	 * Starts/stops stopwatch.
+	 * @param  string  name
 	 * @return elapsed seconds
 	 */
-	public static function timer()
+	public static function timer($name = NULL)
 	{
-		static $time = 0;
+		static $time = array();
 		$now = microtime(TRUE);
-		$delta = $now - $time;
-		$time = $now;
+		$delta = isset($time[$name]) ? $now - $time[$name] : 0;
+		$time[$name] = $now;
 		return $delta;
 	}
 
@@ -258,61 +266,70 @@ final class Debug
 	/**
 	 * Enables displaying or logging errors and exceptions.
 	 * @param  int   error reporting level
-	 * @param  bool|string  log to file?
-	 * @param  array|string  send emails?
+	 * @param  string        error log file (enables production mode)
+	 * @param  array|string  administrator email or email headers; enables email sending
 	 * @return void
 	 */
-	public static function enable($level = E_ALL, $logErrors = NULL, $sendEmails = FALSE)
+	public static function enable($level = E_ALL, $logFile = NULL, $email = NULL)
 	{
 		if (version_compare(PHP_VERSION, '5.2.1') === 0) {
 			throw new /*\*/NotSupportedException(__METHOD__ . ' is not supported in PHP 5.2.1'); // PHP bug #40815
 		}
 
-		// Environment auto-detection
-		if ($logErrors === NULL && class_exists(/*Nette\*/'Environment')) {
-			$logErrors = /*Nette\*/Environment::isLive();
+		error_reporting($level === NULL ? E_ALL | E_STRICT : $level);
+
+		// production/development mode detection
+		if (self::$productionMode === NULL) {
+			self::$productionMode = class_exists(/*Nette\*/'Environment')
+				? /*Nette\*/Environment::isProduction()
+				: !isset($_SERVER['SERVER_ADDR']) || $_SERVER['SERVER_ADDR'] !== '127.0.0.1';
 		}
 
 		// Firebug detection
-		if (self::$useFirebug === NULL) {
-			self::$useFirebug = function_exists('json_encode') && !$logErrors && isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
+		self::$useFirebug = !self::$productionMode && function_exists('json_encode')
+			&& isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
+
+		// logging configuration
+		if ($logFile === NULL) {
+			$logFile = self::$productionMode;
 		}
 
-		if ($level !== NULL) {
-			error_reporting($level);
-		}
+		if ($logFile) {
+			self::$logFile = 'php_error.log';
 
-		if (function_exists('ini_set')) {
-			ini_set('display_startup_errors', !$logErrors);
-			ini_set('display_errors', !$logErrors); // or 'stderr'
-			ini_set('html_errors', self::$html);
-			ini_set('log_errors', (bool) $logErrors);
+			if (class_exists(/*Nette\*/'Environment')) {
+				if (is_string($logFile)) {
+					self::$logFile = /*Nette\*/Environment::expand($logFile);
 
-		} elseif ($logErrors) {
-			// throws error only on production server
-			throw new /*\*/NotSupportedException('Function ini_set() is not enabled.');
-		}
-
-		if ($logErrors) {
-			if (is_string($logErrors)) {
-				self::$logFile = strpos($logErrors, '%') === FALSE ? $logErrors : /*Nette\*/Environment::expand($logErrors);
-			} else {
-				try {
+				} elseif (/*Nette\*/Environment::getVariable('%logDir%')) {
 					self::$logFile = /*Nette\*/Environment::expand('%logDir%/php_error.log');
-				} catch (/*\*/InvalidStateException $e) {
-					self::$logFile = 'php_error.log';
 				}
+
+			} elseif (is_string($logFile)) {
+				self::$logFile = $logFile;
 			}
+
 			ini_set('error_log', self::$logFile);
 		}
 
-		self::$sendEmails = $logErrors && $sendEmails;
-		if (self::$sendEmails) {
-			if (is_string($sendEmails)) {
-				self::$emailHeaders['To'] = $sendEmails;
+		// php configuration
+		if (function_exists('ini_set')) {
+			ini_set('display_startup_errors', !$logFile);
+			ini_set('display_errors', !$logFile); // or 'stderr'
+			ini_set('html_errors', !self::$consoleMode);
+			ini_set('log_errors', (bool) $logFile);
 
-			} elseif (is_array($sendEmails)) {
-				self::$emailHeaders = $sendEmails + self::$emailHeaders;
+		} elseif (self::$productionMode) { // throws error only on production server
+			throw new /*\*/NotSupportedException('Function ini_set() is not enabled.');
+		}
+
+		self::$sendEmails = $logFile && $email;
+		if (self::$sendEmails) {
+			if (is_string($email)) {
+				self::$emailHeaders['To'] = $email;
+
+			} elseif (is_array($email)) {
+				self::$emailHeaders = $email + self::$emailHeaders;
 			}
 			if (mt_rand() / mt_getrandmax() < self::$emailProbability) {
 				self::observeErrorLog();
@@ -357,36 +374,8 @@ final class Debug
 			header('HTTP/1.1 500 Internal Server Error');
 		}
 
-		if (self::$logFile) { // log to file
-			error_log("PHP Fatal error:  Uncaught $exception");
-			$file = @strftime('%d-%b-%Y %H-%M-%S ', Debug::$time) . strstr(number_format(Debug::$time, 4, '~', ''), '~');
-			$file = dirname(self::$logFile) . "/exception $file.html";
-			self::$logHandle = @fopen($file, 'x');
-			if (self::$logHandle) {
-				ob_start(array(__CLASS__, 'writeFile'), 1);
-				self::paintBlueScreen($exception);
-				ob_end_flush();
-				fclose(self::$logHandle);
-			}
-			self::observeErrorLog();
-
-		} elseif (!self::$html || isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
-			// console or AJAX mode
-			if (self::$useFirebug && !headers_sent()) {
-				self::fireLog($exception);
-
-			} else {
-				echo "$exception\n";
-				foreach (self::$colophons as $callback) {
-					foreach ((array) call_user_func($callback, 'bluescreen') as $line) echo strip_tags($line) . "\n";
-				}
-			}
-
-		} else { // dump to screen
-			while (ob_get_level() && @ob_end_clean());
-			self::paintBlueScreen($exception);
-			exit;
-		}
+		self::processException($exception);
+		exit;
 	}
 
 
@@ -441,6 +430,52 @@ final class Debug
 
 
 	/**
+	 * Logs or displays exception.
+	 * @param  Exception
+	 * @param  bool  is writing to standard output buffer allowed?
+	 * @return void
+	 */
+	public static function processException(Exception $exception, $outputAllowed = TRUE)
+	{
+		if (self::$logFile) {
+			error_log("PHP Fatal error:  Uncaught $exception");
+			$file = @strftime('%d-%b-%Y %H-%M-%S ', Debug::$time) . strstr(number_format(Debug::$time, 4, '~', ''), '~');
+			$file = dirname(self::$logFile) . "/exception $file.html";
+			self::$logHandle = @fopen($file, 'x');
+			if (self::$logHandle) {
+				ob_start(array(__CLASS__, 'writeFile'), 1);
+				self::paintBlueScreen($exception);
+				ob_end_flush();
+				fclose(self::$logHandle);
+			}
+
+			if (self::$sendEmails) {
+				self::observeErrorLog();
+			}
+
+		} elseif (self::$consoleMode) { // dump to console
+			if ($outputAllowed) {
+				echo "$exception\n";
+				foreach (self::$colophons as $callback) {
+					foreach ((array) call_user_func($callback, 'bluescreen') as $line) echo strip_tags($line) . "\n";
+				}
+			}
+
+		} elseif (self::$useFirebug && !headers_sent() && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') { // AJAX mode
+			self::fireLog($exception);
+
+		} elseif ($outputAllowed) { // dump to browser
+			while (ob_get_level() && @ob_end_clean());
+			self::paintBlueScreen($exception);
+
+		} elseif (self::$useFirebug && !headers_sent()) {
+			self::fireLog($exception);
+		}
+	}
+
+
+
+	/**
 	 * Paint blue screen.
 	 * @param  Exception
 	 * @return void
@@ -448,6 +483,7 @@ final class Debug
 	public static function paintBlueScreen(Exception $exception)
 	{
 		$colophons = self::$colophons;
+		$keyFilter = self::$productionMode ? array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER) : NULL;
 		require dirname(__FILE__) . '/Debug.templates/bluescreen.phtml';
 	}
 
@@ -472,8 +508,6 @@ final class Debug
 	 */
 	private static function observeErrorLog()
 	{
-		if (!self::$sendEmails) return;
-
 		$monitorFile = self::$logFile . '.monitor';
 		$saved = @file_get_contents($monitorFile); // intentionally @
 		$actual = (int) @filemtime(self::$logFile); // intentionally @
@@ -523,25 +557,6 @@ final class Debug
 		} else {
 			mail($to, $subject, $body, $header);
 		}
-	}
-
-
-
-	/**
-	 * Filters output from self::dump() for sensitive informations.
-	 * @param  mixed   variable to dump.
-	 * @param  string  additional key
-	 * @return string
-	 */
-	private static function safeDump($var, $key = NULL)
-	{
-		self::$keyFilter = array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER);
-
-		if ($key !== NULL && isset(self::$keyFilter[strtolower($key)])) {
-			return '<i>*** hidden ***</i>';
-		}
-
-		return "<pre class=\"dump\">" . self::_dump($var, 0) . "</pre>\n";
 	}
 
 
@@ -751,7 +766,7 @@ final class Debug
 /**
  * Static class constructor.
  */
-Debug::$html = PHP_SAPI !== 'cli';
+Debug::$consoleMode = PHP_SAPI === 'cli';
 Debug::$time = microtime(TRUE);
 
 // if (!function_exists('dump')) { function dump($var, $return = FALSE) { /*Nette\*/Debug::dump($var, $return); } }

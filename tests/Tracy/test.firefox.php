@@ -4,7 +4,7 @@ require_once '../../Nette/loader.php';
 
 /*use Nette\Debug;*/
 
-unset($_SERVER['REQUEST_TIME'], $_SERVER['HTTP_USER_AGENT'], $_SERVER['Path'], $_SERVER['PATH'], $_SERVER['PATHEXT'], $_SERVER['SERVER_SIGNATURE'], $_SERVER['SERVER_SOFTWARE']);
+$_SERVER = array_intersect_key($_SERVER, array('PHP_SELF' => 1, 'SCRIPT_NAME' => 1, 'SERVER_ADDR' => 1, 'SERVER_SOFTWARE' => 1, 'HTTP_HOST' => 1, 'DOCUMENT_ROOT' => 1));
 $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 Gecko/2008070208 Firefox/3.0.1 FirePHP/0.1.0.3';
 
 
@@ -59,7 +59,7 @@ try {
 
 
 // prints headers
-Debug::$html = FALSE;
+Debug::$consoleMode = TRUE;
 Debug::$maxLen = FALSE;
 echo '<pre>';
 $headers = headers_list();

@@ -18,12 +18,12 @@ $obj = (object) array('item1' => $arr, 'item2' => 'hello');
 
 echo '<h2>Check mode</h2>';
 
-Debug::dump(Debug::$html);
+Debug::dump(Debug::$consoleMode ? 'console' : 'html');
 
 
 echo '<h2>HTML mode</h2>';
 
-Debug::$html = TRUE;
+Debug::$consoleMode = FALSE;
 
 Debug::dump('<a href="#">test</a>');
 
@@ -35,7 +35,7 @@ Debug::dump($obj);
 
 echo '<h2>Text mode</h2>';
 
-Debug::$html = FALSE;
+Debug::$consoleMode = TRUE;
 
 Debug::dump('<a href="#">test</a>');
 
