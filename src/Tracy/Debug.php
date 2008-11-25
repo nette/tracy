@@ -79,11 +79,11 @@ final class Debug
 		'From' => 'noreply@%host%',
 		'X-Mailer' => 'Nette Framework',
 		'Subject' => 'PHP: An error occurred on the server %host%',
-		'Body' => '[%date%]',
+		'Body' => '[%date%] %message%',
 	);
 
 	/** @var callback */
-	public static $mailer = array(__CLASS__, 'sendEmail');
+	public static $mailer = array(__CLASS__, 'defaultMailer');
 
 	/** @var float  probability that logfile will be checked */
 	public static $emailProbability = 0.01;
@@ -332,7 +332,15 @@ final class Debug
 				self::$emailHeaders = $email + self::$emailHeaders;
 			}
 			if (mt_rand() / mt_getrandmax() < self::$emailProbability) {
-				self::observeErrorLog();
+				$monitorFile = self::$logFile . '.monitor';
+				$saved = @file_get_contents($monitorFile); // intentionally @
+				$actual = (int) @filemtime(self::$logFile); // intentionally @
+				if ($saved === FALSE || $actual === 0) {
+					file_put_contents($monitorFile, $actual);
+
+				} elseif (is_numeric($saved) && $saved != $actual) { // intentionally ==
+					self::sendEmail('Fatal error probably occured');
+				}
 			}
 		}
 
@@ -407,18 +415,26 @@ final class Debug
 
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return NULL; // nothing to do
+		}
+
+		static $types = array(
+			E_WARNING => 'Warning',
+			E_USER_WARNING => 'Warning',
+			E_NOTICE => 'Notice',
+			E_USER_NOTICE => 'Notice',
+			E_STRICT => 'Strict standards',
+			E_DEPRECATED => 'Deprecated',
+		);
+
+		$type = isset($types[$severity]) ? $types[$severity] : 'Unknown error';
+
+		if (self::$logFile) {
+			if (self::$sendEmails) {
+				self::sendEmail("$type: $message in $file on line $line");
+			}
+			return FALSE; // call normal error handler
 
 		} elseif (self::$useFirebug && !headers_sent()) {
-			$types = array(
-				E_WARNING => 'Warning',
-				E_USER_WARNING => 'Warning',
-				E_NOTICE => 'Notice',
-				E_USER_NOTICE => 'Notice',
-				E_STRICT => 'Strict standards',
-				E_DEPRECATED => 'Deprecated',
-			);
-
-			$type = isset($types[$severity]) ? $types[$severity] : 'Unknown error';
 			$message = strip_tags($message);
 			self::fireLog("$type: $message in $file on line $line", 'WARN');
 			return NULL;
@@ -448,9 +464,8 @@ final class Debug
 				ob_end_flush();
 				fclose(self::$logHandle);
 			}
-
 			if (self::$sendEmails) {
-				self::observeErrorLog();
+				self::sendEmail((string) $exception);
 			}
 
 		} elseif (self::$consoleMode) { // dump to console
@@ -503,20 +518,17 @@ final class Debug
 
 
 	/**
-	 * Notify admin by e-mail if error log changed.
+	 * Sends e-mail notification.
+	 * @param  string
 	 * @return void
 	 */
-	private static function observeErrorLog()
+	public static function sendEmail($message)
 	{
 		$monitorFile = self::$logFile . '.monitor';
 		$saved = @file_get_contents($monitorFile); // intentionally @
-		$actual = (int) @filemtime(self::$logFile); // intentionally @
-		if ($saved === FALSE) {
-			file_put_contents($monitorFile, $actual);
-
-		} elseif (is_numeric($saved) && $saved != $actual) { // intentionally ==
-			if (file_put_contents($monitorFile, 'e-mail has been sent')) {
-				call_user_func(self::$mailer);
+		if ($saved === FALSE || is_numeric($saved)) {
+			if (@file_put_contents($monitorFile, 'e-mail has been sent')) { // intentionally @
+				call_user_func(self::$mailer, $message);
 			}
 		}
 	}
@@ -524,17 +536,18 @@ final class Debug
 
 
 	/**
-	 * Sends e-mail notification.
+	 * Default mailer.
+	 * @param  string
 	 * @return void
 	 */
-	private static function sendEmail()
+	private static function defaultMailer($message)
 	{
 		$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] :
 				(isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '');
 
 		$headers = str_replace(
-			array('%host%', '%date%'),
-			array($host, @date('Y-m-d H:i:s', Debug::$time)), // intentionally @
+			array('%host%', '%date%', '%message%'),
+			array($host, @date('Y-m-d H:i:s', Debug::$time), $message), // intentionally @
 			self::$emailHeaders
 		);
 
