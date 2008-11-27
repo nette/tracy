@@ -301,7 +301,7 @@ final class Debug
 				if (is_string($logFile)) {
 					self::$logFile = /*Nette\*/Environment::expand($logFile);
 
-				} elseif (/*Nette\*/Environment::getVariable('%logDir%')) {
+				} elseif (/*Nette\*/Environment::getVariable('logDir')) {
 					self::$logFile = /*Nette\*/Environment::expand('%logDir%/php_error.log');
 				}
 
