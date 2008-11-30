@@ -282,7 +282,7 @@ final class Debug
 		if (self::$productionMode === NULL) {
 			self::$productionMode = class_exists(/*Nette\*/'Environment')
 				? /*Nette\*/Environment::isProduction()
-				: !isset($_SERVER['SERVER_ADDR']) || $_SERVER['SERVER_ADDR'] !== '127.0.0.1';
+				: !isset($_SERVER['SERVER_ADDR']) || ($_SERVER['SERVER_ADDR'] !== '::1' && strncmp($_SERVER['SERVER_ADDR'], '127.', 4));
 		}
 
 		// Firebug detection
