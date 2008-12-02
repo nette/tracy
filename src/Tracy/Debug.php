@@ -373,10 +373,10 @@ final class Debug
 	/**
 	 * Debug exception handler.
 	 *
-	 * @param  Exception
+	 * @param  \Exception
 	 * @return void
 	 */
-	public static function exceptionHandler(Exception $exception)
+	public static function exceptionHandler(/*\*/Exception $exception)
 	{
 		if (!headers_sent()) {
 			header('HTTP/1.1 500 Internal Server Error');
@@ -447,11 +447,11 @@ final class Debug
 
 	/**
 	 * Logs or displays exception.
-	 * @param  Exception
+	 * @param  \Exception
 	 * @param  bool  is writing to standard output buffer allowed?
 	 * @return void
 	 */
-	public static function processException(Exception $exception, $outputAllowed = TRUE)
+	public static function processException(/*\*/Exception $exception, $outputAllowed = TRUE)
 	{
 		if (self::$logFile) {
 			error_log("PHP Fatal error:  Uncaught $exception");
@@ -492,10 +492,10 @@ final class Debug
 
 	/**
 	 * Paint blue screen.
-	 * @param  Exception
+	 * @param  \Exception
 	 * @return void
 	 */
-	public static function paintBlueScreen(Exception $exception)
+	public static function paintBlueScreen(/*\*/Exception $exception)
 	{
 		$colophons = self::$colophons;
 		$keyFilter = self::$productionMode ? array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER) : NULL;
@@ -649,7 +649,7 @@ final class Debug
 
 			$exclude = array('stdClass', 'Exception', 'ErrorException', 'Traversable', 'IteratorAggregate', 'Iterator', 'ArrayAccess', 'Serializable', 'Closure');
 			foreach (get_loaded_extensions() as $ext) {
-				$ref = new ReflectionExtension($ext);
+				$ref = new /*\*/ReflectionExtension($ext);
 				$exclude = array_merge($exclude, $ref->getClassNames());
 			}
 			$classes = array_diff(get_declared_classes(), $exclude);
@@ -701,7 +701,7 @@ final class Debug
 	 */
 	public static function fireLog($message, $priority = self::LOG, $label = NULL)
 	{
-		if ($message instanceof Exception) {
+		if ($message instanceof /*\*/Exception) {
 			$priority = 'TRACE';
 			$message = array(
 				'Class' => get_class($message),

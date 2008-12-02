@@ -28,7 +28,7 @@
 
 
 
-if (!function_exists('_netteDebugPrintCode')) {
+if (!function_exists(/*Nette\*/'_netteDebugPrintCode')) {
 
 /**
  * Prints source code.
@@ -312,9 +312,9 @@ if (headers_sent()) {
 					<table>
 					<?php
 					try {
-						$r = isset($row['class']) ? new ReflectionMethod($row['class'], $row['function']) : new ReflectionFunction($row['function']);
+						$r = isset($row['class']) ? new /*\*/ReflectionMethod($row['class'], $row['function']) : new /*\*/ReflectionFunction($row['function']);
 						$params = $r->getParameters();
-					} catch (Exception $e) {
+					} catch (/*\*/Exception $e) {
 						$params = array();
 					}
 					foreach ($row['args'] as $k => $v) {
@@ -322,7 +322,7 @@ if (headers_sent()) {
 						if (isset($params[$k]) && isset($keyFilter[strtolower($params[$k]->name)])) {
 							echo '<i>*** hidden ***</i>';
 						} else {
-							self::dump($v);
+							/*Nette\*/Debug::dump($v);
 						}
 						echo "</td></tr>\n";
 					}
@@ -359,7 +359,7 @@ if (headers_sent()) {
 		<?php
 		foreach ($ex->context as $k => $v) {
 			echo '<tr><td>$', htmlspecialchars($k), '</td>';
-			echo '<td>', (isset($keyFilter[strtolower($k)]) ? '<i>*** hidden ***</i>' : self::dump($v, TRUE)), "</td></tr>\n";
+			echo '<td>', (isset($keyFilter[strtolower($k)]) ? '<i>*** hidden ***</i>' : /*Nette\*/Debug::dump($v, TRUE)), "</td></tr>\n";
 		}
 		?>
 		</table>
@@ -382,7 +382,7 @@ if (headers_sent()) {
 		<?php
 		foreach ($list['user'] as $k => $v) {
 			echo '<tr><td>', htmlspecialchars($k), '</td>';
-			echo '<td>', (isset($keyFilter[strtolower($k)]) ? '<i>*** hidden ***</i>' : self::dump($v, TRUE)), "</td></tr>\n";
+			echo '<td>', (isset($keyFilter[strtolower($k)]) ? '<i>*** hidden ***</i>' : /*Nette\*/Debug::dump($v, TRUE)), "</td></tr>\n";
 		}
 		?>
 		</table>
@@ -405,7 +405,7 @@ if (headers_sent()) {
 		<?php else: ?>
 		<table>
 		<?php
-		foreach ($_SERVER as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::dump($v, TRUE), "</td></tr>\n";
+		foreach ($_SERVER as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', /*Nette\*/Debug::dump($v, TRUE), "</td></tr>\n";
 		?>
 		</table>
 		<?php endif ?>
@@ -432,7 +432,7 @@ if (headers_sent()) {
 		<?php else: ?>
 		<table>
 		<?php
-		foreach ($GLOBALS[$name] as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::dump($v, TRUE), "</td></tr>\n";
+		foreach ($GLOBALS[$name] as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', /*Nette\*/Debug::dump($v, TRUE), "</td></tr>\n";
 		?>
 		</table>
 		<?php endif ?>
