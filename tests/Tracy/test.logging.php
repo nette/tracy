@@ -4,6 +4,7 @@ require_once '../../Nette/loader.php';
 
 /*use Nette\Debug;*/
 
+Debug::$productionMode = TRUE;
 Debug::$time = 1201042800.1875;
 Debug::$emailProbability = 1;
 Debug::$mailer = 'testMailer';
@@ -14,6 +15,15 @@ $_SERVER['HTTP_HOST'] = 'nettephp.com';
 function testMailer($message)
 {
 	echo "\nSending mail with message '$message'\n";
+
+	echo "\nFiles:\n";
+	global $errorLog;
+	foreach (glob(dirname($errorLog) . '/*') as $file) {
+		echo "$file:\n";
+		echo "----------------\n";
+		echo file_get_contents($file);
+		echo "\n----------------\n\n";
+	}	
 }
 
 

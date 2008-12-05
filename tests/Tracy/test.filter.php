@@ -7,9 +7,11 @@ require_once '../../Nette/loader.php';
 Debug::$time = 1201042800;
 $_SERVER = array_intersect_key($_SERVER, array('PHP_SELF' => 1, 'SCRIPT_NAME' => 1, 'SERVER_ADDR' => 1, 'SERVER_SOFTWARE' => 1, 'HTTP_HOST' => 1, 'DOCUMENT_ROOT' => 1));
 
+die('has no effect now');
+
+Debug::$productionMode = FALSE;
 Debug::$consoleMode = FALSE;
 Debug::enable(E_ALL, FALSE);
-Debug::$productionMode = TRUE;
 
 define('PASS', 'tajne heslo');
 

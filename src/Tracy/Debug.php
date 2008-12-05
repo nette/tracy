@@ -61,8 +61,8 @@ final class Debug
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
 
-	/** @var bool send messages to Firebug? */
-	private static $useFirebug;
+	/** @var bool if Firebug & FirePHP detected? */
+	private static $firebugDetected;
 
 	/** @var string  name of the file where script errors should be logged */
 	private static $logFile;
@@ -116,6 +116,19 @@ final class Debug
 
 
 
+	/**
+	 * Static class constructor.
+	 */
+	public static function init()
+	{
+		self::$time = microtime(TRUE);
+		self::$consoleMode = PHP_SAPI === 'cli';
+		self::$productionMode = isset($_SERVER['SERVER_ADDR']) ? ($_SERVER['SERVER_ADDR'] !== '::1' && strncmp($_SERVER['SERVER_ADDR'], '127.', 4)) : !self::$consoleMode;
+		self::$firebugDetected = function_exists('json_encode') && isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
+	}
+
+
+
 	/********************* useful tools ****************d*g**/
 
 
@@ -129,7 +142,11 @@ final class Debug
 	 */
 	public static function dump($var, $return = FALSE)
 	{
-		self::$keyFilter = self::$productionMode ? array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER) : NULL;
+		if (self::$productionMode) {
+			return $var;
+		}
+
+		//self::$keyFilter = self::$productionMode ? array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER) : NULL;
 
 		$output = "<pre class=\"dump\">" . self::_dump($var, 0) . "</pre>\n";
 
@@ -278,23 +295,8 @@ final class Debug
 
 		error_reporting($level === NULL ? E_ALL | E_STRICT : $level);
 
-		// production/development mode detection
-		if (self::$productionMode === NULL) {
-			self::$productionMode = class_exists(/*Nette\*/'Environment')
-				? /*Nette\*/Environment::isProduction()
-				: !isset($_SERVER['SERVER_ADDR']) || ($_SERVER['SERVER_ADDR'] !== '::1' && strncmp($_SERVER['SERVER_ADDR'], '127.', 4));
-		}
-
-		// Firebug detection
-		self::$useFirebug = !self::$productionMode && function_exists('json_encode')
-			&& isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
-
 		// logging configuration
-		if ($logFile === NULL) {
-			$logFile = self::$productionMode;
-		}
-
-		if ($logFile) {
+		if (self::$productionMode && $logFile !== FALSE) {
 			self::$logFile = 'php_error.log';
 
 			if (class_exists(/*Nette\*/'Environment')) {
@@ -434,7 +436,7 @@ final class Debug
 			}
 			return FALSE; // call normal error handler
 
-		} elseif (self::$useFirebug && !headers_sent()) {
+		} elseif (!self::$productionMode && self::$firebugDetected && !headers_sent()) {
 			$message = strip_tags($message);
 			self::fireLog("$type: $message in $file on line $line", 'WARN');
 			return NULL;
@@ -468,6 +470,9 @@ final class Debug
 				self::sendEmail((string) $exception);
 			}
 
+		} elseif (self::$productionMode) {
+			// be quiet
+
 		} elseif (self::$consoleMode) { // dump to console
 			if ($outputAllowed) {
 				echo "$exception\n";
@@ -476,14 +481,14 @@ final class Debug
 				}
 			}
 
-		} elseif (self::$useFirebug && !headers_sent() && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') { // AJAX mode
+		} elseif (self::$firebugDetected && !headers_sent() && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') { // AJAX mode
 			self::fireLog($exception);
 
 		} elseif ($outputAllowed) { // dump to browser
 			while (ob_get_level() && @ob_end_clean());
 			self::paintBlueScreen($exception);
 
-		} elseif (self::$useFirebug && !headers_sent()) {
+		} elseif (self::$firebugDetected && !headers_sent()) {
 			self::fireLog($exception);
 		}
 	}
@@ -498,8 +503,9 @@ final class Debug
 	public static function paintBlueScreen(/*\*/Exception $exception)
 	{
 		$colophons = self::$colophons;
-		$keyFilter = self::$productionMode ? array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER) : NULL;
+		self::$productionMode = FALSE;
 		require dirname(__FILE__) . '/Debug.templates/bluescreen.phtml';
+		self::$productionMode = TRUE;
 	}
 
 
@@ -584,7 +590,9 @@ final class Debug
 	 */
 	public static function enableProfiler()
 	{
-		register_shutdown_function(array(__CLASS__, 'paintProfiler'));
+		if (!self::$productionMode) {
+			register_shutdown_function(array(__CLASS__, 'paintProfiler'));
+		}
 	}
 
 
@@ -596,7 +604,7 @@ final class Debug
 	public static function paintProfiler()
 	{
 		$colophons = self::$colophons;
-		if (self::$useFirebug) {
+		if (self::$firebugDetected) {
 			self::fireLog( 'Nette profiler', 'GROUP_START');
 			foreach (self::$colophons as $callback) {
 				foreach ((array) call_user_func($callback, 'profiler') as $line) self::fireLog(strip_tags($line));
@@ -728,6 +736,8 @@ final class Debug
 	 */
 	private static function fireSend($index, $payload)
 	{
+		if (self::$productionMode) return NULL;
+
 		if (headers_sent()) return FALSE; // or throw exception?
 
 		header('X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2');
@@ -776,10 +786,7 @@ final class Debug
 
 
 
-/**
- * Static class constructor.
- */
-Debug::$consoleMode = PHP_SAPI === 'cli';
-Debug::$time = microtime(TRUE);
+Debug::init();
 
-// if (!function_exists('dump')) { function dump($var, $return = FALSE) { /*Nette\*/Debug::dump($var, $return); } }
+// hint:
+// if (!function_exists('dump')) { function dump($var, $return = FALSE) { return /*Nette\*/Debug::dump($var, $return); } }
