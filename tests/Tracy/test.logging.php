@@ -23,7 +23,7 @@ function testMailer($message)
 		echo "----------------\n";
 		echo file_get_contents($file);
 		echo "\n----------------\n\n";
-	}	
+	}
 }
 
 

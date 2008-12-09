@@ -16,12 +16,12 @@ $arr = array(10, 20.2, TRUE, NULL, 'hello');
 $obj = (object) array('item1' => $arr, 'item2' => 'hello');
 
 
-echo '<h2>Check mode</h2>';
+echo "<h2>Check mode</h2>\n";
 
 Debug::dump(Debug::$consoleMode ? 'console' : 'html');
 
 
-echo '<h2>HTML mode</h2>';
+echo "<h2>HTML mode</h2>\n";
 
 Debug::$consoleMode = FALSE;
 
@@ -32,8 +32,7 @@ Debug::dump($arr);
 Debug::dump($obj);
 
 
-
-echo '<h2>Text mode</h2>';
+echo "<h2>Text mode</h2>\n";
 
 Debug::$consoleMode = TRUE;
 
@@ -42,3 +41,23 @@ Debug::dump('<a href="#">test</a>');
 Debug::dump($arr);
 
 Debug::dump($obj);
+
+Debug::$consoleMode = FALSE;
+
+
+echo "<h2>Production mode</h2>\n";
+
+Debug::$productionMode = TRUE;
+
+Debug::dump('sensitive data');
+
+echo Debug::dump('forced', TRUE);
+
+
+echo "<h2>Development mode</h2>\n";
+
+Debug::$productionMode = FALSE;
+
+Debug::dump('sensitive data');
+
+echo Debug::dump('forced', TRUE);

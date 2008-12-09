@@ -322,7 +322,7 @@ if (headers_sent()) {
 						if (isset($params[$k]) && isset($keyFilter[strtolower($params[$k]->name)])) {
 							echo '<i>*** hidden ***</i>';
 						} else {
-							/*Nette\*/Debug::dump($v);
+							echo /*Nette\*/Debug::dump($v, TRUE);
 						}
 						echo "</td></tr>\n";
 					}

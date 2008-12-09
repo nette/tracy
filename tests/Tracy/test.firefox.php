@@ -58,6 +58,13 @@ try {
 }
 
 
+// production test
+Debug::$productionMode = TRUE;
+Debug::fireDump('Sensitive data', 'key');
+Debug::fireLog('Sensitive log');
+Debug::$productionMode = FALSE;
+
+
 // prints headers
 Debug::$consoleMode = TRUE;
 Debug::$maxLen = FALSE;

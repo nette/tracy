@@ -61,8 +61,11 @@ final class Debug
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
 
-	/** @var bool if Firebug & FirePHP detected? */
+	/** @var bool is Firebug & FirePHP detected? */
 	private static $firebugDetected;
+
+	/** @var bool is AJAX request detected? */
+	private static $ajaxDetected;
 
 	/** @var string  name of the file where script errors should be logged */
 	private static $logFile;
@@ -123,8 +126,9 @@ final class Debug
 	{
 		self::$time = microtime(TRUE);
 		self::$consoleMode = PHP_SAPI === 'cli';
-		self::$productionMode = isset($_SERVER['SERVER_ADDR']) ? ($_SERVER['SERVER_ADDR'] !== '::1' && strncmp($_SERVER['SERVER_ADDR'], '127.', 4)) : !self::$consoleMode;
+		self::$productionMode = NULL; // detected in enable()
 		self::$firebugDetected = function_exists('json_encode') && isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
+		self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
 	}
 
 
@@ -137,12 +141,12 @@ final class Debug
 	 * Dumps information about a variable in readable format.
 	 *
 	 * @param  mixed  variable to dump.
-	 * @param  bool   return output instead of printing it?
+	 * @param  bool   return output instead of printing it? (bypasses $productionMode)
 	 * @return mixed  variable or dump
 	 */
 	public static function dump($var, $return = FALSE)
 	{
-		if (self::$productionMode) {
+		if (!$return && self::$productionMode) {
 			return $var;
 		}
 
@@ -287,7 +291,7 @@ final class Debug
 	 * @param  array|string  administrator email or email headers; enables email sending
 	 * @return void
 	 */
-	public static function enable($level = E_ALL, $logFile = NULL, $email = NULL)
+	public static function enable($level = NULL, $logFile = NULL, $email = NULL)
 	{
 		if (version_compare(PHP_VERSION, '5.2.1') === 0) {
 			throw new /*\*/NotSupportedException(__METHOD__ . ' is not supported in PHP 5.2.1'); // PHP bug #40815
@@ -295,16 +299,33 @@ final class Debug
 
 		error_reporting($level === NULL ? E_ALL | E_STRICT : $level);
 
+		// production/development mode detection
+		if (self::$productionMode === NULL) {
+			if (class_exists(/*Nette\*/'Environment')) {
+				self::$productionMode = Environment::isProduction();
+
+			} elseif (isset($_SERVER['SERVER_ADDR'])) { // IP address based detection
+				$oct = explode('.', $_SERVER['SERVER_ADDR']);
+				self::$productionMode = $_SERVER['SERVER_ADDR'] !== '::1' && (count($oct) !== 4 || ($oct[0] !== '10' && $oct[0] !== '127' && ($oct[0] !== '172' || $oct[1] < 16 || $oct[1] > 31)
+					&& ($oct[0] !== '169' || $oct[1] !== '254') && ($oct[0] !== '192' || $oct[1] !== '168')));
+
+			} else {
+				self::$productionMode = !self::$consoleMode;
+			}
+		}
+
 		// logging configuration
 		if (self::$productionMode && $logFile !== FALSE) {
 			self::$logFile = 'php_error.log';
 
 			if (class_exists(/*Nette\*/'Environment')) {
 				if (is_string($logFile)) {
-					self::$logFile = /*Nette\*/Environment::expand($logFile);
+					self::$logFile = Environment::expand($logFile);
 
-				} elseif (/*Nette\*/Environment::getVariable('logDir')) {
-					self::$logFile = /*Nette\*/Environment::expand('%logDir%/php_error.log');
+				} else try {
+					self::$logFile = Environment::expand('%logDir%/php_error.log');
+
+				} catch (/*\*/InvalidStateException $e) {
 				}
 
 			} elseif (is_string($logFile)) {
@@ -316,10 +337,10 @@ final class Debug
 
 		// php configuration
 		if (function_exists('ini_set')) {
-			ini_set('display_startup_errors', !$logFile);
-			ini_set('display_errors', !$logFile); // or 'stderr'
+			ini_set('display_startup_errors', !self::$productionMode);
+			ini_set('display_errors', !self::$productionMode); // or 'stderr'
 			ini_set('html_errors', !self::$consoleMode);
-			ini_set('log_errors', (bool) $logFile);
+			ini_set('log_errors', (bool) self::$logFile);
 
 		} elseif (self::$productionMode) { // throws error only on production server
 			throw new /*\*/NotSupportedException('Function ini_set() is not enabled.');
@@ -384,7 +405,7 @@ final class Debug
 			header('HTTP/1.1 500 Internal Server Error');
 		}
 
-		self::processException($exception);
+		self::processException($exception, TRUE);
 		exit;
 	}
 
@@ -453,7 +474,7 @@ final class Debug
 	 * @param  bool  is writing to standard output buffer allowed?
 	 * @return void
 	 */
-	public static function processException(/*\*/Exception $exception, $outputAllowed = TRUE)
+	public static function processException(/*\*/Exception $exception, $outputAllowed = FALSE)
 	{
 		if (self::$logFile) {
 			error_log("PHP Fatal error:  Uncaught $exception");
@@ -481,7 +502,7 @@ final class Debug
 				}
 			}
 
-		} elseif (self::$firebugDetected && !headers_sent() && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') { // AJAX mode
+		} elseif (self::$firebugDetected && self::$ajaxDetected && !headers_sent()) { // AJAX mode
 			self::fireLog($exception);
 
 		} elseif ($outputAllowed) { // dump to browser
@@ -503,9 +524,7 @@ final class Debug
 	public static function paintBlueScreen(/*\*/Exception $exception)
 	{
 		$colophons = self::$colophons;
-		self::$productionMode = FALSE;
 		require dirname(__FILE__) . '/Debug.templates/bluescreen.phtml';
-		self::$productionMode = TRUE;
 	}
 
 
@@ -570,12 +589,7 @@ final class Debug
 		$body = str_replace("\r\n", "\n", $body);
 		if (PHP_OS != 'Linux') $body = str_replace("\n", "\r\n", $body);
 
-		if ($to === 'debug') {
-			self::dump(array($to, $subject, $body, $header));
-
-		} else {
-			mail($to, $subject, $body, $header);
-		}
+		mail($to, $subject, $body, $header);
 	}
 
 
@@ -611,8 +625,8 @@ final class Debug
 			}
 			self::fireLog( null, 'GROUP_END');
 		}
-		if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
-			// non AJAX mode
+
+		if (!self::$ajaxDetected) {
 			require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
 		}
 	}
@@ -789,4 +803,4 @@ final class Debug
 Debug::init();
 
 // hint:
-// if (!function_exists('dump')) { function dump($var, $return = FALSE) { return /*Nette\*/Debug::dump($var, $return); } }
+// if (!function_exists('dump')) { function dump($var, $return = FALSE) { return /*\Nette\*/Debug::dump($var, $return); } }
