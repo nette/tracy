@@ -127,7 +127,7 @@ final class Debug
 		self::$time = microtime(TRUE);
 		self::$consoleMode = PHP_SAPI === 'cli';
 		self::$productionMode = NULL; // detected in enable()
-		self::$firebugDetected = function_exists('json_encode') && isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
+		self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
 		self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
 	}
 
@@ -644,6 +644,7 @@ final class Debug
 	 */
 	public static function addColophon($callback)
 	{
+		/**/fixCallback($callback);/**/
 		if (!in_array($callback, self::$colophons, TRUE) && is_callable($callback)) {
 			self::$colophons[] = $callback;
 		}
