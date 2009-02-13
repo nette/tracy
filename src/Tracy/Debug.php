@@ -63,6 +63,9 @@ final class Debug
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
 
+	/** @var bool {@link Debug::enableProfiler()} */
+	private static $enabledProfiler = FALSE;
+
 	/** @var bool is Firebug & FirePHP detected? */
 	private static $firebugDetected;
 
@@ -522,6 +525,7 @@ final class Debug
 	 * Paint blue screen.
 	 * @param  \Exception
 	 * @return void
+	 * @internal
 	 */
 	public static function paintBlueScreen(/*\*/Exception $exception)
 	{
@@ -606,9 +610,19 @@ final class Debug
 	 */
 	public static function enableProfiler()
 	{
-		if (!self::$productionMode) {
-			register_shutdown_function(array(__CLASS__, 'paintProfiler'));
-		}
+		self::$enabledProfiler = TRUE;
+		register_shutdown_function(array(__CLASS__, 'paintProfiler'));
+	}
+
+
+
+	/**
+	 * Disables profiler.
+	 * @return void
+	 */
+	public static function disableProfiler()
+	{
+		self::$enabledProfiler = FALSE;
 	}
 
 
@@ -616,10 +630,15 @@ final class Debug
 	/**
 	 * Paint profiler window.
 	 * @return void
+	 * @internal
 	 */
 	public static function paintProfiler()
 	{
-		$colophons = self::$colophons;
+		if (!self::$enabledProfiler || self::$productionMode) {
+			return;
+		}
+		self::$enabledProfiler = FALSE;
+
 		if (self::$firebugDetected) {
 			self::fireLog( 'Nette profiler', 'GROUP_START');
 			foreach (self::$colophons as $callback) {
@@ -629,6 +648,7 @@ final class Debug
 		}
 
 		if (!self::$ajaxDetected) {
+			$colophons = self::$colophons;
 			require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
 		}
 	}
