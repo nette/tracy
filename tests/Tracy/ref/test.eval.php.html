@@ -10,20 +10,37 @@
 	<style type="text/css">
 	/* <![CDATA[ */
 		body {
-			font: 78%/1.5 Verdana, sans-serif;
-			background: white;
-			color: #333;
 			margin: 0 0 2em;
 			padding: 0;
 		}
 
-		h1 {
+		#netteBluescreen {
+			font: 78%/1.5 Verdana, sans-serif;
+			background: white;
+			color: #333;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			z-index: 23178;
+		}
+
+		#netteBluescreenIcon {
+			position: absolute;
+			right: .5em;
+			top: .5em;
+			z-index: 23179;
+			color: black;
+			text-decoration: none;
+		}
+
+		#netteBluescreen h1 {
 			font-weight: normal !important;
 			font-size: 18pt;
 			margin: .6em 0;
 		}
 
-		h2 {
+		#netteBluescreen h2 {
 			font-family: sans-serif;
 			font-weight: normal;
 			font-size: 14pt;
@@ -31,70 +48,73 @@
 			margin: .6em 0;
 		}
 
-		a {
+		#netteBluescreen a {
 			text-decoration: none;
 			color: #4197E3;
 		}
 
-		a span {
+		#netteBluescreen a span {
 			color: #999;
 		}
 
-		h3 {
+		#netteBluescreen h3 {
 			font-size: 110%;
 			font-weight: bold;
 			margin: 1em 0;
+			padding: 0;
 		}
 
-		p { margin: .8em 0 }
+		#netteBluescreen p {
+			margin: .8em 0
+		}
 
-		pre, code, table {
+		#netteBluescreen pre, #netteBluescreen code, #netteBluescreen table {
 			font-family: Consolas, monospace;
 		}
 
-		pre, table {
+		#netteBluescreen pre, #netteBluescreen table {
 			background: #ffffcc;
 			padding: .4em .7em;
 			border: 1px dotted silver;
-		}
-
-		table pre {
-			padding: 0;
-			margin: 0;
-			border: none;
 			font-size: 100%;
 		}
 
-		pre.dump span {
+		#netteBluescreen table pre {
+			padding: 0;
+			margin: 0;
+			border: none;
+		}
+
+		#netteBluescreen pre.dump span {
 			color: #c16549;
 		}
 
-		div.panel {
+		#netteBluescreen div.panel {
 			border-bottom: 1px solid #eee;
 			padding: 1px 2em;
 		}
 
-		div.inner {
+		#netteBluescreen div.inner {
 			padding: 0.1em 1em 1em;
 			background: #f5f5f5;
 		}
 
-		table {
+		#netteBluescreen table {
 			border-collapse: collapse;
 			width: 100%;
 		}
 
-		td, th {
+		#netteBluescreen td, #netteBluescreen th {
 			vertical-align: top;
 			padding: 2px 3px;
 			border: 1px solid #eeeebb;
 		}
 
-		ul {
+		#netteBluescreen ul {
 			font-size: 80%;
 		}
 
-		.highlight, #error {
+		#netteBluescreen .highlight, #netteBluescreenError {
 			background: red;
 			color: white;
 			font-weight: bold;
@@ -102,7 +122,7 @@
 			display: block;
 		}
 
-		.line {
+		#netteBluescreen .line {
 			color: #9e9e7e;
 			font-weight: normal;
 			font-style: normal;
@@ -134,36 +154,41 @@
 
 
 <body>
-	<div id="error" class="panel">
-		<h1>FatalErrorException</h1>
-
-		<p>The my error</p>
+	<div>
+		<a id="netteBluescreenIcon" href="#" onclick="return !toggle(this, 'netteBluescreen')"><span>&#x25bc;</span></a>
 	</div>
 
+	<div id="netteBluescreen">
+		<div id="netteBluescreenError" class="panel">
+			<h1>FatalErrorException</h1>
+
+			<p>The my error</p>
+		</div>
 
 
-		
-		
-		
+
+				
+			
+						
 
 
-			<div class="panel">
+				<div class="panel">
 		<h2><a href="#" onclick="return !toggle(this, 'pnl1')">Call stack <span>&#x25bc;</span></a></h2>
 
 		<div id="pnl1" class="inner">
-				<ol>
-								<li><p>
+					<ol>
+										<li><p>
 
-									&lt;PHP inner-code&gt;
-				
-				
-				Debug::				errorHandler
-				(<a href="#" onclick="return !toggle(this, 'args1-0')">arguments <span>&#x25b6;</span></a>)
-				</p>
+											&lt;PHP inner-code&gt;
+					
+					
+					Debug::					errorHandler
+					(<a href="#" onclick="return !toggle(this, 'args1-0')">arguments <span>&#x25b6;</span></a>)
+					</p>
 
-									<div class="collapsed" id="args1-0">
-					<table>
-					<tr><td>$severity</td><td><pre class="dump"><span>int</span>(256)
+											<div class="collapsed" id="args1-0">
+						<table>
+						<tr><td>$severity</td><td><pre class="dump"><span>int</span>(256)
 </pre>
 </td></tr>
 <tr><td>$message</td><td><pre class="dump"><span>string</span>(12) "The my error"
@@ -181,45 +206,45 @@
 }
 </pre>
 </td></tr>
-					</table>
-					</div>
-				
+						</table>
+						</div>
+					
 
-				
-				</li>
-								<li><p>
+					
+					</li>
+										<li><p>
 
-									<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php(16) : eval()'d code">Debug/<b>test.eval.php(16) : eval()'d code</b></span> (1)				
-				
-								trigger_error
-				(<a href="#" onclick="return !toggle(this, 'args1-1')">arguments <span>&#x25b6;</span></a>)
-				</p>
+											<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php(16) : eval()'d code">Debug/<b>test.eval.php(16) : eval()'d code</b></span> (1)					
+					
+										trigger_error
+					(<a href="#" onclick="return !toggle(this, 'args1-1')">arguments <span>&#x25b6;</span></a>)
+					</p>
 
-									<div class="collapsed" id="args1-1">
-					<table>
-					<tr><td>#0</td><td><pre class="dump"><span>string</span>(12) "The my error"
+											<div class="collapsed" id="args1-1">
+						<table>
+						<tr><td>#0</td><td><pre class="dump"><span>string</span>(12) "The my error"
 </pre>
 </td></tr>
 <tr><td>#1</td><td><pre class="dump"><span>int</span>(256)
 </pre>
 </td></tr>
-					</table>
-					</div>
-				
+						</table>
+						</div>
+					
 
-				
-				</li>
-								<li><p>
+					
+					</li>
+										<li><p>
 
-									<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php">Debug/<b>test.eval.php</b></span> (16)				
-				<a href="#" onclick="return !toggle(this, 'src1-2')">source <span>&#x25b6;</span></a> &nbsp; 
-								eval
-				()
-				</p>
+											<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php">Debug/<b>test.eval.php</b></span> (16)					
+					<a href="#" onclick="return !toggle(this, 'src1-2')">source <span>&#x25b6;</span></a> &nbsp; 
+										eval
+					()
+					</p>
 
-				
+					
 
-									<pre class="collapsed" id="src1-2"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line  9:</span>    
+											<pre class="collapsed" id="src1-2"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line  9:</span>    
 <span class='line'>Line 10:</span>    </span><span style="color: #000">Debug</span><span style="color: #d24; font-weight: bold">::</span><span style="color: #000">$consoleMode&nbsp;</span><span style="color: #d24; font-weight: bold">=&nbsp;</span><span style="color: #000">FALSE</span><span style="color: #d24; font-weight: bold">;
 <span class='line'>Line 11:</span>    </span><span style="color: #000">Debug</span><span style="color: #d24; font-weight: bold">::</span><span style="color: #000">enable</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">E_ALL</span><span style="color: #d24; font-weight: bold">);
 <span class='line'>Line 12:</span>    
@@ -232,29 +257,29 @@
 <span class='line'>Line 19:</span>    
 <span class='line'>Line 20:</span>    </span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #080">'root'</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #080">'prvni&nbsp;heslo'</span><span style="color: #d24; font-weight: bold">);</span>
 </span></span></code></pre>
-				
-				</li>
-								<li><p>
+					
+					</li>
+										<li><p>
 
-									<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php">Debug/<b>test.eval.php</b></span> (20)				
-				<a href="#" onclick="return !toggle(this, 'src1-3')">source <span>&#x25b6;</span></a> &nbsp; 
-								first
-				(<a href="#" onclick="return !toggle(this, 'args1-3')">arguments <span>&#x25b6;</span></a>)
-				</p>
+											<span title="D:\Web\nette\_trunk\tests\Debug\test.eval.php">Debug/<b>test.eval.php</b></span> (20)					
+					<a href="#" onclick="return !toggle(this, 'src1-3')">source <span>&#x25b6;</span></a> &nbsp; 
+										first
+					(<a href="#" onclick="return !toggle(this, 'args1-3')">arguments <span>&#x25b6;</span></a>)
+					</p>
 
-									<div class="collapsed" id="args1-3">
-					<table>
-					<tr><td>$user</td><td><pre class="dump"><span>string</span>(4) "root"
+											<div class="collapsed" id="args1-3">
+						<table>
+						<tr><td>$user</td><td><pre class="dump"><span>string</span>(4) "root"
 </pre>
 </td></tr>
 <tr><td>$pass</td><td><pre class="dump"><span>string</span>(11) "prvni heslo"
 </pre>
 </td></tr>
-					</table>
-					</div>
-				
+						</table>
+						</div>
+					
 
-									<pre class="collapsed" id="src1-3"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 13:</span>    
+											<pre class="collapsed" id="src1-3"><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line 13:</span>    
 <span class='line'>Line 14:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$user</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$pass</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line 15:</span>    {
 <span class='line'>Line 16:</span>    &nbsp;&nbsp;&nbsp;&nbsp;eval(</span><span style="color: #080">'trigger_error("The&nbsp;my&nbsp;error",&nbsp;E_USER_ERROR);'</span><span style="color: #d24; font-weight: bold">);
@@ -263,55 +288,55 @@
 <span class='line'>Line 19:</span>    
 <span class='highlight'>Line 20:    first('root',&nbsp;'prvni&nbsp;heslo');
 </span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #d24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #d24; font-weight: bold"></span></span></span></code></pre>
-				
-				</li>
-							</ol>
-				</div>
+					
+					</li>
+									</ol>
+					</div>
 	</div>
 	
 
 
-		
+			
 
 
-					<div class="panel">
+							<div class="panel">
 		<h2><a href="#" onclick="return !toggle(this, 'pnl2')">Variables <span>&#x25b6;</span></a></h2>
 
 		<div id="pnl2" class="collapsed inner">
-			<table>
-		<tr><td>$user</td><td><pre class="dump"><span>string</span>(4) "root"
+				<table>
+			<tr><td>$user</td><td><pre class="dump"><span>string</span>(4) "root"
 </pre>
 </td></tr>
 <tr><td>$pass</td><td><pre class="dump"><span>string</span>(11) "prvni heslo"
 </pre>
 </td></tr>
-		</table>
-				</div>
+			</table>
+					</div>
 	</div>
-			
-		
+				
+				
 
 
 
 
-		<div class="panel">
+			<div class="panel">
 		<h2><a href="#" onclick="return !toggle(this, 'pnl3')">Environment <span>&#x25b6;</span></a></h2>
 
 		<div id="pnl3" class="collapsed inner">
-					<h3><a href="#" onclick="return !toggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
-		<table id="pnl-env-const">
-		<tr><td>NETTE_DIR</td><td><pre class="dump"><span>string</span>(25) "D:\Web\nette\_trunk\Nette"
+							<h3><a href="#" onclick="return !toggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
+			<table id="pnl-env-const">
+			<tr><td>NETTE_DIR</td><td><pre class="dump"><span>string</span>(25) "D:\Web\nette\_trunk\Nette"
 </pre>
 </td></tr>
 <tr><td>E_DEPRECATED</td><td><pre class="dump"><span>int</span>(8192)
 </pre>
 </td></tr>
-		</table>
-		
+			</table>
+			
 
-		<h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a> (15)</h3>
-		<table id="pnl-env-files" class="collapsed">
-		<tr><td>D:\Web\nette\_trunk\tests\Debug\test.eval.php</td></tr>
+			<h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a> (15)</h3>
+			<table id="pnl-env-files" class="collapsed">
+			<tr><td>D:\Web\nette\_trunk\tests\Debug\test.eval.php</td></tr>
 <tr><td>D:\Web\_php\tools.debug.php</td></tr>
 <tr><td>D:\Web\nette\_trunk\Nette\loader.php</td></tr>
 <tr><td>D:\Web\nette\_trunk\Nette\compatibility.php</td></tr>
@@ -326,12 +351,12 @@
 <tr><td>D:\Web\nette\_trunk\Nette\Environment.php</td></tr>
 <tr><td>D:\Web\nette\_trunk\Nette\Configurator.php</td></tr>
 <tr><td>D:\Web\nette\_trunk\Nette\Debug.templates\bluescreen.phtml</td></tr>
-		</table>
+			</table>
 
 
-		<h3>$_SERVER</h3>
-				<table>
-		<tr><td>PHP_SELF</td><td><pre class="dump"><span>string</span>(13) "test.eval.php"
+			<h3>$_SERVER</h3>
+						<table>
+			<tr><td>PHP_SELF</td><td><pre class="dump"><span>string</span>(13) "test.eval.php"
 </pre>
 </td></tr>
 <tr><td>SCRIPT_NAME</td><td><pre class="dump"><span>string</span>(13) "test.eval.php"
@@ -340,45 +365,46 @@
 <tr><td>DOCUMENT_ROOT</td><td><pre class="dump"><span>string</span>(0) ""
 </pre>
 </td></tr>
-		</table>
-					</div>
-	</div>
-	
-
-
-
-		<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl4')">HTTP request <span>&#x25b6;</span></a></h2>
-
-		<div id="pnl4" class="collapsed inner">
-			
-
-				<h3>$_GET</h3>
-				<p><i>empty</i></p>
-						<h3>$_POST</h3>
-				<p><i>empty</i></p>
-						<h3>$_COOKIE</h3>
-				<p><i>empty</i></p>
+			</table>
 							</div>
 	</div>
 	
 
 
-		<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl5')">HTTP response <span>&#x25b6;</span></a></h2>
 
-		<div id="pnl5" class="collapsed inner">
-			<h3>Headers</h3>
-				<p><i>no headers</i></p>
-					</div>
+			<div class="panel">
+		<h2><a href="#" onclick="return !toggle(this, 'pnl4')">HTTP request <span>&#x25b6;</span></a></h2>
+
+		<div id="pnl4" class="collapsed inner">
+				
+
+						<h3>$_GET</h3>
+						<p><i>empty</i></p>
+									<h3>$_POST</h3>
+						<p><i>empty</i></p>
+									<h3>$_COOKIE</h3>
+						<p><i>empty</i></p>
+										</div>
 	</div>
 	
 
-	<ul>
-				<li>PHP 5.2.8
+
+			<div class="panel">
+		<h2><a href="#" onclick="return !toggle(this, 'pnl5')">HTTP response <span>&#x25b6;</span></a></h2>
+
+		<div id="pnl5" class="collapsed inner">
+				<h3>Headers</h3>
+						<p><i>no headers</i></p>
+							</div>
+	</div>
+	
+
+		<ul>
+						<li>PHP 5.2.8
 </li><li>Nette Framework 0.8 (revision $WCREV$ released on $WCDATE$)
 </li><li>Report generated at 01/23/08 00:00:00
-</li>			</ul>
+</li>					</ul>
 
+	</div>
 </body>
 </html>

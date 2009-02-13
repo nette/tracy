@@ -529,6 +529,13 @@ final class Debug
 	 */
 	public static function paintBlueScreen(/*\*/Exception $exception)
 	{
+		$internals = array();
+		foreach (array(/*Nette\*/'Object', /*Nette\*/'ObjectMixin') as $class) {
+			if (class_exists($class, FALSE)) {
+				$rc = new ReflectionClass($class);
+				$internals[$rc->getFileName()] = TRUE;
+			}
+		}
 		$colophons = self::$colophons;
 		require dirname(__FILE__) . '/Debug.templates/bluescreen.phtml';
 	}
