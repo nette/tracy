@@ -511,7 +511,6 @@ final class Debug
 			self::fireLog($exception);
 
 		} elseif ($outputAllowed) { // dump to browser
-			while (ob_get_level() && @ob_end_clean());
 			self::paintBlueScreen($exception);
 
 		} elseif (self::$firebugDetected && !headers_sent()) {
@@ -760,13 +759,13 @@ final class Debug
 				'Message' => $message->getMessage(),
 				'File' => $message->getFile(),
 				'Line' => $message->getLine(),
-				'Trace' => self::replaceObjects($message->getTrace()),
+				'Trace' => $message->getTrace(),
 			);
 		} elseif ($priority === 'GROUP_START') {
 			$label = $message;
 			$message = NULL;
 		}
-		return self::fireSend(1, array(array('Type' => $priority, 'Label' => $label), self::replaceObjects($message)));
+		return self::fireSend(1, self::replaceObjects(array(array('Type' => $priority, 'Label' => $label), $message)));
 	}
 
 
@@ -808,7 +807,7 @@ final class Debug
 
 
 	/**
-	 * fireLog helper
+	 * fireLog helper.
 	 * @param  mixed
 	 * @return mixed
 	 */
@@ -817,12 +816,16 @@ final class Debug
 		if (is_object($val)) {
 			return 'object ' . get_class($val) . '';
 
+		} elseif (is_string($val)) {
+			return iconv('UTF-8', 'UTF-8//IGNORE', $val);
+
 		} elseif (is_array($val)) {
 			foreach ($val as $k => $v) {
 				unset($val[$k]);
 				$val[$k] = self::replaceObjects($v);
 			}
 		}
+
 		return $val;
 	}
 

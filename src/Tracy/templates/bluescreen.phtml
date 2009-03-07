@@ -141,7 +141,7 @@ if (headers_sent()) {
 		}
 
 		#netteBluescreen {
-			font: 78%/1.5 Verdana, sans-serif;
+			font: 9pt/1.5 Verdana, sans-serif;
 			background: white;
 			color: #333;
 			position: absolute;
@@ -149,6 +149,7 @@ if (headers_sent()) {
 			top: 0;
 			width: 100%;
 			z-index: 23178;
+			text-align: left;
 		}
 
 		#netteBluescreenIcon {
@@ -161,15 +162,12 @@ if (headers_sent()) {
 		}
 
 		#netteBluescreen h1 {
-			font-weight: normal !important;
-			font-size: 18pt;
+			font: 18pt/1.5 Verdana, sans-serif !important;
 			margin: .6em 0;
 		}
 
 		#netteBluescreen h2 {
-			font-family: sans-serif;
-			font-weight: normal;
-			font-size: 14pt;
+			font: 14pt/1.5 sans-serif !important;
 			color: #888;
 			margin: .6em 0;
 		}
@@ -184,8 +182,7 @@ if (headers_sent()) {
 		}
 
 		#netteBluescreen h3 {
-			font-size: 110%;
-			font-weight: bold;
+			font: bold 10pt/1.5 Verdana, sans-serif !important;
 			margin: 1em 0;
 			padding: 0;
 		}
@@ -195,14 +192,13 @@ if (headers_sent()) {
 		}
 
 		#netteBluescreen pre, #netteBluescreen code, #netteBluescreen table {
-			font-family: Consolas, monospace;
+			font: 9pt/1.5 Consolas, monospace !important;
 		}
 
 		#netteBluescreen pre, #netteBluescreen table {
 			background: #ffffcc;
 			padding: .4em .7em;
 			border: 1px dotted silver;
-			font-size: 100%;
 		}
 
 		#netteBluescreen table pre {
@@ -237,7 +233,8 @@ if (headers_sent()) {
 		}
 
 		#netteBluescreen ul {
-			font-size: 80%;
+			font: 7pt/1.5 Verdana, sans-serif !important;
+			padding: 1em 2em 50px;
 		}
 
 		#netteBluescreen .highlight, #netteBluescreenError {
@@ -365,6 +362,10 @@ if (headers_sent()) {
 
 					</li>
 					<?php endforeach ?>
+
+					<?php if (!isset($row)):?>
+					<li><i>empty</i></li>
+					<?php endif ?>
 				</ol>
 			<?php _netteClosePanel() ?>
 
