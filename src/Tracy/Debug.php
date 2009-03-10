@@ -716,10 +716,14 @@ final class Debug
 		}
 
 		if ($sender === 'bluescreen') {
-			$arr[] = 'PHP ' . PHP_VERSION;
+			$arr[] = 'Report generated at ' . @date('Y/m/d H:i:s', Debug::$time); // intentionally @
+			if (isset($_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'])) {
+				$url = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://') . htmlSpecialChars($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+				$arr[] = '<a href="' . $url . '">' . $url . '</a>';
+			}
+			$arr[] = 'PHP ' . htmlSpecialChars(PHP_VERSION);
 			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = htmlSpecialChars($_SERVER['SERVER_SOFTWARE']);
-			$arr[] = 'Nette Framework ' . Framework::VERSION . ' (revision ' . Framework::REVISION . ')';
-			$arr[] = 'Report generated at ' . @strftime('%c', Debug::$time); // intentionally @
+			$arr[] = htmlSpecialChars(Framework::NAME . ' ' . Framework::VERSION) . ' <i>(revision ' . htmlSpecialChars(Framework::REVISION) . ')</i>';
 		}
 		return $arr;
 	}
@@ -817,7 +821,7 @@ final class Debug
 			return 'object ' . get_class($val) . '';
 
 		} elseif (is_string($val)) {
-			return iconv('UTF-8', 'UTF-8//IGNORE', $val);
+			return $val = String::fixEncoding($val);
 
 		} elseif (is_array($val)) {
 			foreach ($val as $k => $v) {
