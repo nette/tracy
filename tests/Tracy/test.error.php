@@ -8,7 +8,7 @@ Debug::$time = 1201042800;
 $_SERVER = array_intersect_key($_SERVER, array('PHP_SELF' => 1, 'SCRIPT_NAME' => 1, 'SERVER_ADDR' => 1, 'SERVER_SOFTWARE' => 1, 'HTTP_HOST' => 1, 'DOCUMENT_ROOT' => 1));
 
 Debug::$consoleMode = TRUE;
-Debug::enable(E_ALL, FALSE);
+Debug::enable();
 
 
 function first($arg1, $arg2)

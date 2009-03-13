@@ -11,7 +11,7 @@ die('has no effect now');
 
 Debug::$productionMode = FALSE;
 Debug::$consoleMode = FALSE;
-Debug::enable(E_ALL, FALSE);
+Debug::enable();
 
 define('PASS', 'tajne heslo');
 

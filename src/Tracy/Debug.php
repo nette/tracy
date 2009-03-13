@@ -22,9 +22,9 @@
 
 
 
-require_once dirname(__FILE__) . '/exceptions.php';
-
 /**/require_once dirname(__FILE__) . '/compatibility.php';/**/
+
+require_once dirname(__FILE__) . '/exceptions.php';
 
 require_once dirname(__FILE__) . '/Framework.php';
 
@@ -110,6 +110,8 @@ final class Debug
 	const INFO = 'INFO';
 	const WARN = 'WARN';
 	const ERROR = 'ERROR';
+	const GROUP_START = 'GROUP_START';
+	const GROUP_END = 'GROUP_END';
 	/**#@-*/
 
 
@@ -131,7 +133,7 @@ final class Debug
 	{
 		self::$time = microtime(TRUE);
 		self::$consoleMode = PHP_SAPI === 'cli';
-		self::$productionMode = NULL; // detected in enable()
+		self::$productionMode = NULL; // detect in enable()
 		self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
 		self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
 	}
@@ -597,7 +599,7 @@ final class Debug
 			$header .= "$key: $value\r\n";
 		}
 
-		// pro mailer v unixu je treba zamenit \r\n na \n, protoze on si to pak opet zameni za \r\n
+        // we need to change \r\n to \n because Unix mailer changes it back to \r\n
 		$body = str_replace("\r\n", "\n", $body);
 		if (PHP_OS != 'Linux') $body = str_replace("\n", "\r\n", $body);
 
@@ -765,7 +767,7 @@ final class Debug
 				'Line' => $message->getLine(),
 				'Trace' => $message->getTrace(),
 			);
-		} elseif ($priority === 'GROUP_START') {
+		} elseif ($priority === self::GROUP_START) {
 			$label = $message;
 			$message = NULL;
 		}
@@ -821,11 +823,12 @@ final class Debug
 			return 'object ' . get_class($val) . '';
 
 		} elseif (is_string($val)) {
-			return $val = String::fixEncoding($val);
+			return $val = @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $val)); // intentionally @
 
 		} elseif (is_array($val)) {
 			foreach ($val as $k => $v) {
 				unset($val[$k]);
+				$k = @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $k)); // intentionally @
 				$val[$k] = self::replaceObjects($v);
 			}
 		}

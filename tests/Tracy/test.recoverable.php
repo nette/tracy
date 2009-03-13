@@ -8,7 +8,7 @@ require_once '../../Nette/loader.php';
 /*use Nette\Debug;*/
 
 Debug::$consoleMode = FALSE;
-Debug::enable(E_ALL, FALSE);
+Debug::enable();
 
 
 class TestClass
