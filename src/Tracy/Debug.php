@@ -675,7 +675,12 @@ final class Debug
 	public static function addColophon($callback)
 	{
 		/**/fixCallback($callback);/**/
-		if (!in_array($callback, self::$colophons, TRUE) && is_callable($callback)) {
+		if (!is_callable($callback)) {
+			$able = is_callable($callback, TRUE, $textual);
+			throw new /*\*/InvalidArgumentException("Colophon handler '$textual' is not " . ($able ? 'callable.' : 'valid PHP callback.'));
+		}
+
+		if (!in_array($callback, self::$colophons, TRUE)) {
 			self::$colophons[] = $callback;
 		}
 	}
