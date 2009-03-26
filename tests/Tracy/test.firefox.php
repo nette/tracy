@@ -25,7 +25,7 @@ Debug::fireLog($arr);
 Debug::fireLog(
 	array(
 		array('SQL Statement', 'Time', 'Result'), // table header
-		array('SELECT * FROM foo', '0.02', array('field1', 'field2')), // 1. row
+		array('SELECT * FROM foo', '0.02', array('field1', 'field2')), // 1. row
 		array('SELECT * FROM bar', '0.04', array('field1', 'field2')), // 2. row
 	),
 	'TABLE',

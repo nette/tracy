@@ -533,7 +533,7 @@ final class Debug
 		$internals = array();
 		foreach (array(/*Nette\*/'Object', /*Nette\*/'ObjectMixin') as $class) {
 			if (class_exists($class, FALSE)) {
-				$rc = new ReflectionClass($class);
+				$rc = new /*\*/ReflectionClass($class);
 				$internals[$rc->getFileName()] = TRUE;
 			}
 		}
@@ -599,7 +599,7 @@ final class Debug
 			$header .= "$key: $value\r\n";
 		}
 
-        // we need to change \r\n to \n because Unix mailer changes it back to \r\n
+		// we need to change \r\n to \n because Unix mailer changes it back to \r\n
 		$body = str_replace("\r\n", "\n", $body);
 		if (PHP_OS != 'Linux') $body = str_replace("\n", "\r\n", $body);
 
