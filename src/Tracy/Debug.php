@@ -39,6 +39,12 @@ require_once dirname(__FILE__) . '/Framework.php';
  */
 final class Debug
 {
+	/**#@+ server modes {@link Debug::enable()} */
+	const DEVELOPMENT = FALSE;
+	const PRODUCTION = TRUE;
+	const DETECT = NULL;
+	/**#@-*/
+
 	/** @var array  free counters for your usage */
 	public static $counters = array();
 
@@ -133,7 +139,7 @@ final class Debug
 	{
 		self::$time = microtime(TRUE);
 		self::$consoleMode = PHP_SAPI === 'cli';
-		self::$productionMode = NULL; // detect in enable()
+		self::$productionMode = self::DETECT;
 		self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
 		self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
 	}
@@ -293,21 +299,24 @@ final class Debug
 
 	/**
 	 * Enables displaying or logging errors and exceptions.
-	 * @param  int   error reporting level
-	 * @param  string        error log file (enables production mode)
-	 * @param  array|string  administrator email or email headers; enables email sending
+	 * @param  bool          enable production mode? (NULL means autodetection)
+	 * @param  string        error log file (FALSE disables logging in production mode)
+	 * @param  array|string  administrator email or email headers; enables email sending in production mode
 	 * @return void
 	 */
-	public static function enable($level = NULL, $logFile = NULL, $email = NULL)
+	public static function enable($productionMode = NULL, $logFile = NULL, $email = NULL)
 	{
 		if (version_compare(PHP_VERSION, '5.2.1') === 0) {
 			throw new /*\*/NotSupportedException(__METHOD__ . ' is not supported in PHP 5.2.1'); // PHP bug #40815
 		}
 
-		error_reporting($level === NULL ? E_ALL | E_STRICT : $level);
+		error_reporting(E_ALL | E_STRICT);
 
 		// production/development mode detection
-		if (self::$productionMode === NULL) {
+		if (is_bool($productionMode)) {
+			self::$productionMode = $productionMode;
+		}
+		if (self::$productionMode === self::DETECT) {
 			if (class_exists(/*Nette\*/'Environment')) {
 				self::$productionMode = Environment::isProduction();
 
@@ -385,6 +394,10 @@ final class Debug
 		set_exception_handler(array(__CLASS__, 'exceptionHandler'));
 		set_error_handler(array(__CLASS__, 'errorHandler'));
 		self::$enabled = TRUE;
+
+		if (is_int($productionMode)) { // back compatibility
+			//trigger_error('Debug::enable($errorLevel) is deprecated; Remove $errorLevel parameter.', E_USER_WARNING);
+		}
 	}
 
 

@@ -4,10 +4,10 @@ require_once '../../Nette/loader.php';
 
 /*use Nette\Debug;*/
 
-Debug::$productionMode = TRUE;
 Debug::$time = 1201042800.1875;
 Debug::$emailProbability = 1;
 Debug::$mailer = 'testMailer';
+
 $_SERVER = array_intersect_key($_SERVER, array('PHP_SELF' => 1, 'SCRIPT_NAME' => 1, 'SERVER_ADDR' => 1, 'SERVER_SOFTWARE' => 1, 'HTTP_HOST' => 1, 'DOCUMENT_ROOT' => 1));
 $_SERVER['HTTP_HOST'] = 'nettephp.com';
 
@@ -32,7 +32,7 @@ $errorLog = dirname(__FILE__) . '/log/php_error.log';
 
 foreach (glob(dirname($errorLog) . '/*') as $file) unlink($file); // delete all files
 
-Debug::enable(E_ALL, $errorLog, 'admin@example.com');
+Debug::enable(Debug::PRODUCTION, $errorLog, 'admin@example.com');
 
 
 

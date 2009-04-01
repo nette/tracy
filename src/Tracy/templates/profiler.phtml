@@ -25,22 +25,21 @@
 /*namespace Nette;*/
 
 ?>
-</pre></xmp>
 
 <style type="text/css">
 /* <![CDATA[ */
 	#netteProfilerContainer {
-		position: absolute;
+		position: fixed;
+		_position: absolute;
 		right: 5px;
 		bottom: 5px;
 		z-index: 23178;
 	}
 
 	#netteProfiler {
+		font: normal normal 11px/1.4 Consolas, Arial;
 		position: relative;
-		margin: 0;
 		padding: 1px;
-		width: 350px;
 		color: black;
 		background: #EEE;
 		border: 1px dotted gray;
@@ -49,15 +48,30 @@
 		=filter: alpha(opacity=70);
 	}
 
+	#netteProfilerIcon {
+		position: absolute;
+		right: 0;
+		top: 0;
+		line-height: 1;
+		padding: 4px;
+		color: black;
+		text-decoration: none;
+	}
+
 	#netteProfiler:hover {
 		opacity: 1;
 		=filter: none;
 	}
 
+	#netteProfiler ul {
+		margin: 0;
+		padding: 0;
+		width: 350px;
+	}
+
 	#netteProfiler li {
 		margin: 0;
 		padding: 1px;
-		font: normal normal 11px/1.4 Consolas, Arial;
 		text-align: left;
 		list-style: none;
 	}
@@ -75,11 +89,14 @@
 
 
 <div id="netteProfilerContainer">
-<ul id="netteProfiler">
+<div id="netteProfiler">
+	<a id="netteProfilerIcon" href="#"><span>&#x25bc;</span></a
+	><ul>
 	<?php foreach ($colophons as $callback): ?>
 	<?php foreach ((array) call_user_func($callback, 'profiler') as $line): ?><li><?php echo $line, "\n" ?></li><?php endforeach ?>
 	<?php endforeach ?>
-</ul>
+	</ul>
+</div>
 </div>
 
 
@@ -107,5 +124,16 @@ document.getElementById('netteProfiler').onmousedown = function(e) {
 		return false;
 	};
 };
+
+document.getElementById('netteProfilerIcon').onclick = function(e) {
+	var span = this.getElementsByTagName('span')[0];
+	var panel = this.nextSibling;
+	var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
+
+	span.innerHTML = collapsed ? String.fromCharCode(0x25bc) : 'Profiler ' + String.fromCharCode(0x25ba);
+	panel.style.display = collapsed ? 'block' : 'none';
+	span.parentNode.style.position = collapsed ? 'absolute' : 'static';
+	return false;
+}
 /* ]]> */
 </script>

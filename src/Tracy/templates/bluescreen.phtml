@@ -97,7 +97,7 @@ function _netteOpenPanel($name, $collapsed)
 	$id++;
 	?>
 	<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl<?php echo $id ?>')"><?php echo htmlSpecialChars($name) ?> <span><?php echo $collapsed ? '&#x25b6;' : '&#x25bc;' ?></span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl<?php echo $id ?>')"><?php echo htmlSpecialChars($name) ?> <span><?php echo $collapsed ? '&#x25ba;' : '&#x25bc;' ?></span></a></h2>
 
 		<div id="pnl<?php echo $id ?>" class="<?php echo $collapsed ? 'collapsed ' : '' ?>inner">
 	<?php
@@ -159,6 +159,8 @@ if (headers_sent()) {
 			z-index: 23179;
 			color: black;
 			text-decoration: none;
+			background: red;
+			padding: 3px;
 		}
 
 		#netteBluescreen h1 {
@@ -178,6 +180,7 @@ if (headers_sent()) {
 		}
 
 		#netteBluescreen a span {
+			font-family: sans-serif;
 			color: #999;
 		}
 
@@ -259,14 +262,14 @@ if (headers_sent()) {
 	/* <![CDATA[ */
 		document.write('<style> .collapsed { display: none; } </style>');
 
-		function toggle(link, panel)
+		function netteToggle(link, panelId)
 		{
 			var span = link.getElementsByTagName('span')[0];
-			var div = document.getElementById(panel);
-			var collapsed = div.currentStyle ? div.currentStyle.display == 'none' : getComputedStyle(div, null).display == 'none';
+			var panel = document.getElementById(panelId);
+			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25b6);
-			div.style.display = collapsed ? 'block' : 'none';
+			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
+			panel.style.display = collapsed ? 'block' : 'none';
 
 			return true;
 		}
@@ -278,7 +281,7 @@ if (headers_sent()) {
 
 <body>
 	<div>
-		<a id="netteBluescreenIcon" href="#" onclick="return !toggle(this, 'netteBluescreen')"><span>&#x25bc;</span></a>
+		<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this, 'netteBluescreen')"><span>&#x25bc;</span></a>
 	</div>
 
 	<div id="netteBluescreen">
@@ -323,12 +326,12 @@ if (headers_sent()) {
 						&lt;PHP inner-code&gt;
 					<?php endif ?>
 
-					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#" onclick="return !toggle(this, 'src<?php echo "$level-$key" ?>')">source <span>&#x25b6;</span></a> &nbsp; <?php endif ?>
+					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#" onclick="return !netteToggle(this, 'src<?php echo "$level-$key" ?>')">source <span>&#x25ba;</span></a> &nbsp; <?php endif ?>
 
 					<?php if (isset($row['class'])) echo $row['class'] . $row['type'] ?>
 					<?php echo $row['function'] ?>
 
-					(<?php if (!empty($row['args'])): ?><a href="#" onclick="return !toggle(this, 'args<?php echo "$level-$key" ?>')">arguments <span>&#x25b6;</span></a><?php endif ?>)
+					(<?php if (!empty($row['args'])): ?><a href="#" onclick="return !netteToggle(this, 'args<?php echo "$level-$key" ?>')">arguments <span>&#x25ba;</span></a><?php endif ?>)
 					</p>
 
 					<?php if (!empty($row['args'])): ?>
@@ -405,7 +408,7 @@ if (headers_sent()) {
 			<?php
 			$list = get_defined_constants(TRUE);
 			if (!empty($list['user'])):?>
-			<h3><a href="#" onclick="return !toggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
+			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
 			<table id="pnl-env-const">
 			<?php
 			foreach ($list['user'] as $k => $v) {
@@ -417,7 +420,7 @@ if (headers_sent()) {
 			<?php endif ?>
 
 
-			<h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a> (<?php echo count(get_included_files()) ?>)</h3>
+			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <span>&#x25ba;</span></a> (<?php echo count(get_included_files()) ?>)</h3>
 			<table id="pnl-env-files" class="collapsed">
 			<?php
 			foreach (get_included_files() as $v) {

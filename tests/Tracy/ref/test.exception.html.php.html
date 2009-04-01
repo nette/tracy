@@ -33,6 +33,8 @@
 			z-index: 23179;
 			color: black;
 			text-decoration: none;
+			background: red;
+			padding: 3px;
 		}
 
 		#netteBluescreen h1 {
@@ -52,6 +54,7 @@
 		}
 
 		#netteBluescreen a span {
+			font-family: sans-serif;
 			color: #999;
 		}
 
@@ -133,14 +136,14 @@
 	/* <![CDATA[ */
 		document.write('<style> .collapsed { display: none; } </style>');
 
-		function toggle(link, panel)
+		function netteToggle(link, panelId)
 		{
 			var span = link.getElementsByTagName('span')[0];
-			var div = document.getElementById(panel);
-			var collapsed = div.currentStyle ? div.currentStyle.display == 'none' : getComputedStyle(div, null).display == 'none';
+			var panel = document.getElementById(panelId);
+			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25b6);
-			div.style.display = collapsed ? 'block' : 'none';
+			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
+			panel.style.display = collapsed ? 'block' : 'none';
 
 			return true;
 		}
@@ -152,7 +155,7 @@
 
 <body>
 	<div>
-		<a id="netteBluescreenIcon" href="#" onclick="return !toggle(this, 'netteBluescreen')"><span>&#x25bc;</span></a>
+		<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this, 'netteBluescreen')"><span>&#x25bc;</span></a>
 	</div>
 
 	<div id="netteBluescreen">
@@ -167,7 +170,7 @@
 				
 			
 										<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl1')">Source file <span>&#x25bc;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <span>&#x25bc;</span></a></h2>
 
 		<div id="pnl1" class="inner">
 					<p><strong>File:</strong> D:\Web\nette\_trunk\tests\Debug\test.exception.html.php &nbsp; <strong>Line:</strong> 32</p>
@@ -190,16 +193,16 @@
 
 
 				<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl2')">Call stack <span>&#x25bc;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Call stack <span>&#x25bc;</span></a></h2>
 
 		<div id="pnl2" class="inner">
 					<ol>
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.exception.html.php">Debug/<b>test.exception.html.php</b></span> (26)					
-					<a href="#" onclick="return !toggle(this, 'src1-0')">source <span>&#x25b6;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-0')">source <span>&#x25ba;</span></a> &nbsp; 
 										third
-					(<a href="#" onclick="return !toggle(this, 'args1-0')">arguments <span>&#x25b6;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-0')">arguments <span>&#x25ba;</span></a>)
 					</p>
 
 											<div class="collapsed" id="args1-0">
@@ -236,9 +239,9 @@
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.exception.html.php">Debug/<b>test.exception.html.php</b></span> (19)					
-					<a href="#" onclick="return !toggle(this, 'src1-1')">source <span>&#x25b6;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-1')">source <span>&#x25ba;</span></a> &nbsp; 
 										second
-					(<a href="#" onclick="return !toggle(this, 'args1-1')">arguments <span>&#x25b6;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-1')">arguments <span>&#x25ba;</span></a>)
 					</p>
 
 											<div class="collapsed" id="args1-1">
@@ -274,9 +277,9 @@
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.exception.html.php">Debug/<b>test.exception.html.php</b></span> (36)					
-					<a href="#" onclick="return !toggle(this, 'src1-2')">source <span>&#x25b6;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-2')">source <span>&#x25ba;</span></a> &nbsp; 
 										first
-					(<a href="#" onclick="return !toggle(this, 'args1-2')">arguments <span>&#x25b6;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-2')">arguments <span>&#x25ba;</span></a>)
 					</p>
 
 											<div class="collapsed" id="args1-2">
@@ -319,15 +322,12 @@
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl3')">Environment <span>&#x25b6;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">Environment <span>&#x25ba;</span></a></h2>
 
 		<div id="pnl3" class="collapsed inner">
-							<h3><a href="#" onclick="return !toggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
+							<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
 			<table id="pnl-env-const">
-			<tr><td>NETTE_DIR</td><td><pre class="dump"><span>string</span>(25) "D:\Web\nette\_trunk\Nette"
-</pre>
-</td></tr>
-<tr><td>E_DEPRECATED</td><td><pre class="dump"><span>int</span>(8192)
+			<tr><td>E_DEPRECATED</td><td><pre class="dump"><span>int</span>(8192)
 </pre>
 </td></tr>
 <tr><td>MY_CONST</td><td><pre class="dump"><span>int</span>(123)
@@ -336,7 +336,7 @@
 			</table>
 			
 
-			<h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a> (15)</h3>
+			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <span>&#x25ba;</span></a> (15)</h3>
 			<table id="pnl-env-files" class="collapsed">
 			<tr><td>D:\Web\nette\_trunk\tests\Debug\test.exception.html.php</td></tr>
 <tr><td>D:\Web\_php\tools.debug.php</td></tr>
@@ -375,7 +375,7 @@
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl4')">HTTP request <span>&#x25b6;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">HTTP request <span>&#x25ba;</span></a></h2>
 
 		<div id="pnl4" class="collapsed inner">
 				
@@ -392,7 +392,7 @@
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl5')">HTTP response <span>&#x25b6;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl5')">HTTP response <span>&#x25ba;</span></a></h2>
 
 		<div id="pnl5" class="collapsed inner">
 				<h3>Headers</h3>
@@ -403,7 +403,7 @@
 
 		<ul>
 						<li>Report generated at 2008/01/23 00:00:00
-</li><li>PHP 5.2.8
+</li><li>PHP 5.2.9
 </li><li>Nette Framework 0.8 <i>(revision $WCREV$ released on $WCDATE$)</i>
 </li>					</ul>
 	</div>

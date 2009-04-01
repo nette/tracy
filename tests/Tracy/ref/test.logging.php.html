@@ -46,6 +46,8 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 			z-index: 23179;
 			color: black;
 			text-decoration: none;
+			background: red;
+			padding: 3px;
 		}
 
 		#netteBluescreen h1 {
@@ -65,6 +67,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 		}
 
 		#netteBluescreen a span {
+			font-family: sans-serif;
 			color: #999;
 		}
 
@@ -146,14 +149,14 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 	/* <![CDATA[ */
 		document.write('<style> .collapsed { display: none; } </style>');
 
-		function toggle(link, panel)
+		function netteToggle(link, panelId)
 		{
 			var span = link.getElementsByTagName('span')[0];
-			var div = document.getElementById(panel);
-			var collapsed = div.currentStyle ? div.currentStyle.display == 'none' : getComputedStyle(div, null).display == 'none';
+			var panel = document.getElementById(panelId);
+			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25b6);
-			div.style.display = collapsed ? 'block' : 'none';
+			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
+			panel.style.display = collapsed ? 'block' : 'none';
 
 			return true;
 		}
@@ -165,7 +168,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 
 <body>
 	<div>
-		<a id="netteBluescreenIcon" href="#" onclick="return !toggle(this, 'netteBluescreen')"><span>&#x25bc;</span></a>
+		<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this, 'netteBluescreen')"><span>&#x25bc;</span></a>
 	</div>
 
 	<div id="netteBluescreen">
@@ -180,7 +183,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 				
 			
 										<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl1')">Source file <span>&#x25bc;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <span>&#x25bc;</span></a></h2>
 
 		<div id="pnl1" class="inner">
 					<p><strong>File:</strong> D:\Web\nette\_trunk\tests\Debug\test.logging.php &nbsp; <strong>Line:</strong> 55</p>
@@ -203,7 +206,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 
 
 				<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl2')">Call stack <span>&#x25bc;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Call stack <span>&#x25bc;</span></a></h2>
 
 		<div id="pnl2" class="inner">
 					<ol>
@@ -213,7 +216,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 					
 					
 					Debug::					errorHandler
-					(<a href="#" onclick="return !toggle(this, 'args1-0')">arguments <span>&#x25b6;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-0')">arguments <span>&#x25ba;</span></a>)
 					</p>
 
 											<div class="collapsed" id="args1-0">
@@ -248,9 +251,9 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.logging.php">Debug/<b>test.logging.php</b></span> (55)					
-					<a href="#" onclick="return !toggle(this, 'src1-1')">source <span>&#x25b6;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-1')">source <span>&#x25ba;</span></a> &nbsp; 
 										trigger_error
-					(<a href="#" onclick="return !toggle(this, 'args1-1')">arguments <span>&#x25b6;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-1')">arguments <span>&#x25ba;</span></a>)
 					</p>
 
 											<div class="collapsed" id="args1-1">
@@ -283,9 +286,9 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.logging.php">Debug/<b>test.logging.php</b></span> (48)					
-					<a href="#" onclick="return !toggle(this, 'src1-2')">source <span>&#x25b6;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-2')">source <span>&#x25ba;</span></a> &nbsp; 
 										third
-					(<a href="#" onclick="return !toggle(this, 'args1-2')">arguments <span>&#x25b6;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-2')">arguments <span>&#x25ba;</span></a>)
 					</p>
 
 											<div class="collapsed" id="args1-2">
@@ -322,9 +325,9 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.logging.php">Debug/<b>test.logging.php</b></span> (41)					
-					<a href="#" onclick="return !toggle(this, 'src1-3')">source <span>&#x25b6;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-3')">source <span>&#x25ba;</span></a> &nbsp; 
 										second
-					(<a href="#" onclick="return !toggle(this, 'args1-3')">arguments <span>&#x25b6;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-3')">arguments <span>&#x25ba;</span></a>)
 					</p>
 
 											<div class="collapsed" id="args1-3">
@@ -340,7 +343,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 					
 
 											<pre class="collapsed" id="src1-3"><code><span style="color: #06b"><span style="color: #999; font-style: italic"><span class='line'>Line 34:</span>    
-<span class='line'>Line 35:</span>    </span><span style="color: #000">Debug</span><span style="color: #d24; font-weight: bold">::</span><span style="color: #000">enable</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">E_ALL</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$errorLog</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #080">'admin@example.com'</span><span style="color: #d24; font-weight: bold">);
+<span class='line'>Line 35:</span>    </span><span style="color: #000">Debug</span><span style="color: #d24; font-weight: bold">::</span><span style="color: #000">enable</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">Debug</span><span style="color: #d24; font-weight: bold">::</span><span style="color: #000">PRODUCTION</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">$errorLog</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #080">'admin@example.com'</span><span style="color: #d24; font-weight: bold">);
 <span class='line'>Line 36:</span>    
 <span class='line'>Line 37:</span>    
 <span class='line'>Line 38:</span>    
@@ -360,9 +363,9 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.logging.php">Debug/<b>test.logging.php</b></span> (59)					
-					<a href="#" onclick="return !toggle(this, 'src1-4')">source <span>&#x25b6;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-4')">source <span>&#x25ba;</span></a> &nbsp; 
 										first
-					(<a href="#" onclick="return !toggle(this, 'args1-4')">arguments <span>&#x25b6;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-4')">arguments <span>&#x25ba;</span></a>)
 					</p>
 
 											<div class="collapsed" id="args1-4">
@@ -399,7 +402,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 
 
 							<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl3')">Variables <span>&#x25b6;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">Variables <span>&#x25ba;</span></a></h2>
 
 		<div id="pnl3" class="collapsed inner">
 				<table>
@@ -420,21 +423,18 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl4')">Environment <span>&#x25b6;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">Environment <span>&#x25ba;</span></a></h2>
 
 		<div id="pnl4" class="collapsed inner">
-							<h3><a href="#" onclick="return !toggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
+							<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
 			<table id="pnl-env-const">
-			<tr><td>NETTE_DIR</td><td>string(25) "D:\Web\nette\_trunk\Nette"
-
-</td></tr>
-<tr><td>E_DEPRECATED</td><td>int(8192)
+			<tr><td>E_DEPRECATED</td><td>int(8192)
 
 </td></tr>
 			</table>
 			
 
-			<h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a> (14)</h3>
+			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <span>&#x25ba;</span></a> (14)</h3>
 			<table id="pnl-env-files" class="collapsed">
 			<tr><td>D:\Web\nette\_trunk\tests\Debug\test.logging.php</td></tr>
 <tr><td>D:\Web\_php\tools.debug.php</td></tr>
@@ -475,7 +475,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl5')">HTTP request <span>&#x25b6;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl5')">HTTP request <span>&#x25ba;</span></a></h2>
 
 		<div id="pnl5" class="collapsed inner">
 				
@@ -492,7 +492,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !toggle(this, 'pnl6')">HTTP response <span>&#x25b6;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl6')">HTTP response <span>&#x25ba;</span></a></h2>
 
 		<div id="pnl6" class="collapsed inner">
 				<h3>Headers</h3>
@@ -502,9 +502,9 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 	
 
 		<ul>
-						<li>PHP 5.2.8
-</li><li>Nette Framework 0.8 (revision $WCREV$ released on $WCDATE$)
-</li><li>Report generated at 01/23/08 00:00:00
+						<li>Report generated at 2008/01/23 00:00:00
+</li><li>PHP 5.2.9
+</li><li>Nette Framework 0.8 <i>(revision $WCREV$ released on $WCDATE$)</i>
 </li>					</ul>
 	</div>
 </body>
@@ -513,7 +513,7 @@ D:\Web\nette\_trunk\tests\Debug/log/exception 23-Jan-2008 00-00-00 ~1875.html:
 
 D:\Web\nette\_trunk\tests\Debug/log/php_error.log:
 ----------------
-[07-Mar-2009 20:33:37] PHP Fatal error:  Uncaught exception 'FatalErrorException' with message 'Error generated by trigger_error' in D:\Web\nette\_trunk\tests\Debug\test.logging.php:55
+[01-Apr-2009 04:48:44] PHP Fatal error:  Uncaught exception 'FatalErrorException' with message 'Error generated by trigger_error' in D:\Web\nette\_trunk\tests\Debug\test.logging.php:55
 Stack trace:
 #0 [internal function]: Debug::errorHandler(256, 'Error generated...', 'D:\Web\nette\_t...', 55, Array)
 #1 D:\Web\nette\_trunk\tests\Debug\test.logging.php(55): trigger_error('Error generated...', 256)
