@@ -116,6 +116,8 @@ final class Debug
 	const INFO = 'INFO';
 	const WARN = 'WARN';
 	const ERROR = 'ERROR';
+	const TRACE = 'TRACE';
+	const EXCEPTION = 'EXCEPTION';
 	const GROUP_START = 'GROUP_START';
 	const GROUP_END = 'GROUP_END';
 	/**#@-*/
@@ -479,7 +481,7 @@ final class Debug
 
 		} elseif (!self::$productionMode && self::$firebugDetected && !headers_sent()) {
 			$message = strip_tags($message);
-			self::fireLog("$type: $message in $file on line $line", 'WARN');
+			self::fireLog("$type: $message in $file on line $line", self::ERROR);
 			return NULL;
 		}
 
@@ -523,13 +525,13 @@ final class Debug
 			}
 
 		} elseif (self::$firebugDetected && self::$ajaxDetected && !headers_sent()) { // AJAX mode
-			self::fireLog($exception);
+			self::fireLog($exception, self::EXCEPTION);
 
 		} elseif ($outputAllowed) { // dump to browser
 			self::paintBlueScreen($exception);
 
 		} elseif (self::$firebugDetected && !headers_sent()) {
-			self::fireLog($exception);
+			self::fireLog($exception, self::EXCEPTION);
 		}
 	}
 
@@ -661,11 +663,11 @@ final class Debug
 		self::$enabledProfiler = FALSE;
 
 		if (self::$firebugDetected) {
-			self::fireLog( 'Nette profiler', 'GROUP_START');
+			self::fireLog('Nette profiler', self::GROUP_START);
 			foreach (self::$colophons as $callback) {
 				foreach ((array) call_user_func($callback, 'profiler') as $line) self::fireLog(strip_tags($line));
 			}
-			self::fireLog( null, 'GROUP_END');
+			self::fireLog(NULL, self::GROUP_END);
 		}
 
 		if (!self::$ajaxDetected) {
@@ -777,7 +779,9 @@ final class Debug
 	public static function fireLog($message, $priority = self::LOG, $label = NULL)
 	{
 		if ($message instanceof /*\*/Exception) {
-			$priority = 'TRACE';
+			if ($priority !== self::EXCEPTION && $priority !== self::TRACE) {
+				$priority = self::TRACE;
+			}
 			$message = array(
 				'Class' => get_class($message),
 				'Message' => $message->getMessage(),
