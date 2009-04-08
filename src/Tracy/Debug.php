@@ -322,9 +322,10 @@ final class Debug
 			if (class_exists(/*Nette\*/'Environment')) {
 				self::$productionMode = Environment::isProduction();
 
-			} elseif (isset($_SERVER['SERVER_ADDR'])) { // IP address based detection
-				$oct = explode('.', $_SERVER['SERVER_ADDR']);
-				self::$productionMode = $_SERVER['SERVER_ADDR'] !== '::1' && (count($oct) !== 4 || ($oct[0] !== '10' && $oct[0] !== '127' && ($oct[0] !== '172' || $oct[1] < 16 || $oct[1] > 31)
+			} elseif (isset($_SERVER['SERVER_ADDR']) || isset($_SERVER['LOCAL_ADDR'])) { // IP address based detection
+				$addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['LOCAL_ADDR'];
+				$oct = explode('.', $addr);
+				self::$productionMode = $addr !== '::1' && (count($oct) !== 4 || ($oct[0] !== '10' && $oct[0] !== '127' && ($oct[0] !== '172' || $oct[1] < 16 || $oct[1] > 31)
 					&& ($oct[0] !== '169' || $oct[1] !== '254') && ($oct[0] !== '192' || $oct[1] !== '168')));
 
 			} else {
