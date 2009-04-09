@@ -335,7 +335,7 @@ final class Debug
 
 		// logging configuration
 		if (self::$productionMode && $logFile !== FALSE) {
-			self::$logFile = 'php_error.log';
+			self::$logFile = 'log/php_error.log';
 
 			if (class_exists(/*Nette\*/'Environment')) {
 				if (is_string($logFile)) {
@@ -356,13 +356,13 @@ final class Debug
 
 		// php configuration
 		if (function_exists('ini_set')) {
-			ini_set('display_startup_errors', !self::$productionMode);
 			ini_set('display_errors', !self::$productionMode); // or 'stderr'
 			ini_set('html_errors', !self::$consoleMode);
 			ini_set('log_errors', (bool) self::$logFile);
 
-		} elseif (self::$productionMode) { // throws error only on production server
-			throw new /*\*/NotSupportedException('Function ini_set() is not enabled.');
+		} elseif (ini_get('log_errors') != (bool) self::$logFile || // intentionally ==
+			(ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout'))) {
+			throw new /*\*/NotSupportedException('Function ini_set() must be enabled.');
 		}
 
 		self::$sendEmails = $logFile && $email;
