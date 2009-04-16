@@ -394,12 +394,16 @@ final class Debug
 			define('E_DEPRECATED', 8192);
 		}
 
+		if (!defined('E_USER_DEPRECATED')) {
+			define('E_USER_DEPRECATED', 16384);
+		}
+
 		set_exception_handler(array(__CLASS__, 'exceptionHandler'));
 		set_error_handler(array(__CLASS__, 'errorHandler'));
 		self::$enabled = TRUE;
 
 		if (is_int($productionMode)) { // back compatibility
-			//trigger_error('Debug::enable($errorLevel) is deprecated; Remove $errorLevel parameter.', E_USER_WARNING);
+			//trigger_error('Debug::enable($errorLevel) is deprecated; Remove $errorLevel parameter.', /**/E_USER_WARNING/**//*E_USER_DEPRECATED*/);
 		}
 	}
 
@@ -470,6 +474,7 @@ final class Debug
 			E_USER_NOTICE => 'Notice',
 			E_STRICT => 'Strict standards',
 			E_DEPRECATED => 'Deprecated',
+			E_USER_DEPRECATED => 'Deprecated',
 		);
 
 		$type = isset($types[$severity]) ? $types[$severity] : 'Unknown error';
