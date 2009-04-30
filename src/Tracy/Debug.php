@@ -99,7 +99,7 @@ final class Debug
 	/** @var callback */
 	public static $mailer = array(__CLASS__, 'defaultMailer');
 
-	/** @var float  probability that logfile will be checked */
+	/** @deprecated */
 	public static $emailProbability = 0.01;
 
 	/** @var array  */
@@ -373,17 +373,6 @@ final class Debug
 			} elseif (is_array($email)) {
 				self::$emailHeaders = $email + self::$emailHeaders;
 			}
-			if (mt_rand() / mt_getrandmax() < self::$emailProbability) {
-				$monitorFile = self::$logFile . '.monitor';
-				$saved = @file_get_contents($monitorFile); // intentionally @
-				$actual = (int) @filemtime(self::$logFile); // intentionally @
-				if ($saved === FALSE || $actual === 0) {
-					file_put_contents($monitorFile, $actual);
-
-				} elseif (is_numeric($saved) && $saved != $actual) { // intentionally ==
-					self::sendEmail('Fatal error probably occured');
-				}
-			}
 		}
 
 		if (!defined('E_RECOVERABLE_ERROR')) {
@@ -400,6 +389,7 @@ final class Debug
 
 		set_exception_handler(array(__CLASS__, 'exceptionHandler'));
 		set_error_handler(array(__CLASS__, 'errorHandler'));
+		register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
 		self::$enabled = TRUE;
 
 		if (is_int($productionMode)) { // back compatibility
@@ -446,17 +436,13 @@ final class Debug
 	 * @param  string file that the error was raised in
 	 * @param  int    line number the error was raised at
 	 * @param  array  an array of variables that existed in the scope the error was triggered in
-	 * @return void
+	 * @return bool   FALSE to call normal error handler, NULL otherwise
 	 * @throws \FatalErrorException
 	 */
 	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
 		static $fatals = array(
-			E_ERROR => 1, // unfortunately not catchable
-			E_CORE_ERROR => 1, // not catchable
-			E_COMPILE_ERROR => 1, // unfortunately not catchable
 			E_USER_ERROR => 1,
-			E_PARSE => 1, // unfortunately not catchable
 			E_RECOVERABLE_ERROR => 1, // since PHP 5.2
 		);
 
@@ -492,6 +478,31 @@ final class Debug
 		}
 
 		return FALSE; // call normal error handler
+	}
+
+
+
+	/**
+	 * Shutdown handler to process fatal errors.
+	 * @return void
+	 */
+	public static function shutdownHandler()
+	{
+		static $types = array(
+			E_ERROR => 'Error', // unfortunately not catchable
+			E_CORE_ERROR => 'Error', // not catchable
+			E_COMPILE_ERROR => 'Error', // unfortunately not catchable
+			E_PARSE => 'Error', // unfortunately not catchable
+		);
+
+		$error = error_get_last();
+
+		if (isset($types[$error['type']]) && ($error['type'] & error_reporting())) {
+			if (self::$logFile && self::$sendEmails) {
+				$type = $types[$error['type']];
+				self::sendEmail("$type: $error[message] in $error[file] on line $error[line]");
+			}
+		}
 	}
 
 
