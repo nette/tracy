@@ -131,7 +131,7 @@ if (headers_sent()) {
 	<meta name="robots" content="noindex,noarchive">
 	<meta name="generator" content="Nette Framework">
 
-	<title><?php echo htmlspecialchars(get_class($exception)) ?></title>
+	<title><?php echo htmlspecialchars($exception instanceof FatalErrorException ? 'Fatal Error' : get_class($exception)) ?></title>
 
 	<style type="text/css">
 	/* <![CDATA[ */
@@ -292,7 +292,7 @@ if (headers_sent()) {
 
 	<div id="netteBluescreen">
 		<div id="netteBluescreenError" class="panel">
-			<h1><?php echo htmlspecialchars(get_class($exception)), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
+			<h1><?php echo htmlspecialchars($exception instanceof FatalErrorException ? 'Fatal Error' : get_class($exception)), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 
 			<p><?php echo htmlspecialchars($exception->getMessage()) ?></p>
 		</div>

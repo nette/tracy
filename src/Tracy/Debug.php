@@ -494,10 +494,7 @@ final class Debug
 		$error = error_get_last();
 
 		if (isset($types[$error['type']]) && ($error['type'] & error_reporting())) {
-			if (self::$logFile && self::$sendEmails) {
-				$type = $types[$error['type']];
-				self::sendEmail("$type: $error[message] in $error[file] on line $error[line]");
-			}
+			self::processException(new /*\*/FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
 		}
 	}
 
