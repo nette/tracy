@@ -411,6 +411,7 @@ final class Debug
 	 *
 	 * @param  \Exception
 	 * @return void
+	 * @internal
 	 */
 	public static function exceptionHandler(/*\*/Exception $exception)
 	{
@@ -434,6 +435,7 @@ final class Debug
 	 * @param  array  an array of variables that existed in the scope the error was triggered in
 	 * @return bool   FALSE to call normal error handler, NULL otherwise
 	 * @throws \FatalErrorException
+	 * @internal
 	 */
 	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
@@ -481,6 +483,7 @@ final class Debug
 	/**
 	 * Shutdown handler to process fatal errors.
 	 * @return void
+	 * @internal
 	 */
 	public static function shutdownHandler()
 	{
@@ -494,6 +497,10 @@ final class Debug
 		$error = error_get_last();
 
 		if (isset($types[$error['type']]) && ($error['type'] & error_reporting())) {
+			if (!headers_sent()) { // for PHP < 5.2.4
+				header('HTTP/1.1 500 Internal Server Error');
+			}
+
 			if (ini_get('html_errors')) {
 				$error['message'] = html_entity_decode(strip_tags($error['message']));
 			}
@@ -590,7 +597,7 @@ final class Debug
 	 * @param  string
 	 * @return void
 	 */
-	public static function sendEmail($message)
+	private static function sendEmail($message)
 	{
 		$monitorFile = self::$logFile . '.monitor';
 		$saved = @file_get_contents($monitorFile); // intentionally @
