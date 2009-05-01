@@ -99,8 +99,8 @@ final class Debug
 	/** @var callback */
 	public static $mailer = array(__CLASS__, 'defaultMailer');
 
-	/** @var float  probability that logfile will be checked */
-	public static $emailProbability = 0.01;
+	/** @deprecated */
+	public static $emailProbability;
 
 	/** @var array  */
 	private static $colophons = array(array(__CLASS__, 'getDefaultColophons'));
@@ -373,21 +373,6 @@ final class Debug
 			} elseif (is_array($email)) {
 				self::$emailHeaders = $email + self::$emailHeaders;
 			}
-			if (mt_rand() / mt_getrandmax() < self::$emailProbability) {
-				$monitorFile = self::$logFile . '.monitor';
-				$saved = @file_get_contents($monitorFile); // intentionally @
-				$actual = (int) @filemtime(self::$logFile); // intentionally @
-				if ($saved === FALSE || $actual === 0) {
-					file_put_contents($monitorFile, $actual);
-
-				} elseif (is_numeric($saved) && $saved != $actual) { // intentionally ==
-					self::sendEmail('Fatal error probably occured');
-				}
-			}
-		}
-
-		if (!defined('E_RECOVERABLE_ERROR')) {
-			define('E_RECOVERABLE_ERROR', 4096);
 		}
 
 		if (!defined('E_DEPRECATED')) {
