@@ -120,6 +120,20 @@ function _netteClosePanel()
 }
 
 
+/**
+ * Page title.
+ */
+static $errorTypes = array(
+	E_ERROR => 'Fatal Error',
+	E_USER_ERROR => 'User Error',
+	E_RECOVERABLE_ERROR => 'Recoverable Error',
+	E_CORE_ERROR => 'Core Error',
+	E_COMPILE_ERROR => 'Compile Error',
+	E_PARSE => 'Parse Error',
+);
+$title = ($exception instanceof FatalErrorException && isset($errorTypes[$exception->getSeverity()])) ? $errorTypes[$exception->getSeverity()] : get_class($exception);
+
+
 if (headers_sent()) {
 	echo '</pre></xmp></table>';
 }
@@ -131,7 +145,7 @@ if (headers_sent()) {
 	<meta name="robots" content="noindex,noarchive">
 	<meta name="generator" content="Nette Framework">
 
-	<title><?php echo htmlspecialchars($exception instanceof FatalErrorException ? 'Fatal Error' : get_class($exception)) ?></title>
+	<title><?php echo htmlspecialchars($title) ?></title>
 
 	<style type="text/css">
 	/* <![CDATA[ */
@@ -292,7 +306,7 @@ if (headers_sent()) {
 
 	<div id="netteBluescreen">
 		<div id="netteBluescreenError" class="panel">
-			<h1><?php echo htmlspecialchars($exception instanceof FatalErrorException ? 'Fatal Error' : get_class($exception)), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
+			<h1><?php echo htmlspecialchars($title), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 
 			<p><?php echo htmlspecialchars($exception->getMessage()) ?></p>
 		</div>

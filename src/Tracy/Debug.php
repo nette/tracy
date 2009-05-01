@@ -485,15 +485,19 @@ final class Debug
 	public static function shutdownHandler()
 	{
 		static $types = array(
-			E_ERROR => 'Error', // unfortunately not catchable
-			E_CORE_ERROR => 'Error', // not catchable
-			E_COMPILE_ERROR => 'Error', // unfortunately not catchable
-			E_PARSE => 'Error', // unfortunately not catchable
+			E_ERROR => 1,
+			E_CORE_ERROR => 1,
+			E_COMPILE_ERROR => 1,
+			E_PARSE => 1,
 		);
 
 		$error = error_get_last();
 
 		if (isset($types[$error['type']]) && ($error['type'] & error_reporting())) {
+			if (ini_get('html_errors')) {
+				$error['message'] = html_entity_decode(strip_tags($error['message']));
+			}
+
 			self::processException(new /*\*/FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
 		}
 	}
