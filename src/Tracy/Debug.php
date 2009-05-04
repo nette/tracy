@@ -809,7 +809,13 @@ final class Debug
 				'File' => $message->getFile(),
 				'Line' => $message->getLine(),
 				'Trace' => $message->getTrace(),
+				'Type' => '',
+				'Function' => '',
 			);
+			foreach ($message['Trace'] as & $row) {
+				if (empty($row['file'])) $row['file'] = '?';
+				if (empty($row['line'])) $row['line'] = '?';
+			}
 		} elseif ($priority === self::GROUP_START) {
 			$label = $message;
 			$message = NULL;
