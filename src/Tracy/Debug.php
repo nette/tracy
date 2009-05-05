@@ -48,9 +48,6 @@ final class Debug
 	/** @var array  free counters for your usage */
 	public static $counters = array();
 
-	/** @deprecated {@link Debug::$consoleMode} */
-	public static $html;
-
 	/** @var bool determines whether a server is running in production mode */
 	public static $productionMode;
 
@@ -98,9 +95,6 @@ final class Debug
 
 	/** @var callback */
 	public static $mailer = array(__CLASS__, 'defaultMailer');
-
-	/** @deprecated */
-	public static $emailProbability;
 
 	/** @var array  */
 	private static $colophons = array(array(__CLASS__, 'getDefaultColophons'));
@@ -387,10 +381,6 @@ final class Debug
 		set_error_handler(array(__CLASS__, 'errorHandler'));
 		register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
 		self::$enabled = TRUE;
-
-		if (is_int($productionMode)) { // back compatibility
-			//trigger_error('Debug::enable($errorLevel) is deprecated; Remove $errorLevel parameter.', /**/E_USER_WARNING/**//*E_USER_DEPRECATED*/);
-		}
 	}
 
 
