@@ -721,7 +721,7 @@ final class Debug
 	public static function getDefaultColophons($sender)
 	{
 		if ($sender === 'profiler') {
-			$arr[] = 'Elapsed time: ' . sprintf('%0.3f', (microtime(TRUE) - Debug::$time) * 1000) . ' ms';
+			$arr[] = 'Elapsed time: <b>' . number_format((microtime(TRUE) - Debug::$time) * 1000, 1, '.', ' ') . '</b> ms | Allocated memory: <b>' . number_format(memory_get_peak_usage() / 1000, 1, '.', ' ') . '</b> kB';
 
 			foreach ((array) self::$counters as $name => $value) {
 				if (is_array($value)) $value = implode(', ', $value);
