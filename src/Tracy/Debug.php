@@ -302,10 +302,6 @@ final class Debug
 	 */
 	public static function enable($productionMode = NULL, $logFile = NULL, $email = NULL)
 	{
-		if (version_compare(PHP_VERSION, '5.2.1') === 0) {
-			throw new /*\*/NotSupportedException(__METHOD__ . ' is not supported in PHP 5.2.1'); // PHP bug #40815
-		}
-
 		error_reporting(E_ALL | E_STRICT);
 
 		// production/development mode detection
