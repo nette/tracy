@@ -482,7 +482,7 @@ final class Debug
 
 		$error = error_get_last();
 
-		if (isset($types[$error['type']]) && ($error['type'] & error_reporting())) {
+		if (isset($types[$error['type']])) {
 			if (!headers_sent()) { // for PHP < 5.2.4
 				header('HTTP/1.1 500 Internal Server Error');
 			}
@@ -586,8 +586,7 @@ final class Debug
 	private static function sendEmail($message)
 	{
 		$monitorFile = self::$logFile . '.monitor';
-		$saved = @file_get_contents($monitorFile); // intentionally @
-		if ($saved === FALSE || is_numeric($saved)) {
+		if (!is_file($monitorFile)) {
 			if (@file_put_contents($monitorFile, 'e-mail has been sent')) { // intentionally @
 				call_user_func(self::$mailer, $message);
 			}
@@ -858,7 +857,7 @@ final class Debug
 			return 'object ' . get_class($val) . '';
 
 		} elseif (is_string($val)) {
-			return $val = @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $val)); // intentionally @
+			return @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $val)); // intentionally @
 
 		} elseif (is_array($val)) {
 			foreach ($val as $k => $v) {
