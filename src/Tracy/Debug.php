@@ -66,6 +66,9 @@ final class Debug
 	/** @var int  sensitive keys not displayed by {@link Debug::dump()} when {@link Debug::$productionMode} in on */
 	public static $keysToHide = array('password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin');
 
+	/** @var array of callbacks specifies the functions that are automatically called after fatal error */
+	public static $onFatalError = array();
+
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
 
@@ -548,6 +551,11 @@ final class Debug
 		} elseif (self::$firebugDetected && !headers_sent()) {
 			self::fireLog($exception, self::EXCEPTION);
 		}
+
+		foreach (self::$onFatalError as $handler) {
+			/**/fixCallback($handler);/**/
+			call_user_func($handler, $exception);
+		}
 	}
 
 
@@ -674,6 +682,16 @@ final class Debug
 		if (!self::$enabledProfiler || self::$productionMode) {
 			return;
 		}
+
+		foreach (headers_list() as $header) {
+			if (strncasecmp($header, 'Content-Type:', 13) === 0) {
+				if (substr($header, 14, 9) === 'text/html') {
+					break;
+				}
+				return;
+			}
+		}
+
 		self::$enabledProfiler = FALSE;
 
 		if (self::$firebugDetected) {
