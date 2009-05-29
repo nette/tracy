@@ -37,10 +37,13 @@
 			right: .5em;
 			top: .5em;
 			z-index: 23179;
-			color: black;
 			text-decoration: none;
 			background: red;
 			padding: 3px;
+		}
+
+		#netteBluescreenIcon span {
+			color: black !important;
 		}
 
 		#netteBluescreen h1 {
@@ -145,7 +148,7 @@
 		function netteToggle(link, panelId)
 		{
 			var span = link.getElementsByTagName('span')[0];
-			var panel = document.getElementById(panelId);
+			var panel = panelId ? document.getElementById(panelId) : link.nextSibling;
 			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
 			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
@@ -160,11 +163,10 @@
 
 
 <body>
-	<div>
-		<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this, 'netteBluescreen')"><span>&#x25bc;</span></a>
-	</div>
+<div id="netteBluescreen">
+	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this, null)"><span>&#x25bc;</span></a
 
-	<div id="netteBluescreen">
+	><div>
 		<div id="netteBluescreenError" class="panel">
 			<h1>Exception #123</h1>
 
@@ -415,6 +417,11 @@
 </li><li>PHP 5.2.9-2
 </li><li>Nette Framework 0.9 <i>(revision $WCREV$ released on $WCDATE$)</i>
 </li>					</ul>
-	</div>
+	<div>
+</div>
+
+<script type="text/javascript">
+	document.body.appendChild(document.getElementById('netteBluescreen'));
+</script>
 </body>
 </html>

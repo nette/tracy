@@ -42,6 +42,16 @@ Debug::dump($arr);
 
 Debug::dump($obj);
 
+
+echo "<h2>With location</h2>\n";
+
+Debug::$dumpLocation = TRUE;
+
+Debug::dump('sensitive data');
+
+echo Debug::dump('forced', TRUE);
+
+Debug::$dumpLocation = FALSE;
 Debug::$consoleMode = FALSE;
 
 
@@ -57,6 +67,15 @@ echo Debug::dump('forced', TRUE);
 echo "<h2>Development mode</h2>\n";
 
 Debug::$productionMode = FALSE;
+
+Debug::dump('sensitive data');
+
+echo Debug::dump('forced', TRUE);
+
+
+echo "<h2>With location</h2>\n";
+
+Debug::$dumpLocation = TRUE;
 
 Debug::dump('sensitive data');
 

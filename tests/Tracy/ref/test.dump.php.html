@@ -52,6 +52,11 @@ object(stdClass) (2) {
   "item2" => string(5) "hello"
 }
 
+<h2>With location</h2>
+string(14) "sensitive data" in file D:\Web\nette\_trunk\tests\Debug\test.dump.php on line 50
+
+string(6) "forced" in file D:\Web\nette\_trunk\tests\Debug\test.dump.php on line 52
+
 <h2>Production mode</h2>
 <pre class="dump"><span>string</span>(6) "forced"
 </pre>
@@ -59,4 +64,9 @@ object(stdClass) (2) {
 <pre class="dump"><span>string</span>(14) "sensitive data"
 </pre>
 <pre class="dump"><span>string</span>(6) "forced"
+</pre>
+<h2>With location</h2>
+<pre class="dump"><span>string</span>(14) "sensitive data" <small>in file D:\Web\nette\_trunk\tests\Debug\test.dump.php on line 80</small>
+</pre>
+<pre class="dump"><span>string</span>(6) "forced" <small>in file D:\Web\nette\_trunk\tests\Debug\test.dump.php on line 82</small>
 </pre>

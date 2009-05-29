@@ -60,6 +60,9 @@ final class Debug
 	/** @var int  how long strings display {@link Debug::dump()} */
 	public static $maxLen = 150;
 
+	/** @var int  display location? {@link Debug::dump()} */
+	public static $dumpLocation = FALSE;
+
 	/** @var int  sensitive keys not displayed by {@link Debug::dump()} when {@link Debug::$productionMode} in on */
 	public static $keysToHide = array('password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin');
 
@@ -159,9 +162,14 @@ final class Debug
 			return $var;
 		}
 
-		//self::$keyFilter = self::$productionMode ? array_change_key_case(array_flip(self::$keysToHide), CASE_LOWER) : NULL;
-
 		$output = "<pre class=\"dump\">" . self::_dump($var, 0) . "</pre>\n";
+
+		if (self::$dumpLocation) {
+			$trace = debug_backtrace();
+			if (isset($trace[0]['file'], $trace[0]['line'])) {
+				$output = substr_replace($output, ' <small>' . htmlspecialchars("in file {$trace[0]['file']} on line {$trace[0]['line']}", ENT_NOQUOTES) . '</small>', -8, 0);
+			}
+		}
 
 		if (self::$consoleMode) {
 			$output = htmlspecialchars_decode(strip_tags($output), ENT_NOQUOTES);
