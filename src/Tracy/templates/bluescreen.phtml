@@ -51,6 +51,7 @@ function _netteDebugPrintCode($file, $line, $count = 15)
 	$start = max(1, $line - floor($count / 2));
 
 	$source = explode("\n", @highlight_file($file, TRUE));
+	$spans = 1;
 	echo $source[0]; // <code><span color=highlight.html>
 	$source = explode('<br />', $source[1]);
 	array_unshift($source, NULL);
@@ -58,7 +59,7 @@ function _netteDebugPrintCode($file, $line, $count = 15)
 	$i = $start; // find last highlighted block
 	while (--$i >= 1) {
 		if (preg_match('#.*(</?span[^>]*>)#', $source[$i], $m)) {
-			if ($m[1] !== '</span>') echo $m[1];
+			if ($m[1] !== '</span>') { $spans++; echo $m[1]; }
 			break;
 		}
 	}
@@ -68,6 +69,7 @@ function _netteDebugPrintCode($file, $line, $count = 15)
 	$numWidth = strlen((string) key($source));
 
 	foreach ($source as $n => $s) {
+		$spans += substr_count($s, '<span') - substr_count($s, '</span');
 		$s = str_replace(array("\r", "\n"), array('', ''), $s);
 		if ($n === $line) {
 			printf(
@@ -80,7 +82,7 @@ function _netteDebugPrintCode($file, $line, $count = 15)
 			printf("<span class='line'>Line %{$numWidth}s:</span>    %s\n", $n, $s);
 		}
 	}
-	echo '</span></span></code>';
+	echo str_repeat('</span>', $spans), '</code>';
 }
 
 
@@ -283,7 +285,7 @@ if (headers_sent()) {
 
 	<script type="text/javascript">
 	/* <![CDATA[ */
-		document.write('<style> .collapsed { display: none; } </style>');
+		document.write('<style> .collapsed { display: none; } <\/style>');
 
 		function netteToggle(link, panelId)
 		{
@@ -511,7 +513,7 @@ if (headers_sent()) {
 			<?php foreach ((array) call_user_func($callback, 'bluescreen') as $line): ?><li><?php echo $line, "\n" ?></li><?php endforeach ?>
 			<?php endforeach ?>
 		</ul>
-	<div>
+	</div>
 </div>
 
 <script type="text/javascript">
