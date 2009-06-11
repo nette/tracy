@@ -39,20 +39,22 @@ require_once dirname(__FILE__) . '/Framework.php';
  */
 final class Debug
 {
-	/**#@+ server modes {@link Debug::enable()} */
-	const DEVELOPMENT = FALSE;
-	const PRODUCTION = TRUE;
-	const DETECT = NULL;
-	/**#@-*/
-
-	/** @var array  free counters for your usage */
-	public static $counters = array();
-
 	/** @var bool determines whether a server is running in production mode */
 	public static $productionMode;
 
 	/** @var bool determines whether a server is running in console mode */
 	public static $consoleMode;
+
+	/** @var int */
+	public static $time;
+
+	/** @var bool is Firebug & FirePHP detected? */
+	private static $firebugDetected;
+
+	/** @var bool is AJAX request detected? */
+	private static $ajaxDetected;
+
+	/********************* Debug::dump() ****************d*g**/
 
 	/** @var int  how many nested levels of array/object properties display {@link Debug::dump()} */
 	public static $maxDepth = 3;
@@ -61,22 +63,27 @@ final class Debug
 	public static $maxLen = 150;
 
 	/** @var int  display location? {@link Debug::dump()} */
-	public static $dumpLocation = FALSE;
+	public static $showLocation = FALSE;
+
+	/********************* errors and exceptions reporing ****************d*g**/
+
+	/**#@+ server modes {@link Debug::enable()} */
+	const DEVELOPMENT = FALSE;
+	const PRODUCTION = TRUE;
+	const DETECT = NULL;
+	/**#@-*/
+
+	/** @var bool determines whether to consider all errors as fatal */
+	public static $strictMode = FALSE;
 
 	/** @var array of callbacks specifies the functions that are automatically called after fatal error */
 	public static $onFatalError = array();
 
+	/** @var callback */
+	public static $mailer = array(__CLASS__, 'defaultMailer');
+
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
-
-	/** @var bool {@link Debug::enableProfiler()} */
-	private static $enabledProfiler = FALSE;
-
-	/** @var bool is Firebug & FirePHP detected? */
-	private static $firebugDetected;
-
-	/** @var bool is AJAX request detected? */
-	private static $ajaxDetected;
 
 	/** @var string  name of the file where script errors should be logged */
 	private static $logFile;
@@ -96,14 +103,18 @@ final class Debug
 		'Body' => '[%date%] %message%',
 	);
 
-	/** @var callback */
-	public static $mailer = array(__CLASS__, 'defaultMailer');
-
 	/** @var array  */
 	private static $colophons = array(array(__CLASS__, 'getDefaultColophons'));
 
-	/** @var int */
-	public static $time;
+	/********************* profiler ****************d*g**/
+
+	/** @var bool {@link Debug::enableProfiler()} */
+	private static $enabledProfiler = FALSE;
+
+	/** @var array  free counters for your usage */
+	public static $counters = array();
+
+	/********************* Firebug extension ****************d*g**/
 
 	/**#@+ FirePHP log priority */
 	const LOG = 'LOG';
@@ -161,7 +172,7 @@ final class Debug
 
 		$output = "<pre class=\"dump\">" . self::_dump($var, 0) . "</pre>\n";
 
-		if (self::$dumpLocation) {
+		if (self::$showLocation) {
 			$trace = debug_backtrace();
 			if (isset($trace[0]['file'], $trace[0]['line'])) {
 				$output = substr_replace($output, ' <small>' . htmlspecialchars("in file {$trace[0]['file']} on line {$trace[0]['line']}", ENT_NOQUOTES) . '</small>', -8, 0);
@@ -420,16 +431,15 @@ final class Debug
 	 */
 	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
-		static $fatals = array(
-			E_USER_ERROR => 1,
-			E_RECOVERABLE_ERROR => 1, // since PHP 5.2
-		);
-
-		if (isset($fatals[$severity])) {
+		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
 			throw new /*\*/FatalErrorException($message, 0, $severity, $file, $line, $context);
 
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return NULL; // nothing to do
+
+		} elseif (self::$strictMode) {
+			self::processException(new /*\*/FatalErrorException($message, 0, $severity, $file, $line, $context), TRUE);
+			return NULL;
 		}
 
 		static $types = array(

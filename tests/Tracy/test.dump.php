@@ -45,13 +45,13 @@ Debug::dump($obj);
 
 echo "<h2>With location</h2>\n";
 
-Debug::$dumpLocation = TRUE;
+Debug::$showLocation = TRUE;
 
 Debug::dump('sensitive data');
 
 echo Debug::dump('forced', TRUE);
 
-Debug::$dumpLocation = FALSE;
+Debug::$showLocation = FALSE;
 Debug::$consoleMode = FALSE;
 
 
@@ -75,7 +75,7 @@ echo Debug::dump('forced', TRUE);
 
 echo "<h2>With location</h2>\n";
 
-Debug::$dumpLocation = TRUE;
+Debug::$showLocation = TRUE;
 
 Debug::dump('sensitive data');
 

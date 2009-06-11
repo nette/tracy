@@ -31,3 +31,9 @@ function third($arg1)
 
 
 first(10, 'any string');
+
+echo "\n\n";
+
+Debug::$strictMode = TRUE;
+
+first(10, 'any string');
