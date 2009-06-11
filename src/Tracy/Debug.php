@@ -63,9 +63,6 @@ final class Debug
 	/** @var int  display location? {@link Debug::dump()} */
 	public static $dumpLocation = FALSE;
 
-	/** @var int  sensitive keys not displayed by {@link Debug::dump()} when {@link Debug::$productionMode} in on */
-	public static $keysToHide = array('password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin');
-
 	/** @var array of callbacks specifies the functions that are automatically called after fatal error */
 	public static $onFatalError = array();
 
@@ -104,9 +101,6 @@ final class Debug
 
 	/** @var array  */
 	private static $colophons = array(array(__CLASS__, 'getDefaultColophons'));
-
-	/** @var array  */
-	private static $keyFilter = array();
 
 	/** @var int */
 	public static $time;
@@ -231,12 +225,7 @@ final class Debug
 				$var[$marker] = 0;
 				foreach ($var as $k => &$v) {
 					if ($k === $marker) continue;
-					$s .= "$space  " . (is_int($k) ? $k : "\"$k\"") . " => ";
-					if (self::$keyFilter && is_string($v) && isset(self::$keyFilter[strtolower($k)])) {
-						$s .= "<span>string</span>(?) <i>*** hidden ***</i>\n";
-					} else {
-						$s .= self::_dump($v, $level + 1);
-					}
+					$s .= "$space  " . (is_int($k) ? $k : "\"$k\"") . " => " . self::_dump($v, $level + 1);
 				}
 				unset($var[$marker]);
 			} else {
@@ -261,12 +250,7 @@ final class Debug
 						$m = $k[1] === '*' ? ' <span>protected</span>' : ' <span>private</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$s .= "$space  \"$k\"$m => ";
-					if (self::$keyFilter && is_string($v) && isset(self::$keyFilter[strtolower($k)])) {
-						$s .= "<span>string</span>(?) <i>*** hidden ***</i>\n";
-					} else {
-						$s .= self::_dump($v, $level + 1);
-					}
+					$s .= "$space  \"$k\"$m => " . self::_dump($v, $level + 1);
 				}
 				array_pop($list);
 			} else {
