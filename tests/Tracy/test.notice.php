@@ -37,3 +37,5 @@ echo "\n\n";
 Debug::$strictMode = TRUE;
 
 first(10, 'any string');
+
+first(10, 'any string');

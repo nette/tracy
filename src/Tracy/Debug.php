@@ -301,18 +301,18 @@ final class Debug
 
 	/**
 	 * Enables displaying or logging errors and exceptions.
-	 * @param  bool          enable production mode? (NULL means autodetection)
+	 * @param  mixed         production, development mode or autodetection
 	 * @param  string        error log file (FALSE disables logging in production mode)
 	 * @param  array|string  administrator email or email headers; enables email sending in production mode
 	 * @return void
 	 */
-	public static function enable($productionMode = NULL, $logFile = NULL, $email = NULL)
+	public static function enable($mode = NULL, $logFile = NULL, $email = NULL)
 	{
 		error_reporting(E_ALL | E_STRICT);
 
 		// production/development mode detection
-		if (is_bool($productionMode)) {
-			self::$productionMode = $productionMode;
+		if (is_bool($mode)) {
+			self::$productionMode = $mode;
 		}
 		if (self::$productionMode === self::DETECT) {
 			if (class_exists(/*Nette\*/'Environment')) {
@@ -439,7 +439,7 @@ final class Debug
 
 		} elseif (self::$strictMode) {
 			self::processException(new /*\*/FatalErrorException($message, 0, $severity, $file, $line, $context), TRUE);
-			return NULL;
+			exit;
 		}
 
 		static $types = array(
