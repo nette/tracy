@@ -10,10 +10,18 @@ require_once '../../Nette/loader.php';
 
 /*use Nette\Debug;*/
 
+class Test
+{
+	public $x = array(10, NULL);
+
+	private $y = 'hello';
+
+	protected $z = 30;
+}
 
 $arr = array(10, 20.2, TRUE, NULL, 'hello');
 
-$obj = (object) array('item1' => $arr, 'item2' => 'hello');
+$obj = new Test;
 
 
 echo "<h2>Check mode</h2>\n";
