@@ -161,7 +161,7 @@ static $errorTypes = array(
 	E_USER_DEPRECATED => 'User Deprecated',
 );
 $title = ($exception instanceof FatalErrorException && isset($errorTypes[$exception->getSeverity()])) ? $errorTypes[$exception->getSeverity()] : get_class($exception);
-
+$rn = 0;
 
 if (headers_sent()) {
 	echo '</pre></xmp></table>';
@@ -285,6 +285,10 @@ if (headers_sent()) {
 			vertical-align: top;
 			padding: 2px 3px;
 			border: 1px solid #eeeebb;
+		}
+
+		#netteBluescreen .odd, #netteBluescreen .odd pre {
+			background-color: #fafac3;
 		}
 
 		#netteBluescreen ul {
@@ -437,8 +441,7 @@ if (headers_sent()) {
 			<table>
 			<?php
 			foreach ($ex->context as $k => $v) {
-				echo '<tr><td>$', htmlspecialchars($k), '</td>';
-				echo '<td>', _netteDump($v), "</td></tr>\n";
+				echo '<tr><td>$', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -460,7 +463,7 @@ if (headers_sent()) {
 			<table id="pnl-env-const">
 			<?php
 			foreach ($list['user'] as $k => $v) {
-				echo '<tr><td>', htmlspecialchars($k), '</td>';
+				echo '<tr'.($rn++%2?' class="odd"':'').'><td>', htmlspecialchars($k), '</td>';
 				echo '<td>', _netteDump($v), "</td></tr>\n";
 			}
 			?>
@@ -472,7 +475,7 @@ if (headers_sent()) {
 			<table id="pnl-env-files" class="collapsed">
 			<?php
 			foreach (get_included_files() as $v) {
-				echo '<tr><td>', htmlspecialchars($v), "</td></tr>\n";
+				echo '<tr'.($rn++%2?' class="odd"':'').'><td>', htmlspecialchars($v), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -484,7 +487,7 @@ if (headers_sent()) {
 			<?php else: ?>
 			<table>
 			<?php
-			foreach ($_SERVER as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
+			foreach ($_SERVER as $k => $v) echo '<tr'.($rn++%2?' class="odd"':'').'><td>', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>
@@ -498,7 +501,7 @@ if (headers_sent()) {
 			<h3>Headers</h3>
 			<table>
 			<?php
-			foreach (apache_request_headers() as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', htmlspecialchars($v), "</td></tr>\n";
+			foreach (apache_request_headers() as $k => $v) echo '<tr'.($rn++%2?' class="odd"':'').'><td>', htmlspecialchars($k), '</td><td>', htmlspecialchars($v), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>
@@ -511,7 +514,7 @@ if (headers_sent()) {
 			<?php else: ?>
 			<table>
 			<?php
-			foreach ($GLOBALS[$name] as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
+			foreach ($GLOBALS[$name] as $k => $v) echo '<tr'.($rn++%2?' class="odd"':'').'><td>', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>
