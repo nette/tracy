@@ -12,6 +12,7 @@ $arr = array(10, 20, array('key1' => 'val1', 'key2' => TRUE));
 
 // will show in Firebug "Server" tab for the request
 Debug::fireDump($arr, 'My var');
+Debug::dump($arr, Debug::FIREBUG, 'My var2');
 
 
 // will show in Firebug "Console" tab

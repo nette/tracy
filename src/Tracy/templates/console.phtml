@@ -1,0 +1,194 @@
+<?php
+
+/**
+ * Nette Framework - Dump console template.
+ *
+ * Copyright (c) 2004, 2009 David Grudl (http://davidgrudl.com)
+ *
+ * This source file is subject to the "Nette license" that is bundled
+ * with this package in the file license.txt.
+ *
+ * For more information please see http://nettephp.com
+ *
+ * @author     David Grudl
+ * @copyright  Copyright (c) 2004, 2009 David Grudl
+ * @license    http://nettephp.com/license  Nette license
+ * @link       http://nettephp.com
+ * @category   Nette
+ * @package    Nette
+ * @version    $Id$
+ *
+ * @param      mixed     $var
+ * @param      string    $title
+ * @return     void
+ */
+
+/*namespace Nette;*/
+
+
+
+if (!function_exists(/*Nette\*/'_netteDumpCb2')) {
+
+	function _netteDumpCb2($m)
+	{
+		return $m[1] < 7
+			? "($m[1]) <a href='#' onclick='return !netteToggle(this)'><span>&#x25bc;</span></a> <code>"
+			: "($m[1]) <a href='#' onclick='return !netteToggle(this)'><span>&#x25ba;</span></a> <code class='collapsed'>";
+	}
+}
+
+ob_start();
+
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="robots" content="noindex,noarchive">
+	<meta name="generator" content="Nette Framework">
+
+	<title>Nette Debug Console</title>
+
+	<style type="text/css">
+	/* <![CDATA[ */
+		body {
+			margin: 0;
+			padding: 0;
+			font: 9pt/1.5 Verdana, sans-serif;
+			background: white;
+			color: #333;
+		}
+
+		h1 {
+			font-size: 13pt;
+			margin: 0;
+			padding: 2px 8px;
+			background: black;
+			color: white;
+			border-bottom: 1px solid black;
+		}
+
+		h2 {
+			font: 11pt/1.5 sans-serif;
+			margin: 0;
+			padding: 2px 8px;
+			background: #3484d2;
+			color: white;
+		}
+
+		a {
+			text-decoration: none;
+			color: #4197E3;
+		}
+
+		a span {
+			font-family: sans-serif;
+			color: #999;
+		}
+
+		p {
+			margin: .8em 0
+		}
+
+		pre, code, table {
+			font: 9pt/1.5 Consolas, monospace;
+		}
+
+		pre, table {
+			background: #fffbcc;
+			padding: .4em .7em;
+			border: 1px dotted silver;
+		}
+
+		table pre {
+			padding: 0;
+			margin: 0;
+			border: none;
+		}
+
+		pre.dump span {
+			color: #c16549;
+		}
+
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		td, th {
+			vertical-align: top;
+			text-align: left;
+			border: 1px solid #eeeebb;
+			font-style: normal;
+		}
+
+		th {
+			padding: 2px 3px 2px 8px;
+			font-weight: bold;
+		}
+
+		td {
+			padding: 2px 8px 2px 3px;
+		}
+
+		.odd, .odd pre {
+			background: #faf5c3;
+		}
+
+	/* ]]> */
+	</style>
+
+
+	<script type="text/javascript">
+	/* <![CDATA[ */
+		document.write('<style> .collapsed { display: none; } <\/style>');
+
+		function netteToggle(link, panelId)
+		{
+			var span = link.getElementsByTagName('span')[0];
+			var panel = panelId ? document.getElementById(panelId) : link.nextSibling;
+			while (panel.nodeType !== 1) panel = panel.nextSibling;
+			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
+
+			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
+			panel.style.display = collapsed ? (panel.tagName.toLowerCase() === 'code' ? 'inline' : 'block') : 'none';
+
+			return true;
+		}
+	/* ]]> */
+	</script>
+</head>
+
+
+
+<body>
+	<h1>Nette Debug Console</h1>
+</body>
+</html>
+<?php $document = ob_get_clean() ?>
+
+<?php ob_start() ?>
+	<?php if (isset($title)):?>
+	<h2><?php echo htmlspecialchars($title) ?></h2>
+	<?php endif ?>
+
+	<table>
+	<?php $i = 0 ?>
+	<?php foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val): ?>
+	<tr class="<?php echo $i++ % 2 ? 'odd' : 'even' ?>">
+		<th width="15%"><?php echo htmlspecialchars($key) ?></th>
+		<td><?php echo preg_replace_callback('#\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb2', Debug::dump($val, TRUE)) ?></td>
+	</tr>
+	<?php endforeach ?>
+	</table>
+<?php $body = ob_get_clean() ?>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+if (typeof _netteConsole === 'undefined') {
+	_netteConsole = window.open('','_netteConsole','width=700,height=700,resizable,scrollbars=yes');
+	_netteConsole.document.write(<?php echo json_encode($document) ?>);
+	_netteConsole.document.close();
+}
+_netteConsole.document.body.innerHTML = _netteConsole.document.body.innerHTML + <?php echo json_encode($body) ?>;
+/* ]]> */
+</script>
