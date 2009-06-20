@@ -151,10 +151,11 @@
 		{
 			var span = link.getElementsByTagName('span')[0];
 			var panel = panelId ? document.getElementById(panelId) : link.nextSibling;
+			while (panel.nodeType !== 1) panel = panel.nextSibling;
 			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
 			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
-			panel.style.display = collapsed ? 'block' : 'none';
+			panel.style.display = collapsed ? (panel.tagName.toLowerCase() === 'code' ? 'inline' : 'block') : 'none';
 
 			return true;
 		}
@@ -166,7 +167,7 @@
 
 <body>
 <div id="netteBluescreen">
-	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this, null)"><span>&#x25bc;</span></a
+	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this)"><span>&#x25bc;</span></a
 
 	><div>
 		<div id="netteBluescreenError" class="panel">

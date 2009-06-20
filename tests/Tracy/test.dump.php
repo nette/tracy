@@ -19,7 +19,7 @@ class Test
 	protected $z = 30;
 }
 
-$arr = array(10, 20.2, TRUE, NULL, 'hello');
+$arr = array(10, 20.2, TRUE, NULL, 'hello', (object) NULL, array());
 
 $obj = new Test;
 

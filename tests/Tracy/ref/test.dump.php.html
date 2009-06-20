@@ -11,41 +11,45 @@ string(7) "console"
 <h2>HTML mode</h2>
 <pre class="dump"><span>string</span>(20) "&lt;a href="#"&gt;test&lt;/a&gt;"
 </pre>
-<pre class="dump"><span>array</span>(5) {
-  0 => <span>int</span>(10)
-  1 => <span>float</span>(20.2)
-  2 => <span>bool</span>(TRUE)
-  3 => <span>NULL</span>
-  4 => <span>string</span>(5) "hello"
-}
+<pre class="dump"><span>array</span>(7) <code>{
+   0 => <span>int</span>(10)
+   1 => <span>float</span>(20.2)
+   2 => <span>bool</span>(TRUE)
+   3 => <span>NULL</span>
+   4 => <span>string</span>(5) "hello"
+   5 => <span>object</span>(stdClass) (0) {}
+   6 => <span>array</span>(0) 
+}</code>
 </pre>
-<pre class="dump"><span>object</span>(Test) (3) {
-  "x" => <span>array</span>(2) {
-    0 => <span>int</span>(10)
-    1 => <span>NULL</span>
-  }
-  "y" <span>private</span> => <span>string</span>(5) "hello"
-  "z" <span>protected</span> => <span>int</span>(30)
-}
+<pre class="dump"><span>object</span>(Test) (3) <code>{
+   "x" => <span>array</span>(2) <code>{
+      0 => <span>int</span>(10)
+      1 => <span>NULL</span>
+   }</code>
+   "y" <span>private</span> => <span>string</span>(5) "hello"
+   "z" <span>protected</span> => <span>int</span>(30)
+}</code>
 </pre>
 <h2>Text mode</h2>
 string(20) "<a href="#">test</a>"
 
-array(5) {
-  0 => int(10)
-  1 => float(20.2)
-  2 => bool(TRUE)
-  3 => NULL
-  4 => string(5) "hello"
+array(7) {
+   0 => int(10)
+   1 => float(20.2)
+   2 => bool(TRUE)
+   3 => NULL
+   4 => string(5) "hello"
+   5 => object(stdClass) (0) {}
+   6 => array(0) 
 }
 
 object(Test) (3) {
-  "x" => array(2) {
-    0 => int(10)
-    1 => NULL
-  }
-  "y" private => string(5) "hello"
-  "z" protected => int(30)
+   "x" => array(2) {
+      0 => int(10)
+      1 => NULL
+   }
+   "y" private => string(5) "hello"
+   "z" protected => int(30)
 }
 
 <h2>With location</h2>

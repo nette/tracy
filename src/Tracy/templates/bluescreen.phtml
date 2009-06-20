@@ -20,7 +20,6 @@
  *
  * @param      array     $exception
  * @param      array     $colophons
- * @param      array     $keyFilter
  * @param      array     $internals
  * @return     void
  */
@@ -83,6 +82,25 @@ function _netteDebugPrintCode($file, $line, $count = 15)
 		}
 	}
 	echo str_repeat('</span>', $spans), '</code>';
+}
+
+
+
+/**
+ * Dumps variable.
+ * @param  mixed
+ * @return string
+ */
+function _netteDump($var)
+{
+	return preg_replace_callback('#\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb', Debug::dump($var, TRUE));
+}
+
+function _netteDumpCb($m)
+{
+	return $m[1] < 7
+		? "($m[1]) <a href='#' onclick='return !netteToggle(this)'><span>&#x25bc;</span></a> <code>"
+		: "($m[1]) <a href='#' onclick='return !netteToggle(this)'><span>&#x25ba;</span></a> <code class='collapsed'>";
 }
 
 
@@ -300,10 +318,11 @@ if (headers_sent()) {
 		{
 			var span = link.getElementsByTagName('span')[0];
 			var panel = panelId ? document.getElementById(panelId) : link.nextSibling;
+			while (panel.nodeType !== 1) panel = panel.nextSibling;
 			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
 			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
-			panel.style.display = collapsed ? 'block' : 'none';
+			panel.style.display = collapsed ? (panel.tagName.toLowerCase() === 'code' ? 'inline' : 'block') : 'none';
 
 			return true;
 		}
@@ -315,7 +334,7 @@ if (headers_sent()) {
 
 <body>
 <div id="netteBluescreen">
-	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this, null)"><span>&#x25bc;</span></a
+	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this)"><span>&#x25bc;</span></a
 
 	><div>
 		<div id="netteBluescreenError" class="panel">
@@ -379,11 +398,7 @@ if (headers_sent()) {
 						}
 						foreach ($row['args'] as $k => $v) {
 							echo '<tr><td>', (isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</td><td>';
-							if (isset($params[$k]) && isset($keyFilter[strtolower($params[$k]->name)])) {
-								echo '<i>*** hidden ***</i>';
-							} else {
-								echo /*Nette\*/Debug::dump($v, TRUE);
-							}
+							echo _netteDump($v);
 							echo "</td></tr>\n";
 						}
 						?>
@@ -407,7 +422,7 @@ if (headers_sent()) {
 
 
 
-			<?php if ($ex instanceof /*Nette\*/IDebuggable): ?>
+			<?php if ($ex instanceof IDebuggable): ?>
 			<?php foreach ($ex->getPanels() as $name => $panel): ?>
 			<?php _netteOpenPanel($name, empty($panel['expanded'])) ?>
 				<?php echo $panel['content'] ?>
@@ -423,7 +438,7 @@ if (headers_sent()) {
 			<?php
 			foreach ($ex->context as $k => $v) {
 				echo '<tr><td>$', htmlspecialchars($k), '</td>';
-				echo '<td>', (isset($keyFilter[strtolower($k)]) ? '<i>*** hidden ***</i>' : /*Nette\*/Debug::dump($v, TRUE)), "</td></tr>\n";
+				echo '<td>', _netteDump($v), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -446,7 +461,7 @@ if (headers_sent()) {
 			<?php
 			foreach ($list['user'] as $k => $v) {
 				echo '<tr><td>', htmlspecialchars($k), '</td>';
-				echo '<td>', (isset($keyFilter[strtolower($k)]) ? '<i>*** hidden ***</i>' : /*Nette\*/Debug::dump($v, TRUE)), "</td></tr>\n";
+				echo '<td>', _netteDump($v), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -469,7 +484,7 @@ if (headers_sent()) {
 			<?php else: ?>
 			<table>
 			<?php
-			foreach ($_SERVER as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', /*Nette\*/Debug::dump($v, TRUE), "</td></tr>\n";
+			foreach ($_SERVER as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>
@@ -496,7 +511,7 @@ if (headers_sent()) {
 			<?php else: ?>
 			<table>
 			<?php
-			foreach ($GLOBALS[$name] as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', /*Nette\*/Debug::dump($v, TRUE), "</td></tr>\n";
+			foreach ($GLOBALS[$name] as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>

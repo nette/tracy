@@ -224,36 +224,45 @@ final class Debug
 			return "<span>string</span>(" . strlen($var) . ") \"$s\"\n";
 
 		} elseif (is_array($var)) {
-			$s = "<span>array</span>(" . count($var) . ") {\n";
-			$space = str_repeat('  ', $level);
+			$s = "<span>array</span>(" . count($var) . ") ";
+			$space = str_repeat($space1 = '   ', $level);
 
 			static $marker;
 			if ($marker === NULL) $marker = uniqid("\x00", TRUE);
-			if (isset($var[$marker])) {
-				$s .= "$space  *RECURSION*\n";
+			if (empty($var)) {
+
+			} elseif (isset($var[$marker])) {
+				$s .= "{\n$space$space1*RECURSION*\n$space}";
 
 			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
+				$s .= "<code>{\n";
 				$var[$marker] = 0;
 				foreach ($var as $k => &$v) {
 					if ($k === $marker) continue;
-					$s .= "$space  " . (is_int($k) ? $k : "\"$k\"") . " => " . self::_dump($v, $level + 1);
+					$s .= "$space$space1" . (is_int($k) ? $k : "\"$k\"") . " => " . self::_dump($v, $level + 1);
 				}
 				unset($var[$marker]);
+				$s .= "$space}</code>";
+
 			} else {
-				$s .= "$space  ...\n";
+				$s .= "{\n$space$space1...\n$space}";
 			}
-			return $s . "$space}\n";
+			return $s . "\n";
 
 		} elseif (is_object($var)) {
 			$arr = (array) $var;
-			$s = "<span>object</span>(" . get_class($var) . ") (" . count($arr) . ") {\n";
-			$space = str_repeat('  ', $level);
+			$s = "<span>object</span>(" . get_class($var) . ") (" . count($arr) . ") ";
+			$space = str_repeat($space1 = '   ', $level);
 
 			static $list = array();
-			if (in_array($var, $list, TRUE)) {
-				$s .= "$space  *RECURSION*\n";
+			if (empty($arr)) {
+				$s .= "{}";
+
+			} elseif (in_array($var, $list, TRUE)) {
+				$s .= "{\n$space$space1*RECURSION*\n$space}";
 
 			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
+				$s .= "<code>{\n";
 				$list[] = $var;
 				foreach ($arr as $k => &$v) {
 					$m = '';
@@ -261,13 +270,15 @@ final class Debug
 						$m = $k[1] === '*' ? ' <span>protected</span>' : ' <span>private</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$s .= "$space  \"$k\"$m => " . self::_dump($v, $level + 1);
+					$s .= "$space$space1\"$k\"$m => " . self::_dump($v, $level + 1);
 				}
 				array_pop($list);
+				$s .= "$space}</code>";
+
 			} else {
-				$s .= "$space  ...\n";
+				$s .= "{\n$space$space1...\n$space}";
 			}
-			return $s . "$space}\n";
+			return $s . "\n";
 
 		} elseif (is_resource($var)) {
 			return "<span>resource of type</span>(" . get_resource_type($var) . ")\n";
@@ -361,7 +372,7 @@ final class Debug
 			throw new /*\*/NotSupportedException('Function ini_set() must be enabled.');
 		}
 
-		self::$sendEmails = $logFile && $email;
+		self::$sendEmails = self::$logFile && $email;
 		if (self::$sendEmails) {
 			if (is_string($email)) {
 				self::$emailHeaders['To'] = $email;
