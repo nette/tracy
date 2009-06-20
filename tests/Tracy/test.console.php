@@ -10,11 +10,14 @@ require_once '../../Nette/loader.php';
 
 /*use Nette\Debug;*/
 
+$_ENV = NULL;
+$_SERVER = array_intersect_key($_SERVER, array('PHP_SELF' => 1, 'SCRIPT_NAME' => 1, 'SERVER_ADDR' => 1, 'SERVER_SOFTWARE' => 1, 'HTTP_HOST' => 1, 'DOCUMENT_ROOT' => 1));
+
 $arr = array(10, 20.2, TRUE, NULL, 'hello', (object) NULL, array());
 
 
-Debug::dump(get_defined_vars(), Debug::CONSOLE);
+Debug::consoleDump(get_defined_vars());
 
-Debug::dump($arr, Debug::CONSOLE, 'The Array');
+Debug::consoleDump($arr, 'The Array');
 
-Debug::dump('<a href="#">test</a>', Debug::CONSOLE, 'String');
+Debug::consoleDump('<a href="#">test</a>', 'String');

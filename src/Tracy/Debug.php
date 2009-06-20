@@ -56,11 +56,6 @@ final class Debug
 
 	/********************* Debug::dump() ****************d*g**/
 
-	/**#@+ destination {@link Debug::dump()} */
-	const CONSOLE = 'console';
-	const FIREBUG = 'firebug';
-	/**#@-*/
-
 	/** @var int  how many nested levels of array/object properties display {@link Debug::dump()} */
 	public static $maxDepth = 3;
 
@@ -169,18 +164,10 @@ final class Debug
 	 * @param  bool   return output instead of printing it? (bypasses $productionMode)
 	 * @return mixed  variable or dump
 	 */
-	public static function dump($var, $destination = FALSE, $title = NULL)
+	public static function dump($var, $return = FALSE)
 	{
-		if ($destination === FALSE && self::$productionMode) {
+		if (!$return && self::$productionMode) {
 			return $var;
-
-		} elseif ($destination === self::CONSOLE) {
-			require dirname(__FILE__) . '/Debug.templates/console.phtml';
-			return;
-
-		} elseif ($destination === self::FIREBUG) {
-			self::fireDump($var, $title);
-			return;
 		}
 
 		$output = "<pre class=\"dump\">" . self::_dump($var, 0) . "</pre>\n";
@@ -196,12 +183,28 @@ final class Debug
 			$output = htmlspecialchars_decode(strip_tags($output), ENT_NOQUOTES);
 		}
 
-		if ($destination) {
+		if ($return) {
 			return $output;
 
 		} else {
 			echo $output;
 			return $var;
+		}
+	}
+
+
+
+	/**
+	 * Dumps information about a variable in Nette Debug Console.
+	 *
+	 * @param  mixed  variable to dump.
+	 * @param  string optional title
+	 * @return void
+	 */
+	public static function consoleDump($var, $title = NULL)
+	{
+		if (!self::$productionMode) {
+			require dirname(__FILE__) . '/Debug.templates/console.phtml';
 		}
 	}
 
@@ -921,4 +924,4 @@ final class Debug
 Debug::init();
 
 // hint:
-// if (!function_exists('dump')) { function dump($var, $destination = FALSE) { return /*\Nette\*/Debug::dump($var, $destination); } }
+// if (!function_exists('dump')) { function dump($var, $return = FALSE) { return /*\Nette\*/Debug::dump($var, $return); } }
