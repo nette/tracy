@@ -31,9 +31,7 @@ if (!function_exists(/*Nette\*/'_netteDumpCb2')) {
 
 	function _netteDumpCb2($m)
 	{
-		return $m[1] < 7
-			? "($m[1]) <a href='#' onclick='return !netteToggle(this)'><span>&#x25bc;</span></a> <code>"
-			: "($m[1]) <a href='#' onclick='return !netteToggle(this)'><span>&#x25ba;</span></a> <code class='collapsed'>";
+		return "$m[1]<a href='#' onclick='return !netteToggle(this)'>$m[2]($m[3]) " . (trim($m[1]) || $m[3] < 7 ? '<abbr>&#x25bc;</abbr> </a><code>' : '<abbr>&#x25ba;</abbr> </a><code class="collapsed">');
 	}
 }
 
@@ -80,7 +78,7 @@ ob_start();
 			color: #4197E3;
 		}
 
-		a span {
+		a abbr {
 			font-family: sans-serif;
 			color: #999;
 		}
@@ -109,6 +107,10 @@ ob_start();
 			color: #c16549;
 		}
 
+		pre.dump a {
+			color: #333;
+		}
+
 		table {
 			border-collapse: collapse;
 			width: 100%;
@@ -118,10 +120,10 @@ ob_start();
 			vertical-align: top;
 			text-align: left;
 			border: 1px solid #eeeebb;
-			font-style: normal;
 		}
 
 		th {
+			width: 10;
 			padding: 2px 3px 2px 8px;
 			font-weight: bold;
 		}
@@ -144,12 +146,12 @@ ob_start();
 
 		function netteToggle(link, panelId)
 		{
-			var span = link.getElementsByTagName('span')[0];
+			var arrow = link.getElementsByTagName('abbr')[0];
 			var panel = panelId ? document.getElementById(panelId) : link.nextSibling;
 			while (panel.nodeType !== 1) panel = panel.nextSibling;
 			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
+			arrow.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
 			panel.style.display = collapsed ? (panel.tagName.toLowerCase() === 'code' ? 'inline' : 'block') : 'none';
 
 			return true;
@@ -175,8 +177,8 @@ ob_start();
 	<?php $i = 0 ?>
 	<?php foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val): ?>
 	<tr class="<?php echo $i++ % 2 ? 'odd' : 'even' ?>">
-		<th width="15%"><?php echo htmlspecialchars($key) ?></th>
-		<td><?php echo preg_replace_callback('#\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb2', Debug::dump($val, TRUE)) ?></td>
+		<th><?php echo htmlspecialchars($key) ?></th>
+		<td><?php echo preg_replace_callback('#(<pre class="dump">|\s+)?(.*)\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb2', Debug::dump($val, TRUE)) ?></td>
 	</tr>
 	<?php endforeach ?>
 	</table>

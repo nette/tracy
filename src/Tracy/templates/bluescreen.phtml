@@ -93,14 +93,12 @@ function _netteDebugPrintCode($file, $line, $count = 15)
  */
 function _netteDump($var)
 {
-	return preg_replace_callback('#\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb', Debug::dump($var, TRUE));
+	return preg_replace_callback('#(<pre class="dump">|\s+)?(.*)\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb', Debug::dump($var, TRUE));
 }
 
 function _netteDumpCb($m)
 {
-	return $m[1] < 7
-		? "($m[1]) <a href='#' onclick='return !netteToggle(this)'><span>&#x25bc;</span></a> <code>"
-		: "($m[1]) <a href='#' onclick='return !netteToggle(this)'><span>&#x25ba;</span></a> <code class='collapsed'>";
+	return "$m[1]<a href='#' onclick='return !netteToggle(this)'>$m[2]($m[3]) " . (trim($m[1]) || $m[3] < 7 ? '<abbr>&#x25bc;</abbr> </a><code>' : '<abbr>&#x25ba;</abbr> </a><code class="collapsed">');
 }
 
 
@@ -117,7 +115,7 @@ function _netteOpenPanel($name, $collapsed)
 	$id++;
 	?>
 	<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl<?php echo $id ?>')"><?php echo htmlSpecialChars($name) ?> <span><?php echo $collapsed ? '&#x25ba;' : '&#x25bc;' ?></span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl<?php echo $id ?>')"><?php echo htmlSpecialChars($name) ?> <abbr><?php echo $collapsed ? '&#x25ba;' : '&#x25bc;' ?></abbr></a></h2>
 
 		<div id="pnl<?php echo $id ?>" class="<?php echo $collapsed ? 'collapsed ' : '' ?>inner">
 	<?php
@@ -211,7 +209,7 @@ if (headers_sent()) {
 			padding: 3px;
 		}
 
-		#netteBluescreenIcon span {
+		#netteBluescreenIcon abbr {
 			color: black !important;
 		}
 
@@ -231,7 +229,7 @@ if (headers_sent()) {
 			color: #4197E3;
 		}
 
-		#netteBluescreen a span {
+		#netteBluescreen a abbr {
 			font-family: sans-serif;
 			color: #999;
 		}
@@ -266,6 +264,10 @@ if (headers_sent()) {
 			color: #c16549;
 		}
 
+		#netteBluescreen pre.dump a {
+			color: #333;
+		}
+
 		#netteBluescreen div.panel {
 			border-bottom: 1px solid #eee;
 			padding: 1px 2em;
@@ -283,8 +285,14 @@ if (headers_sent()) {
 
 		#netteBluescreen td, #netteBluescreen th {
 			vertical-align: top;
+			text-align: left;
 			padding: 2px 3px;
 			border: 1px solid #eeeebb;
+		}
+
+		#netteBluescreen th {
+			width: 10%;
+			font-weight: bold;
 		}
 
 		#netteBluescreen .odd, #netteBluescreen .odd pre {
@@ -320,12 +328,12 @@ if (headers_sent()) {
 
 		function netteToggle(link, panelId)
 		{
-			var span = link.getElementsByTagName('span')[0];
+			var arrow = link.getElementsByTagName('abbr')[0];
 			var panel = panelId ? document.getElementById(panelId) : link.nextSibling;
 			while (panel.nodeType !== 1) panel = panel.nextSibling;
 			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
+			arrow.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
 			panel.style.display = collapsed ? (panel.tagName.toLowerCase() === 'code' ? 'inline' : 'block') : 'none';
 
 			return true;
@@ -338,7 +346,7 @@ if (headers_sent()) {
 
 <body>
 <div id="netteBluescreen">
-	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this)"><span>&#x25bc;</span></a
+	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this)"><abbr>&#x25bc;</abbr></a
 
 	><div>
 		<div id="netteBluescreenError" class="panel">
@@ -382,12 +390,12 @@ if (headers_sent()) {
 						&lt;PHP inner-code&gt;
 					<?php endif ?>
 
-					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#" onclick="return !netteToggle(this, 'src<?php echo "$level-$key" ?>')">source <span>&#x25ba;</span></a> &nbsp; <?php endif ?>
+					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#" onclick="return !netteToggle(this, 'src<?php echo "$level-$key" ?>')">source <abbr>&#x25ba;</abbr></a>&nbsp; <?php endif ?>
 
 					<?php if (isset($row['class'])) echo $row['class'] . $row['type'] ?>
 					<?php echo $row['function'] ?>
 
-					(<?php if (!empty($row['args'])): ?><a href="#" onclick="return !netteToggle(this, 'args<?php echo "$level-$key" ?>')">arguments <span>&#x25ba;</span></a><?php endif ?>)
+					(<?php if (!empty($row['args'])): ?><a href="#" onclick="return !netteToggle(this, 'args<?php echo "$level-$key" ?>')">arguments <abbr>&#x25ba;</abbr></a><?php endif ?>)
 					</p>
 
 					<?php if (!empty($row['args'])): ?>
@@ -401,7 +409,7 @@ if (headers_sent()) {
 							$params = array();
 						}
 						foreach ($row['args'] as $k => $v) {
-							echo '<tr><td>', (isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</td><td>';
+							echo '<tr><th>', (isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</th><td>';
 							echo _netteDump($v);
 							echo "</td></tr>\n";
 						}
@@ -441,7 +449,7 @@ if (headers_sent()) {
 			<table>
 			<?php
 			foreach ($ex->context as $k => $v) {
-				echo '<tr><td>$', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
+				echo '<tr><th>$', htmlspecialchars($k), '</th><td>', _netteDump($v), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -459,11 +467,11 @@ if (headers_sent()) {
 			<?php
 			$list = get_defined_constants(TRUE);
 			if (!empty($list['user'])):?>
-			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
+			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<table id="pnl-env-const">
 			<?php
 			foreach ($list['user'] as $k => $v) {
-				echo '<tr'.($rn++%2?' class="odd"':'').'><td>', htmlspecialchars($k), '</td>';
+				echo '<tr'.($rn++%2?' class="odd"':'').'><th>', htmlspecialchars($k), '</th>';
 				echo '<td>', _netteDump($v), "</td></tr>\n";
 			}
 			?>
@@ -471,7 +479,7 @@ if (headers_sent()) {
 			<?php endif ?>
 
 
-			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <span>&#x25ba;</span></a> (<?php echo count(get_included_files()) ?>)</h3>
+			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <abbr>&#x25ba;</abbr></a>(<?php echo count(get_included_files()) ?>)</h3>
 			<table id="pnl-env-files" class="collapsed">
 			<?php
 			foreach (get_included_files() as $v) {
@@ -487,7 +495,7 @@ if (headers_sent()) {
 			<?php else: ?>
 			<table>
 			<?php
-			foreach ($_SERVER as $k => $v) echo '<tr'.($rn++%2?' class="odd"':'').'><td>', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
+			foreach ($_SERVER as $k => $v) echo '<tr'.($rn++%2?' class="odd"':'').'><th>', htmlspecialchars($k), '</th><td>', _netteDump($v), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>
@@ -501,7 +509,7 @@ if (headers_sent()) {
 			<h3>Headers</h3>
 			<table>
 			<?php
-			foreach (apache_request_headers() as $k => $v) echo '<tr'.($rn++%2?' class="odd"':'').'><td>', htmlspecialchars($k), '</td><td>', htmlspecialchars($v), "</td></tr>\n";
+			foreach (apache_request_headers() as $k => $v) echo '<tr'.($rn++%2?' class="odd"':'').'><th>', htmlspecialchars($k), '</th><td>', htmlspecialchars($v), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>
@@ -514,7 +522,7 @@ if (headers_sent()) {
 			<?php else: ?>
 			<table>
 			<?php
-			foreach ($GLOBALS[$name] as $k => $v) echo '<tr'.($rn++%2?' class="odd"':'').'><td>', htmlspecialchars($k), '</td><td>', _netteDump($v), "</td></tr>\n";
+			foreach ($GLOBALS[$name] as $k => $v) echo '<tr'.($rn++%2?' class="odd"':'').'><th>', htmlspecialchars($k), '</th><td>', _netteDump($v), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>

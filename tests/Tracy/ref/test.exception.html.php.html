@@ -42,7 +42,7 @@
 			padding: 3px;
 		}
 
-		#netteBluescreenIcon span {
+		#netteBluescreenIcon abbr {
 			color: black !important;
 		}
 
@@ -62,7 +62,7 @@
 			color: #4197E3;
 		}
 
-		#netteBluescreen a span {
+		#netteBluescreen a abbr {
 			font-family: sans-serif;
 			color: #999;
 		}
@@ -97,6 +97,10 @@
 			color: #c16549;
 		}
 
+		#netteBluescreen pre.dump a {
+			color: #333;
+		}		
+
 		#netteBluescreen div.panel {
 			border-bottom: 1px solid #eee;
 			padding: 1px 2em;
@@ -114,8 +118,14 @@
 
 		#netteBluescreen td, #netteBluescreen th {
 			vertical-align: top;
+			text-align: left;
 			padding: 2px 3px;
 			border: 1px solid #eeeebb;
+		}
+
+		#netteBluescreen th {
+			width: 10%;
+			font-weight: bold;
 		}
 
 		#netteBluescreen .odd, #netteBluescreen .odd pre {
@@ -151,12 +161,12 @@
 
 		function netteToggle(link, panelId)
 		{
-			var span = link.getElementsByTagName('span')[0];
+			var arrow = link.getElementsByTagName('abbr')[0];
 			var panel = panelId ? document.getElementById(panelId) : link.nextSibling;
 			while (panel.nodeType !== 1) panel = panel.nextSibling;
 			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-			span.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
+			arrow.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
 			panel.style.display = collapsed ? (panel.tagName.toLowerCase() === 'code' ? 'inline' : 'block') : 'none';
 
 			return true;
@@ -169,7 +179,7 @@
 
 <body>
 <div id="netteBluescreen">
-	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this)"><span>&#x25bc;</span></a
+	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this)"><abbr>&#x25bc;</abbr></a
 
 	><div>
 		<div id="netteBluescreenError" class="panel">
@@ -183,7 +193,7 @@
 				
 			
 										<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <span>&#x25bc;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
 
 		<div id="pnl1" class="inner">
 					<p><strong>File:</strong> D:\Web\nette\_trunk\tests\Debug\test.exception.html.php &nbsp; <strong>Line:</strong> 32</p>
@@ -206,21 +216,21 @@
 
 
 				<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Call stack <span>&#x25bc;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Call stack <abbr>&#x25bc;</abbr></a></h2>
 
 		<div id="pnl2" class="inner">
 					<ol>
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.exception.html.php">Debug/<b>test.exception.html.php</b></span> (26)					
-					<a href="#" onclick="return !netteToggle(this, 'src1-0')">source <span>&#x25ba;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-0')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
 										third
-					(<a href="#" onclick="return !netteToggle(this, 'args1-0')">arguments <span>&#x25ba;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-0')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
 
 											<div class="collapsed" id="args1-0">
 						<table>
-						<tr><td>$arg1</td><td><pre class="dump"><span>array</span>(3) <a href='#' onclick='return !netteToggle(this)'><span>&#x25bc;</span></a> <code>{
+						<tr><th>$arg1</th><td><pre class="dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>{
    0 => <span>int</span>(1)
    1 => <span>int</span>(2)
    2 => <span>int</span>(3)
@@ -252,17 +262,17 @@
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.exception.html.php">Debug/<b>test.exception.html.php</b></span> (19)					
-					<a href="#" onclick="return !netteToggle(this, 'src1-1')">source <span>&#x25ba;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-1')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
 										second
-					(<a href="#" onclick="return !netteToggle(this, 'args1-1')">arguments <span>&#x25ba;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-1')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
 
 											<div class="collapsed" id="args1-1">
 						<table>
-						<tr><td>$arg1</td><td><pre class="dump"><span>bool</span>(TRUE)
+						<tr><th>$arg1</th><td><pre class="dump"><span>bool</span>(TRUE)
 </pre>
 </td></tr>
-<tr><td>$arg2</td><td><pre class="dump"><span>bool</span>(FALSE)
+<tr><th>$arg2</th><td><pre class="dump"><span>bool</span>(FALSE)
 </pre>
 </td></tr>
 						</table>
@@ -290,17 +300,17 @@
 										<li><p>
 
 											<span title="D:\Web\nette\_trunk\tests\Debug\test.exception.html.php">Debug/<b>test.exception.html.php</b></span> (36)					
-					<a href="#" onclick="return !netteToggle(this, 'src1-2')">source <span>&#x25ba;</span></a> &nbsp; 
+					<a href="#" onclick="return !netteToggle(this, 'src1-2')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
 										first
-					(<a href="#" onclick="return !netteToggle(this, 'args1-2')">arguments <span>&#x25ba;</span></a>)
+					(<a href="#" onclick="return !netteToggle(this, 'args1-2')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
 
 											<div class="collapsed" id="args1-2">
 						<table>
-						<tr><td>$arg1</td><td><pre class="dump"><span>int</span>(10)
+						<tr><th>$arg1</th><td><pre class="dump"><span>int</span>(10)
 </pre>
 </td></tr>
-<tr><td>$arg2</td><td><pre class="dump"><span>string</span>(10) "any string"
+<tr><th>$arg2</th><td><pre class="dump"><span>string</span>(10) "any string"
 </pre>
 </td></tr>
 						</table>
@@ -335,24 +345,24 @@
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">Environment <span>&#x25ba;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">Environment <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="pnl3" class="collapsed inner">
-							<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
+							<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<table id="pnl-env-const">
-			<tr><td>E_DEPRECATED</td><td><pre class="dump"><span>int</span>(8192)
+			<tr><th>E_DEPRECATED</th><td><pre class="dump"><span>int</span>(8192)
 </pre>
 </td></tr>
-<tr class="odd"><td>E_USER_DEPRECATED</td><td><pre class="dump"><span>int</span>(16384)
+<tr class="odd"><th>E_USER_DEPRECATED</th><td><pre class="dump"><span>int</span>(16384)
 </pre>
 </td></tr>
-<tr><td>MY_CONST</td><td><pre class="dump"><span>int</span>(123)
+<tr><th>MY_CONST</th><td><pre class="dump"><span>int</span>(123)
 </pre>
 </td></tr>
 			</table>
 			
 
-			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <span>&#x25ba;</span></a> (15)</h3>
+			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <abbr>&#x25ba;</abbr></a>(15)</h3>
 			<table id="pnl-env-files" class="collapsed">
 			<tr class="odd"><td>D:\Web\nette\_trunk\tests\Debug\test.exception.html.php</td></tr>
 <tr><td>D:\Web\_php\tools.debug.php</td></tr>
@@ -374,13 +384,13 @@
 
 			<h3>$_SERVER</h3>
 						<table>
-			<tr><td>PHP_SELF</td><td><pre class="dump"><span>string</span>(23) "test.exception.html.php"
+			<tr><th>PHP_SELF</th><td><pre class="dump"><span>string</span>(23) "test.exception.html.php"
 </pre>
 </td></tr>
-<tr class="odd"><td>SCRIPT_NAME</td><td><pre class="dump"><span>string</span>(23) "test.exception.html.php"
+<tr class="odd"><th>SCRIPT_NAME</th><td><pre class="dump"><span>string</span>(23) "test.exception.html.php"
 </pre>
 </td></tr>
-<tr><td>DOCUMENT_ROOT</td><td><pre class="dump"><span>string</span>(0) ""
+<tr><th>DOCUMENT_ROOT</th><td><pre class="dump"><span>string</span>(0) ""
 </pre>
 </td></tr>
 			</table>
@@ -391,7 +401,7 @@
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">HTTP request <span>&#x25ba;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="pnl4" class="collapsed inner">
 				
@@ -408,7 +418,7 @@
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl5')">HTTP response <span>&#x25ba;</span></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl5')">HTTP response <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="pnl5" class="collapsed inner">
 				<h3>Headers</h3>

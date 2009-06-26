@@ -96,7 +96,7 @@
 
 <div id="netteProfilerContainer">
 <div id="netteProfiler">
-	<a id="netteProfilerIcon" href="#"><span>&#x25bc;</span></a
+	<a id="netteProfilerIcon" href="#"><abbr>&#x25bc;</abbr></a
 	><ul>
 	<?php foreach ($colophons as $callback): ?>
 	<?php foreach ((array) call_user_func($callback, 'profiler') as $line): ?><li><?php echo $line, "\n" ?></li><?php endforeach ?>
@@ -132,13 +132,13 @@ document.getElementById('netteProfiler').onmousedown = function(e) {
 };
 
 document.getElementById('netteProfilerIcon').onclick = function(e) {
-	var span = this.getElementsByTagName('span')[0];
+	var arrow = this.getElementsByTagName('abbr')[0];
 	var panel = this.nextSibling;
 	var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-	span.innerHTML = collapsed ? String.fromCharCode(0x25bc) : 'Profiler ' + String.fromCharCode(0x25ba);
+	arrow.innerHTML = collapsed ? String.fromCharCode(0x25bc) : 'Profiler ' + String.fromCharCode(0x25ba);
 	panel.style.display = collapsed ? 'block' : 'none';
-	span.parentNode.style.position = collapsed ? 'absolute' : 'static';
+	arrow.parentNode.style.position = collapsed ? 'absolute' : 'static';
 	return false;
 }
 

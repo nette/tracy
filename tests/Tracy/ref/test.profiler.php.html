@@ -71,9 +71,9 @@
 
 <div id="netteProfilerContainer">
 <div id="netteProfiler">
-	<a id="netteProfilerIcon" href="#"><span>&#x25bc;</span></a
+	<a id="netteProfilerIcon" href="#"><abbr>&#x25bc;</abbr></a
 	><ul>
-		<li>Elapsed time: <b>10.2</b> ms | Allocated memory: <b>492.9</b> kB
+		<li>Elapsed time: <b>10.7</b> ms | Allocated memory: <b>489.1</b> kB
 </li><li><span>13/1 files</span>, <span title="Object, ArgumentOutOfRangeException, InvalidStateException, NotImplementedException, NotSupportedException, DeprecatedException, MemberAccessException, IOException, FileNotFoundException, DirectoryNotFoundException, FatalErrorException, ObjectMixin, LimitedScope, AutoLoader, NetteLoader, Debug, Framework">17 classes</span>, <span >0 intf</span>, <span title="dump, stopky, myautoload, fixnamespace, fixcallback">5 func</span>, <span >0 consts</span>, 
 </li>		</ul>
 </div>
@@ -106,13 +106,13 @@ document.getElementById('netteProfiler').onmousedown = function(e) {
 };
 
 document.getElementById('netteProfilerIcon').onclick = function(e) {
-	var span = this.getElementsByTagName('span')[0];
+	var arrow = this.getElementsByTagName('abbr')[0];
 	var panel = this.nextSibling;
 	var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-	span.innerHTML = collapsed ? String.fromCharCode(0x25bc) : 'Profiler ' + String.fromCharCode(0x25ba);
+	arrow.innerHTML = collapsed ? String.fromCharCode(0x25bc) : 'Profiler ' + String.fromCharCode(0x25ba);
 	panel.style.display = collapsed ? 'block' : 'none';
-	span.parentNode.style.position = collapsed ? 'absolute' : 'static';
+	arrow.parentNode.style.position = collapsed ? 'absolute' : 'static';
 	return false;
 }
 
