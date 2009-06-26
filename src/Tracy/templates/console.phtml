@@ -31,7 +31,7 @@ if (!function_exists(/*Nette\*/'_netteDumpCb2')) {
 
 	function _netteDumpCb2($m)
 	{
-		return "$m[1]<a href='#' onclick='return !netteToggle(this)'>$m[2]($m[3]) " . (trim($m[1]) || $m[3] < 7 ? '<abbr>&#x25bc;</abbr> </a><code>' : '<abbr>&#x25ba;</abbr> </a><code class="collapsed">');
+		return "$m[1]<a href='#' onclick='return !netteToggle(this)'>$m[2]($m[3]) " . ($m[3] < 7 ? '<abbr>&#x25bc;</abbr> </a><code>' : '<abbr>&#x25ba;</abbr> </a><code class="collapsed">');
 	}
 }
 
