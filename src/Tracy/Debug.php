@@ -380,7 +380,7 @@ final class Debug
 		// php configuration
 		if (function_exists('ini_set')) {
 			ini_set('display_errors', !self::$productionMode); // or 'stderr'
-			ini_set('html_errors', !self::$consoleMode);
+			ini_set('html_errors', !self::$logFile && !self::$consoleMode);
 			ini_set('log_errors', (bool) self::$logFile);
 
 		} elseif (ini_get('log_errors') != (bool) self::$logFile || // intentionally ==
