@@ -18,8 +18,7 @@
  * @package    Nette
  * @version    $Id$
  *
- * @param      mixed     $var
- * @param      string    $title
+ * @param      array     $payload
  * @return     void
  */
 
@@ -169,19 +168,21 @@ ob_start();
 <?php $document = ob_get_clean() ?>
 
 <?php ob_start() ?>
-	<?php if (isset($title)):?>
-	<h2><?php echo htmlspecialchars($title) ?></h2>
+<?php foreach ($payload as $item): ?>
+	<?php if ($item['title']):?>
+	<h2><?php echo htmlspecialchars($item['title']) ?></h2>
 	<?php endif ?>
 
 	<table>
 	<?php $i = 0 ?>
-	<?php foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val): ?>
+	<?php foreach ((is_array($item['var']) ? $item['var'] : array('' => $item['var'])) as $key => $val): ?>
 	<tr class="<?php echo $i++ % 2 ? 'odd' : 'even' ?>">
 		<th><?php echo htmlspecialchars($key) ?></th>
 		<td><?php echo preg_replace_callback('#(<pre class="dump">|\s+)?(.*)\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb2', Debug::dump($val, TRUE)) ?></td>
 	</tr>
 	<?php endforeach ?>
 	</table>
+<?php endforeach ?>
 <?php $body = ob_get_clean() ?>
 
 <script type="text/javascript">

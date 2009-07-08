@@ -54,6 +54,9 @@ final class Debug
 	/** @var bool is AJAX request detected? */
 	private static $ajaxDetected;
 
+	/** @var array payload filled by {@link Debug::consoleDump()} */
+	private static $consoleData;
+
 	/********************* Debug::dump() ****************d*g**/
 
 	/** @var int  how many nested levels of array/object properties display {@link Debug::dump()} */
@@ -149,6 +152,75 @@ final class Debug
 		self::$productionMode = self::DETECT;
 		self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
 		self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+		register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
+	}
+
+
+
+	/**
+	 * Shutdown handler to execute of the planned activities.
+	 * @return void
+	 * @internal
+	 */
+	public static function shutdownHandler()
+	{
+		// 1) fatal error handler
+		static $types = array(
+			E_ERROR => 1,
+			E_CORE_ERROR => 1,
+			E_COMPILE_ERROR => 1,
+			E_PARSE => 1,
+		);
+
+		$error = error_get_last();
+		if (isset($types[$error['type']])) {
+			if (!headers_sent()) { // for PHP < 5.2.4
+				header('HTTP/1.1 500 Internal Server Error');
+			}
+
+			if (ini_get('html_errors')) {
+				$error['message'] = html_entity_decode(strip_tags($error['message']));
+			}
+
+			self::processException(new /*\*/FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
+		}
+
+
+		// other activities require HTML & development mode
+		if (self::$productionMode) {
+			return;
+		}
+		foreach (headers_list() as $header) {
+			if (strncasecmp($header, 'Content-Type:', 13) === 0) {
+				if (substr($header, 14, 9) === 'text/html') {
+					break;
+				}
+				return;
+			}
+		}
+
+		// 2) profiler
+		if (self::$enabledProfiler) {
+			if (self::$firebugDetected) {
+				self::fireLog('Nette profiler', self::GROUP_START);
+				foreach (self::$colophons as $callback) {
+					foreach ((array) call_user_func($callback, 'profiler') as $line) self::fireLog(strip_tags($line));
+				}
+				self::fireLog(NULL, self::GROUP_END);
+			}
+
+			if (!self::$ajaxDetected) {
+				$colophons = self::$colophons;
+				require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
+			}
+		}
+
+
+		// 3) console
+		if (self::$consoleData) {
+			$payload = self::$consoleData;
+			require dirname(__FILE__) . '/Debug.templates/console.phtml';
+		}
 	}
 
 
@@ -204,7 +276,7 @@ final class Debug
 	public static function consoleDump($var, $title = NULL)
 	{
 		if (!self::$productionMode) {
-			require dirname(__FILE__) . '/Debug.templates/console.phtml';
+			self::$consoleData[] = array('title' => $title, 'var' => $var);
 		}
 	}
 
@@ -408,7 +480,6 @@ final class Debug
 
 		set_exception_handler(array(__CLASS__, 'exceptionHandler'));
 		set_error_handler(array(__CLASS__, 'errorHandler'));
-		register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
 		self::$enabled = TRUE;
 	}
 
@@ -494,37 +565,6 @@ final class Debug
 		}
 
 		return FALSE; // call normal error handler
-	}
-
-
-
-	/**
-	 * Shutdown handler to process fatal errors.
-	 * @return void
-	 * @internal
-	 */
-	public static function shutdownHandler()
-	{
-		static $types = array(
-			E_ERROR => 1,
-			E_CORE_ERROR => 1,
-			E_COMPILE_ERROR => 1,
-			E_PARSE => 1,
-		);
-
-		$error = error_get_last();
-
-		if (isset($types[$error['type']])) {
-			if (!headers_sent()) { // for PHP < 5.2.4
-				header('HTTP/1.1 500 Internal Server Error');
-			}
-
-			if (ini_get('html_errors')) {
-				$error['message'] = html_entity_decode(strip_tags($error['message']));
-			}
-
-			self::processException(new /*\*/FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
-		}
 	}
 
 
@@ -677,7 +717,6 @@ final class Debug
 	public static function enableProfiler()
 	{
 		self::$enabledProfiler = TRUE;
-		register_shutdown_function(array(__CLASS__, 'paintProfiler'));
 	}
 
 
@@ -689,44 +728,6 @@ final class Debug
 	public static function disableProfiler()
 	{
 		self::$enabledProfiler = FALSE;
-	}
-
-
-
-	/**
-	 * Paint profiler window.
-	 * @return void
-	 * @internal
-	 */
-	public static function paintProfiler()
-	{
-		if (!self::$enabledProfiler || self::$productionMode) {
-			return;
-		}
-
-		foreach (headers_list() as $header) {
-			if (strncasecmp($header, 'Content-Type:', 13) === 0) {
-				if (substr($header, 14, 9) === 'text/html') {
-					break;
-				}
-				return;
-			}
-		}
-
-		self::$enabledProfiler = FALSE;
-
-		if (self::$firebugDetected) {
-			self::fireLog('Nette profiler', self::GROUP_START);
-			foreach (self::$colophons as $callback) {
-				foreach ((array) call_user_func($callback, 'profiler') as $line) self::fireLog(strip_tags($line));
-			}
-			self::fireLog(NULL, self::GROUP_END);
-		}
-
-		if (!self::$ajaxDetected) {
-			$colophons = self::$colophons;
-			require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
-		}
 	}
 
 
