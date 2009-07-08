@@ -49,7 +49,9 @@ function _netteDebugPrintCode($file, $line, $count = 15)
 
 	$start = max(1, $line - floor($count / 2));
 
-	$source = explode("\n", @highlight_file($file, TRUE));
+	$source = @file_get_contents($file);
+	if (!$source) return;
+	$source = explode("\n", highlight_string($source, TRUE));
 	$spans = 1;
 	echo $source[0]; // <code><span color=highlight.html>
 	$source = explode('<br />', $source[1]);
