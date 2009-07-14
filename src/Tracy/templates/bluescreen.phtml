@@ -165,6 +165,9 @@ $rn = 0;
 
 if (headers_sent()) {
 	echo '</pre></xmp></table>';
+} else {
+	@ob_end_clean(); while (ob_get_level() && @ob_end_clean());
+	header('Content-Encoding:', TRUE); // override gzhandler
 }
 
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
