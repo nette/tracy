@@ -232,9 +232,9 @@ final class Debug
 	/**
 	 * Dumps information about a variable in readable format.
 	 *
-	 * @param  mixed  variable to dump.
+	 * @param  mixed  variable to dump
 	 * @param  bool   return output instead of printing it? (bypasses $productionMode)
-	 * @return mixed  variable or dump
+	 * @return mixed  variable itself or dump
 	 */
 	public static function dump($var, $return = FALSE)
 	{
@@ -269,15 +269,16 @@ final class Debug
 	/**
 	 * Dumps information about a variable in Nette Debug Console.
 	 *
-	 * @param  mixed  variable to dump.
+	 * @param  mixed  variable to dump
 	 * @param  string optional title
-	 * @return void
+	 * @return mixed  variable itself
 	 */
 	public static function consoleDump($var, $title = NULL)
 	{
 		if (!self::$productionMode) {
 			self::$consoleData[] = array('title' => $title, 'var' => $var);
 		}
+		return $var;
 	}
 
 
@@ -607,6 +608,10 @@ final class Debug
 			self::fireLog($exception, self::EXCEPTION);
 
 		} elseif ($outputAllowed) { // dump to browser
+			if (!headers_sent()) {
+				@ob_end_clean(); while (ob_get_level() && @ob_end_clean());
+				header('Content-Encoding:', TRUE); // override gzhandler
+			}
 			self::paintBlueScreen($exception);
 
 		} elseif (self::$firebugDetected && !headers_sent()) {
@@ -812,13 +817,14 @@ final class Debug
 
 	/**
 	 * Sends variable dump to Firebug tab request/server.
-	 * @param  mixed   variable to dump
-	 * @param  string  unique key
-	 * @return bool    was successful?
+	 * @param  mixed  variable to dump
+	 * @param  string unique key
+	 * @return mixed  variable itself
 	 */
 	public static function fireDump($var, $key)
 	{
-		return self::fireSend(2, array((string) $key => $var));
+		self::fireSend(2, array((string) $key => $var));
+		return $var;
 	}
 
 
