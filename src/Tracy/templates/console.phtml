@@ -191,6 +191,11 @@ if (typeof _netteConsole === 'undefined') {
 	_netteConsole = window.open('','_netteConsole','width=700,height=700,resizable,scrollbars=yes');
 	_netteConsole.document.write(<?php echo json_encode(preg_replace('#\s+#', ' ', $document)) ?>);
 	_netteConsole.document.close();
+	_netteConsole.document.onkeyup = function(e) {
+		e = e || _netteConsole.event;
+		if (e.keyCode == 27) _netteConsole.close();
+	}
+	_netteConsole.document.body.focus();
 }
 _netteConsole.document.body.innerHTML = _netteConsole.document.body.innerHTML + <?php echo json_encode($body) ?>;
 /* ]]> */
