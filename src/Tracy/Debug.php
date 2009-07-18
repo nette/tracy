@@ -20,6 +20,8 @@
 
 /*namespace Nette;*/
 
+/*use Nette\Environment;*/
+
 
 
 /**/require_once dirname(__FILE__) . '/compatibility.php';/**/
@@ -641,6 +643,11 @@ final class Debug
 				$internals[$rc->getFileName()] = TRUE;
 			}
 		}
+
+		if (class_exists(/*Nette\*/'Environment', FALSE)) {
+			$application = Environment::getServiceLocator()->hasService('Nette\Application\Application', TRUE) ? Environment::getServiceLocator()->getService('Nette\Application\Application') : NULL;
+		}
+
 		$colophons = self::$colophons;
 		require dirname(__FILE__) . '/Debug.templates/bluescreen.phtml';
 	}

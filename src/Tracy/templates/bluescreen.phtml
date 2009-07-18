@@ -21,6 +21,7 @@
  * @param      array     $exception
  * @param      array     $colophons
  * @param      array     $internals
+ * @param      Nette\Application\Application $application
  * @return     void
  */
 
@@ -461,6 +462,18 @@ if (headers_sent()) {
 		<?php } while ((method_exists($ex, 'getPrevious') && $ex = $ex->getPrevious()) || (isset($ex->previous) && $ex = $ex->previous)); ?>
 		<?php while (--$level) _netteClosePanel() ?>
 
+
+
+
+		<?php if (!empty($application)):?>
+		<?php _netteOpenPanel('Nette Application', TRUE) ?>
+			<h3>Requests</h3>
+			<?php echo _netteDump($application->getRequests()) ?>
+
+			<h3>Presenter</h3>
+			<?php echo _netteDump($application->getPresenter()) ?>
+		<?php _netteClosePanel() ?>
+		<?php endif ?>
 
 
 
