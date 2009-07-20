@@ -39,7 +39,7 @@
 	#netteProfiler {
 		font: normal normal 11px/1.4 Consolas, Arial;
 		position: relative;
-		padding: 1px;
+		padding: 3px;
 		color: black;
 		background: #EEE;
 		border: 1px dotted gray;
@@ -59,7 +59,7 @@
 		right: 0;
 		top: 0;
 		line-height: 1;
-		padding: 4px;
+		padding: 2px;
 		color: black;
 		text-decoration: none;
 	}
@@ -139,9 +139,15 @@ document.getElementById('netteProfilerIcon').onclick = function(e) {
 	arrow.innerHTML = collapsed ? String.fromCharCode(0x25bc) : 'Profiler ' + String.fromCharCode(0x25ba);
 	panel.style.display = collapsed ? 'block' : 'none';
 	arrow.parentNode.style.position = collapsed ? 'absolute' : 'static';
+
+	document.cookie = 'netteProfilerVisible=' + collapsed*1 + '; path=/';
 	return false;
 }
 
 document.body.appendChild(document.getElementById('netteProfilerContainer'));
+
+if (document.cookie.indexOf('netteProfilerVisible=0') > -1) {
+	document.getElementById('netteProfilerIcon').onclick();
+}
 /* ]]> */
 </script>
