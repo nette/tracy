@@ -127,6 +127,7 @@ document.getElementById('netteProfiler').onmousedown = function(e) {
 	document.documentElement.onmouseup = function(e) {
 		document.documentElement.onmousemove = null;
 		document.documentElement.onmouseup = null;
+		document.cookie = 'netteProfilerPosition=' + thisObj.style.left + ':' + thisObj.style.top + '; path=/';
 		return false;
 	};
 };
@@ -148,6 +149,12 @@ document.body.appendChild(document.getElementById('netteProfilerContainer'));
 
 if (document.cookie.indexOf('netteProfilerVisible=0') > -1) {
 	document.getElementById('netteProfilerIcon').onclick();
+}
+
+var _nettePos = document.cookie.match(/netteProfilerPosition=([0-9-]+px):([0-9-]+px)/);
+if (_nettePos) {
+	document.getElementById('netteProfiler').style.left = _nettePos[1];
+	document.getElementById('netteProfiler').style.top = _nettePos[2];
 }
 /* ]]> */
 </script>

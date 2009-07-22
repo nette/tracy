@@ -14,7 +14,7 @@
 	#netteProfiler {
 		font: normal normal 11px/1.4 Consolas, Arial;
 		position: relative;
-		padding: 1px;
+		padding: 3px;
 		color: black;
 		background: #EEE;
 		border: 1px dotted gray;
@@ -34,7 +34,7 @@
 		right: 0;
 		top: 0;
 		line-height: 1;
-		padding: 4px;
+		padding: 2px;
 		color: black;
 		text-decoration: none;
 	}
@@ -73,7 +73,7 @@
 <div id="netteProfiler">
 	<a id="netteProfilerIcon" href="#"><abbr>&#x25bc;</abbr></a
 	><ul>
-		<li>Elapsed time: <b>10.7</b> ms | Allocated memory: <b>489.1</b> kB
+		<li>Elapsed time: <b>11.4</b> ms | Allocated memory: <b>494.2</b> kB
 </li><li><span>13/1 files</span>, <span title="Object, ArgumentOutOfRangeException, InvalidStateException, NotImplementedException, NotSupportedException, DeprecatedException, MemberAccessException, IOException, FileNotFoundException, DirectoryNotFoundException, FatalErrorException, ObjectMixin, LimitedScope, AutoLoader, NetteLoader, Debug, Framework">17 classes</span>, <span >0 intf</span>, <span title="dump, stopky, myautoload, fixnamespace, fixcallback">5 func</span>, <span >0 consts</span>, 
 </li>		</ul>
 </div>
@@ -101,6 +101,7 @@ document.getElementById('netteProfiler').onmousedown = function(e) {
 	document.documentElement.onmouseup = function(e) {
 		document.documentElement.onmousemove = null;
 		document.documentElement.onmouseup = null;
+		document.cookie = 'netteProfilerPosition=' + thisObj.style.left + ':' + thisObj.style.top + '; path=/';
 		return false;
 	};
 };
@@ -113,9 +114,21 @@ document.getElementById('netteProfilerIcon').onclick = function(e) {
 	arrow.innerHTML = collapsed ? String.fromCharCode(0x25bc) : 'Profiler ' + String.fromCharCode(0x25ba);
 	panel.style.display = collapsed ? 'block' : 'none';
 	arrow.parentNode.style.position = collapsed ? 'absolute' : 'static';
+
+	document.cookie = 'netteProfilerVisible=' + collapsed*1 + '; path=/';
 	return false;
 }
 
 document.body.appendChild(document.getElementById('netteProfilerContainer'));
+
+if (document.cookie.indexOf('netteProfilerVisible=0') > -1) {
+	document.getElementById('netteProfilerIcon').onclick();
+}
+
+var _nettePos = document.cookie.match(/netteProfilerPosition=(.+):(.+)/);
+if (_nettePos) {
+	document.getElementById('netteProfiler').style.left = _nettePos[1];
+	document.getElementById('netteProfiler').style.top = _nettePos[2];
+}
 /* ]]> */
 </script>
