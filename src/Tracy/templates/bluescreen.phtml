@@ -161,7 +161,7 @@ static $errorTypes = array(
 	E_DEPRECATED => 'Deprecated',
 	E_USER_DEPRECATED => 'User Deprecated',
 );
-$title = ($exception instanceof FatalErrorException && isset($errorTypes[$exception->getSeverity()])) ? $errorTypes[$exception->getSeverity()] : get_class($exception);
+$title = ($exception instanceof /*\*/FatalErrorException && isset($errorTypes[$exception->getSeverity()])) ? $errorTypes[$exception->getSeverity()] : get_class($exception);
 $rn = 0;
 
 if (headers_sent()) {
