@@ -293,6 +293,16 @@ final class Debug
 	 */
 	private static function _dump(&$var, $level)
 	{
+		static $tableUtf, $tableBin, $re = '#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u';
+		if ($tableUtf === NULL) {
+			foreach (range("\x00", "\xFF") as $ch) {
+				if (ord($ch) < 32 && strpos("\r\n\t", $ch) === FALSE) $tableUtf[$ch] = $tableBin[$ch] = '\\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
+				elseif (ord($ch) < 127) $tableUtf[$ch] = $tableBin[$ch] = $ch;
+				else { $tableUtf[$ch] = $ch; $tableBin[$ch] = '\\x' . dechex(ord($ch)); }
+			}
+			$tableUtf['\\x'] = $tableBin['\\x'] = '\\\\x';
+		}
+
 		if (is_bool($var)) {
 			return "<span>bool</span>(" . ($var ? 'TRUE' : 'FALSE') . ")\n";
 
@@ -311,6 +321,7 @@ final class Debug
 			} else {
 				$s = htmlSpecialChars($var, ENT_NOQUOTES);
 			}
+			$s = strtr($s, preg_match($re, $s) || preg_last_error() ? $tableBin : $tableUtf);
 			return "<span>string</span>(" . strlen($var) . ") \"$s\"\n";
 
 		} elseif (is_array($var)) {
@@ -329,7 +340,8 @@ final class Debug
 				$var[$marker] = 0;
 				foreach ($var as $k => &$v) {
 					if ($k === $marker) continue;
-					$s .= "$space$space1" . (is_int($k) ? $k : "\"$k\"") . " => " . self::_dump($v, $level + 1);
+					$k = is_int($k) ? $k : '"' . strtr($k, preg_match($re, $k) || preg_last_error() ? $tableBin : $tableUtf) . '"';
+					$s .= "$space$space1$k => " . self::_dump($v, $level + 1);
 				}
 				unset($var[$marker]);
 				$s .= "$space}</code>";
@@ -360,6 +372,7 @@ final class Debug
 						$m = $k[1] === '*' ? ' <span>protected</span>' : ' <span>private</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
+					$k = strtr($k, preg_match($re, $k) || preg_last_error() ? $tableBin : $tableUtf);
 					$s .= "$space$space1\"$k\"$m => " . self::_dump($v, $level + 1);
 				}
 				array_pop($list);
