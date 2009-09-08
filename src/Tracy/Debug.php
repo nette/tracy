@@ -551,6 +551,9 @@ final class Debug
 			return NULL; // nothing to do
 
 		} elseif (self::$strictMode) {
+			if (!headers_sent()) {
+				header('HTTP/1.1 500 Internal Server Error');
+			}
 			self::processException(new /*\*/FatalErrorException($message, 0, $severity, $file, $line, $context), TRUE);
 			exit;
 		}
