@@ -627,7 +627,8 @@ final class Debug
 		} elseif ($outputAllowed) { // dump to browser
 			if (!headers_sent()) {
 				@ob_end_clean(); while (ob_get_level() && @ob_end_clean());
-				header('Content-Encoding: identity', TRUE); // override gzhandler
+				/*header_remove('Content-Encoding');*/
+				/**/header('Content-Encoding: identity', TRUE);/**/ // override gzhandler
 			}
 			self::paintBlueScreen($exception);
 
