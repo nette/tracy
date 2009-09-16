@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="robots" content="noindex,noarchive">
+	<meta name="generator" content="Nette Framework">
+
+	<title>Notice</title><!-- Undefined variable: x -->
+
+	%A%
+</head>
+
+
+
+<body>
+<div id="netteBluescreen">
+	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this)"><abbr>&#x25bc;</abbr></a
+
+	><div>
+		<div id="netteBluescreenError" class="panel">
+			<h1>Notice</h1>
+
+			<p>Undefined variable: x</p>
+		</div>
+
+
+
+				
+			
+										<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
+
+		<div id="pnl1" class="inner">
+					<p><strong>File:</strong> %a% &nbsp; <strong>Line:</strong> %d%</p>
+				<pre>%A%</pre>
+					</div>
+	</div>
+				
+
+
+				<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Call stack <abbr>&#x25bc;</abbr></a></h2>
+
+		<div id="pnl2" class="inner">
+					<ol>
+										<li><p>
+
+											<span title="%a%">%a%</span> (%d%)					
+					<a href="#" onclick="return !netteToggle(this, 'src1-0')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
+					%ns%Debug::					errorHandler
+					(<a href="#" onclick="return !netteToggle(this, 'args1-0')">arguments <abbr>&#x25ba;</abbr></a>)
+					</p>
+
+											<div class="collapsed" id="args1-0">
+						<table>
+						<tr><th>$severity</th><td><pre class="dump"><span>int</span>(8)
+</pre>
+</td></tr>
+<tr><th>$message</th><td><pre class="dump"><span>string</span>(21) "Undefined variable: x"
+</pre>
+</td></tr>
+<tr><th>$file</th><td><pre class="dump"><span>string</span>(%d%) "%a%"
+</pre>
+</td></tr>
+<tr><th>$line</th><td><pre class="dump"><span>int</span>(%d%)
+</pre>
+</td></tr>
+<tr><th>$context</th><td><pre class="dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(1) <abbr>&#x25bc;</abbr> </a><code>{
+   <a href='#' onclick='return !netteToggle(this)'>"arg1" => <span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>{
+      0 => <span>int</span>(1)
+      1 => <span>int</span>(2)
+      2 => <span>int</span>(3)
+   }</code>
+}</code>
+</pre>
+</td></tr>
+						</table>
+						</div>
+					
+
+											<pre class="collapsed" id="src1-0">%A%</pre>
+					
+					</li>
+										<li><p>
+
+											<span title="%a%">%a%</span> (%d%)					
+					<a href="#" onclick="return !netteToggle(this, 'src1-1')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
+										third
+					(<a href="#" onclick="return !netteToggle(this, 'args1-1')">arguments <abbr>&#x25ba;</abbr></a>)
+					</p>
+
+											<div class="collapsed" id="args1-1">
+						<table>
+						<tr><th>$arg1</th><td><pre class="dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>{
+   0 => <span>int</span>(1)
+   1 => <span>int</span>(2)
+   2 => <span>int</span>(3)
+}</code>
+</pre>
+</td></tr>
+						</table>
+						</div>
+					
+
+											<pre class="collapsed" id="src1-1">%A%</pre>
+					
+					</li>
+										<li><p>
+
+											<span title="%a%">%a%</span> (%d%)					
+					<a href="#" onclick="return !netteToggle(this, 'src1-2')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
+										second
+					(<a href="#" onclick="return !netteToggle(this, 'args1-2')">arguments <abbr>&#x25ba;</abbr></a>)
+					</p>
+
+											<div class="collapsed" id="args1-2">
+						<table>
+						<tr><th>$arg1</th><td><pre class="dump"><span>bool</span>(TRUE)
+</pre>
+</td></tr>
+<tr><th>$arg2</th><td><pre class="dump"><span>bool</span>(FALSE)
+</pre>
+</td></tr>
+						</table>
+						</div>
+					
+
+											<pre class="collapsed" id="src1-2">%A%</pre>
+					
+					</li>
+										<li><p>
+
+											<span title="%a%">%a%</span> (%d%)					
+					<a href="#" onclick="return !netteToggle(this, 'src1-3')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
+										first
+					(<a href="#" onclick="return !netteToggle(this, 'args1-3')">arguments <abbr>&#x25ba;</abbr></a>)
+					</p>
+
+											<div class="collapsed" id="args1-3">
+						<table>
+						<tr><th>$arg1</th><td><pre class="dump"><span>int</span>(10)
+</pre>
+</td></tr>
+<tr><th>$arg2</th><td><pre class="dump"><span>string</span>(10) "any string"
+</pre>
+</td></tr>
+						</table>
+						</div>
+					
+
+											<pre class="collapsed" id="src1-3">%A%</pre>
+					
+					</li>
+					
+									</ol>
+					</div>
+	</div>
+	
+
+
+			
+
+
+							<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">Variables <abbr>&#x25ba;</abbr></a></h2>
+
+		<div id="pnl3" class="collapsed inner">
+				<table>
+			<tr><th>$arg1</th><td><pre class="dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>{
+   0 => <span>int</span>(1)
+   1 => <span>int</span>(2)
+   2 => <span>int</span>(3)
+}</code>
+</pre>
+</td></tr>
+			</table>
+					</div>
+	</div>
+				
+				
+
+
+
+		
+
+
+
+			<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">Environment <abbr>&#x25ba;</abbr></a></h2>
+
+		<div id="pnl4" class="collapsed inner">
+				
+
+			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <abbr>&#x25ba;</abbr></a>(%d%)</h3>
+			<table id="pnl-env-files" class="collapsed">%A%</table>
+
+
+			<h3>$_SERVER</h3>
+						<table>%A%</table>
+							</div>
+	</div>
+	
+
+
+
+			<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl5')">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+
+		<div id="pnl5" class="collapsed inner">
+				
+
+						<h3>$_GET</h3>
+						<table>%A%</table>
+									<h3>$_POST</h3>
+						<p><i>empty</i></p>
+									<h3>$_COOKIE</h3>
+						<p><i>empty</i></p>
+										</div>
+	</div>
+	
+
+
+			<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl6')">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+
+		<div id="pnl6" class="collapsed inner">
+				<h3>Headers</h3>
+						<pre>%A%</pre>
+							</div>
+	</div>
+	
+
+		<ul>
+						<li>Report generated at %a%
+</li><li>PHP %a%
+</li><li>Nette Framework %a%</i>
+</li>					</ul>
+	</div>
+</div>
+
+<script type="text/javascript">
+	document.body.appendChild(document.getElementById('netteBluescreen'));
+</script>
+</body>
+</html>

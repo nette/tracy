@@ -1,0 +1,152 @@
+<br />
+<b>Fatal error</b>:  Call to undefined function missing_funcion() in <b>%a%</b> on line <b>%d%</b><br />
+</pre></xmp></table><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="robots" content="noindex,noarchive">
+	<meta name="generator" content="Nette Framework">
+
+	<title>Fatal Error</title><!-- Call to undefined function missing_funcion() -->
+
+	%A%
+</head>
+
+
+
+<body>
+<div id="netteBluescreen">
+	<a id="netteBluescreenIcon" href="#" onclick="return !netteToggle(this)"><abbr>&#x25bc;</abbr></a
+
+	><div>
+		<div id="netteBluescreenError" class="panel">
+			<h1>Fatal Error</h1>
+
+			<p>Call to undefined function missing_funcion()</p>
+		</div>
+
+
+
+				
+			
+										<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
+
+		<div id="pnl1" class="inner">
+					<p><strong>File:</strong> %a% &nbsp; <strong>Line:</strong> %d%</p>
+				<pre><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line %d%:</span>    {
+<span class='line'>Line %d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #d24; font-weight: bold">));
+<span class='line'>Line %d%:</span>    }
+<span class='line'>Line %d%:</span>    
+<span class='line'>Line %d%:</span>    
+<span class='line'>Line %d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #d24; font-weight: bold">)
+<span class='line'>Line %d%:</span>    {
+<span class='highlight'>Line %d%:    &nbsp;&nbsp;&nbsp;&nbsp;missing_funcion();
+</span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"><span class='line'>Line %d%:</span>    }
+<span class='line'>Line %d%:</span>    
+<span class='line'>Line %d%:</span>    
+<span class='line'>Line %d%:</span>    </span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #d24; font-weight: bold">);
+<span class='line'>Line %d%:</span>    
+<span class='line'>Line %d%:</span>    
+<span class='line'>Line %d%:</span>    
+</span></span></code></pre>
+					</div>
+	</div>
+				
+
+
+				<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Call stack <abbr>&#x25bc;</abbr></a></h2>
+
+		<div id="pnl2" class="inner">
+					<ol>
+										<li><p>
+
+											&lt;PHP inner-code&gt;
+					
+					
+					%ns%Debug::					shutdownHandler
+					()
+					</p>
+
+					
+
+					
+					</li>
+					
+									</ol>
+					</div>
+	</div>
+	
+
+
+			
+
+
+			
+				
+
+
+
+		
+
+
+
+			<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">Environment <abbr>&#x25ba;</abbr></a></h2>
+
+		<div id="pnl3" class="collapsed inner">
+				
+
+			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <abbr>&#x25ba;</abbr></a>(%d%)</h3>
+			<table id="pnl-env-files" class="collapsed">%A%</table>
+
+
+			<h3>$_SERVER</h3>
+						<table>%A%</table>
+							</div>
+	</div>
+	
+
+
+
+			<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+
+		<div id="pnl4" class="collapsed inner">
+				
+
+						<h3>$_GET</h3>
+						<table>%A%</table>
+									<h3>$_POST</h3>
+						<p><i>empty</i></p>
+									<h3>$_COOKIE</h3>
+						<p><i>empty</i></p>
+										</div>
+	</div>
+	
+
+
+			<div class="panel">
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl5')">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+
+		<div id="pnl5" class="collapsed inner">
+				<h3>Headers</h3>
+						<pre>Content-Type: text/plain; charset=utf-8<br></pre>
+							</div>
+	</div>
+	
+
+		<ul>
+						<li>Report generated at %a%
+</li><li>PHP %a%
+</li><li>Nette Framework %a%</i>
+</li>					</ul>
+	</div>
+</div>
+
+<script type="text/javascript">
+	document.body.appendChild(document.getElementById('netteBluescreen'));
+</script>
+</body>
+</html>
