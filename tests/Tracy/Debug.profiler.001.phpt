@@ -39,7 +39,7 @@ __halt_compiler();
 <div id="netteProfiler">
 	<a id="netteProfilerIcon" href="#"><abbr>&#x25bc;</abbr></a
 	><ul>
-		<li>Elapsed time: <b>%f%</b> ms | Allocated memory: <b>%f%</b> kB
+		<li>Elapsed time: <b>%a%</b> ms | Allocated memory: <b>%a%</b> kB
 %A%</ul>
 </div>
 </div>
