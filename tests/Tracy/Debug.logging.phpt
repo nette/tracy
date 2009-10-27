@@ -51,7 +51,7 @@ __halt_compiler();
 ------EXPECT------
 Sending mail with message 'exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%
 Stack trace:
-#0 [internal function]: %ns%Debug::shutdownHandler()
+#0 [internal function]: %ns%Debug::_shutdownHandler()
 #1 {main}'
 
 %a%/log/exception %a%.html

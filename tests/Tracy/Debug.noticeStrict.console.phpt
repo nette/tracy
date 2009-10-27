@@ -54,7 +54,7 @@ __halt_compiler();
 ------EXPECT------
 exception 'FatalErrorException' with message 'Undefined variable: x' in %a%
 Stack trace:
-#0 %a%: %ns%Debug::errorHandler(8, '%a%', '%a%', %a%, Array)
+#0 %a%: %ns%Debug::_errorHandler(8, '%a%', '%a%', %a%, Array)
 #1 %a%: third(Array)
 #2 %a%: second(true, false)
 #3 %a%: first(10, 'any string')

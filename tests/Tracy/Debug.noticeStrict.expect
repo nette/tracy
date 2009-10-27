@@ -47,7 +47,7 @@
 
 											<span title="%a%">%a%</span> (%d%)					
 					<a href="#" onclick="return !netteToggle(this, 'src1-0')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
-					%ns%Debug::					errorHandler
+					%ns%Debug::					_errorHandler
 					(<a href="#" onclick="return !netteToggle(this, 'args1-0')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
 

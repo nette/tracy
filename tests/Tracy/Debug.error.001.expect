@@ -65,7 +65,7 @@
 											&lt;PHP inner-code&gt;
 					
 					
-					%ns%Debug::					shutdownHandler
+					%ns%Debug::					_shutdownHandler
 					()
 					</p>
 
