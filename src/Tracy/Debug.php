@@ -175,7 +175,7 @@ final class Debug
 		);
 
 		$error = error_get_last();
-		if (isset($types[$error['type']])) {
+		if (self::$enabled && isset($types[$error['type']])) {
 			if (!headers_sent()) { // for PHP < 5.2.4
 				header('HTTP/1.1 500 Internal Server Error');
 			}
@@ -596,7 +596,10 @@ final class Debug
 	 */
 	public static function processException(/*\*/Exception $exception, $outputAllowed = FALSE)
 	{
-		if (self::$logFile) {
+		if (!self::$enabled) {
+			return;
+
+		} elseif (self::$logFile) {
 			error_log("PHP Fatal error:  Uncaught $exception");
 			$file = @strftime('%d-%b-%Y %H-%M-%S ', Debug::$time) . strstr(number_format(Debug::$time, 4, '~', ''), '~');
 			$file = dirname(self::$logFile) . "/exception $file.html";
@@ -629,7 +632,7 @@ final class Debug
 			if (!headers_sent()) {
 				@ob_end_clean(); while (ob_get_level() && @ob_end_clean());
 				/*header_remove('Content-Encoding');*/
-				/**/header('Content-Encoding: identity', TRUE);/**/ // override gzhandler
+				/**/if (in_array('Content-Encoding: gzip', headers_list())) header('Content-Encoding: identity', TRUE);/**/ // override gzhandler
 			}
 			self::_paintBlueScreen($exception);
 
