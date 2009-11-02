@@ -86,6 +86,9 @@ final class Debug
 	/** @var callback */
 	public static $mailer = array(__CLASS__, 'defaultMailer');
 
+	/** @var int interval for sending email is 2 days */
+	public static $emailSnooze = 172800;
+
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
 
@@ -695,10 +698,9 @@ final class Debug
 	private static function sendEmail($message)
 	{
 		$monitorFile = self::$logFile . '.monitor';
-		if (!is_file($monitorFile)) {
-			if (@file_put_contents($monitorFile, 'e-mail has been sent')) { // intentionally @
-				call_user_func(self::$mailer, $message);
-			}
+		if (@filemtime($monitorFile) + self::$emailSnooze < time()
+			&& @file_put_contents($monitorFile, 'sent')) { // intentionally @
+			call_user_func(self::$mailer, $message);
 		}
 	}
 
