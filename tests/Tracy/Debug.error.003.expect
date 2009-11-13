@@ -47,23 +47,18 @@
 											<div class="collapsed" id="args1-0">
 						<table>
 						<tr><th>$severity</th><td><pre class="dump"><span>int</span>(256)
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$message</th><td><pre class="dump"><span>string</span>(12) "The my error"
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$file</th><td><pre class="dump"><span>string</span>(%d%) "%a% : eval()'d code"
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$line</th><td><pre class="dump"><span>int</span>(%d%)
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$context</th><td><pre class="dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(2) <abbr>&#x25bc;</abbr> </a><code>{
    "user" => <span>string</span>(4) "root"
    "pass" => <span>string</span>(3) "xxx"
 }</code>
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -81,11 +76,9 @@
 											<div class="collapsed" id="args1-1">
 						<table>
 						<tr><th>$messsage</th><td><pre class="dump"><span>string</span>(12) "The my error"
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$error_type</th><td><pre class="dump"><span>int</span>(256)
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -116,11 +109,9 @@
 											<div class="collapsed" id="args1-3">
 						<table>
 						<tr><th>$user</th><td><pre class="dump"><span>string</span>(4) "root"
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$pass</th><td><pre class="dump"><span>string</span>(3) "xxx"
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -144,11 +135,9 @@
 		<div id="pnl2" class="collapsed inner">
 				<table>
 			<tr><th>$user</th><td><pre class="dump"><span>string</span>(4) "root"
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$pass</th><td><pre class="dump"><span>string</span>(3) "xxx"
-</pre>
-</td></tr>
+</pre></td></tr>
 			</table>
 					</div>
 	</div>

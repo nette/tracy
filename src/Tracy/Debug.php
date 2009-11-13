@@ -251,8 +251,9 @@ final class Debug
 
 		if (self::$showLocation) {
 			$trace = debug_backtrace();
-			if (isset($trace[0]['file'], $trace[0]['line'])) {
-				$output = substr_replace($output, ' <small>' . htmlspecialchars("in file {$trace[0]['file']} on line {$trace[0]['line']}", ENT_NOQUOTES) . '</small>', -8, 0);
+			$i = isset($trace[1]['class']) && $trace[1]['class'] === __CLASS__ ? 1 : 0;
+			if (isset($trace[$i]['file'], $trace[$i]['line'])) {
+				$output = substr_replace($output, ' <small>' . htmlspecialchars("in file {$trace[$i]['file']} on line {$trace[$i]['line']}", ENT_NOQUOTES) . '</small>', -8, 0);
 			}
 		}
 
@@ -281,7 +282,11 @@ final class Debug
 	public static function consoleDump($var, $title = NULL)
 	{
 		if (!self::$productionMode) {
-			self::$consoleData[] = array('title' => $title, 'var' => $var);
+			$dump = array();
+			foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val) {
+				$dump[$key] = self::dump($val, TRUE);
+			}
+			self::$consoleData[] = array('title' => $title, 'dump' => $dump);
 		}
 		return $var;
 	}

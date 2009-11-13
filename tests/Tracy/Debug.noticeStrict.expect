@@ -54,17 +54,13 @@
 											<div class="collapsed" id="args1-0">
 						<table>
 						<tr><th>$severity</th><td><pre class="dump"><span>int</span>(8)
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$message</th><td><pre class="dump"><span>string</span>(21) "Undefined variable: x"
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$file</th><td><pre class="dump"><span>string</span>(%d%) "%a%"
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$line</th><td><pre class="dump"><span>int</span>(%d%)
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$context</th><td><pre class="dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(1) <abbr>&#x25bc;</abbr> </a><code>{
    <a href='#' onclick='return !netteToggle(this)'>"arg1" => <span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>{
       0 => <span>int</span>(1)
@@ -72,8 +68,7 @@
       2 => <span>int</span>(3)
    }</code>
 }</code>
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -96,8 +91,7 @@
    1 => <span>int</span>(2)
    2 => <span>int</span>(3)
 }</code>
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -116,11 +110,9 @@
 											<div class="collapsed" id="args1-2">
 						<table>
 						<tr><th>$arg1</th><td><pre class="dump"><span>bool</span>(TRUE)
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$arg2</th><td><pre class="dump"><span>bool</span>(FALSE)
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -139,11 +131,9 @@
 											<div class="collapsed" id="args1-3">
 						<table>
 						<tr><th>$arg1</th><td><pre class="dump"><span>int</span>(10)
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$arg2</th><td><pre class="dump"><span>string</span>(10) "any string"
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -171,8 +161,7 @@
    1 => <span>int</span>(2)
    2 => <span>int</span>(3)
 }</code>
-</pre>
-</td></tr>
+</pre></td></tr>
 			</table>
 					</div>
 	</div>

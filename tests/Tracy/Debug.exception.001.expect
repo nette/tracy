@@ -58,8 +58,7 @@
    1 => <span>int</span>(2)
    2 => <span>int</span>(3)
 }</code>
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -78,11 +77,9 @@
 											<div class="collapsed" id="args1-1">
 						<table>
 						<tr><th>$arg1</th><td><pre class="dump"><span>bool</span>(TRUE)
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$arg2</th><td><pre class="dump"><span>bool</span>(FALSE)
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -101,11 +98,9 @@
 											<div class="collapsed" id="args1-2">
 						<table>
 						<tr><th>$arg1</th><td><pre class="dump"><span>int</span>(10)
-</pre>
-</td></tr>
+</pre></td></tr>
 <tr><th>$arg2</th><td><pre class="dump"><span>string</span>(10) "any string"
-</pre>
-</td></tr>
+</pre></td></tr>
 						</table>
 						</div>
 					
@@ -137,8 +132,7 @@
 							<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<table id="pnl-env-const">
 			<tr><th>MY_CONST</th><td><pre class="dump"><span>int</span>(123)
-</pre>
-</td></tr>
+</pre></td></tr>
 			</table>
 			
 

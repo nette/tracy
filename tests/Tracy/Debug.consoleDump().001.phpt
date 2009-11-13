@@ -27,6 +27,8 @@ $arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2
 
 Debug::consoleDump($arr);
 
+end($arr)->key1 = 'changed'; // make post-change
+
 Debug::consoleDump('<a href="#">test</a>', 'String');
 
 

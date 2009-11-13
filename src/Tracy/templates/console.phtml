@@ -174,10 +174,10 @@ ob_start();
 
 	<table>
 	<?php $i = 0 ?>
-	<?php foreach ((is_array($item['var']) ? $item['var'] : array('' => $item['var'])) as $key => $val): ?>
+	<?php foreach ($item['dump'] as $key => $dump): ?>
 	<tr class="<?php echo $i++ % 2 ? 'odd' : 'even' ?>">
 		<th><?php echo htmlspecialchars($key) ?></th>
-		<td><?php echo preg_replace_callback('#(<pre class="dump">|\s+)?(.*)\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb2', Debug::dump($val, TRUE)) ?></td>
+		<td><?php echo preg_replace_callback('#(<pre class="dump">|\s+)?(.*)\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb2', $dump) ?></td>
 	</tr>
 	<?php endforeach ?>
 	</table>
