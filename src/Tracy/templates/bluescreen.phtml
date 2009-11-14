@@ -466,10 +466,10 @@ if (headers_sent()) {
 		<?php if (!empty($application)):?>
 		<?php _netteOpenPanel('Nette Application', TRUE) ?>
 			<h3>Requests</h3>
-			<?php echo _netteDump(self::_dump($application->getRequests(), 0)) ?>
+			<?php $tmp = $application->getRequests(); echo _netteDump(self::_dump($tmp, 0)) ?>
 
 			<h3>Presenter</h3>
-			<?php echo _netteDump(self::_dump($application->getPresenter(), 0)) ?>
+			<?php $tmp = $application->getPresenter(); echo _netteDump(self::_dump($tmp, 0)) ?>
 		<?php _netteClosePanel() ?>
 		<?php endif ?>
 
