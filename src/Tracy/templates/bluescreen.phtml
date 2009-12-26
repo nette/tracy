@@ -363,7 +363,7 @@ if (headers_sent()) {
 		<?php do { ?>
 
 			<?php if ($level++): ?>
-				<?php _netteOpenPanel('Caused by', TRUE) ?>
+				<?php _netteOpenPanel('Caused by', $level > 2) ?>
 				<div class="panel">
 					<h1><?php echo htmlspecialchars(get_class($ex)), ($ex->getCode() ? ' #' . $ex->getCode() : '') ?></h1>
 
