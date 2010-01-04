@@ -16,14 +16,6 @@
 
 
 
-/**/require_once dirname(__FILE__) . '/compatibility/PHP.php';/**/
-
-require_once dirname(__FILE__) . '/exceptions.php';
-
-require_once dirname(__FILE__) . '/Framework.php';
-
-
-
 /**
  * Debug static class.
  *
