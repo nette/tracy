@@ -465,7 +465,7 @@ final class Debug
 
 		} elseif (ini_get('log_errors') != (bool) self::$logFile || // intentionally ==
 			(ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout'))) {
-			throw new /*\*/NotSupportedException('Function ini_set() must be enabled.');
+			throw new /*\*/LogicException('Function ini_set() must be enabled.');
 		}
 
 		self::$sendEmails = self::$logFile && $email;
@@ -633,7 +633,6 @@ final class Debug
 		}
 
 		foreach (self::$onFatalError as $handler) {
-			/**/fixCallback($handler);/**/
 			call_user_func($handler, $exception);
 		}
 	}
@@ -766,7 +765,6 @@ final class Debug
 	 */
 	public static function addColophon($callback)
 	{
-		/**/fixCallback($callback);/**/
 		if (!is_callable($callback)) {
 			$able = is_callable($callback, TRUE, $textual);
 			throw new /*\*/InvalidArgumentException("Colophon handler '$textual' is not " . ($able ? 'callable.' : 'valid PHP callback.'));
@@ -822,7 +820,7 @@ final class Debug
 			}
 			$arr[] = 'PHP ' . htmlSpecialChars(PHP_VERSION);
 			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = htmlSpecialChars($_SERVER['SERVER_SOFTWARE']);
-			$arr[] = htmlSpecialChars(Framework::NAME . ' ' . Framework::VERSION) . ' <i>(revision ' . htmlSpecialChars(Framework::REVISION) . ')</i>';
+			if (class_exists(/*Nette\*/'Framework')) $arr[] = htmlSpecialChars('Nette Framework ' . Framework::VERSION) . ' <i>(revision ' . htmlSpecialChars(Framework::REVISION) . ')</i>';
 		}
 		return $arr;
 	}
