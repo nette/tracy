@@ -593,7 +593,7 @@ final class Debug
 
 		} elseif (self::$logFile) {
 			error_log("PHP Fatal error:  Uncaught $exception");
-			$file = @strftime('%d-%b-%Y %H-%M-%S ', Debug::$time) . strstr(number_format(Debug::$time, 4, '~', ''), '~');
+			$file = @strftime('%d-%b-%Y %H-%M-%S ', self::$time) . strstr(number_format(self::$time, 4, '~', ''), '~');
 			$file = dirname(self::$logFile) . "/exception $file.html";
 			self::$logHandle = @fopen($file, 'x');
 			if (self::$logHandle) {
@@ -706,7 +706,7 @@ final class Debug
 
 		$headers = str_replace(
 			array('%host%', '%date%', '%message%'),
-			array($host, @date('Y-m-d H:i:s', Debug::$time), $message), // intentionally @
+			array($host, @date('Y-m-d H:i:s', self::$time), $message), // intentionally @
 			self::$emailHeaders
 		);
 
@@ -785,7 +785,7 @@ final class Debug
 	private static function getDefaultColophons($sender)
 	{
 		if ($sender === 'profiler') {
-			$arr[] = 'Elapsed time: <b>' . number_format((microtime(TRUE) - Debug::$time) * 1000, 1, '.', ' ') . '</b> ms | Allocated memory: <b>' . number_format(memory_get_peak_usage() / 1000, 1, '.', ' ') . '</b> kB';
+			$arr[] = 'Elapsed time: <b>' . number_format((microtime(TRUE) - self::$time) * 1000, 1, '.', ' ') . '</b> ms | Allocated memory: <b>' . number_format(memory_get_peak_usage() / 1000, 1, '.', ' ') . '</b> kB';
 
 			foreach ((array) self::$counters as $name => $value) {
 				if (is_array($value)) $value = implode(', ', $value);
@@ -813,7 +813,7 @@ final class Debug
 		}
 
 		if ($sender === 'bluescreen') {
-			$arr[] = 'Report generated at ' . @date('Y/m/d H:i:s', Debug::$time); // intentionally @
+			$arr[] = 'Report generated at ' . @date('Y/m/d H:i:s', self::$time); // intentionally @
 			if (isset($_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'])) {
 				$url = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://') . htmlSpecialChars($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 				$arr[] = '<a href="' . $url . '">' . $url . '</a>';
@@ -947,4 +947,4 @@ final class Debug
 Debug::_init();
 
 // hint:
-// if (!function_exists('dump')) { function dump($var, $return = FALSE) { return /*\Nette\*/Debug::dump($var, $return); } }
+// if (!function_exists('dump')) { function dump($var) { foreach ($args = func_get_args() as $arg) /*\Nette\*/Debug::dump($arg); return $var; } }
