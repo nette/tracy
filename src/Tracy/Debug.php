@@ -544,10 +544,7 @@ final class Debug
 			return NULL; // nothing to do
 
 		} elseif (self::$strictMode) {
-			if (!headers_sent()) {
-				header('HTTP/1.1 500 Internal Server Error');
-			}
-			self::processException(new /*\*/FatalErrorException($message, 0, $severity, $file, $line, $context), TRUE);
+			self::_exceptionHandler(new /*\*/FatalErrorException($message, 0, $severity, $file, $line, $context), TRUE);
 			exit;
 		}
 
@@ -634,6 +631,22 @@ final class Debug
 
 		foreach (self::$onFatalError as $handler) {
 			call_user_func($handler, $exception);
+		}
+	}
+
+
+
+	/**
+	 * Handles exception throwed in __toString().
+	 * @param  \Exception
+	 * @return void
+	 */
+	public static function toStringException(/*\*/Exception $exception)
+	{
+		if (self::$enabled) {
+			self::_exceptionHandler($exception);
+		} else {	
+			trigger_error($exception->getMessage(), E_USER_ERROR);
 		}
 	}
 
