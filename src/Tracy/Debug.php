@@ -958,13 +958,3 @@ final class Debug
 
 
 Debug::_init();
-
-/*
-if (!function_exists('dump')) {
-	function dump($var)
-	{
-		foreach ($args = func_get_args() as $arg) Debug::dump($arg);
-		return $var;
-	}
-}
-*/
