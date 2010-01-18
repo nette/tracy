@@ -597,11 +597,16 @@ final class Debug
 			return;
 
 		} elseif (self::$logFile) {
+			$hash = md5($exception/**/ . (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))/**/);
 			error_log("PHP Fatal error:  Uncaught $exception");
-			$file = @strftime('%d-%b-%Y %H-%M-%S ', self::$time) . strstr(number_format(self::$time, 4, '~', ''), '~');
-			$file = dirname(self::$logFile) . "/exception $file.html";
-			self::$logHandle = @fopen($file, 'x');
-			if (self::$logHandle) {
+			foreach (new /*\*/DirectoryIterator(dirname(self::$logFile)) as $entry) {
+				if (strpos($entry, $hash)) {
+					$skip = TRUE;
+					break;
+				}
+			}
+			$file = dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html";
+			if (empty($skip) && self::$logHandle = @fopen($file, 'x')) {
 				ob_start(array(__CLASS__, '_writeFile'), 1);
 				self::_paintBlueScreen($exception);
 				ob_end_flush();
