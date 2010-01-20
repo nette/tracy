@@ -168,7 +168,7 @@ final class Debug
 			}
 
 			if (ini_get('html_errors')) {
-				$error['message'] = html_entity_decode(strip_tags($error['message']));
+				$error['message'] = html_entity_decode(strip_tags($error['message']), ENT_QUOTES, 'UTF-8');
 			}
 
 			self::processException(new /*\*/FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
