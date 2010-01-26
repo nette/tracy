@@ -524,7 +524,6 @@ final class Debug
 		if (!headers_sent()) {
 			header('HTTP/1.1 500 Internal Server Error');
 		}
-
 		self::processException($exception, TRUE);
 		exit;
 	}
@@ -553,7 +552,6 @@ final class Debug
 
 		} elseif (self::$strictMode) {
 			self::_exceptionHandler(new /*\*/FatalErrorException($message, 0, $severity, $file, $line, $context), TRUE);
-			exit;
 		}
 
 		static $types = array(
@@ -607,9 +605,11 @@ final class Debug
 			}
 			$file = dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html";
 			if (empty($skip) && self::$logHandle = @fopen($file, 'x')) {
+				ob_start(); // double buffer prevents sending HTTP headers in some PHP
 				ob_start(array(__CLASS__, '_writeFile'), 1);
 				self::_paintBlueScreen($exception);
 				ob_end_flush();
+				ob_end_clean();
 				fclose(self::$logHandle);
 			}
 			if (self::$sendEmails) {
