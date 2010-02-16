@@ -866,20 +866,6 @@ final class Debug
 
 
 	/**
-	 * Sends variable dump to Firebug tab request/server.
-	 * @param  mixed  variable to dump
-	 * @param  string unique key
-	 * @return mixed  variable itself
-	 */
-	public static function fireDump($var, $key)
-	{
-		self::fireSend('Dump/0.1', array((string) $key => $var));
-		return $var;
-	}
-
-
-
-	/**
 	 * Sends message to Firebug console.
 	 * @param  mixed   message to log
 	 * @param  string  priority of message (LOG, INFO, WARN, ERROR, GROUP_START, GROUP_END)

@@ -24,8 +24,6 @@ Debug::$consoleMode = FALSE;
 Debug::$productionMode = TRUE;
 
 
-Debug::fireDump('Sensitive data', 'key');
-
 Debug::fireLog('Sensitive log');
 
 flush();
