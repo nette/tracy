@@ -54,13 +54,14 @@ __halt_compiler();
 ------EXPECT------
 
 ---EXPECTHEADERS---
-X-Wf-nette-Structure-2: http://meta.firephp.org/Wildfire/Structure/FirePHP/Dump/0.1
-X-Wf-nette-2-1-n1: |{"My var":[10,20.2,true,false,null,"hello",{"key1":"val1","key2":true},{"key1":"val1","key2":true}]}|
-X-Wf-nette-1-1-n2: |[{"Type":"LOG","Label":null},"Hello World"]|
-X-Wf-nette-1-1-n3: |[{"Type":"INFO","Label":null},"Info message"]|
-X-Wf-nette-1-1-n4: |[{"Type":"WARN","Label":null},"Warn message"]|
-X-Wf-nette-1-1-n5: |[{"Type":"ERROR","Label":null},"Error message"]|
+X-Wf-nette-Structure-1: http://meta.firephp.org/Wildfire/Structure/FirePHP/Dump/0.1
+X-Wf-nette-1-1-n1: |{"My var":[10,20.2,true,false,null,"hello",{"key1":"val1","key2":true},{"key1":"val1","key2":true}]}|
+X-Wf-nette-2-1-n2: |[{"Type":"LOG","Label":null},"Hello World"]|
+X-Wf-nette-2-1-n3: |[{"Type":"INFO","Label":null},"Info message"]|
+X-Wf-nette-2-1-n4: |[{"Type":"WARN","Label":null},"Warn message"]|
+X-Wf-nette-2-1-n5: |[{"Type":"ERROR","Label":null},"Error message"]|
+X-Wf-nette-2-1-n6: |[{"Type":"LOG","Label":null},[10,20.2,true,false,null,"hello",{"key1":"val1","key2":true},"object stdClass"]]|
 X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2
 X-Wf-nette-Plugin-1: http://meta.firephp.org/Wildfire/Plugin/FirePHP/Library-FirePHPCore/0.2.0
-X-Wf-nette-Structure-1: http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1
-X-Wf-nette-1-1-n6: |[{"Type":"LOG","Label":null},[10,20.2,true,false,null,"hello",{"key1":"val1","key2":true},"object stdClass"]]|
+X-Wf-nette-Structure-2: http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1
+X-Wf-nette-2-1-n7: |[{"Type":"TABLE","Label":"2 SQL queries took 0.06 seconds"},[["SQL Statement","Time","Result"],["SELECT * FROM foo","0.02",["field1","field2"]],["SELECT * FROM bar","0.04",["field1","field2"]]]]|
