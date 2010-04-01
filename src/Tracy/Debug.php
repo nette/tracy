@@ -469,11 +469,10 @@ final class Debug
 		if (function_exists('ini_set')) {
 			ini_set('display_errors', !self::$productionMode); // or 'stderr'
 			ini_set('html_errors', !self::$logFile && !self::$consoleMode);
-			ini_set('log_errors', (bool) self::$logFile);
+			ini_set('log_errors', FALSE);
 
-		} elseif (ini_get('log_errors') != (bool) self::$logFile || // intentionally ==
-			(ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout'))) {
-			throw new /*\*/LogicException('Function ini_set() must be enabled.');
+		} elseif (ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')) { // intentionally ==
+			throw new /*\*/NotSupportedException('Function ini_set() must be enabled.');
 		}
 
 		self::$sendEmails = self::$logFile && $email;
@@ -508,6 +507,18 @@ final class Debug
 	public static function isEnabled()
 	{
 		return self::$enabled;
+	}
+
+
+
+	/**
+	 * Log user error.
+	 * @param  string
+	 * @return void
+	 */
+	public static function log($message)
+	{
+		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . PHP_EOL, 3, self::$logFile);
 	}
 
 
@@ -564,17 +575,17 @@ final class Debug
 			E_USER_DEPRECATED => 'Deprecated',
 		);
 
-		$type = isset($types[$severity]) ? $types[$severity] : 'Unknown error';
+		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message in $file:$line";
 
 		if (self::$logFile) {
 			if (self::$sendEmails) {
-				self::sendEmail("$type: $message in $file on line $line");
+				self::sendEmail($message);
 			}
-			return FALSE; // call normal error handler
+			self::log($message); // log manually, required on some stupid hostings
+			return NULL;
 
 		} elseif (!self::$productionMode && self::$firebugDetected && !headers_sent()) {
-			$message = strip_tags($message);
-			self::fireLog("$type: $message in $file on line $line", self::ERROR);
+			self::fireLog(strip_tags($message), self::ERROR);
 			return NULL;
 		}
 
@@ -597,7 +608,7 @@ final class Debug
 		} elseif (self::$logFile) {
 			try {
 				$hash = md5($exception/**/ . (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))/**/);
-				error_log("PHP Fatal error:  Uncaught $exception");
+				self::log("PHP Fatal error: Uncaught " . str_replace("Stack trace:\n" . $exception->getTraceAsString(), '', $exception));
 				foreach (new /*\*/DirectoryIterator(dirname(self::$logFile)) as $entry) {
 					if (strpos($entry, $hash)) {
 						$skip = TRUE;
