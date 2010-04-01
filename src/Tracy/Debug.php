@@ -39,9 +39,6 @@ final class Debug
 	/** @var bool is AJAX request detected? */
 	private static $ajaxDetected;
 
-	/** @var array payload filled by {@link Debug::consoleDump()} */
-	private static $consoleData;
-
 	/********************* Debug::dump() ****************d*g**/
 
 	/** @var int  how many nested levels of array/object properties display {@link Debug::dump()} */
@@ -97,10 +94,19 @@ final class Debug
 	/** @var array  */
 	private static $colophons = array(array(__CLASS__, 'getDefaultColophons'));
 
-	/********************* profiler ****************d*g**/
+	/********************* debug bar ****************d*g**/
 
-	/** @var bool {@link Debug::enableProfiler()} */
-	private static $enabledProfiler = FALSE;
+	/** @var bool {@link Debug::enableBar()} */
+	private static $enabledBar = TRUE;
+
+	/** @var array */
+	private static $panels = array();
+
+	/** @var array payload filled by {@link Debug::barDump()} */
+	private static $dumps;
+
+	/** @var array payload filled by {@link Debug::_errorHandler()} */
+	private static $errors;
 
 	/** @var array  free counters for your usage */
 	public static $counters = array();
@@ -141,6 +147,10 @@ final class Debug
 		self::$productionMode = self::DETECT;
 		self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
 		self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+		self::addPanel(new DebugPanel('time', array(__CLASS__, 'getDefaultPanel')));
+		self::addPanel(new DebugPanel('memory', array(__CLASS__, 'getDefaultPanel')));
+		self::addPanel(new DebugPanel('errors', array(__CLASS__, 'getDefaultPanel')));
+		self::addPanel(new DebugPanel('dumps', array(__CLASS__, 'getDefaultPanel')));
 		register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
 	}
 
@@ -175,40 +185,27 @@ final class Debug
 		}
 
 
-		// other activities require HTML & development mode
-		if (self::$productionMode) {
-			return;
-		}
-		foreach (headers_list() as $header) {
-			if (strncasecmp($header, 'Content-Type:', 13) === 0) {
-				if (substr($header, 14, 9) === 'text/html') {
-					break;
+		// 2) debug bar (require HTML & development mode)
+		if (self::$enabledBar && !self::$productionMode && !self::$ajaxDetected) {
+			foreach (headers_list() as $header) {
+				if (strncasecmp($header, 'Content-Type:', 13) === 0) {
+					if (substr($header, 14, 9) === 'text/html') {
+						break;
+					}
+					return;
 				}
-				return;
-			}
-		}
-
-		// 2) profiler
-		if (self::$enabledProfiler) {
-			if (self::$firebugDetected) {
-				self::fireLog('Nette profiler', self::GROUP_START);
-				foreach (self::$colophons as $callback) {
-					foreach ((array) call_user_func($callback, 'profiler') as $line) self::fireLog(strip_tags($line));
-				}
-				self::fireLog(NULL, self::GROUP_END);
 			}
 
-			if (!self::$ajaxDetected) {
-				$colophons = self::$colophons;
-				require dirname(__FILE__) . '/Debug.templates/profiler.phtml';
+			$panels = array();
+			foreach (self::$panels as $panel) {
+				$panels[] = array(
+					'id' => preg_replace('#[^a-z0-9]+#i', '-', $panel->getId()),
+					'tab' => $tab = (string) $panel->getTab(),
+					'panel' => $tab ? (string) $panel->getPanel() : NULL,
+				);
 			}
-		}
 
-
-		// 3) console
-		if (self::$consoleData) {
-			$payload = self::$consoleData;
-			require dirname(__FILE__) . '/Debug.templates/console.phtml';
+			require dirname(__FILE__) . '/Debug.templates/bar.phtml';
 		}
 	}
 
@@ -257,7 +254,7 @@ final class Debug
 
 
 	/**
-	 * Dumps information about a variable in Nette Debug Console.
+	 * Dumps information about a variable in Nette Debug Bar.
 	 *
 	 * @param  mixed  variable to dump
 	 * @param  string optional title
@@ -270,7 +267,7 @@ final class Debug
 			foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val) {
 				$dump[$key] = self::dump($val, TRUE);
 			}
-			self::$consoleData[] = array('title' => $title, 'dump' => $dump);
+			self::$dumps[] = array('title' => $title, 'dump' => $dump);
 		}
 		return $var;
 	}
@@ -584,8 +581,11 @@ final class Debug
 			self::log($message); // log manually, required on some stupid hostings
 			return NULL;
 
-		} elseif (!self::$productionMode && self::$firebugDetected && !headers_sent()) {
-			self::fireLog(strip_tags($message), self::ERROR);
+		} elseif (!self::$productionMode) {
+			self::$errors[] = $message;
+			if (self::$firebugDetected && !headers_sent()) {
+				self::fireLog(strip_tags($message), self::ERROR);
+			}
 			return NULL;
 		}
 
@@ -773,28 +773,75 @@ final class Debug
 
 
 
-	/********************* profiler ****************d*g**/
+	/********************* debug bar ****************d*g**/
 
 
 
 	/**
-	 * Enables profiler.
+	 * Enables debug bar.
 	 * @return void
 	 */
-	public static function enableProfiler()
+	public static function enableBar()
 	{
-		self::$enabledProfiler = TRUE;
+		self::$enabledBar = TRUE;
 	}
 
 
 
 	/**
-	 * Disables profiler.
+	 * Disables debug bar.
 	 * @return void
 	 */
-	public static function disableProfiler()
+	public static function disableBar()
 	{
-		self::$enabledProfiler = FALSE;
+		self::$enabledBar = FALSE;
+	}
+
+
+
+	/**
+	 * Add custom panel.
+	 * @param  IDebugPanel
+	 * @return void
+	 */
+	public static function addPanel(IDebugPanel $panel)
+	{
+		self::$panels[] = $panel;
+	}
+
+
+
+	/**
+	 * Renders default panel.
+	 * @param  string
+	 * @return void
+	 */
+	public static function getDefaultPanel($id)
+	{
+		switch ($id) {
+		case 'time:tab':
+			require dirname(__FILE__) . '/Debug.templates/bar.time.tab.phtml';
+			return;
+		case 'memory:tab':
+			require dirname(__FILE__) . '/Debug.templates/bar.memory.tab.phtml';
+			return;
+		case 'variables:tab':
+			if (!Debug::$dumps) return;
+			require dirname(__FILE__) . '/Debug.templates/bar.dumps.tab.phtml';
+			return;
+		case 'variables:panel':
+			if (!Debug::$dumps) return;
+			require dirname(__FILE__) . '/Debug.templates/bar.dumps.panel.phtml';
+			return;
+		case 'errors:tab':
+			if (!Debug::$errors) return;
+			require dirname(__FILE__) . '/Debug.templates/bar.errors.tab.phtml';
+			return;
+		case 'errors:panel':
+			if (!Debug::$errors) return;
+			require dirname(__FILE__) . '/Debug.templates/bar.errors.panel.phtml';
+			return;
+		}
 	}
 
 
@@ -824,39 +871,11 @@ final class Debug
 
 	/**
 	 * Returns default colophons.
-	 * @param  string  profiler | bluescreen
+	 * @param  string  bluescreen
 	 * @return array
 	 */
 	private static function getDefaultColophons($sender)
 	{
-		if ($sender === 'profiler') {
-			$arr[] = 'Elapsed time: <b>' . number_format((microtime(TRUE) - self::$time) * 1000, 1, '.', ' ') . '</b> ms | Allocated memory: <b>' . number_format(memory_get_peak_usage() / 1000, 1, '.', ' ') . '</b> kB';
-
-			foreach ((array) self::$counters as $name => $value) {
-				if (is_array($value)) $value = implode(', ', $value);
-				$arr[] = htmlSpecialChars($name) . ' = <strong>' . htmlSpecialChars($value) . '</strong>';
-			}
-
-			$autoloaded = class_exists(/*Nette\Loaders\*/'AutoLoader', FALSE) ? /*Nette\Loaders\*/AutoLoader::$count : 0;
-			$s = '<span>' . count(get_included_files()) . '/' .  $autoloaded . ' files</span>, ';
-
-			$exclude = array('stdClass', 'Exception', 'ErrorException', 'Traversable', 'IteratorAggregate', 'Iterator', 'ArrayAccess', 'Serializable', 'Closure');
-			foreach (get_loaded_extensions() as $ext) {
-				$ref = new /*\*/ReflectionExtension($ext);
-				$exclude = array_merge($exclude, $ref->getClassNames());
-			}
-			$classes = array_diff(get_declared_classes(), $exclude);
-			$intf = array_diff(get_declared_interfaces(), $exclude);
-			$func = get_defined_functions();
-			$func = (array) @$func['user'];
-			$consts = get_defined_constants(TRUE);
-			$consts = array_keys((array) @$consts['user']);
-			foreach (array('classes', 'intf', 'func', 'consts') as $item) {
-				$s .= '<span ' . ($$item ? 'title="' . implode(", ", $$item) . '"' : '') . '>' . count($$item) . ' ' . $item . '</span>, ';
-			}
-			$arr[] = $s;
-		}
-
 		if ($sender === 'bluescreen') {
 			$arr[] = 'Report generated at ' . @date('Y/m/d H:i:s', self::$time); // intentionally @
 			if (isset($_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'])) {
@@ -966,6 +985,47 @@ final class Debug
 		}
 
 		return $val;
+	}
+
+}
+
+
+
+/**
+ * Debug Bar Helper.
+ *
+ * @copyright  Copyright (c) 2004, 2010 David Grudl
+ * @package    Nette
+ */
+class DebugPanel extends Object implements IDebugPanel
+{
+	private $id;
+
+	private $callback;
+
+	public function __construct($id, $callback)
+	{
+		$this->id = $id;
+		$this->callback = $callback;
+	}
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function getTab()
+	{
+		ob_start();
+		call_user_func($this->callback, "$this->id:tab");
+		return ob_get_clean();
+	}
+
+	public function getPanel()
+	{
+		ob_start();
+		call_user_func($this->callback, "$this->id:panel");
+		return ob_get_clean();
 	}
 
 }

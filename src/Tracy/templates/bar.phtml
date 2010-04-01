@@ -1,0 +1,522 @@
+<?php
+
+/**
+ * Nette Framework - Debug bar screen template.
+ *
+ * @copyright  Copyright (c) 2004, 2010 David Grudl
+ * @license    http://nettephp.com/license  Nette license
+ * @link       http://nettephp.com
+ * @category   Nette
+ * @package    Nette
+ *
+ * @param      array     $panels
+ * @return     void
+ */
+
+/*namespace Nette;*/
+
+?>
+
+<style type="text/css" id="nette-debug-style">
+/* <![CDATA[ */
+
+	/* common styles */
+	#nette-debug {
+		display: none;
+	}
+
+	body#nette-debug {
+		margin: 5px 5px 0;
+		display: block;
+	}
+
+	#nette-debug * {
+		font-family: inherit;
+		color: inherit;
+		background: transparent;
+		margin: 0;
+		padding: 0;
+		border: none;
+		text-align: inherit;
+	}
+
+	#nette-debug .nette-fixed-coords {
+		position: fixed;
+		_position: absolute;
+		right: 0;
+		bottom: 0;
+	}
+
+	#nette-debug .nette-panel h2, #nette-debug .nette-panel h3, #nette-debug .nette-panel p {
+		margin: .4em 0;
+	}
+
+	#nette-debug .nette-panel a {
+		color: #125EAE;
+	}
+
+	#nette-debug .nette-panel a:hover, #nette-debug .nette-panel a:active, #nette-debug .nette-panel a:focus {
+		background-color: #125EAE;
+		text-decoration: none;
+		color: white;
+	}
+
+	#nette-debug .nette-panel table {
+		border-collapse: collapse;
+		background: #fcfae5;
+	}
+
+	#nette-debug .nette-panel table .nette-alt td {
+		background: #f9f6e0;
+	}
+
+	#nette-debug .nette-panel table td, #nette-debug .nette-panel table th {
+		border: 1px solid #DCD7C8;
+		padding: 2px 5px;
+		vertical-align: top;
+		text-align: left;
+	}
+
+	#nette-debug .nette-panel table th {
+		background: #f0eee6;
+		color: #655E5E;
+		font-size: 90%;
+		font-weight: bold;
+	}
+
+	#nette-debug .nette-panel pre, #nette-debug .nette-panel code {
+		font: 9pt/1.5 Consolas, monospace;
+	}
+
+	#nette-hidden {
+		display: none;
+	}
+
+
+
+
+
+	/* bar */
+	#nette-debug-bar {
+		cursor: move;
+		font: normal normal 12px/21px Tahoma, sans-serif;
+		position: relative;
+		top: -5px;
+		left: -5px;
+
+		min-width: 50px;
+		white-space: nowrap;
+
+		z-index: 23178;
+
+		opacity: .9;
+		=filter: alpha(opacity=90);
+	}
+
+	#nette-debug-bar:hover {
+		opacity: 1;
+		=filter: none;
+	}
+
+	#nette-debug-bar ul {
+		list-style: none none;
+	}
+
+	#nette-debug-bar li {
+		display: inline-block;
+	}
+
+	#nette-debug-bar img {
+		vertical-align: middle;
+		position: relative;
+		top: -1px;
+		margin-right: 3px;
+	}
+
+	#nette-debug-bar li a {
+		color: #3d3d3d;
+		text-decoration: none;
+		display: block;
+		padding: 0 4px;
+	}
+
+	#nette-debug-bar li a:hover {
+		color: black;
+		background: #c3c1b8;
+	}
+
+	#nette-debug-bar li .nette-warning {
+		color: #d32b2b;
+		font-weight: bold;
+	}
+
+	#nette-debug-bar li div {
+		padding: 0 4px;
+	}
+
+
+
+
+
+
+	/* panels */
+	#nette-debug .nette-panel {
+		font: normal normal 12px/1.5 sans-serif;
+		background: white;
+		color: #333;
+	}
+
+	#nette-debug h1 {
+		font: normal normal 23px/1.4 Tahoma, sans-serif;
+		color: #575753;
+		background: #edeae0;
+		margin: -5px -5px 5px;
+		padding: 0 25px 5px 5px;
+	}
+
+	#nette-debug .nette-mode-peek .nette-inner, #nette-debug .nette-mode-float .nette-inner {
+		max-width: 700px;
+		max-height: 500px;
+		overflow: auto;
+	}
+
+	#nette-debug .nette-panel .nette-icons {
+		display: none;
+	}
+
+	#nette-debug .nette-mode-peek {
+		display: none;
+		position: relative;
+		z-index: 23179;
+		padding: 5px;
+		min-width: 150px;
+		min-height: 50px;
+		border: 5px solid #edeae0;
+		border-radius: 5px;
+		-moz-border-radius: 5px;
+	}
+
+	#nette-debug .nette-mode-peek h1 {
+		cursor: move;
+	}
+
+	#nette-debug .nette-mode-float {
+		position: relative;
+		z-index: 23170;
+		padding: 5px;
+		min-width: 150px;
+		min-height: 50px;
+		border: 5px solid #edeae0;
+		border-radius: 5px;
+		-moz-border-radius: 5px;
+		opacity: .9;
+		=filter: alpha(opacity=90);
+	}
+
+	#nette-debug .nette-focused {
+		z-index: 23179;
+		opacity: 1;
+		=filter: none;
+	}
+
+	#nette-debug .nette-mode-float h1 {
+		cursor: move;
+	}
+
+	#nette-debug .nette-mode-float .nette-icons {
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	#nette-debug a.nette-icon-window {
+		display: inline-block;
+		background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACtJREFUeNpiZGBgKGbAAZgY8AAWJHYvEruYeJ3///+HCzIyMkJosh0EEGAA4BwE90s3fqAAAAAASUVORK5CYII=') no-repeat; /* window.png */
+		width: 7px;
+		height: 7px;
+	}
+
+	#nette-debug a.nette-icon-close {
+		display: inline-block;
+		background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHAQMAAAD+nMWQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////AAAAVcLTfgAAAAJ0Uk5TAHO/n+2+AAAAFUlEQVQIHWM8xviOsYbRAojfMR4DACBuBKBO17DlAAAAAElFTkSuQmCC') no-repeat; /* cross.png */
+		width: 7px;
+		height: 7px;
+	}
+
+
+/* ]]> */
+</style>
+
+
+
+<script type="text/javascript" id="nette-debug-script">
+/* <![CDATA[ */
+<?php require dirname(__FILE__) . '/netteJs.js' ?>
+
+
+(function(){
+Nette.Debug = {};
+
+var $ = Nette.Q.factory;
+
+var Panel = Nette.Debug.Panel = Nette.Class({
+	Extends: Nette.Q,
+
+	Static: {
+		PEEK: 'nette-mode-peek',
+		FLOAT: 'nette-mode-float',
+		WINDOW: 'nette-mode-window',
+		FOCUSED: 'nette-focused',
+
+		factory: function(selector) {
+			return new Panel(selector)
+		}
+	},
+
+	constructor: function(selector) {
+		Nette.Q.call(this, '#nette-debug-panel-' + selector);
+	},
+
+	reposition: function() {
+		this.position(this.position());
+	},
+
+	focus: function() {
+		if (this.hasClass(Panel.WINDOW)) {
+			this.data().win.focus();
+		} else {
+			clearTimeout(this.data().blurTimeout);
+			this.addClass(Panel.FOCUSED).show();
+		}
+	},
+
+	blur: function() {
+		this.removeClass(Panel.FOCUSED);
+		if (this.hasClass(Panel.PEEK)) {
+			var panel = this;
+			this.data().blurTimeout = setTimeout(function() {
+				panel.hide();
+			}, 50);
+		}
+	},
+
+	toFloat: function() {
+		this.removeClass(Panel.WINDOW).removeClass(Panel.PEEK).addClass(Panel.FLOAT).show().reposition();
+		if (this.position().width) { // is visible?
+			document.cookie = this.dom().id + '=' + this.position().left + ':' + this.position().top + '; path=/';
+		}
+		return this;
+	},
+
+	toPeek: function() {
+		this.removeClass(Panel.WINDOW).removeClass(Panel.FLOAT).addClass(Panel.PEEK).hide();
+		document.cookie = this.dom().id + '=; path=/'; // delete position
+	},
+
+	toWindow: function() {
+		var panel = this, win, offset = this.offset(), id = this.dom().id;
+
+		offset.left += typeof window.screenLeft === 'number' ? window.screenLeft : (window.screenX + 10);
+		offset.top += typeof window.screenTop === 'number' ? window.screenTop : (window.screenY + 50);
+
+		win = window.open('', id.replace(/-/g, '_'), 'left='+offset.left+',top='+offset.top+',width='+offset.width+',height='+(offset.height+15)+',resizable=yes,scrollbars=yes');
+		if (!win) return;
+
+		var d = win.document;
+		d.write('<!DOCTYPE html><meta http-equiv="Content-Type" content="text\/html; charset=utf-8"><style>' + $('#nette-debug-style').dom().innerHTML + '<\/style><script>' + $('#nette-debug-script').dom().innerHTML + '<\/script><body id="nette-debug"><div class="nette-panel nette-mode-window" id="' + id + '">' + this.dom().innerHTML + '<\/div>');
+		d.close();
+		d.title = panel.find('h1').dom().innerHTML;
+
+		$([win]).bind('unload', function() {
+			panel.toPeek();
+			win.close(); // forces closing, can be invoked by F5
+		});
+
+		$(d).bind('keyup', function(e) {
+			if (e.keyCode === 27) win.close();
+		});
+
+		win.resizeBy(d.documentElement.scrollWidth - d.documentElement.clientWidth, d.documentElement.scrollHeight - d.documentElement.clientHeight);
+
+		document.cookie = id + '=window; path=/'; // save position
+		this.hide().removeClass(Panel.FLOAT).removeClass(Panel.PEEK).addClass(Panel.WINDOW).data().win = win;
+	},
+
+	toggle: function(mode) {
+		if (mode === Panel.WINDOW) {
+			this.toFloat().toWindow();
+		} else if (this.hasClass(Panel.FLOAT)) {
+			this.toPeek();
+		} else {
+			this.toFloat().position({left: this.position().left - Math.round(Math.random() * 100) - 20, top: this.position().top - Math.round(Math.random() * 100) - 20});
+		}
+	},
+
+	init: function() {
+		var panel = this, pos;
+
+		panel.data().onmove = function(coords) { // forces constrained inside window
+			var d = document, width = d.documentElement.clientWidth || d.body.clientWidth, height = d.documentElement.clientHeight || d.body.clientHeight;
+			coords.left = Math.max(Math.min(coords.left, .8 * this.offsetWidth), .2 * this.offsetWidth - width);
+			coords.top = Math.max(Math.min(coords.top, .8 * this.offsetHeight), this.offsetHeight - height);
+		};
+
+		$(window).bind('resize', function() {
+			panel.reposition();
+		});
+
+		panel.draggable({
+			handle: panel.find('h1'),
+			stop: function() {
+				panel.toFloat();
+			}
+
+		}).bind('mouseenter', function(e) {
+			panel.focus();
+
+		}).bind('mouseleave', function(e) {
+			panel.blur();
+		});
+
+		panel.find('.nette-icon-window').bind('click', function(e) {
+			panel.toWindow();
+			e.preventDefault();
+		});
+
+		panel.find('.nette-icon-close').bind('click', function(e) {
+			panel.toPeek();
+			e.preventDefault();
+		});
+
+		// restore saved position
+		if (pos = document.cookie.match(new RegExp(panel.dom().id + '=(window|(-?[0-9]+):(-?[0-9]+))'))) {
+			if (pos[2]) {
+				panel.toFloat().position({left: pos[2], top: pos[3]});
+			} else {
+				panel.toWindow();
+			}
+		} else {
+			panel.addClass(Panel.PEEK);
+		}
+	}
+
+});
+
+
+
+
+Nette.Debug.Bar = Nette.Class({
+	Extends: Nette.Q,
+
+	constructor: function() {
+		Nette.Q.call(this, '#nette-debug-bar');
+	},
+
+	init: function() {
+		var bar = this, pos;
+
+		bar.data().onmove = function(coords) { // forces constrained inside window
+			var d = document, width = d.documentElement.clientWidth || d.body.clientWidth, height = d.documentElement.clientHeight || d.body.clientHeight;
+			coords.left = Math.max(Math.min(coords.left, 0), this.offsetWidth - width);
+			coords.top = Math.max(Math.min(coords.top, 0), this.offsetHeight - height);
+		};
+
+		$(window).bind('resize', function() {
+			bar.position(bar.position());
+		});
+
+		bar.draggable({
+			draggedClass: 'nette-dragged',
+			stop: function() {
+				document.cookie = bar.dom().id + '=' + bar.position().left + ':' + bar.position().top + '; path=/';
+			}
+		});
+
+		bar.find('a').bind('click', function(e) {
+			if (!this.rel) return;
+			Panel.factory(this.rel).toggle(e.shiftKey ? Panel.WINDOW : Panel.FLOAT);
+			e.preventDefault();
+
+		}).bind('mouseenter', function(e) {
+			if (!this.rel) return;
+			if (bar.hasClass('nette-dragged')) return;
+			var panel = Panel.factory(this.rel);
+			panel.focus();
+			if (panel.hasClass(Panel.PEEK)) {
+				var offset = $(this).offset();
+				panel.offset({left: offset.left - panel.position().width + offset.width + 4, top: offset.top - panel.position().height - 4});
+			}
+
+		}).bind('mouseleave', function(e) {
+			if (!this.rel) return;
+			Panel.factory(this.rel).blur();
+		});
+
+		bar.find('.nette-icon-close').bind('click', function(e) {
+			bar.hide();
+			e.preventDefault();
+		});
+
+		// restore saved position
+		if (pos = document.cookie.match(new RegExp(bar.dom().id + '=(-?[0-9]+):(-?[0-9]+)'))) {
+			bar.position({left: pos[1], top: pos[2]}); // TODO
+		}
+
+		bar.find('a').each(function() {
+			if (!this.rel) return;
+			Panel.factory(this.rel).init();
+		});
+	}
+
+});
+
+
+})();
+
+/* ]]> */
+</script>
+
+
+
+
+<div id="nette-debug">
+
+<div class="nette-fixed-coords">
+	<div id="nette-debug-bar">
+		<ul>
+			<?php foreach ($panels as $panel): if (!$panel['tab']) continue; ?>
+			<li><?php if ($panel['panel']): ?><a href="#" rel="<?php echo $panel['id'] ?>"><?php echo trim($panel['tab']) ?></a><?php else: echo '<div>', trim($panel['tab']), '</div>'; endif ?></li>
+			<?php endforeach ?>
+			<li><a href="#" class="nette-icon-close" title="close debug bar"></a></li>
+		</ul>
+
+		<div style="position:absolute; z-index:-1; background: url('data:image/png;base64,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') no-repeat; left: -56px; top: -7px; width: 56px; height: 37px"></div>
+		<div style="position:absolute; z-index:-1; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAlCAYAAACDKIOpAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAF5JREFUeNpUjjEOgDAMA932DXynA/8X6sAnGBErjYlLW8Fy8jlRFAAI0RH/SC9yziuu86AUDjroiR+ldA6a0hDNHLUqSWmj6yvo2i6rS1vZi2xRd0/UNL4ypSDgEWAAvWU1L9Te5UYAAAAASUVORK5CYII=') repeat-x; left: 0; right: 7px; top: -7px; height: 37px"></div>
+		<div style="position:absolute; z-index:-1; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAlCAYAAACZFGMnAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAb5JREFUeNq8Vb1OwzAQtlNTIoRYYIhEFfUVGLp2YykDA48FG8/AUvEKqFIGQDwEA20CKv9UUFWkPuzUTi/pOW0XTjolvfrL951/PnPGGGelaLfbwIiIoih7aoBX+g9cH7AgHcJkzaRnkuNU4BygC3XEAI73ggqB5EFpsFOylYVB0vEBMMqgprR2wjDcD4JAy/wZjUayiiWLz7cBPD/dv9xe97pHnc5Jo9HYU+Utlb7pV6AJ4jno41VnH+5uepetVutAlbcNcFPlBuo9m0kPYC692QwPfd8P0AAPLb6d/uwLTAN1CiF2OOd1MxhQ8xz3JixgxlhYPypn6ySlzAEI55mpJ8MwsWVMuA6KybKQG5uXnohpcf04AZj3BCCrmKp6Wh2Qz966IdZlMSD2P0yeA0Qdd8Ant2r2KJ9YykQd+ZmpWGCapl9qCX6RT9A94R8P/fhqPB4PCSZY6EkxvA/ix+j07PwiSZLYMLlcKXPOYy1pMpkM4zhWmORb1acGNEW2lkvWO3cXFaQjCzK1vJQwSnIw7ild0WELtjwldoGsugwEMpBVbo2C68hSPwvy8OUmCKuCZVepoOhdd66NPwEGACivHvMuwfIKAAAAAElFTkSuQmCC') no-repeat; right: -6px; top: -7px; width: 13px; height: 37px"></div>
+	</div>
+</div>
+
+<?php foreach ($panels as $id => $panel): ?>
+<div class="nette-fixed-coords">
+	<div class="nette-panel" id="nette-debug-panel-<?php echo $panel['id'] ?>">
+		<div id="nette-debug-<?php echo $panel['id'] ?>"><?php echo $panel['panel'] ?></div>
+		<div class="nette-icons">
+			<a href="#" class="nette-icon-window" title="open in window"></a>
+			<a href="#" class="nette-icon-close" title="close"></a>
+		</div>
+	</div>
+</div>
+<?php endforeach ?>
+</div>
+
+
+
+<script type="text/javascript" id="nette-debug-script">
+/* <![CDATA[ */
+
+(new Nette.Debug.Bar).init();
+document.body.appendChild( Nette.Q.factory('#nette-debug').show().dom() );
+
+/* ]]> */
+</script>

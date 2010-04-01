@@ -1,0 +1,85 @@
+<?php
+
+/*namespace Nette;*/
+
+if (!function_exists(/*Nette\*/'_netteDumpCb2')) {
+
+	function _netteDumpCb2($m)
+	{
+		return "$m[1]<a href='#'>$m[2]($m[3]) " . ($m[3] < 7 ? '<abbr>&#x25bc;</abbr> </a><code>' : '<abbr>&#x25ba;</abbr> </a><code class="nette-hidden">');
+	}
+}
+
+?>
+<style type="text/css">
+/* <![CDATA[ */
+
+	#nette-debug-dumps h2 {
+		font: 11pt/1.5 sans-serif;
+		margin: 0;
+		padding: 2px 8px;
+		background: #3484d2;
+		color: white;
+	}
+
+	#nette-debug #nette-debug-dumps a {
+		text-decoration: none;
+		color: #333;
+		background: transparent;
+	}
+
+	#nette-debug-dumps a abbr {
+		font-family: sans-serif;
+		color: #999;
+	}
+
+	#nette-debug-dumps pre.nette-dump span {
+		color: #c16549;
+	}
+
+	#nette-debug-dumps table {
+		width: 100%;
+	}
+
+/* ]]> */
+</style>
+
+
+<h1>Dumped variables</h1>
+
+<div class="nette-inner">
+<?php foreach (self::$dumps as $item): ?>
+	<?php if ($item['title']):?>
+	<h2><?php echo htmlspecialchars($item['title']) ?></h2>
+	<?php endif ?>
+
+	<table>
+	<?php $i = 0 ?>
+	<?php foreach ($item['dump'] as $key => $dump): ?>
+	<tr class="<?php echo $i++ % 2 ? 'nette-alt' : '' ?>">
+		<th><?php echo htmlspecialchars($key) ?></th>
+		<td><?php echo preg_replace_callback('#(<pre class="nette-dump">|\s+)?(.*)\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb2', $dump) ?></td>
+	</tr>
+	<?php endforeach ?>
+	</table>
+<?php endforeach ?>
+</div>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+
+(function(){
+	var $ = Nette.Q.factory, $p = Nette.Debug.Panel.factory;
+
+	$('pre').bind('click', function(e) {
+		var link = $(e.target || e.srcElement).closest('a');
+		link.next('code').toggle(link.find('abbr'));
+
+		$p('dumps').reposition();
+
+		e.preventDefault();
+	});
+})();
+
+/* ]]> */
+</script>

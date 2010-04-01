@@ -1,0 +1,11 @@
+<h1>Errors</h1>
+
+<?php $relative = isset($_SERVER['SCRIPT_FILENAME']) ? strtr(dirname(dirname($_SERVER['SCRIPT_FILENAME'])), '/', DIRECTORY_SEPARATOR) : NULL ?>
+
+<table class="nette-inner">
+<?php foreach (self::$errors as $i => $item): ?>
+<tr class="<?php echo $i++ % 2 ? 'nette-alt' : '' ?>">
+	<td><pre><?php echo $relative ? str_replace($relative, "\xE2\x80\xA6", $item) : $item ?></pre></td>
+</tr>
+<?php endforeach ?>
+</table>
