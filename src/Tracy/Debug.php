@@ -818,11 +818,11 @@ final class Debug
 		case 'memory:tab':
 			require dirname(__FILE__) . '/Debug.templates/bar.memory.tab.phtml';
 			return;
-		case 'variables:tab':
+		case 'dumps:tab':
 			if (!Debug::$dumps) return;
 			require dirname(__FILE__) . '/Debug.templates/bar.dumps.tab.phtml';
 			return;
-		case 'variables:panel':
+		case 'dumps:panel':
 			if (!Debug::$dumps) return;
 			require dirname(__FILE__) . '/Debug.templates/bar.dumps.panel.phtml';
 			return;
@@ -836,6 +836,14 @@ final class Debug
 			return;
 		}
 	}
+
+
+
+	/** @deprecated */
+	public static function addColophon(){}
+
+	/** @deprecated */
+	public static function consoleDump(){}
 
 
 
@@ -944,6 +952,7 @@ final class Debug
  *
  * @copyright  Copyright (c) 2004, 2010 David Grudl
  * @package    Nette
+ * @internal
  */
 class DebugPanel extends Object implements IDebugPanel
 {

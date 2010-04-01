@@ -428,7 +428,7 @@ if (headers_sent()) {
 
 
 			<?php if ($ex instanceof IDebugPanel && $panel = $ex->getPanel()): ?>
-			<?php _netteOpenPanel($ex->getTab()) ?>
+			<?php _netteOpenPanel($ex->getTab(), FALSE) ?>
 				<?php echo $panel ?>
 			<?php _netteClosePanel() ?>
 			<?php endif ?>
