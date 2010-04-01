@@ -10,7 +10,6 @@
  * @package    Nette
  *
  * @param      array     $exception
- * @param      array     $colophons
  * @param      array     $internals
  * @param      Nette\Application\Application $application
  * @return     void
@@ -545,9 +544,13 @@ if (headers_sent()) {
 
 
 		<ul>
-			<?php foreach ($colophons as $callback): ?>
-			<?php foreach ((array) call_user_func($callback, 'bluescreen') as $line): ?><li><?php echo $line, "\n" ?></li><?php endforeach ?>
-			<?php endforeach ?>
+			<li>Report generated at <?php echo @date('Y/m/d H:i:s', self::$time) ?></li>
+			<?php if (isset($_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'])): ?>
+				<li><a href="<?php $url = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://') . htmlSpecialChars($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ?>"><?php echo $url ?></a></li>
+			<?php endif ?>
+			<li>PHP <?php echo htmlSpecialChars(PHP_VERSION) ?></li>
+			<?php if (isset($_SERVER['SERVER_SOFTWARE'])): ?><li><?php echo htmlSpecialChars($_SERVER['SERVER_SOFTWARE']) ?></li><?php endif ?>
+			<?php if (class_exists(/*Nette\*/'Framework')): ?><li><?php echo htmlSpecialChars('Nette Framework ' . Framework::VERSION) ?> <i>(revision <?php echo htmlSpecialChars(Framework::REVISION) ?>)</i></li><?php endif ?>
 		</ul>
 	</div>
 </div>

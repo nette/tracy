@@ -91,9 +91,6 @@ final class Debug
 		'Body' => '[%date%] %message%',
 	);
 
-	/** @var array  */
-	private static $colophons = array(array(__CLASS__, 'getDefaultColophons'));
-
 	/********************* debug bar ****************d*g**/
 
 	/** @var bool {@link Debug::enableBar()} */
@@ -260,7 +257,7 @@ final class Debug
 	 * @param  string optional title
 	 * @return mixed  variable itself
 	 */
-	public static function consoleDump($var, $title = NULL)
+	public static function barDump($var, $title = NULL)
 	{
 		if (!self::$productionMode) {
 			$dump = array();
@@ -641,9 +638,6 @@ final class Debug
 		} elseif (self::$consoleMode) { // dump to console
 			if ($outputAllowed) {
 				echo "$exception\n";
-				foreach (self::$colophons as $callback) {
-					foreach ((array) call_user_func($callback, 'bluescreen') as $line) echo strip_tags($line) . "\n";
-				}
 			}
 
 		} elseif (self::$firebugDetected && self::$ajaxDetected && !headers_sent()) { // AJAX mode
@@ -704,7 +698,6 @@ final class Debug
 			$application = Environment::getServiceLocator()->hasService('Nette\Application\Application', TRUE) ? Environment::getServiceLocator()->getService('Nette\Application\Application') : NULL;
 		}
 
-		$colophons = self::$colophons;
 		require dirname(__FILE__) . '/Debug.templates/bluescreen.phtml';
 	}
 
@@ -842,51 +835,6 @@ final class Debug
 			require dirname(__FILE__) . '/Debug.templates/bar.errors.panel.phtml';
 			return;
 		}
-	}
-
-
-
-	/********************* colophons ****************d*g**/
-
-
-
-	/**
-	 * Add custom descriptions.
-	 * @param  callback
-	 * @return void
-	 */
-	public static function addColophon($callback)
-	{
-		if (!is_callable($callback)) {
-			$able = is_callable($callback, TRUE, $textual);
-			throw new /*\*/InvalidArgumentException("Colophon handler '$textual' is not " . ($able ? 'callable.' : 'valid PHP callback.'));
-		}
-
-		if (!in_array($callback, self::$colophons, TRUE)) {
-			self::$colophons[] = $callback;
-		}
-	}
-
-
-
-	/**
-	 * Returns default colophons.
-	 * @param  string  bluescreen
-	 * @return array
-	 */
-	private static function getDefaultColophons($sender)
-	{
-		if ($sender === 'bluescreen') {
-			$arr[] = 'Report generated at ' . @date('Y/m/d H:i:s', self::$time); // intentionally @
-			if (isset($_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'])) {
-				$url = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://') . htmlSpecialChars($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-				$arr[] = '<a href="' . $url . '">' . $url . '</a>';
-			}
-			$arr[] = 'PHP ' . htmlSpecialChars(PHP_VERSION);
-			if (isset($_SERVER['SERVER_SOFTWARE'])) $arr[] = htmlSpecialChars($_SERVER['SERVER_SOFTWARE']);
-			if (class_exists(/*Nette\*/'Framework')) $arr[] = htmlSpecialChars('Nette Framework ' . Framework::VERSION) . ' <i>(revision ' . htmlSpecialChars(Framework::REVISION) . ')</i>';
-		}
-		return $arr;
 	}
 
 
