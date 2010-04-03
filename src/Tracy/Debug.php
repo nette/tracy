@@ -225,7 +225,7 @@ final class Debug
 			return $var;
 		}
 
-		$output = "<pre class=\"dump\">" . self::_dump($var, 0) . "</pre>\n";
+		$output = "<pre class=\"nette-dump\">" . self::_dump($var, 0) . "</pre>\n";
 
 		if (self::$showLocation) {
 			$trace = debug_backtrace();

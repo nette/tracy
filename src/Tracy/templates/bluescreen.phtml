@@ -86,7 +86,7 @@ function _netteDebugPrintCode($file, $line, $count = 15)
  */
 function _netteDump($dump)
 {
-	return '<pre class="dump">' . preg_replace_callback('#(^|\s+)?(.*)\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb', $dump) . '</pre>';
+	return '<pre class="nette-dump">' . preg_replace_callback('#(^|\s+)?(.*)\((\d+)\) <code>#', /*Nette\*/'_netteDumpCb', $dump) . '</pre>';
 }
 
 function _netteDumpCb($m)
@@ -253,11 +253,11 @@ if (headers_sent()) {
 			border: none;
 		}
 
-		#netteBluescreen pre.dump span {
+		#netteBluescreen pre.nette-dump span {
 			color: #c16549;
 		}
 
-		#netteBluescreen pre.dump a {
+		#netteBluescreen pre.nette-dump a {
 			color: #333;
 		}
 
