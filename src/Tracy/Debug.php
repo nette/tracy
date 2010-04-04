@@ -93,8 +93,8 @@ final class Debug
 
 	/********************* debug bar ****************d*g**/
 
-	/** @var bool {@link Debug::enableBar()} */
-	private static $enabledBar = TRUE;
+	/** @var bool */
+	public static $showBar = TRUE;
 
 	/** @var array */
 	private static $panels = array();
@@ -183,7 +183,7 @@ final class Debug
 
 
 		// 2) debug bar (require HTML & development mode)
-		if (self::$enabledBar && !self::$productionMode && !self::$ajaxDetected) {
+		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected) {
 			foreach (headers_list() as $header) {
 				if (strncasecmp($header, 'Content-Type:', 13) === 0) {
 					if (substr($header, 14, 9) === 'text/html') {
@@ -771,28 +771,6 @@ final class Debug
 
 
 	/**
-	 * Enables debug bar.
-	 * @return void
-	 */
-	public static function enableBar()
-	{
-		self::$enabledBar = TRUE;
-	}
-
-
-
-	/**
-	 * Disables debug bar.
-	 * @return void
-	 */
-	public static function disableBar()
-	{
-		self::$enabledBar = FALSE;
-	}
-
-
-
-	/**
 	 * Add custom panel.
 	 * @param  IDebugPanel
 	 * @return void
@@ -808,6 +786,7 @@ final class Debug
 	 * Renders default panel.
 	 * @param  string
 	 * @return void
+     * @internal
 	 */
 	public static function getDefaultPanel($id)
 	{
