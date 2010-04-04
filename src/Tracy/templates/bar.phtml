@@ -306,11 +306,20 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 
 		factory: function(selector) {
 			return new Panel(selector)
+		},
+
+		_toggle: function(link) { // .nette-toggler
+			var rel = link.rel, el = rel.charAt(0) === '#' ? $(rel) : $(link)[rel.charAt(0) === '<' ? 'prev' : 'next'](rel.substring(1));
+			if (el.css('display') === 'none') {
+				el.show(); link.innerHTML = link.innerHTML.replace("\u25ba", "\u25bc");
+			} else {
+				el.hide(); link.innerHTML = link.innerHTML.replace("\u25bc", "\u25ba");
+			}
 		}
 	},
 
-	constructor: function(selector) {
-		Nette.Q.call(this, '#nette-debug-panel-' + selector);
+	constructor: function(id) {
+		Nette.Q.call(this, '#nette-debug-panel-' + id.replace('nette-debug-panel-', ''));
 	},
 
 	reposition: function() {
@@ -358,21 +367,8 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 		win = window.open('', id.replace(/-/g, '_'), 'left='+offset.left+',top='+offset.top+',width='+offset.width+',height='+(offset.height+15)+',resizable=yes,scrollbars=yes');
 		if (!win) return;
 
-		var d = win.document;
-		d.write('<!DOCTYPE html><meta http-equiv="Content-Type" content="text\/html; charset=utf-8"><style>' + $('#nette-debug-style').dom().innerHTML + '<\/style><script>' + $('#nette-debug-script').dom().innerHTML + '<\/script><body id="nette-debug"><div class="nette-panel nette-mode-window" id="' + id + '">' + this.dom().innerHTML + '<script>Nette.Debug.init();<\/script><\/div>');
-		d.close();
-		d.title = panel.find('h1').dom().innerHTML;
-
-		$([win]).bind('unload', function() {
-			panel.toPeek();
-			win.close(); // forces closing, can be invoked by F5
-		});
-
-		$(d).bind('keyup', function(e) {
-			if (e.keyCode === 27) win.close();
-		});
-
-		win.resizeBy(d.documentElement.scrollWidth - d.documentElement.clientWidth, d.documentElement.scrollHeight - d.documentElement.clientHeight);
+		win.document.write('<!DOCTYPE html><meta http-equiv="Content-Type" content="text\/html; charset=utf-8"><style>' + $('#nette-debug-style').dom().innerHTML + '<\/style><script>' + $('#nette-debug-script').dom().innerHTML + '<\/script><body id="nette-debug"><div class="nette-panel nette-mode-window" id="' + id + '">' + this.dom().innerHTML + '<\/div><script>(new Nette.Debug.Panel("'+id+'")).initWin()<\/script>');
+		win.document.close();
 
 		document.cookie = id + '=window; path=/'; // save position
 		this.hide().removeClass(Panel.FLOAT).removeClass(Panel.PEEK).addClass(Panel.WINDOW).data().win = win;
@@ -404,7 +400,13 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 			panel.blur();
 
 		}).bind('click', function(e) {
-			panel.reposition();
+			// enable .nette-toggler
+			var $link = $(e.target).closest('a'), link = $link.dom();
+			if (link && $link.hasClass('nette-toggler')) {
+				Panel._toggle(link);
+				e.preventDefault();
+				panel.reposition();
+			}
 		});
 
 		panel.find('.nette-icons').find('a').bind('click', function(e) {
@@ -422,6 +424,31 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 		} else {
 			panel.addClass(Panel.PEEK);
 		}
+	},
+
+	initWin: function() {
+		var panel = this, d = document;
+
+		$([window]).bind('unload', function() {
+			panel.toPeek();
+			window.close(); // forces closing, can be invoked by F5
+		});
+
+		$(d).bind('keyup', function(e) {
+			if (e.keyCode === 27) window.close();
+		});
+
+		window.resizeBy(d.documentElement.scrollWidth - d.documentElement.clientWidth, d.documentElement.scrollHeight - d.documentElement.clientHeight);
+
+		d.title = panel.find('h1').dom().innerHTML;
+
+		panel.bind('click', function(e) {
+			var $link = $(e.target).closest('a'), link = $link.dom();
+			if (link && $link.hasClass('nette-toggler')) {
+				Panel._toggle(link);
+				e.preventDefault();
+			}
+		});
 	}
 
 });
@@ -500,25 +527,6 @@ Nette.Debug.Bar = Nette.Class({
 });
 
 
-
-Nette.Debug.init = function() {
-	// enable .nette-toggler
-	$('#nette-debug').bind('click', function(e) {
-		var $link = $(e.target || e.srcElement).closest('a'), link = $link.dom();
-		if (!link || !$link.hasClass('nette-toggler')) return;
-
-		var el = link.rel.charAt(0) === '#' ? $(link.rel) : $link[link.rel.charAt(0) === '<' ? 'prev' : 'next'](link.rel.substring(1));
-		if (el.css('display') === 'none') {
-			el.show();
-			link.innerHTML = link.innerHTML.replace("\u25ba", "\u25bc");
-		} else {
-			el.hide();
-			link.innerHTML = link.innerHTML.replace("\u25bc", "\u25ba");
-		}
-		e.preventDefault();
-	});
-};
-
 })();
 
 /* ]]> */
@@ -560,7 +568,6 @@ Nette.Debug.init = function() {
 
 <script>
 (function(){
-	Nette.Debug.init();
 	(new Nette.Debug.Bar).init();
 	document.body.appendChild( Nette.Q.factory('#nette-debug').show().dom() );
 })();

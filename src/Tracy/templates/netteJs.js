@@ -131,6 +131,7 @@ fn({
 			var el = this, // fixes 'this' in iE
 				handlers = events[event] = [],
 				generic = fn.bind.genericHandler = function(e) { // dont worry, 'e' is passed in IE
+					if (!e.target) e.target = e.srcElement;
 					if (!e.preventDefault) e.preventDefault = function() { e.returnValue = false }; // emulate preventDefault()
 					if (!e.stopPropagation) e.stopPropagation = function() { e.cancelBubble = true }; // emulate stopPropagation()
 					e.stopImmediatePropagation = function() { this.stopPropagation(); i = handlers.length };
