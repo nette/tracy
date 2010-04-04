@@ -6,12 +6,12 @@ if (!function_exists(/*Nette\*/'_netteDumpCb2')) {
 
 	function _netteDumpCb2($m)
 	{
-		return "$m[1]<a href='#'>$m[2]($m[3]) " . ($m[3] < 7 ? '<abbr>&#x25bc;</abbr> </a><code>' : '<abbr>&#x25ba;</abbr> </a><code class="nette-hidden">');
+		return "$m[1]<a href='#' class='nette-toggler'>$m[2]($m[3]) " . ($m[3] < 7 ? '<abbr>&#x25bc;</abbr> </a><code>' : '<abbr>&#x25ba;</abbr> </a><code class="nette-hidden">');
 	}
 }
 
 ?>
-<style type="text/css">
+<style>
 /* <![CDATA[ */
 
 	#nette-debug-dumps h2 {
@@ -22,8 +22,11 @@ if (!function_exists(/*Nette\*/'_netteDumpCb2')) {
 		color: white;
 	}
 
+	#nette-debug-dumps table {
+		width: 100%;
+	}
+
 	#nette-debug #nette-debug-dumps a {
-		text-decoration: none;
 		color: #333;
 		background: transparent;
 	}
@@ -35,10 +38,6 @@ if (!function_exists(/*Nette\*/'_netteDumpCb2')) {
 
 	#nette-debug-dumps pre.nette-dump span {
 		color: #c16549;
-	}
-
-	#nette-debug-dumps table {
-		width: 100%;
 	}
 
 /* ]]> */
@@ -64,22 +63,3 @@ if (!function_exists(/*Nette\*/'_netteDumpCb2')) {
 	</table>
 <?php endforeach ?>
 </div>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-
-(function(){
-	var $ = Nette.Q.factory, $p = Nette.Debug.Panel.factory;
-
-	$('#nette-debug-dumps').find('pre').bind('click', function(e) {
-		var link = $(e.target || e.srcElement).closest('a');
-		link.next('code').toggle(link.find('abbr'));
-
-		$p('dumps').reposition();
-
-		e.preventDefault();
-	});
-})();
-
-/* ]]> */
-</script>

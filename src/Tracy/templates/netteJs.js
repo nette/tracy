@@ -165,17 +165,16 @@ fn({
 	},
 
 	show: function() {
-		this.style.display = 'block';
+		var dsp = fn.show.display = fn.show.display || {}, tag = this.tagName;
+		if (!dsp[tag]) {
+			var el = document.body.appendChild(document.createElement(tag));
+			dsp[tag] = fn.css.call(el, 'display');
+		}
+		this.style.display = dsp[tag];
 	},
 
 	hide: function() {
 		this.style.display = 'none';
-	},
-
-	toggle: function(arrow) {
-		var h = fn.css.call(this, 'display') === 'none';
-		this.style.display = h ? 'block' : 'none';
-		if (arrow) $(arrow).dom().innerHTML = String.fromCharCode(h ? 0x25bc : 0x25ba);
 	},
 
 	css: function(property) {
@@ -198,7 +197,7 @@ fn({
 	},
 
 	prev: function(selector) {
-		return fn._trav(this.prevSibling, selector, 'prevSibling');
+		return fn._trav(this.previousSibling, selector, 'previousSibling');
 	},
 
 	next: function(selector) {

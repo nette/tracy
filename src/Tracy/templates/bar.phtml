@@ -19,7 +19,7 @@
 
 <!-- Nette Debug Bar -->
 
-<style type="text/css" id="nette-debug-style">
+<style id="nette-debug-style">
 /* <![CDATA[ */
 
 	/* common styles */
@@ -50,17 +50,17 @@
 	}
 
 	#nette-debug a {
-		color: #125EAE;
+		color: #125eae;
 		text-decoration: none;
 	}
 
 	#nette-debug .nette-panel a {
-		color: #125EAE;
+		color: #125eae;
 		text-decoration: none;
 	}
 
 	#nette-debug a:hover, #nette-debug a:active, #nette-debug a:focus {
-		background-color: #125EAE;
+		background-color: #125eae;
 		color: white;
 	}
 
@@ -73,20 +73,20 @@
 		background: #fcfae5;
 	}
 
-	#nette-debug .nette-panel table .nette-alt td {
-		background: #f9f6e0;
+	#nette-debug .nette-panel .nette-alt td {
+		background: #f5f2db;
 	}
 
-	#nette-debug .nette-panel table td, #nette-debug .nette-panel table th {
-		border: 1px solid #DCD7C8;
+	#nette-debug .nette-panel td, #nette-debug .nette-panel th {
+		border: 1px solid #dcd7c8;
 		padding: 2px 5px;
 		vertical-align: top;
 		text-align: left;
 	}
 
-	#nette-debug .nette-panel table th {
+	#nette-debug .nette-panel th {
 		background: #f0eee6;
-		color: #655E5E;
+		color: #655e5e;
 		font-size: 90%;
 		font-weight: bold;
 	}
@@ -285,7 +285,7 @@
 </style><![endif]-->
 
 
-<script type="text/javascript" id="nette-debug-script">
+<script id="nette-debug-script">
 /* <![CDATA[ */
 <?php require dirname(__FILE__) . '/netteJs.js' ?>
 
@@ -359,7 +359,7 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 		if (!win) return;
 
 		var d = win.document;
-		d.write('<!DOCTYPE html><meta http-equiv="Content-Type" content="text\/html; charset=utf-8"><style>' + $('#nette-debug-style').dom().innerHTML + '<\/style><script>' + $('#nette-debug-script').dom().innerHTML + '<\/script><body id="nette-debug"><div class="nette-panel nette-mode-window" id="' + id + '">' + this.dom().innerHTML + '<\/div>');
+		d.write('<!DOCTYPE html><meta http-equiv="Content-Type" content="text\/html; charset=utf-8"><style>' + $('#nette-debug-style').dom().innerHTML + '<\/style><script>' + $('#nette-debug-script').dom().innerHTML + '<\/script><body id="nette-debug"><div class="nette-panel nette-mode-window" id="' + id + '">' + this.dom().innerHTML + '<script>Nette.Debug.init();<\/script><\/div>');
 		d.close();
 		d.title = panel.find('h1').dom().innerHTML;
 
@@ -402,6 +402,9 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 
 		}).bind('mouseleave', function(e) {
 			panel.blur();
+
+		}).bind('click', function(e) {
+			panel.reposition();
 		});
 
 		panel.find('.nette-icons').find('a').bind('click', function(e) {
@@ -497,6 +500,25 @@ Nette.Debug.Bar = Nette.Class({
 });
 
 
+
+Nette.Debug.init = function() {
+	// enable .nette-toggler
+	$('#nette-debug').bind('click', function(e) {
+		var $link = $(e.target || e.srcElement).closest('a'), link = $link.dom();
+		if (!link || !$link.hasClass('nette-toggler')) return;
+
+		var el = link.rel.charAt(0) === '#' ? $(link.rel) : $link[link.rel.charAt(0) === '<' ? 'prev' : 'next'](link.rel.substring(1));
+		if (el.css('display') === 'none') {
+			el.show();
+			link.innerHTML = link.innerHTML.replace("\u25ba", "\u25bc");
+		} else {
+			el.hide();
+			link.innerHTML = link.innerHTML.replace("\u25bc", "\u25ba");
+		}
+		e.preventDefault();
+	});
+};
+
 })();
 
 /* ]]> */
@@ -536,14 +558,12 @@ Nette.Debug.Bar = Nette.Class({
 </div>
 
 
-
-<script type="text/javascript" id="nette-debug-script">
-/* <![CDATA[ */
-
-(new Nette.Debug.Bar).init();
-document.body.appendChild( Nette.Q.factory('#nette-debug').show().dom() );
-
-/* ]]> */
+<script>
+(function(){
+	Nette.Debug.init();
+	(new Nette.Debug.Bar).init();
+	document.body.appendChild( Nette.Q.factory('#nette-debug').show().dom() );
+})();
 </script>
 
 <!-- /Nette Debug Bar -->
