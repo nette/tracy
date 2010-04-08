@@ -183,7 +183,7 @@ final class Debug
 
 
 		// 2) debug bar (require HTML & development mode)
-		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected) {
+		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode) {
 			foreach (headers_list() as $header) {
 				if (strncasecmp($header, 'Content-Type:', 13) === 0) {
 					if (substr($header, 14, 9) === 'text/html') {
