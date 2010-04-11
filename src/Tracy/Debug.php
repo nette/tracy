@@ -786,7 +786,7 @@ final class Debug
 	 * Renders default panel.
 	 * @param  string
 	 * @return void
-     * @internal
+	 * @internal
 	 */
 	public static function getDefaultPanel($id)
 	{

@@ -17,12 +17,12 @@
 
 /*namespace Nette;*/
 
+ob_start();
 ?>
 
 <!-- Nette Debug Bar -->
 
 <style id="nette-debug-style">
-/* <![CDATA[ */
 
 	/* common styles */
 	#nette-debug {
@@ -281,7 +281,6 @@
 		color: white;
 	}
 
-/* ]]> */
 </style>
 
 <!--[if lt IE 8]><style>
@@ -331,12 +330,12 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 	reposition: function() {
 		if (this.hasClass(Panel.WINDOW)) {
 			window.resizeBy(document.documentElement.scrollWidth - document.documentElement.clientWidth, document.documentElement.scrollHeight - document.documentElement.clientHeight);
-		} else {	
+		} else {
 			this.position(this.position());
 			if (this.position().width) { // is visible?
 				document.cookie = this.dom().id + '=' + this.position().left + ':' + this.position().top + '; path=/';
 			}
-		}	
+		}
 	},
 
 	focus: function() {
@@ -577,3 +576,9 @@ Nette.Debug.Bar = Nette.Class({
 </script>
 
 <!-- /Nette Debug Bar -->
+<?php
+echo preg_replace_callback(
+	'#(</textarea|</pre|</script|^).*?(?=<textarea|<pre|<script|$)#si',
+	create_function('$m', 'return trim(preg_replace("#[ \t\r\n]+#", " ", $m[0]));'),
+	ob_get_clean()
+);
