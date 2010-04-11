@@ -55,6 +55,3 @@ exception 'FatalErrorException' with message 'Call to undefined function missing
 Stack trace:
 #0 [internal function]: %ns%Debug::_shutdownHandler()
 #1 {main}
-Report generated at %a%
-PHP %a%
-Nette Framework %a%

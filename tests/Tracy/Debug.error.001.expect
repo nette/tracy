@@ -135,15 +135,12 @@
 	
 
 		<ul>
-						<li>Report generated at %a%
-</li><li>PHP %a%
-</li><li>Nette Framework %a%</i>
-</li>					</ul>
+			<li>Report generated at %a%</li>
+						<li>PHP %a%</li>
+						<li>Nette Framework %a%</li>		</ul>
 	</div>
 </div>
 
-<script type="text/javascript">
-	document.body.appendChild(document.getElementById('netteBluescreen'));
-</script>
+<script type="text/javascript">%A%</script>
 </body>
 </html>

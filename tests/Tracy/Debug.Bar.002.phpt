@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug::enableProfiler() in non-HTML mode.
+ * Test: Nette\Debug Bar in non-HTML mode.
  *
  * @author     David Grudl
  * @category   Nette
@@ -22,7 +22,7 @@ Debug::$productionMode = FALSE;
 
 header('Content-Type: text/plain');
 
-Debug::enableProfiler();
+Debug::barDump('value');
 
 
 

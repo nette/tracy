@@ -59,6 +59,3 @@ Stack trace:
 #2 %a%: second(true, false)
 #3 %a%: first(10, 'any string')
 #4 {main}
-Report generated at %a%
-PHP %a%
-Nette Framework %a%

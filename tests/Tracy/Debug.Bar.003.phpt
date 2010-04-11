@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug::consoleDump() in production mode.
+ * Test: Nette\Debug Bar in production mode.
  *
  * @author     David Grudl
  * @category   Nette
@@ -22,7 +22,7 @@ Debug::$productionMode = TRUE;
 
 header('Content-Type: text/html');
 
-Debug::consoleDump('value');
+Debug::barDump('value');
 
 
 

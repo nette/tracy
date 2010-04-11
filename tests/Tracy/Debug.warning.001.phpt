@@ -22,6 +22,8 @@ Debug::$productionMode = FALSE;
 
 Debug::enable();
 
+header('Content-Type: text/html');
+
 
 
 function first($arg1, $arg2)
@@ -50,7 +52,4 @@ first(10, 'any string');
 __halt_compiler();
 
 ------EXPECT------
-<br />
-<b>Notice</b>:  Undefined variable: x in %a%
-<br />
-<b>Warning</b>:  rename(..,..) [<a href='function.rename'>function.rename</a>]: %a%
+%A%<div id="nette-debug-errors">%A%PHP Notice: Undefined variable: x in %A%PHP Warning: rename(..,..) %A%

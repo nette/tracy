@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug::enableProfiler() in production mode.
+ * Test: Nette\Debug Bar.
  *
  * @author     David Grudl
  * @category   Nette
@@ -18,14 +18,13 @@ require dirname(__FILE__) . '/../NetteTest/initialize.php';
 
 
 Debug::$consoleMode = FALSE;
-Debug::$productionMode = TRUE;
+Debug::$productionMode = FALSE;
 
 header('Content-Type: text/html');
-
-Debug::enableProfiler();
 
 
 
 __halt_compiler();
 
 ------EXPECT------
+%A%<div id="nette-debug">%A%

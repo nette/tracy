@@ -71,11 +71,11 @@ __halt_compiler();
 ------EXPECT------
 HTML mode
 
-<pre class="dump"><span>string</span>(20) "&lt;a href="#"&gt;test&lt;/a&gt;"
+<pre class="nette-dump"><span>string</span>(20) "&lt;a href="#"&gt;test&lt;/a&gt;"
 </pre>
-<pre class="dump"><span>string</span>(13) "Special\x12chars"
+<pre class="nette-dump"><span>string</span>(13) "Special\x12chars"
 </pre>
-<pre class="dump"><span>array</span>(7) <code>{
+<pre class="nette-dump"><span>array</span>(7) <code>{
    0 => <span>int</span>(10)
    1 => <span>float</span>(20.2)
    2 => <span>bool</span>(TRUE)
@@ -85,7 +85,7 @@ HTML mode
    6 => <span>array</span>(0)
 }</code>
 </pre>
-<pre class="dump"><span>object</span>(Test) (3) <code>{
+<pre class="nette-dump"><span>object</span>(Test) (3) <code>{
    "x" => <span>array</span>(2) <code>{
       0 => <span>int</span>(10)
       1 => <span>NULL</span>
