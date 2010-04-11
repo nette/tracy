@@ -579,11 +579,13 @@ final class Debug
 			return NULL;
 
 		} elseif (!self::$productionMode) {
-			self::$errors[] = $message;
+			if (self::$showBar) {
+				self::$errors[] = $message;
+			}
 			if (self::$firebugDetected && !headers_sent()) {
 				self::fireLog(strip_tags($message), self::ERROR);
 			}
-			return NULL;
+			return self::$consoleMode || (!self::$showBar && !self::$ajaxDetected) ? FALSE : NULL;
 		}
 
 		return FALSE; // call normal error handler

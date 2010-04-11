@@ -6,7 +6,7 @@
 <table>
 <?php foreach (self::$errors as $i => $item): ?>
 <tr class="<?php echo $i++ % 2 ? 'nette-alt' : '' ?>">
-	<td><pre><?php echo $relative ? str_replace($relative, "\xE2\x80\xA6", $item) : $item ?></pre></td>
+	<td><pre><?php echo $relative ? str_replace($relative, "...", $item) : $item ?></pre></td>
 </tr>
 <?php endforeach ?>
 </table>
