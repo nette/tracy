@@ -144,10 +144,11 @@ final class Debug
 		self::$productionMode = self::DETECT;
 		self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
 		self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
-		self::addPanel(new DebugPanel('time', array(__CLASS__, 'getDefaultPanel')));
-		self::addPanel(new DebugPanel('memory', array(__CLASS__, 'getDefaultPanel')));
-		self::addPanel(new DebugPanel('errors', array(__CLASS__, 'getDefaultPanel')));
-		self::addPanel(new DebugPanel('dumps', array(__CLASS__, 'getDefaultPanel')));
+		$tab = array(__CLASS__, 'renderTab'); $panel = array(__CLASS__, 'renderPanel');
+		self::addPanel(new DebugPanel('time', $tab, $panel));
+		self::addPanel(new DebugPanel('memory', $tab, $panel));
+		self::addPanel(new DebugPanel('errors', $tab, $panel));
+		self::addPanel(new DebugPanel('dumps', $tab, $panel));
 		register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
 	}
 
@@ -790,31 +791,41 @@ final class Debug
 	 * @return void
 	 * @internal
 	 */
-	public static function getDefaultPanel($id)
+	public static function renderTab($id)
 	{
 		switch ($id) {
-		case 'time:tab':
+		case 'time':
 			require dirname(__FILE__) . '/Debug.templates/bar.time.tab.phtml';
 			return;
-		case 'memory:tab':
+		case 'memory':
 			require dirname(__FILE__) . '/Debug.templates/bar.memory.tab.phtml';
 			return;
-		case 'dumps:tab':
+		case 'dumps':
 			if (!Debug::$dumps) return;
 			require dirname(__FILE__) . '/Debug.templates/bar.dumps.tab.phtml';
 			return;
-		case 'dumps:panel':
-			if (!Debug::$dumps) return;
-			require dirname(__FILE__) . '/Debug.templates/bar.dumps.panel.phtml';
-			return;
-		case 'errors:tab':
+		case 'errors':
 			if (!Debug::$errors) return;
 			require dirname(__FILE__) . '/Debug.templates/bar.errors.tab.phtml';
+		}
+	}
+
+
+
+	/**
+	 * Renders default panel.
+	 * @param  string
+	 * @return void
+	 * @internal
+	 */
+	public static function renderPanel($id)
+	{
+		switch ($id) {
+		case 'dumps':
+			require dirname(__FILE__) . '/Debug.templates/bar.dumps.panel.phtml';
 			return;
-		case 'errors:panel':
-			if (!Debug::$errors) return;
+		case 'errors':
 			require dirname(__FILE__) . '/Debug.templates/bar.errors.panel.phtml';
-			return;
 		}
 	}
 
@@ -929,22 +940,24 @@ final class Debug
 
 
 /**
- * Debug Bar Helper.
+ * IDebugPanel implementation helper.
  *
  * @copyright  Copyright (c) 2004, 2010 David Grudl
  * @package    Nette
- * @internal
  */
 class DebugPanel extends Object implements IDebugPanel
 {
 	private $id;
 
-	private $callback;
+	private $tabCb;
 
-	public function __construct($id, $callback)
+	private $panelCb;
+
+	public function __construct($id, $tabCb, $panelCb)
 	{
 		$this->id = $id;
-		$this->callback = $callback;
+		$this->tabCb = $tabCb;
+		$this->panelCb = $panelCb;
 	}
 
 	public function getId()
@@ -955,14 +968,14 @@ class DebugPanel extends Object implements IDebugPanel
 	public function getTab()
 	{
 		ob_start();
-		call_user_func($this->callback, "$this->id:tab");
+		call_user_func($this->tabCb, $this->id);
 		return ob_get_clean();
 	}
 
 	public function getPanel()
 	{
 		ob_start();
-		call_user_func($this->callback, "$this->id:panel");
+		call_user_func($this->panelCb, $this->id);
 		return ob_get_clean();
 	}
 
