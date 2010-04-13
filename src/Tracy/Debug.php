@@ -228,7 +228,7 @@ final class Debug
 
 		$output = "<pre class=\"nette-dump\">" . self::_dump($var, 0) . "</pre>\n";
 
-		if (self::$showLocation) {
+		if (!$return && self::$showLocation) {
 			$trace = debug_backtrace();
 			$i = isset($trace[1]['class']) && $trace[1]['class'] === __CLASS__ ? 1 : 0;
 			if (isset($trace[$i]['file'], $trace[$i]['line'])) {
