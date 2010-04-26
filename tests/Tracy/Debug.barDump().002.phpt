@@ -21,6 +21,8 @@ Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
 Debug::$showLocation = TRUE;
 
+Debug::enable();
+
 header('Content-Type: text/html');
 
 Debug::barDump('value');

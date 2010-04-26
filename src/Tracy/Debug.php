@@ -149,62 +149,6 @@ final class Debug
 		self::addPanel(new DebugPanel('memory', $tab, $panel));
 		self::addPanel(new DebugPanel('errors', $tab, $panel));
 		self::addPanel(new DebugPanel('dumps', $tab, $panel));
-		register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
-	}
-
-
-
-	/**
-	 * Shutdown handler to execute of the planned activities.
-	 * @return void
-	 * @internal
-	 */
-	public static function _shutdownHandler()
-	{
-		// 1) fatal error handler
-		static $types = array(
-			E_ERROR => 1,
-			E_CORE_ERROR => 1,
-			E_COMPILE_ERROR => 1,
-			E_PARSE => 1,
-		);
-
-		$error = error_get_last();
-		if (self::$enabled && isset($types[$error['type']])) {
-			if (!headers_sent()) { // for PHP < 5.2.4
-				header('HTTP/1.1 500 Internal Server Error');
-			}
-
-			if (ini_get('html_errors')) {
-				$error['message'] = html_entity_decode(strip_tags($error['message']), ENT_QUOTES, 'UTF-8');
-			}
-
-			self::processException(new /*\*/FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
-		}
-
-
-		// 2) debug bar (require HTML & development mode)
-		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode) {
-			foreach (headers_list() as $header) {
-				if (strncasecmp($header, 'Content-Type:', 13) === 0) {
-					if (substr($header, 14, 9) === 'text/html') {
-						break;
-					}
-					return;
-				}
-			}
-
-			$panels = array();
-			foreach (self::$panels as $panel) {
-				$panels[] = array(
-					'id' => preg_replace('#[^a-z0-9]+#i', '-', $panel->getId()),
-					'tab' => $tab = (string) $panel->getTab(),
-					'panel' => $tab ? (string) $panel->getPanel() : NULL,
-				);
-			}
-
-			require dirname(__FILE__) . '/Debug.templates/bar.phtml';
-		}
 	}
 
 
@@ -488,6 +432,7 @@ final class Debug
 			define('E_USER_DEPRECATED', 16384);
 		}
 
+		register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
 		set_exception_handler(array(__CLASS__, '_exceptionHandler'));
 		set_error_handler(array(__CLASS__, '_errorHandler'));
 		self::$enabled = TRUE;
@@ -514,6 +459,61 @@ final class Debug
 	public static function log($message)
 	{
 		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . PHP_EOL, 3, self::$logFile);
+	}
+
+
+
+	/**
+	 * Shutdown handler to execute of the planned activities.
+	 * @return void
+	 * @internal
+	 */
+	public static function _shutdownHandler()
+	{
+		// 1) fatal error handler
+		static $types = array(
+			E_ERROR => 1,
+			E_CORE_ERROR => 1,
+			E_COMPILE_ERROR => 1,
+			E_PARSE => 1,
+		);
+
+		$error = error_get_last();
+		if (isset($types[$error['type']])) {
+			if (!headers_sent()) { // for PHP < 5.2.4
+				header('HTTP/1.1 500 Internal Server Error');
+			}
+
+			if (ini_get('html_errors')) {
+				$error['message'] = html_entity_decode(strip_tags($error['message']), ENT_QUOTES, 'UTF-8');
+			}
+
+			self::processException(new /*\*/FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
+		}
+
+
+		// 2) debug bar (require HTML & development mode)
+		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode) {
+			foreach (headers_list() as $header) {
+				if (strncasecmp($header, 'Content-Type:', 13) === 0) {
+					if (substr($header, 14, 9) === 'text/html') {
+						break;
+					}
+					return;
+				}
+			}
+
+			$panels = array();
+			foreach (self::$panels as $panel) {
+				$panels[] = array(
+					'id' => preg_replace('#[^a-z0-9]+#i', '-', $panel->getId()),
+					'tab' => $tab = (string) $panel->getTab(),
+					'panel' => $tab ? (string) $panel->getPanel() : NULL,
+				);
+			}
+
+			require dirname(__FILE__) . '/Debug.templates/bar.phtml';
+		}
 	}
 
 

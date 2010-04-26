@@ -20,6 +20,8 @@ require dirname(__FILE__) . '/../NetteTest/initialize.php';
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = TRUE;
 
+Debug::enable();
+
 header('Content-Type: text/html');
 
 Debug::barDump('value');
