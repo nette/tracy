@@ -35,7 +35,7 @@ Debug::barDump('<a href="#">test</a>', 'String');
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ------EXPECT------
 %A%<h1>Dumped variables</h1> <div class="nette-inner"> <table> <tr class=""> <th>0</th> <td><pre class="nette-dump"><span>int</span>(10)

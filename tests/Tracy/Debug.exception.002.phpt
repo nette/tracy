@@ -47,7 +47,7 @@ first(10, 'any string');
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ------EXPECT------
 exception 'Exception' with message 'The my exception' in %a%

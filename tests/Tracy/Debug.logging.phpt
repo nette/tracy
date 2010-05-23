@@ -18,7 +18,7 @@ require dirname(__FILE__) . '/../NetteTest/initialize.php';
 
 
 // Setup environment
-$_SERVER['HTTP_HOST'] = 'nettephp.com';
+$_SERVER['HTTP_HOST'] = 'nette.org';
 
 $errorLog = dirname(__FILE__) . '/log/php_error.log';
 NetteTestHelpers::purge(dirname($errorLog));
@@ -46,7 +46,7 @@ missing_funcion();
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ------EXPECT------
 Sending mail with message 'exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%

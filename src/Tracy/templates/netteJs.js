@@ -2,7 +2,7 @@
  * NetteJs
  *
  * @copyright  Copyright (c) 2010 David Grudl
- * @license    http://nettephp.com/license  Nette license
+ * @license    http://nette.org/license  Nette license
  */
 
 var Nette = Nette || {};

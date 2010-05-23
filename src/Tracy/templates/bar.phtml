@@ -6,8 +6,8 @@
  * Debug Bar uses Silk Icons created by Mark James and released under Creative Commons Attribution 2.5 License.
  *
  * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    http://nettephp.com/license  Nette license
- * @link       http://nettephp.com
+ * @license    http://nette.org/license  Nette license
+ * @link       http://nette.org
  * @category   Nette
  * @package    Nette
  *
@@ -101,8 +101,6 @@ ob_start();
 	.nette-hidden {
 		display: none;
 	}
-
-
 
 
 
@@ -457,7 +455,6 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 
 
 
-
 Nette.Debug.Bar = Nette.Class({
 	Extends: Nette.Q,
 
@@ -536,7 +533,6 @@ Nette.Debug.Bar = Nette.Class({
 
 
 
-
 <div id="nette-debug">
 
 <?php foreach ($panels as $id => $panel): ?>
@@ -577,7 +573,7 @@ Nette.Debug.Bar = Nette.Class({
 
 <!-- /Nette Debug Bar -->
 <?php
-echo preg_replace_callback(
+echo "\n\n\n\n" . preg_replace_callback(
 	'#(</textarea|</pre|</script|^).*?(?=<textarea|<pre|<script|$)#si',
 	create_function('$m', 'return trim(preg_replace("#[ \t\r\n]+#", " ", $m[0]));'),
 	ob_get_clean()

@@ -49,7 +49,7 @@ first(10, 'any string');
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ------EXPECT------
 %A%<div id="nette-debug-errors">%A%PHP Notice: Undefined variable: x in %A%PHP Warning: rename(..,..) %A%

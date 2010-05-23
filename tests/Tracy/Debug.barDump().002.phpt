@@ -29,7 +29,7 @@ Debug::barDump('value');
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ------EXPECT------
 %A%<h1>Dumped variables</h1> <div class="nette-inner"> <table> <tr class=""> <th></th> <td><pre class="nette-dump"><span>string</span>(5) "value" <small>in file %a% on line %d%</small>

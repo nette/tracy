@@ -49,7 +49,7 @@ output('after');
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ---EXPECTHEADERS---
 Status: 500 Internal Server Error

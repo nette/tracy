@@ -26,7 +26,7 @@ header('Content-Type: text/html');
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ------EXPECT------
 %A%<div id="nette-debug">%A%

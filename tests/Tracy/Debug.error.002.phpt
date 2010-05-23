@@ -46,7 +46,7 @@ first(10, 'any string');
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ------EXPECT------
 

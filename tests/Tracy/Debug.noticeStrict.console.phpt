@@ -49,7 +49,7 @@ output('after');
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ------EXPECT------
 exception 'FatalErrorException' with message 'Undefined variable: x' in %a%

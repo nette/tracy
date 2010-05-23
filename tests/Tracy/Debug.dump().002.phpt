@@ -28,7 +28,7 @@ Debug::dump('xxx');
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ------EXPECT------
 <pre class="nette-dump"><span>string</span>(3) "xxx" <small>in file %a%</small>

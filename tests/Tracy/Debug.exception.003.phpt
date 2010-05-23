@@ -26,7 +26,7 @@ throw new Exception('The my exception', 123);
 
 
 
-__halt_compiler();
+__halt_compiler() ?>
 
 ---EXPECTHEADERS---
 Status: 500 Internal Server Error
