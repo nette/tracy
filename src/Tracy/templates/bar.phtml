@@ -15,7 +15,9 @@
  * @return     void
  */
 
-/*namespace Nette;*/
+namespace Nette;
+
+use Nette;
 
 ob_start();
 ?>
@@ -290,7 +292,7 @@ ob_start();
 
 <script id="nette-debug-script">
 /* <![CDATA[ */
-<?php require dirname(__FILE__) . '/netteJs.js' ?>
+<?php require __DIR__ . '/netteJs.js' ?>
 
 
 (function(){

@@ -9,12 +9,12 @@
  * @subpackage UnitTests
  */
 
-/*use Nette\Debug;*/
-/*use Nette\Environment;*/
+use Nette\Debug;
+use Nette\Environment;
 
 
 
-require dirname(__FILE__) . '/../NetteTest/initialize.php';
+require __DIR__ . '/../NetteTest/initialize.php';
 
 
 

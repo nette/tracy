@@ -9,18 +9,18 @@
  * @subpackage UnitTests
  */
 
-/*use Nette\Debug;*/
+use Nette\Debug;
 
 
 
-require dirname(__FILE__) . '/../NetteTest/initialize.php';
+require __DIR__ . '/../NetteTest/initialize.php';
 
 
 
 // Setup environment
 $_SERVER['HTTP_HOST'] = 'nette.org';
 
-$errorLog = dirname(__FILE__) . '/log/php_error.log';
+$errorLog = __DIR__ . '/log/php_error.log';
 NetteTestHelpers::purge(dirname($errorLog));
 
 Debug::$consoleMode = FALSE;
