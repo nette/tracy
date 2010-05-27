@@ -699,7 +699,7 @@ final class Debug
 		}
 
 		if (class_exists('Nette\Environment', FALSE)) {
-			$application = Environment::getServiceLocator()->hasService('Nette\Application\Application', TRUE) ? Environment::getServiceLocator()->getService('Nette\Application\Application') : NULL;
+			$application = Environment::getServiceLocator()->hasService('Nette\\Application\\Application', TRUE) ? Environment::getServiceLocator()->getService('Nette\\Application\\Application') : NULL;
 		}
 
 		require __DIR__ . '/Debug.templates/bluescreen.phtml';
