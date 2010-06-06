@@ -327,7 +327,7 @@ if (headers_sent()) {
 			while (panel.nodeType !== 1) panel = panel.nextSibling;
 			var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-			arrow.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba);
+			try { arrow.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba); } catch(e){} // ie6
 			panel.style.display = collapsed ? (panel.tagName.toLowerCase() === 'code' ? 'inline' : 'block') : 'none';
 
 			return true;
@@ -547,7 +547,7 @@ if (headers_sent()) {
 		<ul>
 			<li>Report generated at <?php echo @date('Y/m/d H:i:s', self::$time) ?></li>
 			<?php if (isset($_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'])): ?>
-				<li><a href="<?php $url = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://') . htmlSpecialChars($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ?>"><?php echo $url ?></a></li>
+				<li><a href="<?php echo $url = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://') . htmlSpecialChars($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ?>"><?php echo $url ?></a></li>
 			<?php endif ?>
 			<li>PHP <?php echo htmlSpecialChars(PHP_VERSION) ?></li>
 			<?php if (isset($_SERVER['SERVER_SOFTWARE'])): ?><li><?php echo htmlSpecialChars($_SERVER['SERVER_SOFTWARE']) ?></li><?php endif ?>
