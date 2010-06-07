@@ -611,7 +611,7 @@ final class Debug
 						break;
 					}
 				}
-				$file = 'compress.zlib://' . dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html.gz";
+				$file = dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html";
 				if (empty($skip) && self::$logHandle = @fopen($file, 'w')) {
 					ob_start(); // double buffer prevents sending HTTP headers in some PHP
 					ob_start(array(__CLASS__, '_writeFile'), 1);
