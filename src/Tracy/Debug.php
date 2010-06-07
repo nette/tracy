@@ -749,16 +749,12 @@ final class Debug
 
 		$subject = $headers['Subject'];
 		$to = $headers['To'];
-		$body = $headers['Body'];
+		$body = str_replace("\r\n", PHP_EOL, $headers['Body']);
 		unset($headers['Subject'], $headers['To'], $headers['Body']);
 		$header = '';
 		foreach ($headers as $key => $value) {
-			$header .= "$key: $value\r\n";
+			$header .= "$key: $value" . PHP_EOL;
 		}
-
-		// we need to change \r\n to \n because Unix mailer changes it back to \r\n
-		$body = str_replace("\r\n", "\n", $body);
-		if (PHP_OS != 'Linux') $body = str_replace("\n", "\r\n", $body);
 
 		mail($to, $subject, $body, $header);
 	}
