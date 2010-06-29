@@ -13,7 +13,7 @@ use Nette\Debug;
 
 
 
-require __DIR__ . '/../NetteTest/initialize.php';
+require __DIR__ . '/../initialize.php';
 
 
 
@@ -36,7 +36,7 @@ $arr = array(10, 20.2, TRUE, NULL, 'hello', (object) NULL, array());
 $obj = new Test;
 
 
-output("HTML mode");
+T::note("HTML mode");
 
 Debug::$consoleMode = FALSE;
 
@@ -49,7 +49,7 @@ Debug::dump($arr);
 Debug::dump($obj);
 
 
-output("\nText mode");
+T::note("\nText mode");
 
 Debug::$consoleMode = TRUE;
 
@@ -62,7 +62,7 @@ Debug::dump($arr);
 $res = Debug::dump($obj);
 
 
-dump( $res === $obj, 'result = var' );
+T::dump( $res === $obj, 'result = var' );
 
 
 

@@ -14,7 +14,7 @@ use Nette\Environment;
 
 
 
-require __DIR__ . '/../NetteTest/initialize.php';
+require __DIR__ . '/../initialize.php';
 
 
 
@@ -22,14 +22,14 @@ Debug::$consoleMode = FALSE;
 
 
 
-dump( Debug::$productionMode, 'Debug::$productionMode' );
+T::dump( Debug::$productionMode, 'Debug::$productionMode' );
 
-output("setting production environment...");
+T::note("setting production environment...");
 
 Environment::setMode('production', TRUE);
 Debug::enable();
 
-dump( Debug::$productionMode, 'Debug::$productionMode' );
+T::dump( Debug::$productionMode, 'Debug::$productionMode' );
 
 
 

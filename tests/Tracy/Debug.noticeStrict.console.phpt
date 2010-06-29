@@ -13,7 +13,7 @@ use Nette\Debug;
 
 
 
-require __DIR__ . '/../NetteTest/initialize.php';
+require __DIR__ . '/../initialize.php';
 
 
 
@@ -45,7 +45,7 @@ function third($arg1)
 
 first(10, 'any string');
 
-output('after');
+T::note('after');
 
 
 

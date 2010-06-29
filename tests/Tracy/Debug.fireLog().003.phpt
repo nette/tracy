@@ -13,7 +13,7 @@ use Nette\Debug;
 
 
 
-require __DIR__ . '/../NetteTest/initialize.php';
+require __DIR__ . '/../initialize.php';
 
 
 
@@ -28,7 +28,7 @@ Debug::fireLog('Sensitive log');
 
 flush();
 
-dump( headers_list() );
+T::dump( headers_list() );
 
 
 

@@ -13,7 +13,7 @@ use Nette\Debug;
 
 
 
-require __DIR__ . '/../NetteTest/initialize.php';
+require __DIR__ . '/../initialize.php';
 
 
 
@@ -21,7 +21,7 @@ require __DIR__ . '/../NetteTest/initialize.php';
 $_SERVER['HTTP_HOST'] = 'nette.org';
 
 $errorLog = __DIR__ . '/log/php_error.log';
-NetteTestHelpers::purge(dirname($errorLog));
+T::purge(dirname($errorLog));
 
 Debug::$consoleMode = FALSE;
 Debug::$mailer = 'testMailer';
@@ -32,11 +32,11 @@ Debug::enable(Debug::PRODUCTION, $errorLog, 'admin@example.com');
 
 function testMailer($message)
 {
-	output("Sending mail with message '$message'");
+	T::note("Sending mail with message '$message'");
 
 	global $errorLog;
 	foreach (glob(dirname($errorLog) . '/*') as $file) {
-		output($file);
+		T::note($file);
 	}
 }
 

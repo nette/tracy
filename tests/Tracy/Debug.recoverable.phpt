@@ -13,7 +13,7 @@ use Nette\Debug;
 
 
 
-require __DIR__ . '/../NetteTest/initialize.php';
+require __DIR__ . '/../initialize.php';
 
 
 
@@ -49,24 +49,24 @@ class TestClass
 $obj = new TestClass;
 
 try {
-	output("Invalid argument #1");
+	T::note("Invalid argument #1");
 	$obj->test1('hello');
 } catch (Exception $e) {
-	dump( $e );
+	T::dump( $e );
 }
 
 try {
-	output("Invalid argument #2");
+	T::note("Invalid argument #2");
 	$obj->test2('hello');
 } catch (Exception $e) {
-	dump( $e );
+	T::dump( $e );
 }
 
 try {
-	output("Invalid toString");
+	T::note("Invalid toString");
 	echo $obj;
 } catch (Exception $e) {
-	dump( $e );
+	T::dump( $e );
 }
 
 

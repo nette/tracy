@@ -13,7 +13,7 @@ use Nette\Debug;
 
 
 
-require __DIR__ . '/../NetteTest/initialize.php';
+require __DIR__ . '/../initialize.php';
 
 
 
@@ -25,9 +25,9 @@ Debug::timer('foo');
 
 sleep(1);
 
-dump( round(Debug::timer(), 1) );
+T::dump( round(Debug::timer(), 1) );
 
-dump( round(Debug::timer('foo'), 1) );
+T::dump( round(Debug::timer('foo'), 1) );
 
 
 
