@@ -510,7 +510,7 @@ final class Debug
 				);
 			}
 
-			require __DIR__ . '/Debug.templates/bar.phtml';
+			require __DIR__ . '/templates/bar.phtml';
 		}
 	}
 
@@ -697,7 +697,7 @@ final class Debug
 			$application = Environment::getServiceLocator()->hasService('Nette\\Application\\Application', TRUE) ? Environment::getServiceLocator()->getService('Nette\\Application\\Application') : NULL;
 		}
 
-		require __DIR__ . '/Debug.templates/bluescreen.phtml';
+		require __DIR__ . '/templates/bluescreen.phtml';
 	}
 
 
@@ -787,18 +787,18 @@ final class Debug
 	{
 		switch ($id) {
 		case 'time':
-			require __DIR__ . '/Debug.templates/bar.time.tab.phtml';
+			require __DIR__ . '/templates/bar.time.tab.phtml';
 			return;
 		case 'memory':
-			require __DIR__ . '/Debug.templates/bar.memory.tab.phtml';
+			require __DIR__ . '/templates/bar.memory.tab.phtml';
 			return;
 		case 'dumps':
 			if (!Debug::$dumps) return;
-			require __DIR__ . '/Debug.templates/bar.dumps.tab.phtml';
+			require __DIR__ . '/templates/bar.dumps.tab.phtml';
 			return;
 		case 'errors':
 			if (!Debug::$errors) return;
-			require __DIR__ . '/Debug.templates/bar.errors.tab.phtml';
+			require __DIR__ . '/templates/bar.errors.tab.phtml';
 		}
 	}
 
@@ -814,10 +814,10 @@ final class Debug
 	{
 		switch ($id) {
 		case 'dumps':
-			require __DIR__ . '/Debug.templates/bar.dumps.panel.phtml';
+			require __DIR__ . '/templates/bar.dumps.panel.phtml';
 			return;
 		case 'errors':
-			require __DIR__ . '/Debug.templates/bar.errors.panel.phtml';
+			require __DIR__ . '/templates/bar.errors.panel.phtml';
 		}
 	}
 
@@ -925,50 +925,6 @@ final class Debug
 		}
 
 		return $val;
-	}
-
-}
-
-
-
-/**
- * IDebugPanel implementation helper.
- *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Nette
- */
-class DebugPanel extends Object implements IDebugPanel
-{
-	private $id;
-
-	private $tabCb;
-
-	private $panelCb;
-
-	public function __construct($id, $tabCb, $panelCb)
-	{
-		$this->id = $id;
-		$this->tabCb = $tabCb;
-		$this->panelCb = $panelCb;
-	}
-
-	public function getId()
-	{
-		return $this->id;
-	}
-
-	public function getTab()
-	{
-		ob_start();
-		call_user_func($this->tabCb, $this->id);
-		return ob_get_clean();
-	}
-
-	public function getPanel()
-	{
-		ob_start();
-		call_user_func($this->panelCb, $this->id);
-		return ob_get_clean();
 	}
 
 }
