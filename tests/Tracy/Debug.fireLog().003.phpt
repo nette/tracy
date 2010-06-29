@@ -35,6 +35,7 @@ dump( headers_list() );
 __halt_compiler() ?>
 
 ------EXPECT------
-array(1) {
-	0 => string(39) "Content-Type: %a%"
+array(2) {
+	0 => string(29) "X-Powered-By: Nette Framework"
+	1 => string(39) "Content-Type: %a%"
 }
