@@ -25,8 +25,8 @@
 
 
 
-				
-			
+
+
 										<div class="panel">
 		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
 
@@ -35,7 +35,7 @@
 				<pre>%A%</pre>
 					</div>
 	</div>
-				
+
 
 
 				<div class="panel">
@@ -45,8 +45,8 @@
 					<ol>
 										<li><p>
 
-											<span title="%a%">%a%</span> (%d%)					
-					<a href="#" onclick="return !netteToggle(this, 'src1-0')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
+											<span title="%a%">%a%</span> (%d%)
+					<a href="#" onclick="return !netteToggle(this, 'src1-0')">source <abbr>&#x25ba;</abbr></a>&nbsp;
 					%ns%Debug::					_errorHandler
 					(<a href="#" onclick="return !netteToggle(this, 'args1-0')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
@@ -71,15 +71,15 @@
 </pre></td></tr>
 						</table>
 						</div>
-					
+
 
 											<pre class="collapsed" id="src1-0">%A%</pre>
-					
+
 					</li>
 										<li><p>
 
-											<span title="%a%">%a%</span> (%d%)					
-					<a href="#" onclick="return !netteToggle(this, 'src1-1')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
+											<span title="%a%">%a%</span> (%d%)
+					<a href="#" onclick="return !netteToggle(this, 'src1-1')">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										third
 					(<a href="#" onclick="return !netteToggle(this, 'args1-1')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
@@ -94,15 +94,15 @@
 </pre></td></tr>
 						</table>
 						</div>
-					
+
 
 											<pre class="collapsed" id="src1-1">%A%</pre>
-					
+
 					</li>
 										<li><p>
 
-											<span title="%a%">%a%</span> (%d%)					
-					<a href="#" onclick="return !netteToggle(this, 'src1-2')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
+											<span title="%a%">%a%</span> (%d%)
+					<a href="#" onclick="return !netteToggle(this, 'src1-2')">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										second
 					(<a href="#" onclick="return !netteToggle(this, 'args1-2')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
@@ -115,15 +115,15 @@
 </pre></td></tr>
 						</table>
 						</div>
-					
+
 
 											<pre class="collapsed" id="src1-2">%A%</pre>
-					
+
 					</li>
 										<li><p>
 
-											<span title="%a%">%a%</span> (%d%)					
-					<a href="#" onclick="return !netteToggle(this, 'src1-3')">source <abbr>&#x25ba;</abbr></a>&nbsp; 
+											<span title="%a%">%a%</span> (%d%)
+					<a href="#" onclick="return !netteToggle(this, 'src1-3')">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										first
 					(<a href="#" onclick="return !netteToggle(this, 'args1-3')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
@@ -136,19 +136,19 @@
 </pre></td></tr>
 						</table>
 						</div>
-					
+
 
 											<pre class="collapsed" id="src1-3">%A%</pre>
-					
+
 					</li>
-					
+
 									</ol>
 					</div>
 	</div>
-	
 
 
-			
+
+
 
 
 							<div class="panel">
@@ -165,18 +165,20 @@
 			</table>
 					</div>
 	</div>
-				
-				
 
 
-		
+
+
+
 
 
 			<div class="panel">
 		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">Environment <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="pnl4" class="collapsed inner">
-				
+							<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
+			<table id="pnl-env-const">%A%</table>
+
 
 			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <abbr>&#x25ba;</abbr></a>(%d%)</h3>
 			<table id="pnl-env-files" class="collapsed">%A%</table>
@@ -186,14 +188,14 @@
 						<table>%A%</table>
 							</div>
 	</div>
-	
+
 
 
 			<div class="panel">
 		<h2><a href="#" onclick="return !netteToggle(this, 'pnl5')">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="pnl5" class="collapsed inner">
-				
+
 
 						<h3>$_GET</h3>
 						<table>%A%</table>
@@ -203,7 +205,7 @@
 						<p><i>empty</i></p>
 										</div>
 	</div>
-	
+
 
 
 			<div class="panel">
@@ -214,7 +216,7 @@
 						<pre>%A%</pre>
 							</div>
 	</div>
-	
+
 
 		<ul>
 			<li>Report generated at %a%</li>

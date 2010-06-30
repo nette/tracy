@@ -54,7 +54,7 @@ Stack trace:
 #0 [internal function]: %ns%Debug::_shutdownHandler()
 #1 {main}'
 
-%a%/log/exception %a%.html.gz
+%a%/log/exception %a%.html
 
 %a%/log/php_error.log
 

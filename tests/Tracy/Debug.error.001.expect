@@ -27,8 +27,8 @@
 
 
 
-				
-			
+
+
 										<div class="panel">
 		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
 
@@ -37,22 +37,22 @@
 				<pre><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line %d%:</span>    {
 <span class='line'>Line %d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #d24; font-weight: bold">));
 <span class='line'>Line %d%:</span>    }
-<span class='line'>Line %d%:</span>    
-<span class='line'>Line %d%:</span>    
+<span class='line'>Line %d%:</span>
+<span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #d24; font-weight: bold">)
 <span class='line'>Line %d%:</span>    {
 <span class='highlight'>Line %d%:    &nbsp;&nbsp;&nbsp;&nbsp;missing_funcion();
 </span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"><span class='line'>Line %d%:</span>    }
-<span class='line'>Line %d%:</span>    
-<span class='line'>Line %d%:</span>    
+<span class='line'>Line %d%:</span>
+<span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>    </span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #d24; font-weight: bold">);
-<span class='line'>Line %d%:</span>    
-<span class='line'>Line %d%:</span>    
-<span class='line'>Line %d%:</span>    
+<span class='line'>Line %d%:</span>
+<span class='line'>Line %d%:</span>
+<span class='line'>Line %d%:</span>
 </span></span></code></pre>
 					</div>
 	</div>
-				
+
 
 
 				<div class="panel">
@@ -63,38 +63,40 @@
 										<li><p>
 
 											&lt;PHP inner-code&gt;
-					
-					
+
+
 					%ns%Debug::					_shutdownHandler
 					()
 					</p>
 
-					
 
-					
+
+
 					</li>
-					
+
 									</ol>
 					</div>
 	</div>
-	
 
 
-			
 
 
-			
-				
 
 
-		
+
+
+
+
+
 
 
 			<div class="panel">
 		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">Environment <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="pnl3" class="collapsed inner">
-				
+							<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
+			<table id="pnl-env-const">%A%</table>
+
 
 			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <abbr>&#x25ba;</abbr></a>(%d%)</h3>
 			<table id="pnl-env-files" class="collapsed">%A%</table>
@@ -104,14 +106,14 @@
 						<table>%A%</table>
 							</div>
 	</div>
-	
+
 
 
 			<div class="panel">
 		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="pnl4" class="collapsed inner">
-				
+
 
 						<h3>$_GET</h3>
 						<table>%A%</table>
@@ -121,7 +123,7 @@
 						<p><i>empty</i></p>
 										</div>
 	</div>
-	
+
 
 
 			<div class="panel">
@@ -129,10 +131,10 @@
 
 		<div id="pnl5" class="collapsed inner">
 				<h3>Headers</h3>
-						<pre>Content-Type: text/plain; charset=utf-8<br></pre>
+						<pre>X-Powered-By: Nette Framework<br>Content-Type: text/plain; charset=utf-8<br></pre>
 							</div>
 	</div>
-	
+
 
 		<ul>
 			<li>Report generated at %a%</li>
