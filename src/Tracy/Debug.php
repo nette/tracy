@@ -40,6 +40,9 @@ final class Debug
 	/** @var bool is AJAX request detected? */
 	private static $ajaxDetected;
 
+	/** @var string */
+	private static $uri;
+
 	/********************* Debug::dump() ****************d*g**/
 
 	/** @var int  how many nested levels of array/object properties display {@link Debug::dump()} */
@@ -145,6 +148,12 @@ final class Debug
 		self::$productionMode = self::DETECT;
 		self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
 		self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+		if (isset($_SERVER['REQUEST_URI'])) {
+			self::$uri = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
+				. (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : ''))
+				. $_SERVER['REQUEST_URI'];
+		}
+
 		$tab = array(__CLASS__, 'renderTab'); $panel = array(__CLASS__, 'renderPanel');
 		self::addPanel(new DebugPanel('time', $tab, $panel));
 		self::addPanel(new DebugPanel('memory', $tab, $panel));
@@ -569,10 +578,11 @@ final class Debug
 		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message in $file:$line";
 
 		if (self::$logFile) {
+			if (self::$uri) $message .= '  @  ' . self::$uri;
+			self::log($message); // log manually, required on some stupid hostings
 			if (self::$sendEmails) {
 				self::sendEmail($message);
 			}
-			self::log($message); // log manually, required on some stupid hostings
 			return NULL;
 
 		} elseif (!self::$productionMode) {
