@@ -9,8 +9,8 @@
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
-use Nette\Environment;
+use Nette\Debug,
+	Nette\Environment;
 
 
 
