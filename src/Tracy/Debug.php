@@ -733,8 +733,8 @@ final class Debug
 	private static function sendEmail($message)
 	{
 		$monitorFile = self::$logFile . '.monitor';
-		if (@filemtime($monitorFile) + self::$emailSnooze < time()
-			&& @file_put_contents($monitorFile, 'sent')) { // intentionally @
+		if (@filemtime($monitorFile) + self::$emailSnooze < time() // @ - file may not exist
+			&& @file_put_contents($monitorFile, 'sent')) { // @ - file may not be writable
 			call_user_func(self::$mailer, $message);
 		}
 	}
@@ -753,7 +753,7 @@ final class Debug
 
 		$headers = str_replace(
 			array('%host%', '%date%', '%message%'),
-			array($host, @date('Y-m-d H:i:s', self::$time), $message), // intentionally @
+			array($host, @date('Y-m-d H:i:s', self::$time), $message), // @ - timezone may not be set
 			self::$emailHeaders
 		);
 
