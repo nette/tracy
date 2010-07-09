@@ -109,7 +109,7 @@ final class Debug
 	/** @var array payload filled by {@link Debug::_errorHandler()} */
 	private static $errors;
 
-	/** @var array  free counters for your usage */
+	/** @deprecated */
 	public static $counters = array();
 
 	/********************* Firebug extension ****************d*g**/
