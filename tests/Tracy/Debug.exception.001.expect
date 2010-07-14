@@ -53,11 +53,11 @@
 
 											<div class="collapsed" id="args1-0">
 						<table>
-						<tr><th>$arg1</th><td><pre class="nette-dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>{
-   0 => <span>int</span>(1)
-   1 => <span>int</span>(2)
-   2 => <span>int</span>(3)
-}</code>
+						<tr><th>$arg1</th><td><pre class="nette-dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>[
+   0 => 1
+   1 => 2
+   2 => 3
+]</code>
 </pre></td></tr>
 						</table>
 						</div>
@@ -76,9 +76,9 @@
 
 											<div class="collapsed" id="args1-1">
 						<table>
-						<tr><th>$arg1</th><td><pre class="nette-dump"><span>bool</span>(TRUE)
+						<tr><th>$arg1</th><td><pre class="nette-dump">TRUE
 </pre></td></tr>
-<tr><th>$arg2</th><td><pre class="nette-dump"><span>bool</span>(FALSE)
+<tr><th>$arg2</th><td><pre class="nette-dump">FALSE
 </pre></td></tr>
 						</table>
 						</div>
@@ -97,9 +97,9 @@
 
 											<div class="collapsed" id="args1-2">
 						<table>
-						<tr><th>$arg1</th><td><pre class="nette-dump"><span>int</span>(10)
+						<tr><th>$arg1</th><td><pre class="nette-dump">10
 </pre></td></tr>
-<tr><th>$arg2</th><td><pre class="nette-dump"><span>string</span>(10) "any string"
+<tr><th>$arg2</th><td><pre class="nette-dump">"any string" (10)
 </pre></td></tr>
 						</table>
 						</div>

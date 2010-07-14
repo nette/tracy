@@ -32,5 +32,5 @@ Debug::barDump('value');
 __halt_compiler() ?>
 
 ------EXPECT------
-%A%<h1>Dumped variables</h1> <div class="nette-inner"> <table> <tr class=""> <th></th> <td><pre class="nette-dump"><span>string</span>(5) "value"
+%A%<h1>Dumped variables</h1> <div class="nette-inner"> <table> <tr class=""> <th></th> <td><pre class="nette-dump">"value" (5)
 </pre> </td> </tr> </table> </div> </div>%A%

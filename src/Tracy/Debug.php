@@ -232,27 +232,33 @@ final class Debug
 	 */
 	private static function _dump(&$var, $level)
 	{
-		static $tableUtf, $tableBin, $re = '#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u';
+		static $tableUtf, $tableBin, $reBinary = '#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u';
 		if ($tableUtf === NULL) {
 			foreach (range("\x00", "\xFF") as $ch) {
 				if (ord($ch) < 32 && strpos("\r\n\t", $ch) === FALSE) $tableUtf[$ch] = $tableBin[$ch] = '\\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
 				elseif (ord($ch) < 127) $tableUtf[$ch] = $tableBin[$ch] = $ch;
 				else { $tableUtf[$ch] = $ch; $tableBin[$ch] = '\\x' . dechex(ord($ch)); }
 			}
+			$tableBin["\\"] = '\\\\';
+			$tableBin["\r"] = '\\r';
+			$tableBin["\n"] = '\\n';
+			$tableBin["\t"] = '\\t';
 			$tableUtf['\\x'] = $tableBin['\\x'] = '\\\\x';
 		}
 
 		if (is_bool($var)) {
-			return "<span>bool</span>(" . ($var ? 'TRUE' : 'FALSE') . ")\n";
+			return ($var ? 'TRUE' : 'FALSE') . "\n";
 
 		} elseif ($var === NULL) {
-			return "<span>NULL</span>\n";
+			return "NULL\n";
 
 		} elseif (is_int($var)) {
-			return "<span>int</span>($var)\n";
+			return "$var\n";
 
 		} elseif (is_float($var)) {
-			return "<span>float</span>($var)\n";
+			$var = (string) $var;
+			if (strpos($var, '.') === FALSE) $var .= '.0';
+			return "$var\n";
 
 		} elseif (is_string($var)) {
 			if (self::$maxLen && strlen($var) > self::$maxLen) {
@@ -260,47 +266,49 @@ final class Debug
 			} else {
 				$s = htmlSpecialChars($var, ENT_NOQUOTES);
 			}
-			$s = strtr($s, preg_match($re, $s) || preg_last_error() ? $tableBin : $tableUtf);
-			return "<span>string</span>(" . strlen($var) . ") \"$s\"\n";
+			$s = strtr($s, preg_match($reBinary, $s) || preg_last_error() ? $tableBin : $tableUtf);
+			$len = strlen($var);
+			return "\"$s\"" . ($len > 1 ? " ($len)" : "") . "\n";
 
 		} elseif (is_array($var)) {
 			$s = "<span>array</span>(" . count($var) . ") ";
 			$space = str_repeat($space1 = '   ', $level);
+			$brackets = range(0, count($var) - 1) === array_keys($var) ? "[]" : "{}";
 
 			static $marker;
 			if ($marker === NULL) $marker = uniqid("\x00", TRUE);
 			if (empty($var)) {
 
 			} elseif (isset($var[$marker])) {
-				$s .= "{\n$space$space1*RECURSION*\n$space}";
+				$brackets = $var[$marker];
+				$s .= "$brackets[0] *RECURSION* $brackets[1]";
 
 			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
-				$s .= "<code>{\n";
-				$var[$marker] = 0;
+				$s .= "<code>$brackets[0]\n";
+				$var[$marker] = $brackets;
 				foreach ($var as $k => &$v) {
 					if ($k === $marker) continue;
-					$k = is_int($k) ? $k : '"' . strtr($k, preg_match($re, $k) || preg_last_error() ? $tableBin : $tableUtf) . '"';
+					$k = is_int($k) ? $k : '"' . strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf) . '"';
 					$s .= "$space$space1$k => " . self::_dump($v, $level + 1);
 				}
 				unset($var[$marker]);
-				$s .= "$space}</code>";
+				$s .= "$space$brackets[1]</code>";
 
 			} else {
-				$s .= "{\n$space$space1...\n$space}";
+				$s .= "$brackets[0] ... $brackets[1]";
 			}
 			return $s . "\n";
 
 		} elseif (is_object($var)) {
 			$arr = (array) $var;
-			$s = "<span>object</span>(" . get_class($var) . ") (" . count($arr) . ") ";
+			$s = "<span>" . get_class($var) . "</span>(" . count($arr) . ") ";
 			$space = str_repeat($space1 = '   ', $level);
 
 			static $list = array();
 			if (empty($arr)) {
-				$s .= "{}";
 
 			} elseif (in_array($var, $list, TRUE)) {
-				$s .= "{\n$space$space1*RECURSION*\n$space}";
+				$s .= "{ *RECURSION* }";
 
 			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
 				$s .= "<code>{\n";
@@ -311,19 +319,19 @@ final class Debug
 						$m = $k[1] === '*' ? ' <span>protected</span>' : ' <span>private</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$k = strtr($k, preg_match($re, $k) || preg_last_error() ? $tableBin : $tableUtf);
+					$k = strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf);
 					$s .= "$space$space1\"$k\"$m => " . self::_dump($v, $level + 1);
 				}
 				array_pop($list);
 				$s .= "$space}</code>";
 
 			} else {
-				$s .= "{\n$space$space1...\n$space}";
+				$s .= "{ ... }";
 			}
 			return $s . "\n";
 
 		} elseif (is_resource($var)) {
-			return "<span>resource of type</span>(" . get_resource_type($var) . ")\n";
+			return "<span>" . get_resource_type($var) . " resource</span>\n";
 
 		} else {
 			return "<span>unknown type</span>\n";

@@ -31,5 +31,5 @@ echo Debug::dump('forced', TRUE);
 __halt_compiler() ?>
 
 ------EXPECT------
-<pre class="nette-dump"><span>string</span>(6) "forced"
+<pre class="nette-dump">"forced" (6)
 </pre>

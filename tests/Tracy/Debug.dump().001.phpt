@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug::dump() in HTML and text mode.
+ * Test: Nette\Debug::dump() basic types in HTML and text mode.
  *
  * @author     David Grudl
  * @category   Nette
@@ -17,7 +17,6 @@ require __DIR__ . '/../initialize.php';
 
 
 
-Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
 
 
@@ -31,38 +30,74 @@ class Test
 	protected $z = 30;
 }
 
-$arr = array(10, 20.2, TRUE, NULL, 'hello', (object) NULL, array());
-
-$obj = new Test;
-
 
 T::note("HTML mode");
 
 Debug::$consoleMode = FALSE;
 
-Debug::dump('<a href="#">test</a>');
+Debug::dump(NULL);
 
-Debug::dump("Special\x12chars");
+Debug::dump(TRUE);
 
-Debug::dump($arr);
+Debug::dump(FALSE);
 
-Debug::dump($obj);
+Debug::dump(0);
+
+Debug::dump(1);
+
+Debug::dump(0.0);
+
+Debug::dump(0.1);
+
+Debug::dump('');
+
+Debug::dump('0');
+
+Debug::dump("\x00");
+
+Debug::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)));
+
+Debug::dump(fopen(__FILE__, 'r'));
+
+Debug::dump((object) NULL);
+
+$obj = new Test;
+$res = Debug::dump($obj);
+
+Assert::same($res,  $obj );
 
 
 T::note("\nText mode");
 
 Debug::$consoleMode = TRUE;
 
-Debug::dump('<a href="#">test</a>');
+Debug::dump(NULL);
 
-Debug::dump("Special\x12chars");
+Debug::dump(TRUE);
 
-Debug::dump($arr);
+Debug::dump(FALSE);
+
+Debug::dump(0);
+
+Debug::dump(1);
+
+Debug::dump(0.0);
+
+Debug::dump(0.1);
+
+Debug::dump('');
+
+Debug::dump('0');
+
+Debug::dump("\x00");
+
+Debug::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)));
+
+Debug::dump(fopen(__FILE__, 'r'));
+
+Debug::dump((object) NULL);
 
 $res = Debug::dump($obj);
-
-
-T::dump( $res === $obj, 'result = var' );
 
 
 
@@ -71,53 +106,99 @@ __halt_compiler() ?>
 ------EXPECT------
 HTML mode
 
-<pre class="nette-dump"><span>string</span>(20) "&lt;a href="#"&gt;test&lt;/a&gt;"
+<pre class="nette-dump">NULL
 </pre>
-<pre class="nette-dump"><span>string</span>(13) "Special\x12chars"
+<pre class="nette-dump">TRUE
 </pre>
-<pre class="nette-dump"><span>array</span>(7) <code>{
-   0 => <span>int</span>(10)
-   1 => <span>float</span>(20.2)
-   2 => <span>bool</span>(TRUE)
-   3 => <span>NULL</span>
-   4 => <span>string</span>(5) "hello"
-   5 => <span>object</span>(stdClass) (0) {}
-   6 => <span>array</span>(0)
-}</code>
+<pre class="nette-dump">FALSE
 </pre>
-<pre class="nette-dump"><span>object</span>(Test) (3) <code>{
-   "x" => <span>array</span>(2) <code>{
-      0 => <span>int</span>(10)
-      1 => <span>NULL</span>
+<pre class="nette-dump">0
+</pre>
+<pre class="nette-dump">1
+</pre>
+<pre class="nette-dump">0.0
+</pre>
+<pre class="nette-dump">0.1
+</pre>
+<pre class="nette-dump">""
+</pre>
+<pre class="nette-dump">"0"
+</pre>
+<pre class="nette-dump">"\x00"
+</pre>
+<pre class="nette-dump"><span>array</span>(5) <code>[
+   0 => 1
+   1 => "hello" (5)
+   2 => <span>array</span>(0)
+   3 => <span>array</span>(2) <code>[
+      0 => 1
+      1 => 2
+   ]</code>
+   4 => <span>array</span>(2) <code>{
+      1 => 1
+      2 => 2
    }</code>
-   "y" <span>private</span> => <span>string</span>(5) "hello"
-   "z" <span>protected</span> => <span>int</span>(30)
+]</code>
+</pre>
+<pre class="nette-dump"><span>stream resource</span>
+</pre>
+<pre class="nette-dump"><span>stdClass</span>(0) 
+</pre>
+<pre class="nette-dump"><span>Test</span>(3) <code>{
+   "x" => <span>array</span>(2) <code>[
+      0 => 10
+      1 => NULL
+   ]</code>
+   "y" <span>private</span> => "hello" (5)
+   "z" <span>protected</span> => 30
 }</code>
 </pre>
 
 Text mode
 
-string(20) "<a href="#">test</a>"
+NULL
 
-string(13) "Special\x12chars"
+TRUE
 
-array(7) {
-   0 => int(10)
-   1 => float(20.2)
-   2 => bool(TRUE)
-   3 => NULL
-   4 => string(5) "hello"
-   5 => object(stdClass) (0) {}
-   6 => array(0)
-}
+FALSE
 
-object(Test) (3) {
-   "x" => array(2) {
-      0 => int(10)
-      1 => NULL
+0
+
+1
+
+0.0
+
+0.1
+
+""
+
+"0"
+
+"\x00"
+
+array(5) [
+   0 => 1
+   1 => "hello" (5)
+   2 => array(0)
+   3 => array(2) [
+      0 => 1
+      1 => 2
+   ]
+   4 => array(2) {
+      1 => 1
+      2 => 2
    }
-   "y" private => string(5) "hello"
-   "z" protected => int(30)
-}
+]
 
-result = var: bool(TRUE)
+stream resource
+
+stdClass(0) 
+
+Test(3) {
+   "x" => array(2) [
+      0 => 10
+      1 => NULL
+   ]
+   "y" private => "hello" (5)
+   "z" protected => 30
+}
