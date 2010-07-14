@@ -40,4 +40,4 @@ Debug::$productionMode: NULL
 
 setting production environment...
 
-Debug::$productionMode: bool(TRUE)
+Debug::$productionMode: TRUE

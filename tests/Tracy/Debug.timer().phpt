@@ -34,6 +34,6 @@ T::dump( round(Debug::timer('foo'), 1) );
 __halt_compiler() ?>
 
 ------EXPECT------
-float(2)
+2.0
 
-float(1)
+1.0
