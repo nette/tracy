@@ -479,6 +479,38 @@ final class Debug
 
 
 	/**
+	 * Starts catching potential errors/warnings.
+	 * @return void
+	 */
+	public static function tryError()
+	{
+		error_reporting(0);
+		trigger_error(''); // "reset" error_get_last
+	}
+
+
+
+	/**
+	 * Returns catched error/warning message.
+	 * @param  string  catched message
+	 * @return bool
+	 */
+	public static function catchError(& $message)
+	{
+		error_reporting(E_ALL | E_STRICT);
+		$error = error_get_last();
+		if ($error && $error['message'] !== '') {
+			$message = $error['message'];
+			return TRUE;
+		} else {
+			$message = NULL;
+			return FALSE;
+		}
+	}
+
+
+
+	/**
 	 * Shutdown handler to execute of the planned activities.
 	 * @return void
 	 * @internal
@@ -562,7 +594,7 @@ final class Debug
 			throw new \FatalErrorException($message, 0, $severity, $file, $line, $context);
 
 		} elseif (($severity & error_reporting()) !== $severity) {
-			return NULL; // nothing to do
+			return FALSE; // calls normal error handler to fill-in error_get_last()
 
 		} elseif (self::$strictMode) {
 			self::_exceptionHandler(new \FatalErrorException($message, 0, $severity, $file, $line, $context), TRUE);
