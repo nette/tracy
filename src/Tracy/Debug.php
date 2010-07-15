@@ -588,9 +588,7 @@ final class Debug
 		if (self::$logFile) {
 			if (self::$uri) $message .= '  @  ' . self::$uri;
 			self::log($message); // log manually, required on some stupid hostings
-			if (self::$sendEmails) {
-				self::sendEmail($message);
-			}
+			self::sendEmail($message);
 			return NULL;
 
 		} elseif (!self::$productionMode) {
@@ -622,15 +620,14 @@ final class Debug
 		} elseif (self::$logFile) {
 			try {
 				$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
-				self::log("PHP Fatal error: Uncaught " . str_replace("Stack trace:\n" . $exception->getTraceAsString(), '', $exception));
+				self::log("PHP Fatal error: Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "' in " . $exception->getFile() . ":" . $exception->getLine() . (self::$uri ? '  @  ' . self::$uri : ''));
 				foreach (new \DirectoryIterator(dirname(self::$logFile)) as $entry) {
 					if (strpos($entry, $hash)) {
 						$skip = TRUE;
 						break;
 					}
 				}
-				$file = dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html";
-				if (empty($skip) && self::$logHandle = @fopen($file, 'w')) {
+				if (empty($skip) && self::$logHandle = @fopen(dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
 					ob_start(); // double buffer prevents sending HTTP headers in some PHP
 					ob_start(array(__CLASS__, '_writeFile'), 1);
 					self::_paintBlueScreen($exception);
@@ -638,9 +635,8 @@ final class Debug
 					ob_end_clean();
 					fclose(self::$logHandle);
 				}
-				if (self::$sendEmails) {
-					self::sendEmail((string) $exception);
-				}
+				self::sendEmail("$exception\n\n" . self::$uri);
+
 			} catch (\Exception $e) {
 				if (!headers_sent()) {
 					header('HTTP/1.1 500 Internal Server Error');
@@ -741,7 +737,7 @@ final class Debug
 	private static function sendEmail($message)
 	{
 		$monitorFile = self::$logFile . '.monitor';
-		if (@filemtime($monitorFile) + self::$emailSnooze < time() // @ - file may not exist
+		if (self::$sendEmails && @filemtime($monitorFile) + self::$emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents($monitorFile, 'sent')) { // @ - file may not be writable
 			call_user_func(self::$mailer, $message);
 		}
@@ -767,7 +763,7 @@ final class Debug
 
 		$subject = $headers['Subject'];
 		$to = $headers['To'];
-		$body = str_replace("\r\n", PHP_EOL, $headers['Body']);
+		$body = str_replace("\n", PHP_EOL, str_replace("\r\n", "\n", $headers['Body']));
 		unset($headers['Subject'], $headers['To'], $headers['Body']);
 		$header = '';
 		foreach ($headers as $key => $value) {
