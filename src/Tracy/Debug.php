@@ -422,7 +422,7 @@ final class Debug
 		// php configuration
 		if (function_exists('ini_set')) {
 			ini_set('display_errors', !self::$productionMode); // or 'stderr'
-			ini_set('html_errors', !self::$logFile && !self::$consoleMode);
+			ini_set('html_errors', FALSE);
 			ini_set('log_errors', FALSE);
 
 		} elseif (ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')) { // intentionally ==
@@ -498,11 +498,6 @@ final class Debug
 			if (!headers_sent()) { // for PHP < 5.2.4
 				header('HTTP/1.1 500 Internal Server Error');
 			}
-
-			if (ini_get('html_errors')) {
-				$error['message'] = html_entity_decode(strip_tags($error['message']), ENT_QUOTES, 'UTF-8');
-			}
-
 			self::processException(new \FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
 		}
 

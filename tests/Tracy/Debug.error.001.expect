@@ -1,5 +1,5 @@
-<br />
-<b>Fatal error</b>:  Call to undefined function missing_funcion() in <b>%a%</b> on line <b>%d%</b><br />
+
+Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 </pre></xmp></table><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
