@@ -726,14 +726,6 @@ final class Debug
 	 */
 	public static function _paintBlueScreen(\Exception $exception)
 	{
-		$internals = array();
-		foreach (array('Nette\Object', 'Nette\ObjectMixin') as $class) {
-			if (class_exists($class, FALSE)) {
-				$rc = new \ReflectionClass($class);
-				$internals[$rc->getFileName()] = TRUE;
-			}
-		}
-
 		if (class_exists('Nette\Environment', FALSE)) {
 			$application = Environment::getServiceLocator()->hasService('Nette\\Application\\Application', TRUE) ? Environment::getServiceLocator()->getService('Nette\\Application\\Application') : NULL;
 		}
