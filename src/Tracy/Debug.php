@@ -65,6 +65,9 @@ final class Debug
 	/** @var bool determines whether to consider all errors as fatal */
 	public static $strictMode = FALSE;
 
+	/** @var bool disables the @ (shut-up) operator so that notices and warnings are no longer hidden */
+	public static $scream = FALSE;
+
 	/** @var array of callbacks specifies the functions that are automatically called after fatal error */
 	public static $onFatalError = array();
 
@@ -590,6 +593,10 @@ final class Debug
 	 */
 	public static function _errorHandler($severity, $message, $file, $line, $context)
 	{
+		if (self::$scream) {
+			error_reporting(E_ALL | E_STRICT);
+		}
+
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
 			throw new \FatalErrorException($message, 0, $severity, $file, $line, $context);
 
