@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug error in production mode.
+ * Test: Nette\Debug eval error in HTML.
  *
  * @author     David Grudl
  * @category   Nette
@@ -18,11 +18,19 @@ require __DIR__ . '/../initialize.php';
 
 
 Debug::$consoleMode = FALSE;
-Debug::$productionMode = TRUE;
+Debug::$productionMode = FALSE;
 
 Debug::enable();
 
-missing_funcion();
+
+
+function first($user, $pass)
+{
+	eval('trigger_error("The my error", E_USER_ERROR);');
+}
+
+
+first('root', 'xxx');
 
 
 
@@ -30,5 +38,3 @@ __halt_compiler() ?>
 
 ---EXPECTHEADERS---
 Status: 500 Internal Server Error
-
-------EXPECT------

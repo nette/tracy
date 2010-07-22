@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug logging.
+ * Test: Nette\Debug error logging.
  *
  * @author     David Grudl
  * @category   Nette

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug notices and warnings.
+ * Test: Nette\Debug E_ERROR in console.
  *
  * @author     David Grudl
  * @category   Nette
@@ -17,12 +17,10 @@ require __DIR__ . '/../initialize.php';
 
 
 
-Debug::$consoleMode = FALSE;
+Debug::$consoleMode = TRUE;
 Debug::$productionMode = FALSE;
 
 Debug::enable();
-
-header('Content-Type: text/html');
 
 
 
@@ -40,8 +38,7 @@ function second($arg1, $arg2)
 
 function third($arg1)
 {
-	$x++;
-	rename('..', '..');
+	missing_funcion();
 }
 
 
@@ -52,4 +49,9 @@ first(10, 'any string');
 __halt_compiler() ?>
 
 ------EXPECT------
-%A%<div id="nette-debug-errors">%A%PHP Notice: Undefined variable: x in %A%PHP Warning: rename(..,..): %A%
+
+Fatal error: Call to undefined function missing_funcion() in %a%
+exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%
+Stack trace:
+#0 [internal function]: %ns%Debug::_shutdownHandler()
+#1 {main}

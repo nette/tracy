@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug notices with $strictMode in console.
+ * Test: Nette\Debug E_ERROR in HTML.
  *
  * @author     David Grudl
  * @category   Nette
@@ -17,10 +17,9 @@ require __DIR__ . '/../initialize.php';
 
 
 
-Debug::$consoleMode = TRUE;
+Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
 
-Debug::$strictMode = TRUE;
 Debug::enable();
 
 
@@ -39,23 +38,12 @@ function second($arg1, $arg2)
 
 function third($arg1)
 {
-	$x++;
+	missing_funcion();
 }
 
 
 first(10, 'any string');
 
-T::note('after');
-
 
 
 __halt_compiler() ?>
-
-------EXPECT------
-exception 'FatalErrorException' with message 'Undefined variable: x' in %a%
-Stack trace:
-#0 %a%: %ns%Debug::_errorHandler(8, '%a%', '%a%', %a%, Array)
-#1 %a%: third(Array)
-#2 %a%: second(true, false)
-#3 %a%: first(10, 'any string')
-#4 {main}

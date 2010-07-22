@@ -29,7 +29,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 
-										<div class="panel">
+													<div class="panel">
 		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
 
 		<div id="pnl1" class="inner">
@@ -55,28 +55,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 
-				<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Call stack <abbr>&#x25bc;</abbr></a></h2>
-
-		<div id="pnl2" class="inner">
-					<ol>
-										<li><p>
-
-											&lt;PHP inner-code&gt;
-
-
-					%ns%Debug::					_shutdownHandler
-					()
-					</p>
-
-
-
-
-					</li>
-
-									</ol>
-					</div>
-	</div>
 
 
 
@@ -91,9 +69,9 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">Environment <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Environment <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="pnl3" class="collapsed inner">
+		<div id="pnl2" class="collapsed inner">
 							<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<table id="pnl-env-const">%A%</table>
 
@@ -110,9 +88,9 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="pnl4" class="collapsed inner">
+		<div id="pnl3" class="collapsed inner">
 
 
 						<h3>$_GET</h3>
@@ -127,9 +105,9 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl5')">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">HTTP response <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="pnl5" class="collapsed inner">
+		<div id="pnl4" class="collapsed inner">
 				<h3>Headers</h3>
 						<pre>X-Powered-By: Nette Framework<br>Content-Type: text/plain; charset=utf-8<br></pre>
 							</div>

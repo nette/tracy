@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug recoverable error.
+ * Test: Nette\Debug E_RECOVERABLE_ERROR error.
  *
  * @author     David Grudl
  * @category   Nette

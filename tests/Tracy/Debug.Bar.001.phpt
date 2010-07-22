@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug Bar.
+ * Test: Nette\Debug Bar in HTML.
  *
  * @author     David Grudl
  * @category   Nette

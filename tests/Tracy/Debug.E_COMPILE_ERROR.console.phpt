@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug notices with $strictMode.
+ * Test: Nette\Debug error in console.
  *
  * @author     David Grudl
  * @category   Nette
@@ -17,10 +17,9 @@ require __DIR__ . '/../initialize.php';
 
 
 
-Debug::$consoleMode = FALSE;
+Debug::$consoleMode = TRUE;
 Debug::$productionMode = FALSE;
 
-Debug::$strictMode = TRUE;
 Debug::enable();
 
 
@@ -39,17 +38,20 @@ function second($arg1, $arg2)
 
 function third($arg1)
 {
-	$x++;
+	require 'E_COMPILE_ERROR.inc';
 }
 
 
 first(10, 'any string');
 
-T::note('after');
-
 
 
 __halt_compiler() ?>
 
----EXPECTHEADERS---
-Status: 500 Internal Server Error
+------EXPECT------
+
+Fatal error: Cannot re-assign $this in %a%
+exception 'FatalErrorException' with message 'Cannot re-assign $this' in %a%
+Stack trace:
+#0 [internal function]: %ns%Debug::_shutdownHandler()
+#1 {main}

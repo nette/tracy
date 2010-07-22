@@ -602,6 +602,7 @@ final class Debug
 
 		static $types = array(
 			E_WARNING => 'Warning',
+			E_COMPILE_WARNING => 'Warning', // currently unable to handle
 			E_USER_WARNING => 'Warning',
 			E_NOTICE => 'Notice',
 			E_USER_NOTICE => 'Notice',

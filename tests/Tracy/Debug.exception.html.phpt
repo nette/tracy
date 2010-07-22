@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug error.
+ * Test: Nette\Debug exception in HTML.
  *
  * @author     David Grudl
  * @category   Nette
@@ -30,6 +30,7 @@ function first($arg1, $arg2)
 }
 
 
+
 function second($arg1, $arg2)
 {
 	third(array(1, 2, 3));
@@ -38,12 +39,17 @@ function second($arg1, $arg2)
 
 function third($arg1)
 {
-	missing_funcion();
+	throw new Exception('The my exception', 123);
 }
 
+
+define('MY_CONST', 123);
 
 first(10, 'any string');
 
 
 
 __halt_compiler() ?>
+
+---EXPECTHEADERS---
+Status: 500 Internal Server Error

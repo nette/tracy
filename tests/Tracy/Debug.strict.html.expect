@@ -27,7 +27,7 @@
 
 
 
-										<div class="panel">
+													<div class="panel">
 		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
 
 		<div id="pnl1" class="inner">
@@ -38,44 +38,11 @@
 
 
 
-				<div class="panel">
+										<div class="panel">
 		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Call stack <abbr>&#x25bc;</abbr></a></h2>
 
 		<div id="pnl2" class="inner">
 					<ol>
-										<li><p>
-
-											<span title="%a%">%a%</span> (%d%)
-					<a href="#" onclick="return !netteToggle(this, 'src1-0')">source <abbr>&#x25ba;</abbr></a>&nbsp;
-					%ns%Debug::					_errorHandler
-					(<a href="#" onclick="return !netteToggle(this, 'args1-0')">arguments <abbr>&#x25ba;</abbr></a>)
-					</p>
-
-											<div class="collapsed" id="args1-0">
-						<table>
-						<tr><th>$severity</th><td><pre class="nette-dump">8
-</pre></td></tr>
-<tr><th>$message</th><td><pre class="nette-dump">"Undefined variable: x" (21)
-</pre></td></tr>
-<tr><th>$file</th><td><pre class="nette-dump">"%a%" (%d%)
-</pre></td></tr>
-<tr><th>$line</th><td><pre class="nette-dump">42
-</pre></td></tr>
-<tr><th>$context</th><td><pre class="nette-dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(1) <abbr>&#x25bc;</abbr> </a><code>{
-   <a href='#' onclick='return !netteToggle(this)'>"arg1" => <span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>[
-      0 => 1
-      1 => 2
-      2 => 3
-   ]</code>
-}</code>
-</pre></td></tr>
-						</table>
-						</div>
-
-
-											<pre class="collapsed" id="src1-0">%A%</pre>
-
-					</li>
 										<li><p>
 
 											<span title="%a%">%a%</span> (%d%)
@@ -141,7 +108,6 @@
 											<pre class="collapsed" id="src1-3">%A%</pre>
 
 					</li>
-
 									</ol>
 					</div>
 	</div>
