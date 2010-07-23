@@ -58,4 +58,4 @@ __halt_compiler() ?>
 
 Warning: Unsupported declare 'foo' in %a% on line %d%
 
-%A%<div id="nette-debug-errors"><h1>Errors</h1> <div class="nette-inner"> <table> <tr class=""> <td><pre>PHP Strict standards: mktime(): You should be using the time() function instead in %a%:%d%</pre></td> </tr> <tr class="nette-alt"> <td><pre>PHP Deprecated: mktime(): The is_dst parameter is deprecated in %a%:%d%</pre></td> </tr> <tr class=""> <td><pre>PHP Notice: Undefined variable: x in %a%:%d%</pre></td> </tr> <tr class="nette-alt"> <td><pre>PHP Warning: rename(..,..): Pøístup byl odepøen. (code: 5) in %a%:%d%</pre></td> </tr> </table>%A%
+%A%<div id="nette-debug-errors"><h1>Errors</h1> <div class="nette-inner"> <table> <tr class=""> <td><pre>PHP Strict standards: mktime(): You should be using the time() function instead in %a%:%d%</pre></td> </tr> <tr class="nette-alt"> <td><pre>PHP Deprecated: mktime(): The is_dst parameter is deprecated in %a%:%d%</pre></td> </tr> <tr class=""> <td><pre>PHP Notice: Undefined variable: x in %a%:%d%</pre></td> </tr> <tr class="nette-alt"> <td><pre>PHP Warning: rename(..,..): %A% in %a%:%d%</pre></td> </tr> </table>%A%

@@ -60,6 +60,6 @@ Deprecated: mktime(): The is_dst parameter is deprecated in %a% on line %d%
 
 Notice: Undefined variable: x in %a% on line %d%
 
-Warning: rename(..,..): Pøístup byl odepøen. (code: 5) in %a% on line %d%
+Warning: rename(..,..): %A% in %a% on line %d%
 
 Warning: Unsupported declare 'foo' in %a% on line %d%
