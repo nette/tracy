@@ -692,11 +692,6 @@ final class Debug
 			self::fireLog($exception, self::EXCEPTION);
 
 		} elseif ($outputAllowed) { // dump to browser
-			if (!headers_sent()) {
-				@ob_end_clean(); while (ob_get_level() && @ob_end_clean());
-				/**/header_remove('Content-Encoding');/**/
-				/*5.2* if (in_array('Content-Encoding: gzip', headers_list())) header('Content-Encoding: identity', TRUE); // override gzhandler*/
-			}
 			self::_paintBlueScreen($exception);
 
 		} elseif (self::$firebugDetected && !headers_sent()) {
