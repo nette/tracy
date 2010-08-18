@@ -30,22 +30,22 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 													<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'netteBsPnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
 
-		<div id="pnl1" class="inner">
+		<div id="netteBsPnl1" class="inner">
 					<p><strong>File:</strong> %a% &nbsp; <strong>Line:</strong> %d%</p>
-				<pre><code><span style="color: #06b"><span style="color: #d24; font-weight: bold"><span class='line'>Line %d%:</span>    {
-<span class='line'>Line %d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #d24; font-weight: bold">));
+				<pre><code><span style="color: #06B"><span style="color: #C22; font-weight: bold"><span class='line'>Line %d%:</span>    {
+<span class='line'>Line %d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #C22; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #C22; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #C22; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #C22; font-weight: bold">));
 <span class='line'>Line %d%:</span>    }
 <span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>
-<span class='line'>Line %d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #d24; font-weight: bold">)
+<span class='line'>Line %d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #C22; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #C22; font-weight: bold">)
 <span class='line'>Line %d%:</span>    {
 <span class='highlight'>Line %d%:    &nbsp;&nbsp;&nbsp;&nbsp;missing_funcion();
-</span></span><span style="color: #000"></span><span style="color: #d24; font-weight: bold"><span class='line'>Line %d%:</span>    }
+</span></span><span style="color: #000"></span><span style="color: #C22; font-weight: bold"><span class='line'>Line %d%:</span>    }
 <span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>
-<span class='line'>Line %d%:</span>    </span><span style="color: #000">first</span><span style="color: #d24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #d24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #d24; font-weight: bold">);
+<span class='line'>Line %d%:</span>    </span><span style="color: #000">first</span><span style="color: #C22; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #C22; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #C22; font-weight: bold">);
 <span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>
@@ -69,15 +69,15 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl2')">Environment <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'netteBsPnl2')">Environment <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="pnl2" class="collapsed inner">
-							<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
-			<table id="pnl-env-const">%A%</table>
+		<div id="netteBsPnl2" class="collapsed inner">
+							<h3><a href="#" onclick="return !netteToggle(this, 'netteBsPnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
+			<table id="netteBsPnl-env-const">%A%</table>
 
 
-			<h3><a href="#" onclick="return !netteToggle(this, 'pnl-env-files')">Included files <abbr>&#x25ba;</abbr></a>(%d%)</h3>
-			<table id="pnl-env-files" class="collapsed">%A%</table>
+			<h3><a href="#" onclick="return !netteToggle(this, 'netteBsPnl-env-files')">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
+			<table id="netteBsPnl-env-files" class="collapsed">%A%</table>
 
 
 			<h3>$_SERVER</h3>
@@ -88,9 +88,9 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl3')">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'netteBsPnl3')">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="pnl3" class="collapsed inner">
+		<div id="netteBsPnl3" class="collapsed inner">
 
 
 						<h3>$_GET</h3>
@@ -105,9 +105,9 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 			<div class="panel">
-		<h2><a href="#" onclick="return !netteToggle(this, 'pnl4')">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" onclick="return !netteToggle(this, 'netteBsPnl4')">HTTP response <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="pnl4" class="collapsed inner">
+		<div id="netteBsPnl4" class="collapsed inner">
 				<h3>Headers</h3>
 						<pre>X-Powered-By: Nette Framework<br>Content-Type: text/plain; charset=utf-8<br></pre>
 							</div>
