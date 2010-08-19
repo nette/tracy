@@ -40,8 +40,8 @@ final class Debug
 	/** @var bool is AJAX request detected? */
 	private static $ajaxDetected;
 
-	/** @var string */
-	private static $uri;
+	/** @var string  requested URI or command line */
+	public static $source;
 
 	/********************* Debug::dump() ****************d*g**/
 
@@ -149,12 +149,16 @@ final class Debug
 		self::$time = microtime(TRUE);
 		self::$consoleMode = PHP_SAPI === 'cli';
 		self::$productionMode = self::DETECT;
-		self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
-		self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
-		if (isset($_SERVER['REQUEST_URI'])) {
-			self::$uri = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
-				. (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : ''))
-				. $_SERVER['REQUEST_URI'];
+		if (self::$consoleMode) {
+			self::$source = empty($_SERVER['argv']) ? 'cli' : 'cli: ' . $_SERVER['argv'][0];
+		} else {
+			self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
+			self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+			if (isset($_SERVER['REQUEST_URI'])) {
+				self::$source = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
+					. (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : ''))
+					. $_SERVER['REQUEST_URI'];
+			}
 		}
 
 		$tab = array(__CLASS__, 'renderTab'); $panel = array(__CLASS__, 'renderPanel');
@@ -476,7 +480,7 @@ final class Debug
 	 */
 	public static function log($message)
 	{
-		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . PHP_EOL, 3, self::$logFile);
+		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logFile);
 	}
 
 
@@ -621,7 +625,6 @@ final class Debug
 		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message in $file:$line";
 
 		if (self::$logFile) {
-			if (self::$uri) $message .= '  @  ' . self::$uri;
 			self::log($message); // log manually, required on some stupid hostings
 			self::sendEmail($message);
 			return NULL;
@@ -655,7 +658,7 @@ final class Debug
 		} elseif (self::$logFile) {
 			try {
 				$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
-				self::log("PHP Fatal error: Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "' in " . $exception->getFile() . ":" . $exception->getLine() . (self::$uri ? '  @  ' . self::$uri : ''));
+				self::log("PHP Fatal error: Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "' in " . $exception->getFile() . ":" . $exception->getLine());
 				foreach (new \DirectoryIterator(dirname(self::$logFile)) as $entry) {
 					if (strpos($entry, $hash)) {
 						$skip = TRUE;
@@ -670,7 +673,7 @@ final class Debug
 					ob_end_clean();
 					fclose(self::$logHandle);
 				}
-				self::sendEmail("$exception\n\n" . self::$uri);
+				self::sendEmail("$exception\n\n" . self::$source);
 
 			} catch (\Exception $e) {
 				if (!headers_sent()) {
