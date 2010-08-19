@@ -117,11 +117,14 @@ final class Debug
 
 	/********************* Firebug extension ****************d*g**/
 
+	/**#@+ {@link Debug::log()} */
+	const INFO = 'INFO';
+	const ERROR = 'ERROR';
+	/**#@-*/
+
 	/**#@+ FirePHP log priority */
 	const LOG = 'LOG';
-	const INFO = 'INFO';
 	const WARN = 'WARN';
-	const ERROR = 'ERROR';
 	const TRACE = 'TRACE';
 	const EXCEPTION = 'EXCEPTION';
 	const GROUP_START = 'GROUP_START';
@@ -476,11 +479,22 @@ final class Debug
 	/**
 	 * Log user error.
 	 * @param  string
+	 * @param  int
 	 * @return void
 	 */
-	public static function log($message)
+	public static function log($message, $priority = self::INFO)
 	{
+		if (!self::$logFile) {
+			return;
+		}
+
 		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logFile);
+
+		if ($priority === self::ERROR && self::$sendEmails // sends e-mail notification.
+			&& @filemtime(self::$logFile . '.email-sent') + self::$emailSnooze < time() // @ - file may not exist
+			&& @file_put_contents(self::$logFile . '.email-sent', 'sent')) { // @ - file may not be writable
+			call_user_func(self::$mailer, $message);
+		}
 	}
 
 
@@ -625,8 +639,7 @@ final class Debug
 		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message in $file:$line";
 
 		if (self::$logFile) {
-			self::log($message); // log manually, required on some stupid hostings
-			self::sendEmail($message);
+			self::log($message, self::ERROR); // log manually, required on some stupid hostings
 			return NULL;
 
 		} elseif (!self::$productionMode) {
@@ -658,7 +671,7 @@ final class Debug
 		} elseif (self::$logFile) {
 			try {
 				$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
-				self::log("PHP Fatal error: Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "' in " . $exception->getFile() . ":" . $exception->getLine());
+				self::log("PHP Fatal error: Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "' in " . $exception->getFile() . ":" . $exception->getLine(), self::ERROR);
 				foreach (new \DirectoryIterator(dirname(self::$logFile)) as $entry) {
 					if (strpos($entry, $hash)) {
 						$skip = TRUE;
@@ -673,7 +686,6 @@ final class Debug
 					ob_end_clean();
 					fclose(self::$logHandle);
 				}
-				self::sendEmail("$exception\n\n" . self::$source);
 
 			} catch (\Exception $e) {
 				if (!headers_sent()) {
@@ -750,22 +762,6 @@ final class Debug
 	public static function _writeFile($buffer)
 	{
 		fwrite(self::$logHandle, $buffer);
-	}
-
-
-
-	/**
-	 * Sends e-mail notification.
-	 * @param  string
-	 * @return void
-	 */
-	private static function sendEmail($message)
-	{
-		$monitorFile = self::$logFile . '.monitor';
-		if (self::$sendEmails && @filemtime($monitorFile) + self::$emailSnooze < time() // @ - file may not exist
-			&& @file_put_contents($monitorFile, 'sent')) { // @ - file may not be writable
-			call_user_func(self::$mailer, $message);
-		}
 	}
 
 

@@ -53,4 +53,4 @@ Sending mail with message 'PHP Notice: Undefined variable: a in %a%'
 
 %a%/log/php_error.log
 
-%a%/log/php_error.log.monitor
+%a%/log/php_error.log.email-sent

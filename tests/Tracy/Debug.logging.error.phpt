@@ -49,15 +49,8 @@ missing_funcion();
 __halt_compiler() ?>
 
 ------EXPECT------
-Sending mail with message 'exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%
-Stack trace:
-#0 [internal function]: %ns%Debug::_shutdownHandler()
-#1 {main}
-
-'
-
-%a%/log/exception %a%.html
+Sending mail with message 'PHP Fatal error: Uncaught exception FatalErrorException with message 'Call to undefined function missing_funcion()' in %a%'
 
 %a%/log/php_error.log
 
-%a%/log/php_error.log.monitor
+%a%/log/php_error.log.email-sent
