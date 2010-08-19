@@ -477,7 +477,7 @@ final class Debug
 
 
 	/**
-	 * Log user error.
+	 * Logs message to file (if set) and sends e-mail notification (if enabled).
 	 * @param  string
 	 * @param  int
 	 * @return void
@@ -490,7 +490,7 @@ final class Debug
 
 		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logFile);
 
-		if ($priority === self::ERROR && self::$sendEmails // sends e-mail notification.
+		if ($priority === self::ERROR && self::$sendEmails
 			&& @filemtime(self::$logFile . '.email-sent') + self::$emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents(self::$logFile . '.email-sent', 'sent')) { // @ - file may not be writable
 			call_user_func(self::$mailer, $message);
@@ -500,39 +500,7 @@ final class Debug
 
 
 	/**
-	 * Starts catching potential errors/warnings.
-	 * @return void
-	 */
-	public static function tryError()
-	{
-		error_reporting(0);
-		trigger_error(''); // "reset" error_get_last
-	}
-
-
-
-	/**
-	 * Returns catched error/warning message.
-	 * @param  string  catched message
-	 * @return bool
-	 */
-	public static function catchError(& $message)
-	{
-		error_reporting(E_ALL | E_STRICT);
-		$error = error_get_last();
-		if ($error && $error['message'] !== '') {
-			$message = $error['message'];
-			return TRUE;
-		} else {
-			$message = NULL;
-			return FALSE;
-		}
-	}
-
-
-
-	/**
-	 * Shutdown handler to execute of the planned activities.
+	 * Shutdown handler to catch fatal errors and execute of the planned activities.
 	 * @return void
 	 * @internal
 	 */
@@ -582,7 +550,7 @@ final class Debug
 
 
 	/**
-	 * Debug exception handler.
+	 * Handler to catch uncaught exception.
 	 * @param  \Exception
 	 * @return void
 	 * @internal
@@ -593,13 +561,12 @@ final class Debug
 			header('HTTP/1.1 500 Internal Server Error');
 		}
 		self::processException($exception, TRUE);
-		exit;
 	}
 
 
 
 	/**
-	 * Own error handler.
+	 * Handler to catch warnings and notices.
 	 * @param  int    level of the error raised
 	 * @param  string error message
 	 * @param  string file that the error was raised in
@@ -623,6 +590,7 @@ final class Debug
 
 		} elseif (self::$strictMode) {
 			self::_exceptionHandler(new \FatalErrorException($message, 0, $severity, $file, $line, $context), TRUE);
+			exit;
 		}
 
 		static $types = array(
@@ -658,7 +626,7 @@ final class Debug
 
 
 	/**
-	 * Logs or displays exception.
+	 * Logs or visualize exception according to the settings.
 	 * @param  \Exception
 	 * @param  bool  is writing to standard output buffer allowed?
 	 * @return void
@@ -732,6 +700,7 @@ final class Debug
 		} else {
 			trigger_error($exception->getMessage(), E_USER_ERROR);
 		}
+		exit;
 	}
 
 
@@ -762,6 +731,38 @@ final class Debug
 	public static function _writeFile($buffer)
 	{
 		fwrite(self::$logHandle, $buffer);
+	}
+
+
+
+	/**
+	 * Starts catching potential errors/warnings.
+	 * @return void
+	 */
+	public static function tryError()
+	{
+		error_reporting(0);
+		trigger_error(''); // "reset" error_get_last
+	}
+
+
+
+	/**
+	 * Returns catched error/warning message.
+	 * @param  string  catched message
+	 * @return bool
+	 */
+	public static function catchError(& $message)
+	{
+		error_reporting(E_ALL | E_STRICT);
+		$error = error_get_last();
+		if ($error && $error['message'] !== '') {
+			$message = $error['message'];
+			return TRUE;
+		} else {
+			$message = NULL;
+			return FALSE;
+		}
 	}
 
 
