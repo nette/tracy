@@ -543,15 +543,10 @@ final class Debug
 			E_COMPILE_ERROR => 1,
 			E_PARSE => 1,
 		);
-
 		$error = error_get_last();
 		if (isset($types[$error['type']])) {
-			if (!headers_sent()) { // for PHP < 5.2.4
-				header('HTTP/1.1 500 Internal Server Error');
-			}
-			self::processException(new \FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
+			self::_exceptionHandler(new \FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL));
 		}
-
 
 		// 2) debug bar (require HTML & development mode)
 		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode) {
@@ -587,10 +582,42 @@ final class Debug
 	 */
 	public static function _exceptionHandler(\Exception $exception)
 	{
-		if (!headers_sent()) {
+		if (!headers_sent()) { // for PHP < 5.2.4
 			header('HTTP/1.1 500 Internal Server Error');
 		}
-		self::processException($exception, TRUE);
+
+		if (self::$logFile) {
+			try {
+				self::log($exception, self::ERROR);
+			} catch (\Exception $e) {
+				if (!headers_sent()) {
+					header('HTTP/1.1 500 Internal Server Error');
+				}
+				echo 'Nette\Debug fatal error: ', get_class($e), ': ', ($e->getCode() ? '#' . $e->getCode() . ' ' : '') . $e->getMessage(), "\n";
+				exit;
+			}
+
+		} elseif (self::$productionMode) {
+			// be quiet
+
+		} elseif (self::$consoleMode) { // dump to console
+			if ($outputAllowed) {
+				echo "$exception\n";
+			}
+
+		} elseif (self::$firebugDetected && self::$ajaxDetected && !headers_sent()) { // AJAX mode
+			self::fireLog($exception, self::EXCEPTION);
+
+		} elseif ($outputAllowed) { // dump to browser
+			self::_paintBlueScreen($exception);
+
+		} elseif (self::$firebugDetected && !headers_sent()) {
+			self::fireLog($exception, self::EXCEPTION);
+		}
+
+		foreach (self::$onFatalError as $handler) {
+			call_user_func($handler, $exception);
+		}
 	}
 
 
@@ -619,7 +646,7 @@ final class Debug
 			return FALSE; // calls normal error handler to fill-in error_get_last()
 
 		} elseif (self::$strictMode) {
-			self::_exceptionHandler(new \FatalErrorException($message, 0, $severity, $file, $line, $context), TRUE);
+			self::_exceptionHandler(new \FatalErrorException($message, 0, $severity, $file, $line, $context));
 			exit;
 		}
 
@@ -655,49 +682,10 @@ final class Debug
 
 
 
-	/**
-	 * Logs or visualize exception according to the settings.
-	 * @param  \Exception
-	 * @param  bool  is writing to standard output buffer allowed?
-	 * @return void
-	 */
-	public static function processException(\Exception $exception, $outputAllowed = FALSE)
+	/** @deprecated */
+	public static function processException(\Exception $exception)
 	{
-		if (!self::$enabled) {
-			return;
-
-		} elseif (self::$logFile) {
-			try {
-				self::log($exception, self::ERROR);
-			} catch (\Exception $e) {
-				if (!headers_sent()) {
-					header('HTTP/1.1 500 Internal Server Error');
-				}
-				echo 'Nette\Debug fatal error: ', get_class($e), ': ', ($e->getCode() ? '#' . $e->getCode() . ' ' : '') . $e->getMessage(), "\n";
-				exit;
-			}
-
-		} elseif (self::$productionMode) {
-			// be quiet
-
-		} elseif (self::$consoleMode) { // dump to console
-			if ($outputAllowed) {
-				echo "$exception\n";
-			}
-
-		} elseif (self::$firebugDetected && self::$ajaxDetected && !headers_sent()) { // AJAX mode
-			self::fireLog($exception, self::EXCEPTION);
-
-		} elseif ($outputAllowed) { // dump to browser
-			self::_paintBlueScreen($exception);
-
-		} elseif (self::$firebugDetected && !headers_sent()) {
-			self::fireLog($exception, self::EXCEPTION);
-		}
-
-		foreach (self::$onFatalError as $handler) {
-			call_user_func($handler, $exception);
-		}
+		self::log($exception);
 	}
 
 
