@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug E_ERROR in production mode.
+ * Test: Nette\Debug E_ERROR in production & console mode.
  *
  * @author     David Grudl
  * @category   Nette
@@ -17,9 +17,8 @@ require __DIR__ . '/../initialize.php';
 
 
 
-Debug::$consoleMode = FALSE;
+Debug::$consoleMode = TRUE;
 Debug::$productionMode = TRUE;
-header('Content-Type: text/html');
 
 Debug::enable();
 
@@ -29,8 +28,5 @@ missing_funcion();
 
 __halt_compiler() ?>
 
----EXPECTHEADERS---
-Status: 500 Internal Server Error
-
 ------EXPECT------
-%A%<h1>Server Error</h1>%A%
+ERROR:%A%

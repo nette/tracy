@@ -19,6 +19,7 @@ require __DIR__ . '/../initialize.php';
 
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = TRUE;
+header('Content-Type: text/html');
 
 Debug::enable();
 
@@ -32,3 +33,4 @@ __halt_compiler() ?>
 Status: 500 Internal Server Error
 
 ------EXPECT------
+%A%<h1>Server Error</h1>%A%

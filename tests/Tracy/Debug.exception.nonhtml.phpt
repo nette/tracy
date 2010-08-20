@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Debug eval error in HTML.
+ * Test: Nette\Debug exception in non-HTML mode.
  *
  * @author     David Grudl
  * @category   Nette
@@ -19,23 +19,14 @@ require __DIR__ . '/../initialize.php';
 
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
-header('Content-Type: text/html');
+header('Content-Type: text/plain');
 
 Debug::enable();
 
-
-
-function first($user, $pass)
-{
-	eval('trigger_error("The my error", E_USER_ERROR);');
-}
-
-
-first('root', 'xxx');
+throw new Exception('The my exception', 123);
 
 
 
 __halt_compiler() ?>
 
----EXPECTHEADERS---
-Status: 500 Internal Server Error
+------EXPECT------

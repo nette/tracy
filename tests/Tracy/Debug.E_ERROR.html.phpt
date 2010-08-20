@@ -19,6 +19,7 @@ require __DIR__ . '/../initialize.php';
 
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
+header('Content-Type: text/html');
 
 Debug::enable();
 
