@@ -477,8 +477,8 @@ final class Debug
 
 
 	/**
-	 * Logs message to file (if set) and sends e-mail notification (if enabled).
-	 * @param  string
+	 * Logs message or exception to file (if set) and sends e-mail notification (if enabled).
+	 * @param  string|Exception
 	 * @param  int
 	 * @return void
 	 */
@@ -488,6 +488,11 @@ final class Debug
 			return;
 		}
 
+		if ($message instanceof \Exception) {
+			$exception = $message;
+			$message = "PHP Fatal error: Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "' in " . $exception->getFile() . ":" . $exception->getLine();
+		}
+
 		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logFile);
 
 		if ($priority === self::ERROR && self::$sendEmails
@@ -495,6 +500,31 @@ final class Debug
 			&& @file_put_contents(self::$logFile . '.email-sent', 'sent')) { // @ - file may not be writable
 			call_user_func(self::$mailer, $message);
 		}
+
+		if (isset($exception)) {
+			$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
+			foreach (new \DirectoryIterator(dirname(self::$logFile)) as $entry) {
+				if (strpos($entry, $hash)) {
+					$skip = TRUE; break;
+				}
+			}
+			if (empty($skip) && self::$logHandle = @fopen(dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
+				ob_start(); // double buffer prevents sending HTTP headers in some PHP
+				ob_start(array(__CLASS__, '_writeFile'), 1);
+				self::_paintBlueScreen($exception);
+				ob_end_flush();
+				ob_end_clean();
+				fclose(self::$logHandle);
+			}
+		}
+	}
+
+
+
+	/** @internal */
+	public static function _writeFile($buffer)
+	{
+		fwrite(self::$logHandle, $buffer);
 	}
 
 
@@ -638,23 +668,7 @@ final class Debug
 
 		} elseif (self::$logFile) {
 			try {
-				$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
-				self::log("PHP Fatal error: Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "' in " . $exception->getFile() . ":" . $exception->getLine(), self::ERROR);
-				foreach (new \DirectoryIterator(dirname(self::$logFile)) as $entry) {
-					if (strpos($entry, $hash)) {
-						$skip = TRUE;
-						break;
-					}
-				}
-				if (empty($skip) && self::$logHandle = @fopen(dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
-					ob_start(); // double buffer prevents sending HTTP headers in some PHP
-					ob_start(array(__CLASS__, '_writeFile'), 1);
-					self::_paintBlueScreen($exception);
-					ob_end_flush();
-					ob_end_clean();
-					fclose(self::$logHandle);
-				}
-
+				self::log($exception, self::ERROR);
 			} catch (\Exception $e) {
 				if (!headers_sent()) {
 					header('HTTP/1.1 500 Internal Server Error');
@@ -718,19 +732,6 @@ final class Debug
 		}
 
 		require __DIR__ . '/templates/bluescreen.phtml';
-	}
-
-
-
-	/**
-	 * Redirects output to file.
-	 * @param  string
-	 * @return string
-	 * @internal
-	 */
-	public static function _writeFile($buffer)
-	{
-		fwrite(self::$logHandle, $buffer);
 	}
 
 
