@@ -21,8 +21,8 @@ Debug::tryError(); {
 	$a++;
 } $res = Debug::catchError($message);
 
-T::dump( $res );
-T::dump( $message );
+Assert::true( $res );
+Assert::same( "Undefined variable: a", $message );
 
 
 
@@ -30,18 +30,5 @@ Debug::tryError(); {
 
 } $res = Debug::catchError($message);
 
-T::dump( $res );
-T::dump( $message );
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-TRUE
-
-"Undefined variable: a"
-
-FALSE
-
-NULL
+Assert::false( $res );
+Assert::null( $message );

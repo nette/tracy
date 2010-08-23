@@ -41,20 +41,7 @@ $arr = array(
 );
 
 $arr[] = &$arr;
-
-Debug::dump($arr);
-
-Debug::$maxDepth = 2;
-Debug::$maxLen = 50;
-
-Debug::dump($arr);
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-array(5) {
+Assert::match( 'array(5) {
    "long" => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
    0 => array(1) [
       0 => array(1) [
@@ -80,7 +67,13 @@ array(5) {
    }
 }
 
-array(5) {
+', Debug::dump($arr, TRUE) );
+
+
+
+Debug::$maxDepth = 2;
+Debug::$maxLen = 50;
+Assert::match( 'array(5) {
    "long" => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    0 => array(1) [
       0 => array(1) [ ... ]
@@ -97,3 +90,5 @@ array(5) {
       2 => array(6) { *RECURSION* }
    }
 }
+
+', Debug::dump($arr, TRUE) );

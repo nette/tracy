@@ -31,102 +31,41 @@ class Test
 }
 
 
-T::note("HTML mode");
+// HTML mode
 
 Debug::$consoleMode = FALSE;
 
-Debug::dump(NULL);
+Assert::match( '<pre class="nette-dump">NULL
+</pre>', Debug::dump(NULL, TRUE) );
 
-Debug::dump(TRUE);
+Assert::match( '<pre class="nette-dump">TRUE
+</pre>', Debug::dump(TRUE, TRUE) );
 
-Debug::dump(FALSE);
+Assert::match( '<pre class="nette-dump">FALSE
+</pre>', Debug::dump(FALSE, TRUE) );
 
-Debug::dump(0);
+Assert::match( '<pre class="nette-dump">0
+</pre>', Debug::dump(0, TRUE) );
 
-Debug::dump(1);
+Assert::match( '<pre class="nette-dump">1
+</pre>', Debug::dump(1, TRUE) );
 
-Debug::dump(0.0);
+Assert::match( '<pre class="nette-dump">0.0
+</pre>', Debug::dump(0.0, TRUE) );
 
-Debug::dump(0.1);
+Assert::match( '<pre class="nette-dump">0.1
+</pre>', Debug::dump(0.1, TRUE) );
 
-Debug::dump('');
+Assert::match( '<pre class="nette-dump">""
+</pre>', Debug::dump('', TRUE) );
 
-Debug::dump('0');
+Assert::match( '<pre class="nette-dump">"0"
+</pre>', Debug::dump('0', TRUE) );
 
-Debug::dump("\x00");
+Assert::match( '<pre class="nette-dump">"\\x00"
+</pre>', Debug::dump("\x00", TRUE) );
 
-Debug::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)));
-
-Debug::dump(fopen(__FILE__, 'r'));
-
-Debug::dump((object) NULL);
-
-$obj = new Test;
-$res = Debug::dump($obj);
-
-Assert::same($res,  $obj );
-
-
-T::note("\nText mode");
-
-Debug::$consoleMode = TRUE;
-
-Debug::dump(NULL);
-
-Debug::dump(TRUE);
-
-Debug::dump(FALSE);
-
-Debug::dump(0);
-
-Debug::dump(1);
-
-Debug::dump(0.0);
-
-Debug::dump(0.1);
-
-Debug::dump('');
-
-Debug::dump('0');
-
-Debug::dump("\x00");
-
-Debug::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)));
-
-Debug::dump(fopen(__FILE__, 'r'));
-
-Debug::dump((object) NULL);
-
-$res = Debug::dump($obj);
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-HTML mode
-
-<pre class="nette-dump">NULL
-</pre>
-<pre class="nette-dump">TRUE
-</pre>
-<pre class="nette-dump">FALSE
-</pre>
-<pre class="nette-dump">0
-</pre>
-<pre class="nette-dump">1
-</pre>
-<pre class="nette-dump">0.0
-</pre>
-<pre class="nette-dump">0.1
-</pre>
-<pre class="nette-dump">""
-</pre>
-<pre class="nette-dump">"0"
-</pre>
-<pre class="nette-dump">"\x00"
-</pre>
-<pre class="nette-dump"><span>array</span>(5) <code>[
+Assert::match( '<pre class="nette-dump"><span>array</span>(5) <code>[
    0 => 1
    1 => "hello" (5)
    2 => <span>array</span>(0)
@@ -140,43 +79,43 @@ HTML mode
    }</code>
 ]</code>
 </pre>
-<pre class="nette-dump"><span>stream resource</span>
-</pre>
-<pre class="nette-dump"><span>stdClass</span>(0)
-</pre>
-<pre class="nette-dump"><span>Test</span>(3) <code>{
-   "x" => <span>array</span>(2) <code>[
-      0 => 10
-      1 => NULL
-   ]</code>
-   "y" <span>private</span> => "hello" (5)
-   "z" <span>protected</span> => 30
-}</code>
-</pre>
+', Debug::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)), TRUE) );
 
-Text mode
+Assert::match( '<pre class="nette-dump"><span>stream resource</span>
+</pre>', Debug::dump(fopen(__FILE__, 'r'), TRUE) );
 
-NULL
+Assert::match( '<pre class="nette-dump"><span>stdClass</span>(0)
+</pre>', Debug::dump((object) NULL, TRUE) );
 
-TRUE
+$obj = new Test;
+Assert::same(Debug::dump($obj), $obj);
 
-FALSE
 
-0
+// Text mode
 
-1
+Debug::$consoleMode = TRUE;
 
-0.0
+Assert::match( 'NULL', Debug::dump(NULL, TRUE) );
 
-0.1
+Assert::match( 'TRUE', Debug::dump(TRUE, TRUE) );
 
-""
+Assert::match( 'FALSE', Debug::dump(FALSE, TRUE) );
 
-"0"
+Assert::match( '0', Debug::dump(0, TRUE) );
 
-"\x00"
+Assert::match( '1', Debug::dump(1, TRUE) );
 
-array(5) [
+Assert::match( '0.0', Debug::dump(0.0, TRUE) );
+
+Assert::match( '0.1', Debug::dump(0.1, TRUE) );
+
+Assert::match( '""', Debug::dump('', TRUE) );
+
+Assert::match( '"0"', Debug::dump('0', TRUE) );
+
+Assert::match( '"\\x00"', Debug::dump("\x00", TRUE) );
+
+Assert::match( 'array(5) [
    0 => 1
    1 => "hello" (5)
    2 => array(0)
@@ -189,12 +128,13 @@ array(5) [
       2 => 2
    }
 ]
+', Debug::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)), TRUE) );
 
-stream resource
+Assert::match( 'stream resource', Debug::dump(fopen(__FILE__, 'r'), TRUE) );
 
-stdClass(0)
+Assert::match( 'stdClass(0)', Debug::dump((object) NULL, TRUE) );
 
-Test(3) {
+Assert::match( 'Test(3) {
    "x" => array(2) [
       0 => 10
       1 => NULL
@@ -202,3 +142,4 @@ Test(3) {
    "y" private => "hello" (5)
    "z" protected => 30
 }
+', Debug::dump($obj, TRUE) );

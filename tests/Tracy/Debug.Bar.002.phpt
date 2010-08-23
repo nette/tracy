@@ -24,10 +24,7 @@ Debug::enable();
 
 header('Content-Type: text/plain');
 
-Debug::barDump('value');
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
+ob_start();
+register_shutdown_function(function() {
+	Assert::same('', ob_get_clean());
+});

@@ -21,15 +21,9 @@ Debug::$consoleMode = FALSE;
 Debug::$productionMode = TRUE;
 
 
-
+ob_start();
 Debug::dump('sensitive data');
+Assert::same( '', ob_get_clean() );
 
-echo Debug::dump('forced', TRUE);
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-<pre class="nette-dump">"forced" (6)
-</pre>
+Assert::match( '<pre class="nette-dump">"forced" (6)
+</pre>', Debug::dump('forced', TRUE) );

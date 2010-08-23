@@ -32,7 +32,7 @@ Debug::enable(Debug::PRODUCTION, $errorLog, 'admin@example.com');
 
 function testMailer($message)
 {
-	T::note("Sending mail with message '$message'");
+	// Sending mail with message '$message'
 
 	global $errorLog;
 	foreach (glob(dirname($errorLog) . '/*') as $file) {

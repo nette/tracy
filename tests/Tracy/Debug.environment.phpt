@@ -22,22 +22,11 @@ Debug::$consoleMode = FALSE;
 
 
 
-T::dump( Debug::$productionMode, 'Debug::$productionMode' );
+Assert::null( Debug::$productionMode );
 
-T::note("setting production environment...");
+// setting production environment...
 
 Environment::setMode('production', TRUE);
 Debug::enable();
 
-T::dump( Debug::$productionMode, 'Debug::$productionMode' );
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-Debug::$productionMode: NULL
-
-setting production environment...
-
-Debug::$productionMode: TRUE
+Assert::true( Debug::$productionMode );

@@ -24,12 +24,7 @@ Debug::$productionMode = FALSE;
 
 Debug::$showLocation = TRUE;
 
+ob_start();
 Debug::dump('xxx');
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-<pre class="nette-dump">"xxx" (3) <small>in file %a% on line %d%</small>
-</pre>
+Assert::match( '<pre class="nette-dump">"xxx" (3) <small>in file %a% on line %d%</small>
+</pre>', ob_get_clean() );

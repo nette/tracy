@@ -24,9 +24,7 @@ Debug::enable();
 
 header('Content-Type: text/html');
 
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-%A%<div id="nette-debug">%A%
+ob_start();
+register_shutdown_function(function() {
+	Assert::match('%A%<div id="nette-debug">%A%', ob_get_clean());
+});

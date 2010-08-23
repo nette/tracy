@@ -22,23 +22,7 @@ Debug::$productionMode = FALSE;
 
 
 
-Debug::dump(array(
-	'',
-	' ',
-	"\t",
-	"single line",
-	"multi\nline",
-	"I\xc3\xb1t\xc3\xabrn\xc3\xa2ti\xc3\xb4n\xc3\xa0liz\xc3\xa6ti\xc3\xb8n", // Iñtërnâtiônàlizætiøn,
-	"\x00",
-	"\xFF",
-));
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-array(8) [
+Assert::match( 'array(8) [
    0 => ""
    1 => " "
    2 => "	"
@@ -49,3 +33,14 @@ line" (10)
    6 => "\x00"
    7 => "\xff"
 ]
+
+', Debug::dump(array(
+	'',
+	' ',
+	"\t",
+	"single line",
+	"multi\nline",
+	"I\xc3\xb1t\xc3\xabrn\xc3\xa2ti\xc3\xb4n\xc3\xa0liz\xc3\xa6ti\xc3\xb8n", // Iñtërnâtiônàlizætiøn,
+	"\x00",
+	"\xFF",
+), TRUE));

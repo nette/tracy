@@ -46,7 +46,7 @@ function third($arg1)
 
 first(10, 'any string');
 
-T::note('after');
+// after
 
 
 

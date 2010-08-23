@@ -25,15 +25,6 @@ Debug::timer('foo');
 
 sleep(1);
 
-T::dump( round(Debug::timer(), 1) );
+Assert::same( 2.0, round(Debug::timer(), 1) );
 
-T::dump( round(Debug::timer('foo'), 1) );
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-2.0
-
-1.0
+Assert::same( 1.0, round(Debug::timer('foo'), 1) );
