@@ -28,14 +28,4 @@ Debug::fireLog('Sensitive log');
 
 flush();
 
-T::dump( headers_list() );
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-array(
-	"X-Powered-By: Nette Framework"
-	"Content-Type: %a%"
-)
+Assert::false(strpos(implode('', headers_list()), 'X-Wf-'));

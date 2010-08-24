@@ -22,14 +22,16 @@ Debug::$productionMode = FALSE;
 
 Debug::enable();
 
-@missing_funcion();
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
+function shutdown() {
+	Assert::match("exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
 Stack trace:
 #0 [internal function]: %ns%Debug::_shutdownHandler()
 #1 {main}
+", ob_get_clean());
+	die(0);
+}
+Assert::handler('shutdown');
+
+
+
+@missing_funcion();

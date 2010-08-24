@@ -28,29 +28,16 @@ Debug::$mailer = 'testMailer';
 
 Debug::enable(Debug::PRODUCTION, $errorLog, 'admin@example.com');
 
+function testMailer() {}
 
-
-function testMailer($message)
-{
-	// Sending mail with message '$message'
-
+function shutdown() {
 	global $errorLog;
-	foreach (glob(dirname($errorLog) . '/*') as $file) {
-		T::note($file);
-	}
+	Assert::match('%a%PHP Fatal error: Uncaught exception FatalErrorException with message \'Call to undefined function missing_funcion()\' in %a%', file_get_contents(dirname($errorLog) . '/php_error.log'));
+	Assert::true(is_file(dirname($errorLog) . '/php_error.log.email-sent'));
+	die(0);
 }
+Assert::handler('shutdown');
 
 
 
 missing_funcion();
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-Sending mail with message 'PHP Fatal error: Uncaught exception FatalErrorException with message 'Call to undefined function missing_funcion()' in %a%'
-
-%a%/log/php_error.log
-
-%a%/log/php_error.log.email-sent

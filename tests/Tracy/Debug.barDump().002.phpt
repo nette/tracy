@@ -20,18 +20,19 @@ require __DIR__ . '/../initialize.php';
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
 Debug::$showLocation = TRUE;
+header('Content-Type: text/html');
 
 Debug::enable();
 
-header('Content-Type: text/html');
-
-Debug::barDump('value');
-
-ob_start();
-register_shutdown_function(function() {
+function shutdown() {
 	Assert::match(<<<EOD
 %A%<h1>Dumped variables</h1> <div class="nette-inner"> <table> <tr class=""> <th></th> <td><pre class="nette-dump">"value" (5)
 </pre> </td> </tr> </table> </div> </div>%A%
 EOD
 , ob_get_clean());
-});
+}
+Assert::handler('shutdown');
+
+
+
+Debug::barDump('value');

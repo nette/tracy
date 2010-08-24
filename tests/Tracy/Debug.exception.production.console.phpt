@@ -22,11 +22,11 @@ Debug::$productionMode = TRUE;
 
 Debug::enable();
 
+function shutdown() {
+	Assert::match('ERROR:%A%', ob_get_clean());
+}
+Assert::handler('shutdown');
+
+
+
 throw new Exception('The my exception', 123);
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-ERROR:%A%

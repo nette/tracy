@@ -22,11 +22,12 @@ Debug::$productionMode = TRUE;
 
 Debug::enable();
 
+function shutdown() {
+	Assert::match('ERROR:%A%', ob_get_clean());
+	die(0);
+}
+Assert::handler('shutdown');
+
+
+
 missing_funcion();
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-ERROR:%A%

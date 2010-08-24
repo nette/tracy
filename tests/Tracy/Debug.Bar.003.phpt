@@ -19,12 +19,11 @@ require __DIR__ . '/../initialize.php';
 
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = TRUE;
+header('Content-Type: text/html');
 
 Debug::enable();
 
-header('Content-Type: text/html');
-
-ob_start();
-register_shutdown_function(function() {
+function shutdown() {
 	Assert::same('', ob_get_clean());
-});
+}
+Assert::handler('shutdown');

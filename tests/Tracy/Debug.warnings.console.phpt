@@ -45,15 +45,9 @@ function third($arg1)
 	require 'E_COMPILE_WARNING.inc'; // E_COMPILE_WARNING
 }
 
-
+ob_start();
 first(10, 'any string');
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-
+Assert::match("
 Strict Standards: mktime(): You should be using the time() function instead in %a% on line %d%
 
 Deprecated: mktime(): The is_dst parameter is deprecated in %a% on line %d%
@@ -63,3 +57,4 @@ Notice: Undefined variable: x in %a% on line %d%
 Warning: rename(..,..): %A% in %a% on line %d%
 
 Warning: Unsupported declare 'foo' in %a% on line %d%
+", ob_get_clean());

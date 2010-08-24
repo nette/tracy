@@ -7,6 +7,7 @@
  * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
+ * @assertCode 500
  */
 
 use Nette\Debug;
@@ -23,6 +24,11 @@ header('Content-Type: text/html');
 
 Debug::$strictMode = TRUE;
 Debug::enable();
+
+function shutdown() {
+	Assert::match(file_get_contents(__DIR__ . '/Debug.strict.html.expect'), ob_get_clean());
+}
+Assert::handler('shutdown');
 
 
 

@@ -23,6 +23,12 @@ header('Content-Type: text/html');
 
 Debug::enable();
 
+function shutdown() {
+	Assert::match(file_get_contents(__DIR__ . '/Debug.E_ERROR.html.expect'), ob_get_clean());
+	die(0);
+}
+Assert::handler('shutdown');
+
 
 
 function first($arg1, $arg2)
@@ -44,7 +50,3 @@ function third($arg1)
 
 
 first(10, 'any string');
-
-
-
-__halt_compiler() ?>

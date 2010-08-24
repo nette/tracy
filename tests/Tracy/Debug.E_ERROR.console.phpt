@@ -22,6 +22,18 @@ Debug::$productionMode = FALSE;
 
 Debug::enable();
 
+function shutdown() {
+	Assert::match("
+Fatal error: Call to undefined function missing_funcion() in %a%
+exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%
+Stack trace:
+#0 [internal function]: %ns%Debug::_shutdownHandler()
+#1 {main}
+", ob_get_clean());
+	die(0);
+}
+Assert::handler('shutdown');
+
 
 
 function first($arg1, $arg2)
@@ -43,15 +55,3 @@ function third($arg1)
 
 
 first(10, 'any string');
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-
-Fatal error: Call to undefined function missing_funcion() in %a%
-exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%
-Stack trace:
-#0 [internal function]: %ns%Debug::_shutdownHandler()
-#1 {main}

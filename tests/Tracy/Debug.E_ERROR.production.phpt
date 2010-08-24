@@ -7,6 +7,7 @@
  * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
+ * @assertCode 500
  */
 
 use Nette\Debug;
@@ -23,14 +24,12 @@ header('Content-Type: text/html');
 
 Debug::enable();
 
+function shutdown() {
+	Assert::match('%A%<h1>Server Error</h1>%A%', ob_get_clean());
+	die(0);
+}
+Assert::handler('shutdown');
+
+
+
 missing_funcion();
-
-
-
-__halt_compiler() ?>
-
----EXPECTHEADERS---
-Status: 500 Internal Server Error
-
-------EXPECT------
-%A%<h1>Server Error</h1>%A%

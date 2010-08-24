@@ -19,12 +19,11 @@ require __DIR__ . '/../initialize.php';
 
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
+header('Content-Type: text/html');
 
 Debug::enable();
 
-header('Content-Type: text/html');
-
-ob_start();
-register_shutdown_function(function() {
+function shutdown() {
 	Assert::match('%A%<div id="nette-debug">%A%', ob_get_clean());
-});
+}
+Assert::handler('shutdown');

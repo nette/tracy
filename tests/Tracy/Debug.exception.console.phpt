@@ -22,6 +22,17 @@ Debug::$productionMode = FALSE;
 
 Debug::enable();
 
+function shutdown() {
+	Assert::match("exception 'Exception' with message 'The my exception' in %a%
+Stack trace:
+#0 %a%: third(Array)
+#1 %a%: second(true, false)
+#2 %a%: first(10, 'any string')
+#3 {main}
+", ob_get_clean());
+}
+Assert::handler('shutdown');
+
 
 
 function first($arg1, $arg2)
@@ -44,15 +55,3 @@ function third($arg1)
 
 
 first(10, 'any string');
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-exception 'Exception' with message 'The my exception' in %a%
-Stack trace:
-#0 %a%: third(Array)
-#1 %a%: second(true, false)
-#2 %a%: first(10, 'any string')
-#3 {main}

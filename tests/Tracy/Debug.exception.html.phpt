@@ -7,6 +7,7 @@
  * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
+ * @assertCode 500
  */
 
 use Nette\Debug;
@@ -22,6 +23,11 @@ Debug::$productionMode = FALSE;
 header('Content-Type: text/html');
 
 Debug::enable();
+
+function shutdown() {
+	Assert::match(file_get_contents(__DIR__ . '/Debug.exception.html.expect'), ob_get_clean());
+}
+Assert::handler('shutdown');
 
 
 
@@ -47,10 +53,3 @@ function third($arg1)
 define('MY_CONST', 123);
 
 first(10, 'any string');
-
-
-
-__halt_compiler() ?>
-
----EXPECTHEADERS---
-Status: 500 Internal Server Error

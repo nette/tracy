@@ -7,6 +7,7 @@
  * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
+ * @assertCode 500
  */
 
 use Nette\Debug;
@@ -23,6 +24,11 @@ header('Content-Type: text/html');
 
 Debug::enable();
 
+function shutdown() {
+	Assert::match(file_get_contents(__DIR__ . '/Debug.error-in-eval.expect'), ob_get_clean());
+}
+Assert::handler('shutdown');
+
 
 
 function first($user, $pass)
@@ -32,10 +38,3 @@ function first($user, $pass)
 
 
 first('root', 'xxx');
-
-
-
-__halt_compiler() ?>
-
----EXPECTHEADERS---
-Status: 500 Internal Server Error

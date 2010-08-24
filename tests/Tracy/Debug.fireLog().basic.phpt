@@ -44,13 +44,7 @@ Debug::fireLog(
 	'2 SQL queries took 0.06 seconds' // table title
 );
 
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-
----EXPECTHEADERS---
+Assert::match('%A%
 X-Wf-nette-1-1-n1: |[{"Type":"LOG","Label":null},"Hello World"]|
 X-Wf-nette-1-1-n2: |[{"Type":"INFO","Label":null},"Info message"]|
 X-Wf-nette-1-1-n3: |[{"Type":"WARN","Label":null},"Warn message"]|
@@ -60,3 +54,4 @@ X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2
 X-Wf-nette-Plugin-1: http://meta.firephp.org/Wildfire/Plugin/FirePHP/Library-FirePHPCore/0.2.0
 X-Wf-nette-Structure-1: http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1
 X-Wf-nette-1-1-n6: |[{"Type":"TABLE","Label":"2 SQL queries took 0.06 seconds"},[["SQL Statement","Time","Result"],["SELECT * FROM foo","0.02",["field1","field2"]],["SELECT * FROM bar","0.04",["field1","field2"]]]]|
+', implode("\r\n", headers_list()));

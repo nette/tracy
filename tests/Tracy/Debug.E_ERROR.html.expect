@@ -1,6 +1,6 @@
 
 Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
-</pre></xmp></table><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -46,10 +46,8 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 <span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>    </span><span style="color: #000">first</span><span style="color: #C22; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #C22; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #C22; font-weight: bold">);
-<span class='line'>Line %d%:</span>
-<span class='line'>Line %d%:</span>
-<span class='line'>Line %d%:</span>
-</span></span></code></pre>
+<span class='line'>Line %d%:</span>    </span>
+</span></code></pre>
 					</div>
 	</div>
 

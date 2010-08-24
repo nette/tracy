@@ -19,10 +19,18 @@ require __DIR__ . '/../initialize.php';
 
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
+header('Content-Type: text/html');
 
 Debug::enable();
 
-header('Content-Type: text/html');
+function shutdown() {
+	Assert::match('
+Warning: Unsupported declare \'foo\' in %a% on line %d%
+
+%A%<div id="nette-debug-errors"><h1>Errors</h1> <div class="nette-inner"> <table> <tr class=""> <td><pre>PHP Strict standards: mktime(): You should be using the time() function instead in %a%:%d%</pre></td> </tr> <tr class="nette-alt"> <td><pre>PHP Deprecated: mktime(): The is_dst parameter is deprecated in %a%:%d%</pre></td> </tr> <tr class=""> <td><pre>PHP Notice: Undefined variable: x in %a%:%d%</pre></td> </tr> <tr class="nette-alt"> <td><pre>PHP Warning: rename(..,..): %A% in %a%:%d%</pre></td> </tr> </table>%A%
+', ob_get_clean());
+}
+Assert::handler('shutdown');
 
 
 
@@ -49,13 +57,3 @@ function third($arg1)
 
 
 first(10, 'any string');
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-
-Warning: Unsupported declare 'foo' in %a% on line %d%
-
-%A%<div id="nette-debug-errors"><h1>Errors</h1> <div class="nette-inner"> <table> <tr class=""> <td><pre>PHP Strict standards: mktime(): You should be using the time() function instead in %a%:%d%</pre></td> </tr> <tr class="nette-alt"> <td><pre>PHP Deprecated: mktime(): The is_dst parameter is deprecated in %a%:%d%</pre></td> </tr> <tr class=""> <td><pre>PHP Notice: Undefined variable: x in %a%:%d%</pre></td> </tr> <tr class="nette-alt"> <td><pre>PHP Warning: rename(..,..): %A% in %a%:%d%</pre></td> </tr> </table>%A%

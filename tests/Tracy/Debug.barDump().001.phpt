@@ -19,22 +19,11 @@ require __DIR__ . '/../initialize.php';
 
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
+header('Content-Type: text/html');
 
 Debug::enable();
 
-header('Content-Type: text/html');
-
-
-$arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2' => TRUE), (object) array('key1' => 'val1', 'key2' => TRUE));
-
-Debug::barDump($arr);
-
-end($arr)->key1 = 'changed'; // make post-change
-
-Debug::barDump('<a href="#">test</a>', 'String');
-
-ob_start();
-register_shutdown_function(function() {
+function shutdown() {
 	Assert::match(<<<EOD
 %A%<h1>Dumped variables</h1> <div class="nette-inner"> <table> <tr class=""> <th>0</th> <td><pre class="nette-dump">10
 </pre> </td> </tr> <tr class="nette-alt"> <th>1</th> <td><pre class="nette-dump">20.2
@@ -54,4 +43,15 @@ register_shutdown_function(function() {
 </pre> </td> </tr> </table> </div> </div>%A%
 EOD
 , ob_get_clean());
-});
+}
+Assert::handler('shutdown');
+
+
+
+$arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2' => TRUE), (object) array('key1' => 'val1', 'key2' => TRUE));
+
+Debug::barDump($arr);
+
+end($arr)->key1 = 'changed'; // make post-change
+
+Debug::barDump('<a href="#">test</a>', 'String');

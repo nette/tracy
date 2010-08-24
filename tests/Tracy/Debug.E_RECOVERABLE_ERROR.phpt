@@ -49,39 +49,25 @@ class TestClass
 $obj = new TestClass;
 
 try {
-	T::note("Invalid argument #1");
+	// Invalid argument #1
 	$obj->test1('hello');
+	Assert::fail('Expected exception');
 } catch (Exception $e) {
-	T::dump( $e );
+	Assert::exception('FatalErrorException', 'Argument 1 passed to TestClass::test1() must be an array, string given, called in %a%', $e );
 }
 
 try {
-	T::note("Invalid argument #2");
+	// Invalid argument #2
 	$obj->test2('hello');
+	Assert::fail('Expected exception');
 } catch (Exception $e) {
-	T::dump( $e );
+	Assert::exception('FatalErrorException', 'Argument 1 passed to TestClass::test2() must be an instance of TestClass, string given, called in %a%', $e );
 }
 
 try {
-	T::note("Invalid toString");
+	// Invalid toString
 	echo $obj;
+	Assert::fail('Expected exception');
 } catch (Exception $e) {
-	T::dump( $e );
+	Assert::exception('FatalErrorException', 'Method TestClass::__toString() must return a string value', $e );
 }
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
-Invalid argument #1
-
-Exception FatalErrorException: Argument 1 passed to TestClass::test1() must be an array, string given, called in %a%
-
-Invalid argument #2
-
-Exception FatalErrorException: Argument 1 passed to TestClass::test2() must be an instance of TestClass, string given, called in %a%
-
-Invalid toString
-
-Exception FatalErrorException: Method TestClass::__toString() must return a string value

@@ -23,10 +23,11 @@ header('Content-Type: text/plain');
 
 Debug::enable();
 
+function shutdown() {
+	Assert::same('', ob_get_clean());
+}
+Assert::handler('shutdown');
+
+
+
 throw new Exception('The my exception', 123);
-
-
-
-__halt_compiler() ?>
-
-------EXPECT------
