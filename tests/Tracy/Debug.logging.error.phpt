@@ -21,7 +21,7 @@ require __DIR__ . '/../initialize.php';
 $_SERVER['HTTP_HOST'] = 'nette.org';
 
 $errorLog = __DIR__ . '/log/php_error.log';
-T::purge(dirname($errorLog));
+TestHelpers::purge(dirname($errorLog));
 
 Debug::$consoleMode = FALSE;
 Debug::$mailer = 'testMailer';
