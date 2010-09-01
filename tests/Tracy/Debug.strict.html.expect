@@ -78,7 +78,7 @@
 						<table>
 						<tr><th>$arg1</th><td><pre class="nette-dump">TRUE
 </pre></td></tr>
-<tr class="odd"><th>$arg2</th><td><pre class="nette-dump">FALSE
+<tr><th>$arg2</th><td><pre class="nette-dump">FALSE
 </pre></td></tr>
 						</table>
 						</div>
@@ -99,7 +99,7 @@
 						<table>
 						<tr><th>$arg1</th><td><pre class="nette-dump">10
 </pre></td></tr>
-<tr class="odd"><th>$arg2</th><td><pre class="nette-dump">"any string" (10)
+<tr><th>$arg2</th><td><pre class="nette-dump">"any string" (10)
 </pre></td></tr>
 						</table>
 						</div>
