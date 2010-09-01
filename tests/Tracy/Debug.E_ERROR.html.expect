@@ -34,18 +34,18 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 		<div id="netteBsPnl1" class="inner">
 					<p><strong>File:</strong> %a% &nbsp; <strong>Line:</strong> %d%</p>
-				<pre><code><span style="color: #06B"><span style="color: #C22; font-weight: bold"><span class='line'>Line %d%:</span>    {
-<span class='line'>Line %d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #C22; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #C22; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #C22; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #C22; font-weight: bold">));
+				<pre><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>Line %d%:</span>    {
+<span class='line'>Line %d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
 <span class='line'>Line %d%:</span>    }
 <span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>
-<span class='line'>Line %d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #C22; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #C22; font-weight: bold">)
+<span class='line'>Line %d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>Line %d%:</span>    {
 <span class='highlight'>Line %d%:    &nbsp;&nbsp;&nbsp;&nbsp;missing_funcion();
-</span></span><span style="color: #000"></span><span style="color: #C22; font-weight: bold"><span class='line'>Line %d%:</span>    }
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>Line %d%:</span>    }
 <span class='line'>Line %d%:</span>
 <span class='line'>Line %d%:</span>
-<span class='line'>Line %d%:</span>    </span><span style="color: #000">first</span><span style="color: #C22; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #C22; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #C22; font-weight: bold">);
+<span class='line'>Line %d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #D24; font-weight: bold">);
 <span class='line'>Line %d%:</span>    </span>
 </span></code></pre>
 					</div>
@@ -71,15 +71,21 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 		<div id="netteBsPnl2" class="collapsed inner">
 							<h3><a href="#" onclick="return !netteToggle(this, 'netteBsPnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
+			<div class="outer">
 			<table id="netteBsPnl-env-const">%A%</table>
+			</div>
 
 
 			<h3><a href="#" onclick="return !netteToggle(this, 'netteBsPnl-env-files')">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
+			<div class="outer">
 			<table id="netteBsPnl-env-files" class="collapsed">%A%</table>
+			</div>
 
 
 			<h3>$_SERVER</h3>
-						<table>%A%</table>
+						<div class="outer">
+			<table>%A%</table>
+			</div>
 							</div>
 	</div>
 
@@ -92,7 +98,9 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 						<h3>$_GET</h3>
-						<table>%A%</table>
+						<div class="outer">
+			<table>%A%</table>
+			</div>
 									<h3>$_POST</h3>
 						<p><i>empty</i></p>
 									<h3>$_COOKIE</h3>

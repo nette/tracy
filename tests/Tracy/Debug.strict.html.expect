@@ -51,7 +51,7 @@
 					(<a href="#" onclick="return !netteToggle(this, 'netteBsArgs1-1')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
 
-											<div class="collapsed" id="netteBsArgs1-1">
+											<div class="collapsed outer" id="netteBsArgs1-1">
 						<table>
 						<tr><th>$arg1</th><td><pre class="nette-dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>[
    0 => 1
@@ -74,11 +74,11 @@
 					(<a href="#" onclick="return !netteToggle(this, 'netteBsArgs1-2')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
 
-											<div class="collapsed" id="netteBsArgs1-2">
+											<div class="collapsed outer" id="netteBsArgs1-2">
 						<table>
 						<tr><th>$arg1</th><td><pre class="nette-dump">TRUE
 </pre></td></tr>
-<tr><th>$arg2</th><td><pre class="nette-dump">FALSE
+<tr class="odd"><th>$arg2</th><td><pre class="nette-dump">FALSE
 </pre></td></tr>
 						</table>
 						</div>
@@ -95,11 +95,11 @@
 					(<a href="#" onclick="return !netteToggle(this, 'netteBsArgs1-3')">arguments <abbr>&#x25ba;</abbr></a>)
 					</p>
 
-											<div class="collapsed" id="netteBsArgs1-3">
+											<div class="collapsed outer" id="netteBsArgs1-3">
 						<table>
 						<tr><th>$arg1</th><td><pre class="nette-dump">10
 </pre></td></tr>
-<tr><th>$arg2</th><td><pre class="nette-dump">"any string" (10)
+<tr class="odd"><th>$arg2</th><td><pre class="nette-dump">"any string" (10)
 </pre></td></tr>
 						</table>
 						</div>
@@ -121,7 +121,8 @@
 		<h2><a href="#" onclick="return !netteToggle(this, 'netteBsPnl3')">Variables <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl3" class="collapsed inner">
-				<table>
+				<div class="outer">
+			<table>
 			<tr><th>$arg1</th><td><pre class="nette-dump"><a href='#' onclick='return !netteToggle(this)'><span>array</span>(3) <abbr>&#x25bc;</abbr> </a><code>[
    0 => 1
    1 => 2
@@ -129,6 +130,7 @@
 ]</code>
 </pre></td></tr>
 			</table>
+			</div>
 					</div>
 	</div>
 
@@ -143,15 +145,21 @@
 
 		<div id="netteBsPnl4" class="collapsed inner">
 							<h3><a href="#" onclick="return !netteToggle(this, 'netteBsPnl-env-const')">Constants <abbr>&#x25bc;</abbr></a></h3>
+			<div class="outer">
 			<table id="netteBsPnl-env-const">%A%</table>
+			</div>
 
 
 			<h3><a href="#" onclick="return !netteToggle(this, 'netteBsPnl-env-files')">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
+			<div class="outer">
 			<table id="netteBsPnl-env-files" class="collapsed">%A%</table>
+			</div>
 
 
 			<h3>$_SERVER</h3>
-						<table>%A%</table>
+						<div class="outer">
+			<table>%A%</table>
+			</div>
 							</div>
 	</div>
 
@@ -164,7 +172,9 @@
 
 
 						<h3>$_GET</h3>
-						<table>%A%</table>
+						<div class="outer">
+			<table>%A%</table>
+			</div>
 									<h3>$_POST</h3>
 						<p><i>empty</i></p>
 									<h3>$_COOKIE</h3>
