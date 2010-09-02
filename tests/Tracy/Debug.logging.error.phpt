@@ -32,7 +32,7 @@ function testMailer() {}
 
 function shutdown() {
 	global $errorLog;
-	Assert::match('%a%PHP Fatal error: Uncaught exception FatalErrorException with message \'Call to undefined function missing_funcion()\' in %a%', file_get_contents(dirname($errorLog) . '/php_error.log'));
+	Assert::match('%a%PHP Fatal error: Call to undefined function missing_funcion() in %a%', file_get_contents(dirname($errorLog) . '/php_error.log'));
 	Assert::true(is_file(dirname($errorLog) . '/php_error.log.email-sent'));
 	die(0);
 }

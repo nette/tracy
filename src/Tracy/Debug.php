@@ -490,7 +490,9 @@ final class Debug
 
 		if ($message instanceof \Exception) {
 			$exception = $message;
-			$message = "PHP Fatal error: Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "' in " . $exception->getFile() . ":" . $exception->getLine();
+			$message = "PHP Fatal error: "
+				. ($message instanceof \FatalErrorException ? $exception->getMessage() : "Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "'")
+				. " in " . $exception->getFile() . ":" . $exception->getLine();
 		}
 
 		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logFile);
