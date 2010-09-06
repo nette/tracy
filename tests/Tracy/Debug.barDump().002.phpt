@@ -26,8 +26,19 @@ Debug::enable();
 
 function shutdown() {
 	Assert::match(<<<EOD
-%A%<h1>Dumped variables</h1> <div class="nette-inner"> <table> <tr class=""> <th></th> <td><pre class="nette-dump">"value" (5)
-</pre> </td> </tr> </table> </div> </div>%A%
+%A%<h1>Dumped variables</h1>
+
+<div class="nette-inner">
+
+	<table>
+			<tr class="">
+		<th></th>
+		<td><pre class="nette-dump">"value" (5)
+</pre></td>
+	</tr>
+		</table>
+</div>
+%A%
 EOD
 , ob_get_clean());
 }

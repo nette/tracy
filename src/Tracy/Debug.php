@@ -225,7 +225,7 @@ final class Debug
 		if (!self::$productionMode) {
 			$dump = array();
 			foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val) {
-				$dump[$key] = self::dump($val, TRUE);
+				$dump[$key] = self::_dump($val, 0);
 			}
 			self::$dumps[] = array('title' => $title, 'dump' => $dump);
 		}
@@ -727,7 +727,7 @@ final class Debug
 				'panel' => $tab ? (string) $panel->getPanel() : NULL,
 			);
 		}
-		require __DIR__ . '/templates/bar.phtml';		
+		require __DIR__ . '/templates/bar.phtml';
 	}
 
 
