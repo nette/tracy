@@ -513,7 +513,7 @@ final class Debug
 			if (empty($skip) && self::$logHandle = @fopen(dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
 				ob_start(); // double buffer prevents sending HTTP headers in some PHP
 				ob_start(array(__CLASS__, '_writeFile'), 1);
-				self::_paintBlueScreen($exception);
+				self::paintBlueScreen($exception);
 				ob_end_flush();
 				ob_end_clean();
 				fclose(self::$logHandle);
@@ -554,16 +554,7 @@ final class Debug
 		// 2) debug bar (require HTML & development mode)
 		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode
 			&& (!preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list())))) {
-			$panels = array();
-			foreach (self::$panels as $panel) {
-				$panels[] = array(
-					'id' => preg_replace('#[^a-z0-9]+#i', '-', $panel->getId()),
-					'tab' => $tab = (string) $panel->getTab(),
-					'panel' => $tab ? (string) $panel->getPanel() : NULL,
-				);
-			}
-
-			require __DIR__ . '/templates/bar.phtml';
+			self::paintDebugBar();
 		}
 	}
 
@@ -608,7 +599,7 @@ final class Debug
 				self::fireLog($exception, self::EXCEPTION);
 
 			} elseif ($htmlMode) { // dump to browser
-				self::_paintBlueScreen($exception);
+				self::paintBlueScreen($exception);
 			}
 		}
 
@@ -710,13 +701,33 @@ final class Debug
 	 * @return void
 	 * @internal
 	 */
-	public static function _paintBlueScreen(\Exception $exception)
+	public static function paintBlueScreen(\Exception $exception)
 	{
 		if (class_exists('Nette\Environment', FALSE)) {
 			$application = Environment::getServiceLocator()->hasService('Nette\\Application\\Application', TRUE) ? Environment::getServiceLocator()->getService('Nette\\Application\\Application') : NULL;
 		}
 
 		require __DIR__ . '/templates/bluescreen.phtml';
+	}
+
+
+
+	/**
+	 * Paint debug bar.
+	 * @return void
+	 * @internal
+	 */
+	public static function paintDebugBar()
+	{
+		$panels = array();
+		foreach (self::$panels as $panel) {
+			$panels[] = array(
+				'id' => preg_replace('#[^a-z0-9]+#i', '-', $panel->getId()),
+				'tab' => $tab = (string) $panel->getTab(),
+				'panel' => $tab ? (string) $panel->getPanel() : NULL,
+			);
+		}
+		require __DIR__ . '/templates/bar.phtml';		
 	}
 
 
