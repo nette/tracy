@@ -40,7 +40,7 @@ function shutdown() {
 </div>
 %A%
 EOD
-, ob_get_clean());
+, Nette\String::replace(ob_get_clean(), '#base64Decode\("(.+)"\)#', function($m) { return base64_decode($m[1]); }));
 }
 Assert::handler('shutdown');
 

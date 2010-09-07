@@ -45,7 +45,7 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%
 	<td><pre>PHP Warning: rename(..,..): %A% in %a%:%d%</pre></td>
 </tr>
 </table>
-</div>%A%', ob_get_clean());
+</div>%A%', Nette\String::replace(ob_get_clean(), '#base64Decode\("(.+)"\)#', function($m) { return base64_decode($m[1]); }));
 }
 Assert::handler('shutdown');
 
