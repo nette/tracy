@@ -18,7 +18,11 @@ use Nette,
 
 
 /**
- * Debug static class.
+ * Debugger: displays and logs errors.
+ *
+ * Behavior is determined by two factors: mode & output
+ * - modes: production / development
+ * - output: HTML / AJAX / CLI / other (e.g. XML)
  *
  * @copyright  Copyright (c) 2004, 2010 David Grudl
  * @package    Nette
@@ -353,7 +357,7 @@ final class Debug
 	/**
 	 * Starts/stops stopwatch.
 	 * @param  string  name
-	 * @return elapsed seconds
+	 * @return float   elapsed seconds
 	 */
 	public static function timer($name = NULL)
 	{
@@ -588,7 +592,7 @@ final class Debug
 			} elseif ($htmlMode) {
 				echo "<!DOCTYPE html><meta name=robots content=noindex><meta name=generator content='Nette Framework'>\n\n";
 				echo "<style>body{color:#333;background:white;width:500px;margin:100px auto}h1{font:bold 47px/1.5 sans-serif;margin:.6em 0}p{font:21px/1.5 Georgia,serif;margin:1.5em 0}small{font-size:70%;color:gray}</style>\n\n";
-				echo "<title>Server Error</title>\n\n<h1>Server Error</h1>\n\n<p>We're sorry! The server encountered an internal error and was unable to complete your request. Please try again later.</p>\n\n<p><small>500 error</small></p>";
+				echo "<title>Server Error</title>\n\n<h1>Server Error</h1>\n\n<p>We're sorry! The server encountered an internal error and was unable to complete your request. Please try again later.</p>\n\n<p><small>error 500</small></p>";
 			}
 
 		} else {
