@@ -4,7 +4,6 @@
  * Test: Nette\Debug E_ERROR in production mode.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  * @assertCode 500

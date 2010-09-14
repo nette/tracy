@@ -4,7 +4,6 @@
  * Test: Nette\Debug notices and warnings with $strictMode in HTML.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  * @assertCode 500

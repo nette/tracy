@@ -4,7 +4,6 @@
  * Test: Nette\Debug::dump() and strings.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

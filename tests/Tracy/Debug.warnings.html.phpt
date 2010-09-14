@@ -4,7 +4,6 @@
  * Test: Nette\Debug notices and warnings in HTML.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

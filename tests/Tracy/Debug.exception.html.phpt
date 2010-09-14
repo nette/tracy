@@ -4,7 +4,6 @@
  * Test: Nette\Debug exception in HTML.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  * @assertCode 500

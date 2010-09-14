@@ -4,7 +4,6 @@
  * Test: Nette\Debug::barDump()
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

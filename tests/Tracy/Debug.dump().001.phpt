@@ -4,7 +4,6 @@
  * Test: Nette\Debug::dump() basic types in HTML and text mode.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

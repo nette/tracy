@@ -4,7 +4,6 @@
  * Test: Nette\Debug errors and shut-up operator.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

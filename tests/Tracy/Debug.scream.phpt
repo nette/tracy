@@ -4,7 +4,6 @@
  * Test: Nette\Debug notices and warnings in scream mode.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

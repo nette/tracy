@@ -4,7 +4,6 @@
  * Test: Nette\Debug::timer()
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

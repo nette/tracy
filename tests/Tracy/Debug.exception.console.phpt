@@ -4,7 +4,6 @@
  * Test: Nette\Debug exception in console.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

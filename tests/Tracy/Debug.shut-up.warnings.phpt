@@ -4,7 +4,6 @@
  * Test: Nette\Debug notices and warnings and shut-up operator.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

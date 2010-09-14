@@ -4,7 +4,6 @@
  * Test: Nette\Debug::fireLog() and exception.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

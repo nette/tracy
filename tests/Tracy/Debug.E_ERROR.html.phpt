@@ -4,7 +4,6 @@
  * Test: Nette\Debug E_ERROR in HTML.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

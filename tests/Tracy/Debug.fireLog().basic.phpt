@@ -4,7 +4,6 @@
  * Test: Nette\Debug::fireLog()
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

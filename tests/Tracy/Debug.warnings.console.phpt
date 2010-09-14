@@ -4,7 +4,6 @@
  * Test: Nette\Debug notices and warnings in console.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

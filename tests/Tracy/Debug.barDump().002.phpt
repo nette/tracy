@@ -4,7 +4,6 @@
  * Test: Nette\Debug::barDump() with showLocation.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

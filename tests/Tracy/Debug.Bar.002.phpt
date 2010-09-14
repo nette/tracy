@@ -4,7 +4,6 @@
  * Test: Nette\Debug Bar in non-HTML mode.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

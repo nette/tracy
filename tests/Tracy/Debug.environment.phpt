@@ -4,7 +4,6 @@
  * Test: Nette\Debug and Environment.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */

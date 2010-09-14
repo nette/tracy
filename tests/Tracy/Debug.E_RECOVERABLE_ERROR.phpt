@@ -4,7 +4,6 @@
  * Test: Nette\Debug E_RECOVERABLE_ERROR error.
  *
  * @author     David Grudl
- * @category   Nette
  * @package    Nette
  * @subpackage UnitTests
  */
