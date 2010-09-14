@@ -85,9 +85,6 @@ final class Debug
 	/** @var string  name of the file where script errors should be logged */
 	private static $logFile;
 
-	/** @var resource */
-	private static $logHandle;
-
 	/** @var bool  send e-mail notifications of errors? */
 	private static $sendEmails;
 
@@ -512,23 +509,15 @@ final class Debug
 					$skip = TRUE; break;
 				}
 			}
-			if (empty($skip) && self::$logHandle = @fopen(dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
+			if (empty($skip) && $logHandle = @fopen(dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
 				ob_start(); // double buffer prevents sending HTTP headers in some PHP
-				ob_start(array(__CLASS__, '_writeFile'), 1);
+				ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
 				self::paintBlueScreen($exception);
 				ob_end_flush();
 				ob_end_clean();
-				fclose(self::$logHandle);
+				fclose($logHandle);
 			}
 		}
-	}
-
-
-
-	/** @internal */
-	public static function _writeFile($buffer)
-	{
-		fwrite(self::$logHandle, $buffer);
 	}
 
 
