@@ -23,6 +23,6 @@ header('Content-Type: text/html');
 Debug::enable();
 
 function shutdown() {
-	Assert::match('%A%<div id="nette-debug">%A%', ob_get_clean());
+	Assert::match('%A%<!-- Nette Debug Bar -->%A%', ob_get_clean());
 }
 Assert::handler('shutdown');
