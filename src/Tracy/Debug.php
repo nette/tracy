@@ -664,7 +664,8 @@ final class Debug
 	/** @deprecated */
 	public static function processException(\Exception $exception)
 	{
-		self::log($exception);
+		trigger_error(__METHOD__ . '() is deprecated; use ' . __CLASS__ . '::log($exception, Debug::ERROR) instead.', E_USER_WARNING);
+		self::log($exception, self::ERROR);
 	}
 
 
