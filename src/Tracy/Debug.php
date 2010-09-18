@@ -111,9 +111,6 @@ final class Debug
 	/** @var array payload filled by {@link Debug::_errorHandler()} */
 	private static $errors;
 
-	/** @deprecated */
-	public static $counters = array();
-
 	/********************* Firebug extension ****************d*g**/
 
 	/**#@+ {@link Debug::log()} */
@@ -845,14 +842,6 @@ final class Debug
 			require __DIR__ . '/templates/bar.errors.panel.phtml';
 		}
 	}
-
-
-
-	/** @deprecated */
-	public static function addColophon(){}
-
-	/** @deprecated */
-	public static function consoleDump(){}
 
 
 
