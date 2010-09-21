@@ -453,10 +453,12 @@ final class Debug
 			define('E_USER_DEPRECATED', 16384);
 		}
 
-		register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
-		set_exception_handler(array(__CLASS__, '_exceptionHandler'));
-		set_error_handler(array(__CLASS__, '_errorHandler'));
-		self::$enabled = TRUE;
+		if (!self::$enabled) {
+			register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
+			set_exception_handler(array(__CLASS__, '_exceptionHandler'));
+			set_error_handler(array(__CLASS__, '_errorHandler'));
+			self::$enabled = TRUE;
+		}
 	}
 
 
