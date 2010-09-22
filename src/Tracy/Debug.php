@@ -73,6 +73,9 @@ final class Debug
 	/** @var array of callbacks specifies the functions that are automatically called after fatal error */
 	public static $onFatalError = array();
 
+	/** @var string  e-mail */
+	public static $email;
+
 	/** @var callback */
 	public static $mailer = array(__CLASS__, 'defaultMailer');
 
@@ -84,18 +87,6 @@ final class Debug
 
 	/** @var string  name of the file where script errors should be logged */
 	private static $logFile;
-
-	/** @var bool  send e-mail notifications of errors? */
-	private static $sendEmails;
-
-	/** @var string  e-mail headers & body */
-	private static $emailHeaders = array(
-		'To' => '',
-		'From' => 'noreply@%host%',
-		'X-Mailer' => 'Nette Framework',
-		'Subject' => 'PHP: An error occurred on the server %host%',
-		'Body' => '[%date%] %message%',
-	);
 
 	/********************* debug bar ****************d*g**/
 
@@ -370,7 +361,7 @@ final class Debug
 	 * Enables displaying or logging errors and exceptions.
 	 * @param  mixed         production, development mode, autodetection or IP address(es).
 	 * @param  string        error log file (FALSE disables logging in production mode)
-	 * @param  array|string  administrator email or email headers; enables email sending in production mode
+	 * @param  string        administrator email; enables email sending in production mode
 	 * @return void
 	 */
 	public static function enable($mode = NULL, $logFile = NULL, $email = NULL)
@@ -435,14 +426,11 @@ final class Debug
 			throw new \NotSupportedException('Function ini_set() must be enabled.');
 		}
 
-		self::$sendEmails = self::$logFile && $email;
-		if (self::$sendEmails) {
-			if (is_string($email)) {
-				self::$emailHeaders['To'] = $email;
-
-			} elseif (is_array($email)) {
-				self::$emailHeaders = $email + self::$emailHeaders;
+		if ($email) {
+			if (!is_string($email)) {
+				throw new \InvalidArgumentException('E-mail address must be a string.');
 			}
+			self::$email = $email;
 		}
 
 		if (!defined('E_DEPRECATED')) {
@@ -495,7 +483,7 @@ final class Debug
 
 		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logFile);
 
-		if ($priority === self::ERROR && self::$sendEmails
+		if ($priority === self::ERROR && self::$email
 			&& @filemtime(self::$logFile . '.email-sent') + self::$emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents(self::$logFile . '.email-sent', 'sent')) { // @ - file may not be writable
 			call_user_func(self::$mailer, $message);
@@ -765,22 +753,17 @@ final class Debug
 		$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] :
 				(isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '');
 
-		$headers = str_replace(
-			array('%host%', '%date%', '%message%'),
-			array($host, @date('Y-m-d H:i:s', self::$time), $message), // @ - timezone may not be set
-			self::$emailHeaders
+		$parts = str_replace(
+			array("\r\n", "\n"),
+			array("\n", PHP_EOL),
+			array(
+				'headers' => "From: noreply@$host\nX-Mailer: Nette Framework\n",
+				'subject' => "PHP: An error occurred on the server $host",
+				'body' => "[" . @date('Y-m-d H:i:s') . "] $message", // @ - timezone may not be set
+			)
 		);
 
-		$subject = $headers['Subject'];
-		$to = $headers['To'];
-		$body = str_replace("\n", PHP_EOL, str_replace("\r\n", "\n", $headers['Body']));
-		unset($headers['Subject'], $headers['To'], $headers['Body']);
-		$header = '';
-		foreach ($headers as $key => $value) {
-			$header .= "$key: $value" . PHP_EOL;
-		}
-
-		mail($to, $subject, $body, $header);
+		mail(self::$email, $parts['subject'], $parts['body'], $parts['headers']);
 	}
 
 
