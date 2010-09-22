@@ -73,6 +73,9 @@ final class Debug
 	/** @var array of callbacks specifies the functions that are automatically called after fatal error */
 	public static $onFatalError = array();
 
+	/** @var string  name of the file where script errors should be logged */
+	public static $logFile;
+
 	/** @var string  e-mail */
 	public static $email;
 
@@ -84,9 +87,6 @@ final class Debug
 
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
-
-	/** @var string  name of the file where script errors should be logged */
-	private static $logFile;
 
 	/********************* debug bar ****************d*g**/
 
@@ -360,7 +360,7 @@ final class Debug
 	/**
 	 * Enables displaying or logging errors and exceptions.
 	 * @param  mixed         production, development mode, autodetection or IP address(es).
-	 * @param  string        error log file (FALSE disables logging in production mode)
+	 * @param  string        error log file; enables logging in production mode
 	 * @param  string        administrator email; enables email sending in production mode
 	 * @return void
 	 */
@@ -397,22 +397,7 @@ final class Debug
 
 		// logging configuration
 		if (self::$productionMode && $logFile !== FALSE) {
-			self::$logFile = 'log/php_error.log';
-
-			if (class_exists('Nette\Environment')) {
-				if (is_string($logFile)) {
-					self::$logFile = Environment::expand($logFile);
-
-				} else try {
-					self::$logFile = Environment::expand('%logDir%/php_error.log');
-
-				} catch (\InvalidStateException $e) {
-				}
-
-			} elseif (is_string($logFile)) {
-				self::$logFile = $logFile;
-			}
-
+			self::$logFile = is_string($logFile) ? $logFile : 'log/php_error.log';
 			ini_set('error_log', self::$logFile);
 		}
 
