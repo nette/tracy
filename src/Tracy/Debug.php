@@ -27,13 +27,13 @@ use Nette,
  */
 final class Debug
 {
-	/** @var bool determines whether a server is running in production mode */
+	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode;
 
-	/** @var bool determines whether a server is running in console mode */
+	/** @var bool in console mode is omitted HTML output */
 	public static $consoleMode;
 
-	/** @var int */
+	/** @var int timestamp with microseconds of the start of the request */
 	public static $time;
 
 	/** @var bool is Firebug & FirePHP detected? */
@@ -64,8 +64,8 @@ final class Debug
 	const DETECT = NULL;
 	/**#@-*/
 
-	/** @var bool determines whether to consider all errors as fatal */
-	public static $strictMode = FALSE;
+	/** @var bool determines whether any error will cause immediate death */
+	public static $strictMode = FALSE; // $immediateDeath
 
 	/** @var bool disables the @ (shut-up) operator so that notices and warnings are no longer hidden */
 	public static $scream = FALSE;
@@ -73,13 +73,13 @@ final class Debug
 	/** @var array of callbacks specifies the functions that are automatically called after fatal error */
 	public static $onFatalError = array();
 
-	/** @var string  name of the file where script errors should be logged */
+	/** @var string name of the file where script errors should be logged */
 	public static $logFile;
 
-	/** @var string  e-mail */
+	/** @var string e-mail to sent error notifications */
 	public static $email;
 
-	/** @var callback */
+	/** @var callback handler for sending emails */
 	public static $mailer = array(__CLASS__, 'defaultMailer');
 
 	/** @var int interval for sending email is 2 days */
@@ -90,7 +90,7 @@ final class Debug
 
 	/********************* debug bar ****************d*g**/
 
-	/** @var bool */
+	/** @var bool determines whether show Debug Bar */
 	public static $showBar = TRUE;
 
 	/** @var array */
