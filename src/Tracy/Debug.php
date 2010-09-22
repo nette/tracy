@@ -828,6 +828,10 @@ final class Debug
 	 */
 	public static function fireLog($message, $priority = self::LOG, $label = NULL)
 	{
+		if (self::$productionMode) return NULL;
+
+		if (headers_sent()) return FALSE; // or throw exception?
+		
 		if ($message instanceof \Exception) {
 			if ($priority !== self::EXCEPTION && $priority !== self::TRACE) {
 				$priority = self::TRACE;
@@ -849,38 +853,19 @@ final class Debug
 			$label = $message;
 			$message = NULL;
 		}
-		return self::fireSend('FirebugConsole/0.1', self::replaceObjects(array(array('Type' => $priority, 'Label' => $label), $message)));
-	}
-
-
-
-	/**
-	 * Performs Firebug output.
-	 * @see http://www.firephp.org
-	 * @param  string  structure
-	 * @param  array   payload
-	 * @return bool    was successful?
-	 */
-	private static function fireSend($struct, $payload)
-	{
-		if (self::$productionMode) return NULL;
-
-		if (headers_sent()) return FALSE; // or throw exception?
-
+		
 		header('X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2');
 		header('X-Wf-nette-Plugin-1: http://meta.firephp.org/Wildfire/Plugin/FirePHP/Library-FirePHPCore/0.2.0');
+		header("X-Wf-nette-Structure-1: http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1");
 
-		static $structures;
-		$index = isset($structures[$struct]) ? $structures[$struct] : ($structures[$struct] = count($structures) + 1);
-		header("X-Wf-nette-Structure-$index: http://meta.firephp.org/Wildfire/Structure/FirePHP/$struct");
-
+		$payload = self::replaceObjects(array(array('Type' => $priority, 'Label' => $label), $message));
 		$payload = json_encode($payload);
 		static $counter;
 		foreach (str_split($payload, 4990) as $s) {
 			$num = ++$counter;
-			header("X-Wf-nette-$index-1-n$num: |$s|\\");
+			header("X-Wf-nette-1-1-n$num: |$s|\\");
 		}
-		header("X-Wf-nette-$index-1-n$num: |$s|");
+		header("X-Wf-nette-1-1-n$num: |$s|");
 
 		return TRUE;
 	}
