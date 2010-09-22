@@ -73,8 +73,8 @@ final class Debug
 	/** @var array of callbacks specifies the functions that are automatically called after fatal error */
 	public static $onFatalError = array();
 
-	/** @var string name of the file where script errors should be logged */
-	public static $logFile;
+	/** @var string name of the directory where errors should be logged */
+	public static $logDirectory;
 
 	/** @var string e-mail to sent error notifications */
 	public static $email;
@@ -360,11 +360,11 @@ final class Debug
 	/**
 	 * Enables displaying or logging errors and exceptions.
 	 * @param  mixed         production, development mode, autodetection or IP address(es).
-	 * @param  string        error log file; enables logging in production mode
+	 * @param  string        error log directory; enables logging in production mode
 	 * @param  string        administrator email; enables email sending in production mode
 	 * @return void
 	 */
-	public static function enable($mode = NULL, $logFile = NULL, $email = NULL)
+	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
 	{
 		error_reporting(E_ALL | E_STRICT);
 
@@ -396,9 +396,13 @@ final class Debug
 		}
 
 		// logging configuration
-		if (self::$productionMode && $logFile !== FALSE) {
-			self::$logFile = is_string($logFile) ? $logFile : 'log/php_error.log';
-			ini_set('error_log', self::$logFile);
+		if (self::$productionMode && $logDirectory !== FALSE) {
+			if (is_string($logDirectory)) {
+				self::$logDirectory = $logDirectory;
+			} else {
+				self::$logDirectory = defined('APP_DIR') ? APP_DIR . '/../log/' : getcwd() . '/log';
+			}
+			ini_set('error_log', self::$logDirectory . '/php_error.log');
 		}
 
 		// php configuration
@@ -455,7 +459,7 @@ final class Debug
 	 */
 	public static function log($message, $priority = self::INFO)
 	{
-		if (!self::$logFile) {
+		if (!self::$logDirectory) {
 			return;
 		}
 
@@ -466,22 +470,26 @@ final class Debug
 				. " in " . $exception->getFile() . ":" . $exception->getLine();
 		}
 
-		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logFile);
+		if (!is_dir(self::$logDirectory)) {
+			throw new \DirectoryNotFoundException("Directory '" . self::$logDirectory . "' is not found or is not directory.");
+		}
+
+		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logDirectory . '/' . strtolower($priority) . '.log');
 
 		if ($priority === self::ERROR && self::$email
-			&& @filemtime(self::$logFile . '.email-sent') + self::$emailSnooze < time() // @ - file may not exist
-			&& @file_put_contents(self::$logFile . '.email-sent', 'sent')) { // @ - file may not be writable
+			&& @filemtime(self::$logDirectory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
+			&& @file_put_contents(self::$logDirectory . '/email-sent', 'sent')) { // @ - file may not be writable
 			call_user_func(self::$mailer, $message);
 		}
 
 		if (isset($exception)) {
 			$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
-			foreach (new \DirectoryIterator(dirname(self::$logFile)) as $entry) {
+			foreach (new \DirectoryIterator(self::$logDirectory) as $entry) {
 				if (strpos($entry, $hash)) {
 					$skip = TRUE; break;
 				}
 			}
-			if (empty($skip) && $logHandle = @fopen(dirname(self::$logFile) . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
+			if (empty($skip) && $logHandle = @fopen(self::$logDirectory . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
 				ob_start(); // double buffer prevents sending HTTP headers in some PHP
 				ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
 				self::paintBlueScreen($exception);
@@ -614,7 +622,7 @@ final class Debug
 
 		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message in $file:$line";
 
-		if (self::$logFile) {
+		if (self::$logDirectory) {
 			self::log($message, self::ERROR); // log manually, required on some stupid hostings
 			return NULL;
 
@@ -831,7 +839,7 @@ final class Debug
 		if (self::$productionMode) return NULL;
 
 		if (headers_sent()) return FALSE; // or throw exception?
-		
+
 		if ($message instanceof \Exception) {
 			if ($priority !== self::EXCEPTION && $priority !== self::TRACE) {
 				$priority = self::TRACE;
@@ -853,7 +861,7 @@ final class Debug
 			$label = $message;
 			$message = NULL;
 		}
-		
+
 		header('X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2');
 		header('X-Wf-nette-Plugin-1: http://meta.firephp.org/Wildfire/Plugin/FirePHP/Library-FirePHPCore/0.2.0');
 		header("X-Wf-nette-Structure-1: http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1");

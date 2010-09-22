@@ -19,13 +19,13 @@ require __DIR__ . '/../bootstrap.php';
 // Setup environment
 $_SERVER['HTTP_HOST'] = 'nette.org';
 
-$errorLog = __DIR__ . '/log/php_error.log';
-TestHelpers::purge(dirname($errorLog));
+$logDirectory = __DIR__ . '/log';
+TestHelpers::purge($logDirectory);
 
 Debug::$consoleMode = FALSE;
 Debug::$mailer = 'testMailer';
 
-Debug::enable(Debug::PRODUCTION, $errorLog, 'admin@example.com');
+Debug::enable(Debug::PRODUCTION, $logDirectory, 'admin@example.com');
 
 function testMailer() {}
 
@@ -33,5 +33,5 @@ function testMailer() {}
 // throw error
 $a++;
 
-Assert::match('%a%PHP Notice: Undefined variable: a in %a%', file_get_contents(dirname($errorLog) . '/php_error.log'));
-Assert::true(is_file(dirname($errorLog) . '/php_error.log.email-sent'));
+Assert::match('%a%PHP Notice: Undefined variable: a in %a%', file_get_contents($logDirectory . '/error.log'));
+Assert::true(is_file($logDirectory . '/email-sent'));
