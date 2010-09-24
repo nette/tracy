@@ -36,7 +36,7 @@ final class Debug
 	/** @var int timestamp with microseconds of the start of the request */
 	public static $time;
 
-	/** @var bool is Firebug & FirePHP detected? */
+	/** @var bool is Firebug & FireLogger detected? */
 	private static $firebugDetected;
 
 	/** @var bool is AJAX request detected? */
@@ -104,18 +104,12 @@ final class Debug
 
 	/********************* Firebug extension ****************d*g**/
 
-	/**#@+ {@link Debug::log()} */
-	const INFO = 'INFO';
-	const ERROR = 'ERROR';
-	/**#@-*/
-
-	/**#@+ FirePHP log priority */
-	const LOG = 'LOG';
-	const WARN = 'WARN';
-	const TRACE = 'TRACE';
-	const EXCEPTION = 'EXCEPTION';
-	const GROUP_START = 'GROUP_START';
-	const GROUP_END = 'GROUP_END';
+	/**#@+ {@link Debug::log()} and {@link Debug::fireLog()} */
+	const DEBUG = 'debug';
+	const INFO = 'info';
+	const WARNING = 'warning';
+	const ERROR = 'error';
+	const CRITICAL = 'critical';
 	/**#@-*/
 
 
@@ -142,7 +136,7 @@ final class Debug
 		if (self::$consoleMode) {
 			self::$source = empty($_SERVER['argv']) ? 'cli' : 'cli: ' . $_SERVER['argv'][0];
 		} else {
-			self::$firebugDetected = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'FirePHP/');
+			self::$firebugDetected = isset($_SERVER['HTTP_X_FIRELOGGER']);
 			self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
 			if (isset($_SERVER['REQUEST_URI'])) {
 				self::$source = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
@@ -476,7 +470,7 @@ final class Debug
 
 		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logDirectory . '/' . strtolower($priority) . '.log');
 
-		if ($priority === self::ERROR && self::$email
+		if (($priority === self::ERROR || $priority === self::CRITICAL) && self::$email
 			&& @filemtime(self::$logDirectory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents(self::$logDirectory . '/email-sent', 'sent')) { // @ - file may not be writable
 			call_user_func(self::$mailer, $message);
@@ -567,7 +561,7 @@ final class Debug
 				echo "$exception\n";
 
 			} elseif (self::$firebugDetected && !headers_sent() && !$htmlMode) { // AJAX or non-HTML mode
-				self::fireLog($exception, self::EXCEPTION);
+				self::fireLog($exception, self::ERROR);
 
 			} elseif ($htmlMode) { // dump to browser
 				self::paintBlueScreen($exception);
@@ -620,18 +614,18 @@ final class Debug
 			E_USER_DEPRECATED => 'Deprecated',
 		);
 
-		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message in $file:$line";
+		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message";
 
 		if (self::$logDirectory) {
-			self::log($message, self::ERROR); // log manually, required on some stupid hostings
+			self::log("$message in $file:$line", self::ERROR); // log manually, required on some stupid hostings
 			return NULL;
 
 		} elseif (!self::$productionMode) {
 			if (self::$showBar) {
-				self::$errors[] = $message;
+				self::$errors[] = "$message in $file:$line";
 			}
 			if (self::$firebugDetected && !headers_sent()) {
-				self::fireLog(strip_tags($message), self::ERROR);
+				self::fireLog(new \ErrorException($message, 0, $severity, $file, $line), self::WARNING);
 			}
 			return self::$consoleMode || (!self::$showBar && !self::$ajaxDetected) ? FALSE : NULL;
 		}
@@ -828,80 +822,148 @@ final class Debug
 
 
 	/**
-	 * Sends message to Firebug console.
+	 * Sends message to FireLogger console.
+	 * @see http://firelogger.binaryage.com
 	 * @param  mixed   message to log
-	 * @param  string  priority of message (LOG, INFO, WARN, ERROR, GROUP_START, GROUP_END)
-	 * @param  string  optional label
 	 * @return bool    was successful?
 	 */
-	public static function fireLog($message, $priority = self::LOG, $label = NULL)
+	public static function fireLog($message)
 	{
-		if (self::$productionMode) return NULL;
+		if (self::$productionMode || headers_sent()) return FALSE;
 
-		if (headers_sent()) return FALSE; // or throw exception?
+		static $payload = array('logs' => array());
 
-		if ($message instanceof \Exception) {
-			if ($priority !== self::EXCEPTION && $priority !== self::TRACE) {
-				$priority = self::TRACE;
+		$item = array(
+			'name' => 'PHP',
+			'level' => 'debug',
+			'order' => count($payload['logs']),
+			'time' => str_pad(number_format((microtime(TRUE) - self::$time) * 1000, 1, '.', ' '), 8, '0', STR_PAD_LEFT) . ' ms',
+			'template' => '',
+			'message' => '',
+			'style' => 'background:#767ab6',
+		);
+
+		$args = func_get_args();
+		if (isset($args[0]) && is_string($args[0])) {
+			$item['template'] = array_shift($args);
+		}
+		if (isset($args[0]) && in_array($args[0], array(self::DEBUG, self::INFO, self::WARNING, self::ERROR, self::CRITICAL), TRUE)) {
+			$item['level'] = array_shift($args);
+		}
+
+		if (isset($args[0]) && $args[0] instanceof \Exception) {
+			$e = array_shift($args);
+			$trace = $e->getTrace();
+			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__ && ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')) {
+				unset($trace[0]);
 			}
-			$message = array(
-				'Class' => get_class($message),
-				'Message' => $message->getMessage(),
-				'File' => $message->getFile(),
-				'Line' => $message->getLine(),
-				'Trace' => $message->getTrace(),
-				'Type' => '',
-				'Function' => '',
+
+			$item['exc_info'] = array(
+				$e->getMessage(),
+				$e->getFile(),
+				array(),
 			);
-			foreach ($message['Trace'] as & $row) {
-				if (empty($row['file'])) $row['file'] = '?';
-				if (empty($row['line'])) $row['line'] = '?';
+			$item['exc_frames'] = array();
+
+			foreach ($trace as $frame) {
+				$frame += array('file' => null, 'line' => null, 'class' => null, 'type' => null, 'function' => null, 'object' => null, 'args' => null);
+				$item['exc_info'][2][] = array($frame['file'], $frame['line'], "$frame[class]$frame[type]$frame[function]", $frame['object']);
+				$item['exc_frames'][] = $frame['args'];
+			};
+
+			$file = str_replace(dirname(dirname(dirname($e->getFile()))), "\xE2\x80\xA6", $e->getFile());
+			$item['template'] = ($e instanceof \ErrorException ? '' : get_class($e) . ': ') . $e->getMessage() . ($e->getCode() ? ' #' . $e->getCode() : '') . ' in ' . $file . ':' . $e->getLine();
+			array_unshift($trace, array('file' => $e->getFile(), 'line' => $e->getLine()));
+
+		} else {
+			$trace = debug_backtrace();
+			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__ && ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')) {
+				unset($trace[0]);
 			}
-		} elseif ($priority === self::GROUP_START) {
-			$label = $message;
-			$message = NULL;
+		}
+		$item['args'] = $args;
+
+		foreach ($trace as $frame) {
+			if (isset($frame['file']) && is_file($frame['file'])) {
+				$item['pathname'] = $frame['file'];
+				$item['lineno'] = $frame['line'];
+				break;
+			}
 		}
 
-		header('X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2');
-		header('X-Wf-nette-Plugin-1: http://meta.firephp.org/Wildfire/Plugin/FirePHP/Library-FirePHPCore/0.2.0');
-		header("X-Wf-nette-Structure-1: http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1");
-
-		$payload = self::replaceObjects(array(array('Type' => $priority, 'Label' => $label), $message));
-		$payload = json_encode($payload);
-		static $counter;
-		foreach (str_split($payload, 4990) as $s) {
-			$num = ++$counter;
-			header("X-Wf-nette-1-1-n$num: |$s|\\");
+		$payload['logs'][] = $item;
+		foreach (str_split(base64_encode(@json_encode($payload)), 4990) as $k => $v) {
+			header("FireLogger-de11e-$k:$v");
 		}
-		header("X-Wf-nette-1-1-n$num: |$s|");
-
 		return TRUE;
 	}
 
 
 
 	/**
-	 * fireLog helper.
-	 * @param  mixed
-	 * @return mixed
+	 * Internal dump() implementation.
+	 * @param  mixed  variable to dump
+	 * @param  int    current recursion level
+	 * @return string
 	 */
-	static private function replaceObjects($val)
+	private static function fireDump(&$var, $level = 0)
 	{
-		if (is_object($val)) {
-			return 'object ' . get_class($val) . '';
+		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
+			return $var;
 
-		} elseif (is_string($val)) {
-			return @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $val)); // intentionally @
-
-		} elseif (is_array($val)) {
-			foreach ($val as $k => $v) {
-				unset($val[$k]);
-				$k = @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $k)); // intentionally @
-				$val[$k] = self::replaceObjects($v);
+		} elseif (is_string($var)) {
+			if (self::$maxLen && strlen($var) > self::$maxLen) {
+				$var = substr($var, 0, self::$maxLen) . " \xE2\x80\xA6 ";
 			}
+			return @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $var)); // intentionally @
+
+		} elseif (is_array($var)) {
+			static $marker;
+			if ($marker === NULL) $marker = uniqid("\x00", TRUE);
+			if (isset($var[$marker])) {
+				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
+
+			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
+				$var[$marker] = TRUE;
+				$res = array();
+				foreach ($var as $k => &$v) {
+					if ($k !== $marker) $res[self::fireDump($k)] = self::fireDump($v, $level + 1);
+			}
+				unset($var[$marker]);
+				return $res;
+
+			} else {
+				return " \xE2\x80\xA6 ";
 		}
 
-		return $val;
+		} elseif (is_object($var)) {
+			$arr = (array) $var;
+			static $list = array();
+			if (in_array($var, $list, TRUE)) {
+				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
+
+			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
+				$list[] = $var;
+				$res = array(" \xC2\xBBclass\xC2\xAB" => get_class($var));
+				foreach ($arr as $k => &$v) {
+					if ($k[0] === "\x00") {
+						$k = substr($k, strrpos($k, "\x00") + 1);
+					}
+					$res[self::fireDump($k)] = self::fireDump($v, $level + 1);
+				}
+				array_pop($list);
+				return $res;
+
+			} else {
+				return " \xE2\x80\xA6 ";
+			}
+
+		} elseif (is_resource($var)) {
+			return "resource " . get_resource_type($var);
+
+		} else {
+			return "unknown type";
+		}
 	}
 
 }

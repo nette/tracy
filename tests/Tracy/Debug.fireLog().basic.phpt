@@ -17,7 +17,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
-$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 Gecko/2008070208 Firefox/3.0.1 FirePHP/0.1.0.3';
+$_SERVER['HTTP_X_FIRELOGGER'] = TRUE;
 
 Debug::$consoleMode = FALSE;
 Debug::$productionMode = FALSE;
@@ -27,12 +27,12 @@ Debug::$productionMode = FALSE;
 $arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2' => TRUE), (object) array('key1' => 'val1', 'key2' => TRUE));
 
 // will show in Firebug "Console" tab
-Debug::fireLog('Hello World'); // Debug::LOG
+Debug::fireLog('Hello World'); // Debug::DEBUG
 Debug::fireLog('Info message', Debug::INFO);
-Debug::fireLog('Warn message', Debug::WARN);
+Debug::fireLog('Warn message', Debug::WARNING);
 Debug::fireLog('Error message', Debug::ERROR);
 Debug::fireLog($arr);
-
+/*
 Debug::fireLog(
 	array(
 		array('SQL Statement', 'Time', 'Result'), // table header
@@ -42,15 +42,8 @@ Debug::fireLog(
 	'TABLE',
 	'2 SQL queries took 0.06 seconds' // table title
 );
+*/
 
 Assert::match('%A%
-X-Wf-nette-1-1-n1: |[{"Type":"LOG","Label":null},"Hello World"]|
-X-Wf-nette-1-1-n2: |[{"Type":"INFO","Label":null},"Info message"]|
-X-Wf-nette-1-1-n3: |[{"Type":"WARN","Label":null},"Warn message"]|
-X-Wf-nette-1-1-n4: |[{"Type":"ERROR","Label":null},"Error message"]|
-X-Wf-nette-1-1-n5: |[{"Type":"LOG","Label":null},[10,20.2,true,false,null,"hello",{"key1":"val1","key2":true},"object stdClass"]]|
-X-Wf-Protocol-nette: http://meta.wildfirehq.org/Protocol/JsonStream/0.2
-X-Wf-nette-Plugin-1: http://meta.firephp.org/Wildfire/Plugin/FirePHP/Library-FirePHPCore/0.2.0
-X-Wf-nette-Structure-1: http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1
-X-Wf-nette-1-1-n6: |[{"Type":"TABLE","Label":"2 SQL queries took 0.06 seconds"},[["SQL Statement","Time","Result"],["SELECT * FROM foo","0.02",["field1","field2"]],["SELECT * FROM bar","0.04",["field1","field2"]]]]|
+FireLogger-de11e-0:eyJsb2dzIjpbeyJuYW1lIjoiUEhQIiwibGV2ZWwiOiJkZWJ1ZyIsIm9yZGVyIjowLCJ0aW1lIjoiMDAwMDAwLjUgbXMiLCJ0ZW1wbGF0ZSI6IkhlbGxvIFdvcmxkIiwibWVzc2FnZSI6IiIsInN0eWxlIjoiYmFja2dyb3VuZDojNzY3YWI2IiwiYXJncyI6W10sInBhdGhuYW1lIjoiVzpcXE5ldHRlXFxfbmV0dGVcXHRlc3RzXFxEZWJ1Z1xcRGVidWcuZmlyZUxvZygpLmJhc2ljLnBocHQiLCJsaW5lbm8iOjMwfSx7Im5hbWUiOiJQSFAiLCJsZXZlbCI6ImluZm8iLCJvcmRlciI6MSwidGltZSI6IjAwMDAwMC42IG1zIiwidGVtcGxhdGUiOiJJbmZvIG1lc3NhZ2UiLCJtZXNzYWdlIjoiIiwic3R5bGUiOiJiYWNrZ3JvdW5kOiM3NjdhYjYiLCJhcmdzIjpbXSwicGF0aG5hbWUiOiJXOlxcTmV0dGVcXF9uZXR0ZVxcdGVzdHNcXERlYnVnXFxEZWJ1Zy5maXJlTG9nKCkuYmFzaWMucGhwdCIsImxpbmVubyI6MzF9LHsibmFtZSI6IlBIUCIsImxldmVsIjoid2FybmluZyIsIm9yZGVyIjoyLCJ0aW1lIjoiMDAwMDAwLjYgbXMiLCJ0ZW1wbGF0ZSI6Ildhcm4gbWVzc2FnZSIsIm1lc3NhZ2UiOiIiLCJzdHlsZSI6ImJhY2tncm91bmQ6Izc2N2FiNiIsImFyZ3MiOltdLCJwYXRobmFtZSI6Ilc6XFxOZXR0ZVxcX25ldHRlXFx0ZXN0c1xcRGVidWdcXERlYnVnLmZpcmVMb2coKS5iYXNpYy5waHB0IiwibGluZW5vIjozMn0seyJuYW1lIjoiUEhQIiwibGV2ZWwiOiJlcnJvciIsIm9yZGVyIjozLCJ0aW1lIjoiMDAwMDAwLjcgbXMiLCJ0ZW1wbGF0ZSI6IkVycm9yIG1lc3NhZ2UiLCJtZXNzYWdlIjoiIiwic3R5bGUiOiJiYWNrZ3JvdW5kOiM3NjdhYjYiLCJhcmdzIjpbXSwicGF0aG5hbWUiOiJXOlxcTmV0dGVcXF9uZXR0ZVxcdGVzdHNcXERlYnVnXFxEZWJ1Zy5maXJlTG9nKCkuYmFzaWMucGhwdCIsImxpbmVubyI6MzN9LHsibmFtZSI6IlBIUCIsImxldmVsIjoiZGVidWciLCJvcmRlciI6NCwidGltZSI6IjAwMDAwMC43IG1zIiwidGVtcGxhdGUiOiIiLCJtZXNzYWdlIjoiIiwic3R5bGUiOiJiYWNrZ3JvdW5kOiM3NjdhYjYiLCJhcmdzIjpbWzEwLDIwLjIsdHJ1ZSxmYWxzZSxudWxsLCJoZWxsbyIseyJrZXkxIjoidmFsMSIsImtleTIiOnRydWV9LHsia2V5MSI6InZhbDEiLCJrZXkyIjp0cnVlfV1dLCJwYXRobmFtZSI6Ilc6XFxOZXR0ZVxcX25ldHRlXFx0ZXN0c1xcRGVidWdcXERlYnVnLmZpcmVMb2coKS5iYXNpYy5waHB0IiwibGluZW5vIjozNH1dfQ==
 ', implode("\r\n", headers_list()));
