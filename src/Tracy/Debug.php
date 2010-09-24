@@ -604,7 +604,7 @@ final class Debug
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return FALSE; // calls normal error handler to fill-in error_get_last()
 
-		} elseif (self::$strictMode) {
+		} elseif (self::$strictMode && !self::$productionMode) {
 			self::_exceptionHandler(new \FatalErrorException($message, 0, $severity, $file, $line, $context));
 			exit;
 		}
