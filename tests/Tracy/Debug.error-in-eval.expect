@@ -37,7 +37,7 @@
 					<ol>
 										<li><p>
 
-											<span title="%a% : eval()'d code">Debug/<b>%a%(%d%) : eval()'d code</b></span> (%d%)
+											<i>inner-code</i> (1)
 
 										trigger_error
 					(<a href="#" onclick="return !netteToggle(this, 'netteBsArgs1-1')">arguments <abbr>&#x25ba;</abbr></a>)
@@ -57,7 +57,8 @@
 					</li>
 										<li><p>
 
-											<span title="%a%">%a%</span> (%d%)
+											<a href="editor:%a%" title="%a%Debug.error-in-eval.phpt">
+						Debug/<b>Debug.error-in-eval.phpt</b></a> (%d%)
 					<a href="#" onclick="return !netteToggle(this, 'netteBsSrc1-2')">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										eval
 					()
@@ -70,7 +71,8 @@
 					</li>
 										<li><p>
 
-											<span title="%a%">%a%</span> (%d%)
+											<a href="editor:%a%" title="%a%Debug.error-in-eval.phpt">
+						Debug/<b>Debug.error-in-eval.phpt</b></a> (%d%)
 					<a href="#" onclick="return !netteToggle(this, 'netteBsSrc1-3')">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										first
 					(<a href="#" onclick="return !netteToggle(this, 'netteBsArgs1-3')">arguments <abbr>&#x25ba;</abbr></a>)

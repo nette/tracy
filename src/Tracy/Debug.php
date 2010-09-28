@@ -85,8 +85,8 @@ final class Debug
 	/** @var int interval for sending email is 2 days */
 	public static $emailSnooze = 172800;
 
-	/** @var string URL pattern to open editor in format "editor:%filename:%line" */
-	public static $editorLink = "";
+	/** @var string URL pattern mask to open editor */
+	public static $editor = 'editor://open/?file=%file&line=%line';
 
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;

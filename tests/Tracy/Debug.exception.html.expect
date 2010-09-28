@@ -45,7 +45,8 @@
 					<ol>
 										<li><p>
 
-											<span title="%a%">%a%</span> (%d%)
+											<a href="editor:%a%" title="%a%Debug.exception.html.phpt">
+						Debug/<b>Debug.exception.html.phpt</b></a> (%d%)
 					<a href="#" onclick="return !netteToggle(this, 'netteBsSrc1-0')">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										third
 					(<a href="#" onclick="return !netteToggle(this, 'netteBsArgs1-0')">arguments <abbr>&#x25ba;</abbr></a>)
@@ -68,7 +69,8 @@
 					</li>
 										<li><p>
 
-											<span title="%a%">%a%</span> (%d%)
+											<a href="editor:%a%" title="%a%Debug.exception.html.phpt">
+						Debug/<b>Debug.exception.html.phpt</b></a> (%d%)
 					<a href="#" onclick="return !netteToggle(this, 'netteBsSrc1-1')">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										second
 					(<a href="#" onclick="return !netteToggle(this, 'netteBsArgs1-1')">arguments <abbr>&#x25ba;</abbr></a>)
@@ -89,7 +91,8 @@
 					</li>
 										<li><p>
 
-											<span title="%a%">%a%</span> (%d%)
+											<a href="editor:%a%" title="%a%Debug.exception.html.phpt">
+						Debug/<b>Debug.exception.html.phpt</b></a> (%d%)
 					<a href="#" onclick="return !netteToggle(this, 'netteBsSrc1-2')">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										first
 					(<a href="#" onclick="return !netteToggle(this, 'netteBsArgs1-2')">arguments <abbr>&#x25ba;</abbr></a>)
