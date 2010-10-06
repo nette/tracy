@@ -33,7 +33,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 		<h2><a href="#" onclick="return !netteToggle(this, 'netteBsPnl1')">Source file <abbr>&#x25bc;</abbr></a></h2>
 
 		<div id="netteBsPnl1" class="inner">
-					<p><strong>File:</strong> %a% &nbsp; <strong>Line:</strong> %d%</p>
+					<p><b>File:</b> %a% &nbsp; <b>Line:</b> %d%</p>
 				<pre><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>Line %d%:</span>    {
 <span class='line'>Line %d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
 <span class='line'>Line %d%:</span>    }
