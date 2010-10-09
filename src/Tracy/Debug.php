@@ -885,7 +885,7 @@ final class Debug
 		if (isset($args[0]) && in_array($args[0], array(self::DEBUG, self::INFO, self::WARNING, self::ERROR, self::CRITICAL), TRUE)) {
 			$item['level'] = array_shift($args);
 		}
-		
+
 		$item['args'] = $args;
 
 		foreach ($trace as $frame) {
