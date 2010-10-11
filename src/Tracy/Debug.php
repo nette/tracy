@@ -715,7 +715,10 @@ final class Debug
 	public static function tryError()
 	{
 		error_reporting(0);
+		$old = self::$scream;
+		self::$scream = FALSE;
 		trigger_error(''); // "reset" error_get_last
+		self::$scream = $old;
 	}
 
 
