@@ -32,16 +32,16 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%
 <div class="nette-inner">
 <table>
 <tr class="">
-	<td><pre>PHP Strict standards: mktime(): You should be using the time() function instead in %a%:%d%</pre></td>
+	<td><pre>PHP Strict standards: mktime(): You should be using the time() function instead in %a%:%d%</a></pre></td>
 </tr>
 <tr class="nette-alt">
-	<td><pre>PHP Deprecated: mktime(): The is_dst parameter is deprecated in %a%:%d%</pre></td>
+	<td><pre>PHP Deprecated: mktime(): The is_dst parameter is deprecated in %a%:%d%</a></pre></td>
 </tr>
 <tr class="">
-	<td><pre>PHP Notice: Undefined variable: x in %a%:%d%</pre></td>
+	<td><pre>PHP Notice: Undefined variable: x in %a%:%d%</a></pre></td>
 </tr>
 <tr class="nette-alt">
-	<td><pre>PHP Warning: rename(..,..): %A% in %a%:%d%</pre></td>
+	<td><pre>PHP Warning: rename(..,..): %A% in %a%:%d%</a></pre></td>
 </tr>
 </table>
 </div>%A%', Nette\String::replace(ob_get_clean(), '#base64Decode\("(.+)"\)#', function($m) { return base64_decode($m[1]); }));
