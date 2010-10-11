@@ -632,7 +632,7 @@ final class Debug
 
 		} else {
 			if (self::$showBar) {
-				self::$errors[] = "$message in " . (self::$editor ? '<a href="' . htmlspecialchars(strtr(self::$editor, array('%file' => urlencode($file), '%line' => $line))) . "\">$file:$line</a>" : "$file:$line");
+				self::$errors[] = "$message in " . (self::$editor ? '<a href="' . htmlspecialchars(strtr(self::$editor, array('%file' => rawurlencode($file), '%line' => $line))) . "\">$file:$line</a>" : "$file:$line");
 			}
 			if (self::$firebugDetected && !headers_sent()) {
 				self::fireLog(new \ErrorException($message, 0, $severity, $file, $line), self::WARNING);
