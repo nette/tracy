@@ -393,17 +393,13 @@ final class Debug
 		}
 
 		// logging configuration
-		if (self::$productionMode) {
-			if (is_string($logDirectory) || $logDirectory === FALSE) {
-				self::$logDirectory = $logDirectory;
-			} else {
-				self::$logDirectory = defined('APP_DIR') ? APP_DIR . '/../log/' : getcwd() . '/log';
-			}
-			if (self::$logDirectory) {
-				ini_set('error_log', self::$logDirectory . '/php_error.log');
-			}
+		if (is_string($logDirectory) || $logDirectory === FALSE) {
+			self::$logDirectory = $logDirectory;
 		} else {
-			self::$logDirectory = FALSE;
+			self::$logDirectory = defined('APP_DIR') ? APP_DIR . '/../log/' : getcwd() . '/log';
+		}
+		if (self::$logDirectory) {
+			ini_set('error_log', self::$logDirectory . '/php_error.log');
 		}
 
 		// php configuration
@@ -453,7 +449,7 @@ final class Debug
 
 
 	/**
-	 * Logs message or exception to file (if set) and sends e-mail notification (if enabled).
+	 * Logs message or exception to file (if not disabled) and sends e-mail notification (if enabled).
 	 * @param  string|Exception
 	 * @param  int
 	 * @return void
@@ -546,16 +542,16 @@ final class Debug
 			header('HTTP/1.1 500 Internal Server Error');
 		}
 
-		try {
-			self::log($exception, self::ERROR);
-		} catch (\Exception $e) {
-			echo 'Nette\Debug fatal error: ', get_class($e), ': ', ($e->getCode() ? '#' . $e->getCode() . ' ' : '') . $e->getMessage(), "\n";
-			exit;
-		}
-
 		$htmlMode = !self::$ajaxDetected && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
 
 		if (self::$productionMode) {
+			try {
+				self::log($exception, self::ERROR);
+			} catch (\Exception $e) {
+				echo 'Nette\Debug fatal error: ', get_class($e), ': ', ($e->getCode() ? '#' . $e->getCode() . ' ' : '') . $e->getMessage(), "\n";
+				exit;
+			}
+
 			if (self::$consoleMode) {
 				echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
 
@@ -569,11 +565,11 @@ final class Debug
 			if (self::$consoleMode) { // dump to console
 				echo "$exception\n";
 
-			} elseif (self::$firebugDetected && !headers_sent() && !$htmlMode) { // AJAX or non-HTML mode
-				self::fireLog($exception, self::ERROR);
-
 			} elseif ($htmlMode) { // dump to browser
 				self::paintBlueScreen($exception);
+
+			} elseif (!self::fireLog($exception, self::ERROR)) { // AJAX or non-HTML mode
+				self::log($exception);
 			}
 		}
 
@@ -625,19 +621,16 @@ final class Debug
 
 		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message";
 
-		self::log("$message in $file:$line", self::ERROR); // log manually, required on some stupid hostings
-
 		if (self::$productionMode) {
+			self::log("$message in $file:$line", self::ERROR); // log manually, required on some stupid hostings
 			return NULL;
 
 		} else {
 			if (self::$showBar) {
 				self::$errors[] = "$message in " . (self::$editor ? '<a href="' . htmlspecialchars(strtr(self::$editor, array('%file' => rawurlencode($file), '%line' => $line))) . "\">$file:$line</a>" : "$file:$line");
 			}
-			if (self::$firebugDetected && !headers_sent()) {
-				self::fireLog(new \ErrorException($message, 0, $severity, $file, $line), self::WARNING);
-			}
-			return self::$consoleMode || (!self::$showBar && !self::$ajaxDetected) ? FALSE : NULL;
+			$ok = self::fireLog(new \ErrorException($message, 0, $severity, $file, $line), self::WARNING);
+			return self::$consoleMode || (!self::$showBar && !$ok) ? FALSE : NULL;
 		}
 
 		return FALSE; // call normal error handler
@@ -842,7 +835,12 @@ final class Debug
 	 */
 	public static function fireLog($message)
 	{
-		if (self::$productionMode || headers_sent()) return FALSE;
+		if (self::$productionMode) {
+			return;
+
+		} elseif (!self::$firebugDetected || headers_sent()) {
+			return FALSE;
+		}
 
 		static $payload = array('logs' => array());
 
