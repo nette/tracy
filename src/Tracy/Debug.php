@@ -381,6 +381,9 @@ final class Debug
 			if (class_exists('Nette\Environment')) {
 				self::$productionMode = Environment::isProduction();
 
+			} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) { // proxy server detected
+				self::$productionMode = TRUE;
+
 			} elseif (isset($_SERVER['SERVER_ADDR']) || isset($_SERVER['LOCAL_ADDR'])) { // IP address based detection
 				$addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['LOCAL_ADDR'];
 				$oct = explode('.', $addr);
