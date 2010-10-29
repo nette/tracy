@@ -381,14 +381,25 @@ final class Debug
 			if (class_exists('Nette\Environment')) {
 				self::$productionMode = Environment::isProduction();
 
-			} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) { // proxy server detected
-				self::$productionMode = TRUE;
-
 			} elseif (isset($_SERVER['SERVER_ADDR']) || isset($_SERVER['LOCAL_ADDR'])) { // IP address based detection
-				$addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['LOCAL_ADDR'];
-				$oct = explode('.', $addr);
-				self::$productionMode = $addr !== '::1' && (count($oct) !== 4 || ($oct[0] !== '10' && $oct[0] !== '127' && ($oct[0] !== '172' || $oct[1] < 16 || $oct[1] > 31)
-					&& ($oct[0] !== '169' || $oct[1] !== '254') && ($oct[0] !== '192' || $oct[1] !== '168')));
+				$addrs = array();
+				if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) { // proxy server detected
+					$addrs = preg_split('#,\s*#', $_SERVER['HTTP_X_FORWARDED_FOR']);
+				}
+				if (isset($_SERVER['REMOTE_ADDR'])) {
+					$addrs[] = $_SERVER['REMOTE_ADDR'];
+				}
+				$addrs[] = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['LOCAL_ADDR'];
+				self::$productionMode = FALSE;
+				foreach ($addrs as $addr) {
+					$oct = explode('.', $addr);
+					if ($addr !== '::1' && (count($oct) !== 4 || ($oct[0] !== '10' && $oct[0] !== '127' && ($oct[0] !== '172' || $oct[1] < 16 || $oct[1] > 31)
+						&& ($oct[0] !== '169' || $oct[1] !== '254') && ($oct[0] !== '192' || $oct[1] !== '168')))
+					) {
+						self::$productionMode = TRUE;
+						break;
+					}
+				}
 
 			} else {
 				self::$productionMode = !self::$consoleMode;
