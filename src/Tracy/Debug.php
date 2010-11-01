@@ -410,7 +410,7 @@ final class Debug
 		if (is_string($logDirectory) || $logDirectory === FALSE) {
 			self::$logDirectory = $logDirectory;
 		} else {
-			self::$logDirectory = defined('APP_DIR') ? APP_DIR . '/../log/' : getcwd() . '/log';
+			self::$logDirectory = defined('APP_DIR') ? APP_DIR . '/../log' : getcwd() . '/log';
 		}
 		if (self::$logDirectory) {
 			ini_set('error_log', self::$logDirectory . '/php_error.log');
