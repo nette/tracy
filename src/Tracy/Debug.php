@@ -91,6 +91,9 @@ final class Debug
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
 
+	/** @var int {@link Debug::tryError()} */
+	private static $tryErrorLevel;
+
 	/********************* debug bar ****************d*g**/
 
 	/** @var bool determines whether show Debug Bar */
@@ -722,7 +725,9 @@ final class Debug
 	 */
 	public static function tryError()
 	{
-		error_reporting(0);
+		if (!isset(self::$tryErrorLevel)) {
+			self::$tryErrorLevel = error_reporting(0);
+		}
 		$old = self::$scream;
 		self::$scream = FALSE;
 		trigger_error(''); // "reset" error_get_last
@@ -738,7 +743,10 @@ final class Debug
 	 */
 	public static function catchError(& $message)
 	{
-		error_reporting(E_ALL | E_STRICT);
+		if (isset(self::$tryErrorLevel)) {
+			error_reporting(self::$tryErrorLevel);
+			self::$tryErrorLevel = NULL;
+		}
 		$error = error_get_last();
 		if ($error && $error['message'] !== '') {
 			$message = $error['message'];
