@@ -32,15 +32,19 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%
 <div class="nette-inner">
 <table>
 <tr class="">
+	<td class="nette-right">1%a%</td>
 	<td><pre>PHP Strict standards: mktime(): You should be using the time() function instead in %a%:%d%</a></pre></td>
 </tr>
 <tr class="nette-alt">
+	<td class="nette-right">1%a%</td>
 	<td><pre>PHP Deprecated: mktime(): The is_dst parameter is deprecated in %a%:%d%</a></pre></td>
 </tr>
 <tr class="">
+	<td class="nette-right">1%a%</td>
 	<td><pre>PHP Notice: Undefined variable: x in %a%:%d%</a></pre></td>
 </tr>
 <tr class="nette-alt">
+	<td class="nette-right">1%a%</td>
 	<td><pre>PHP Warning: rename(..,..): %A% in %a%:%d%</a></pre></td>
 </tr>
 </table>

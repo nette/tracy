@@ -634,15 +634,16 @@ final class Debug
 		);
 
 		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message";
+		$count = & self::$errors["$message|$file|$line"];
 
-		if (self::$productionMode) {
+		if ($count++) { // repeated error
+			return NULL;
+
+		} elseif (self::$productionMode) {
 			self::log("$message in $file:$line", self::ERROR); // log manually, required on some stupid hostings
 			return NULL;
 
 		} else {
-			if (self::$showBar) {
-				self::$errors[] = "$message in " . (self::$editor ? '<a href="' . htmlspecialchars(strtr(self::$editor, array('%file' => rawurlencode($file), '%line' => $line))) . "\">$file:$line</a>" : "$file:$line");
-			}
 			$ok = self::fireLog(new \ErrorException($message, 0, $severity, $file, $line), self::WARNING);
 			return self::$consoleMode || (!self::$showBar && !$ok) ? FALSE : NULL;
 		}
