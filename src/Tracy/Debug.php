@@ -561,37 +561,37 @@ final class Debug
 
 		$htmlMode = !self::$ajaxDetected && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
 
-		if (self::$productionMode) {
-			try {
+		try {
+			if (self::$productionMode) {
 				self::log($exception, self::ERROR);
-			} catch (\Exception $e) {
-				echo 'Nette\Debug fatal error: ', get_class($e), ': ', ($e->getCode() ? '#' . $e->getCode() . ' ' : '') . $e->getMessage(), "\n";
-				exit;
+
+				if (self::$consoleMode) {
+					echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
+
+				} elseif ($htmlMode) {
+					echo "<!DOCTYPE html><meta name=robots content=noindex><meta name=generator content='Nette Framework'>\n\n";
+					echo "<style>body{color:#333;background:white;width:500px;margin:100px auto}h1{font:bold 47px/1.5 sans-serif;margin:.6em 0}p{font:21px/1.5 Georgia,serif;margin:1.5em 0}small{font-size:70%;color:gray}</style>\n\n";
+					echo "<title>Server Error</title>\n\n<h1>Server Error</h1>\n\n<p>We're sorry! The server encountered an internal error and was unable to complete your request. Please try again later.</p>\n\n<p><small>error 500</small></p>";
+				}
+
+			} else {
+				if (self::$consoleMode) { // dump to console
+					echo "$exception\n";
+
+				} elseif ($htmlMode) { // dump to browser
+					self::paintBlueScreen($exception);
+
+				} elseif (!self::fireLog($exception, self::ERROR)) { // AJAX or non-HTML mode
+					self::log($exception);
+				}
 			}
 
-			if (self::$consoleMode) {
-				echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
-
-			} elseif ($htmlMode) {
-				echo "<!DOCTYPE html><meta name=robots content=noindex><meta name=generator content='Nette Framework'>\n\n";
-				echo "<style>body{color:#333;background:white;width:500px;margin:100px auto}h1{font:bold 47px/1.5 sans-serif;margin:.6em 0}p{font:21px/1.5 Georgia,serif;margin:1.5em 0}small{font-size:70%;color:gray}</style>\n\n";
-				echo "<title>Server Error</title>\n\n<h1>Server Error</h1>\n\n<p>We're sorry! The server encountered an internal error and was unable to complete your request. Please try again later.</p>\n\n<p><small>error 500</small></p>";
+			foreach (self::$onFatalError as $handler) {
+				call_user_func($handler, $exception);
 			}
-
-		} else {
-			if (self::$consoleMode) { // dump to console
-				echo "$exception\n";
-
-			} elseif ($htmlMode) { // dump to browser
-				self::paintBlueScreen($exception);
-
-			} elseif (!self::fireLog($exception, self::ERROR)) { // AJAX or non-HTML mode
-				self::log($exception);
-			}
-		}
-
-		foreach (self::$onFatalError as $handler) {
-			call_user_func($handler, $exception);
+		} catch (\Exception $e) {
+			echo "\nNette\\Debug FATAL ERROR: thrown ", get_class($e), ': ', $e->getMessage(), "\nwhile processing ", get_class($exception), ': ', $exception->getMessage(), "\n";
+			exit;
 		}
 	}
 
