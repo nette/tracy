@@ -91,8 +91,8 @@ final class Debug
 	/** @var bool {@link Debug::enable()} */
 	private static $enabled = FALSE;
 
-	/** @var int {@link Debug::tryError()} */
-	private static $tryErrorLevel;
+	/** @var mixed {@link Debug::tryError()} FALSE means catching is disabled */
+	private static $lastError = FALSE;
 
 	/********************* debug bar ****************d*g**/
 
@@ -610,6 +610,11 @@ final class Debug
 	 */
 	public static function _errorHandler($severity, $message, $file, $line, $context)
 	{
+		if (self::$lastError !== FALSE) { // tryError mode
+			self::$lastError = $message;
+			return NULL;
+		}
+
 		if (self::$scream) {
 			error_reporting(E_ALL | E_STRICT);
 		}
@@ -725,13 +730,10 @@ final class Debug
 	 */
 	public static function tryError()
 	{
-		if (!isset(self::$tryErrorLevel)) {
-			self::$tryErrorLevel = error_reporting(0);
+		self::$lastError = NULL;
+		if (!self::$enabled) {
+			set_error_handler(array(__CLASS__, '_errorHandler'));
 		}
-		$old = self::$scream;
-		self::$scream = FALSE;
-		trigger_error(''); // "reset" error_get_last
-		self::$scream = $old;
 	}
 
 
@@ -743,18 +745,12 @@ final class Debug
 	 */
 	public static function catchError(& $message)
 	{
-		if (isset(self::$tryErrorLevel)) {
-			error_reporting(self::$tryErrorLevel);
-			self::$tryErrorLevel = NULL;
+		$message = self::$lastError;
+		self::$lastError = FALSE;
+		if (!self::$enabled) {
+			restore_error_handler();
 		}
-		$error = error_get_last();
-		if ($error && $error['message'] !== '') {
-			$message = $error['message'];
-			return TRUE;
-		} else {
-			$message = NULL;
-			return FALSE;
-		}
+		return (bool) $message;
 	}
 
 
