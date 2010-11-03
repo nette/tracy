@@ -611,7 +611,7 @@ final class Debug
 	public static function _errorHandler($severity, $message, $file, $line, $context)
 	{
 		if (self::$lastError !== FALSE) { // tryError mode
-			self::$lastError = $message;
+			self::$lastError = new \ErrorException($message, 0, $severity, $file, $line);
 			return NULL;
 		}
 
@@ -730,27 +730,27 @@ final class Debug
 	 */
 	public static function tryError()
 	{
-		self::$lastError = NULL;
-		if (!self::$enabled) {
+		if (!self::$enabled && self::$lastError === FALSE) {
 			set_error_handler(array(__CLASS__, '_errorHandler'));
 		}
+		self::$lastError = NULL;
 	}
 
 
 
 	/**
 	 * Returns catched error/warning message.
-	 * @param  string  catched message
+	 * @param  \ErrorException  catched error
 	 * @return bool
 	 */
-	public static function catchError(& $message)
+	public static function catchError(& $error)
 	{
-		$message = self::$lastError;
-		self::$lastError = FALSE;
-		if (!self::$enabled) {
+		if (!self::$enabled && self::$lastError !== FALSE) {
 			restore_error_handler();
 		}
-		return (bool) $message;
+		$error = self::$lastError;
+		self::$lastError = FALSE;
+		return (bool) $error;
 	}
 
 

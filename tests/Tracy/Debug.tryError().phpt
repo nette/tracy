@@ -18,16 +18,16 @@ require __DIR__ . '/../bootstrap.php';
 
 Debug::tryError(); {
 	$a++;
-} $res = Debug::catchError($message);
+} $res = Debug::catchError($e);
 
 Assert::true( $res );
-Assert::same( "Undefined variable: a", $message );
+Assert::same( "Undefined variable: a", $e->getMessage() );
 
 
 
 Debug::tryError(); {
 
-} $res = Debug::catchError($message);
+} $res = Debug::catchError($e);
 
 Assert::false( $res );
-Assert::null( $message );
+Assert::null( $e );
