@@ -359,7 +359,7 @@ final class Debug
 
 	/**
 	 * Enables displaying or logging errors and exceptions.
-	 * @param  mixed         production, development mode, autodetection or IP address(es).
+	 * @param  mixed         production, development mode, autodetection or IP address(es) whitelist.
 	 * @param  string        error log directory; enables logging in production mode, FALSE means that logging is disabled
 	 * @param  string        administrator email; enables email sending in production mode
 	 * @return void
@@ -372,11 +372,11 @@ final class Debug
 		if (is_bool($mode)) {
 			self::$productionMode = $mode;
 
-		} elseif (is_string($mode)) { // IP adresses
-			$mode = preg_split('#[,\s]+#', $mode);
+		} elseif (is_string($mode)) { // IP addresses
+			$mode = preg_split('#[,\s]+#', "$mode 127.0.0.1 ::1");
 		}
 
-		if (is_array($mode)) { // IP adresses
+		if (is_array($mode)) { // IP addresses whitelist detection
 			self::$productionMode = !isset($_SERVER['REMOTE_ADDR']) || !in_array($_SERVER['REMOTE_ADDR'], $mode, TRUE);
 		}
 
