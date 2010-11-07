@@ -76,7 +76,7 @@ final class Debug
 	/** @var string name of the directory where errors should be logged; FALSE means that logging is disabled */
 	public static $logDirectory;
 
-	/** @var string e-mail to sent error notifications */
+	/** @var string email to sent error notifications */
 	public static $email;
 
 	/** @var callback handler for sending emails */
@@ -235,7 +235,7 @@ final class Debug
 
 		if ($email) {
 			if (!is_string($email)) {
-				throw new \InvalidArgumentException('E-mail address must be a string.');
+				throw new \InvalidArgumentException('Email address must be a string.');
 			}
 			self::$email = $email;
 		}
@@ -270,9 +270,9 @@ final class Debug
 
 
 	/**
-	 * Logs message or exception to file (if not disabled) and sends e-mail notification (if enabled).
+	 * Logs message or exception to file (if not disabled) and sends email notification (if enabled).
 	 * @param  string|Exception
-	 * @param  int
+	 * @param  int  one of constant Debug::INFO, WARNING, ERROR (sends email), CRITICAL (sends email)
 	 * @return void
 	 */
 	public static function log($message, $priority = self::INFO)
@@ -452,7 +452,7 @@ final class Debug
 			return NULL;
 
 		} elseif (self::$productionMode) {
-			self::log("$message in $file:$line", self::ERROR); // log manually, required on some stupid hostings
+			self::log("$message in $file:$line", self::ERROR);
 			return NULL;
 
 		} else {

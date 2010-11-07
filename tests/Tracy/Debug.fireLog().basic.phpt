@@ -32,17 +32,6 @@ Debug::fireLog('Info message', Debug::INFO);
 Debug::fireLog('Warn message', Debug::WARNING);
 Debug::fireLog('Error message', Debug::ERROR);
 Debug::fireLog($arr);
-/*
-Debug::fireLog(
-	array(
-		array('SQL Statement', 'Time', 'Result'), // table header
-		array('SELECT * FROM foo', '0.02', array('field1', 'field2')), // 1. row
-		array('SELECT * FROM bar', '0.04', array('field1', 'field2')), // 2. row
-	),
-	'TABLE',
-	'2 SQL queries took 0.06 seconds' // table title
-);
-*/
 
 Assert::match('%A%
 FireLogger-de11e-0:%a%

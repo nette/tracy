@@ -50,6 +50,6 @@ try {
 }
 
 
-Assert::match('%A%
-FireLogger-de11e-0:eyJsb2dzIjpbeyJuYW1lIjoiUEhQIiwibGV2ZWwiOiJkZWJ1ZyIsIm9yZGVyIjowLCJ0aW1lIjoiMDAwMDAwLjUgbXMiLCJ0ZW1wbGF0ZSI6IkV4Y2VwdGlvbjogVGhlIG15IGV4Y2VwdGlvbiAjMTIzIGluIFx1MjAyNlxcdGVzdHNcXERlYnVnXFxEZWJ1Zy5maXJlTG9nKCkuZXhjZXB0aW9uLnBocHQ6NDIiLCJtZXNzYWdlIjoiIiwic3R5bGUiOiJiYWNrZ3JvdW5kOiM3NjdhYjYiLCJleGNfaW5mbyI6WyJUaGUgbXkgZXhjZXB0aW9uIiwiVzpcXE5ldHRlXFxfbmV0dGVcXHRlc3RzXFxEZWJ1Z1xcRGVidWcuZmlyZUxvZygpLmV4Y2VwdGlvbi5waHB0IixbWyJXOlxcTmV0dGVcXF9uZXR0ZVxcdGVzdHNcXERlYnVnXFxEZWJ1Zy5maXJlTG9nKCkuZXhjZXB0aW9uLnBocHQiLDM2LCJ0aGlyZCIsbnVsbF0sWyJXOlxcTmV0dGVcXF9uZXR0ZVxcdGVzdHNcXERlYnVnXFxEZWJ1Zy5maXJlTG9nKCkuZXhjZXB0aW9uLnBocHQiLDI5LCJzZWNvbmQiLG51bGxdLFsiVzpcXE5ldHRlXFxfbmV0dGVcXHRlc3RzXFxEZWJ1Z1xcRGVidWcuZmlyZUxvZygpLmV4Y2VwdGlvbi5waHB0Iiw0NiwiZmlyc3QiLG51bGxdXV0sImV4Y19mcmFtZXMiOltbWzEsMiwzXV0sW3RydWUsZmFsc2VdLFsxMCwiYW55IHN0cmluZyJdXSwiYXJncyI6W10sInBhdGhuYW1lIjoiVzpcXE5ldHRlXFxfbmV0dGVcXHRlc3RzXFxEZWJ1Z1xcRGVidWcuZmlyZUxvZygpLmV4Y2VwdGlvbi5waHB0IiwibGluZW5vIjo0Mn1dfQ==
-', implode("\r\n", headers_list()));
+preg_match('#^FireLogger-de11e-0:(.+)#m', implode("\n", headers_list()), $matches);
+Assert::true(isset($matches[1]));
+Assert::match('{"logs":[{"name":"PHP","level":"debug","order":0,"time":"%a% ms","template":"Exception: The my exception #123 in %a%\\\\Debug.fireLog().exception.phpt:%d%","message":"","style":"background:#767ab6","exc_info":["The my exception","%a%\\\\Debug.fireLog().exception.phpt",[["%a%\\\\Debug.fireLog().exception.phpt",%d%,"third",null],["%a%\\\\Debug.fireLog().exception.phpt",%d%,"second",null],["%a%\\\\Debug.fireLog().exception.phpt",%d%,"first",null]]],"exc_frames":[[[1,2,3]],[true,false],[10,"any string"]],"args":[],"pathname":"%a%\\\\Debug.fireLog().exception.phpt","lineno":%d%}]}', base64_decode($matches[1]));
