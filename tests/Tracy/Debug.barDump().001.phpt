@@ -23,7 +23,8 @@ header('Content-Type: text/html');
 Debug::enable();
 
 function shutdown() {
-	Assert::match(file_get_contents(__DIR__ . '/Debug.barDump().001.expect'), Nette\String::replace(ob_get_clean(), '#base64Decode\("(.+)"\)#', function($m) { return base64_decode($m[1]); }));
+	$m = Nette\String::match(ob_get_clean(), '#debug.innerHTML = (".*");#');
+	Assert::match(file_get_contents(__DIR__ . '/Debug.barDump().001.expect'), json_decode($m[1]));
 }
 Assert::handler('shutdown');
 

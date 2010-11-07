@@ -24,6 +24,7 @@ header('Content-Type: text/html');
 Debug::enable();
 
 function shutdown() {
+	$m = Nette\String::match(ob_get_clean(), '#debug.innerHTML = (".*");#');
 	Assert::match(<<<EOD
 %A%<h1>Dumped variables</h1>
 
@@ -39,7 +40,7 @@ function shutdown() {
 </div>
 %A%
 EOD
-, Nette\String::replace(ob_get_clean(), '#base64Decode\("(.+)"\)#', function($m) { return base64_decode($m[1]); }));
+, json_decode($m[1]));
 }
 Assert::handler('shutdown');
 

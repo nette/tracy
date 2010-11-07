@@ -23,14 +23,11 @@ header('Content-Type: text/html');
 Debug::enable();
 
 function shutdown() {
+	$m = Nette\String::match($output = ob_get_clean(), '#debug.innerHTML = (".*");#');
 	Assert::match('
-Warning: Unsupported declare \'foo\' in %a% on line %d%
+Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 
-%A%<div id="nette-debug-errors"><h1>Errors</h1>
-
-
-<div class="nette-inner">
-<table>
+	Assert::match('%A%<table>
 <tr class="">
 	<td class="nette-right">1%a%</td>
 	<td><pre>PHP Strict standards: mktime(): You should be using the time() function instead in %a%:%d%</a></pre></td>
@@ -48,7 +45,7 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%
 	<td><pre>PHP Warning: rename(..,..): %A% in %a%:%d%</a></pre></td>
 </tr>
 </table>
-</div>%A%', Nette\String::replace(ob_get_clean(), '#base64Decode\("(.+)"\)#', function($m) { return base64_decode($m[1]); }));
+</div>%A%', json_decode($m[1]));
 }
 Assert::handler('shutdown');
 
