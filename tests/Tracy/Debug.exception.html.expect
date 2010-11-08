@@ -27,22 +27,21 @@
 
 
 
-													<div class="panel">
-		<h2><a href="#" rel="netteBsPnl1">Source file <abbr>&#x25bc;</abbr></a></h2>
+												<div class="panel">
+			<h2><a href="#" rel="netteBsPnl1">Source file <abbr>&#x25bc;</abbr></a></h2>
 
-		<div id="netteBsPnl1" class="inner">
-					<p><b>File:</b> %a% &nbsp; <b>Line:</b> %d%</p>
+			<div id="netteBsPnl1" class="inner">
+				<p><b>File:</b> %a% &nbsp; <b>Line:</b> %d%</p>
 				<pre>%A%</pre>
-					</div>
-	</div>
+			</div></div>
 
 
 
-										<div class="panel">
-		<h2><a href="#" rel="netteBsPnl2">Call stack <abbr>&#x25bc;</abbr></a></h2>
+									<div class="panel">
+				<h2><a href="#" rel="netteBsPnl2">Call stack <abbr>&#x25bc;</abbr></a></h2>
 
-		<div id="netteBsPnl2" class="inner">
-					<ol>
+				<div id="netteBsPnl2" class="inner">
+				<ol>
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debug.exception.html.phpt">
@@ -112,8 +111,7 @@
 
 					</li>
 									</ol>
-					</div>
-	</div>
+			</div></div>
 
 
 
@@ -127,11 +125,11 @@
 
 
 
-			<div class="panel">
+		<div class="panel">
 		<h2><a href="#" rel="netteBsPnl3">Environment <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl3" class="nette-collapsed inner">
-							<h3><a href="#" rel="netteBsPnl-env-const">Constants <abbr>&#x25bc;</abbr></a></h3>
+						<h3><a href="#" rel="netteBsPnl-env-const">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<div class="outer">
 			<table id="netteBsPnl-env-const">%A%</table>
 			</div>
@@ -147,12 +145,11 @@
 						<div class="outer">
 			<table>%A%</table>
 			</div>
-							</div>
-	</div>
+					</div></div>
 
 
 
-			<div class="panel">
+		<div class="panel">
 		<h2><a href="#" rel="netteBsPnl4">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl4" class="nette-collapsed inner">
@@ -166,19 +163,17 @@
 						<p><i>empty</i></p>
 									<h3>$_COOKIE</h3>
 						<p><i>empty</i></p>
-										</div>
-	</div>
+								</div></div>
 
 
 
-			<div class="panel">
+		<div class="panel">
 		<h2><a href="#" rel="netteBsPnl5">HTTP response <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl5" class="nette-collapsed inner">
-				<h3>Headers</h3>
+			<h3>Headers</h3>
 						<pre>%A%</pre>
-							</div>
-	</div>
+					</div></div>
 
 
 		<ul>

@@ -29,11 +29,11 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 
-													<div class="panel">
-		<h2><a href="#" rel="netteBsPnl1">Source file <abbr>&#x25bc;</abbr></a></h2>
+												<div class="panel">
+			<h2><a href="#" rel="netteBsPnl1">Source file <abbr>&#x25bc;</abbr></a></h2>
 
-		<div id="netteBsPnl1" class="inner">
-					<p><b>File:</b> %a% &nbsp; <b>Line:</b> %d%</p>
+			<div id="netteBsPnl1" class="inner">
+				<p><b>File:</b> %a% &nbsp; <b>Line:</b> %d%</p>
 				<pre><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    {
 <span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
 <span class='line'>%d%:</span>    }
@@ -48,8 +48,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 <span class='line'>%d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #D24; font-weight: bold">);
 <span class='line'>%d%:</span>    </span>
 </span></code></pre>
-					</div>
-	</div>
+			</div></div>
 
 
 
@@ -66,11 +65,11 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 
-			<div class="panel">
+		<div class="panel">
 		<h2><a href="#" rel="netteBsPnl2">Environment <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl2" class="nette-collapsed inner">
-							<h3><a href="#" rel="netteBsPnl-env-const">Constants <abbr>&#x25bc;</abbr></a></h3>
+						<h3><a href="#" rel="netteBsPnl-env-const">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<div class="outer">
 			<table id="netteBsPnl-env-const">%A%</table>
 			</div>
@@ -86,12 +85,11 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 						<div class="outer">
 			<table>%A%</table>
 			</div>
-							</div>
-	</div>
+					</div></div>
 
 
 
-			<div class="panel">
+		<div class="panel">
 		<h2><a href="#" rel="netteBsPnl3">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl3" class="nette-collapsed inner">
@@ -105,19 +103,17 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 						<p><i>empty</i></p>
 									<h3>$_COOKIE</h3>
 						<p><i>empty</i></p>
-										</div>
-	</div>
+								</div></div>
 
 
 
-			<div class="panel">
+		<div class="panel">
 		<h2><a href="#" rel="netteBsPnl4">HTTP response <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl4" class="nette-collapsed inner">
-				<h3>Headers</h3>
+			<h3>Headers</h3>
 						<pre>X-Powered-By: Nette Framework<br>Content-Type: text/html<br></pre>
-							</div>
-	</div>
+					</div></div>
 
 
 		<ul>

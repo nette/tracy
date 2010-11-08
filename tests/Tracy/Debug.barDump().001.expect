@@ -35,7 +35,7 @@
 	</tr>
 		<tr class="">
 		<th>6</th>
-		<td><pre class="nette-dump"><a href='#' class='nette-toggler'><span>array</span>(2) <abbr>&#x25bc;</abbr> </a><code>{
+		<td><pre class="nette-dump"><a href='#' rel='next'><span>array</span>(2) <abbr>&#x25bc;</abbr> </a><code>{
    "key1" => "val1" (4)
    "key2" => TRUE
 }</code>
@@ -43,7 +43,7 @@
 	</tr>
 		<tr class="nette-alt">
 		<th>7</th>
-		<td><pre class="nette-dump"><a href='#' class='nette-toggler'><span>stdClass</span>(2) <abbr>&#x25bc;</abbr> </a><code>{
+		<td><pre class="nette-dump"><a href='#' rel='next'><span>stdClass</span>(2) <abbr>&#x25bc;</abbr> </a><code>{
    "key1" => "val1" (4)
    "key2" => TRUE
 }</code>
