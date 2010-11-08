@@ -26,6 +26,8 @@ class DebugPanel extends Object implements IDebugPanel
 
 	private $panelCb;
 
+	public $data;
+
 	public function __construct($id, $tabCb, $panelCb)
 	{
 		$this->id = $id;
@@ -41,14 +43,14 @@ class DebugPanel extends Object implements IDebugPanel
 	public function getTab()
 	{
 		ob_start();
-		call_user_func($this->tabCb, $this->id);
+		call_user_func($this->tabCb, $this->id, $this->data);
 		return ob_get_clean();
 	}
 
 	public function getPanel()
 	{
 		ob_start();
-		call_user_func($this->panelCb, $this->id);
+		call_user_func($this->panelCb, $this->id, $this->data);
 		return ob_get_clean();
 	}
 

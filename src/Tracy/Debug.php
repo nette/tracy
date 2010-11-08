@@ -102,9 +102,6 @@ final class Debug
 	/** @var array */
 	private static $panels = array();
 
-	/** @var array payload filled by {@link Debug::barDump()} */
-	private static $dumps;
-
 	/** @var array payload filled by {@link Debug::_errorHandler()} */
 	private static $errors;
 
@@ -151,204 +148,11 @@ final class Debug
 			}
 		}
 
-		$tab = array(__CLASS__, 'renderTab'); $panel = array(__CLASS__, 'renderPanel');
+		$tab = array('Nette\DebugHelpers', 'renderTab'); $panel = array('Nette\DebugHelpers', 'renderPanel');
 		self::addPanel(new DebugPanel('time', $tab, $panel));
 		self::addPanel(new DebugPanel('memory', $tab, $panel));
-		self::addPanel(new DebugPanel('errors', $tab, $panel));
+		self::addPanel($tmp = new DebugPanel('errors', $tab, $panel)); $tmp->data = & self::$errors;
 		self::addPanel(new DebugPanel('dumps', $tab, $panel));
-	}
-
-
-
-	/********************* useful tools ****************d*g**/
-
-
-
-	/**
-	 * Dumps information about a variable in readable format.
-	 * @param  mixed  variable to dump
-	 * @param  bool   return output instead of printing it? (bypasses $productionMode)
-	 * @return mixed  variable itself or dump
-	 */
-	public static function dump($var, $return = FALSE)
-	{
-		if (!$return && self::$productionMode) {
-			return $var;
-		}
-
-		$output = "<pre class=\"nette-dump\">" . self::_dump($var, 0) . "</pre>\n";
-
-		if (!$return && self::$showLocation) {
-			$trace = debug_backtrace();
-			$i = isset($trace[1]['class']) && $trace[1]['class'] === __CLASS__ ? 1 : 0;
-			if (isset($trace[$i]['file'], $trace[$i]['line'])) {
-				$output = substr_replace($output, ' <small>' . htmlspecialchars("in file {$trace[$i]['file']} on line {$trace[$i]['line']}", ENT_NOQUOTES) . '</small>', -8, 0);
-			}
-		}
-
-		if (self::$consoleMode) {
-			$output = htmlspecialchars_decode(strip_tags($output), ENT_NOQUOTES);
-		}
-
-		if ($return) {
-			return $output;
-
-		} else {
-			echo $output;
-			return $var;
-		}
-	}
-
-
-
-	/**
-	 * Dumps information about a variable in Nette Debug Bar.
-	 * @param  mixed  variable to dump
-	 * @param  string optional title
-	 * @return mixed  variable itself
-	 */
-	public static function barDump($var, $title = NULL)
-	{
-		if (!self::$productionMode) {
-			$dump = array();
-			foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val) {
-				$dump[$key] = self::_dump($val, 0);
-			}
-			self::$dumps[] = array('title' => $title, 'dump' => $dump);
-		}
-		return $var;
-	}
-
-
-
-	/**
-	 * Internal dump() implementation.
-	 * @param  mixed  variable to dump
-	 * @param  int    current recursion level
-	 * @return string
-	 */
-	private static function _dump(&$var, $level)
-	{
-		static $tableUtf, $tableBin, $reBinary = '#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u';
-		if ($tableUtf === NULL) {
-			foreach (range("\x00", "\xFF") as $ch) {
-				if (ord($ch) < 32 && strpos("\r\n\t", $ch) === FALSE) $tableUtf[$ch] = $tableBin[$ch] = '\\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
-				elseif (ord($ch) < 127) $tableUtf[$ch] = $tableBin[$ch] = $ch;
-				else { $tableUtf[$ch] = $ch; $tableBin[$ch] = '\\x' . dechex(ord($ch)); }
-			}
-			$tableBin["\\"] = '\\\\';
-			$tableBin["\r"] = '\\r';
-			$tableBin["\n"] = '\\n';
-			$tableBin["\t"] = '\\t';
-			$tableUtf['\\x'] = $tableBin['\\x'] = '\\\\x';
-		}
-
-		if (is_bool($var)) {
-			return ($var ? 'TRUE' : 'FALSE') . "\n";
-
-		} elseif ($var === NULL) {
-			return "NULL\n";
-
-		} elseif (is_int($var)) {
-			return "$var\n";
-
-		} elseif (is_float($var)) {
-			$var = (string) $var;
-			if (strpos($var, '.') === FALSE) $var .= '.0';
-			return "$var\n";
-
-		} elseif (is_string($var)) {
-			if (self::$maxLen && strlen($var) > self::$maxLen) {
-				$s = htmlSpecialChars(substr($var, 0, self::$maxLen), ENT_NOQUOTES) . ' ... ';
-			} else {
-				$s = htmlSpecialChars($var, ENT_NOQUOTES);
-			}
-			$s = strtr($s, preg_match($reBinary, $s) || preg_last_error() ? $tableBin : $tableUtf);
-			$len = strlen($var);
-			return "\"$s\"" . ($len > 1 ? " ($len)" : "") . "\n";
-
-		} elseif (is_array($var)) {
-			$s = "<span>array</span>(" . count($var) . ") ";
-			$space = str_repeat($space1 = '   ', $level);
-			$brackets = range(0, count($var) - 1) === array_keys($var) ? "[]" : "{}";
-
-			static $marker;
-			if ($marker === NULL) $marker = uniqid("\x00", TRUE);
-			if (empty($var)) {
-
-			} elseif (isset($var[$marker])) {
-				$brackets = $var[$marker];
-				$s .= "$brackets[0] *RECURSION* $brackets[1]";
-
-			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
-				$s .= "<code>$brackets[0]\n";
-				$var[$marker] = $brackets;
-				foreach ($var as $k => &$v) {
-					if ($k === $marker) continue;
-					$k = is_int($k) ? $k : '"' . strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf) . '"';
-					$s .= "$space$space1$k => " . self::_dump($v, $level + 1);
-				}
-				unset($var[$marker]);
-				$s .= "$space$brackets[1]</code>";
-
-			} else {
-				$s .= "$brackets[0] ... $brackets[1]";
-			}
-			return $s . "\n";
-
-		} elseif (is_object($var)) {
-			$arr = (array) $var;
-			$s = "<span>" . get_class($var) . "</span>(" . count($arr) . ") ";
-			$space = str_repeat($space1 = '   ', $level);
-
-			static $list = array();
-			if (empty($arr)) {
-
-			} elseif (in_array($var, $list, TRUE)) {
-				$s .= "{ *RECURSION* }";
-
-			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
-				$s .= "<code>{\n";
-				$list[] = $var;
-				foreach ($arr as $k => &$v) {
-					$m = '';
-					if ($k[0] === "\x00") {
-						$m = $k[1] === '*' ? ' <span>protected</span>' : ' <span>private</span>';
-						$k = substr($k, strrpos($k, "\x00") + 1);
-					}
-					$k = strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf);
-					$s .= "$space$space1\"$k\"$m => " . self::_dump($v, $level + 1);
-				}
-				array_pop($list);
-				$s .= "$space}</code>";
-
-			} else {
-				$s .= "{ ... }";
-			}
-			return $s . "\n";
-
-		} elseif (is_resource($var)) {
-			return "<span>" . get_resource_type($var) . " resource</span>\n";
-
-		} else {
-			return "<span>unknown type</span>\n";
-		}
-	}
-
-
-
-	/**
-	 * Starts/stops stopwatch.
-	 * @param  string  name
-	 * @return float   elapsed seconds
-	 */
-	public static function timer($name = NULL)
-	{
-		static $time = array();
-		$now = microtime(TRUE);
-		$delta = isset($time[$name]) ? $now - $time[$name] : 0;
-		$time[$name] = $now;
-		return $delta;
 	}
 
 
@@ -508,7 +312,7 @@ final class Debug
 			if (empty($skip) && $logHandle = @fopen(self::$logDirectory . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
 				ob_start(); // double buffer prevents sending HTTP headers in some PHP
 				ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
-				self::paintBlueScreen($exception);
+				DebugHelpers::renderBlueScreen($exception);
 				ob_end_flush();
 				ob_end_clean();
 				fclose($logHandle);
@@ -541,7 +345,7 @@ final class Debug
 		// 2) debug bar (require HTML & development mode)
 		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode
 			&& (!preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list())))) {
-			self::paintDebugBar();
+			DebugHelpers::renderDebugBar(self::$panels);
 		}
 	}
 
@@ -579,7 +383,7 @@ final class Debug
 					echo "$exception\n";
 
 				} elseif ($htmlMode) { // dump to browser
-					self::paintBlueScreen($exception);
+					DebugHelpers::renderBlueScreen($exception);
 
 				} elseif (!self::fireLog($exception, self::ERROR)) { // AJAX or non-HTML mode
 					self::log($exception);
@@ -688,43 +492,6 @@ final class Debug
 
 
 	/**
-	 * Paint blue screen.
-	 * @param  \Exception
-	 * @return void
-	 * @internal
-	 */
-	public static function paintBlueScreen(\Exception $exception)
-	{
-		if (class_exists('Nette\Environment', FALSE)) {
-			$application = Environment::getContext()->hasService('Nette\\Application\\Application', TRUE) ? Environment::getContext()->getService('Nette\\Application\\Application') : NULL;
-		}
-
-		require __DIR__ . '/templates/bluescreen.phtml';
-	}
-
-
-
-	/**
-	 * Paint debug bar.
-	 * @return void
-	 * @internal
-	 */
-	public static function paintDebugBar()
-	{
-		$panels = array();
-		foreach (self::$panels as $panel) {
-			$panels[] = array(
-				'id' => preg_replace('#[^a-z0-9]+#i', '-', $panel->getId()),
-				'tab' => $tab = (string) $panel->getTab(),
-				'panel' => $tab ? (string) $panel->getPanel() : NULL,
-			);
-		}
-		require __DIR__ . '/templates/bar.phtml';
-	}
-
-
-
-	/**
 	 * Starts catching potential errors/warnings.
 	 * @return void
 	 */
@@ -780,6 +547,63 @@ final class Debug
 
 
 
+	/********************* useful tools ****************d*g**/
+
+
+
+	/**
+	 * Dumps information about a variable in readable format.
+	 * @param  mixed  variable to dump
+	 * @param  bool   return output instead of printing it? (bypasses $productionMode)
+	 * @return mixed  variable itself or dump
+	 */
+	public static function dump($var, $return = FALSE)
+	{
+		if (!$return && self::$productionMode) {
+			return $var;
+		}
+
+		$output = "<pre class=\"nette-dump\">" . DebugHelpers::htmlDump($var) . "</pre>\n";
+
+		if (!$return && self::$showLocation) {
+			$trace = debug_backtrace();
+			$i = isset($trace[1]['class']) && $trace[1]['class'] === __CLASS__ ? 1 : 0;
+			if (isset($trace[$i]['file'], $trace[$i]['line'])) {
+				$output = substr_replace($output, ' <small>' . htmlspecialchars("in file {$trace[$i]['file']} on line {$trace[$i]['line']}", ENT_NOQUOTES) . '</small>', -8, 0);
+			}
+		}
+
+		if (self::$consoleMode) {
+			$output = htmlspecialchars_decode(strip_tags($output), ENT_NOQUOTES);
+		}
+
+		if ($return) {
+			return $output;
+
+		} else {
+			echo $output;
+			return $var;
+		}
+	}
+
+
+
+	/**
+	 * Starts/stops stopwatch.
+	 * @param  string  name
+	 * @return float   elapsed seconds
+	 */
+	public static function timer($name = NULL)
+	{
+		static $time = array();
+		$now = microtime(TRUE);
+		$delta = isset($time[$name]) ? $now - $time[$name] : 0;
+		$time[$name] = $now;
+		return $delta;
+	}
+
+
+
 	/********************* debug bar ****************d*g**/
 
 
@@ -797,47 +621,21 @@ final class Debug
 
 
 	/**
-	 * Renders default panel.
-	 * @param  string
-	 * @return void
-	 * @internal
+	 * Dumps information about a variable in Nette Debug Bar.
+	 * @param  mixed  variable to dump
+	 * @param  string optional title
+	 * @return mixed  variable itself
 	 */
-	public static function renderTab($id)
+	public static function barDump($var, $title = NULL)
 	{
-		switch ($id) {
-		case 'time':
-			require __DIR__ . '/templates/bar.time.tab.phtml';
-			return;
-		case 'memory':
-			require __DIR__ . '/templates/bar.memory.tab.phtml';
-			return;
-		case 'dumps':
-			if (!Debug::$dumps) return;
-			require __DIR__ . '/templates/bar.dumps.tab.phtml';
-			return;
-		case 'errors':
-			if (!Debug::$errors) return;
-			require __DIR__ . '/templates/bar.errors.tab.phtml';
+		if (!self::$productionMode) {
+			$dump = array();
+			foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val) {
+				$dump[$key] = DebugHelpers::clickableDump($val);
+			}
+			self::$panels[3]->data[] = array('title' => $title, 'dump' => $dump);
 		}
-	}
-
-
-
-	/**
-	 * Renders default panel.
-	 * @param  string
-	 * @return void
-	 * @internal
-	 */
-	public static function renderPanel($id)
-	{
-		switch ($id) {
-		case 'dumps':
-			require __DIR__ . '/templates/bar.dumps.panel.phtml';
-			return;
-		case 'errors':
-			require __DIR__ . '/templates/bar.errors.panel.phtml';
-		}
+		return $var;
 	}
 
 
@@ -893,7 +691,7 @@ final class Debug
 			$item['exc_frames'] = array();
 
 			foreach ($trace as $frame) {
-				$frame += array('file' => null, 'line' => null, 'class' => null, 'type' => null, 'function' => null, 'object' => null, 'args' => null);
+				$frame += array('file' => NULL, 'line' => NULL, 'class' => NULL, 'type' => NULL, 'function' => NULL, 'object' => NULL, 'args' => NULL);
 				$item['exc_info'][2][] = array($frame['file'], $frame['line'], "$frame[class]$frame[type]$frame[function]", $frame['object']);
 				$item['exc_frames'][] = $frame['args'];
 			};
@@ -923,79 +721,11 @@ final class Debug
 			}
 		}
 
-		$payload['logs'][] = $item;
+		$payload['logs'][] = DebugHelpers::jsonDump($item, -1);
 		foreach (str_split(base64_encode(@json_encode($payload)), 4990) as $k => $v) {
 			header("FireLogger-de11e-$k:$v");
 		}
 		return TRUE;
-	}
-
-
-
-	/**
-	 * Internal dump() implementation.
-	 * @param  mixed  variable to dump
-	 * @param  int    current recursion level
-	 * @return string
-	 */
-	private static function fireDump(&$var, $level = 0)
-	{
-		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
-			return $var;
-
-		} elseif (is_string($var)) {
-			if (self::$maxLen && strlen($var) > self::$maxLen) {
-				$var = substr($var, 0, self::$maxLen) . " \xE2\x80\xA6 ";
-			}
-			return @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $var)); // intentionally @
-
-		} elseif (is_array($var)) {
-			static $marker;
-			if ($marker === NULL) $marker = uniqid("\x00", TRUE);
-			if (isset($var[$marker])) {
-				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
-
-			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
-				$var[$marker] = TRUE;
-				$res = array();
-				foreach ($var as $k => &$v) {
-					if ($k !== $marker) $res[self::fireDump($k)] = self::fireDump($v, $level + 1);
-			}
-				unset($var[$marker]);
-				return $res;
-
-			} else {
-				return " \xE2\x80\xA6 ";
-		}
-
-		} elseif (is_object($var)) {
-			$arr = (array) $var;
-			static $list = array();
-			if (in_array($var, $list, TRUE)) {
-				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
-
-			} elseif ($level < self::$maxDepth || !self::$maxDepth) {
-				$list[] = $var;
-				$res = array(" \xC2\xBBclass\xC2\xAB" => get_class($var));
-				foreach ($arr as $k => &$v) {
-					if ($k[0] === "\x00") {
-						$k = substr($k, strrpos($k, "\x00") + 1);
-					}
-					$res[self::fireDump($k)] = self::fireDump($v, $level + 1);
-				}
-				array_pop($list);
-				return $res;
-
-			} else {
-				return " \xE2\x80\xA6 ";
-			}
-
-		} elseif (is_resource($var)) {
-			return "resource " . get_resource_type($var);
-
-		} else {
-			return "unknown type";
-		}
 	}
 
 }
