@@ -214,8 +214,14 @@ final class Debug
 		}
 
 		// logging configuration
-		if (is_string($logDirectory) || $logDirectory === FALSE) {
-			self::$logDirectory = $logDirectory;
+		if (is_string($logDirectory)) {
+			self::$logDirectory = realpath($logDirectory);
+			if (self::$logDirectory === FALSE) {
+				throw new \DirectoryNotFoundException("Directory '$logDirectory' is not found.");
+			}
+		} elseif ($logDirectory === FALSE) {
+			self::$logDirectory = FALSE;
+
 		} else {
 			self::$logDirectory = defined('APP_DIR') ? APP_DIR . '/../log' : getcwd() . '/log';
 		}
