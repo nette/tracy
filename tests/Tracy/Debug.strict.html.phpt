@@ -50,12 +50,3 @@ function third($arg1)
 
 
 first(10, 'any string');
-
-// after
-
-
-
-__halt_compiler() ?>
-
----EXPECTHEADERS---
-Status: 500 Internal Server Error
