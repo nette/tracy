@@ -51,11 +51,19 @@ final class DebugHelpers
 	public static function renderDebugBar($panels)
 	{
 		foreach ($panels as $key => $panel) {
-			$panels[$key] = array(
-				'id' => preg_replace('#[^a-z0-9]+#i', '-', $panel->getId()),
-				'tab' => $tab = (string) $panel->getTab(),
-				'panel' => $tab ? (string) $panel->getPanel() : NULL,
-			);
+			try {
+				$panels[$key] = array(
+					'id' => preg_replace('#[^a-z0-9]+#i', '-', $panel->getId()),
+					'tab' => $tab = (string) $panel->getTab(),
+					'panel' => $tab ? (string) $panel->getPanel() : NULL,
+				);
+			} catch (\Exception $e) {
+				$panels[$key] = array(
+					'id' => "error-$key",
+					'tab' => "Error: $key",
+					'panel' => nl2br(htmlSpecialChars((string) $e)),
+				);
+			}
 		}
 		require __DIR__ . '/templates/bar.phtml';
 	}
