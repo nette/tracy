@@ -20,7 +20,7 @@
 		<div id="netteBluescreenError" class="panel">
 			<h1>Notice</h1>
 
-			<p>Undefined variable: x</p>
+			<p>Undefined variable: x <a href="%a%" id="netteBsSearch">search&#x25ba;</a></p>
 		</div>
 
 

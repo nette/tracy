@@ -20,7 +20,7 @@
 		<div id="netteBluescreenError" class="panel">
 			<h1>User Error</h1>
 
-			<p>The my error</p>
+			<p>The my error <a href="%a%" id="netteBsSearch">search&#x25ba;</a></p>
 		</div>
 
 
