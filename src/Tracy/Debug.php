@@ -296,9 +296,22 @@ final class Debug
 			$message = "PHP Fatal error: "
 				. ($message instanceof \FatalErrorException ? $exception->getMessage() : "Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "'")
 				. " in " . $exception->getFile() . ":" . $exception->getLine();
+
+			$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
+			$exceptionFilename = "exception " . @date('Y-m-d H-i-s') . " $hash.html";
+			foreach (new \DirectoryIterator(self::$logDirectory) as $entry) {
+				if (strpos($entry, $hash)) {
+					$exceptionFilename = NULL; break;
+				}
+			}
 		}
 
-		error_log(@date('[Y-m-d H-i-s] ') . trim($message) . (self::$source ? '  @  ' . self::$source : '') . PHP_EOL, 3, self::$logDirectory . '/' . strtolower($priority) . '.log');
+		error_log(
+			@date('[Y-m-d H-i-s] ') . trim($message) .
+				(self::$source ? '  @  ' . self::$source : '') .
+				(!empty($exceptionFilename) ? ' @@ ' . $exceptionFilename : '') . PHP_EOL,
+			3, self::$logDirectory . '/' . strtolower($priority) . '.log'
+		);
 
 		if (($priority === self::ERROR || $priority === self::CRITICAL) && self::$email
 			&& @filemtime(self::$logDirectory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
@@ -306,21 +319,13 @@ final class Debug
 			call_user_func(self::$mailer, $message);
 		}
 
-		if (isset($exception)) {
-			$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
-			foreach (new \DirectoryIterator(self::$logDirectory) as $entry) {
-				if (strpos($entry, $hash)) {
-					$skip = TRUE; break;
-				}
-			}
-			if (empty($skip) && $logHandle = @fopen(self::$logDirectory . "/exception " . @date('Y-m-d H-i-s') . " $hash.html", 'w')) {
-				ob_start(); // double buffer prevents sending HTTP headers in some PHP
-				ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
-				DebugHelpers::renderBlueScreen($exception);
-				ob_end_flush();
-				ob_end_clean();
-				fclose($logHandle);
-			}
+		if (!empty($exceptionFilename) && $logHandle = @fopen(self::$logDirectory . '/'. $exceptionFilename, 'w')) {
+			ob_start(); // double buffer prevents sending HTTP headers in some PHP
+			ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
+			DebugHelpers::renderBlueScreen($exception);
+			ob_end_flush();
+			ob_end_clean();
+			fclose($logHandle);
 		}
 	}
 
