@@ -309,7 +309,7 @@ final class Debug
 		error_log(
 			@date('[Y-m-d H-i-s] ') . trim($message) .
 				(self::$source ? '  @  ' . self::$source : '') .
-				(!empty($exceptionFilename) ? ' @@ ' . $exceptionFilename : '') . PHP_EOL,
+				(!empty($exceptionFilename) ? '  @@  ' . $exceptionFilename : '') . PHP_EOL,
 			3, self::$logDirectory . '/' . strtolower($priority) . '.log'
 		);
 
