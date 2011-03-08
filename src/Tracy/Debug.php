@@ -423,13 +423,13 @@ final class Debug
 	 */
 	public static function _errorHandler($severity, $message, $file, $line, $context)
 	{
-		if (self::$lastError !== FALSE) { // tryError mode
-			self::$lastError = new \ErrorException($message, 0, $severity, $file, $line);
-			return NULL;
-		}
-
 		if (self::$scream) {
 			error_reporting(E_ALL | E_STRICT);
+		}
+
+		if (self::$lastError !== FALSE && ($severity & error_reporting()) === $severity) { // tryError mode
+			self::$lastError = new \ErrorException($message, 0, $severity, $file, $line);
+			return NULL;
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
