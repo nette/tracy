@@ -212,7 +212,7 @@ final class DebugHelpers
 			return "$var\n";
 
 		} elseif (is_float($var)) {
-			$var = (string) $var;
+			$var = var_export($var, TRUE);
 			if (strpos($var, '.') === FALSE) $var .= '.0';
 			return "$var\n";
 
