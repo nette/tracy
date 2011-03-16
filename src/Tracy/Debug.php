@@ -294,7 +294,9 @@ final class Debug
 		if ($message instanceof \Exception) {
 			$exception = $message;
 			$message = "PHP Fatal error: "
-				. ($message instanceof \FatalErrorException ? $exception->getMessage() : "Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "'")
+				. ($message instanceof \FatalErrorException
+					? $exception->getMessage()
+					: "Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "'")
 				. " in " . $exception->getFile() . ":" . $exception->getLine();
 
 			$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
@@ -315,7 +317,8 @@ final class Debug
 
 		if (($priority === self::ERROR || $priority === self::CRITICAL) && self::$email
 			&& @filemtime(self::$logDirectory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
-			&& @file_put_contents(self::$logDirectory . '/email-sent', 'sent')) { // @ - file may not be writable
+			&& @file_put_contents(self::$logDirectory . '/email-sent', 'sent') // @ - file may not be writable
+		) {
 			call_user_func(self::$mailer, $message);
 		}
 
@@ -353,7 +356,8 @@ final class Debug
 
 		// 2) debug bar (require HTML & development mode)
 		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode
-			&& (!preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list())))) {
+			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))
+		) {
 			DebugHelpers::renderDebugBar(self::$panels);
 		}
 	}
@@ -382,9 +386,7 @@ final class Debug
 					echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
 
 				} elseif ($htmlMode) {
-					echo "<!DOCTYPE html><meta http-equiv='Content-Type' content='text/html; charset=utf-8'><meta name=robots content=noindex><meta name=generator content='Nette Framework'>\n\n";
-					echo "<style>body{color:#333;background:white;width:500px;margin:100px auto}h1{font:bold 47px/1.5 sans-serif;margin:.6em 0}p{font:21px/1.5 Georgia,serif;margin:1.5em 0}small{font-size:70%;color:gray}</style>\n\n";
-					echo "<title>Server Error</title>\n\n<h1>Server Error</h1>\n\n<p>We're sorry! The server encountered an internal error and was unable to complete your request. Please try again later.</p>\n\n<p><small>error 500</small></p>";
+					require __DIR__ . '/templates/error.phtml';
 				}
 
 			} else {
@@ -403,7 +405,8 @@ final class Debug
 				call_user_func($handler, $exception);
 			}
 		} catch (\Exception $e) {
-			echo "\nNette\\Debug FATAL ERROR: thrown ", get_class($e), ': ', $e->getMessage(), "\nwhile processing ", get_class($exception), ': ', $exception->getMessage(), "\n";
+			echo "\nNette\\Debug FATAL ERROR: thrown ", get_class($e), ': ', $e->getMessage(),
+				"\nwhile processing ", get_class($exception), ': ', $exception->getMessage(), "\n";
 			exit;
 		}
 	}
@@ -578,7 +581,10 @@ final class Debug
 			$trace = debug_backtrace();
 			$i = isset($trace[1]['class']) && $trace[1]['class'] === __CLASS__ ? 1 : 0;
 			if (isset($trace[$i]['file'], $trace[$i]['line'])) {
-				$output = substr_replace($output, ' <small>' . htmlspecialchars("in file {$trace[$i]['file']} on line {$trace[$i]['line']}", ENT_NOQUOTES) . '</small>', -8, 0);
+				$output = substr_replace(
+					$output,
+					' <small>' . htmlspecialchars("in file {$trace[$i]['file']} on line {$trace[$i]['line']}", ENT_NOQUOTES) . '</small>',
+					-8, 0);
 			}
 		}
 
@@ -688,7 +694,9 @@ final class Debug
 		if (isset($args[0]) && $args[0] instanceof \Exception) {
 			$e = array_shift($args);
 			$trace = $e->getTrace();
-			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__ && ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')) {
+			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__
+				&& ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')
+			) {
 				unset($trace[0]);
 			}
 
@@ -706,12 +714,15 @@ final class Debug
 			}
 
 			$file = str_replace(dirname(dirname(dirname($e->getFile()))), "\xE2\x80\xA6", $e->getFile());
-			$item['template'] = ($e instanceof \ErrorException ? '' : get_class($e) . ': ') . $e->getMessage() . ($e->getCode() ? ' #' . $e->getCode() : '') . ' in ' . $file . ':' . $e->getLine();
+			$item['template'] = ($e instanceof \ErrorException ? '' : get_class($e) . ': ')
+				. $e->getMessage() . ($e->getCode() ? ' #' . $e->getCode() : '') . ' in ' . $file . ':' . $e->getLine();
 			array_unshift($trace, array('file' => $e->getFile(), 'line' => $e->getLine()));
 
 		} else {
 			$trace = debug_backtrace();
-			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__ && ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')) {
+			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__
+				&& ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')
+			) {
 				unset($trace[0]);
 			}
 		}

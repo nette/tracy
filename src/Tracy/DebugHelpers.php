@@ -33,7 +33,9 @@ final class DebugHelpers
 	public static function renderBlueScreen(\Exception $exception)
 	{
 		if (class_exists('Nette\Environment', FALSE)) {
-			$application = Environment::getContext()->hasService('Nette\\Application\\Application', TRUE) ? Environment::getContext()->getService('Nette\\Application\\Application') : NULL;
+			$application = Environment::getContext()->hasService('Nette\\Application\\Application', TRUE)
+				? Environment::getContext()->getService('Nette\\Application\\Application')
+				: NULL;
 		}
 
 		require __DIR__ . '/templates/bluescreen.phtml';
@@ -136,7 +138,9 @@ final class DebugHelpers
 		$i = $start; // find last highlighted block
 		while (--$i >= 1) {
 			if (preg_match('#.*(</?span[^>]*>)#', $source[$i], $m)) {
-				if ($m[1] !== '</span>') { $spans++; $out .= $m[1]; }
+				if ($m[1] !== '</span>') {
+					$spans++; $out .= $m[1];
+				}
 				break;
 			}
 		}
@@ -191,9 +195,13 @@ final class DebugHelpers
 		static $tableUtf, $tableBin, $reBinary = '#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u';
 		if ($tableUtf === NULL) {
 			foreach (range("\x00", "\xFF") as $ch) {
-				if (ord($ch) < 32 && strpos("\r\n\t", $ch) === FALSE) $tableUtf[$ch] = $tableBin[$ch] = '\\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
-				elseif (ord($ch) < 127) $tableUtf[$ch] = $tableBin[$ch] = $ch;
-				else { $tableUtf[$ch] = $ch; $tableBin[$ch] = '\\x' . dechex(ord($ch)); }
+				if (ord($ch) < 32 && strpos("\r\n\t", $ch) === FALSE) {
+					$tableUtf[$ch] = $tableBin[$ch] = '\\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
+				} elseif (ord($ch) < 127) {
+					$tableUtf[$ch] = $tableBin[$ch] = $ch;
+				} else {
+					$tableUtf[$ch] = $ch; $tableBin[$ch] = '\\x' . dechex(ord($ch));
+				}
 			}
 			$tableBin["\\"] = '\\\\';
 			$tableBin["\r"] = '\\r';
@@ -374,7 +382,10 @@ final class DebugHelpers
 		return '<pre class="nette-dump">' . preg_replace_callback(
 			'#^( *)((?>[^(]{1,200}))\((\d+)\) <code>#m',
 			function ($m) {
-				return "$m[1]<a href='#' rel='next'>$m[2]($m[3]) " . (trim($m[1]) || $m[3] < 7 ? '<abbr>&#x25bc;</abbr> </a><code>' : '<abbr>&#x25ba;</abbr> </a><code class="nette-collapsed">');
+				return "$m[1]<a href='#' rel='next'>$m[2]($m[3]) "
+					. (trim($m[1]) || $m[3] < 7
+					? '<abbr>&#x25bc;</abbr> </a><code>'
+					: '<abbr>&#x25ba;</abbr> </a><code class="nette-collapsed">');
 			},
 			self::htmlDump($dump)
 		) . '</pre>';
