@@ -260,7 +260,7 @@ final class DebugHelpers
 				$var[$marker] = $brackets;
 				foreach ($var as $k => &$v) {
 					if ($k === $marker) continue;
-					$k = is_int($k) ? $k : '"' . strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf) . '"';
+					$k = is_int($k) ? $k : '"' . htmlSpecialChars(strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf)) . '"';
 					$s .= "$space$space1$k => " . self::htmlDump($v, $level + 1);
 				}
 				unset($var[$marker]);
@@ -291,7 +291,7 @@ final class DebugHelpers
 						$m = $k[1] === '*' ? ' <span>protected</span>' : ' <span>private</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$k = strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf);
+					$k = htmlSpecialChars(strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf));
 					$s .= "$space$space1\"$k\"$m => " . self::htmlDump($v, $level + 1);
 				}
 				array_pop($list);
@@ -303,7 +303,7 @@ final class DebugHelpers
 			return $s . "\n";
 
 		} elseif (is_resource($var)) {
-			return "<span>" . get_resource_type($var) . " resource</span>\n";
+			return "<span>" . htmlSpecialChars(get_resource_type($var)) . " resource</span>\n";
 
 		} else {
 			return "<span>unknown type</span>\n";
