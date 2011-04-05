@@ -61,7 +61,7 @@ final class Debugger
 	/** @var int  display location? {@link Debugger::dump()} */
 	public static $showLocation = FALSE;
 
-	/********************* errors and exceptions reporing ****************d*g**/
+	/********************* errors and exceptions reporting ****************d*g**/
 
 	/** server modes {@link Debugger::enable()} */
 	const DEVELOPMENT = FALSE,
@@ -187,7 +187,7 @@ final class Debugger
 
 
 
-	/********************* errors and exceptions reporing ****************d*g**/
+	/********************* errors and exceptions reporting ****************d*g**/
 
 
 
@@ -501,7 +501,7 @@ final class Debugger
 
 
 	/**
-	 * Handles exception throwed in __toString().
+	 * Handles exception thrown in __toString().
 	 * @param  \Exception
 	 * @return void
 	 */
