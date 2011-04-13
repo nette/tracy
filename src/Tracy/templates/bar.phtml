@@ -12,7 +12,7 @@
  * @return     void
  */
 
-namespace Nette;
+namespace Nette\Diagnostics;
 
 use Nette;
 
@@ -547,7 +547,7 @@ Nette.Debug.Bar = Nette.Class({
 		<ul>
 			<li id="nette-debug-logo" title="PHP <?php echo htmlSpecialChars(PHP_VERSION . " |\n"
 			. (isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] . " |\n" : '')
-			. (class_exists('Nette\Framework') ? 'Nette Framework ' . Framework::VERSION . ' (' . substr(Framework::REVISION, 8) . ')' : '')) ?>">&nbsp;<span>Nette Framework</span></li>
+			. (class_exists('Nette\Framework') ? 'Nette Framework ' . Nette\Framework::VERSION . ' (' . substr(Nette\Framework::REVISION, 8) . ')' : '')) ?>">&nbsp;<span>Nette Framework</span></li>
 			<?php foreach ($panels as $panel): if (!$panel['tab']) continue; ?>
 			<li><?php if ($panel['panel']): ?><a href="#" rel="<?php echo $panel['id'] ?>"><?php echo trim($panel['tab']) ?></a><?php else: echo '<span>', trim($panel['tab']), '</span>'; endif ?></li>
 			<?php endforeach ?>

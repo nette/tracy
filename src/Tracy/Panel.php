@@ -9,7 +9,9 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette;
+namespace Nette\Diagnostics;
+
+use Nette;
 
 
 
@@ -18,7 +20,7 @@ namespace Nette;
  *
  * @author     David Grudl
  */
-class DebugPanel extends Object implements IDebugPanel
+class Panel extends Nette\Object implements IPanel
 {
 	private $id;
 

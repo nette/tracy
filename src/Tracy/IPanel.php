@@ -9,18 +9,18 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette;
+namespace Nette\Diagnostics;
 
 use Nette;
 
 
 
 /**
- * Custom output for Nette\Debug.
+ * Custom output for Debugger.
  *
  * @author     David Grudl
  */
-interface IDebugPanel
+interface IPanel
 {
 
 	/**

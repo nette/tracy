@@ -7,7 +7,7 @@
  * Copyright (c) 2004, 2010 David Grudl (http://davidgrudl.com)
  */
 
-namespace Nette;
+namespace Nette\Diagnostics;
 
 use Nette;
 ?>
@@ -23,10 +23,10 @@ use Nette;
 	<td class="nette-right"><?php echo $count ? "$count\xC3\x97" : '' ?></td>
 	<td><pre><?php echo
 		htmlspecialchars($message), ' in ',
-		(Debug::$editor ? '<a href="' . DebugHelpers::editorLink($file, $line) . '">' : ''),
+		(Debugger::$editor ? '<a href="' . Helpers::editorLink($file, $line) . '">' : ''),
 		htmlspecialchars(($relative ? str_replace($relative, "...", $file) : $file)),
 		':', $line,
-		(Debug::$editor ? '</a>' : '')
+		(Debugger::$editor ? '</a>' : '')
 	?></pre></td>
 </tr>
 <?php endforeach ?>

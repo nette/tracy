@@ -9,20 +9,19 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette;
+namespace Nette\Diagnostics;
 
-use Nette,
-	Nette\Environment;
+use Nette;
 
 
 
 /**
- * Rendering helpers for Nette\Debug.
+ * Rendering helpers for Debugger.
  *
  * @author     David Grudl
  * @internal
  */
-final class DebugHelpers
+final class Helpers
 {
 
 	/**
@@ -33,8 +32,8 @@ final class DebugHelpers
 	public static function renderBlueScreen(\Exception $exception)
 	{
 		if (class_exists('Nette\Environment', FALSE)) {
-			$application = Environment::getContext()->hasService('Nette\\Application\\Application', TRUE)
-				? Environment::getContext()->getService('Nette\\Application\\Application')
+			$application = Nette\Environment::getContext()->hasService('Nette\\Application\\Application', TRUE)
+				? Nette\Environment::getContext()->getService('Nette\\Application\\Application')
 				: NULL;
 		}
 
@@ -183,7 +182,7 @@ final class DebugHelpers
 	 */
 	public static function editorLink($file, $line)
 	{
-		return strtr(Debug::$editor, array('%file' => rawurlencode($file), '%line' => $line));
+		return strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line));
 	}
 
 
@@ -233,8 +232,8 @@ final class DebugHelpers
 			return "$var\n";
 
 		} elseif (is_string($var)) {
-			if (Debug::$maxLen && strlen($var) > Debug::$maxLen) {
-				$s = htmlSpecialChars(substr($var, 0, Debug::$maxLen), ENT_NOQUOTES) . ' ... ';
+			if (Debugger::$maxLen && strlen($var) > Debugger::$maxLen) {
+				$s = htmlSpecialChars(substr($var, 0, Debugger::$maxLen), ENT_NOQUOTES) . ' ... ';
 			} else {
 				$s = htmlSpecialChars($var, ENT_NOQUOTES);
 			}
@@ -255,7 +254,7 @@ final class DebugHelpers
 				$brackets = $var[$marker];
 				$s .= "$brackets[0] *RECURSION* $brackets[1]";
 
-			} elseif ($level < Debug::$maxDepth || !Debug::$maxDepth) {
+			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth) {
 				$s .= "<code>$brackets[0]\n";
 				$var[$marker] = $brackets;
 				foreach ($var as $k => &$v) {
@@ -282,7 +281,7 @@ final class DebugHelpers
 			} elseif (in_array($var, $list, TRUE)) {
 				$s .= "{ *RECURSION* }";
 
-			} elseif ($level < Debug::$maxDepth || !Debug::$maxDepth) {
+			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth) {
 				$s .= "<code>{\n";
 				$list[] = $var;
 				foreach ($arr as $k => &$v) {
@@ -324,8 +323,8 @@ final class DebugHelpers
 			return $var;
 
 		} elseif (is_string($var)) {
-			if (Debug::$maxLen && strlen($var) > Debug::$maxLen) {
-				$var = substr($var, 0, Debug::$maxLen) . " \xE2\x80\xA6 ";
+			if (Debugger::$maxLen && strlen($var) > Debugger::$maxLen) {
+				$var = substr($var, 0, Debugger::$maxLen) . " \xE2\x80\xA6 ";
 			}
 			return @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $var)); // intentionally @
 
@@ -335,7 +334,7 @@ final class DebugHelpers
 			if (isset($var[$marker])) {
 				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
 
-			} elseif ($level < Debug::$maxDepth || !Debug::$maxDepth) {
+			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth) {
 				$var[$marker] = TRUE;
 				$res = array();
 				foreach ($var as $k => &$v) {
@@ -354,7 +353,7 @@ final class DebugHelpers
 			if (in_array($var, $list, TRUE)) {
 				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
 
-			} elseif ($level < Debug::$maxDepth || !Debug::$maxDepth) {
+			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth) {
 				$list[] = $var;
 				$res = array("\x00" => '(object) ' . get_class($var));
 				foreach ($arr as $k => &$v) {
