@@ -1,14 +1,15 @@
 <?php
 
 /**
- * Test: Nette\Debug notices and warnings in HTML.
+ * Test: Nette\Diagnostics\Debugger notices and warnings in HTML.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger,
+	Nette\StringUtils;
 
 
 
@@ -16,14 +17,14 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = FALSE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = FALSE;
+Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
 
-Debug::enable();
+Debugger::enable();
 
 function shutdown() {
-	$m = Nette\String::match($output = ob_get_clean(), '#debug.innerHTML = (".*");#');
+	$m = StringUtils::match($output = ob_get_clean(), '#debug.innerHTML = (".*");#');
 	Assert::match('
 Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 

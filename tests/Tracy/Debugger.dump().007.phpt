@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug::dump() and locale.
+ * Test: Nette\Diagnostics\Debugger::dump() and locale.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,8 +16,8 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = TRUE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = TRUE;
+Debugger::$productionMode = FALSE;
 setLocale(LC_ALL, 'czech');
 
 
@@ -27,4 +27,4 @@ Assert::match( 'array(2) [
    1 => 10.3
 ]
 
-', Debug::dump(array(-10.0, 10.3), TRUE));
+', Debugger::dump(array(-10.0, 10.3), TRUE));

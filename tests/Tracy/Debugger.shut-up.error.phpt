@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug errors and shut-up operator.
+ * Test: Nette\Diagnostics\Debugger errors and shut-up operator.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,15 +16,15 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = TRUE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = TRUE;
+Debugger::$productionMode = FALSE;
 
-Debug::enable();
+Debugger::enable();
 
 function shutdown() {
-	Assert::match("exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
+	Assert::match("exception 'Nette\FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
 Stack trace:
-#0 [internal function]: %ns%Debug::_shutdownHandler()
+#0 [internal function]: %ns%Debugger::_shutdownHandler()
 #1 {main}
 ", ob_get_clean());
 	die(0);

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug notices and warnings with $strictMode in console.
+ * Test: Nette\Diagnostics\Debugger notices and warnings with $strictMode in console.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,16 +16,16 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = TRUE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = TRUE;
+Debugger::$productionMode = FALSE;
 
-Debug::$strictMode = TRUE;
-Debug::enable();
+Debugger::$strictMode = TRUE;
+Debugger::enable();
 
 function shutdown() {
-	Assert::match("exception 'FatalErrorException' with message 'Undefined variable: x' in %a%
+	Assert::match("exception 'Nette\FatalErrorException' with message 'Undefined variable: x' in %a%
 Stack trace:
-#0 %a%: %ns%Debug::_errorHandler(8, '%a%', '%a%', %a%, Array)
+#0 %a%: %ns%Debugger::_errorHandler(8, '%a%', '%a%', %a%, Array)
 #1 %a%: third(Array)
 #2 %a%: second(true, false)
 #3 %a%: first(10, 'any string')

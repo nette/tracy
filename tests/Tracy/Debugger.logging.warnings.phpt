@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug notices and warnings logging.
+ * Test: Nette\Diagnostics\Debugger notices and warnings logging.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -22,10 +22,10 @@ $_SERVER['HTTP_HOST'] = 'nette.org';
 $logDirectory = __DIR__ . '/log';
 TestHelpers::purge($logDirectory);
 
-Debug::$consoleMode = FALSE;
-Debug::$mailer = 'testMailer';
+Debugger::$consoleMode = FALSE;
+Debugger::$mailer = 'testMailer';
 
-Debug::enable(Debug::PRODUCTION, $logDirectory, 'admin@example.com');
+Debugger::enable(Debugger::PRODUCTION, $logDirectory, 'admin@example.com');
 
 function testMailer() {}
 

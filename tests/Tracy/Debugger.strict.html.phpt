@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Test: Nette\Debug notices and warnings with $strictMode in HTML.
+ * Test: Nette\Diagnostics\Debugger notices and warnings with $strictMode in HTML.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  * @assertCode 500
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -17,12 +17,12 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = FALSE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = FALSE;
+Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
 
-Debug::$strictMode = TRUE;
-Debug::enable();
+Debugger::$strictMode = TRUE;
+Debugger::enable();
 
 function shutdown() {
 	Assert::match(file_get_contents(__DIR__ . '/Debugger.strict.html.expect'), ob_get_clean());

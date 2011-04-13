@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug exception in console.
+ * Test: Nette\Diagnostics\Debugger exception in console.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,10 +16,10 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = TRUE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = TRUE;
+Debugger::$productionMode = FALSE;
 
-Debug::enable();
+Debugger::enable();
 
 function shutdown() {
 	Assert::match("exception 'Exception' with message 'The my exception' in %a%

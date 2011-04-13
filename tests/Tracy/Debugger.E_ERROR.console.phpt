@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug E_ERROR in console.
+ * Test: Nette\Diagnostics\Debugger E_ERROR in console.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,17 +16,17 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = TRUE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = TRUE;
+Debugger::$productionMode = FALSE;
 
-Debug::enable();
+Debugger::enable();
 
 function shutdown() {
 	Assert::match("
 Fatal error: Call to undefined function missing_funcion() in %a%
-exception 'FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%
+exception 'Nette\FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%
 Stack trace:
-#0 [internal function]: %ns%Debug::_shutdownHandler()
+#0 [internal function]: %ns%Debugger::_shutdownHandler()
 #1 {main}
 ", ob_get_clean());
 	die(0);

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug::dump() in production mode.
+ * Test: Nette\Diagnostics\Debugger::dump() in production mode.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,13 +16,13 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = FALSE;
-Debug::$productionMode = TRUE;
+Debugger::$consoleMode = FALSE;
+Debugger::$productionMode = TRUE;
 
 
 ob_start();
-Debug::dump('sensitive data');
+Debugger::dump('sensitive data');
 Assert::same( '', ob_get_clean() );
 
 Assert::match( '<pre class="nette-dump">"forced" (6)
-</pre>', Debug::dump('forced', TRUE) );
+</pre>', Debugger::dump('forced', TRUE) );

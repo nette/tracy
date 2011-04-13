@@ -1,14 +1,15 @@
 <?php
 
 /**
- * Test: Nette\Debug::barDump()
+ * Test: Nette\Diagnostics\Debugger::barDump()
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger,
+	Nette\StringUtils;
 
 
 
@@ -16,14 +17,14 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = FALSE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = FALSE;
+Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
 
-Debug::enable();
+Debugger::enable();
 
 function shutdown() {
-	$m = Nette\String::match(ob_get_clean(), '#debug.innerHTML = (".*");#');
+	$m = StringUtils::match(ob_get_clean(), '#debug.innerHTML = (".*");#');
 	Assert::match(file_get_contents(__DIR__ . '/Debugger.barDump().001.expect'), json_decode($m[1]));
 }
 Assert::handler('shutdown');
@@ -32,8 +33,8 @@ Assert::handler('shutdown');
 
 $arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2' => TRUE), (object) array('key1' => 'val1', 'key2' => TRUE));
 
-Debug::barDump($arr);
+Debugger::barDump($arr);
 
 end($arr)->key1 = 'changed'; // make post-change
 
-Debug::barDump('<a href="#">test</a>', 'String');
+Debugger::barDump('<a href="#">test</a>', 'String');

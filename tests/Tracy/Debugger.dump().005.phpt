@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug::dump() and recursive arrays.
+ * Test: Nette\Diagnostics\Debugger::dump() and recursive arrays.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,8 +16,8 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = TRUE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = TRUE;
+Debugger::$productionMode = FALSE;
 
 
 $arr = array(1, 2, 3);
@@ -33,7 +33,7 @@ Assert::match( 'array(4) [
       3 => array(5) [ *RECURSION* ]
    ]
 ]
-', Debug::dump($arr, TRUE) );
+', Debugger::dump($arr, TRUE) );
 
 
 
@@ -48,4 +48,4 @@ Assert::match( 'array(3) {
       0 => array(4) { *RECURSION* }
    }
 }
-', Debug::dump($arr, TRUE) );
+', Debugger::dump($arr, TRUE) );

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug::dump() with $showLocation.
+ * Test: Nette\Diagnostics\Debugger::dump() with $showLocation.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,14 +16,14 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = FALSE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = FALSE;
+Debugger::$productionMode = FALSE;
 
 
 
-Debug::$showLocation = TRUE;
+Debugger::$showLocation = TRUE;
 
 ob_start();
-Debug::dump('xxx');
+Debugger::dump('xxx');
 Assert::match( '<pre class="nette-dump">"xxx" (3) <small>in file %a% on line %d%</small>
 </pre>', ob_get_clean() );

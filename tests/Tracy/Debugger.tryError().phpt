@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug::tryError() & catchError.
+ * Test: Nette\Diagnostics\Debugger::tryError() & catchError.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,18 +16,18 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::tryError(); {
+Debugger::tryError(); {
 	$a++;
-} $res = Debug::catchError($e);
+} $res = Debugger::catchError($e);
 
 Assert::true( $res );
 Assert::same( "Undefined variable: a", $e->getMessage() );
 
 
 
-Debug::tryError(); {
+Debugger::tryError(); {
 
-} $res = Debug::catchError($e);
+} $res = Debugger::catchError($e);
 
 Assert::false( $res );
 Assert::null( $e );

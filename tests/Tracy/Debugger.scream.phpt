@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug notices and warnings in scream mode.
+ * Test: Nette\Diagnostics\Debugger notices and warnings in scream mode.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,11 +16,11 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = TRUE;
-Debug::$productionMode = FALSE;
-Debug::$scream = TRUE;
+Debugger::$consoleMode = TRUE;
+Debugger::$productionMode = FALSE;
+Debugger::$scream = TRUE;
 
-Debug::enable();
+Debugger::enable();
 
 function shutdown() {
 	Assert::match('

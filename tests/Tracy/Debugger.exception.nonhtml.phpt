@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug exception in non-HTML mode.
+ * Test: Nette\Diagnostics\Debugger exception in non-HTML mode.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,11 +16,11 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = FALSE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = FALSE;
+Debugger::$productionMode = FALSE;
 header('Content-Type: text/plain');
 
-Debug::enable();
+Debugger::enable();
 
 function shutdown() {
 	Assert::same('', ob_get_clean());

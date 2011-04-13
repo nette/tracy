@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug and Environment.
+ * Test: Nette\Diagnostics\Debugger and Environment.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug,
+use Nette\Diagnostics\Debugger,
 	Nette\Environment;
 
 
@@ -17,15 +17,15 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = FALSE;
+Debugger::$consoleMode = FALSE;
 
 
 
-Assert::null( Debug::$productionMode );
+Assert::null( Debugger::$productionMode );
 
 // setting production environment...
 
 Environment::setMode('production', TRUE);
-Debug::enable();
+Debugger::enable();
 
-Assert::true( Debug::$productionMode );
+Assert::true( Debugger::$productionMode );

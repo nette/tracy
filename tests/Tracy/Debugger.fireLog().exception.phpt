@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug::fireLog() and exception.
+ * Test: Nette\Diagnostics\Debugger::fireLog() and exception.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -19,8 +19,8 @@ require __DIR__ . '/../bootstrap.php';
 // Setup environment
 $_SERVER['HTTP_X_FIRELOGGER'] = TRUE;
 
-Debug::$consoleMode = FALSE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = FALSE;
+Debugger::$productionMode = FALSE;
 
 
 
@@ -46,7 +46,7 @@ try {
 	first(10, 'any string');
 
 } catch (Exception $e) {
-	Debug::fireLog($e);
+	Debugger::fireLog($e);
 }
 
 

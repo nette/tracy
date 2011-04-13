@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug::timer()
+ * Test: Nette\Diagnostics\Debugger::timer()
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,14 +16,14 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::timer();
+Debugger::timer();
 
 sleep(1);
 
-Debug::timer('foo');
+Debugger::timer('foo');
 
 sleep(1);
 
-Assert::same( 2.0, round(Debug::timer(), 1) );
+Assert::same( 2.0, round(Debugger::timer(), 1) );
 
-Assert::same( 1.0, round(Debug::timer('foo'), 1) );
+Assert::same( 1.0, round(Debugger::timer('foo'), 1) );

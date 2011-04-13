@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug notices and warnings in production mode.
+ * Test: Nette\Diagnostics\Debugger notices and warnings in production mode.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,10 +16,10 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = FALSE;
-Debug::$productionMode = TRUE;
+Debugger::$consoleMode = FALSE;
+Debugger::$productionMode = TRUE;
 
-Debug::enable();
+Debugger::enable();
 
 function shutdown() {
 	Assert::same('', ob_get_clean());

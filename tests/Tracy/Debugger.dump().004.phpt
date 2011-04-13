@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug::dump() and $maxDepth and $maxLen.
+ * Test: Nette\Diagnostics\Debugger::dump() and $maxDepth and $maxLen.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,8 +16,8 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = TRUE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = TRUE;
+Debugger::$productionMode = FALSE;
 
 
 
@@ -66,12 +66,12 @@ Assert::match( 'array(5) {
    }
 }
 
-', Debug::dump($arr, TRUE) );
+', Debugger::dump($arr, TRUE) );
 
 
 
-Debug::$maxDepth = 2;
-Debug::$maxLen = 50;
+Debugger::$maxDepth = 2;
+Debugger::$maxLen = 50;
 Assert::match( 'array(5) {
    "long" => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    0 => array(1) [
@@ -90,4 +90,4 @@ Assert::match( 'array(5) {
    }
 }
 
-', Debug::dump($arr, TRUE) );
+', Debugger::dump($arr, TRUE) );

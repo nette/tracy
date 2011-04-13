@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Debug::dump() and strings.
+ * Test: Nette\Diagnostics\Debugger::dump() and strings.
  *
  * @author     David Grudl
- * @package    Nette
+ * @package    Nette\Diagnostics
  * @subpackage UnitTests
  */
 
-use Nette\Debug;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -16,8 +16,8 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debug::$consoleMode = TRUE;
-Debug::$productionMode = FALSE;
+Debugger::$consoleMode = TRUE;
+Debugger::$productionMode = FALSE;
 
 
 
@@ -33,7 +33,7 @@ line" (10)
    7 => "\xff"
 ]
 
-', Debug::dump(array(
+', Debugger::dump(array(
 	'',
 	' ',
 	"\t",
