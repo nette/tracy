@@ -119,7 +119,7 @@ final class Debugger
 	 */
 	final public function __construct()
 	{
-		throw new \LogicException("Cannot instantiate static class " . get_class($this));
+		throw new Nette\StaticClassException;
 	}
 
 
@@ -238,7 +238,7 @@ final class Debugger
 
 		if ($email) {
 			if (!is_string($email)) {
-				throw new \InvalidArgumentException('Email address must be a string.');
+				throw new Nette\InvalidArgumentException('Email address must be a string.');
 			}
 			self::$email = $email;
 		}
