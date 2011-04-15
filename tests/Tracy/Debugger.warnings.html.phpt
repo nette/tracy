@@ -48,8 +48,8 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 </table>
 </div>%A%', json_decode($m[1]));
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 function first($arg1, $arg2)

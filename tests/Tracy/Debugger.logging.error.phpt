@@ -34,8 +34,8 @@ function shutdown() {
 	Assert::true(is_file(Debugger::$logDirectory . '/email-sent'));
 	die(0);
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 missing_funcion();

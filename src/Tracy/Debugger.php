@@ -350,7 +350,6 @@ final class Debugger
 		$error = error_get_last();
 		if (isset($types[$error['type']])) {
 			self::_exceptionHandler(new Nette\FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL));
-			return;
 		}
 
 		// 2) debug bar (require HTML & development mode)
@@ -394,6 +393,9 @@ final class Debugger
 
 				} elseif ($htmlMode) { // dump to browser
 					Helpers::renderBlueScreen($exception);
+					if (self::$showBar) {
+						Helpers::renderDebugBar(self::$panels);
+					}
 
 				} elseif (!self::fireLog($exception, self::ERROR)) { // AJAX or non-HTML mode
 					self::log($exception);
@@ -406,8 +408,8 @@ final class Debugger
 		} catch (\Exception $e) {
 			echo "\nNette\\Debug FATAL ERROR: thrown ", get_class($e), ': ', $e->getMessage(),
 				"\nwhile processing ", get_class($exception), ': ', $exception->getMessage(), "\n";
-			exit;
 		}
+		exit(255);
 	}
 
 
@@ -442,7 +444,6 @@ final class Debugger
 
 		} elseif (self::$strictMode && !self::$productionMode) {
 			self::_exceptionHandler(new Nette\FatalErrorException($message, 0, $severity, $file, $line, $context));
-			exit;
 		}
 
 		static $types = array(
@@ -497,7 +498,6 @@ final class Debugger
 		} else {
 			trigger_error($exception->getMessage(), E_USER_ERROR);
 		}
-		exit;
 	}
 
 

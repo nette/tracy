@@ -31,8 +31,8 @@ Stack trace:
 ", ob_get_clean());
 	die(0);
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 function first($arg1, $arg2)

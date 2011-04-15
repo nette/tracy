@@ -25,9 +25,10 @@ Debugger::enable();
 
 function shutdown() {
 	Assert::match(file_get_contents(__DIR__ . '/Debugger.error-in-eval.expect'), ob_get_clean());
+	die(0);
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 function first($user, $pass)

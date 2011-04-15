@@ -33,8 +33,8 @@ Notice: Undefined variable: x in %a% on line %d%
 Warning: rename(..,..): %A% in %a% on line %d%
 ', ob_get_clean());
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 @mktime(); // E_STRICT

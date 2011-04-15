@@ -29,9 +29,10 @@ Stack trace:
 #2 %a%: first(10, 'any string')
 #3 {main}
 ", ob_get_clean());
+	die(0);
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 function first($arg1, $arg2)

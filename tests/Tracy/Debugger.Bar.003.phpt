@@ -25,4 +25,5 @@ Debugger::enable();
 function shutdown() {
 	Assert::same('', ob_get_clean());
 }
-Assert::handler('shutdown');
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';

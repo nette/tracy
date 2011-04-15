@@ -23,9 +23,10 @@ Debugger::enable();
 
 function shutdown() {
 	Assert::match('ERROR:%A%', ob_get_clean());
+	die(0);
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 throw new Exception('The my exception', 123);

@@ -27,8 +27,8 @@ function shutdown() {
 	Assert::match('%A%<h1>Server Error</h1>%A%', ob_get_clean());
 	die(0);
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 missing_funcion();

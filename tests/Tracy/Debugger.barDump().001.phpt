@@ -27,8 +27,8 @@ function shutdown() {
 	$m = StringUtils::match(ob_get_clean(), '#debug.innerHTML = (".*");#');
 	Assert::match(file_get_contents(__DIR__ . '/Debugger.barDump().001.expect'), json_decode($m[1]));
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 $arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2' => TRUE), (object) array('key1' => 'val1', 'key2' => TRUE));

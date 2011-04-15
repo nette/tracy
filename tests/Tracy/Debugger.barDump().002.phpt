@@ -43,8 +43,8 @@ function shutdown() {
 EOD
 , json_decode($m[1]));
 }
-Assert::handler('shutdown');
-
+ob_start();
+Debugger::$onFatalError[] = 'shutdown';
 
 
 Debugger::barDump('value');

@@ -129,3 +129,5 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 <script type="text/javascript">%A%</script>
 </body>
 </html>
+
+%A%<!-- Nette Debug Bar -->%A%
