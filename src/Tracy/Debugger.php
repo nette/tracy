@@ -35,9 +35,6 @@ final class Debugger
 	/** @var int timestamp with microseconds of the start of the request */
 	public static $time;
 
-	/** @var bool is Firebug & FireLogger detected? */
-	private static $firebugDetected;
-
 	/** @var bool is AJAX request detected? */
 	private static $ajaxDetected;
 
@@ -87,6 +84,9 @@ final class Debugger
 
 	/** @var Logger */
 	public static $logger;
+
+	/** @var FireLogger */
+	public static $fireLogger;
 
 	/** @var string name of the directory where errors should be logged; FALSE means that logging is disabled */
 	public static $logDirectory;
@@ -144,7 +144,6 @@ final class Debugger
 		if (self::$consoleMode) {
 			self::$source = empty($_SERVER['argv']) ? 'cli' : 'cli: ' . implode(' ', $_SERVER['argv']);
 		} else {
-			self::$firebugDetected = isset($_SERVER['HTTP_X_FIRELOGGER']);
 			self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
 			if (isset($_SERVER['REQUEST_URI'])) {
 				self::$source = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
@@ -159,8 +158,10 @@ final class Debugger
 		self::$logger->mailer = & self::$mailer;
 		Logger::$emailSnooze = & self::$emailSnooze;
 
+		self::$fireLogger = new FireLogger;
+
 		self::$blueScreen = new BlueScreen;
-		
+
 		self::$bar = new Bar;
 		self::$bar->addPanel(new DefaultBarPanel('time'));
 		self::$bar->addPanel(new DefaultBarPanel('memory'));
@@ -590,10 +591,6 @@ final class Debugger
 
 
 
-	/********************* debug bar ****************d*g**/
-
-
-
 	/**
 	 * Dumps information about a variable in Nette Debug Bar.
 	 * @param  mixed  variable to dump
@@ -614,97 +611,16 @@ final class Debugger
 
 
 
-	/********************* Firebug extension ****************d*g**/
-
-
-
 	/**
 	 * Sends message to FireLogger console.
-	 * @see http://firelogger.binaryage.com
 	 * @param  mixed   message to log
 	 * @return bool    was successful?
 	 */
 	public static function fireLog($message)
 	{
-		if (self::$productionMode) {
-			return;
-
-		} elseif (!self::$firebugDetected || headers_sent()) {
-			return FALSE;
+		if (!self::$productionMode) {
+			return self::$fireLogger->log($message);
 		}
-
-		static $payload = array('logs' => array());
-
-		$item = array(
-			'name' => 'PHP',
-			'level' => 'debug',
-			'order' => count($payload['logs']),
-			'time' => str_pad(number_format((microtime(TRUE) - self::$time) * 1000, 1, '.', ' '), 8, '0', STR_PAD_LEFT) . ' ms',
-			'template' => '',
-			'message' => '',
-			'style' => 'background:#767ab6',
-		);
-
-		$args = func_get_args();
-		if (isset($args[0]) && is_string($args[0])) {
-			$item['template'] = array_shift($args);
-		}
-
-		if (isset($args[0]) && $args[0] instanceof \Exception) {
-			$e = array_shift($args);
-			$trace = $e->getTrace();
-			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__
-				&& ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')
-			) {
-				unset($trace[0]);
-			}
-
-			$item['exc_info'] = array(
-				$e->getMessage(),
-				$e->getFile(),
-				array(),
-			);
-			$item['exc_frames'] = array();
-
-			foreach ($trace as $frame) {
-				$frame += array('file' => NULL, 'line' => NULL, 'class' => NULL, 'type' => NULL, 'function' => NULL, 'object' => NULL, 'args' => NULL);
-				$item['exc_info'][2][] = array($frame['file'], $frame['line'], "$frame[class]$frame[type]$frame[function]", $frame['object']);
-				$item['exc_frames'][] = $frame['args'];
-			}
-
-			$file = str_replace(dirname(dirname(dirname($e->getFile()))), "\xE2\x80\xA6", $e->getFile());
-			$item['template'] = ($e instanceof \ErrorException ? '' : get_class($e) . ': ')
-				. $e->getMessage() . ($e->getCode() ? ' #' . $e->getCode() : '') . ' in ' . $file . ':' . $e->getLine();
-			array_unshift($trace, array('file' => $e->getFile(), 'line' => $e->getLine()));
-
-		} else {
-			$trace = debug_backtrace();
-			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__
-				&& ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')
-			) {
-				unset($trace[0]);
-			}
-		}
-
-		if (isset($args[0]) && in_array($args[0], array(self::DEBUG, self::INFO, self::WARNING, self::ERROR, self::CRITICAL), TRUE)) {
-			$item['level'] = array_shift($args);
-		}
-
-		$item['args'] = $args;
-
-		foreach ($trace as $frame) {
-			if (isset($frame['file']) && is_file($frame['file'])) {
-				$item['pathname'] = $frame['file'];
-				$item['lineno'] = $frame['line'];
-				break;
-			}
-		}
-
-		$payload['logs'][] = Helpers::jsonDump($item, -1);
-		foreach (str_split(base64_encode(@json_encode($payload)), 4990) as $k => $v) {
-			header("FireLogger-de11e-$k:$v");
-		}
-		return TRUE;
 	}
 
 
