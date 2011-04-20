@@ -7,6 +7,7 @@
  * Copyright (c) 2004, 2010 David Grudl (http://davidgrudl.com)
  *
  * @param      array     $exception
+ * @param      array     $panels
  * @param      Nette\Application\Application $application
  * @return     void
  */
@@ -294,14 +295,15 @@ $counter = 0;
 
 
 
-			<?php if ($ex instanceof IBarPanel && ($tab = $ex->getTab()) && ($panel = $ex->getPanel())): ?>
+			<?php foreach ($panels as $panel): ?>
+			<?php $panel = call_user_func($panel, $ex); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 			<div class="panel">
-				<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>"><?php echo htmlSpecialChars($tab) ?> <abbr>&#x25bc;</abbr></a></h2>
+				<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>"><?php echo htmlSpecialChars($panel['tab']) ?> <abbr>&#x25bc;</abbr></a></h2>
 
 				<div id="netteBsPnl<?php echo $counter ?>" class="inner">
-				<?php echo $panel ?>
+				<?php echo $panel['panel'] ?>
 			</div></div>
-			<?php endif ?>
+			<?php endforeach ?>
 
 
 

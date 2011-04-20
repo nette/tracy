@@ -23,6 +23,27 @@ use Nette;
  */
 class BlueScreen extends Nette\Object
 {
+	/** @var array */
+	private $panels = array();
+
+
+
+	/**
+	 * Add custom panel.
+	 * @param  callback
+	 * @param  string
+	 * @return void
+	 */
+	public function addPanel($panel, $id = NULL)
+	{
+		if ($id === NULL) {
+			$this->panels[] = $panel;
+		} else {
+			$this->panels[$id] = $panel;
+		}
+	}
+
+
 
 	/**
 	 * Renders blue screen.
@@ -36,7 +57,7 @@ class BlueScreen extends Nette\Object
 				? Nette\Environment::getContext()->getService('Nette\\Application\\Application')
 				: NULL;
 		}
-
+		$panels = $this->panels;
 		require __DIR__ . '/templates/bluescreen.phtml';
 	}
 
