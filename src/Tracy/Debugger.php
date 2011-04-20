@@ -77,23 +77,28 @@ final class Debugger
 	/** @var array of callbacks specifies the functions that are automatically called after fatal error */
 	public static $onFatalError = array();
 
+	/** @var bool {@link Debugger::enable()} */
+	private static $enabled = FALSE;
+
+	/** @var mixed {@link Debugger::tryError()} FALSE means catching is disabled */
+	private static $lastError = FALSE;
+
+	/********************* logging ****************d*g**/
+
+	/** @var Logger */
+	public static $logger;
+
 	/** @var string name of the directory where errors should be logged; FALSE means that logging is disabled */
 	public static $logDirectory;
 
 	/** @var string email to sent error notifications */
 	public static $email;
 
-	/** @var callback handler for sending emails */
-	public static $mailer = array(__CLASS__, 'defaultMailer');
+	/** @deprecated */
+	public static $mailer;
 
-	/** @var int interval for sending email is 2 days */
-	public static $emailSnooze = 172800;
-
-	/** @var bool {@link Debugger::enable()} */
-	private static $enabled = FALSE;
-
-	/** @var mixed {@link Debugger::tryError()} FALSE means catching is disabled */
-	private static $lastError = FALSE;
+	/** @deprecated */
+	public static $emailSnooze;
 
 	/********************* debug bar ****************d*g**/
 
@@ -147,6 +152,12 @@ final class Debugger
 					. $_SERVER['REQUEST_URI'];
 			}
 		}
+
+		self::$logger = new Logger;
+		self::$logger->directory = & self::$logDirectory;
+		self::$logger->email = & self::$email;
+		self::$logger->mailer = & self::$mailer;
+		Logger::$emailSnooze = & self::$emailSnooze;
 
 		self::$blueScreen = new BlueScreen;
 		
@@ -290,9 +301,6 @@ final class Debugger
 
 		} elseif (!self::$logDirectory) {
 			throw new Nette\InvalidStateException('Logging directory is not specified in Nette\Diagnostics\Debugger::$logDirectory.');
-
-		} elseif (!is_dir(self::$logDirectory)) {
-			throw new Nette\DirectoryNotFoundException("Directory '" . self::$logDirectory . "' is not found or is not directory.");
 		}
 
 		if ($message instanceof \Exception) {
@@ -312,19 +320,12 @@ final class Debugger
 			}
 		}
 
-		error_log(
-			@date('[Y-m-d H-i-s] ') . trim($message) .
-				(self::$source ? '  @  ' . self::$source : '') .
-				(!empty($exceptionFilename) ? '  @@  ' . $exceptionFilename : '') . PHP_EOL,
-			3, self::$logDirectory . '/' . strtolower($priority) . '.log'
-		);
-
-		if (($priority === self::ERROR || $priority === self::CRITICAL) && self::$email
-			&& @filemtime(self::$logDirectory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
-			&& @file_put_contents(self::$logDirectory . '/email-sent', 'sent') // @ - file may not be writable
-		) {
-			call_user_func(self::$mailer, $message);
-		}
+		self::$logger->log(array(
+			@date('[Y-m-d H-i-s]'),
+			$message,
+			self::$source ? ' @  ' . self::$source : NULL,
+			!empty($exceptionFilename) ? ' @@  ' . $exceptionFilename : NULL
+		), $priority);
 
 		if (!empty($exceptionFilename) && $logHandle = @fopen(self::$logDirectory . '/'. $exceptionFilename, 'w')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
@@ -525,31 +526,6 @@ final class Debugger
 		$error = self::$lastError;
 		self::$lastError = FALSE;
 		return (bool) $error;
-	}
-
-
-
-	/**
-	 * Default mailer.
-	 * @param  string
-	 * @return void
-	 */
-	private static function defaultMailer($message)
-	{
-		$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] :
-				(isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '');
-
-		$parts = str_replace(
-			array("\r\n", "\n"),
-			array("\n", PHP_EOL),
-			array(
-				'headers' => "From: noreply@$host\nX-Mailer: Nette Framework\n",
-				'subject' => "PHP: An error occurred on the server $host",
-				'body' => "[" . @date('Y-m-d H:i:s') . "] $message", // @ - timezone may not be set
-			)
-		);
-
-		mail(self::$email, $parts['subject'], $parts['body'], $parts['headers']);
 	}
 
 
