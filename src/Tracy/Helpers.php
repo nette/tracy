@@ -43,52 +43,6 @@ final class Helpers
 
 
 	/**
-	 * Renders default panel.
-	 * @param  string
-	 * @param  mixed
-	 * @return void
-	 */
-	public static function renderTab($id, $data)
-	{
-		switch ($id) {
-		case 'time':
-			require __DIR__ . '/templates/bar.time.tab.phtml';
-			return;
-		case 'memory':
-			require __DIR__ . '/templates/bar.memory.tab.phtml';
-			return;
-		case 'dumps':
-			if (!$data) return;
-			require __DIR__ . '/templates/bar.dumps.tab.phtml';
-			return;
-		case 'errors':
-			if (!$data) return;
-			require __DIR__ . '/templates/bar.errors.tab.phtml';
-		}
-	}
-
-
-
-	/**
-	 * Renders default panel.
-	 * @param  string
-	 * @param  mixed
-	 * @return void
-	 */
-	public static function renderPanel($id, $data)
-	{
-		switch ($id) {
-		case 'dumps':
-			require __DIR__ . '/templates/bar.dumps.panel.phtml';
-			return;
-		case 'errors':
-			require __DIR__ . '/templates/bar.errors.panel.phtml';
-		}
-	}
-
-
-
-	/**
 	 * Returns syntax highlighted source code.
 	 * @param  string
 	 * @param  int

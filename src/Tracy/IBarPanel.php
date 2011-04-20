@@ -25,20 +25,14 @@ interface IBarPanel
 
 	/**
 	 * Renders HTML code for custom tab.
-	 * @return void
+	 * @return string
 	 */
 	function getTab();
 
 	/**
 	 * Renders HTML code for custom panel.
-	 * @return void
-	 */
-	function getPanel();
-
-	/**
-	 * Returns panel ID.
 	 * @return string
 	 */
-	function getId();
+	function getPanel();
 
 }

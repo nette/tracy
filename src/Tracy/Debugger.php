@@ -145,12 +145,11 @@ final class Debugger
 			}
 		}
 
-		$tab = array('Nette\Diagnostics\Helpers', 'renderTab'); $panel = array('Nette\Diagnostics\Helpers', 'renderPanel');
 		self::$bar = new Bar;
-		self::$bar->addPanel(new Panel('time', $tab, $panel));
-		self::$bar->addPanel(new Panel('memory', $tab, $panel));
-		self::$bar->addPanel(self::$errorPanel = new Panel('errors', $tab, $panel)); // filled by _errorHandler()
-		self::$bar->addPanel(self::$dumpPanel = new Panel('dumps', $tab, $panel)); // filled by barDump()
+		self::$bar->addPanel(new DefaultBarPanel('time'));
+		self::$bar->addPanel(new DefaultBarPanel('memory'));
+		self::$bar->addPanel(self::$errorPanel = new DefaultBarPanel('errors')); // filled by _errorHandler()
+		self::$bar->addPanel(self::$dumpPanel = new DefaultBarPanel('dumps')); // filled by barDump()
 	}
 
 
@@ -474,15 +473,6 @@ final class Debugger
 		}
 
 		return FALSE; // call normal error handler
-	}
-
-
-
-	/** @deprecated */
-	public static function processException(\Exception $exception)
-	{
-		trigger_error(__METHOD__ . '() is deprecated; use ' . __CLASS__ . '::log($exception, Debug::ERROR) instead.', E_USER_WARNING);
-		self::log($exception, self::ERROR);
 	}
 
 
