@@ -44,6 +44,9 @@ final class Debugger
 	/** @var string  requested URI or command line */
 	public static $source;
 
+	/** @var string URL pattern mask to open editor */
+	public static $editor = 'editor://open/?file=%file&line=%line';
+
 	/********************* Debugger::dump() ****************d*g**/
 
 	/** @var int  how many nested levels of array/object properties display {@link Debugger::dump()} */
@@ -83,9 +86,6 @@ final class Debugger
 	/** @var int interval for sending email is 2 days */
 	public static $emailSnooze = 172800;
 
-	/** @var string URL pattern mask to open editor */
-	public static $editor = 'editor://open/?file=%file&line=%line';
-
 	/** @var bool {@link Debugger::enable()} */
 	private static $enabled = FALSE;
 
@@ -94,14 +94,14 @@ final class Debugger
 
 	/********************* debug bar ****************d*g**/
 
-	/** @var bool determines whether show Debug Bar */
-	public static $showBar = TRUE;
+	/** @var Bar */
+	public static $bar;
 
-	/** @var array */
-	private static $panels = array();
+	/** @var DefaultBarPanel */
+	private static $errorPanel;
 
-	/** @var array payload filled by {@link Debugger::_errorHandler()} */
-	private static $errors;
+	/** @var DefaultBarPanel */
+	private static $dumpPanel;
 
 	/********************* Firebug extension ****************d*g**/
 
@@ -146,10 +146,11 @@ final class Debugger
 		}
 
 		$tab = array('Nette\Diagnostics\Helpers', 'renderTab'); $panel = array('Nette\Diagnostics\Helpers', 'renderPanel');
-		self::addPanel(new Panel('time', $tab, $panel));
-		self::addPanel(new Panel('memory', $tab, $panel));
-		self::addPanel($tmp = new Panel('errors', $tab, $panel)); $tmp->data = & self::$errors;
-		self::addPanel(new Panel('dumps', $tab, $panel));
+		self::$bar = new Bar;
+		self::$bar->addPanel(new Panel('time', $tab, $panel));
+		self::$bar->addPanel(new Panel('memory', $tab, $panel));
+		self::$bar->addPanel(self::$errorPanel = new Panel('errors', $tab, $panel)); // filled by _errorHandler()
+		self::$bar->addPanel(self::$dumpPanel = new Panel('dumps', $tab, $panel)); // filled by barDump()
 	}
 
 
@@ -353,10 +354,10 @@ final class Debugger
 		}
 
 		// 2) debug bar (require HTML & development mode)
-		if (self::$showBar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode
+		if (self::$bar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode
 			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))
 		) {
-			Helpers::renderDebugBar(self::$panels);
+			self::$bar->render();
 		}
 	}
 
@@ -393,8 +394,8 @@ final class Debugger
 
 				} elseif ($htmlMode) { // dump to browser
 					Helpers::renderBlueScreen($exception);
-					if (self::$showBar) {
-						Helpers::renderDebugBar(self::$panels);
+					if (self::$bar) {
+						self::$bar->render();
 					}
 
 				} elseif (!self::fireLog($exception, self::ERROR)) { // AJAX or non-HTML mode
@@ -458,7 +459,7 @@ final class Debugger
 		);
 
 		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message";
-		$count = & self::$errors["$message|$file|$line"];
+		$count = & self::$errorPanel->data["$message|$file|$line"];
 
 		if ($count++) { // repeated error
 			return NULL;
@@ -469,7 +470,7 @@ final class Debugger
 
 		} else {
 			$ok = self::fireLog(new \ErrorException($message, 0, $severity, $file, $line), self::WARNING);
-			return self::$consoleMode || (!self::$showBar && !$ok) ? FALSE : NULL;
+			return self::$consoleMode || (!self::$bar && !$ok) ? FALSE : NULL;
 		}
 
 		return FALSE; // call normal error handler
@@ -623,18 +624,6 @@ final class Debugger
 
 
 	/**
-	 * Add custom panel.
-	 * @param  IPanel
-	 * @return void
-	 */
-	public static function addPanel(IPanel $panel)
-	{
-		self::$panels[] = $panel;
-	}
-
-
-
-	/**
 	 * Dumps information about a variable in Nette Debug Bar.
 	 * @param  mixed  variable to dump
 	 * @param  string optional title
@@ -647,7 +636,7 @@ final class Debugger
 			foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val) {
 				$dump[$key] = Helpers::clickableDump($val);
 			}
-			self::$panels[3]->data[] = array('title' => $title, 'dump' => $dump);
+			self::$dumpPanel->data[] = array('title' => $title, 'dump' => $dump);
 		}
 		return $var;
 	}
@@ -745,6 +734,14 @@ final class Debugger
 			header("FireLogger-de11e-$k:$v");
 		}
 		return TRUE;
+	}
+
+
+
+	/** @deprecated */
+	public static function addPanel(IPanel $panel, $id = NULL)
+	{
+		self::$bar->addPanel($panel, $id);
 	}
 
 }
