@@ -286,7 +286,7 @@ use Nette;
 
 <script id="nette-debug-script">
 /* <![CDATA[ */
-<?php require __DIR__ . '/../../../client-side/NetteQ/netteQ.js' ?>
+<?php require __DIR__ . '/netteQ.js' ?>
 
 
 (function(){
@@ -530,10 +530,10 @@ Nette.Debug.Bar = Nette.Class({
 </script>
 
 
-<?php foreach ($panels as $id => $panel): ?>
+<?php foreach ($panels as $id => $panel): if (!$panel['panel']) continue; ?>
 <div class="nette-fixed-coords">
 	<div class="nette-panel" id="nette-debug-panel-<?php echo $panel['id'] ?>">
-		<div id="nette-debug-<?php echo $panel['id'] ?>"><?php echo $panel['panel'] ?></div>
+		<?php echo $panel['panel'] ?>
 		<div class="nette-icons">
 			<a href="#" title="open in window">&curren;</a>
 			<a href="#" rel="close" title="close window">&times;</a>

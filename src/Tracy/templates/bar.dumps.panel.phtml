@@ -14,7 +14,7 @@ use Nette;
 ?>
 <style>
 
-	#nette-debug-dumps h2 {
+	#nette-debug .nette-DumpPanel h2 {
 		font: 11pt/1.5 sans-serif;
 		margin: 0;
 		padding: 2px 8px;
@@ -22,21 +22,21 @@ use Nette;
 		color: white;
 	}
 
-	#nette-debug-dumps table {
+	#nette-debug .nette-DumpPanel table {
 		width: 100%;
 	}
 
-	#nette-debug #nette-debug-dumps a {
+	#nette-debug .nette-DumpPanel a {
 		color: #333;
 		background: transparent;
 	}
 
-	#nette-debug-dumps a abbr {
+	#nette-debug .nette-DumpPanel a abbr {
 		font-family: sans-serif;
 		color: #999;
 	}
 
-	#nette-debug-dumps pre.nette-dump span {
+	#nette-debug .nette-DumpPanel pre.nette-dump span {
 		color: #c16549;
 	}
 
@@ -45,7 +45,7 @@ use Nette;
 
 <h1>Dumped variables</h1>
 
-<div class="nette-inner">
+<div class="nette-inner nette-DumpPanel">
 <?php foreach ($data as $item): ?>
 	<?php if ($item['title']):?>
 	<h2><?php echo htmlspecialchars($item['title']) ?></h2>
