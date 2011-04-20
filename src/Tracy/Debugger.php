@@ -65,6 +65,9 @@ final class Debugger
 		PRODUCTION = TRUE,
 		DETECT = NULL;
 
+	/** @var BlueScreen */
+	public static $blueScreen;
+
 	/** @var bool determines whether any error will cause immediate death */
 	public static $strictMode = FALSE; // $immediateDeath
 
@@ -145,6 +148,8 @@ final class Debugger
 			}
 		}
 
+		self::$blueScreen = new BlueScreen;
+		
 		self::$bar = new Bar;
 		self::$bar->addPanel(new DefaultBarPanel('time'));
 		self::$bar->addPanel(new DefaultBarPanel('memory'));
@@ -324,7 +329,7 @@ final class Debugger
 		if (!empty($exceptionFilename) && $logHandle = @fopen(self::$logDirectory . '/'. $exceptionFilename, 'w')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
 			ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
-			Helpers::renderBlueScreen($exception);
+			self::$blueScreen->render($exception);
 			ob_end_flush();
 			ob_end_clean();
 			fclose($logHandle);
@@ -392,7 +397,7 @@ final class Debugger
 					echo "$exception\n";
 
 				} elseif ($htmlMode) { // dump to browser
-					Helpers::renderBlueScreen($exception);
+					self::$blueScreen->render($exception);
 					if (self::$bar) {
 						self::$bar->render();
 					}

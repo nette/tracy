@@ -318,7 +318,7 @@ $counter = 0;
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?php if (Debugger::$editor) echo '<a href="', htmlspecialchars(Helpers::editorLink($ex->getFile(), $ex->getLine())), '">' ?>
 				<?php echo htmlspecialchars($ex->getFile()), (Debugger::$editor ? '</a>':'') ?> &nbsp; <b>Line:</b> <?php echo $ex->getLine() ?></p>
-				<pre><?php echo Helpers::highlightFile($ex->getFile(), $ex->getLine()) ?></pre>
+				<pre><?php echo self::highlightFile($ex->getFile(), $ex->getLine()) ?></pre>
 			</div></div>
 			<?php endif?>
 
@@ -371,7 +371,7 @@ $counter = 0;
 
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?>
-						<pre <?php if ($expanded !== $key) echo 'class="nette-collapsed"'; ?> id="netteBsSrc<?php echo "$level-$key" ?>"><?php echo Helpers::highlightFile($row['file'], $row['line']) ?></pre>
+						<pre <?php if ($expanded !== $key) echo 'class="nette-collapsed"'; ?> id="netteBsSrc<?php echo "$level-$key" ?>"><?php echo self::highlightFile($row['file'], $row['line']) ?></pre>
 					<?php endif ?>
 
 					</li>
