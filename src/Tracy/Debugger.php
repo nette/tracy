@@ -739,7 +739,7 @@ final class Debugger
 
 
 	/** @deprecated */
-	public static function addPanel(IPanel $panel, $id = NULL)
+	public static function addPanel(IBarPanel $panel, $id = NULL)
 	{
 		self::$bar->addPanel($panel, $id);
 	}

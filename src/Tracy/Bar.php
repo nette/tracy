@@ -30,11 +30,11 @@ class Bar extends Nette\Object
 
 	/**
 	 * Add custom panel.
-	 * @param  IPanel
+	 * @param  IBarPanel
 	 * @param  string
 	 * @return void
 	 */
-	public function addPanel(IPanel $panel, $id = NULL)
+	public function addPanel(IBarPanel $panel, $id = NULL)
 	{
 		if ($id === NULL) {
 			$c = 0;

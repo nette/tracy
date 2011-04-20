@@ -294,7 +294,7 @@ $counter = 0;
 
 
 
-			<?php if ($ex instanceof IPanel && ($tab = $ex->getTab()) && ($panel = $ex->getPanel())): ?>
+			<?php if ($ex instanceof IBarPanel && ($tab = $ex->getTab()) && ($panel = $ex->getPanel())): ?>
 			<div class="panel">
 				<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>"><?php echo htmlSpecialChars($tab) ?> <abbr>&#x25bc;</abbr></a></h2>
 
