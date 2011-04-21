@@ -62,7 +62,7 @@ class FireLogger extends Nette\Object
 		if (isset($args[0]) && $args[0] instanceof \Exception) {
 			$e = array_shift($args);
 			$trace = $e->getTrace();
-			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__
+			if (isset($trace[0]['class']) && $trace[0]['class'] === 'Nette\Diagnostics\Debugger'
 				&& ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')
 			) {
 				unset($trace[0]);
@@ -88,7 +88,7 @@ class FireLogger extends Nette\Object
 
 		} else {
 			$trace = debug_backtrace();
-			if (isset($trace[0]['class']) && $trace[0]['class'] === __CLASS__
+			if (isset($trace[0]['class']) && $trace[0]['class'] === 'Nette\Diagnostics\Debugger'
 				&& ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')
 			) {
 				unset($trace[0]);
