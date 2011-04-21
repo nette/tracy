@@ -161,6 +161,17 @@ final class Debugger
 		self::$fireLogger = new FireLogger;
 
 		self::$blueScreen = new BlueScreen;
+		self::$blueScreen->addPanel(function($e) {
+			if ($e instanceof Nette\Templating\FilterException) {
+				$link = Helpers::editorLink($e->sourceFile, $e->sourceLine);
+				return array(
+					'tab' => 'Template',
+					'panel' => '<p><b>File:</b> ' . ($link ? '<a href="' . htmlspecialchars($link) . '">' : '') . htmlspecialchars($e->sourceFile) . ($link ? '</a>' : '')
+					. '&nbsp; <b>Line:</b> ' . ($e->sourceLine ? $e->sourceLine : 'n/a') . '</p>'
+					. ($e->sourceLine ? '<pre>' . BlueScreen::highlightFile($e->sourceFile, $e->sourceLine) . '</pre>' : '')
+				);
+			}
+		});
 
 		self::$bar = new Bar;
 		self::$bar->addPanel(new DefaultBarPanel('time'));
