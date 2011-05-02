@@ -72,7 +72,9 @@ final class Helpers
 
 		} elseif (is_float($var)) {
 			$var = var_export($var, TRUE);
-			if (strpos($var, '.') === FALSE) $var .= '.0';
+			if (strpos($var, '.') === FALSE) {
+				$var .= '.0';
+			}
 			return "$var\n";
 
 		} elseif (is_string($var)) {
@@ -91,7 +93,9 @@ final class Helpers
 			$brackets = range(0, count($var) - 1) === array_keys($var) ? "[]" : "{}";
 
 			static $marker;
-			if ($marker === NULL) $marker = uniqid("\x00", TRUE);
+			if ($marker === NULL) {
+				$marker = uniqid("\x00", TRUE);
+			}
 			if (empty($var)) {
 
 			} elseif (isset($var[$marker])) {
@@ -102,7 +106,9 @@ final class Helpers
 				$s .= "<code>$brackets[0]\n";
 				$var[$marker] = $brackets;
 				foreach ($var as $k => &$v) {
-					if ($k === $marker) continue;
+					if ($k === $marker) {
+						continue;
+					}
 					$k = is_int($k) ? $k : '"' . htmlSpecialChars(strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf)) . '"';
 					$s .= "$space$space1$k => " . self::htmlDump($v, $level + 1);
 				}

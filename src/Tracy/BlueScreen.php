@@ -83,7 +83,9 @@ class BlueScreen extends Nette\Object
 		$start = max(1, $line - floor($count / 2));
 
 		$source = @file_get_contents($file);
-		if (!$source) return;
+		if (!$source) {
+			return;
+		}
 		$source = explode("\n", highlight_string($source, TRUE));
 		$spans = 1;
 		$out = $source[0]; // <code><span color=highlight.html>

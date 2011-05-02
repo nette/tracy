@@ -137,7 +137,9 @@ class FireLogger extends Nette\Object
 
 		} elseif (is_array($var)) {
 			static $marker;
-			if ($marker === NULL) $marker = uniqid("\x00", TRUE);
+			if ($marker === NULL) {
+				$marker = uniqid("\x00", TRUE);
+			}
 			if (isset($var[$marker])) {
 				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
 
@@ -145,7 +147,9 @@ class FireLogger extends Nette\Object
 				$var[$marker] = TRUE;
 				$res = array();
 				foreach ($var as $k => &$v) {
-					if ($k !== $marker) $res[self::jsonDump($k)] = self::jsonDump($v, $level + 1);
+					if ($k !== $marker) {
+						$res[self::jsonDump($k)] = self::jsonDump($v, $level + 1);
+					}
 			}
 				unset($var[$marker]);
 				return $res;
