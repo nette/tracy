@@ -13,21 +13,13 @@ use Nette;
 ?>
 <h1>Errors</h1>
 
-<?php $relative = isset($_SERVER['SCRIPT_FILENAME']) ? strtr(dirname(dirname($_SERVER['SCRIPT_FILENAME'])), '/', DIRECTORY_SEPARATOR) : NULL ?>
-
 <div class="nette-inner">
 <table>
 <?php $i = 0 ?>
 <?php foreach ($data as $item => $count): list($message, $file, $line) = explode('|', $item) ?>
 <tr class="<?php echo $i++ % 2 ? 'nette-alt' : '' ?>">
 	<td class="nette-right"><?php echo $count ? "$count\xC3\x97" : '' ?></td>
-	<td><pre><?php echo
-		htmlspecialchars($message), ' in ',
-		(Debugger::$editor ? '<a href="' . Helpers::editorLink($file, $line) . '">' : ''),
-		htmlspecialchars(($relative ? str_replace($relative, "...", $file) : $file)),
-		':', $line,
-		(Debugger::$editor ? '</a>' : '')
-	?></pre></td>
+	<td><pre><?php echo htmlspecialchars($message), ' in ', Helpers::editorLink($file, $line), ':', $line ?></pre></td>
 </tr>
 <?php endforeach ?>
 </table>

@@ -43,7 +43,7 @@
 				<ol>
 										<li><p>
 
-											<i>inner-code</i> (1)
+											<i>inner-code</i>:%d%
 
 										trigger_error
 					(<a href="#" rel="netteBsArgs1-1">arguments <abbr>&#x25ba;</abbr></a>)
@@ -63,8 +63,7 @@
 					</li>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt">
-						Diagnostics/<b>Debugger.error-in-eval.phpt</b></a> (%d%)
+											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b></a>:%d%
 					<a href="#" rel="netteBsSrc1-2">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										eval
 					()
@@ -77,8 +76,7 @@
 					</li>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt">
-						Diagnostics/<b>Debugger.error-in-eval.phpt</b></a> (%d%)
+											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b></a>:%d%
 					<a href="#" rel="netteBsSrc1-3">source <abbr>&#x25ba;</abbr></a>&nbsp;
 										first
 					(<a href="#" rel="netteBsArgs1-3">arguments <abbr>&#x25ba;</abbr></a>)

@@ -25,5 +25,5 @@ Debugger::$showLocation = TRUE;
 
 ob_start();
 Debugger::dump('xxx');
-Assert::match( '<pre class="nette-dump">"xxx" (3) <small>in file %a% on line %d%</small>
+Assert::match( '<pre class="nette-dump">"xxx" (3) <small>in %a%:%d%</small>
 </pre>', ob_get_clean() );

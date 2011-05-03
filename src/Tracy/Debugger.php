@@ -15,6 +15,11 @@ use Nette;
 
 
 
+require_once __DIR__ . '/Helpers.php';
+require_once __DIR__ . '/../Utils/Html.php';
+
+
+
 /**
  * Debugger: displays and logs errors.
  *
@@ -163,10 +168,9 @@ final class Debugger
 		self::$blueScreen = new BlueScreen;
 		self::$blueScreen->addPanel(function($e) {
 			if ($e instanceof Nette\Templating\FilterException) {
-				$link = Helpers::editorLink($e->sourceFile, $e->sourceLine);
 				return array(
 					'tab' => 'Template',
-					'panel' => '<p><b>File:</b> ' . ($link ? '<a href="' . htmlspecialchars($link) . '">' : '') . htmlspecialchars($e->sourceFile) . ($link ? '</a>' : '')
+					'panel' => '<p><b>File:</b> ' . Helpers::editorLink($e->sourceFile, $e->sourceLine)
 					. '&nbsp; <b>Line:</b> ' . ($e->sourceLine ? $e->sourceLine : 'n/a') . '</p>'
 					. ($e->sourceLine ? '<pre>' . BlueScreen::highlightFile($e->sourceFile, $e->sourceLine) . '</pre>' : '')
 				);
@@ -566,7 +570,7 @@ final class Debugger
 			if (isset($trace[$i]['file'], $trace[$i]['line'])) {
 				$output = substr_replace(
 					$output,
-					' <small>' . htmlspecialchars("in file {$trace[$i]['file']} on line {$trace[$i]['line']}", ENT_NOQUOTES) . '</small>',
+					' <small>in ' . Helpers::editorLink($trace[$i]['file'], $trace[$i]['line']) . ":{$trace[$i]['line']}</small>",
 					-8, 0);
 			}
 		}

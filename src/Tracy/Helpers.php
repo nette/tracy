@@ -26,11 +26,24 @@ final class Helpers
 
 	/**
 	 * Returns link to editor.
-	 * @return string
+	 * @return Nette\Utils\Html
 	 */
 	public static function editorLink($file, $line)
 	{
-		return strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line));
+		$dir = dirname(strtr($file, '/', DIRECTORY_SEPARATOR));
+		$base = isset($_SERVER['SCRIPT_FILENAME']) ? dirname(dirname(strtr($_SERVER['SCRIPT_FILENAME'], '/', DIRECTORY_SEPARATOR))) : dirname($dir);
+		if (substr($dir, 0, strlen($base)) === $base) {
+			$dir = '...' . substr($dir, strlen($base));
+		}
+
+		if (Debugger::$editor) {
+			$el = Nette\Utils\Html::el('a')
+				->href(strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line)));
+		} else {
+			$el = Nette\Utils\Html::el('span');
+		}
+		return $el->title("$file:$line")
+			->setHtml(htmlSpecialChars(rtrim($dir, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . '<b>' . htmlSpecialChars(basename($file)) . '</b>');
 	}
 
 

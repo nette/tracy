@@ -318,8 +318,7 @@ $counter = 0;
 			<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Source file <abbr><?php echo ($collapsed = $expanded !== NULL) ? '&#x25ba;' : '&#x25bc;' ?></abbr></a></h2>
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
-				<p><b>File:</b> <?php if (Debugger::$editor) echo '<a href="', htmlspecialchars(Helpers::editorLink($ex->getFile(), $ex->getLine())), '">' ?>
-				<?php echo htmlspecialchars($ex->getFile()), (Debugger::$editor ? '</a>':'') ?> &nbsp; <b>Line:</b> <?php echo $ex->getLine() ?></p>
+				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?> &nbsp; <b>Line:</b> <?php echo $ex->getLine() ?></p>
 				<pre><?php echo self::highlightFile($ex->getFile(), $ex->getLine()) ?></pre>
 			</div></div>
 			<?php endif?>
@@ -337,10 +336,9 @@ $counter = 0;
 					<li><p>
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?>
-						<?php echo Debugger::$editor ? '<a href="' . htmlspecialchars(Helpers::editorLink($row['file'], $row['line'])) . '"' : '<span'; ?> title="<?php echo htmlSpecialChars($row['file'])?>">
-						<?php echo htmlSpecialChars(basename(dirname($row['file']))), '/<b>', htmlSpecialChars(basename($row['file'])), '</b>', (Debugger::$editor ? '</a>':'</span>'), ' (', $row['line'], ')' ?>
+						<?php echo Helpers::editorLink($row['file'], $row['line']), ':', $row['line'] ?>
 					<?php else: ?>
-						<i>inner-code</i><?php if (isset($row['line'])) echo ' (', $row['line'], ')' ?>
+						<i>inner-code</i><?php if (isset($row['line'])) echo ':', $row['line'] ?>
 					<?php endif ?>
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#" rel="netteBsSrc<?php echo "$level-$key" ?>">source <abbr>&#x25ba;</abbr></a>&nbsp; <?php endif ?>
