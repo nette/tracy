@@ -358,7 +358,7 @@ final class Debugger
 	 */
 	public static function _shutdownHandler()
 	{
-		// 1) fatal error handler
+		// fatal error handler
 		static $types = array(
 			E_ERROR => 1,
 			E_CORE_ERROR => 1,
@@ -367,10 +367,10 @@ final class Debugger
 		);
 		$error = error_get_last();
 		if (isset($types[$error['type']])) {
-			self::_exceptionHandler(new Nette\FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL));
+			self::_exceptionHandler(new Nette\FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
 		}
 
-		// 2) debug bar (require HTML & development mode)
+		// debug bar (require HTML & development mode)
 		if (self::$bar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode
 			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))
 		) {
@@ -386,7 +386,7 @@ final class Debugger
 	 * @return void
 	 * @internal
 	 */
-	public static function _exceptionHandler(\Exception $exception)
+	public static function _exceptionHandler(\Exception $exception, $drawBar = FALSE)
 	{
 		if (!headers_sent()) { // for PHP < 5.2.4
 			header('HTTP/1.1 500 Internal Server Error');
@@ -411,7 +411,7 @@ final class Debugger
 
 				} elseif ($htmlMode) { // dump to browser
 					self::$blueScreen->render($exception);
-					if (self::$bar) {
+					if ($drawBar && self::$bar) {
 						self::$bar->render();
 					}
 

@@ -27,8 +27,7 @@ function shutdown() {
 	Assert::match(file_get_contents(__DIR__ . '/Debugger.exception.html.expect'), ob_get_clean());
 	die(0);
 }
-ob_start();
-Debugger::$onFatalError[] = 'shutdown';
+Assert::handler('shutdown');
 
 
 function first($arg1, $arg2)
