@@ -68,31 +68,36 @@ class FireLogger extends Nette\Object
 				unset($trace[0]);
 			}
 
-			$item['exc_info'] = array(
-				$e->getMessage(),
-				$e->getFile(),
-				array(),
-			);
-			$item['exc_frames'] = array();
-
-			foreach ($trace as $frame) {
-				$frame += array('file' => NULL, 'line' => NULL, 'class' => NULL, 'type' => NULL, 'function' => NULL, 'object' => NULL, 'args' => NULL);
-				$item['exc_info'][2][] = array($frame['file'], $frame['line'], "$frame[class]$frame[type]$frame[function]", $frame['object']);
-				$item['exc_frames'][] = $frame['args'];
-			}
-
 			$file = str_replace(dirname(dirname(dirname($e->getFile()))), "\xE2\x80\xA6", $e->getFile());
 			$item['template'] = ($e instanceof \ErrorException ? '' : get_class($e) . ': ')
 				. $e->getMessage() . ($e->getCode() ? ' #' . $e->getCode() : '') . ' in ' . $file . ':' . $e->getLine();
-			array_unshift($trace, array('file' => $e->getFile(), 'line' => $e->getLine()));
+			$item['pathname'] = $e->getFile();
+			$item['lineno'] = $e->getLine();
 
 		} else {
 			$trace = debug_backtrace();
-			if (isset($trace[0]['class']) && $trace[0]['class'] === 'Nette\Diagnostics\Debugger'
-				&& ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')
+			if (isset($trace[1]['class']) && $trace[1]['class'] === 'Nette\Diagnostics\Debugger'
+				&& ($trace[1]['function'] === 'fireLog')
 			) {
 				unset($trace[0]);
 			}
+
+			foreach ($trace as $frame) {
+				if (isset($frame['file']) && is_file($frame['file'])) {
+					$item['pathname'] = $frame['file'];
+					$item['lineno'] = $frame['line'];
+					break;
+				}
+			}
+		}
+
+		$item['exc_info'] = array('', '', array());
+		$item['exc_frames'] = array();
+
+		foreach ($trace as $frame) {
+			$frame += array('file' => NULL, 'line' => NULL, 'class' => NULL, 'type' => NULL, 'function' => NULL, 'object' => NULL, 'args' => NULL);
+			$item['exc_info'][2][] = array($frame['file'], $frame['line'], "$frame[class]$frame[type]$frame[function]", $frame['object']);
+			$item['exc_frames'][] = $frame['args'];
 		}
 
 		if (isset($args[0]) && in_array($args[0], array(self::DEBUG, self::INFO, self::WARNING, self::ERROR, self::CRITICAL), TRUE)) {
@@ -100,14 +105,6 @@ class FireLogger extends Nette\Object
 		}
 
 		$item['args'] = $args;
-
-		foreach ($trace as $frame) {
-			if (isset($frame['file']) && is_file($frame['file'])) {
-				$item['pathname'] = $frame['file'];
-				$item['lineno'] = $frame['line'];
-				break;
-			}
-		}
 
 		self::$payload['logs'][] = self::jsonDump($item, -1);
 		foreach (str_split(base64_encode(@json_encode(self::$payload)), 4990) as $k => $v) {
