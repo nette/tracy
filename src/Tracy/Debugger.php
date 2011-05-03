@@ -564,14 +564,23 @@ final class Debugger
 
 		$output = "<pre class=\"nette-dump\">" . Helpers::htmlDump($var) . "</pre>\n";
 
-		if (!$return && self::$showLocation) {
+		if (!$return) {
 			$trace = debug_backtrace();
-			$i = isset($trace[1]['class']) && $trace[1]['class'] === __CLASS__ ? 1 : 0;
-			if (isset($trace[$i]['file'], $trace[$i]['line'])) {
+			$i = !isset($trace[1]['class']) && isset($trace[1]['function']) && $trace[1]['function'] === 'dump' ? 1 : 0;
+			if (isset($trace[$i]['file'], $trace[$i]['line']) && is_file($trace[$i]['file'])) {
+				$lines = file($trace[$i]['file']);
+				preg_match('#dump\((.*)\)#', $lines[$trace[$i]['line'] - 1], $m);
 				$output = substr_replace(
 					$output,
-					' <small>in ' . Helpers::editorLink($trace[$i]['file'], $trace[$i]['line']) . ":{$trace[$i]['line']}</small>",
-					-8, 0);
+					' title="' . htmlspecialchars((isset($m[0]) ? "$m[0] \n" : '') . "in file {$trace[$i]['file']} on line {$trace[$i]['line']}") . '"',
+					4, 0);
+
+				if (self::$showLocation) {
+					$output = substr_replace(
+						$output,
+						' <small>in ' . Helpers::editorLink($trace[$i]['file'], $trace[$i]['line']) . ":{$trace[$i]['line']}</small>",
+						-8, 0);
+				}
 			}
 		}
 

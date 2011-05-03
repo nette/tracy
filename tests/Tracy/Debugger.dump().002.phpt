@@ -21,9 +21,20 @@ Debugger::$productionMode = FALSE;
 
 
 
-Debugger::$showLocation = TRUE;
-
 ob_start();
-Debugger::dump('xxx');
-Assert::match( '<pre class="nette-dump">"xxx" (3) <small>in %a%:%d%</small>
-</pre>', ob_get_clean() );
+dump('hello');
+
+Debugger::$showLocation = TRUE;
+Debugger::dump(trim('hello'));
+dump('hello');
+
+Assert::match( '<pre title="dump(\'hello\')
+in file %a% on line %d%" class="nette-dump">"hello" (5)
+</pre>
+<pre title="dump(trim(\'hello\'))
+in file %a% on line %d%" class="nette-dump">"hello" (5) <small>in %a%:%d%</small>
+</pre>
+<pre title="dump(\'hello\')
+in file %a% on line %d%" class="nette-dump">"hello" (5) <small>in %a%:%d%</small>
+</pre>
+', ob_get_clean() );
