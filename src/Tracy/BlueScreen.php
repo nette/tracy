@@ -52,11 +52,6 @@ class BlueScreen extends Nette\Object
 	 */
 	public function render(\Exception $exception)
 	{
-		if (class_exists('Nette\Environment', FALSE)) {
-			$application = Nette\Environment::getContext()->hasService('Nette\\Application\\Application', TRUE)
-				? Nette\Environment::getContext()->getService('Nette\\Application\\Application')
-				: NULL;
-		}
 		$panels = $this->panels;
 		require __DIR__ . '/templates/bluescreen.phtml';
 	}

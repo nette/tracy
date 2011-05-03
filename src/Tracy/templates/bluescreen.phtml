@@ -8,7 +8,6 @@
  *
  * @param      array     $exception
  * @param      array     $panels
- * @param      Nette\Application\Application $application
  * @return     void
  */
 
@@ -404,18 +403,15 @@ $counter = 0;
 
 
 
-		<?php if (!empty($application)):?>
+		<?php foreach ($panels as $panel): ?>
+		<?php $panel = call_user_func($panel, NULL); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Nette Application <abbr>&#x25ba;</abbr></a></h2>
+			<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>"><?php echo htmlSpecialChars($panel['tab']) ?> <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
-			<h3>Requests</h3>
-			<?php echo Helpers::clickableDump($application->getRequests()) ?>
-
-			<h3>Presenter</h3>
-			<?php echo Helpers::clickableDump($application->getPresenter()) ?>
+			<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
+			<?php echo $panel['panel'] ?>
 		</div></div>
-		<?php endif ?>
+		<?php endforeach ?>
 
 
 
