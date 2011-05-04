@@ -107,7 +107,7 @@ class FireLogger extends Nette\Object
 		$item['args'] = $args;
 
 		self::$payload['logs'][] = self::jsonDump($item, -1);
-		foreach (str_split(base64_encode(@json_encode(self::$payload)), 4990) as $k => $v) {
+		foreach (str_split(base64_encode(@json_encode(self::$payload)), 4990) as $k => $v) { // intentionally @
 			header("FireLogger-de11e-$k:$v");
 		}
 		return TRUE;

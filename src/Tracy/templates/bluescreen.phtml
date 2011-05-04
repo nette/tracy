@@ -543,9 +543,9 @@ $counter = 0;
 			styles[i].disabled = true;
 
 		} else if (styles[i].addRule) {
-        	styles[i].addRule('.nette-collapsed', 'display: none');
+			styles[i].addRule('.nette-collapsed', 'display: none');
 		} else {
-        	styles[i].insertRule('.nette-collapsed { display: none }', 0);
+			styles[i].insertRule('.nette-collapsed { display: none }', 0);
 		}
 	}
 
