@@ -158,10 +158,10 @@ final class Debugger
 		}
 
 		self::$logger = new Logger;
-		self::$logger->directory = & self::$logDirectory;
-		self::$logger->email = & self::$email;
-		self::$logger->mailer = & self::$mailer;
-		Logger::$emailSnooze = & self::$emailSnooze;
+		self::$logDirectory = & self::$logger->directory;
+		self::$email = & self::$logger->email;
+		self::$mailer = & self::$logger->mailer;
+		self::$emailSnooze = & Logger::$emailSnooze;
 
 		self::$fireLogger = new FireLogger;
 

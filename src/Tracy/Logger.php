@@ -59,7 +59,7 @@ class Logger extends Nette\Object
 		}
 		$res = error_log(trim($message) . PHP_EOL, 3, $this->directory . '/' . strtolower($priority) . '.log');
 
-		if (($priority === self::ERROR || $priority === self::CRITICAL) && $this->email
+		if (($priority === self::ERROR || $priority === self::CRITICAL) && $this->email && $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
