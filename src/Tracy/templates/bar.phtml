@@ -568,7 +568,7 @@ Nette.Debug.Bar = Nette.Class({
 		if (typeof onloadOrig === 'function') onloadOrig();
 		var debug = document.getElementById('nette-debug');
 		document.body.appendChild(debug);
-		debug.innerHTML = <?php echo json_encode(@iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $output))) ?>;
+		debug.innerHTML = <?php echo json_encode(Nette\Utils\Strings::fixEncoding($output)) ?>;
 		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) eval(scripts[i].innerHTML);
 		(new Nette.Debug.Bar).init();
 		Nette.Q.factory(debug).show();

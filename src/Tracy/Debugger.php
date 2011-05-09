@@ -17,6 +17,7 @@ use Nette;
 
 require_once __DIR__ . '/Helpers.php';
 require_once __DIR__ . '/../Utils/Html.php';
+require_once __DIR__ . '/../Utils/Strings.php';
 
 
 

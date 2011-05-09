@@ -130,7 +130,7 @@ class FireLogger extends Nette\Object
 			if (Debugger::$maxLen && strlen($var) > Debugger::$maxLen) {
 				$var = substr($var, 0, Debugger::$maxLen) . " \xE2\x80\xA6 ";
 			}
-			return @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $var)); // intentionally @
+			return Nette\Utils\Strings::fixEncoding($var);
 
 		} elseif (is_array($var)) {
 			static $marker;
