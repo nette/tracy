@@ -25,7 +25,7 @@ Assert::null( Debugger::$productionMode );
 
 // setting production environment...
 
-Environment::setMode('production', TRUE);
+Environment::setProductionMode();
 Debugger::enable();
 
 Assert::true( Debugger::$productionMode );
