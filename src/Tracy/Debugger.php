@@ -363,6 +363,10 @@ final class Debugger
 	 */
 	public static function _shutdownHandler()
 	{
+		if (!self::$enabled) {
+			return;
+		}
+
 		// fatal error handler
 		static $types = array(
 			E_ERROR => 1,
@@ -372,7 +376,7 @@ final class Debugger
 		);
 		$error = error_get_last();
 		if (isset($types[$error['type']])) {
-			self::_exceptionHandler(new Nette\FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL), TRUE);
+			self::_exceptionHandler(new Nette\FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL));
 		}
 
 		// debug bar (require HTML & development mode)
@@ -391,7 +395,7 @@ final class Debugger
 	 * @return void
 	 * @internal
 	 */
-	public static function _exceptionHandler(\Exception $exception, $drawBar = FALSE)
+	public static function _exceptionHandler(\Exception $exception)
 	{
 		if (!headers_sent()) { // for PHP < 5.2.4
 			header('HTTP/1.1 500 Internal Server Error');
@@ -416,7 +420,7 @@ final class Debugger
 
 				} elseif ($htmlMode) { // dump to browser
 					self::$blueScreen->render($exception);
-					if ($drawBar && self::$bar) {
+					if (self::$bar) {
 						self::$bar->render();
 					}
 
@@ -432,6 +436,7 @@ final class Debugger
 			echo "\nNette\\Debug FATAL ERROR: thrown ", get_class($e), ': ', $e->getMessage(),
 				"\nwhile processing ", get_class($exception), ': ', $exception->getMessage(), "\n";
 		}
+		self::$enabled = FALSE; // un-register shutdown function
 		exit(255);
 	}
 
