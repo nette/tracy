@@ -33,13 +33,13 @@
 
 
 
-												<div class="panel">
+
+			<div class="panel">
 			<h2><a href="#" rel="netteBsPnl1">Source file <abbr>&#x25bc;</abbr></a></h2>
 
 			<div id="netteBsPnl1" class="inner">
 				<p><b>File:</b> %a% &nbsp; <b>Line:</b> %d%</p>
-				<pre>%A%</pre>
-			</div></div>
+				<pre>%A%</pre>			</div></div>
 
 
 

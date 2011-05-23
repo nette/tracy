@@ -34,12 +34,19 @@
 
 
 
+			<div class="panel">
+			<h2><a href="#" rel="netteBsPnl1">Source file <abbr>&#x25bc;</abbr></a></h2>
+
+			<div id="netteBsPnl1" class="inner">
+				<p><b>File:</b> <span>%a% : eval()'d code</span> &nbsp; <b>Line:</b> 1</p>
+							</div></div>
+
 
 
 									<div class="panel">
-				<h2><a href="#" rel="netteBsPnl1">Call stack <abbr>&#x25bc;</abbr></a></h2>
+				<h2><a href="#" rel="netteBsPnl2">Call stack <abbr>&#x25bc;</abbr></a></h2>
 
-				<div id="netteBsPnl1" class="inner">
+				<div id="netteBsPnl2" class="inner">
 				<ol>
 										<li><p>
 
@@ -101,9 +108,9 @@
 
 
 						<div class="panel">
-			<h2><a href="#" rel="netteBsPnl2">Variables <abbr>&#x25ba;</abbr></a></h2>
+			<h2><a href="#" rel="netteBsPnl3">Variables <abbr>&#x25ba;</abbr></a></h2>
 
-			<div id="netteBsPnl2" class="nette-collapsed inner">
+			<div id="netteBsPnl3" class="nette-collapsed inner">
 			<div class="outer">
 			<table>
 			<tr><th>$user</th><td><pre class="nette-dump">"root" (4)
@@ -121,9 +128,9 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl3">Environment <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" rel="netteBsPnl4">Environment <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="netteBsPnl3" class="nette-collapsed inner">
+		<div id="netteBsPnl4" class="nette-collapsed inner">
 						<h3><a href="#" rel="netteBsPnl-env-const">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<div class="outer">
 			<table id="netteBsPnl-env-const">%A%</table>
@@ -145,9 +152,9 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl4">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" rel="netteBsPnl5">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="netteBsPnl4" class="nette-collapsed inner">
+		<div id="netteBsPnl5" class="nette-collapsed inner">
 
 
 						<h3>$_GET</h3>
@@ -161,9 +168,9 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl5">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" rel="netteBsPnl6">HTTP response <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="netteBsPnl5" class="nette-collapsed inner">
+		<div id="netteBsPnl6" class="nette-collapsed inner">
 			<h3>Headers</h3>
 						<pre>%A%</pre>
 					</div></div>

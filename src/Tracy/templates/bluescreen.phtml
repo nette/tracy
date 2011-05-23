@@ -312,15 +312,14 @@ $counter = 0;
 					if (isset($row['file']) && strpos($row['file'], $expandPath) !== 0) { $expanded = $key; break; }
 				}
 			} ?>
-			<?php if (is_file($ex->getFile())): ?>
+
 			<div class="panel">
 			<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Source file <abbr><?php echo ($collapsed = $expanded !== NULL) ? '&#x25ba;' : '&#x25bc;' ?></abbr></a></h2>
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?> &nbsp; <b>Line:</b> <?php echo $ex->getLine() ?></p>
-				<pre><?php echo self::highlightFile($ex->getFile(), $ex->getLine()) ?></pre>
+				<?php if (is_file($ex->getFile())): ?><pre><?php echo self::highlightFile($ex->getFile(), $ex->getLine()) ?></pre><?php endif ?>
 			</div></div>
-			<?php endif?>
 
 
 

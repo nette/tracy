@@ -30,20 +30,19 @@ final class Helpers
 	 */
 	public static function editorLink($file, $line)
 	{
-		$dir = dirname(strtr($file, '/', DIRECTORY_SEPARATOR));
-		$base = isset($_SERVER['SCRIPT_FILENAME']) ? dirname(dirname(strtr($_SERVER['SCRIPT_FILENAME'], '/', DIRECTORY_SEPARATOR))) : dirname($dir);
-		if (substr($dir, 0, strlen($base)) === $base) {
-			$dir = '...' . substr($dir, strlen($base));
-		}
-
-		if (Debugger::$editor) {
-			$el = Nette\Utils\Html::el('a')
-				->href(strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line)));
+		if (Debugger::$editor && is_file($file)) {
+			$dir = dirname(strtr($file, '/', DIRECTORY_SEPARATOR));
+			$base = isset($_SERVER['SCRIPT_FILENAME']) ? dirname(dirname(strtr($_SERVER['SCRIPT_FILENAME'], '/', DIRECTORY_SEPARATOR))) : dirname($dir);
+			if (substr($dir, 0, strlen($base)) === $base) {
+				$dir = '...' . substr($dir, strlen($base));
+			}
+			return Nette\Utils\Html::el('a')
+				->href(strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line)))
+				->title("$file:$line")
+				->setHtml(htmlSpecialChars(rtrim($dir, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . '<b>' . htmlSpecialChars(basename($file)) . '</b>');
 		} else {
-			$el = Nette\Utils\Html::el('span');
+			return Nette\Utils\Html::el('span')->setText($file);
 		}
-		return $el->title("$file:$line")
-			->setHtml(htmlSpecialChars(rtrim($dir, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . '<b>' . htmlSpecialChars(basename($file)) . '</b>');
 	}
 
 
