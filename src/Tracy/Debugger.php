@@ -58,7 +58,7 @@ final class Debugger
 	/** @var int  how long strings display {@link Debugger::dump()} */
 	public static $maxLen = 150;
 
-	/** @var int  display location? {@link Debugger::dump()} */
+	/** @var bool display location? {@link Debugger::dump()} */
 	public static $showLocation = FALSE;
 
 	/********************* errors and exceptions reporting ****************d*g**/
