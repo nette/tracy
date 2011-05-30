@@ -44,6 +44,9 @@ final class Debugger
 	/** @var string URL pattern mask to open editor */
 	public static $editor = 'editor://open/?file=%file&line=%line';
 
+	/** @var string command to open browser (use 'start ""' in Windows) */
+	public static $browser;
+
 	/********************* Debugger::dump() ****************d*g**/
 
 	/** @var int  how many nested levels of array/object properties display {@link Debugger::dump()} */
@@ -389,6 +392,9 @@ final class Debugger
 					echo "$exception\n";
 					if ($file = self::log($exception)) {
 						echo "(stored in $file)\n";
+						if (self::$browser) {
+							exec(self::$browser . ' ' . escapeshellarg($file));
+						}
 					}
 
 				} elseif (self::isHtmlMode()) { // dump to browser
