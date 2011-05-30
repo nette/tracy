@@ -65,7 +65,7 @@ class BlueScreen extends Nette\Object
 	 * @param  int
 	 * @return string
 	 */
-	public static function highlightFile($file, $line, $count = 15)
+	public static function highlightFile($file, $line, $count = 15, $vars = array())
 	{
 		if (function_exists('ini_set')) {
 			ini_set('highlight.comment', '#999; font-style: italic');
@@ -116,7 +116,15 @@ class BlueScreen extends Nette\Object
 				$out .= sprintf("<span class='line'>%{$numWidth}s:</span>    %s\n", $n, $s);
 			}
 		}
-		return $out . str_repeat('</span>', $spans) . '</code>';
+		$out .= str_repeat('</span>', $spans) . '</code>';
+
+		$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function($m) use ($vars) {
+			return isset($vars[$m[1]])
+				? '" title="' . str_replace('"', '&quot;', strip_tags(Helpers::htmlDump($vars[$m[1]]))) . $m[0]
+				: $m[0];
+		}, $out);
+
+		return $out;
 	}
 
 }

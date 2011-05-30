@@ -318,7 +318,7 @@ $counter = 0;
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?> &nbsp; <b>Line:</b> <?php echo $ex->getLine() ?></p>
-				<?php if (is_file($ex->getFile())): ?><pre><?php echo self::highlightFile($ex->getFile(), $ex->getLine()) ?></pre><?php endif ?>
+				<?php if (is_file($ex->getFile())): ?><pre><?php echo self::highlightFile($ex->getFile(), $ex->getLine(), 15, isset($ex->context) ? $ex->context : NULL) ?></pre><?php endif ?>
 			</div></div>
 
 
