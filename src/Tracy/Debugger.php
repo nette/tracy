@@ -252,7 +252,7 @@ final class Debugger
 		} elseif ($logDirectory === FALSE) {
 			self::$logDirectory = FALSE;
 
-		} else {
+		} elseif (self::$logDirectory === NULL) {
 			self::$logDirectory = defined('APP_DIR') ? APP_DIR . '/../log' : getcwd() . '/log';
 		}
 		if (self::$logDirectory) {
