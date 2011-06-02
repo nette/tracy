@@ -384,6 +384,9 @@ final class Debugger
 			} else {
 				if (self::$consoleMode) { // dump to console
 					echo "$exception\n";
+					if ($file = self::log($exception)) {
+						echo "(stored in $file)\n";
+					}
 
 				} elseif (self::isHtmlMode()) { // dump to browser
 					self::$blueScreen->render($exception);

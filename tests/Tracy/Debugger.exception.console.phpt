@@ -28,6 +28,7 @@ Stack trace:
 #1 %a%: second(true, false)
 #2 %a%: first(10, 'any string')
 #3 {main}
+(stored in %a%)
 ", ob_get_clean());
 	die(0);
 }

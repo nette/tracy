@@ -26,6 +26,7 @@ function shutdown() {
 Stack trace:
 #0 [internal function]: %ns%Debugger::_shutdownHandler()
 #1 {main}
+(stored in %a%)
 ", ob_get_clean());
 	die(0);
 }
