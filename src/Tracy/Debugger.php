@@ -273,7 +273,7 @@ final class Debugger
 	 * Logs message or exception to file (if not disabled) and sends email notification (if enabled).
 	 * @param  string|Exception
 	 * @param  int  one of constant Debugger::INFO, WARNING, ERROR (sends email), CRITICAL (sends email)
-	 * @return void
+	 * @return string logged error filename
 	 */
 	public static function log($message, $priority = self::INFO)
 	{
@@ -296,7 +296,8 @@ final class Debugger
 			$exceptionFilename = "exception " . @date('Y-m-d H-i-s') . " $hash.html";
 			foreach (new \DirectoryIterator(self::$logDirectory) as $entry) {
 				if (strpos($entry, $hash)) {
-					$exceptionFilename = NULL; break;
+					$saved = TRUE;
+					break;
 				}
 			}
 		}
@@ -308,7 +309,7 @@ final class Debugger
 			!empty($exceptionFilename) ? ' @@  ' . $exceptionFilename : NULL
 		), $priority);
 
-		if (!empty($exceptionFilename) && $logHandle = @fopen(self::$logDirectory . '/'. $exceptionFilename, 'w')) {
+		if (!empty($exceptionFilename) && empty($saved) && $logHandle = @fopen(self::$logDirectory . '/'. $exceptionFilename, 'w')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
 			ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
 			self::$blueScreen->render($exception);
@@ -316,6 +317,8 @@ final class Debugger
 			ob_end_clean();
 			fclose($logHandle);
 		}
+
+		return empty($exceptionFilename) ? NULL : self::$logDirectory . '/' . $exceptionFilename;
 	}
 
 
