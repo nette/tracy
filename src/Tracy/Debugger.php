@@ -15,12 +15,6 @@ use Nette;
 
 
 
-require_once __DIR__ . '/Helpers.php';
-require_once __DIR__ . '/../Utils/Html.php';
-require_once __DIR__ . '/../Utils/Strings.php';
-
-
-
 /**
  * Debugger: displays and logs errors.
  *
@@ -662,7 +656,3 @@ final class Debugger
 	}
 
 }
-
-
-
-Debugger::_init();
