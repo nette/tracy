@@ -277,6 +277,26 @@ use Nette;
 		color: white;
 	}
 
+
+	/* dump() */
+	pre.nette-dump {
+		color: #444; background: white;
+	}
+	pre.nette-dump .php-array, pre.nette-dump .php-object {
+		color: #C22;
+	}
+	pre.nette-dump .php-string {
+		color: #080;
+	}
+	pre.nette-dump .php-int, pre.nette-dump .php-float {
+		color: #37D;
+	}
+	pre.nette-dump .php-null, pre.nette-dump .php-bool {
+		color: black;
+	}
+	pre.nette-dump .php-visibility {
+		font-size: 85%; color: #999;
+	}
 </style>
 
 <!--[if lt IE 8]><style class="nette">
