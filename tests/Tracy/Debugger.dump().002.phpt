@@ -29,12 +29,12 @@ Debugger::dump(trim('hello'));
 dump('hello');
 
 Assert::match( '<pre title="dump(\'hello\')
-in file %a% on line %d%" class="nette-dump">"hello" (5)
+in file %a% on line %d%" class="nette-dump"><span class="php-string">"hello"</span> (5)
 </pre>
 <pre title="dump(trim(\'hello\'))
-in file %a% on line %d%" class="nette-dump">"hello" (5) <small>in %a%:%d%</small>
+in file %a% on line %d%" class="nette-dump"><span class="php-string">"hello"</span> (5) <small>in %a%:%d%</small>
 </pre>
 <pre title="dump(\'hello\')
-in file %a% on line %d%" class="nette-dump">"hello" (5) <small>in %a%:%d%</small>
+in file %a% on line %d%" class="nette-dump"><span class="php-string">"hello"</span> (5) <small>in %a%:%d%</small>
 </pre>
 ', ob_get_clean() );

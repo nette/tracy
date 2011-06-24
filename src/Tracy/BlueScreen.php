@@ -68,7 +68,7 @@ class BlueScreen extends Nette\Object
 	public static function highlightFile($file, $line, $count = 15, $vars = array())
 	{
 		if (function_exists('ini_set')) {
-			ini_set('highlight.comment', '#999; font-style: italic');
+			ini_set('highlight.comment', '#998; font-style: italic');
 			ini_set('highlight.default', '#000');
 			ini_set('highlight.html', '#06B');
 			ini_set('highlight.keyword', '#D24; font-weight: bold');

@@ -74,20 +74,20 @@ final class Helpers
 		}
 
 		if (is_bool($var)) {
-			return ($var ? 'TRUE' : 'FALSE') . "\n";
+			return '<span class="php-bool">' . ($var ? 'TRUE' : 'FALSE') . "</span>\n";
 
 		} elseif ($var === NULL) {
-			return "NULL\n";
+			return "<span class=\"php-null\">NULL</span>\n";
 
 		} elseif (is_int($var)) {
-			return "$var\n";
+			return "<span class=\"php-int\">$var</span>\n";
 
 		} elseif (is_float($var)) {
 			$var = var_export($var, TRUE);
 			if (strpos($var, '.') === FALSE) {
 				$var .= '.0';
 			}
-			return "$var\n";
+			return "<span class=\"php-float\">$var</span>\n";
 
 		} elseif (is_string($var)) {
 			if (Debugger::$maxLen && strlen($var) > Debugger::$maxLen) {
@@ -97,10 +97,10 @@ final class Helpers
 			}
 			$s = strtr($s, preg_match($reBinary, $s) || preg_last_error() ? $tableBin : $tableUtf);
 			$len = strlen($var);
-			return "\"$s\"" . ($len > 1 ? " ($len)" : "") . "\n";
+			return "<span class=\"php-string\">\"$s\"</span>" . ($len > 1 ? " ($len)" : "") . "\n";
 
 		} elseif (is_array($var)) {
-			$s = "<span>array</span>(" . count($var) . ") ";
+			$s = '<span class="php-array">array</span>(' . count($var) . ") ";
 			$space = str_repeat($space1 = '   ', $level);
 			$brackets = range(0, count($var) - 1) === array_keys($var) ? "[]" : "{}";
 
@@ -121,8 +121,9 @@ final class Helpers
 					if ($k === $marker) {
 						continue;
 					}
-					$k = is_int($k) ? $k : '"' . htmlSpecialChars(strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf)) . '"';
-					$s .= "$space$space1$k => " . self::htmlDump($v, $level + 1);
+					$k = strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf);
+					$k = htmlSpecialChars(preg_match('#^\w+$#', $k) ? $k : "\"$k\"");
+					$s .= "$space$space1<span class=\"php-key\">$k</span> => " . self::htmlDump($v, $level + 1);
 				}
 				unset($var[$marker]);
 				$s .= "$space$brackets[1]</code>";
@@ -143,7 +144,7 @@ final class Helpers
 			} else {
 				$arr = (array) $var;
 			}
-			$s = "<span>" . get_class($var) . "</span>(" . count($arr) . ") ";
+			$s = '<span class="php-object">' . get_class($var) . "</span>(" . count($arr) . ") ";
 			$space = str_repeat($space1 = '   ', $level);
 
 			static $list = array();
@@ -158,11 +159,12 @@ final class Helpers
 				foreach ($arr as $k => &$v) {
 					$m = '';
 					if ($k[0] === "\x00") {
-						$m = $k[1] === '*' ? ' <span>protected</span>' : ' <span>private</span>';
+						$m = ' <span class="php-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$k = htmlSpecialChars(strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf));
-					$s .= "$space$space1\"$k\"$m => " . self::htmlDump($v, $level + 1);
+					$k = strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf);
+					$k = htmlSpecialChars(preg_match('#^\w+$#', $k) ? $k : "\"$k\"");
+					$s .= "$space$space1<span class=\"php-key\">$k</span>$m => " . self::htmlDump($v, $level + 1);
 				}
 				array_pop($list);
 				$s .= "$space}</code>";
@@ -173,7 +175,7 @@ final class Helpers
 			return $s . "\n";
 
 		} elseif (is_resource($var)) {
-			return "<span>" . htmlSpecialChars(get_resource_type($var)) . " resource</span>\n";
+			return '<span class="php-resource">' . htmlSpecialChars(get_resource_type($var)) . " resource</span>\n";
 
 		} else {
 			return "<span>unknown type</span>\n";

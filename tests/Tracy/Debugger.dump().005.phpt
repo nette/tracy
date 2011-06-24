@@ -40,11 +40,11 @@ Assert::match( 'array(4) [
 $arr = array('x' => 1, 'y' => 2);
 $arr[] = & $arr;
 Assert::match( 'array(3) {
-   "x" => 1
-   "y" => 2
+   x => 1
+   y => 2
    0 => array(3) {
-      "x" => 1
-      "y" => 2
+      x => 1
+      y => 2
       0 => array(4) { *RECURSION* }
    }
 }

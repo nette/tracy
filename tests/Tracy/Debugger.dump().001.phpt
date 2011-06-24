@@ -34,56 +34,56 @@ class Test
 
 Debugger::$consoleMode = FALSE;
 
-Assert::match( '<pre class="nette-dump">NULL
+Assert::match( '<pre class="nette-dump"><span class="php-null">NULL</span>
 </pre>', Debugger::dump(NULL, TRUE) );
 
-Assert::match( '<pre class="nette-dump">TRUE
+Assert::match( '<pre class="nette-dump"><span class="php-bool">TRUE</span>
 </pre>', Debugger::dump(TRUE, TRUE) );
 
-Assert::match( '<pre class="nette-dump">FALSE
+Assert::match( '<pre class="nette-dump"><span class="php-bool">FALSE</span>
 </pre>', Debugger::dump(FALSE, TRUE) );
 
-Assert::match( '<pre class="nette-dump">0
+Assert::match( '<pre class="nette-dump"><span class="php-int">0</span>
 </pre>', Debugger::dump(0, TRUE) );
 
-Assert::match( '<pre class="nette-dump">1
+Assert::match( '<pre class="nette-dump"><span class="php-int">1</span>
 </pre>', Debugger::dump(1, TRUE) );
 
-Assert::match( '<pre class="nette-dump">0.0
+Assert::match( '<pre class="nette-dump"><span class="php-float">0.0</span>
 </pre>', Debugger::dump(0.0, TRUE) );
 
-Assert::match( '<pre class="nette-dump">0.1
+Assert::match( '<pre class="nette-dump"><span class="php-float">0.1</span>
 </pre>', Debugger::dump(0.1, TRUE) );
 
-Assert::match( '<pre class="nette-dump">""
+Assert::match( '<pre class="nette-dump"><span class="php-string">""</span>
 </pre>', Debugger::dump('', TRUE) );
 
-Assert::match( '<pre class="nette-dump">"0"
+Assert::match( '<pre class="nette-dump"><span class="php-string">"0"</span>
 </pre>', Debugger::dump('0', TRUE) );
 
-Assert::match( '<pre class="nette-dump">"\\x00"
+Assert::match( '<pre class="nette-dump"><span class="php-string">"\\x00"</span>
 </pre>', Debugger::dump("\x00", TRUE) );
 
-Assert::match( '<pre class="nette-dump"><span>array</span>(5) <code>[
-   0 => 1
-   1 => "hello" (5)
-   2 => <span>array</span>(0)
-   3 => <span>array</span>(2) <code>[
-      0 => 1
-      1 => 2
+Assert::match( '<pre class="nette-dump"><span class="php-array">array</span>(5) <code>[
+   <span class="php-key">0</span> => <span class="php-int">1</span>
+   <span class="php-key">1</span> => <span class="php-string">"hello"</span> (5)
+   <span class="php-key">2</span> => <span class="php-array">array</span>(0)
+   <span class="php-key">3</span> => <span class="php-array">array</span>(2) <code>[
+      <span class="php-key">0</span> => <span class="php-int">1</span>
+      <span class="php-key">1</span> => <span class="php-int">2</span>
    ]</code>
-   4 => <span>array</span>(2) <code>{
-      1 => 1
-      2 => 2
+   <span class="php-key">4</span> => <span class="php-array">array</span>(2) <code>{
+      <span class="php-key">1</span> => <span class="php-int">1</span>
+      <span class="php-key">2</span> => <span class="php-int">2</span>
    }</code>
 ]</code>
 </pre>
 ', Debugger::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)), TRUE) );
 
-Assert::match( '<pre class="nette-dump"><span>stream resource</span>
+Assert::match( '<pre class="nette-dump"><span class="php-resource">stream resource</span>
 </pre>', Debugger::dump(fopen(__FILE__, 'r'), TRUE) );
 
-Assert::match( '<pre class="nette-dump"><span>stdClass</span>(0)
+Assert::match( '<pre class="nette-dump"><span class="php-object">stdClass</span>(0)
 </pre>', Debugger::dump((object) NULL, TRUE) );
 
 $obj = new Test;
@@ -134,11 +134,11 @@ Assert::match( 'stream resource', Debugger::dump(fopen(__FILE__, 'r'), TRUE) );
 Assert::match( 'stdClass(0)', Debugger::dump((object) NULL, TRUE) );
 
 Assert::match( 'Test(3) {
-   "x" => array(2) [
+   x => array(2) [
       0 => 10
       1 => NULL
    ]
-   "y" private => "hello" (5)
-   "z" protected => 30
+   y private => "hello" (5)
+   z protected => 30
 }
 ', Debugger::dump($obj, TRUE) );

@@ -41,26 +41,26 @@ $arr = array(
 
 $arr[] = &$arr;
 Assert::match( 'array(5) {
-   "long" => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
+   long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
    0 => array(1) [
       0 => array(1) [
          0 => array(1) { ... }
       ]
    ]
-   "long2" => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
+   long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
    1 => stdClass(1) {
-      "0" => stdClass(1) {
-         "0" => stdClass(1) { ... }
+      0 => stdClass(1) {
+         0 => stdClass(1) { ... }
       }
    }
    2 => array(5) {
-      "long" => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
+      long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
       0 => array(1) [
          0 => array(1) [ ... ]
       ]
-      "long2" => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
+      long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
       1 => stdClass(1) {
-         "0" => stdClass(1) { ... }
+         0 => stdClass(1) { ... }
       }
       2 => array(6) { *RECURSION* }
    }
@@ -73,18 +73,18 @@ Assert::match( 'array(5) {
 Debugger::$maxDepth = 2;
 Debugger::$maxLen = 50;
 Assert::match( 'array(5) {
-   "long" => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
+   long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    0 => array(1) [
       0 => array(1) [ ... ]
    ]
-   "long2" => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
+   long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    1 => stdClass(1) {
-      "0" => stdClass(1) { ... }
+      0 => stdClass(1) { ... }
    }
    2 => array(5) {
-      "long" => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
+      long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
       0 => array(1) [ ... ]
-      "long2" => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
+      long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
       1 => stdClass(1) { ... }
       2 => array(6) { *RECURSION* }
    }

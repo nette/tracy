@@ -24,5 +24,5 @@ ob_start();
 Debugger::dump('sensitive data');
 Assert::same( '', ob_get_clean() );
 
-Assert::match( '<pre class="nette-dump">"forced" (6)
+Assert::match( '<pre class="nette-dump"><span class="php-string">"forced"</span> (6)
 </pre>', Debugger::dump('forced', TRUE) );
