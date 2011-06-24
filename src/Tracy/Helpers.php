@@ -133,7 +133,16 @@ final class Helpers
 			return $s . "\n";
 
 		} elseif (is_object($var)) {
-			$arr = (array) $var;
+			if ($var instanceof \Closure) {
+				$rc = new \ReflectionFunction($var);
+				$arr = array();
+				foreach ($rc->getParameters() as $param) {
+					$arr[] = '$' . $param->getName();
+				}
+				$arr = array('file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'parameters' => implode(', ', $arr));
+			} else {
+				$arr = (array) $var;
+			}
 			$s = "<span>" . get_class($var) . "</span>(" . count($arr) . ") ";
 			$space = str_repeat($space1 = '   ', $level);
 
@@ -143,7 +152,7 @@ final class Helpers
 			} elseif (in_array($var, $list, TRUE)) {
 				$s .= "{ *RECURSION* }";
 
-			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth) {
+			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth || $var instanceof \Closure) {
 				$s .= "<code>{\n";
 				$list[] = $var;
 				foreach ($arr as $k => &$v) {
