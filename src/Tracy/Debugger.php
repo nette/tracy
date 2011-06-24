@@ -371,9 +371,7 @@ final class Debugger
 		}
 
 		// debug bar (require HTML & development mode)
-		if (self::$bar && !self::$productionMode && !self::$ajaxDetected && !self::$consoleMode
-			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))
-		) {
+		if (self::$bar && !self::$productionMode && self::isHtmlMode()) {
 			self::$bar->render();
 		}
 	}
@@ -392,8 +390,6 @@ final class Debugger
 			header('HTTP/1.1 500 Internal Server Error');
 		}
 
-		$htmlMode = !self::$ajaxDetected && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
-
 		try {
 			if (self::$productionMode) {
 				self::log($exception, self::ERROR);
@@ -401,7 +397,7 @@ final class Debugger
 				if (self::$consoleMode) {
 					echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
 
-				} elseif ($htmlMode) {
+				} elseif (self::isHtmlMode()) {
 					require __DIR__ . '/templates/error.phtml';
 				}
 
@@ -409,7 +405,7 @@ final class Debugger
 				if (self::$consoleMode) { // dump to console
 					echo "$exception\n";
 
-				} elseif ($htmlMode) { // dump to browser
+				} elseif (self::isHtmlMode()) { // dump to browser
 					self::$blueScreen->render($exception);
 					if (self::$bar) {
 						self::$bar->render();
@@ -488,7 +484,7 @@ final class Debugger
 
 		} else {
 			$ok = self::fireLog(new \ErrorException($message, 0, $severity, $file, $line), self::WARNING);
-			return self::$consoleMode || (!self::$bar && !$ok) ? FALSE : NULL;
+			return !self::isHtmlMode() || (!self::$bar && !$ok) ? FALSE : NULL;
 		}
 
 		return FALSE; // call normal error handler
@@ -642,6 +638,14 @@ final class Debugger
 		if (!self::$productionMode) {
 			return self::$fireLogger->log($message);
 		}
+	}
+
+
+
+	private static function isHtmlMode()
+	{
+		return !self::$ajaxDetected && !self::$consoleMode
+			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
 	}
 
 
