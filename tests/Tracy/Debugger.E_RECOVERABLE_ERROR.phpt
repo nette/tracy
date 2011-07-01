@@ -47,26 +47,17 @@ class TestClass
 
 $obj = new TestClass;
 
-try {
+Assert::throws(function() use ($obj) {
 	// Invalid argument #1
 	$obj->test1('hello');
-	Assert::fail('Expected exception');
-} catch (Exception $e) {
-	Assert::exception('Nette\FatalErrorException', 'Argument 1 passed to TestClass::test1() must be an array, string given, called in %a%', $e );
-}
+}, 'Nette\FatalErrorException', 'Argument 1 passed to TestClass::test1() must be an array, string given, called in %a%');
 
-try {
+Assert::throws(function() use ($obj) {
 	// Invalid argument #2
 	$obj->test2('hello');
-	Assert::fail('Expected exception');
-} catch (Exception $e) {
-	Assert::exception('Nette\FatalErrorException', 'Argument 1 passed to TestClass::test2() must be an instance of TestClass, string given, called in %a%', $e );
-}
+}, 'Nette\FatalErrorException', 'Argument 1 passed to TestClass::test2() must be an instance of TestClass, string given, called in %a%');
 
-try {
+Assert::throws(function() use ($obj) {
 	// Invalid toString
 	echo $obj;
-	Assert::fail('Expected exception');
-} catch (Exception $e) {
-	Assert::exception('Nette\FatalErrorException', 'Method TestClass::__toString() must return a string value', $e );
-}
+}, 'Nette\FatalErrorException', 'Method TestClass::__toString() must return a string value');
