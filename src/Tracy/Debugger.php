@@ -392,7 +392,11 @@ final class Debugger
 
 		try {
 			if (self::$productionMode) {
-				self::log($exception, self::ERROR);
+				try {
+					self::log($exception, self::ERROR);
+				} catch (\Exception $e) {
+					echo 'FATAL ERROR: unable to log error';
+				}
 
 				if (self::$consoleMode) {
 					echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
@@ -419,10 +423,16 @@ final class Debugger
 			foreach (self::$onFatalError as $handler) {
 				call_user_func($handler, $exception);
 			}
+
 		} catch (\Exception $e) {
-			echo "\nNette\\Debug FATAL ERROR: thrown ", get_class($e), ': ', $e->getMessage(),
-				"\nwhile processing ", get_class($exception), ': ', $exception->getMessage(), "\n";
+			if (self::$productionMode) {
+				echo self::isHtmlMode() ? '<meta name=robots content=noindex>FATAL ERROR' : 'FATAL ERROR';
+			} else {
+				echo "FATAL ERROR: thrown ", get_class($e), ': ', $e->getMessage(),
+					"\nwhile processing ", get_class($exception), ': ', $exception->getMessage(), "\n";
+			}
 		}
+
 		self::$enabled = FALSE; // un-register shutdown function
 		exit(255);
 	}
