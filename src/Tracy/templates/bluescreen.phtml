@@ -460,12 +460,27 @@ $counter = 0;
 			</div>
 
 
+			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Configuration options <abbr>&#x25ba;</abbr></a></h3>
+			<div class="outer">
+			<table id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed">
+			<tr>
+				<th>Directive</th><th>Local Value</th><th>Master Value</th>
+			</tr>
+			<?php
+			foreach (ini_get_all() as $k => $v) {
+				echo '<tr><th>', htmlspecialchars($k), '</th><td>', htmlspecialchars($v['local_value']), '</th><td>', htmlspecialchars($v['global_value']), "</td></tr>\n";
+			}
+			?>
+			</table>
+			</div>
+
+
 			<h3>$_SERVER</h3>
 			<?php if (empty($_SERVER)):?>
 			<p><i>empty</i></p>
 			<?php else: ?>
 			<div class="outer">
-			<table>
+			<table id="netteBsPnl<?php echo $counter ?>">
 			<?php
 			foreach ($_SERVER as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', Helpers::clickableDump($v), "</td></tr>\n";
 			?>
