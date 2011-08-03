@@ -434,9 +434,9 @@ $counter = 0;
 			<?php
 			$list = get_defined_constants(TRUE);
 			if (!empty($list['user'])):?>
-			<h3><a href="#" rel="netteBsPnl-env-const">Constants <abbr>&#x25bc;</abbr></a></h3>
+			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<div class="outer">
-			<table id="netteBsPnl-env-const">
+			<table id="netteBsPnl<?php echo $counter ?>">
 			<?php
 			foreach ($list['user'] as $k => $v) {
 				echo '<tr><th>', htmlspecialchars($k), '</th>';
@@ -448,9 +448,9 @@ $counter = 0;
 			<?php endif ?>
 
 
-			<h3><a href="#" rel="netteBsPnl-env-files">Included files <abbr>&#x25ba;</abbr></a> (<?php echo count(get_included_files()) ?>)</h3>
+			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Included files <abbr>&#x25ba;</abbr></a> (<?php echo count(get_included_files()) ?>)</h3>
 			<div class="outer">
-			<table id="netteBsPnl-env-files" class="nette-collapsed">
+			<table id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed">
 			<?php
 			foreach (get_included_files() as $v) {
 				echo '<tr><td>', htmlspecialchars($v), "</td></tr>\n";
@@ -475,10 +475,7 @@ $counter = 0;
 			</div>
 
 
-			<h3>$_SERVER</h3>
-			<?php if (empty($_SERVER)):?>
-			<p><i>empty</i></p>
-			<?php else: ?>
+			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">$_SERVER <abbr>&#x25bc;</abbr></a></h3>
 			<div class="outer">
 			<table id="netteBsPnl<?php echo $counter ?>">
 			<?php
@@ -486,7 +483,6 @@ $counter = 0;
 			?>
 			</table>
 			</div>
-			<?php endif ?>
 		</div></div>
 
 

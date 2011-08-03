@@ -144,30 +144,36 @@
 		<h2><a href="#" rel="netteBsPnl4">Environment <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl4" class="nette-collapsed inner">
-						<h3><a href="#" rel="netteBsPnl-env-const">Constants <abbr>&#x25bc;</abbr></a></h3>
+						<h3><a href="#" rel="netteBsPnl5">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<div class="outer">
-			<table id="netteBsPnl-env-const">%A%</table>
+			<table id="netteBsPnl5">%A%</table>
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl-env-files">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
+			<h3><a href="#" rel="netteBsPnl6">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
 			<div class="outer">
-			<table id="netteBsPnl-env-files" class="nette-collapsed">%A%</table>
+			<table id="netteBsPnl6" class="nette-collapsed">%A%</table>
 			</div>
 
 
-			<h3>$_SERVER</h3>
-						<div class="outer">
-			<table>%A%</table>
+			<h3><a href="#" rel="netteBsPnl7">Configuration options <abbr>&#x25ba;</abbr></a></h3>
+			<div class="outer">
+			<table id="netteBsPnl7" class="nette-collapsed">%A%</table>
 			</div>
-					</div></div>
+
+
+			<h3><a href="#" rel="netteBsPnl8">$_SERVER <abbr>&#x25bc;</abbr></a></h3>
+			<div class="outer">
+			<table id="netteBsPnl8">%A%</table>
+			</div>
+		</div></div>
 
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl5">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" rel="netteBsPnl9">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="netteBsPnl5" class="nette-collapsed inner">
+		<div id="netteBsPnl9" class="nette-collapsed inner">
 
 
 						<h3>$_GET</h3>
@@ -181,9 +187,9 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl6">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" rel="netteBsPnl10">HTTP response <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="netteBsPnl6" class="nette-collapsed inner">
+		<div id="netteBsPnl10" class="nette-collapsed inner">
 			<h3>Headers</h3>
 						<pre>%A%</pre>
 					</div></div>

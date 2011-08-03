@@ -72,30 +72,36 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 		<h2><a href="#" rel="netteBsPnl2">Environment <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl2" class="nette-collapsed inner">
-						<h3><a href="#" rel="netteBsPnl-env-const">Constants <abbr>&#x25bc;</abbr></a></h3>
+						<h3><a href="#" rel="netteBsPnl3">Constants <abbr>&#x25bc;</abbr></a></h3>
 			<div class="outer">
-			<table id="netteBsPnl-env-const">%A%</table>
+			<table id="netteBsPnl3">%A%</table>
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl-env-files">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
+			<h3><a href="#" rel="netteBsPnl4">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
 			<div class="outer">
-			<table id="netteBsPnl-env-files" class="nette-collapsed">%A%</table>
+			<table id="netteBsPnl4" class="nette-collapsed">%A%</table>
 			</div>
 
 
-			<h3>$_SERVER</h3>
-						<div class="outer">
-			<table>%A%</table>
+			<h3><a href="#" rel="netteBsPnl5">Configuration options <abbr>&#x25ba;</abbr></a></h3>
+			<div class="outer">
+			<table id="netteBsPnl5" class="nette-collapsed">%A%</table>
 			</div>
-					</div></div>
+
+
+			<h3><a href="#" rel="netteBsPnl6">$_SERVER <abbr>&#x25bc;</abbr></a></h3>
+			<div class="outer">
+			<table id="netteBsPnl6">%A%</table>
+			</div>
+		</div></div>
 
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl3">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" rel="netteBsPnl7">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="netteBsPnl3" class="nette-collapsed inner">
+		<div id="netteBsPnl7" class="nette-collapsed inner">
 
 
 						<h3>$_GET</h3>
@@ -109,9 +115,9 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl4">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#" rel="netteBsPnl8">HTTP response <abbr>&#x25ba;</abbr></a></h2>
 
-		<div id="netteBsPnl4" class="nette-collapsed inner">
+		<div id="netteBsPnl8" class="nette-collapsed inner">
 			<h3>Headers</h3>
 						<pre>X-Powered-By: Nette Framework<br>Content-Type: text/html<br></pre>
 					</div></div>
