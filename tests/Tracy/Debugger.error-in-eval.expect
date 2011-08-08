@@ -132,26 +132,25 @@
 
 		<div id="netteBsPnl4" class="nette-collapsed inner">
 						<h3><a href="#" rel="netteBsPnl5">Constants <abbr>&#x25bc;</abbr></a></h3>
-			<div class="outer">
-			<table id="netteBsPnl5">%A%</table>
+			<div id="netteBsPnl5" class="outer">
+			<table>%A%</table>
 			</div>
 
 
 			<h3><a href="#" rel="netteBsPnl6">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
-			<div class="outer">
-			<table id="netteBsPnl6" class="nette-collapsed">%A%</table>
+			<div id="netteBsPnl6" class="outer nette-collapsed">
+			<table>%A%</table>
 			</div>
 
 
 			<h3><a href="#" rel="netteBsPnl7">Configuration options <abbr>&#x25ba;</abbr></a></h3>
-			<div class="outer">
-			<table id="netteBsPnl7" class="nette-collapsed">%A%</table>
-			</div>
+			<div id="netteBsPnl7" class="outer nette-collapsed">
+			%A%</div>
 
 
 			<h3><a href="#" rel="netteBsPnl8">$_SERVER <abbr>&#x25bc;</abbr></a></h3>
-			<div class="outer">
-			<table id="netteBsPnl8">%A%</table>
+			<div id="netteBsPnl8" class="outer">
+			<table>%A%</table>
 			</div>
 		</div></div>
 

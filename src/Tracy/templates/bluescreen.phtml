@@ -230,8 +230,11 @@ $counter = 0;
 		}
 
 		#netteBluescreen th {
-			width: 10%;
 			font-weight: bold;
+		}
+
+		#netteBluescreen tr > :first-child {
+			width: 20%;
 		}
 
 		#netteBluescreen tr:nth-child(2n), #netteBluescreen tr:nth-child(2n) pre {
@@ -435,8 +438,8 @@ $counter = 0;
 			$list = get_defined_constants(TRUE);
 			if (!empty($list['user'])):?>
 			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Constants <abbr>&#x25bc;</abbr></a></h3>
-			<div class="outer">
-			<table id="netteBsPnl<?php echo $counter ?>">
+			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
+			<table>
 			<?php
 			foreach ($list['user'] as $k => $v) {
 				echo '<tr><th>', htmlspecialchars($k), '</th>';
@@ -449,8 +452,8 @@ $counter = 0;
 
 
 			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Included files <abbr>&#x25ba;</abbr></a> (<?php echo count(get_included_files()) ?>)</h3>
-			<div class="outer">
-			<table id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed">
+			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
+			<table>
 			<?php
 			foreach (get_included_files() as $v) {
 				echo '<tr><td>', htmlspecialchars($v), "</td></tr>\n";
@@ -461,23 +464,14 @@ $counter = 0;
 
 
 			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Configuration options <abbr>&#x25ba;</abbr></a></h3>
-			<div class="outer">
-			<table id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed">
-			<tr>
-				<th>Directive</th><th>Local Value</th><th>Master Value</th>
-			</tr>
-			<?php
-			foreach (ini_get_all() as $k => $v) {
-				echo '<tr><th>', htmlspecialchars($k), '</th><td>', htmlspecialchars($v['local_value']), '</th><td>', htmlspecialchars($v['global_value']), "</td></tr>\n";
-			}
-			?>
-			</table>
+			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
+			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+$#s', '', ob_get_clean()) ?>
 			</div>
 
 
 			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">$_SERVER <abbr>&#x25bc;</abbr></a></h3>
-			<div class="outer">
-			<table id="netteBsPnl<?php echo $counter ?>">
+			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
+			<table>
 			<?php
 			foreach ($_SERVER as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', Helpers::clickableDump($v), "</td></tr>\n";
 			?>
