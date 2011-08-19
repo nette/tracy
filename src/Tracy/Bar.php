@@ -53,6 +53,7 @@ class Bar extends Nette\Object
 	 */
 	public function render()
 	{
+		$obLevel = ob_get_level();
 		$panels = array();
 		foreach ($this->panels as $id => $panel) {
 			try {
@@ -67,6 +68,9 @@ class Bar extends Nette\Object
 					'tab' => "Error: $id",
 					'panel' => nl2br(htmlSpecialChars((string) $e)),
 				);
+				while (ob_get_level() > $obLevel) { // restore ob-level if broken
+					ob_end_clean();
+				}
 			}
 		}
 		require __DIR__ . '/templates/bar.phtml';
