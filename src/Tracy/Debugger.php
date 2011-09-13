@@ -65,7 +65,7 @@ final class Debugger
 	/** @var BlueScreen */
 	public static $blueScreen;
 
-	/** @var bool determines whether any error will cause immediate death */
+	/** @var bool|int determines whether any error will cause immediate death; if integer that it's matched against error severity */
 	public static $strictMode = FALSE; // $immediateDeath
 
 	/** @var bool disables the @ (shut-up) operator so that notices and warnings are no longer hidden */
@@ -467,7 +467,7 @@ final class Debugger
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return FALSE; // calls normal error handler to fill-in error_get_last()
 
-		} elseif (self::$strictMode && !self::$productionMode) {
+		} elseif (!self::$productionMode && (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))) {
 			self::_exceptionHandler(new Nette\FatalErrorException($message, 0, $severity, $file, $line, $context));
 		}
 
