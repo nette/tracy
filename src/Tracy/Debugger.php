@@ -200,38 +200,11 @@ final class Debugger
 		if (is_bool($mode)) {
 			self::$productionMode = $mode;
 
-		} elseif (is_string($mode)) { // IP addresses
-			$mode = preg_split('#[,\s]+#', "$mode 127.0.0.1 ::1");
-		}
-
-		if (is_array($mode)) { // IP addresses whitelist detection
-			self::$productionMode = !isset($_SERVER['REMOTE_ADDR']) || !in_array($_SERVER['REMOTE_ADDR'], $mode, TRUE);
-		}
-
-		if (self::$productionMode === self::DETECT) {
-			if (isset($_SERVER['SERVER_ADDR']) || isset($_SERVER['LOCAL_ADDR'])) { // IP address based detection
-				$addrs = array();
-				if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) { // proxy server detected
-					$addrs = preg_split('#,\s*#', $_SERVER['HTTP_X_FORWARDED_FOR']);
-				}
-				if (isset($_SERVER['REMOTE_ADDR'])) {
-					$addrs[] = $_SERVER['REMOTE_ADDR'];
-				}
-				$addrs[] = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['LOCAL_ADDR'];
-				self::$productionMode = FALSE;
-				foreach ($addrs as $addr) {
-					$oct = explode('.', $addr);
-					if ($addr !== '::1' && (count($oct) !== 4 || ($oct[0] !== '10' && $oct[0] !== '127' && ($oct[0] !== '172' || $oct[1] < 16 || $oct[1] > 31)
-						&& ($oct[0] !== '169' || $oct[1] !== '254') && ($oct[0] !== '192' || $oct[1] !== '168')))
-					) {
-						self::$productionMode = TRUE;
-						break;
-					}
-				}
-
-			} else {
-				self::$productionMode = !self::$consoleMode;
-			}
+		} elseif ($mode !== self::DETECT || self::$productionMode === NULL) { // IP addresses or computer names whitelist detection
+			$mode = is_string($mode) ? preg_split('#[,\s]+#', $mode) : array($mode);
+			$mode[] = '127.0.0.1';
+			$mode[] = '::1';
+			self::$productionMode = !in_array(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : php_uname('n'), $mode, TRUE);
 		}
 
 		// logging configuration
