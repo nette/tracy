@@ -296,6 +296,7 @@ final class Debugger
 			$exceptionFilename = "exception " . @date('Y-m-d H-i-s') . " $hash.html";
 			foreach (new \DirectoryIterator(self::$logDirectory) as $entry) {
 				if (strpos($entry, $hash)) {
+					$exceptionFilename = $entry;
 					$saved = TRUE;
 					break;
 				}
@@ -309,16 +310,18 @@ final class Debugger
 			!empty($exceptionFilename) ? ' @@  ' . $exceptionFilename : NULL
 		), $priority);
 
-		if (!empty($exceptionFilename) && empty($saved) && $logHandle = @fopen(self::$logDirectory . '/'. $exceptionFilename, 'w')) {
-			ob_start(); // double buffer prevents sending HTTP headers in some PHP
-			ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
-			self::$blueScreen->render($exception);
-			ob_end_flush();
-			ob_end_clean();
-			fclose($logHandle);
+		if (!empty($exceptionFilename)) {
+			$exceptionFilename = self::$logDirectory . '/' . $exceptionFilename;
+			if (empty($saved) && $logHandle = @fopen($exceptionFilename, 'w')) {
+				ob_start(); // double buffer prevents sending HTTP headers in some PHP
+				ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
+				self::$blueScreen->render($exception);
+				ob_end_flush();
+				ob_end_clean();
+				fclose($logHandle);
+			}
+			return strtr($exceptionFilename, '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		}
-
-		return empty($exceptionFilename) ? NULL : self::$logDirectory . '/' . $exceptionFilename;
 	}
 
 
