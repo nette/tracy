@@ -579,7 +579,7 @@ final class Debugger
 		}
 
 		if (self::$consoleMode) {
-			$output = htmlspecialchars_decode(strip_tags($output), ENT_NOQUOTES);
+			$output = htmlspecialchars_decode(strip_tags($output), ENT_QUOTES);
 		}
 
 		if ($return) {
