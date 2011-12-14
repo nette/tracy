@@ -289,10 +289,9 @@ final class Debugger
 
 		if ($message instanceof \Exception) {
 			$exception = $message;
-			$message = "PHP Fatal error: "
-				. ($message instanceof Nette\FatalErrorException
-					? $exception->getMessage()
-					: "Uncaught exception " . get_class($exception) . " with message '" . $exception->getMessage() . "'")
+			$message = ($message instanceof Nette\FatalErrorException
+				? 'Fatal error: ' . $exception->getMessage()
+				: get_class($exception) . ": " . $exception->getMessage())
 				. " in " . $exception->getFile() . ":" . $exception->getLine();
 
 			$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);

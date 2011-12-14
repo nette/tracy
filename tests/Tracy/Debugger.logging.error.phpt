@@ -30,7 +30,7 @@ Debugger::enable(Debugger::PRODUCTION, NULL, 'admin@example.com');
 function testMailer() {}
 
 function shutdown() {
-	Assert::match('%a%PHP Fatal error: Call to undefined function missing_funcion() in %a%', file_get_contents(Debugger::$logDirectory . '/error.log'));
+	Assert::match('%a%Fatal error: Call to undefined function missing_funcion() in %a%', file_get_contents(Debugger::$logDirectory . '/error.log'));
 	Assert::true(is_file(Debugger::$logDirectory . '/email-sent'));
 	die(0);
 }
