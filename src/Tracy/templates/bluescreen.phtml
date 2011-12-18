@@ -309,8 +309,10 @@ $counter = 0;
 
 
 
+			<?php $bottomPanels = array() ?>
 			<?php foreach ($panels as $panel): ?>
 			<?php $panel = call_user_func($panel, $ex); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
+			<?php if (!empty($panel['bottom'])) { $bottomPanels[] = $panel; continue; } ?>
 			<div class="panel">
 				<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>"><?php echo htmlSpecialChars($panel['tab']) ?> <abbr>&#x25bc;</abbr></a></h2>
 
@@ -527,6 +529,18 @@ $counter = 0;
 			<p><i>no headers</i></p>
 			<?php endif ?>
 		</div></div>
+
+
+
+		<?php foreach ($bottomPanels as $panel): ?>
+		<div class="panel">
+			<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>"><?php echo htmlSpecialChars($panel['tab']) ?> <abbr>&#x25bc;</abbr></a></h2>
+
+			<div id="netteBsPnl<?php echo $counter ?>" class="inner">
+			<?php echo $panel['panel'] ?>
+		</div></div>
+		<?php endforeach ?>
+
 
 
 		<ul>

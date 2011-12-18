@@ -121,6 +121,10 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 					</div></div>
 
 
+
+
+
+
 		<ul>
 			<li>Report generated at %a%</li>
 						<li>PHP %a%</li>
