@@ -40,7 +40,10 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 			<div id="netteBsPnl1" class="inner">
 				<p><b>File:</b> %a% &nbsp; <b>Line:</b> %d%</p>
-				<pre><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    {
+				<pre><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
 <span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
 <span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
@@ -48,12 +51,11 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 <span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
 <span class='highlight'>%d%:    &nbsp;&nbsp;&nbsp;&nbsp;missing_funcion();
-</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>48:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #D24; font-weight: bold">);
-<span class='line'>%d%:</span>    </span>
-</span></code></pre>			</div></div>
+</span></span></code></pre>			</div></div>
 
 
 
