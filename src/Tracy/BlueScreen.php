@@ -32,7 +32,7 @@ class BlueScreen extends Nette\Object
 	 * Add custom panel.
 	 * @param  callback
 	 * @param  string
-	 * @return void
+	 * @return BlueScreen  provides a fluent interface
 	 */
 	public function addPanel($panel, $id = NULL)
 	{
@@ -41,6 +41,7 @@ class BlueScreen extends Nette\Object
 		} else {
 			$this->panels[$id] = $panel;
 		}
+		return $this;
 	}
 
 

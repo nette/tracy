@@ -32,7 +32,7 @@ class Bar extends Nette\Object
 	 * Add custom panel.
 	 * @param  IBarPanel
 	 * @param  string
-	 * @return void
+	 * @return Bar  provides a fluent interface
 	 */
 	public function addPanel(IBarPanel $panel, $id = NULL)
 	{
@@ -43,6 +43,7 @@ class Bar extends Nette\Object
 			} while (isset($this->panels[$id]));
 		}
 		$this->panels[$id] = $panel;
+		return $this;
 	}
 
 
