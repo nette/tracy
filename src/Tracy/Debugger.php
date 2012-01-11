@@ -316,7 +316,7 @@ final class Debugger
 			$exceptionFilename = self::$logDirectory . '/' . $exceptionFilename;
 			if (empty($saved) && $logHandle = @fopen($exceptionFilename, 'w')) {
 				ob_start(); // double buffer prevents sending HTTP headers in some PHP
-				ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 1);
+				ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 4096);
 				self::$blueScreen->render($exception);
 				ob_end_flush();
 				ob_end_clean();
