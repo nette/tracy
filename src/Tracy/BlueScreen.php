@@ -31,15 +31,12 @@ class BlueScreen extends Nette\Object
 	/**
 	 * Add custom panel.
 	 * @param  callback
-	 * @param  string
 	 * @return BlueScreen  provides a fluent interface
 	 */
-	public function addPanel($panel, $id = NULL)
+	public function addPanel($panel)
 	{
-		if ($id === NULL) {
+		if (!in_array($panel, $this->panels, TRUE)) {
 			$this->panels[] = $panel;
-		} else {
-			$this->panels[$id] = $panel;
 		}
 		return $this;
 	}
