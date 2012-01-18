@@ -368,7 +368,8 @@ final class Debugger
 	public static function _exceptionHandler(\Exception $exception)
 	{
 		if (!headers_sent()) { // for PHP < 5.2.4
-			header('HTTP/1.1 500 Internal Server Error');
+			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+			header($protocol . ' 500', TRUE, 500);
 		}
 
 		try {
