@@ -189,13 +189,13 @@ final class Helpers
 	 * @param  string
 	 * @return string
 	 */
-	public static function clickableDump($dump)
+	public static function clickableDump($dump, $collapsed = FALSE)
 	{
 		return '<pre class="nette-dump">' . preg_replace_callback(
 			'#^( *)((?>[^(\r\n]{1,200}))\((\d+)\) <code>#m',
-			function ($m) {
+			function ($m) use ($collapsed) {
 				return "$m[1]<a href='#' rel='next'>$m[2]($m[3]) "
-					. (trim($m[1]) || $m[3] < 7
+					. (($m[1] || !$collapsed) && ($m[3] < 7)
 					? '<abbr>&#x25bc;</abbr> </a><code>'
 					: '<abbr>&#x25ba;</abbr> </a><code class="nette-collapsed">');
 			},
