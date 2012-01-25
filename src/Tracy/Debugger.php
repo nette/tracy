@@ -560,7 +560,7 @@ final class Debugger
 
 		if (!$return) {
 			$trace = debug_backtrace();
-			$i = !isset($trace[1]['class']) && isset($trace[1]['function']) && $trace[1]['function'] === 'dump' ? 1 : 0;
+			$i = Helpers::findTrace($trace, 'dump') ? 1 : 0;
 			if (isset($trace[$i]['file'], $trace[$i]['line']) && is_file($trace[$i]['file'])) {
 				$lines = file($trace[$i]['file']);
 				preg_match('#dump\((.*)\)#', $lines[$trace[$i]['line'] - 1], $m);
