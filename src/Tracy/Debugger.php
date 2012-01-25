@@ -172,6 +172,19 @@ final class Debugger
 					. '&nbsp; <b>Line:</b> ' . ($e->sourceLine ? $e->sourceLine : 'n/a') . '</p>'
 					. ($e->sourceLine ? '<pre>' . BlueScreen::highlightFile($e->sourceFile, $e->sourceLine) . '</pre>' : '')
 				);
+			} elseif ($e instanceof Nette\Utils\NeonException && preg_match('#line (\d+)#', $e->getMessage(), $m)) {
+				if ($item = Helpers::findTrace($e->getTrace(), 'Nette\Config\Adapters\NeonAdapter::load')) {
+					return array(
+						'tab' => 'NEON',
+						'panel' => '<p><b>File:</b> ' . Helpers::editorLink($item['args'][0], $m[1]) . '&nbsp; <b>Line:</b> ' . $m[1] . '</p>'
+							. '<pre>' . BlueScreen::highlightFile($item['args'][0], $m[1]) . '</pre>'
+					);
+				} elseif ($item = Helpers::findTrace($e->getTrace(), 'Nette\Utils\Neon::decode')) {
+					return array(
+						'tab' => 'NEON',
+						'panel' => '<pre>' . BlueScreen::highlightFile($item['args'][0], $m[1]) . '</pre>'
+					);
+				}
 			}
 		});
 

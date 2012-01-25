@@ -63,7 +63,7 @@ class BlueScreen extends Nette\Object
 	 * @param  int
 	 * @return string
 	 */
-	public static function highlightFile($file, $line, $count = 15, $vars = array())
+	public static function highlightFile($file, $line, $lines = 15, $vars = array())
 	{
 		if (function_exists('ini_set')) {
 			ini_set('highlight.comment', '#998; font-style: italic');
@@ -73,13 +73,12 @@ class BlueScreen extends Nette\Object
 			ini_set('highlight.string', '#080');
 		}
 
-		$start = max(1, $line - floor($count * 2/3));
+		$start = max(1, $line - floor($lines * 2/3));
 
-		$source = @file_get_contents($file); // intentionally @
+		$source = is_file($file) ? @file_get_contents($file) : $file; // intentionally @
 		if (!$source) {
 			return;
 		}
-		$sourcex = explode("\n", $source);
 		$source = explode("\n", highlight_string($source, TRUE));
 		$spans = 1;
 		$out = $source[0]; // <code><span color=highlight.html>
@@ -96,7 +95,7 @@ class BlueScreen extends Nette\Object
 			}
 		}
 
-		$source = array_slice($source, $start, $count, TRUE);
+		$source = array_slice($source, $start, $lines, TRUE);
 		end($source);
 		$numWidth = strlen((string) key($source));
 
@@ -104,7 +103,7 @@ class BlueScreen extends Nette\Object
 			$spans += substr_count($s, '<span') - substr_count($s, '</span');
 			$s = str_replace(array("\r", "\n"), array('', ''), $s);
 			preg_match_all('#<[^>]+>#', $s, $tags);
-			if ($n === $line) {
+			if ($n == $line) {
 				$out .= sprintf(
 					"<span class='highlight'>%{$numWidth}s:    %s\n</span>%s",
 					$n,
