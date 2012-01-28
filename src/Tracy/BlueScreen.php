@@ -65,6 +65,23 @@ class BlueScreen extends Nette\Object
 	 */
 	public static function highlightFile($file, $line, $lines = 15, $vars = array())
 	{
+		$source = @file_get_contents($file); // intentionally @
+		if ($source) {
+			return static::highlightPhp($source, $line, $lines, $vars);
+		}
+	}
+
+
+
+	/**
+	 * Returns syntax highlighted source code.
+	 * @param  string
+	 * @param  int
+	 * @param  int
+	 * @return string
+	 */
+	public static function highlightPhp($source, $line, $lines = 15, $vars = array())
+	{
 		if (function_exists('ini_set')) {
 			ini_set('highlight.comment', '#998; font-style: italic');
 			ini_set('highlight.default', '#000');
@@ -74,11 +91,6 @@ class BlueScreen extends Nette\Object
 		}
 
 		$start = max(1, $line - floor($lines * 2/3));
-
-		$source = is_file($file) ? @file_get_contents($file) : $file; // intentionally @
-		if (!$source) {
-			return;
-		}
 		$source = explode("\n", highlight_string($source, TRUE));
 		$spans = 1;
 		$out = $source[0]; // <code><span color=highlight.html>
