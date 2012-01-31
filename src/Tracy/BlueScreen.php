@@ -25,6 +25,9 @@ class BlueScreen extends Nette\Object
 	/** @var array */
 	private $panels = array();
 
+	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
+	public $collapsePaths = array();
+
 
 
 	/**
@@ -134,6 +137,23 @@ class BlueScreen extends Nette\Object
 		}, $out);
 
 		return "<pre class='php'><div>$out</div></pre>";
+	}
+
+
+
+	/**
+	 * Should a file be collapsed in stack trace?
+	 * @param  string
+	 * @return bool
+	 */
+	public function isCollapsed($file)
+	{
+		foreach ($this->collapsePaths as $path) {
+			if (strpos(strtr($file, '\\', '/'), strtr("$path/", '\\', '/')) === 0) {
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 
 }

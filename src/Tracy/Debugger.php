@@ -161,6 +161,7 @@ final class Debugger
 		self::$fireLogger = new FireLogger;
 
 		self::$blueScreen = new BlueScreen;
+		self::$blueScreen->collapsePaths[] = NETTE_DIR;
 		self::$blueScreen->addPanel(function($e) {
 			if ($e instanceof Nette\Templating\FilterException) {
 				return array(
