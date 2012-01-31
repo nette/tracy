@@ -51,8 +51,8 @@ $counter = 0;
 	<meta name="generator" content="Nette Framework">
 
 	<title><?php echo htmlspecialchars($title) ?></title><!-- <?php
-		$ex = $exception; echo $ex->getMessage(), ($ex->getCode() ? ' #' . $ex->getCode() : '');
-		while ((method_exists($ex, 'getPrevious') && $ex = $ex->getPrevious()) || (isset($ex->previous) && $ex = $ex->previous)) echo '; caused by ', get_class($ex), ' ', $ex->getMessage(), ($ex->getCode() ? ' #' . $ex->getCode() : '');
+		$ex = $exception; echo htmlspecialchars($ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''));
+		while ((method_exists($ex, 'getPrevious') && $ex = $ex->getPrevious()) || (isset($ex->previous) && $ex = $ex->previous)) echo htmlspecialchars('; caused by ' . get_class($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''));
 	?> -->
 
 	<style type="text/css" class="nette">
@@ -301,7 +301,7 @@ $counter = 0;
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
 				<div class="panel">
-					<h1><?php echo htmlspecialchars(get_class($ex)), ($ex->getCode() ? ' #' . $ex->getCode() : '') ?></h1>
+					<h1><?php echo htmlspecialchars(get_class($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : '')) ?></h1>
 
 					<p><b><?php echo htmlspecialchars($ex->getMessage()) ?></b></p>
 				</div>
@@ -357,8 +357,8 @@ $counter = 0;
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#" rel="netteBsSrc<?php echo "$level-$key" ?>">source <abbr>&#x25ba;</abbr></a>&nbsp; <?php endif ?>
 
-					<?php if (isset($row['class'])) echo $row['class'] . $row['type'] ?>
-					<?php echo $row['function'] ?>
+					<?php if (isset($row['class'])) echo htmlspecialchars($row['class'] . $row['type']) ?>
+					<?php echo htmlspecialchars($row['function']) ?>
 
 					(<?php if (!empty($row['args'])): ?><a href="#" rel="netteBsArgs<?php echo "$level-$key" ?>">arguments <abbr>&#x25ba;</abbr></a><?php endif ?>)
 					</p>
@@ -374,7 +374,7 @@ $counter = 0;
 							$params = array();
 						}
 						foreach ($row['args'] as $k => $v) {
-							echo '<tr><th>', (isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</th><td>';
+							echo '<tr><th>', htmlspecialchars(isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</th><td>';
 							echo Helpers::clickableDump($v);
 							echo "</td></tr>\n";
 						}
@@ -500,7 +500,7 @@ $counter = 0;
 
 
 			<?php foreach (array('_GET', '_POST', '_COOKIE') as $name): ?>
-			<h3>$<?php echo $name ?></h3>
+			<h3>$<?php echo htmlspecialchars($name) ?></h3>
 			<?php if (empty($GLOBALS[$name])):?>
 			<p><i>empty</i></p>
 			<?php else: ?>
