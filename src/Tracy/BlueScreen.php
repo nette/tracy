@@ -89,15 +89,15 @@ class BlueScreen extends Nette\Object
 			ini_set('highlight.string', '#080');
 		}
 
-		$start = max(1, $line - floor($lines * 2/3));
+		$source = str_replace(array("\r\n", "\r"), "\n", $source);
 		$source = explode("\n", highlight_string($source, TRUE));
 		$spans = 1;
 		$out = $source[0]; // <code><span color=highlight.html>
 		$source = explode('<br />', $source[1]);
 		array_unshift($source, NULL);
 
-		$i = $start; // find last highlighted block
-		while (--$i >= 1) {
+		$start = $i = max(1, $line - floor($lines * 2/3));
+		while (--$i >= 1) { // find last highlighted block
 			if (preg_match('#.*(</?span[^>]*>)#', $source[$i], $m)) {
 				if ($m[1] !== '</span>') {
 					$spans++; $out .= $m[1];
