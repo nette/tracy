@@ -47,6 +47,17 @@ final class Helpers
 
 
 	/**
+	 * @param  mixed  variable to dump
+	 * @return string
+	 */
+	public static function textDump($var)
+	{
+		return htmlspecialchars_decode(strip_tags(self::htmlDump($var)), ENT_QUOTES);
+	}
+
+
+
+	/**
 	 * Internal dump() implementation.
 	 * @param  mixed  variable to dump
 	 * @param  int    current recursion level
