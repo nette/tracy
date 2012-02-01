@@ -77,7 +77,7 @@
 
 
 
-											<pre class="nette-collapsed" id="netteBsSrc1-2">%A%</pre>
+											<div class="nette-collapsed" id="netteBsSrc1-2">%A%</div>
 
 					</li>
 										<li><p>
@@ -98,7 +98,7 @@
 						</div>
 
 
-											<pre class="nette-collapsed" id="netteBsSrc1-3">%A%</pre>
+											<div class="nette-collapsed" id="netteBsSrc1-3">%A%</div>
 
 					</li>
 									</ol>

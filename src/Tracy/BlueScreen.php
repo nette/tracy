@@ -133,7 +133,7 @@ class BlueScreen extends Nette\Object
 				: $m[0];
 		}, $out);
 
-		return $out;
+		return "<pre><div>$out</div></pre>";
 	}
 
 }

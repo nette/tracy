@@ -173,6 +173,10 @@ $counter = 0;
 			overflow: auto;
 		}
 
+		#netteBluescreen pre div {
+			float: left;
+		}
+
 		#netteBluescreen table pre {
 			padding: 0;
 			margin: 0;
@@ -334,7 +338,7 @@ $counter = 0;
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?> &nbsp; <b>Line:</b> <?php echo $ex->getLine() ?></p>
-				<?php if (is_file($ex->getFile())): ?><pre><?php echo self::highlightFile($ex->getFile(), $ex->getLine(), 15, isset($ex->context) ? $ex->context : NULL) ?></pre><?php endif ?>
+				<?php if (is_file($ex->getFile())): ?><?php echo self::highlightFile($ex->getFile(), $ex->getLine(), 15, isset($ex->context) ? $ex->context : NULL) ?><?php endif ?>
 			</div></div>
 
 
@@ -385,7 +389,7 @@ $counter = 0;
 
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?>
-						<pre <?php if ($expanded !== $key) echo 'class="nette-collapsed"'; ?> id="netteBsSrc<?php echo "$level-$key" ?>"><?php echo self::highlightFile($row['file'], $row['line']) ?></pre>
+						<div <?php if ($expanded !== $key) echo 'class="nette-collapsed"'; ?> id="netteBsSrc<?php echo "$level-$key" ?>"><?php echo self::highlightFile($row['file'], $row['line']) ?></div>
 					<?php endif ?>
 
 					</li>
