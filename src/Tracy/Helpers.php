@@ -19,7 +19,6 @@ use Nette;
  * Rendering helpers for Debugger.
  *
  * @author     David Grudl
- * @internal
  */
 final class Helpers
 {

@@ -19,7 +19,6 @@ use Nette;
  * Debug Bar.
  *
  * @author     David Grudl
- * @internal
  */
 class Bar extends Nette\Object
 {

@@ -19,7 +19,6 @@ use Nette;
  * Red BlueScreen.
  *
  * @author     David Grudl
- * @internal
  */
 class BlueScreen extends Nette\Object
 {
