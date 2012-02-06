@@ -572,7 +572,7 @@ final class Debugger
 		$output = "<pre class=\"nette-dump\">" . Helpers::htmlDump($var) . "</pre>\n";
 
 		if (!$return) {
-			$trace = debug_backtrace();
+			$trace = /*5.2*PHP_VERSION_ID < 50205 ? debug_backtrace() : */debug_backtrace(FALSE);
 			$i = Helpers::findTrace($trace, 'dump') ? 1 : 0;
 			if (isset($trace[$i]['file'], $trace[$i]['line']) && is_file($trace[$i]['file'])) {
 				$lines = file($trace[$i]['file']);
