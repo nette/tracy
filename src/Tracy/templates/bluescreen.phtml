@@ -486,6 +486,32 @@ $counter = 0;
 			?>
 			</table>
 			</div>
+
+
+			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">$_SESSION <abbr>&#x25bc;</abbr></a></h3>
+			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
+			<?php if (empty($_SESSION)):?>
+			<p><i>empty</i></p>
+			<?php else: ?>
+			<table>
+			<?php
+			foreach ($_SESSION as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', $k === '__NF' ? '<i>Nette Session</i>' : Helpers::clickableDump($v), "</td></tr>\n";
+			?>
+			</table>
+			<?php endif ?>
+			</div>
+
+
+			<?php if (!empty($_SESSION['__NF']['DATA'])):?>
+			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Nette Session <abbr>&#x25bc;</abbr></a></h3>
+			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
+			<table>
+			<?php
+			foreach ($_SESSION['__NF']['DATA'] as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', Helpers::clickableDump($v), "</td></tr>\n";
+			?>
+			</table>
+			</div>
+			<?php endif ?>
 		</div></div>
 
 
