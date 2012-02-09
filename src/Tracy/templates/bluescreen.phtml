@@ -443,41 +443,6 @@ $counter = 0;
 		<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Environment <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
-			<?php
-			$list = get_defined_constants(TRUE);
-			if (!empty($list['user'])):?>
-			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Constants <abbr>&#x25bc;</abbr></a></h3>
-			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
-			<table>
-			<?php
-			foreach ($list['user'] as $k => $v) {
-				echo '<tr><th>', htmlspecialchars($k), '</th>';
-				echo '<td>', Helpers::clickableDump($v), "</td></tr>\n";
-			}
-			?>
-			</table>
-			</div>
-			<?php endif ?>
-
-
-			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Included files <abbr>&#x25ba;</abbr></a> (<?php echo count(get_included_files()) ?>)</h3>
-			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
-			<table>
-			<?php
-			foreach (get_included_files() as $v) {
-				echo '<tr><td>', htmlspecialchars($v), "</td></tr>\n";
-			}
-			?>
-			</table>
-			</div>
-
-
-			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Configuration options <abbr>&#x25ba;</abbr></a></h3>
-			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
-			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+$#s', '', ob_get_clean()) ?>
-			</div>
-
-
 			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">$_SERVER <abbr>&#x25bc;</abbr></a></h3>
 			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
 			<table>
@@ -512,6 +477,41 @@ $counter = 0;
 			</table>
 			</div>
 			<?php endif ?>
+
+
+			<?php
+			$list = get_defined_constants(TRUE);
+			if (!empty($list['user'])):?>
+			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Constants <abbr>&#x25ba;</abbr></a></h3>
+			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
+			<table>
+			<?php
+			foreach ($list['user'] as $k => $v) {
+				echo '<tr><th>', htmlspecialchars($k), '</th>';
+				echo '<td>', Helpers::clickableDump($v), "</td></tr>\n";
+			}
+			?>
+			</table>
+			</div>
+			<?php endif ?>
+
+
+			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Included files <abbr>&#x25ba;</abbr></a> (<?php echo count(get_included_files()) ?>)</h3>
+			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
+			<table>
+			<?php
+			foreach (get_included_files() as $v) {
+				echo '<tr><td>', htmlspecialchars($v), "</td></tr>\n";
+			}
+			?>
+			</table>
+			</div>
+
+
+			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Configuration options <abbr>&#x25ba;</abbr></a></h3>
+			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
+			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+$#s', '', ob_get_clean()) ?>
+			</div>
 		</div></div>
 
 
