@@ -16,6 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
+Debugger::$consoleColors = NULL;
 Debugger::$productionMode = FALSE;
 
 

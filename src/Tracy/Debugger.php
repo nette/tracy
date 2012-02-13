@@ -58,6 +58,20 @@ final class Debugger
 	/** @var bool display location? {@link Debugger::dump()} */
 	public static $showLocation = FALSE;
 
+	/** @var array */
+	public static $consoleColors = array(
+		'bool' => '1;33',
+		'null' => '1;33',
+		'int' => '1;36',
+		'float' => '1;36',
+		'string' => '1;32',
+		'array' => '1;31',
+		'key' => '1;37',
+		'object' => '1;31',
+		'visibility' => '1;30',
+		'resource' => '1;37',
+	);
+
 	/********************* errors and exceptions reporting ****************d*g**/
 
 	/** server modes {@link Debugger::enable()} */
@@ -592,6 +606,11 @@ final class Debugger
 		}
 
 		if (self::$consoleMode) {
+			if (self::$consoleColors && substr(PHP_OS, 0, 3) !== 'WIN') {
+				$output = preg_replace_callback('#<span class="php-(\w+)">|</span>#', function($m) {
+					return "\033[" . (isset($m[1], Debugger::$consoleColors[$m[1]]) ? Debugger::$consoleColors[$m[1]] : '0') . "m";
+				}, $output);
+			}
 			$output = htmlspecialchars_decode(strip_tags($output), ENT_QUOTES);
 		}
 
