@@ -19,7 +19,7 @@ require __DIR__ . '/../bootstrap.php';
 // Setup environment
 $_SERVER['HTTP_HOST'] = 'nette.org';
 
-Debugger::$logDirectory = __DIR__ . '/log';
+Debugger::$logDirectory = TEMP_DIR . '/log';
 TestHelpers::purge(Debugger::$logDirectory);
 
 Debugger::$consoleMode = FALSE;
