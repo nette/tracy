@@ -334,7 +334,7 @@ final class Debugger
 
 		self::$logger->log(array(
 			@date('[Y-m-d H-i-s]'),
-			$message,
+			trim($message),
 			self::$source ? ' @  ' . self::$source : NULL,
 			!empty($exceptionFilename) ? ' @@  ' . $exceptionFilename : NULL
 		), $priority);
