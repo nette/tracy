@@ -31,7 +31,7 @@ class Logger extends Nette\Object
 	/** @var int interval for sending email is 2 days */
 	public static $emailSnooze = 172800;
 
-	/** @var callback handler for sending emails */
+	/** @var callable handler for sending emails */
 	public $mailer = array(__CLASS__, 'defaultMailer');
 
 	/** @var string name of the directory where errors should be logged; FALSE means that logging is disabled */
