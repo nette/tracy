@@ -63,7 +63,7 @@ class Logger extends Nette\Object
 			&& @filemtime($this->directory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
-			call_user_func($this->mailer, $message, $this->email);
+			callback($this->mailer)->invoke($message, $this->email);
 		}
 		return $res;
 	}
