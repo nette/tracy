@@ -165,8 +165,7 @@
 		<h2><a href="#" rel="netteBsPnl10">HTTP request <abbr>&#x25ba;</abbr></a></h2>
 
 		<div id="netteBsPnl10" class="nette-collapsed inner">
-
-
+%A%
 						<h3>$_GET</h3>
 						<p><i>empty</i></p>
 									<h3>$_POST</h3>

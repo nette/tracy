@@ -50,7 +50,7 @@ $obj = new TestClass;
 Assert::throws(function() use ($obj) {
 	// Invalid argument #1
 	$obj->test1('hello');
-}, 'Nette\FatalErrorException', 'Argument 1 passed to TestClass::test1() must be an array, string given, called in %a%');
+}, 'Nette\FatalErrorException', 'Argument 1 passed to TestClass::test1() must be %a% array, string given, called in %a%');
 
 Assert::throws(function() use ($obj) {
 	// Invalid argument #2
