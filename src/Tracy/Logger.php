@@ -76,7 +76,7 @@ class Logger extends Nette\Object
 	 * @param  string
 	 * @return void
 	 */
-	private static function defaultMailer($message, $email)
+	public static function defaultMailer($message, $email)
 	{
 		$host = '';
 		foreach (array('HTTP_HOST','SERVER_NAME', 'HOSTNAME') as $item) {
