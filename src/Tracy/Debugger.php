@@ -155,7 +155,7 @@ final class Debugger
 	 */
 	public static function _init()
 	{
-		self::$time = microtime(TRUE);
+		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		self::$consoleMode = PHP_SAPI === 'cli';
 		self::$productionMode = self::DETECT;
 		if (self::$consoleMode) {
