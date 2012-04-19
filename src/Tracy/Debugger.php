@@ -606,7 +606,7 @@ final class Debugger
 		}
 
 		if (self::$consoleMode) {
-			if (self::$consoleColors && substr(PHP_OS, 0, 3) !== 'WIN') {
+			if (self::$consoleColors && substr(getenv('TERM'), 0, 5) === 'xterm') {
 				$output = preg_replace_callback('#<span class="php-(\w+)">|</span>#', function($m) {
 					return "\033[" . (isset($m[1], Debugger::$consoleColors[$m[1]]) ? Debugger::$consoleColors[$m[1]] : '0') . "m";
 				}, $output);
