@@ -308,6 +308,12 @@ use Nette;
 	#nette-debug pre.nette-dump .php-visibility {
 		font-size: 85%; color: #999;
 	}
+
+	@media print {
+		#nette-debug * {
+			display: none;
+		}
+	}
 </style>
 
 <!--[if lt IE 8]><style class="nette">
