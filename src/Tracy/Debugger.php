@@ -231,10 +231,12 @@ final class Debugger
 			self::$productionMode = $mode;
 
 		} elseif ($mode !== self::DETECT || self::$productionMode === NULL) { // IP addresses or computer names whitelist detection
-			$mode = is_string($mode) ? preg_split('#[,\s]+#', $mode) : (array) $mode;
-			$mode[] = '127.0.0.1';
-			$mode[] = '::1';
-			self::$productionMode = !in_array(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : php_uname('n'), $mode, TRUE);
+			$list = is_string($mode) ? preg_split('#[,\s]+#', $mode) : (array) $mode;
+			if (!isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				$list[] = '127.0.0.1';
+				$list[] = '::1';
+			}
+			self::$productionMode = !in_array(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : php_uname('n'), $list, TRUE);
 		}
 
 		// logging configuration
