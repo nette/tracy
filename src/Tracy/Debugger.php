@@ -272,14 +272,6 @@ final class Debugger
 			self::$email = $email;
 		}
 
-		if (!defined('E_DEPRECATED')) {
-			define('E_DEPRECATED', 8192);
-		}
-
-		if (!defined('E_USER_DEPRECATED')) {
-			define('E_USER_DEPRECATED', 16384);
-		}
-
 		if (!self::$enabled) {
 			register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
 			set_exception_handler(array(__CLASS__, '_exceptionHandler'));
@@ -498,9 +490,13 @@ final class Debugger
 			E_NOTICE => 'Notice',
 			E_USER_NOTICE => 'Notice',
 			E_STRICT => 'Strict standards',
-			E_DEPRECATED => 'Deprecated',
-			E_USER_DEPRECATED => 'Deprecated',
 		);
+		if (PHP_VERSION_ID >= 50300) {
+			$types += array(
+				E_DEPRECATED => 'Deprecated',
+				E_USER_DEPRECATED => 'Deprecated',
+			);
+		}
 
 		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message";
 		$count = & self::$errorPanel->data["$message|$file|$line"];
