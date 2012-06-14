@@ -174,7 +174,19 @@ final class Helpers
 			return $s . "\n";
 
 		} elseif (is_resource($var)) {
-			return '<span class="php-resource">' . htmlSpecialChars(get_resource_type($var)) . " resource</span>\n";
+			$type = get_resource_type($var);
+			$s = '<span class="php-resource">' . htmlSpecialChars($type) . " resource</span> ";
+
+			static $info = array('stream' => 'stream_get_meta_data', 'curl' => 'curl_getinfo');
+			if (isset($info[$type])) {
+				$space = str_repeat($space1 = '   ', $level);
+				$s .= "<code>{\n";
+				foreach (call_user_func($info[$type], $var) as $k => $v) {
+					$s .= $space . $space1 . '<span class="php-key">' . htmlSpecialChars($k) . "</span> => " . self::htmlDump($v, $level + 1);
+				}
+				$s .= "$space}</code>";
+			}
+			return $s . "\n";
 
 		} else {
 			return "<span>unknown type</span>\n";
