@@ -48,6 +48,18 @@ class Bar extends Nette\Object
 
 
 	/**
+	 * Returns panel with given id
+	 * @param  string
+	 * @return IBarPanel|NULL
+	 */
+	public function getPanel($id)
+	{
+		return isset($this->panels[$id]) ? $this->panels[$id] : NULL;
+	}
+
+
+
+	/**
 	 * Renders debug bar.
 	 * @return void
 	 */
