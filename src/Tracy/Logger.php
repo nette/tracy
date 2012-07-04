@@ -78,7 +78,7 @@ class Logger extends Nette\Object
 	 */
 	public static function defaultMailer($message, $email)
 	{
-		$host = '';
+		$host = php_uname('n');
 		foreach (array('HTTP_HOST','SERVER_NAME', 'HOSTNAME') as $item) {
 			if (isset($_SERVER[$item])) {
 				$host = $_SERVER[$item]; break;
@@ -89,7 +89,12 @@ class Logger extends Nette\Object
 			array("\r\n", "\n"),
 			array("\n", PHP_EOL),
 			array(
-				'headers' => "From: noreply@$host\nX-Mailer: Nette Framework\n",
+				'headers' => implode("\n", array(
+					"From: noreply@$host",
+					'X-Mailer: Nette Framework',
+					'Content-Type: text/plain; charset=UTF-8',
+					'Content-Transfer-Encoding: 8bit',
+				)) . "\n",
 				'subject' => "PHP: An error occurred on the server $host",
 				'body' => "[" . @date('Y-m-d H:i:s') . "] $message", // @ - timezone may not be set
 			)
