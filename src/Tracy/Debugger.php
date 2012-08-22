@@ -373,7 +373,7 @@ final class Debugger
 		}
 
 		// debug bar (require HTML & development mode)
-		if (self::$bar && !self::$productionMode && self::isHtmlMode()) {
+		if (!connection_aborted() && self::$bar && !self::$productionMode && self::isHtmlMode()) {
 			self::$bar->render();
 		}
 	}
@@ -418,7 +418,7 @@ final class Debugger
 						}
 					}
 
-				} elseif (self::isHtmlMode()) { // dump to browser
+				} elseif (!connection_aborted() && self::isHtmlMode()) { // dump to browser
 					self::$blueScreen->render($exception);
 					if (self::$bar) {
 						self::$bar->render();
