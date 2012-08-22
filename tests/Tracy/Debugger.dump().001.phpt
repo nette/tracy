@@ -81,7 +81,7 @@ Assert::match( '<pre class="nette-dump"><span class="php-array">array</span>(5) 
 </pre>
 ', Debugger::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)), TRUE) );
 
-Assert::match( '<pre class="nette-dump"><span class="php-resource">stream resource</span>
+Assert::match( '<pre class="nette-dump"><span class="php-resource">stream resource</span> <code>{%A%}</code>
 </pre>', Debugger::dump(fopen(__FILE__, 'r'), TRUE) );
 
 Assert::match( '<pre class="nette-dump"><span class="php-object">stdClass</span>(0)
@@ -130,7 +130,7 @@ Assert::match( 'array(5) [
 ]
 ', Debugger::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)), TRUE) );
 
-Assert::match( 'stream resource', Debugger::dump(fopen(__FILE__, 'r'), TRUE) );
+Assert::match( 'stream resource {%A%}', Debugger::dump(fopen(__FILE__, 'r'), TRUE) );
 
 Assert::match( 'stdClass(0)', Debugger::dump((object) NULL, TRUE) );
 
