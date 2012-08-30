@@ -101,16 +101,15 @@ final class Helpers
 
 		} elseif (is_string($var)) {
 			if (Debugger::$maxLen && strlen($var) > Debugger::$maxLen) {
-				$s = htmlSpecialChars(substr($var, 0, Debugger::$maxLen), ENT_NOQUOTES, 'ISO-8859-1') . ' ... ';
+				$out = htmlSpecialChars(substr($var, 0, Debugger::$maxLen), ENT_NOQUOTES, 'ISO-8859-1') . ' ... ';
 			} else {
-				$s = htmlSpecialChars($var, ENT_NOQUOTES, 'ISO-8859-1');
+				$out = htmlSpecialChars($var, ENT_NOQUOTES, 'ISO-8859-1');
 			}
-			$s = strtr($s, preg_match($reBinary, $s) || preg_last_error() ? $tableBin : $tableUtf);
+			$out = strtr($out, preg_match($reBinary, $out) || preg_last_error() ? $tableBin : $tableUtf);
 			$len = strlen($var);
-			return "<span class=\"nette-dump-string\">\"$s\"</span>" . ($len > 1 ? " ($len)" : "") . "\n";
+			return "<span class=\"nette-dump-string\">\"$out\"</span>" . ($len > 1 ? " ($len)" : "") . "\n";
 
 		} elseif (is_array($var)) {
-			$s = '<span class="nette-dump-array">array</span>(' . count($var) . ") ";
 			$space = str_repeat($space1 = '   ', $level);
 			$brackets = range(0, count($var) - 1) === array_keys($var) ? "[]" : "{}";
 
@@ -119,29 +118,31 @@ final class Helpers
 				$marker = uniqid("\x00", TRUE);
 			}
 			if (empty($var)) {
+				$out = '';
 
 			} elseif (isset($var[$marker])) {
 				$brackets = $var[$marker];
-				$s .= "$brackets[0] *RECURSION* $brackets[1]";
+				$out = " $brackets[0] *RECURSION* $brackets[1]";
 
 			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth) {
-				$s .= "<code>$brackets[0]\n";
+				$out = " <code>$brackets[0]\n";
 				$var[$marker] = $brackets;
 				foreach ($var as $k => &$v) {
 					if ($k === $marker) {
 						continue;
 					}
 					$k = strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf);
-					$k = htmlSpecialChars(preg_match('#^\w+$#', $k) ? $k : "\"$k\"");
-					$s .= "$space$space1<span class=\"nette-dump-key\">$k</span> => " . self::htmlDump($v, $level + 1);
+					$out .= $space . $space1
+						. '<span class="nette-dump-key">' . htmlSpecialChars(preg_match('#^\w+$#', $k) ? $k : "\"$k\"") . '</span> => '
+						. self::htmlDump($v, $level + 1);
 				}
 				unset($var[$marker]);
-				$s .= "$space$brackets[1]</code>";
+				$out .= "$space$brackets[1]</code>";
 
 			} else {
-				$s .= "$brackets[0] ... $brackets[1]";
+				$out = " $brackets[0] ... $brackets[1]";
 			}
-			return $s . "\n";
+			return '<span class="nette-dump-array">array</span>(' . count($var) . ")$out\n";
 
 		} elseif (is_object($var)) {
 			if ($var instanceof \Closure) {
@@ -154,50 +155,50 @@ final class Helpers
 			} else {
 				$arr = (array) $var;
 			}
-			$s = '<span class="nette-dump-object">' . get_class($var) . "</span>(" . count($arr) . ") ";
 			$space = str_repeat($space1 = '   ', $level);
 
 			static $list = array();
 			if (empty($arr)) {
+				$out = '';
 
 			} elseif (in_array($var, $list, TRUE)) {
-				$s .= "{ *RECURSION* }";
+				$out = " { *RECURSION* }";
 
 			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth || $var instanceof \Closure) {
-				$s .= "<code>{\n";
+				$out = " <code>{\n";
 				$list[] = $var;
 				foreach ($arr as $k => &$v) {
-					$m = '';
+					$visibility = '';
 					if ($k[0] === "\x00") {
-						$m = ' <span class="nette-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
+						$visibility = ' <span class="nette-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$k = strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf);
-					$k = htmlSpecialChars(preg_match('#^\w+$#', $k) ? $k : "\"$k\"");
-					$s .= "$space$space1<span class=\"nette-dump-key\">$k</span>$m => " . self::htmlDump($v, $level + 1);
+					$out .= $space . $space1
+						. '<span class="nette-dump-key">' . htmlSpecialChars(preg_match('#^\w+$#', $k) ? $k : "\"$k\"") . "</span>$visibility => "
+						. self::htmlDump($v, $level + 1);
 				}
 				array_pop($list);
-				$s .= "$space}</code>";
+				$out .= "$space}</code>";
 
 			} else {
-				$s .= "{ ... }";
+				$out = " { ... }";
 			}
-			return $s . "\n";
+			return '<span class="nette-dump-object">' . get_class($var) . "</span>(" . count($arr) . ")$out\n";
 
 		} elseif (is_resource($var)) {
 			$type = get_resource_type($var);
-			$s = '<span class="nette-dump-resource">' . htmlSpecialChars($type) . " resource</span> ";
-
+			$out = '';
 			static $info = array('stream' => 'stream_get_meta_data', 'curl' => 'curl_getinfo');
 			if (isset($info[$type])) {
 				$space = str_repeat($space1 = '   ', $level);
-				$s .= "<code>{\n";
+				$out .= " <code>{\n";
 				foreach (call_user_func($info[$type], $var) as $k => $v) {
-					$s .= $space . $space1 . '<span class="nette-dump-key">' . htmlSpecialChars($k) . "</span> => " . self::htmlDump($v, $level + 1);
+					$out .= $space . $space1 . '<span class="nette-dump-key">' . htmlSpecialChars($k) . "</span> => " . self::htmlDump($v, $level + 1);
 				}
-				$s .= "$space}</code>";
+				$out .= "$space}</code>";
 			}
-			return $s . "\n";
+			return '<span class="nette-dump-resource">' . htmlSpecialChars($type) . " resource</span>$out\n";
 
 		} else {
 			return "<span>unknown type</span>\n";
