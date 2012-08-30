@@ -324,6 +324,8 @@ final class Debugger
 					break;
 				}
 			}
+		} elseif (!is_string($message)) {
+			$message = Helpers::textDump($message);
 		}
 
 		self::$logger->log(array(
