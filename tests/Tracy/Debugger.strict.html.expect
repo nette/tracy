@@ -118,9 +118,9 @@
 
 
 						<div class="panel">
-			<h2><a href="#" rel="netteBsPnl3">Variables <abbr>&#x25ba;</abbr></a></h2>
+			<h2><a href="#" rel="netteBsPnl3">Variables <abbr>&#x25bc;</abbr></a></h2>
 
-			<div id="netteBsPnl3" class="nette-collapsed inner">
+			<div id="netteBsPnl3" class="inner">
 			<div class="outer">
 			<table>
 			<tr><th>$arg1</th><td><pre class="nette-dump"><a href='#' rel='next'><span class="php-array">array</span>(3) <abbr>&#x25bc;</abbr> </a><code>[
