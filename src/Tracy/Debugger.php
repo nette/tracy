@@ -243,7 +243,7 @@ final class Debugger
 		if (is_string($logDirectory)) {
 			self::$logDirectory = realpath($logDirectory);
 			if (self::$logDirectory === FALSE) {
-				throw new Nette\DirectoryNotFoundException("Directory '$logDirectory' is not found.");
+				die(__METHOD__ . "() error: Log directory is not found or is not directory.");
 			}
 		} elseif ($logDirectory === FALSE) {
 			self::$logDirectory = FALSE;
@@ -262,12 +262,12 @@ final class Debugger
 			ini_set('log_errors', FALSE);
 
 		} elseif (ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')) { // intentionally ==
-			throw new Nette\NotSupportedException('Function ini_set() must be enabled.');
+			die(__METHOD__ . "() error: Unable to set 'display_errors' because function ini_set() is disabled.");
 		}
 
 		if ($email) {
 			if (!is_string($email)) {
-				throw new Nette\InvalidArgumentException('Email address must be a string.');
+				die(__METHOD__ . '() error: Email address must be a string.');
 			}
 			self::$email = $email;
 		}
