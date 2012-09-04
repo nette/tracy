@@ -476,6 +476,10 @@ final class Debugger
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
+			if (Helpers::findTrace(/*5.2*PHP_VERSION_ID < 50205 ? debug_backtrace() : */debug_backtrace(FALSE), '*::__toString')) {
+				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
+				self::_exceptionHandler(new Nette\FatalErrorException($message, 0, $severity, $file, $line, $context, $previous));
+			}
 			throw new Nette\FatalErrorException($message, 0, $severity, $file, $line, $context);
 
 		} elseif (($severity & error_reporting()) !== $severity) {
