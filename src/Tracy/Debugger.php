@@ -524,11 +524,7 @@ final class Debugger
 
 
 
-	/**
-	 * Handles exception thrown in __toString().
-	 * @param  \Exception
-	 * @return void
-	 */
+	/** @deprecated */
 	public static function toStringException(\Exception $exception)
 	{
 		if (self::$enabled) {
@@ -540,12 +536,10 @@ final class Debugger
 
 
 
-	/**
-	 * Starts catching potential errors/warnings.
-	 * @return void
-	 */
+	/** @deprecated */
 	public static function tryError()
 	{
+		trigger_error(__METHOD__ . '() is deprecated; use own error handler instead.', E_USER_DEPRECATED);
 		if (!self::$enabled && self::$lastError === FALSE) {
 			set_error_handler(array(__CLASS__, '_errorHandler'));
 		}
@@ -554,13 +548,10 @@ final class Debugger
 
 
 
-	/**
-	 * Returns catched error/warning message.
-	 * @param  \ErrorException  catched error
-	 * @return bool
-	 */
+	/** @deprecated */
 	public static function catchError(& $error)
 	{
+		trigger_error(__METHOD__ . '() is deprecated; use own error handler instead.', E_USER_DEPRECATED);
 		if (!self::$enabled && self::$lastError !== FALSE) {
 			restore_error_handler();
 		}
