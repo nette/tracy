@@ -215,7 +215,7 @@ final class Helpers
 	{
 		return '<pre class="nette-dump">' . preg_replace_callback(
 			'#^( *)((?>[^(\r\n]{1,200}))\((\d+)\) <code>#m',
-			function ($m) use ($collapsed) {
+			function($m) use ($collapsed) {
 				return "$m[1]<a href='#' rel='next'>$m[2]($m[3]) "
 					. (($m[1] || !$collapsed) && ($m[3] < 7)
 					? '<abbr>&#x25bc;</abbr> </a><code>'
