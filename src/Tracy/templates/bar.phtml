@@ -48,6 +48,9 @@ use Nette;
 		border: none;
 		text-align: inherit;
 		list-style: inherit;
+		opacity: 1;
+		border-radius: 0;
+		box-shadow: none;
 	}
 
 	#nette-debug b, #nette-debug strong {
@@ -140,10 +143,7 @@ use Nette;
 		opacity: .9;
 
 		border-radius: 3px;
-		-moz-border-radius: 3px;
 		box-shadow: 1px 1px 10px rgba(0, 0, 0, .15);
-		-moz-box-shadow: 1px 1px 10px rgba(0, 0, 0, .15);
-		-webkit-box-shadow: 1px 1px 10px rgba(0, 0, 0, .15);
 	}
 
 	#nette-debug-bar:hover {
@@ -219,7 +219,6 @@ use Nette;
 	#nette-debug h1 {
 		font: normal normal 23px/1.4 Tahoma, sans-serif;
 		color: #575753;
-		background: #EDEAE0;
 		margin: -5px -5px 5px;
 		padding: 0 25px 5px 5px;
 	}
@@ -238,12 +237,12 @@ use Nette;
 		display: none;
 		position: relative;
 		z-index: 23180;
-		padding: 5px;
+		padding: 10px;
 		min-width: 150px;
 		min-height: 50px;
-		border: 5px solid #EDEAE0;
 		border-radius: 5px;
-		-moz-border-radius: 5px;
+		box-shadow: 1px 1px 20px rgba(102, 102, 102, 0.36);
+		border: 1px solid rgba(0, 0, 0, 0.1);
 	}
 
 	#nette-debug .nette-mode-peek h1 {
@@ -252,21 +251,16 @@ use Nette;
 
 	#nette-debug .nette-mode-float {
 		position: relative;
-		z-index: 23179;
-		padding: 5px;
+		padding: 10px;
 		min-width: 150px;
 		min-height: 50px;
-		border: 5px solid #EDEAE0;
 		border-radius: 5px;
-		-moz-border-radius: 5px;
-		opacity: .9;
-		box-shadow: 1px 1px 6px #666;
-		-moz-box-shadow: 1px 1px 6px rgba(0, 0, 0, .45);
-		-webkit-box-shadow: 1px 1px 6px #666;
+		opacity: .95;
+		box-shadow: 1px 1px 30px rgba(102, 102, 102, 0.36);
+		border: 1px solid rgba(0, 0, 0, 0.1);
 	}
 
 	#nette-debug .nette-focused {
-		z-index: 23180;
 		opacity: 1;
 	}
 
@@ -278,7 +272,7 @@ use Nette;
 		display: block;
 		position: absolute;
 		top: 0;
-		right: 0;
+		right: 5px;
 		font-size: 18px;
 	}
 
@@ -343,6 +337,8 @@ use Nette;
 (function(){
 Nette.Debug = {};
 
+var zIndex = 20000;
+
 var $ = Nette.Q.factory;
 
 var Panel = Nette.Debug.Panel = Nette.Class({
@@ -389,6 +385,7 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 		} else {
 			clearTimeout(this.data().blurTimeout);
 			this.addClass(Panel.FOCUSED).show();
+			this[0].style.zIndex = zIndex++;
 		}
 	},
 
