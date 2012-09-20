@@ -582,19 +582,19 @@ final class Debugger
 
 		if (!$return) {
 			$trace = /*5.2*PHP_VERSION_ID < 50205 ? debug_backtrace() : */debug_backtrace(FALSE);
-			$i = Helpers::findTrace($trace, 'dump') ? 1 : 0;
-			if (isset($trace[$i]['file'], $trace[$i]['line']) && is_file($trace[$i]['file'])) {
-				$lines = file($trace[$i]['file']);
-				preg_match('#dump\((.*)\)#', $lines[$trace[$i]['line'] - 1], $m);
+			$item = Helpers::findTrace($trace, 'dump') ?: Helpers::findTrace($trace, __CLASS__ . '::dump');
+			if (isset($item['file'], $item['line']) && is_file($item['file'])) {
+				$lines = file($item['file']);
+				preg_match('#dump\((.*)\)#', $lines[$item['line'] - 1], $m);
 				$output = substr_replace(
 					$output,
-					' title="' . htmlspecialchars((isset($m[0]) ? "$m[0] \n" : '') . "in file {$trace[$i]['file']} on line {$trace[$i]['line']}") . '"',
+					' title="' . htmlspecialchars((isset($m[0]) ? "$m[0] \n" : '') . "in file {$item['file']} on line {$item['line']}") . '"',
 					4, 0);
 
 				if (self::$showLocation) {
 					$output = substr_replace(
 						$output,
-						' <small>in ' . Helpers::editorLink($trace[$i]['file'], $trace[$i]['line']) . ":{$trace[$i]['line']}</small>",
+						' <small>in ' . Helpers::editorLink($item['file'], $item['line']) . ":{$item['line']}</small>",
 						-8, 0);
 				}
 			}
