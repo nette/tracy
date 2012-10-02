@@ -197,7 +197,7 @@ fn({
 	},
 
 	val: function() {
-		var i;
+		var i, len, values;
 		if (!this.nodeName) { // radio
 			for (i = 0, len = this.length; i < len; i++) {
 				if (this[i].checked) { return this[i].value; }
@@ -335,7 +335,6 @@ fn({
 		}).bind('click', function(e) {
 			if (started) {
 				e.stopImmediatePropagation();
-				preventClick = false;
 			}
 		});
 	}
