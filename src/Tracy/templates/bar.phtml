@@ -31,7 +31,6 @@ use Nette;
 	/* common styles */
 	#nette-debug {
 		display: none;
-		position: fixed;
 	}
 
 	body#nette-debug {
@@ -59,14 +58,6 @@ use Nette;
 
 	#nette-debug i, #nette-debug em {
 		font-style: italic;
-	}
-
-	#nette-debug .nette-fixed-coords {
-		position: fixed;
-		_position: absolute;
-		right: 0;
-		bottom: 0;
-		max-width: 100%;
 	}
 
 	#nette-debug a {
@@ -131,7 +122,9 @@ use Nette;
 		color: #333;
 		border: 1px solid #c9c9c9;
 		background: #EDEAE0 url('data:image/png;base64,R0lGODlhAQAVALMAAOTh1/Px6eHe1fHv5e/s4vLw6Ofk2u3q4PPw6PPx6PDt5PLw5+Dd1OXi2Ojm3Orn3iH5BAAAAAAALAAAAAABABUAAAQPMISEyhpYkfOcaQAgCEwEADs=') top;
-		position: relative;
+		position: fixed;
+		right: 0;
+		bottom: 0;
 		overflow: auto;
 		min-height: 21px;
 		_float: left;
@@ -139,7 +132,7 @@ use Nette;
 		min-width: 50px;
 		white-space: nowrap;
 
-		z-index: 23181;
+		z-index: 30000;
 		opacity: .9;
 
 		border-radius: 3px;
@@ -235,8 +228,9 @@ use Nette;
 
 	#nette-debug .nette-mode-peek {
 		display: none;
-		position: relative;
-		z-index: 23180;
+		position: fixed;
+		right: 0;
+		bottom: 0;
 		padding: 10px;
 		min-width: 150px;
 		min-height: 50px;
@@ -250,7 +244,9 @@ use Nette;
 	}
 
 	#nette-debug .nette-mode-float {
-		position: relative;
+		position: fixed;
+		right: 0;
+		bottom: 0;
 		padding: 10px;
 		min-width: 150px;
 		min-height: 50px;
@@ -372,9 +368,9 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 		if (this.hasClass(Panel.WINDOW)) {
 			window.resizeBy(document.documentElement.scrollWidth - document.documentElement.clientWidth, document.documentElement.scrollHeight - document.documentElement.clientHeight);
 		} else {
-			this.position(this.position());
+			this.position({right: this.position().right, bottom: this.position().bottom});
 			if (this.position().width) { // is visible?
-				document.cookie = this.dom().id + '=' + this.position().left + ':' + this.position().top + '; path=/';
+				document.cookie = this.dom().id + '=' + this.position().right + ':' + this.position().bottom + '; path=/';
 			}
 		}
 	},
@@ -442,8 +438,8 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 
 		panel.data().onmove = function(coords) { // forces constrained inside window
 			var d = document, width = window.innerWidth || d.documentElement.clientWidth || d.body.clientWidth, height = window.innerHeight || d.documentElement.clientHeight || d.body.clientHeight;
-			coords.left = Math.max(Math.min(coords.left, .8 * this.offsetWidth), .2 * this.offsetWidth - width);
-			coords.top = Math.max(Math.min(coords.top, .8 * this.offsetHeight), this.offsetHeight - height);
+			coords.right = Math.min(Math.max(coords.right, -.2 * this.offsetWidth), width - .8 * this.offsetWidth);
+			coords.bottom = Math.min(Math.max(coords.bottom, -.2 * this.offsetHeight), height - this.offsetHeight);
 		};
 
 		$(window).bind('resize', function() {
@@ -451,6 +447,8 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 		});
 
 		panel.draggable({
+			rightEdge: true,
+			bottomEdge: true,
 			handle: panel.find('h1'),
 			stop: function() {
 				panel.toFloat();
@@ -473,7 +471,7 @@ var Panel = Nette.Debug.Panel = Nette.Class({
 		// restore saved position
 		if (pos = document.cookie.match(new RegExp(panel.dom().id + '=(window|(-?[0-9]+):(-?[0-9]+))'))) {
 			if (pos[2]) {
-				panel.toFloat().position({left: pos[2], top: pos[3]});
+				panel.toFloat().position({right: pos[2], bottom: pos[3]});
 			} else {
 				panel.toWindow();
 			}
@@ -510,19 +508,22 @@ Nette.Debug.Bar = Nette.Class({
 		var bar = this, pos;
 
 		bar.data().onmove = function(coords) { // forces constrained inside window
-			var d = document, width = window.innerWidth || d.documentElement.clientWidth || d.body.clientWidth, height = window.innerHeight || d.documentElement.clientHeight || d.body.clientHeight;
-			coords.left = Math.max(Math.min(coords.left, 0), this.offsetWidth - width);
-			coords.top = Math.max(Math.min(coords.top, 0), this.offsetHeight - height);
+			var d = document, width = window.innerWidth || d.documentElement.clientWidth || d.body.clientWidth,
+				height = window.innerHeight || d.documentElement.clientHeight || d.body.clientHeight;
+			coords.right = Math.min(Math.max(coords.right, 0), width - this.offsetWidth);
+			coords.bottom = Math.min(Math.max(coords.bottom, 0), height - this.offsetHeight);
 		};
 
 		$(window).bind('resize', function() {
-			bar.position(bar.position());
+			this.position({right: bar.position().right, bottom: bar.position().bottom});
 		});
 
 		bar.draggable({
+			rightEdge: true,
+			bottomEdge: true,
 			draggedClass: 'nette-dragged',
 			stop: function() {
-				document.cookie = bar.dom().id + '=' + bar.position().left + ':' + bar.position().top + '; path=/';
+				document.cookie = bar.dom().id + '=' + bar.position().right + ':' + bar.position().bottom + '; path=/';
 			}
 		});
 
@@ -536,10 +537,12 @@ Nette.Debug.Bar = Nette.Class({
 				if (e.shiftKey) {
 					panel.toFloat().toWindow();
 				} else if (panel.hasClass(Panel.FLOAT)) {
-					var offset = $(this).offset();
-					panel.offset({left: offset.left - panel.position().width + offset.width + 4, top: offset.top - panel.position().height - 4}).toPeek();
+					panel.toPeek();
 				} else {
-					panel.toFloat().position({left: panel.position().left - Math.round(Math.random() * 100) - 20, top: panel.position().top - Math.round(Math.random() * 100) - 20}).reposition();
+					panel.toFloat().position({
+						right: panel.position().right + Math.round(Math.random() * 100) + 20,
+						bottom: panel.position().bottom + Math.round(Math.random() * 100) + 20
+					}).reposition();
 				}
 			}
 			e.preventDefault();
@@ -549,8 +552,10 @@ Nette.Debug.Bar = Nette.Class({
 			var panel = Panel.factory(this.rel);
 			panel.focus();
 			if (panel.hasClass(Panel.PEEK)) {
-				var offset = $(this).offset();
-				panel.offset({left: offset.left - panel.position().width + offset.width + 4, top: $(this).closest('div').offset().top - panel.position().height - 4});
+				panel.position({
+					right: panel.position().right - $(this).offset().left + panel.position().width - $(this).offset().width - 4 + panel.offset().left,
+					bottom: panel.position().bottom - $(this).closest('div').offset().top + panel.position().height + 4 + panel.offset().top
+				});
 			}
 
 		}).bind('mouseleave', function(e) {
@@ -560,7 +565,7 @@ Nette.Debug.Bar = Nette.Class({
 
 		// restore saved position
 		if (pos = document.cookie.match(new RegExp(bar.dom().id + '=(-?[0-9]+):(-?[0-9]+)'))) {
-			bar.position({left: pos[1], top: pos[2]}); // TODO
+			bar.position({right: pos[1], bottom: pos[2]});
 		}
 
 		bar.find('a').each(function() {
@@ -579,7 +584,6 @@ Nette.Debug.Bar = Nette.Class({
 
 
 <?php foreach ($panels as $id => $panel): if (!$panel['panel']) continue; ?>
-<div class="nette-fixed-coords">
 	<div class="nette-panel" id="nette-debug-panel-<?php echo $panel['id'] ?>">
 		<?php echo $panel['panel'] ?>
 		<div class="nette-icons">
@@ -587,22 +591,19 @@ Nette.Debug.Bar = Nette.Class({
 			<a href="#" rel="close" title="close window">&times;</a>
 		</div>
 	</div>
-</div>
 <?php endforeach ?>
 
-<div class="nette-fixed-coords">
-	<div id="nette-debug-bar">
-		<ul>
-			<li id="nette-debug-logo" title="PHP <?php echo htmlSpecialChars(PHP_VERSION . " |\n"
-			. (isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] . " |\n" : '')
-			. (class_exists('Nette\Framework') ? 'Nette Framework ' . Nette\Framework::VERSION . ' (' . substr(Nette\Framework::REVISION, 8) . ')' : '')) ?>">&nbsp;<span>Nette Framework</span></li>
-			<?php foreach ($panels as $panel): if (!$panel['tab']) continue; ?>
-			<?php if (!empty($panel['previous'])) echo '</ul><ul class="nette-previous">'; ?>
-			<li><?php if ($panel['panel']): ?><a href="#" rel="<?php echo $panel['id'] ?>"><?php echo trim($panel['tab']) ?></a><?php else: echo '<span>', trim($panel['tab']), '</span>'; endif ?></li>
-			<?php endforeach ?>
-			<li><a href="#" rel="close" title="close debug bar">&times;</a></li>
-		</ul>
-	</div>
+<div id="nette-debug-bar">
+	<ul>
+		<li id="nette-debug-logo" title="PHP <?php echo htmlSpecialChars(PHP_VERSION . " |\n"
+		. (isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] . " |\n" : '')
+		. (class_exists('Nette\Framework') ? 'Nette Framework ' . Nette\Framework::VERSION . ' (' . substr(Nette\Framework::REVISION, 8) . ')' : '')) ?>">&nbsp;<span>Nette Framework</span></li>
+		<?php foreach ($panels as $panel): if (!$panel['tab']) continue; ?>
+		<?php if (!empty($panel['previous'])) echo '</ul><ul class="nette-previous">'; ?>
+		<li><?php if ($panel['panel']): ?><a href="#" rel="<?php echo $panel['id'] ?>"><?php echo trim($panel['tab']) ?></a><?php else: echo '<span>', trim($panel['tab']), '</span>'; endif ?></li>
+		<?php endforeach ?>
+		<li><a href="#" rel="close" title="close debug bar">&times;</a></li>
+	</ul>
 </div>
 <?php $output = ob_get_clean(); ?>
 
