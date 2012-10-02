@@ -268,10 +268,15 @@ fn({
 			if (this.nette && this.nette.onmove) {
 				this.nette.onmove.call(this, coords);
 			}
-			this.style.left = (coords.left || 0) + 'px';
-			this.style.top = (coords.top || 0) + 'px';
+			for (var item in coords) {
+				this.style[item] = coords[item] + 'px';
+			}
 		} else {
-			return {left: this.offsetLeft, top: this.offsetTop, width: this.offsetWidth, height: this.offsetHeight};
+			return {
+				left: this.offsetLeft, top: this.offsetTop,
+				right: this.style.right ? parseInt(this.style.right, 10) : 0, bottom: this.style.bottom ? parseInt(this.style.bottom, 10) : 0,
+				width: this.offsetWidth, height: this.offsetHeight
+			};
 		}
 	},
 
@@ -288,7 +293,10 @@ fn({
 				return dE.onmouseup(e);
 			}
 
-			var deltaX = $el[0].offsetLeft - e.clientX, deltaY = $el[0].offsetTop - e.clientY;
+			var pos = $el.position(),
+				deltaX = options.rightEdge ? pos.right + e.clientX : pos.left - e.clientX,
+				deltaY = options.bottomEdge ? pos.bottom + e.clientY : pos.top - e.clientY;
+
 			fn.draggable.binded = true;
 			started = false;
 
@@ -303,7 +311,11 @@ fn({
 					}
 					started = true;
 				}
-				$el.position({left: e.clientX + deltaX, top: e.clientY + deltaY});
+
+				var pos = {};
+				pos[options.rightEdge ? 'right' : 'left'] = options.rightEdge ? deltaX - e.clientX : e.clientX + deltaX;
+				pos[options.bottomEdge ? 'bottom' : 'top'] = options.bottomEdge ? deltaY - e.clientY : e.clientY + deltaY;
+				$el.position(pos);
 				return false;
 			};
 
