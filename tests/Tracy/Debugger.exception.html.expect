@@ -57,10 +57,10 @@
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-0">
 						<table>
-						<tr><th>$arg1</th><td><pre class="nette-dump"><a href='#' rel='next'><span class="php-array">array</span>(3) <abbr>&#x25bc;</abbr> </a><code>[
-   <span class="php-key">0</span> => <span class="php-int">1</span>
-   <span class="php-key">1</span> => <span class="php-int">2</span>
-   <span class="php-key">2</span> => <span class="php-int">3</span>
+						<tr><th>$arg1</th><td><pre class="nette-dump"><a href='#' rel='next'><span class="nette-dump-array">array</span>(3) <abbr>&#x25bc;</abbr> </a><code>[
+   <span class="nette-dump-key">0</span> => <span class="nette-dump-int">1</span>
+   <span class="nette-dump-key">1</span> => <span class="nette-dump-int">2</span>
+   <span class="nette-dump-key">2</span> => <span class="nette-dump-int">3</span>
 ]</code>
 </pre></td></tr>
 						</table>
@@ -80,9 +80,9 @@
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-1">
 						<table>
-						<tr><th>$arg1</th><td><pre class="nette-dump"><span class="php-bool">TRUE</span>
+						<tr><th>$arg1</th><td><pre class="nette-dump"><span class="nette-dump-bool">TRUE</span>
 </pre></td></tr>
-<tr><th>$arg2</th><td><pre class="nette-dump"><span class="php-bool">FALSE</span>
+<tr><th>$arg2</th><td><pre class="nette-dump"><span class="nette-dump-bool">FALSE</span>
 </pre></td></tr>
 						</table>
 						</div>
@@ -101,9 +101,9 @@
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-2">
 						<table>
-						<tr><th>$arg1</th><td><pre class="nette-dump"><span class="php-int">10</span>
+						<tr><th>$arg1</th><td><pre class="nette-dump"><span class="nette-dump-int">10</span>
 </pre></td></tr>
-<tr><th>$arg2</th><td><pre class="nette-dump"><span class="php-string">"any string"</span> (10)
+<tr><th>$arg2</th><td><pre class="nette-dump"><span class="nette-dump-string">"any string"</span> (10)
 </pre></td></tr>
 						</table>
 						</div>

@@ -84,20 +84,20 @@ final class Helpers
 		}
 
 		if (is_bool($var)) {
-			return '<span class="php-bool">' . ($var ? 'TRUE' : 'FALSE') . "</span>\n";
+			return '<span class="nette-dump-bool">' . ($var ? 'TRUE' : 'FALSE') . "</span>\n";
 
 		} elseif ($var === NULL) {
-			return "<span class=\"php-null\">NULL</span>\n";
+			return "<span class=\"nette-dump-null\">NULL</span>\n";
 
 		} elseif (is_int($var)) {
-			return "<span class=\"php-int\">$var</span>\n";
+			return "<span class=\"nette-dump-int\">$var</span>\n";
 
 		} elseif (is_float($var)) {
 			$var = var_export($var, TRUE);
 			if (strpos($var, '.') === FALSE) {
 				$var .= '.0';
 			}
-			return "<span class=\"php-float\">$var</span>\n";
+			return "<span class=\"nette-dump-float\">$var</span>\n";
 
 		} elseif (is_string($var)) {
 			if (Debugger::$maxLen && strlen($var) > Debugger::$maxLen) {
@@ -107,10 +107,10 @@ final class Helpers
 			}
 			$s = strtr($s, preg_match($reBinary, $s) || preg_last_error() ? $tableBin : $tableUtf);
 			$len = strlen($var);
-			return "<span class=\"php-string\">\"$s\"</span>" . ($len > 1 ? " ($len)" : "") . "\n";
+			return "<span class=\"nette-dump-string\">\"$s\"</span>" . ($len > 1 ? " ($len)" : "") . "\n";
 
 		} elseif (is_array($var)) {
-			$s = '<span class="php-array">array</span>(' . count($var) . ") ";
+			$s = '<span class="nette-dump-array">array</span>(' . count($var) . ") ";
 			$space = str_repeat($space1 = '   ', $level);
 			$brackets = range(0, count($var) - 1) === array_keys($var) ? "[]" : "{}";
 
@@ -133,7 +133,7 @@ final class Helpers
 					}
 					$k = strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf);
 					$k = htmlSpecialChars(preg_match('#^\w+$#', $k) ? $k : "\"$k\"");
-					$s .= "$space$space1<span class=\"php-key\">$k</span> => " . self::htmlDump($v, $level + 1);
+					$s .= "$space$space1<span class=\"nette-dump-key\">$k</span> => " . self::htmlDump($v, $level + 1);
 				}
 				unset($var[$marker]);
 				$s .= "$space$brackets[1]</code>";
@@ -154,7 +154,7 @@ final class Helpers
 			} else {
 				$arr = (array) $var;
 			}
-			$s = '<span class="php-object">' . get_class($var) . "</span>(" . count($arr) . ") ";
+			$s = '<span class="nette-dump-object">' . get_class($var) . "</span>(" . count($arr) . ") ";
 			$space = str_repeat($space1 = '   ', $level);
 
 			static $list = array();
@@ -169,12 +169,12 @@ final class Helpers
 				foreach ($arr as $k => &$v) {
 					$m = '';
 					if ($k[0] === "\x00") {
-						$m = ' <span class="php-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
+						$m = ' <span class="nette-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$k = strtr($k, preg_match($reBinary, $k) || preg_last_error() ? $tableBin : $tableUtf);
 					$k = htmlSpecialChars(preg_match('#^\w+$#', $k) ? $k : "\"$k\"");
-					$s .= "$space$space1<span class=\"php-key\">$k</span>$m => " . self::htmlDump($v, $level + 1);
+					$s .= "$space$space1<span class=\"nette-dump-key\">$k</span>$m => " . self::htmlDump($v, $level + 1);
 				}
 				array_pop($list);
 				$s .= "$space}</code>";
@@ -186,14 +186,14 @@ final class Helpers
 
 		} elseif (is_resource($var)) {
 			$type = get_resource_type($var);
-			$s = '<span class="php-resource">' . htmlSpecialChars($type) . " resource</span> ";
+			$s = '<span class="nette-dump-resource">' . htmlSpecialChars($type) . " resource</span> ";
 
 			static $info = array('stream' => 'stream_get_meta_data', 'curl' => 'curl_getinfo');
 			if (isset($info[$type])) {
 				$space = str_repeat($space1 = '   ', $level);
 				$s .= "<code>{\n";
 				foreach (call_user_func($info[$type], $var) as $k => $v) {
-					$s .= $space . $space1 . '<span class="php-key">' . htmlSpecialChars($k) . "</span> => " . self::htmlDump($v, $level + 1);
+					$s .= $space . $space1 . '<span class="nette-dump-key">' . htmlSpecialChars($k) . "</span> => " . self::htmlDump($v, $level + 1);
 				}
 				$s .= "$space}</code>";
 			}
