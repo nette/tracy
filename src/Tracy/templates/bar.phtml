@@ -368,8 +368,8 @@ use Nette;
 		document.body.appendChild(debug);
 		debug.innerHTML = <?php echo json_encode(Nette\Utils\Strings::fixEncoding($output)) ?>;
 		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) eval(scripts[i].innerHTML);
-		(new Nette.Debug.Bar).init();
-		Nette.Q.factory(debug).show();
+		(new Nette.DebugBar).init();
+		debug.style.display = 'block';
 	};
 })(window.onload);
 </script>
