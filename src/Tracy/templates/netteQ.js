@@ -9,52 +9,8 @@ var Nette = Nette || {};
 
 (function(){
 
-// simple class builder
-Nette.Class = function(def) {
-	var hasProp = Object.prototype.hasOwnProperty, nm,
-		cl = hasProp.call(def, 'constructor') ? def.constructor : function(){};
-	delete def.constructor;
-
-	if (def.Extends) {
-		var foo = function() { this.constructor = cl; };
-		foo.prototype = def.Extends.prototype;
-		cl.prototype = new foo();
-		delete def.Extends;
-	}
-
-	if (def.Static) {
-		for (nm in def.Static) { if (hasProp.call(def.Static, nm)) cl[nm] = def.Static[nm]; }
-		delete def.Static;
-	}
-
-	for (nm in def) { if (hasProp.call(def, nm)) cl.prototype[nm] = def[nm]; }
-	return cl;
-};
-
-
-// supported cross-browser selectors: #id  |  div  |  div.class  |  .class
-Nette.Q = Nette.Class({
-
-	Static: {
-		factory: function(selector) {
-			return new Nette.Q(selector);
-		},
-
-		implement: function(methods) {
-			var nm, fn = Nette.Q.implement, prot = Nette.Q.prototype, __hasProp = Object.prototype.hasOwnProperty;
-			for (nm in methods) {
-				if (!__hasProp.call(methods, nm)) {
-					continue;
-				}
-				fn[nm] = methods[nm];
-				prot[nm] = (function(nm){
-					return function() { return this.each(fn[nm], arguments); };
-				}(nm));
-			}
-		}
-	},
-
-	constructor: function(selector) {
+	// supported cross-browser selectors: #id  |  div  |  div.class  |  .class
+	var Query = Nette.Query = function(selector) {
 		if (typeof selector === "string") {
 			selector = this._find(document, selector);
 
@@ -65,15 +21,19 @@ Nette.Q = Nette.Class({
 		for (var i = 0, len = selector.length; i < len; i++) {
 			if (selector[i]) { this[this.length++] = selector[i]; }
 		}
-	},
+	};
 
-	length: 0,
+	Query.factory = function(selector) {
+		return new Query(selector);
+	};
 
-	find: function(selector) {
-		return new Nette.Q(this._find(this[0], selector));
-	},
+	Query.prototype.length = 0;
 
-	_find: function(context, selector) {
+	Query.prototype.find = function(selector) {
+		return new Query(this._find(this[0], selector));
+	};
+
+	Query.prototype._find = function(context, selector) {
 		if (!context || !selector) {
 			return [];
 
@@ -97,26 +57,21 @@ Nette.Q = Nette.Class({
 				return elms;
 			}
 		}
-	},
+	};
 
-	dom: function() {
+	Query.prototype.dom = function() {
 		return this[0];
-	},
+	};
 
-	each: function(callback, args) {
-		for (var i = 0, res; i < this.length; i++) {
-			if ((res = callback.apply(this[i], args || [])) !== undefined) { return res; }
+	Query.prototype.each = function(callback) {
+		for (var i = 0; i < this.length; i++) {
+			if (callback.apply(this[i]) === false) { break; }
 		}
 		return this;
-	}
-});
+	};
 
-
-var $ = Nette.Q.factory, fn = Nette.Q.implement;
-
-fn({
 	// cross-browser event attach
-	bind: function(event, handler) {
+	Query.prototype.bind = function(event, handler) {
 		if (document.addEventListener && (event === 'mouseenter' || event === 'mouseleave')) { // simulate mouseenter & mouseleave using mouseover & mouseout
 			var old = handler;
 			event = event === 'mouseenter' ? 'mouseover' : 'mouseout';
@@ -128,13 +83,14 @@ fn({
 			};
 		}
 
-		var data = fn.data.call(this),
+		return this.each(function() {
+			var elem = this, // fixes 'this' in iE
+				data = elem.nette ? elem.nette : elem.nette = {},
 			events = data.events = data.events || {}; // use own handler queue
 
 		if (!events[event]) {
-			var el = this, // fixes 'this' in iE
-				handlers = events[event] = [],
-				generic = fn.bind.genericHandler = function(e) { // dont worry, 'e' is passed in IE
+				var handlers = events[event] = [],
+					generic = function(e) { // dont worry, 'e' is passed in IE
 					if (!e.target) {
 						e.target = e.srcElement;
 					}
@@ -146,151 +102,174 @@ fn({
 					}
 					e.stopImmediatePropagation = function() { this.stopPropagation(); i = handlers.length; };
 					for (var i = 0; i < handlers.length; i++) {
-						handlers[i].call(el, e);
+							handlers[i].call(elem, e);
 					}
 				};
 
 			if (document.addEventListener) { // non-IE
-				this.addEventListener(event, generic, false);
+					elem.addEventListener(event, generic, false);
 			} else if (document.attachEvent) { // IE < 9
-				this.attachEvent('on' + event, generic);
+					elem.attachEvent('on' + event, generic);
 			}
 		}
 
 		events[event].push(handler);
-	},
+		});
+	};
 
 	// adds class to element
-	addClass: function(className) {
+	Query.prototype.addClass = function(className) {
+		return this.each(function() {
 		this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ') + ' ' + className;
-	},
+		});
+	};
 
 	// removes class from element
-	removeClass: function(className) {
+	Query.prototype.removeClass = function(className) {
+		return this.each(function() {
 		this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ');
-	},
+		});
+	};
 
 	// tests whether element has given class
-	hasClass: function(className) {
-		return this.className.replace(/^|\s+|$/g, ' ').indexOf(' '+className+' ') > -1;
-	},
+	Query.prototype.hasClass = function(className) {
+		return this[0] && this[0].className.replace(/^|\s+|$/g, ' ').indexOf(' '+className+' ') > -1;
+	};
 
-	show: function() {
-		var dsp = fn.show.display = fn.show.display || {}, tag = this.tagName;
-		if (!dsp[tag]) {
-			var el = document.body.appendChild(document.createElement(tag));
-			dsp[tag] = fn.css.call(el, 'display');
+	Query.prototype.show = function() {
+		Query.displays = Query.displays || {};
+		return this.each(function() {
+			var tag = this.tagName;
+			if (!Query.displays[tag]) {
+				Query.displays[tag] = (new Query(document.body.appendChild(document.createElement(tag)))).css('display');
 		}
-		this.style.display = dsp[tag];
-	},
+			this.style.display = Query.displays[tag];
+		});
+	};
 
-	hide: function() {
+	Query.prototype.hide = function() {
+		return this.each(function() {
 		this.style.display = 'none';
-	},
+		});
+	};
 
-	css: function(property) {
-		return this.currentStyle ? this.currentStyle[property]
-			: (window.getComputedStyle ? document.defaultView.getComputedStyle(this, null).getPropertyValue(property) : undefined);
-	},
+	Query.prototype.css = function(property) {
+		if (this[0] && this[0].currentStyle) {
+			return this[0].currentStyle[property];
+		} else if (this[0] && window.getComputedStyle) {
+			return document.defaultView.getComputedStyle(this[0], null).getPropertyValue(property)
+		}
+	};
 
-	data: function() {
-		return this.nette ? this.nette : this.nette = {};
-	},
+	Query.prototype.data = function() {
+		if (this[0]) {
+			return this[0].nette ? this[0].nette : this[0].nette = {};
+		}
+	};
 
-	val: function() {
-		var i, len, values;
-		if (!this.nodeName) { // radio
-			for (i = 0, len = this.length; i < len; i++) {
+	Query.prototype.val = function() {
+		var elem = this[0];
+		if (!elem) {
+			return undefined;
+
+		} else if (!elem.nodeName) { // radio
+			for (var i = 0, len = elem.length; i < len; i++) {
 				if (this[i].checked) { return this[i].value; }
 			}
 			return null;
-		}
 
-		if (this.nodeName.toLowerCase() === 'select') {
-			var index = this.selectedIndex, options = this.options;
+		} else if (elem.nodeName.toLowerCase() === 'select') {
+			var index = elem.selectedIndex, options = elem.options;
 
 			if (index < 0) {
 				return null;
 
-			} else if (this.type === 'select-one') {
+			} else if (elem.type === 'select-one') {
 				return options[index].value;
 			}
 
-			for (i = 0, values = [], len = options.length; i < len; i++) {
+			for (var i = 0, values = [], len = options.length; i < len; i++) {
 				if (options[i].selected) { values.push(options[i].value); }
 			}
 			return values;
+
+		} else if (elem.type === 'checkbox') {
+			return elem.checked;
+
+		} else if (elem.value) {
+			return elem.value.replace(/^\s+|\s+$/g, '');
 		}
+	};
 
-		if (this.type === 'checkbox') {
-			return this.checked;
-		}
-
-		return this.value.replace(/^\s+|\s+$/g, '');
-	},
-
-	_trav: function(el, selector, fce) {
+	Query.prototype._trav = function(elem, selector, fce) {
 		selector = selector.split('.');
-		while (el && !(el.nodeType === 1 &&
-			(!selector[0] || el.tagName.toLowerCase() === selector[0]) &&
-			(!selector[1] || fn.hasClass.call(el, selector[1])))) {
-			el = el[fce];
+		while (elem && !(elem.nodeType === 1 &&
+			(!selector[0] || elem.tagName.toLowerCase() === selector[0]) &&
+			(!selector[1] || (new Query(elem)).hasClass(selector[1])))) {
+			elem = elem[fce];
 		}
-		return $(el);
-	},
+		return new Query(elem || []);
+	};
 
-	closest: function(selector) {
-		return fn._trav(this, selector, 'parentNode');
-	},
+	Query.prototype.closest = function(selector) {
+		return this._trav(this[0], selector, 'parentNode');
+	};
 
-	prev: function(selector) {
-		return fn._trav(this.previousSibling, selector, 'previousSibling');
-	},
+	Query.prototype.prev = function(selector) {
+		return this._trav(this[0] && this[0].previousSibling, selector, 'previousSibling');
+	};
 
-	next: function(selector) {
-		return fn._trav(this.nextSibling, selector, 'nextSibling');
-	},
+	Query.prototype.next = function(selector) {
+		return this._trav(this[0] && this[0].nextSibling, selector, 'nextSibling');
+	};
 
 	// returns total offset for element
-	offset: function(coords) {
-		var el = this, ofs = coords ? {left: -coords.left || 0, top: -coords.top || 0} : fn.position.call(el);
-		while (el = el.offsetParent) { ofs.left += el.offsetLeft; ofs.top += el.offsetTop; }
-
+	Query.prototype.offset = function(coords) {
 		if (coords) {
-			fn.position.call(this, {left: -ofs.left, top: -ofs.top});
-		} else {
-			return ofs;
+			return this.each(function() {
+				var elem = this, ofs = {left: -coords.left || 0, top: -coords.top || 0};
+				while (elem = elem.offsetParent) { ofs.left += elem.offsetLeft; ofs.top += elem.offsetTop; }
+				this.style.left = -ofs.left + 'px';
+				this.style.top = -ofs.top + 'px';
+			});
+		} else if (this[0]) {
+			var elem = this[0], res = {left: elem.offsetLeft, top: elem.offsetTop};
+			while (elem = elem.offsetParent) { res.left += elem.offsetLeft; res.top += elem.offsetTop; }
+			return res;
 		}
-	},
+	};
 
 	// returns current position or move to new position
-	position: function(coords) {
+	Query.prototype.position = function(coords) {
 		if (coords) {
+			return this.each(function() {
 			if (this.nette && this.nette.onmove) {
 				this.nette.onmove.call(this, coords);
 			}
 			for (var item in coords) {
 				this.style[item] = coords[item] + 'px';
 			}
-		} else {
+			});
+		} else if (this[0]) {
 			return {
-				left: this.offsetLeft, top: this.offsetTop,
-				right: this.style.right ? parseInt(this.style.right, 10) : 0, bottom: this.style.bottom ? parseInt(this.style.bottom, 10) : 0,
-				width: this.offsetWidth, height: this.offsetHeight
+				left: this[0].offsetLeft, top: this[0].offsetTop,
+				right: this[0].style.right ? parseInt(this[0].style.right, 10) : 0, bottom: this[0].style.bottom ? parseInt(this[0].style.bottom, 10) : 0,
+				width: this[0].offsetWidth, height: this[0].offsetHeight
 			};
 		}
-	},
+	};
 
 	// makes element draggable
-	draggable: function(options) {
-		var $el = $(this), dE = document.documentElement, started;
+	Query.prototype.draggable = function(options) {
+		var elem = this[0], dE = document.documentElement, started;
 		options = options || {};
 
-		$(options.handle || this).bind('mousedown', function(e) {
+		(options.handle ? new Query(options.handle) : this).bind('mousedown', function(e) {
+			var $el = new Query(options.handle ? elem : this);
 			e.preventDefault();
 			e.stopPropagation();
 
-			if (fn.draggable.binded) { // missed mouseup out of window?
+			if (Query.dragging) { // missed mouseup out of window?
 				return dE.onmouseup(e);
 			}
 
@@ -298,7 +277,7 @@ fn({
 				deltaX = options.rightEdge ? pos.right + e.clientX : pos.left - e.clientX,
 				deltaY = options.bottomEdge ? pos.bottom + e.clientY : pos.top - e.clientY;
 
-			fn.draggable.binded = true;
+			Query.dragging = true;
 			started = false;
 
 			dE.onmousemove = function(e) {
@@ -329,7 +308,7 @@ fn({
 						options.stop(e || event, $el);
 					}
 				}
-				fn.draggable.binded = dE.onmousemove = dE.onmouseup = null;
+				Query.dragging = dE.onmousemove = dE.onmouseup = null;
 				return false;
 			};
 
@@ -338,7 +317,8 @@ fn({
 				e.stopImmediatePropagation();
 			}
 		});
-	}
-});
+
+		return this;
+	};
 
 })();
