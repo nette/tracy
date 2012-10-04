@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger::dump() and strings.
+ * Test: Nette\Diagnostics\Dump::toText() special chars
  *
  * @author     David Grudl
  * @package    Nette\Diagnostics
  */
 
-use Nette\Diagnostics\Debugger;
+use Nette\Diagnostics\Dump;
 
 
 
@@ -15,13 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debugger::$consoleColors = NULL;
-Debugger::$productionMode = FALSE;
-header('Content-Type: text/plain');
-
-
-
-Assert::match( 'array(8) [
+Assert::match( 'array (8) [
    0 => ""
    1 => " "
    2 => "	"
@@ -33,7 +27,7 @@ line" (10)
    7 => "\xff"
 ]
 
-', Debugger::dump(array(
+', Dump::toText(array(
 	'',
 	' ',
 	"\t",
@@ -42,4 +36,4 @@ line" (10)
 	"I\xc3\xb1t\xc3\xabrn\xc3\xa2ti\xc3\xb4n\xc3\xa0liz\xc3\xa6ti\xc3\xb8n", // Iñtërnâtiônàlizætiøn,
 	"\x00",
 	"\xFF",
-), TRUE));
+)));

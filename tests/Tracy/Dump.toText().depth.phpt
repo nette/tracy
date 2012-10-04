@@ -1,23 +1,18 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger::dump() and $maxDepth and $maxLen.
+ * Test: Nette\Diagnostics\Dump::toText() depth & truncate
  *
  * @author     David Grudl
  * @package    Nette\Diagnostics
  */
 
-use Nette\Diagnostics\Debugger;
+use Nette\Diagnostics\Dump;
 
 
 
 require __DIR__ . '/../bootstrap.php';
 
-
-
-Debugger::$consoleColors = NULL;
-Debugger::$productionMode = FALSE;
-header('Content-Type: text/plain');
 
 
 $arr = array(
@@ -37,56 +32,61 @@ $arr = array(
 		),
 	),
 );
-
 $arr[] = &$arr;
-Assert::match( 'array(5) {
+
+
+Assert::match( 'array (5) {
    long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-   0 => array(1) [
-      0 => array(1) [
-         0 => array(1) { ... }
+   0 => array (1) [
+      0 => array (1) [
+         0 => array (1) {
+            hello => "world" (5)
+         }
       ]
    ]
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-   1 => stdClass(1) {
-      0 => stdClass(1) {
-         0 => stdClass(1) { ... }
+   1 => stdClass (1) {
+      0 => stdClass (1) {
+         0 => stdClass (1) {
+            hello => "world" (5)
+         }
       }
    }
-   2 => array(5) {
+   2 => array (5) {
       long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-      0 => array(1) [
-         0 => array(1) [ ... ]
+      0 => array (1) [
+         0 => array (1) [
+            0 => array (1) { ... }
+         ]
       ]
       long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-      1 => stdClass(1) {
-         0 => stdClass(1) { ... }
+      1 => stdClass (1) {
+         0 => stdClass (1) {
+            0 => stdClass (1) { ... }
+         }
       }
-      2 => array(6) { *RECURSION* }
+      2 => array (5) { RECURSION }
    }
-}
-
-', Debugger::dump($arr, TRUE) );
+}', Dump::toText($arr) );
 
 
 
-Debugger::$maxDepth = 2;
-Debugger::$maxLen = 50;
-Assert::match( 'array(5) {
+Assert::match( 'array (5) {
    long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-   0 => array(1) [
-      0 => array(1) [ ... ]
+   0 => array (1) [
+      0 => array (1) [ ... ]
    ]
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-   1 => stdClass(1) {
-      0 => stdClass(1) { ... }
+   1 => stdClass (1) {
+      0 => stdClass (1) { ... }
    }
-   2 => array(5) {
+   2 => array (5) {
       long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-      0 => array(1) [ ... ]
+      0 => array (1) [ ... ]
       long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-      1 => stdClass(1) { ... }
-      2 => array(6) { *RECURSION* }
+      1 => stdClass (1) { ... }
+      2 => array (5) { RECURSION }
    }
 }
 
-', Debugger::dump($arr, TRUE) );
+', Dump::toText($arr, array(Dump::DEPTH => 2, Dump::TRUNCATE => 50)) );

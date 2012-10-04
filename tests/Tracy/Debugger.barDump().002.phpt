@@ -32,7 +32,8 @@ register_shutdown_function(function(){
 			<tr class="">
 		<th></th>
 		<td><pre class="nette-dump"><span class="nette-dump-string">"value"</span> (5)
-</pre></td>
+</pre>
+</td>
 	</tr>
 		</table>
 </div>

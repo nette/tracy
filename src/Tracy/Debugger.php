@@ -55,18 +55,8 @@ final class Debugger
 	/** @var bool display location? {@link Debugger::dump()} */
 	public static $showLocation = FALSE;
 
-	/** @var array */
-	public static $consoleColors = array(
-		'bool' => '1;33',
-		'null' => '1;33',
-		'number' => '1;32',
-		'string' => '1;36',
-		'array' => '1;31',
-		'key' => '1;37',
-		'object' => '1;31',
-		'visibility' => '1;30',
-		'resource' => '1;37',
-	);
+	/** @deprecated */
+	public static $consoleColors;
 
 	/********************* errors and exceptions reporting ****************d*g**/
 
@@ -161,6 +151,7 @@ final class Debugger
 			self::$source = empty($_SERVER['argv']) ? 'CLI' : 'CLI: ' . implode(' ', $_SERVER['argv']);
 		}
 
+		self::$consoleColors = & Dump::$terminalColors;
 		self::$logger = new Logger;
 		self::$logDirectory = & self::$logger->directory;
 		self::$email = & self::$logger->email;
@@ -316,7 +307,7 @@ final class Debugger
 				}
 			}
 		} elseif (!is_string($message)) {
-			$message = Helpers::textDump($message);
+			$message = Dump::toText($message);
 		}
 
 		self::$logger->log(array(
@@ -560,48 +551,23 @@ final class Debugger
 	 */
 	public static function dump($var, $return = FALSE)
 	{
-		if (!$return && self::$productionMode) {
-			return $var;
-		}
-
-		$output = "<pre class=\"nette-dump\">" . Helpers::htmlDump($var) . "</pre>\n";
-
-		if (!$return) {
-			$trace = /*5.2*PHP_VERSION_ID < 50205 ? debug_backtrace() : */debug_backtrace(FALSE);
-			$item = Helpers::findTrace($trace, 'dump') ?: Helpers::findTrace($trace, __CLASS__ . '::dump');
-			if (isset($item['file'], $item['line']) && is_file($item['file'])) {
-				$lines = file($item['file']);
-				preg_match('#dump\((.*)\)#', $lines[$item['line'] - 1], $m);
-				$output = substr_replace(
-					$output,
-					' title="' . htmlspecialchars((isset($m[0]) ? "$m[0] \n" : '') . "in file {$item['file']} on line {$item['line']}") . '"',
-					4, 0);
-
-				if (self::$showLocation) {
-					$output = substr_replace(
-						$output,
-						' <small>in ' . Helpers::editorLink($item['file'], $item['line']) . '</small>',
-						-8, 0);
-				}
-			}
-		}
-
-		if (!self::isHtmlMode()) {
-			if (self::$consoleColors && substr(getenv('TERM'), 0, 5) === 'xterm') {
-				$output = preg_replace_callback('#<span class="nette-(\w+)">|</span>#', function($m) {
-					return "\033[" . (isset($m[1], Debugger::$consoleColors[$m[1]]) ? Debugger::$consoleColors[$m[1]] : '0') . "m";
-				}, $output);
-			}
-			$output = htmlspecialchars_decode(strip_tags($output), ENT_QUOTES);
-		}
-
 		if ($return) {
-			return $output;
+			ob_start();
+			Dump::dump($var, array(
+				Dump::DEPTH => self::$maxDepth,
+				Dump::TRUNCATE => self::$maxLen,
+			));
+			return ob_get_clean();
 
-		} else {
-			echo $output;
-			return $var;
+		} elseif (!self::$productionMode) {
+			Dump::dump($var, array(
+				Dump::DEPTH => self::$maxDepth,
+				Dump::TRUNCATE => self::$maxLen,
+				Dump::LOCATION => self::$showLocation,
+			));
 		}
+
+		return $var;
 	}
 
 
@@ -633,7 +599,7 @@ final class Debugger
 		if (!self::$productionMode) {
 			$dump = array();
 			foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val) {
-				$dump[$key] = Helpers::clickableDump($val);
+				$dump[$key] = Dump::toHtml($val);
 			}
 			self::$dumpPanel->data[] = array('title' => $title, 'dump' => $dump);
 		}
