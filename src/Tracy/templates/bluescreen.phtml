@@ -111,11 +111,6 @@ $counter = 0;
 			color: #085AA3;
 		}
 
-		#netteBluescreen a abbr {
-			font-family: sans-serif;
-			color: #BBB;
-		}
-
 		#netteBluescreenIcon {
 			position: absolute;
 			right: .5em;
@@ -123,6 +118,7 @@ $counter = 0;
 			z-index: 20000;
 			text-decoration: none;
 			background: #CD1818;
+			color: white !important;
 			padding: 3px;
 		}
 
@@ -284,16 +280,35 @@ $counter = 0;
 			color: inherit;
 			border-bottom: 1px dotted #C1D2E1;
 		}
+
+		html.js #netteBluescreen .nette-collapsed {
+			display: none;
+		}
+
+		#netteBluescreen .nette-toggle, #netteBluescreen .nette-toggle-collapsed {
+			cursor: pointer;
+		}
+
+		#netteBluescreen .nette-toggle:after {
+			content: " ▼";
+			opacity: .4;
+		}
+
+		#netteBluescreen .nette-toggle-collapsed:after {
+			content: " ►";
+			opacity: .4;
+		}
+
 	</style>
+	<script>document.body.className+=' js'</script>
 </head>
 
 
 
 <body>
 <div id="netteBluescreen">
-	<a id="netteBluescreenIcon" href="#" rel="next"><abbr>&#x25bc;</abbr></a
-
-	><div>
+	<a id="netteBluescreenIcon" href="#" class="nette-toggle"></a>
+	<div>
 		<div id="netteBluescreenError" class="panel">
 			<h1><?php echo htmlspecialchars($title), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 
@@ -307,7 +322,7 @@ $counter = 0;
 
 			<?php if ($level++): ?>
 			<div class="panel">
-			<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Caused by <abbr><?php echo ($collapsed = $level > 2) ? '&#x25ba;' : '&#x25bc;' ?></abbr></a></h2>
+			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle<?php echo ($collapsed = $level > 2) ? '-collapsed' : '' ?>">Caused by</a></h2>
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
 				<div class="panel">
@@ -323,7 +338,7 @@ $counter = 0;
 			<?php $panel = call_user_func($panel, $ex); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 			<?php if (!empty($panel['bottom'])) { continue; } ?>
 			<div class="panel">
-				<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>"><?php echo htmlSpecialChars($panel['tab']) ?> <abbr>&#x25bc;</abbr></a></h2>
+				<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
 
 				<div id="netteBsPnl<?php echo $counter ?>" class="inner">
 				<?php echo $panel['panel'] ?>
@@ -340,7 +355,7 @@ $counter = 0;
 			} ?>
 
 			<div class="panel">
-			<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Source file <abbr><?php echo ($collapsed = $expanded !== NULL) ? '&#x25ba;' : '&#x25bc;' ?></abbr></a></h2>
+			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle<?php echo ($collapsed = $expanded !== NULL) ? '-collapsed' : '' ?>">Source file</a></h2>
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?> &nbsp; <b>Line:</b> <?php echo $ex->getLine() ?></p>
@@ -352,7 +367,7 @@ $counter = 0;
 			<?php if (isset($stack[0]['class']) && $stack[0]['class'] === 'Nette\Diagnostics\Debugger' && ($stack[0]['function'] === '_shutdownHandler' || $stack[0]['function'] === '_errorHandler')) unset($stack[0]) ?>
 			<?php if ($stack): ?>
 			<div class="panel">
-				<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Call stack <abbr>&#x25bc;</abbr></a></h2>
+				<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle">Call stack</a></h2>
 
 				<div id="netteBsPnl<?php echo $counter ?>" class="inner">
 				<ol>
@@ -365,12 +380,12 @@ $counter = 0;
 						<i>inner-code</i><?php if (isset($row['line'])) echo ':', $row['line'] ?>
 					<?php endif ?>
 
-					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#" rel="netteBsSrc<?php echo "$level-$key" ?>">source <abbr>&#x25ba;</abbr></a>&nbsp; <?php endif ?>
+					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#netteBsSrc<?php echo "$level-$key" ?>" class="nette-toggle-collapsed">source</a>&nbsp; <?php endif ?>
 
 					<?php if (isset($row['class'])) echo htmlspecialchars($row['class'] . $row['type']) ?>
 					<?php echo htmlspecialchars($row['function']) ?>
 
-					(<?php if (!empty($row['args'])): ?><a href="#" rel="netteBsArgs<?php echo "$level-$key" ?>">arguments <abbr>&#x25ba;</abbr></a><?php endif ?>)
+					(<?php if (!empty($row['args'])): ?><a href="#netteBsArgs<?php echo "$level-$key" ?>" class="nette-toggle-collapsed">arguments</a><?php endif ?>)
 					</p>
 
 					<?php if (!empty($row['args'])): ?>
@@ -408,9 +423,9 @@ $counter = 0;
 
 			<?php if (isset($ex->context) && is_array($ex->context)):?>
 			<div class="panel">
-			<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Variables <abbr>&#x25bc;</abbr></a></h2>
+			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Variables</a></h2>
 
-			<div id="netteBsPnl<?php echo $counter ?>" class="inner">
+			<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
 			<div class="outer">
 			<table>
 			<?php
@@ -433,7 +448,7 @@ $counter = 0;
 		<?php $panel = call_user_func($panel, NULL); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 		<?php if (!empty($panel['bottom'])) { $bottomPanels[] = $panel; continue; } ?>
 		<div class="panel">
-			<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>"><?php echo htmlSpecialChars($panel['tab']) ?> <abbr>&#x25ba;</abbr></a></h2>
+			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
 			<?php echo $panel['panel'] ?>
@@ -443,10 +458,10 @@ $counter = 0;
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Environment <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Environment</a></h2>
 
 		<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
-			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">$_SERVER <abbr>&#x25bc;</abbr></a></h3>
+			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle">$_SERVER</a></h3>
 			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
 			<table>
 			<?php
@@ -456,7 +471,7 @@ $counter = 0;
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">$_SESSION <abbr>&#x25bc;</abbr></a></h3>
+			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle">$_SESSION</a></h3>
 			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
 			<?php if (empty($_SESSION)):?>
 			<p><i>empty</i></p>
@@ -471,7 +486,7 @@ $counter = 0;
 
 
 			<?php if (!empty($_SESSION['__NF']['DATA'])):?>
-			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Nette Session <abbr>&#x25bc;</abbr></a></h3>
+			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle">Nette Session</a></h3>
 			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
 			<table>
 			<?php
@@ -485,7 +500,7 @@ $counter = 0;
 			<?php
 			$list = get_defined_constants(TRUE);
 			if (!empty($list['user'])):?>
-			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Constants <abbr>&#x25ba;</abbr></a></h3>
+			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Constants</a></h3>
 			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
 			<table>
 			<?php
@@ -499,7 +514,7 @@ $counter = 0;
 			<?php endif ?>
 
 
-			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Included files <abbr>&#x25ba;</abbr></a> (<?php echo count(get_included_files()) ?>)</h3>
+			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Included files</a> (<?php echo count(get_included_files()) ?>)</h3>
 			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
 			<table>
 			<?php
@@ -511,7 +526,7 @@ $counter = 0;
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">Configuration options <abbr>&#x25ba;</abbr></a></h3>
+			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Configuration options</a></h3>
 			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
 			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+$#s', '', ob_get_clean()) ?>
 			</div>
@@ -520,7 +535,7 @@ $counter = 0;
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">HTTP request</a></h2>
 
 		<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
 			<?php if (function_exists('apache_request_headers')): ?>
@@ -554,7 +569,7 @@ $counter = 0;
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">HTTP response</a></h2>
 
 		<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
 			<h3>Headers</h3>
@@ -571,7 +586,7 @@ $counter = 0;
 
 		<?php foreach ($bottomPanels as $panel): ?>
 		<div class="panel">
-			<h2><a href="#" rel="netteBsPnl<?php echo ++$counter ?>"><?php echo htmlSpecialChars($panel['tab']) ?> <abbr>&#x25bc;</abbr></a></h2>
+			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="inner">
 			<?php echo $panel['panel'] ?>
@@ -600,7 +615,7 @@ $counter = 0;
 	document.onkeyup = function(e) {
 		e = e || window.event;
 		if (e.keyCode == 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
-			bs.onclick({target: document.getElementById('netteBluescreenIcon')});
+			document.getElementById('netteBluescreenIcon').click();
 		}
 	};
 
@@ -618,20 +633,22 @@ $counter = 0;
 
 	bs.onclick = function(e) {
 		e = e || window.event;
-		var link = e.target || e.srcElement;
-		while (link && link.tagName && link.tagName.toLowerCase() !== 'a') {
-			link = link.parentNode;
-		}
-		if (!link || !link.rel) {
+		for (var link = e.target || e.srcElement; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode);
+		if (!link) {
 			return true;
 		}
-		var arrow = link.getElementsByTagName('abbr')[0];
-		var panel = link.rel === 'next' ? link.nextSibling : document.getElementById(link.rel);
-		while (panel.nodeType !== 1) panel = panel.nextSibling;
-		var collapsed = panel.currentStyle ? panel.currentStyle.display == 'none' : getComputedStyle(panel, null).display == 'none';
 
-		try { arrow.innerHTML = String.fromCharCode(collapsed ? 0x25bc : 0x25ba); } catch(e){} // ie6
-		panel.style.display = collapsed ? (panel.tagName.toLowerCase() === 'code' ? 'inline' : 'block') : 'none';
+		var collapsed = link.className.indexOf('nette-toggle-collapsed') > -1,
+			ref = link.getAttribute('data-ref') || link.getAttribute('href');
+
+		if (ref && ref !== '#') {
+			dest = document.getElementById(ref.substring(1));
+		} else {
+			for (dest = link.nextSibling; dest && dest.nodeType !== 1; dest = dest.nextSibling);
+		}
+
+		link.className = 'nette-toggle' + (collapsed ? '' : '-collapsed');
+		dest.style.display = collapsed ? (dest.tagName.toLowerCase() === 'div' ? 'block' : 'inline') : 'none';
 
 		if (link.id === 'netteBluescreenIcon') {
 			for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {
@@ -640,7 +657,8 @@ $counter = 0;
 				}
 			}
 		}
-		return false;
+		e.preventDefault ? e.preventDefault() : e.returnValue = false;
+		e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
 	};
 </script>
 </body>

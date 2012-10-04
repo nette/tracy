@@ -14,9 +14,8 @@
 
 <body>
 <div id="netteBluescreen">
-	<a id="netteBluescreenIcon" href="#" rel="next"><abbr>&#x25bc;</abbr></a
-
-	><div>
+	<a id="netteBluescreenIcon" href="#" class="nette-toggle"></a>
+	<div>
 		<div id="netteBluescreenError" class="panel">
 			<h1>Exception #123</h1>
 
@@ -34,7 +33,7 @@
 
 
 			<div class="panel">
-			<h2><a href="#" rel="netteBsPnl1">Source file <abbr>&#x25bc;</abbr></a></h2>
+			<h2><a href="#netteBsPnl1" class="nette-toggle">Source file</a></h2>
 
 			<div id="netteBsPnl1" class="inner">
 				<p><b>File:</b> %a% &nbsp; <b>Line:</b> %d%</p>
@@ -43,16 +42,16 @@
 
 
 									<div class="panel">
-				<h2><a href="#" rel="netteBsPnl2">Call stack <abbr>&#x25bc;</abbr></a></h2>
+				<h2><a href="#netteBsPnl2" class="nette-toggle">Call stack</a></h2>
 
 				<div id="netteBsPnl2" class="inner">
 				<ol>
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b></a>:%d%
-					<a href="#" rel="netteBsSrc1-0">source <abbr>&#x25ba;</abbr></a>&nbsp;
+					<a href="#netteBsSrc1-0" class="nette-toggle-collapsed">source</a>&nbsp;
 										third
-					(<a href="#" rel="netteBsArgs1-0">arguments <abbr>&#x25ba;</abbr></a>)
+					(<a href="#netteBsArgs1-0" class="nette-toggle-collapsed">arguments</a>)
 					</p>
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-0">
@@ -73,9 +72,9 @@
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b></a>:%d%
-					<a href="#" rel="netteBsSrc1-1">source <abbr>&#x25ba;</abbr></a>&nbsp;
+					<a href="#netteBsSrc1-1" class="nette-toggle-collapsed">source</a>&nbsp;
 										second
-					(<a href="#" rel="netteBsArgs1-1">arguments <abbr>&#x25ba;</abbr></a>)
+					(<a href="#netteBsArgs1-1" class="nette-toggle-collapsed">arguments</a>)
 					</p>
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-1">
@@ -94,9 +93,9 @@
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b></a>:%d%
-					<a href="#" rel="netteBsSrc1-2">source <abbr>&#x25ba;</abbr></a>&nbsp;
+					<a href="#netteBsSrc1-2" class="nette-toggle-collapsed">source</a>&nbsp;
 										first
-					(<a href="#" rel="netteBsArgs1-2">arguments <abbr>&#x25ba;</abbr></a>)
+					(<a href="#netteBsArgs1-2" class="nette-toggle-collapsed">arguments</a>)
 					</p>
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-2">
@@ -125,34 +124,34 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl3">Environment <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#netteBsPnl3" class="nette-toggle-collapsed">Environment</a></h2>
 
 		<div id="netteBsPnl3" class="nette-collapsed inner">
-			<h3><a href="#" rel="netteBsPnl4">$_SERVER <abbr>&#x25bc;</abbr></a></h3>
+			<h3><a href="#netteBsPnl4" class="nette-toggle">$_SERVER</a></h3>
 			<div id="netteBsPnl4" class="outer">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl5">$_SESSION <abbr>&#x25bc;</abbr></a></h3>
+			<h3><a href="#netteBsPnl5" class="nette-toggle">$_SESSION</a></h3>
 			<div id="netteBsPnl5" class="outer">%A%</div>
 
 
 
 
-						<h3><a href="#" rel="netteBsPnl6">Constants <abbr>&#x25ba;</abbr></a></h3>
+						<h3><a href="#netteBsPnl6" class="nette-toggle-collapsed">Constants</a></h3>
 			<div id="netteBsPnl6" class="outer nette-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl7">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
+			<h3><a href="#netteBsPnl7" class="nette-toggle-collapsed">Included files</a> (%d%)</h3>
 			<div id="netteBsPnl7" class="outer nette-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl8">Configuration options <abbr>&#x25ba;</abbr></a></h3>
+			<h3><a href="#netteBsPnl8" class="nette-toggle-collapsed">Configuration options</a></h3>
 			<div id="netteBsPnl8" class="outer nette-collapsed">
 			%A%</div>
 		</div></div>
@@ -160,7 +159,7 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl9">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#netteBsPnl9" class="nette-toggle-collapsed">HTTP request</a></h2>
 
 		<div id="netteBsPnl9" class="nette-collapsed inner">
 %A%
@@ -175,7 +174,7 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl10">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#netteBsPnl10" class="nette-toggle-collapsed">HTTP response</a></h2>
 
 		<div id="netteBsPnl10" class="nette-collapsed inner">
 			<h3>Headers</h3>

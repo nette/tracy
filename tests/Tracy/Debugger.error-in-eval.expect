@@ -14,9 +14,8 @@
 
 <body>
 <div id="netteBluescreen">
-	<a id="netteBluescreenIcon" href="#" rel="next"><abbr>&#x25bc;</abbr></a
-
-	><div>
+	<a id="netteBluescreenIcon" href="#" class="nette-toggle"></a>
+	<div>
 		<div id="netteBluescreenError" class="panel">
 			<h1>User Error</h1>
 
@@ -34,7 +33,7 @@
 
 
 			<div class="panel">
-			<h2><a href="#" rel="netteBsPnl1">Source file <abbr>&#x25bc;</abbr></a></h2>
+			<h2><a href="#netteBsPnl1" class="nette-toggle">Source file</a></h2>
 
 			<div id="netteBsPnl1" class="inner">
 				<p><b>File:</b> <span>%a% : eval()'d code</span> &nbsp; <b>Line:</b> 1</p>
@@ -43,7 +42,7 @@
 
 
 									<div class="panel">
-				<h2><a href="#" rel="netteBsPnl2">Call stack <abbr>&#x25bc;</abbr></a></h2>
+				<h2><a href="#netteBsPnl2" class="nette-toggle">Call stack</a></h2>
 
 				<div id="netteBsPnl2" class="inner">
 				<ol>
@@ -52,12 +51,12 @@
 											<i>inner-code</i>:%d%
 
 										trigger_error
-					(<a href="#" rel="netteBsArgs1-1">arguments <abbr>&#x25ba;</abbr></a>)
+					(<a href="#netteBsArgs1-1" class="nette-toggle-collapsed">arguments</a>)
 					</p>
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-1">
 						<table>
-						<tr><th>$message</th><td><pre class="nette-dump"><span class="nette-dump-string">"The my error"</span> (12)
+						<tr><th>$message</th><td><pre class="nette-dump"><span class="nette-dump-string">"The my error"</span> (%d%)
 </pre></td></tr>
 <tr><th>$error_type</th><td><pre class="nette-dump"><span class="nette-dump-int">256</span>
 </pre></td></tr>
@@ -70,7 +69,7 @@
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b></a>:%d%
-					<a href="#" rel="netteBsSrc1-2">source <abbr>&#x25ba;</abbr></a>&nbsp;
+					<a href="#netteBsSrc1-2" class="nette-toggle-collapsed">source</a>&nbsp;
 										eval
 					()
 					</p>
@@ -83,9 +82,9 @@
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b></a>:%d%
-					<a href="#" rel="netteBsSrc1-3">source <abbr>&#x25ba;</abbr></a>&nbsp;
+					<a href="#netteBsSrc1-3" class="nette-toggle-collapsed">source</a>&nbsp;
 										first
-					(<a href="#" rel="netteBsArgs1-3">arguments <abbr>&#x25ba;</abbr></a>)
+					(<a href="#netteBsArgs1-3" class="nette-toggle-collapsed">arguments</a>)
 					</p>
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-3">
@@ -107,9 +106,9 @@
 
 
 						<div class="panel">
-			<h2><a href="#" rel="netteBsPnl3">Variables <abbr>&#x25bc;</abbr></a></h2>
+			<h2><a href="#netteBsPnl3" class="nette-toggle-collapsed">Variables</a></h2>
 
-			<div id="netteBsPnl3" class="inner">
+			<div id="netteBsPnl3" class="nette-collapsed inner">
 			<div class="outer">
 			<table>
 			<tr><th>$user</th><td><pre class="nette-dump"><span class="nette-dump-string">"root"</span> (4)
@@ -127,34 +126,34 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl4">Environment <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#netteBsPnl4" class="nette-toggle-collapsed">Environment</a></h2>
 
 		<div id="netteBsPnl4" class="nette-collapsed inner">
-			<h3><a href="#" rel="netteBsPnl5">$_SERVER <abbr>&#x25bc;</abbr></a></h3>
+			<h3><a href="#netteBsPnl5" class="nette-toggle">$_SERVER</a></h3>
 			<div id="netteBsPnl5" class="outer">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl6">$_SESSION <abbr>&#x25bc;</abbr></a></h3>
+			<h3><a href="#netteBsPnl6" class="nette-toggle">$_SESSION</a></h3>
 			<div id="netteBsPnl6" class="outer">%A%</div>
 
 
 
 
-						<h3><a href="#" rel="netteBsPnl7">Constants <abbr>&#x25ba;</abbr></a></h3>
+						<h3><a href="#netteBsPnl7" class="nette-toggle-collapsed">Constants</a></h3>
 			<div id="netteBsPnl7" class="outer nette-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl8">Included files <abbr>&#x25ba;</abbr></a> (%d%)</h3>
+			<h3><a href="#netteBsPnl8" class="nette-toggle-collapsed">Included files</a> (%d%)</h3>
 			<div id="netteBsPnl8" class="outer nette-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#" rel="netteBsPnl9">Configuration options <abbr>&#x25ba;</abbr></a></h3>
+			<h3><a href="#netteBsPnl9" class="nette-toggle-collapsed">Configuration options</a></h3>
 			<div id="netteBsPnl9" class="outer nette-collapsed">
 			%A%</div>
 		</div></div>
@@ -162,7 +161,7 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl10">HTTP request <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#netteBsPnl10" class="nette-toggle-collapsed">HTTP request</a></h2>
 
 		<div id="netteBsPnl10" class="nette-collapsed inner">
 %A%
@@ -177,7 +176,7 @@
 
 
 		<div class="panel">
-		<h2><a href="#" rel="netteBsPnl11">HTTP response <abbr>&#x25ba;</abbr></a></h2>
+		<h2><a href="#netteBsPnl11" class="nette-toggle-collapsed">HTTP response</a></h2>
 
 		<div id="netteBsPnl11" class="nette-collapsed inner">
 			<h3>Headers</h3>
