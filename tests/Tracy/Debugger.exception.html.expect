@@ -56,7 +56,7 @@
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-0">
 						<table>
-						<tr><th>$arg1</th><td><pre class="nette-dump"><span class='nette-toggle'><span class="nette-dump-array">array</span>(3)</span><code>[
+						<tr><th>$arg1</th><td><pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-array">array</span>(3)</span> <code>[
    <span class="nette-dump-key">0</span> => <span class="nette-dump-int">1</span>
    <span class="nette-dump-key">1</span> => <span class="nette-dump-int">2</span>
    <span class="nette-dump-key">2</span> => <span class="nette-dump-int">3</span>

@@ -64,15 +64,15 @@ Assert::match( '<pre class="nette-dump"><span class="nette-dump-string">"0"</spa
 Assert::match( '<pre class="nette-dump"><span class="nette-dump-string">"\\x00"</span>
 </pre>', Debugger::dump("\x00", TRUE) );
 
-Assert::match( '<pre class="nette-dump"><span class="nette-dump-array">array</span>(5) <code>[
+Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-array">array</span>(5)</span> <code>[
    <span class="nette-dump-key">0</span> => <span class="nette-dump-int">1</span>
    <span class="nette-dump-key">1</span> => <span class="nette-dump-string">"hello"</span> (5)
    <span class="nette-dump-key">2</span> => <span class="nette-dump-array">array</span>(0)
-   <span class="nette-dump-key">3</span> => <span class="nette-dump-array">array</span>(2) <code>[
+   <span class="nette-dump-key">3</span> => <span class="nette-toggle"><span class="nette-dump-array">array</span>(2)</span> <code>[
       <span class="nette-dump-key">0</span> => <span class="nette-dump-int">1</span>
       <span class="nette-dump-key">1</span> => <span class="nette-dump-int">2</span>
    ]</code>
-   <span class="nette-dump-key">4</span> => <span class="nette-dump-array">array</span>(2) <code>{
+   <span class="nette-dump-key">4</span> => <span class="nette-toggle"><span class="nette-dump-array">array</span>(2)</span> <code>{
       <span class="nette-dump-key">1</span> => <span class="nette-dump-int">1</span>
       <span class="nette-dump-key">2</span> => <span class="nette-dump-int">2</span>
    }</code>
@@ -80,7 +80,7 @@ Assert::match( '<pre class="nette-dump"><span class="nette-dump-array">array</sp
 </pre>
 ', Debugger::dump(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2)), TRUE) );
 
-Assert::match( '<pre class="nette-dump"><span class="nette-dump-resource">stream resource</span> <code>{%A%}</code>
+Assert::match( '<pre class="nette-dump"><span class="nette-toggle-collapsed"><span class="nette-dump-resource">stream resource</span></span> <code class="nette-collapsed">{%A%}</code>
 </pre>', Debugger::dump(fopen(__FILE__, 'r'), TRUE) );
 
 Assert::match( '<pre class="nette-dump"><span class="nette-dump-object">stdClass</span>(0)

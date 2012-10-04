@@ -22,6 +22,9 @@ use Nette;
  */
 final class Helpers
 {
+	/** @var int  how big array/object collapse? */
+	public static $collapseLimit = 7;
+
 
 	/**
 	 * Returns link to editor.
@@ -63,7 +66,7 @@ final class Helpers
 	 * @param  int    current recursion level
 	 * @return string
 	 */
-	public static function htmlDump(&$var, $level = 0)
+	public static function htmlDump(&$var, $level = 0, $collapsed = FALSE)
 	{
 		static $tableUtf, $tableBin, $reBinary = '#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u';
 		if ($tableUtf === NULL) {
@@ -82,6 +85,7 @@ final class Helpers
 			$tableBin["\t"] = '\\t';
 			$tableUtf['\\x'] = $tableBin['\\x'] = '\\\\x';
 		}
+		$toggle = NULL;
 
 		if (is_bool($var)) {
 			return '<span class="nette-dump-bool">' . ($var ? 'TRUE' : 'FALSE') . "</span>\n";
@@ -125,7 +129,9 @@ final class Helpers
 				$out = " $brackets[0] *RECURSION* $brackets[1]";
 
 			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth) {
-				$out = " <code>$brackets[0]\n";
+				$collapsed |= count($var) >= self::$collapseLimit;
+			    $toggle = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">');
+		 		$out = '</span> <code' . ($collapsed ? ' class="nette-collapsed"' : '') . ">$brackets[0]\n";
 				$var[$marker] = $brackets;
 				foreach ($var as $k => &$v) {
 					if ($k === $marker) {
@@ -142,7 +148,7 @@ final class Helpers
 			} else {
 				$out = " $brackets[0] ... $brackets[1]";
 			}
-			return '<span class="nette-dump-array">array</span>(' . count($var) . ")$out\n";
+			return $toggle . '<span class="nette-dump-array">array</span>(' . count($var) . ")$out\n";
 
 		} elseif (is_object($var)) {
 			if ($var instanceof \Closure) {
@@ -165,7 +171,9 @@ final class Helpers
 				$out = " { *RECURSION* }";
 
 			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth || $var instanceof \Closure) {
-				$out = " <code>{\n";
+				$collapsed |= count($arr) >= self::$collapseLimit;
+			    $toggle = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">');
+		 		$out = '</span> <code' . ($collapsed ? ' class="nette-collapsed"' : '') . ">{\n";
 				$list[] = $var;
 				foreach ($arr as $k => &$v) {
 					$visibility = '';
@@ -184,7 +192,7 @@ final class Helpers
 			} else {
 				$out = " { ... }";
 			}
-			return '<span class="nette-dump-object">' . get_class($var) . "</span>(" . count($arr) . ")$out\n";
+			return $toggle . '<span class="nette-dump-object">' . get_class($var) . "</span>(" . count($arr) . ")$out\n";
 
 		} elseif (is_resource($var)) {
 			$type = get_resource_type($var);
@@ -192,13 +200,14 @@ final class Helpers
 			static $info = array('stream' => 'stream_get_meta_data', 'curl' => 'curl_getinfo');
 			if (isset($info[$type])) {
 				$space = str_repeat($space1 = '   ', $level);
-				$out .= " <code>{\n";
+			    $toggle = '<span class="nette-toggle-collapsed">';
+		 		$out = "</span> <code class=\"nette-collapsed\">{\n";
 				foreach (call_user_func($info[$type], $var) as $k => $v) {
 					$out .= $space . $space1 . '<span class="nette-dump-key">' . htmlSpecialChars($k) . "</span> => " . self::htmlDump($v, $level + 1);
 				}
 				$out .= "$space}</code>";
 			}
-			return '<span class="nette-dump-resource">' . htmlSpecialChars($type) . " resource</span>$out\n";
+			return $toggle . '<span class="nette-dump-resource">' . htmlSpecialChars($type) . " resource</span>$out\n";
 
 		} else {
 			return "<span>unknown type</span>\n";
@@ -214,15 +223,7 @@ final class Helpers
 	 */
 	public static function clickableDump($dump, $collapsed = FALSE)
 	{
-		return '<pre class="nette-dump">' . preg_replace_callback(
-			'#^( *)((?>[^(\r\n]{1,200}))\((\d+)\) <code>#m',
-			function($m) use ($collapsed) {
-				return ($m[1] || !$collapsed) && $m[3] < 7
-					? "$m[1]<span class='nette-toggle'>$m[2]($m[3])</span><code>"
-					: "$m[1]<span class='nette-toggle-collapsed'>$m[2]($m[3])</span><code class='nette-collapsed'>";
-			},
-			self::htmlDump($dump)
-		) . '</pre>';
+		return '<pre class="nette-dump">' . self::htmlDump($dump, 0, $collapsed) . '</pre>';
 	}
 
 
