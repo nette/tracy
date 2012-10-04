@@ -216,10 +216,9 @@ final class Helpers
 		return '<pre class="nette-dump">' . preg_replace_callback(
 			'#^( *)((?>[^(\r\n]{1,200}))\((\d+)\) <code>#m',
 			function($m) use ($collapsed) {
-				return "$m[1]<a href='#' rel='next'>$m[2]($m[3]) "
-					. (($m[1] || !$collapsed) && ($m[3] < 7)
-					? '<abbr>&#x25bc;</abbr> </a><code>'
-					: '<abbr>&#x25ba;</abbr> </a><code class="nette-collapsed">');
+				return ($m[1] || !$collapsed) && $m[3] < 7
+					? "$m[1]<span class='nette-toggle'>$m[2]($m[3])</span><code>"
+					: "$m[1]<span class='nette-toggle-collapsed'>$m[2]($m[3])</span><code class='nette-collapsed'>";
 			},
 			self::htmlDump($dump)
 		) . '</pre>';

@@ -117,6 +117,7 @@
 		doc.write('<!DOCTYPE html><meta http-equiv="Content-Type" content="text\/html; charset=utf-8"><style>' + $('#nette-debug-style').dom().innerHTML + '<\/style><script>' + $('#nette-debug-script').dom().innerHTML + '<\/script><body id="nette-debug">');
 		doc.body.innerHTML = '<div class="nette-panel nette-mode-window" id="' + this.id + '">' + this.elem.dom().innerHTML + '<\/div>';
 		var winPanel = win.Nette.DebugPanel.get(this.id.replace('nette-debug-panel-', ''));
+		win.Nette.DebugBar.initToggle();
 		winPanel.reposition();
 		doc.title = this.elem.find('h1').dom().innerHTML;
 
@@ -189,6 +190,8 @@
 		$(window).bind('resize', function() {
 			elem.position({right: elem.position().right, bottom: elem.position().bottom});
 		});
+
+		Bar.initToggle(document.body);
 
 		elem.draggable({
 			rightEdge: true,
@@ -273,6 +276,23 @@
 		if (m) {
 			$('#' + this.id).position({right: m[1], bottom: m[2]});
 		}
+	};
+
+	// enables <a class="nette-toggle" href="#"> or <span data-ref="#"> toggling
+	Bar.initToggle = function() {
+		$(document.body).bind('click', function(e) {
+			for (var link = e.target; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode);
+			if (!link) {
+				return;
+			}
+			var collapsed = $(link).hasClass('nette-toggle-collapsed'),
+				ref = link.getAttribute('data-ref') || link.getAttribute('href'),
+				dest = ref && ref !== '#' ? $(ref) : $(link).next('');
+
+			link.className = 'nette-toggle' + (collapsed ? '' : '-collapsed');
+			dest[collapsed ? 'show' : 'hide']();
+			e.preventDefault();
+		});
 	};
 
 })();

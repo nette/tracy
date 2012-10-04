@@ -110,11 +110,6 @@ use Nette;
 		text-align: right;
 	}
 
-	.nette-hidden, .nette-collapsed {
-		display: none;
-	}
-
-
 
 	/* bar */
 	#nette-debug-bar {
@@ -281,31 +276,51 @@ use Nette;
 	}
 
 
-	/* dump() */
+	/* toggle */
+	.nette-collapsed {
+		display: none;
+	}
+
+	.nette-toggle, .nette-toggle-collapsed {
+		cursor: pointer;
+	}
+
+	.nette-toggle:after {
+		content: " ▼";
+		opacity: .4;
+	}
+
+	.nette-toggle-collapsed:after {
+		content: " ►";
+		opacity: .4;
+	}
+
+
+	/* dump */
 	pre.nette-dump {
 		color: #444; background: white;
 	}
-	pre.nette-dump a,
-	#nette-debug pre.nette-dump a {
-		color: inherit;
-		background: inherit;
-	}
+
 	pre.nette-dump .nette-dump-array, pre.nette-dump .nette-dump-object,
 	#nette-debug pre.nette-dump .nette-dump-array, #nette-debug pre.nette-dump .nette-dump-object {
 		color: #C22;
 	}
+
 	pre.nette-dump .nette-dump-string,
 	#nette-debug pre.nette-dump .nette-dump-string {
 		color: #080;
 	}
+
 	pre.nette-dump .nette-dump-int, pre.nette-dump .nette-dump-float,
 	#nette-debug pre.nette-dump .nette-dump-int, #nette-debug pre.nette-dump .nette-dump-float {
 		color: #37D;
 	}
+
 	pre.nette-dump .nette-dump-null, pre.nette-dump .nette-dump-bool,
 	#nette-debug pre.nette-dump .nette-dump-null, #nette-debug pre.nette-dump .nette-dump-bool {
 		color: black;
 	}
+
 	pre.nette-dump .nette-dump-visibility,
 	#nette-debug pre.nette-dump .nette-dump-visibility {
 		font-size: 85%; color: #999;
