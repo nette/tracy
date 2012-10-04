@@ -287,11 +287,19 @@
 			}
 			var collapsed = $(link).hasClass('nette-toggle-collapsed'),
 				ref = link.getAttribute('data-ref') || link.getAttribute('href'),
-				dest = ref && ref !== '#' ? $(ref) : $(link).next('');
+				dest = ref && ref !== '#' ? $(ref) : $(link).next(''),
+				panel = $(link).closest('.nette-panel'),
+				oldPosition = panel.position();
 
 			link.className = 'nette-toggle' + (collapsed ? '' : '-collapsed');
 			dest[collapsed ? 'show' : 'hide']();
 			e.preventDefault();
+
+			var newPosition = panel.position();
+			panel.position({
+				right: newPosition.right - newPosition.width + oldPosition.width,
+				bottom: newPosition.bottom - newPosition.height + oldPosition.height,
+			});
 		});
 	};
 
