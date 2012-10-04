@@ -59,7 +59,7 @@ $counter = 0;
 		while ((method_exists($ex, 'getPrevious') && $ex = $ex->getPrevious()) || (isset($ex->previous) && $ex = $ex->previous)) echo htmlspecialchars('; caused by ' . get_class($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''));
 	?> -->
 
-	<style type="text/css" class="nette">
+	<style type="text/css" class="nette-debug">
 
 		html {
 			overflow-y: scroll;
@@ -620,7 +620,7 @@ $counter = 0;
 	};
 
 	for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {
-		if ((styles[i].owningElement || styles[i].ownerNode).className !== 'nette') {
+		if ((styles[i].owningElement || styles[i].ownerNode).className !== 'nette-debug') {
 			styles[i].oldDisabled = styles[i].disabled;
 			styles[i].disabled = true;
 
@@ -652,7 +652,7 @@ $counter = 0;
 
 		if (link.id === 'netteBluescreenIcon') {
 			for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {
-				if ((styles[i].owningElement || styles[i].ownerNode).className !== 'nette') {
+				if ((styles[i].owningElement || styles[i].ownerNode).className !== 'nette-debug') {
 					styles[i].disabled = collapsed ? true : styles[i].oldDisabled;
 				}
 			}
