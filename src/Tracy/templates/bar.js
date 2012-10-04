@@ -24,15 +24,6 @@
 		return new Panel(id);
 	};
 
-	Panel._toggle = function(link) {
-		var rel = link.rel, el = rel.charAt(0) === '#' ? $(rel) : $(link).next(rel.substring(4));
-		if (el.css('display') === 'none') {
-			el.show(); link.innerHTML = link.innerHTML.replace("\u25ba", "\u25bc");
-		} else {
-			el.hide(); link.innerHTML = link.innerHTML.replace("\u25bc", "\u25ba");
-		}
-	};
-
 	Panel.prototype.init = function() {
 		var _this = this;
 
@@ -58,8 +49,6 @@
 		}).bind('mouseleave', function(e) {
 			_this.blur();
 		});
-
-		this.initToggler();
 
 		this.elem.find('.nette-icons').find('a').bind('click', function(e) {
 			if (this.rel === 'close') {
@@ -128,7 +117,6 @@
 		doc.write('<!DOCTYPE html><meta http-equiv="Content-Type" content="text\/html; charset=utf-8"><style>' + $('#nette-debug-style').dom().innerHTML + '<\/style><script>' + $('#nette-debug-script').dom().innerHTML + '<\/script><body id="nette-debug">');
 		doc.body.innerHTML = '<div class="nette-panel nette-mode-window" id="' + this.id + '">' + this.elem.dom().innerHTML + '<\/div>';
 		var winPanel = win.Nette.DebugPanel.get(this.id.replace('nette-debug-panel-', ''));
-		winPanel.initToggler();
 		winPanel.reposition();
 		doc.title = this.elem.find('h1').dom().innerHTML;
 
@@ -170,18 +158,6 @@
 			height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 		coords.right = Math.min(Math.max(coords.right, -.2 * el.offsetWidth), width - .8 * el.offsetWidth);
 		coords.bottom = Math.min(Math.max(coords.bottom, -.2 * el.offsetHeight), height - el.offsetHeight);
-	};
-
-	Panel.prototype.initToggler = function() { // enable <a rel="..."> togglers
-		var _this = this;
-		this.elem.bind('click', function(e) {
-			var $link = $(e.target).closest('a'), link = $link.dom();
-			if (link && link.rel) {
-				Panel._toggle(link);
-				e.preventDefault();
-				_this.reposition();
-			}
-		});
 	};
 
 	Panel.prototype.restorePosition = function() {
