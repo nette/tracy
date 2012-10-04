@@ -86,9 +86,9 @@ var Nette = Nette || {};
 		return this.each(function() {
 			var elem = this, // fixes 'this' in iE
 				data = elem.nette ? elem.nette : elem.nette = {},
-			events = data.events = data.events || {}; // use own handler queue
+				events = data.events = data.events || {}; // use own handler queue
 
-		if (!events[event]) {
+			if (!events[event]) {
 				var handlers = events[event] = [],
 					generic = function(e) { // dont worry, 'e' is passed in IE
 					if (!e.target) {
@@ -102,32 +102,32 @@ var Nette = Nette || {};
 					}
 					e.stopImmediatePropagation = function() { this.stopPropagation(); i = handlers.length; };
 					for (var i = 0; i < handlers.length; i++) {
-							handlers[i].call(elem, e);
+						handlers[i].call(elem, e);
 					}
 				};
 
-			if (document.addEventListener) { // non-IE
+				if (document.addEventListener) { // non-IE
 					elem.addEventListener(event, generic, false);
-			} else if (document.attachEvent) { // IE < 9
+				} else if (document.attachEvent) { // IE < 9
 					elem.attachEvent('on' + event, generic);
+				}
 			}
-		}
 
-		events[event].push(handler);
+			events[event].push(handler);
 		});
 	};
 
 	// adds class to element
 	Query.prototype.addClass = function(className) {
 		return this.each(function() {
-		this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ') + ' ' + className;
+			this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ') + ' ' + className;
 		});
 	};
 
 	// removes class from element
 	Query.prototype.removeClass = function(className) {
 		return this.each(function() {
-		this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ');
+			this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ');
 		});
 	};
 
@@ -142,14 +142,14 @@ var Nette = Nette || {};
 			var tag = this.tagName;
 			if (!Query.displays[tag]) {
 				Query.displays[tag] = (new Query(document.body.appendChild(document.createElement(tag)))).css('display');
-		}
+			}
 			this.style.display = Query.displays[tag];
 		});
 	};
 
 	Query.prototype.hide = function() {
 		return this.each(function() {
-		this.style.display = 'none';
+			this.style.display = 'none';
 		});
 	};
 
@@ -228,13 +228,17 @@ var Nette = Nette || {};
 		if (coords) {
 			return this.each(function() {
 				var elem = this, ofs = {left: -coords.left || 0, top: -coords.top || 0};
-				while (elem = elem.offsetParent) { ofs.left += elem.offsetLeft; ofs.top += elem.offsetTop; }
+				while (elem = elem.offsetParent) {
+					ofs.left += elem.offsetLeft; ofs.top += elem.offsetTop;
+				}
 				this.style.left = -ofs.left + 'px';
 				this.style.top = -ofs.top + 'px';
 			});
 		} else if (this[0]) {
 			var elem = this[0], res = {left: elem.offsetLeft, top: elem.offsetTop};
-			while (elem = elem.offsetParent) { res.left += elem.offsetLeft; res.top += elem.offsetTop; }
+			while (elem = elem.offsetParent) {
+				res.left += elem.offsetLeft; res.top += elem.offsetTop;
+			}
 			return res;
 		}
 	};
@@ -243,12 +247,12 @@ var Nette = Nette || {};
 	Query.prototype.position = function(coords) {
 		if (coords) {
 			return this.each(function() {
-			if (this.nette && this.nette.onmove) {
-				this.nette.onmove.call(this, coords);
-			}
-			for (var item in coords) {
-				this.style[item] = coords[item] + 'px';
-			}
+				if (this.nette && this.nette.onmove) {
+					this.nette.onmove.call(this, coords);
+				}
+				for (var item in coords) {
+					this.style[item] = coords[item] + 'px';
+				}
 			});
 		} else if (this[0]) {
 			return {
