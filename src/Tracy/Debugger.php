@@ -88,7 +88,7 @@ final class Debugger
 	/** @var string name of the directory where errors should be logged; FALSE means that logging is disabled */
 	public static $logDirectory;
 
-	/** @var string email to sent error notifications */
+	/** @var string|array email(s) to which send error notifications */
 	public static $email;
 
 	/** @deprecated */
@@ -217,7 +217,7 @@ final class Debugger
 		}
 
 		if ($email) {
-			if (!is_string($email)) {
+			if (!is_string($email) && !is_array($email)) {
 				echo __METHOD__ . "() error: Email address must be a string.\n";
 				exit(254);
 			}
