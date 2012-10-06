@@ -58,7 +58,7 @@
 						<table>
 						<tr><th>$message</th><td><pre class="nette-dump"><span class="nette-dump-string">"The my error"</span> (%d%)
 </pre></td></tr>
-<tr><th>$error_type</th><td><pre class="nette-dump"><span class="nette-dump-int">256</span>
+<tr><th>$error_type</th><td><pre class="nette-dump"><span class="nette-dump-number">256</span>
 </pre></td></tr>
 						</table>
 						</div>

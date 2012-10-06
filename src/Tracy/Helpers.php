@@ -94,14 +94,14 @@ final class Helpers
 			return "<span class=\"nette-dump-null\">NULL</span>\n";
 
 		} elseif (is_int($var)) {
-			return "<span class=\"nette-dump-int\">$var</span>\n";
+			return "<span class=\"nette-dump-number\">$var</span>\n";
 
 		} elseif (is_float($var)) {
 			$var = var_export($var, TRUE);
 			if (strpos($var, '.') === FALSE) {
 				$var .= '.0';
 			}
-			return "<span class=\"nette-dump-float\">$var</span>\n";
+			return "<span class=\"nette-dump-number\">$var</span>\n";
 
 		} elseif (is_string($var)) {
 			if (Debugger::$maxLen && strlen($var) > Debugger::$maxLen) {

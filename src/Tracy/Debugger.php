@@ -62,9 +62,8 @@ final class Debugger
 	public static $consoleColors = array(
 		'bool' => '1;33',
 		'null' => '1;33',
-		'int' => '1;36',
-		'float' => '1;36',
-		'string' => '1;32',
+		'number' => '1;32',
+		'string' => '1;36',
 		'array' => '1;31',
 		'key' => '1;37',
 		'object' => '1;31',

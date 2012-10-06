@@ -185,16 +185,20 @@ $counter = 0;
 			border: none;
 		}
 
-		#netteBluescreen pre .nette-dump-array, #netteBluescreen pre .nette-dump-object {
+		#netteBluescreen pre.nette-dump .nette-dump-array, #netteBluescreen pre.nette-dump .nette-dump-object {
 			color: #C22;
 		}
 
-		#netteBluescreen pre .nette-dump-string {
-			color: #080;
+		#netteBluescreen pre.nette-dump .nette-dump-string {
+			color: #35D;
 		}
 
-		#netteBluescreen pre .nette-dump-int, #netteBluescreen pre .nette-dump-float, #netteBluescreen pre .nette-dump-null, #netteBluescreen pre .nette-dump-bool {
-			color: #328ADC;
+		#netteBluescreen pre.nette-dump .nette-dump-number {
+			color: #090;
+		}
+
+		#netteBluescreen pre.nette-dump .nette-dump-null, #netteBluescreen pre.nette-dump .nette-dump-bool {
+			color: #850;
 		}
 
 		#netteBluescreen pre .nette-dump-visibility {
