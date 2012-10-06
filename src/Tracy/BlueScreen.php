@@ -129,7 +129,7 @@ class BlueScreen extends Nette\Object
 
 		$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function($m) use ($vars) {
 			return isset($vars[$m[1]])
-				? '" title="' . str_replace('"', '&quot;', strip_tags(Helpers::htmlDump($vars[$m[1]]))) . $m[0]
+				? '" title="' . str_replace('"', '&quot;', strip_tags(Dump::toHtml($vars[$m[1]]))) . $m[0]
 				: $m[0];
 		}, $out);
 

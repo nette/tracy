@@ -65,17 +65,20 @@ final class Helpers
 	/** @deprecated */
 	public static function htmlDump($var)
 	{
+		trigger_error(__METHOD__ . '() is deprecated; use Nette\Diagnostics\Dump::toHtml() instead.', E_USER_DEPRECATED);
 		return Dump::toHtml($var);
 	}
 
 	public static function clickableDump($var)
 	{
+		trigger_error(__METHOD__ . '() is deprecated; use Nette\Diagnostics\Dump::toHtml() instead.', E_USER_DEPRECATED);
 		return Dump::toHtml($var);
 	}
 
 	/** @deprecated */
 	public static function textDump($var)
 	{
+		trigger_error(__METHOD__ . '() is deprecated; use Nette\Diagnostics\Dump::toText() instead.', E_USER_DEPRECATED);
 		return Dump::toText($var);
 	}
 
