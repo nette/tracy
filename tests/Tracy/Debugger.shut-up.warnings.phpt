@@ -15,7 +15,6 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debugger::$consoleMode = TRUE;
 Debugger::$productionMode = FALSE;
 
 Debugger::enable();

@@ -18,7 +18,6 @@ require __DIR__ . '/../bootstrap.php';
 // Setup environment
 $_SERVER['HTTP_X_FIRELOGGER'] = TRUE;
 
-Debugger::$consoleMode = FALSE;
 Debugger::$productionMode = FALSE;
 
 

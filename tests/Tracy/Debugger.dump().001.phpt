@@ -31,8 +31,8 @@ class Test
 
 
 // HTML mode
+header('Content-Type: text/html');
 
-Debugger::$consoleMode = FALSE;
 
 Assert::match( '<pre class="nette-dump"><span class="nette-dump-null">NULL</span>
 </pre>', Debugger::dump(NULL, TRUE) );
@@ -87,12 +87,14 @@ Assert::match( '<pre class="nette-dump"><span class="nette-dump-object">stdClass
 </pre>', Debugger::dump((object) NULL, TRUE) );
 
 $obj = new Test;
+ob_start();
 Assert::same(Debugger::dump($obj), $obj);
+ob_end_clean();
 
 
 // Text mode
+header('Content-Type: text/plain');
 
-Debugger::$consoleMode = TRUE;
 
 Assert::match( 'NULL', Debugger::dump(NULL, TRUE) );
 

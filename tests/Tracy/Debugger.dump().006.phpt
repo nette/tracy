@@ -16,8 +16,8 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Debugger::$consoleColors = NULL;
-Debugger::$consoleMode = TRUE;
 Debugger::$productionMode = FALSE;
+header('Content-Type: text/plain');
 
 
 

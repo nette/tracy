@@ -29,14 +29,11 @@ final class Debugger
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode;
 
-	/** @var bool in console mode is omitted HTML output */
+	/** @deprecated */
 	public static $consoleMode;
 
 	/** @var int timestamp with microseconds of the start of the request */
 	public static $time;
-
-	/** @var bool is AJAX request detected? */
-	private static $ajaxDetected;
 
 	/** @var string  requested URI or command line */
 	public static $source;
@@ -155,17 +152,13 @@ final class Debugger
 	public static function _init()
 	{
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
-		self::$consoleMode = PHP_SAPI === 'cli';
 		self::$productionMode = self::DETECT;
-		if (self::$consoleMode) {
-			self::$source = empty($_SERVER['argv']) ? 'cli' : 'cli: ' . implode(' ', $_SERVER['argv']);
+		if (isset($_SERVER['REQUEST_URI'])) {
+			self::$source = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
+				. (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : ''))
+				. $_SERVER['REQUEST_URI'];
 		} else {
-			self::$ajaxDetected = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
-			if (isset($_SERVER['REQUEST_URI'])) {
-				self::$source = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
-					. (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : ''))
-					. $_SERVER['REQUEST_URI'];
-			}
+			self::$source = empty($_SERVER['argv']) ? 'CLI' : 'CLI: ' . implode(' ', $_SERVER['argv']);
 		}
 
 		self::$logger = new Logger;
@@ -402,33 +395,28 @@ final class Debugger
 					echo 'FATAL ERROR: unable to log error';
 				}
 
-				if (self::$consoleMode) {
-					echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
-
-				} elseif (self::isHtmlMode()) {
+				if (self::isHtmlMode()) {
 					require __DIR__ . '/templates/error.phtml';
+
+				} else {
+					echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
 				}
 
 			} else {
-				if (self::$consoleMode) { // dump to console
-					echo "$exception\n";
-					if ($file = self::log($exception)) {
-						echo "(stored in $file)\n";
-						if (self::$browser) {
-							exec(self::$browser . ' ' . escapeshellarg($file));
-						}
-					}
-
-				} elseif (!connection_aborted() && self::isHtmlMode()) { // dump to browser
+				if (!connection_aborted() && self::isHtmlMode()) {
 					self::$blueScreen->render($exception);
 					if (self::$bar) {
 						self::$bar->render();
 					}
 
-				} elseif (!self::fireLog($exception, self::ERROR)) { // AJAX or non-HTML mode
+				} elseif (connection_aborted() || !self::fireLog($exception, self::ERROR)) {
 					$file = self::log($exception);
 					if (!headers_sent()) {
 						header("X-Nette-Error-Log: $file");
+					}
+					echo "$exception\n(stored in $file)\n";
+					if (self::$browser) {
+						exec(self::$browser . ' ' . escapeshellarg($file));
 					}
 				}
 			}
@@ -599,7 +587,7 @@ final class Debugger
 			}
 		}
 
-		if (self::$consoleMode) {
+		if (!self::isHtmlMode()) {
 			if (self::$consoleColors && substr(getenv('TERM'), 0, 5) === 'xterm') {
 				$output = preg_replace_callback('#<span class="nette-(\w+)">|</span>#', function($m) {
 					return "\033[" . (isset($m[1], Debugger::$consoleColors[$m[1]]) ? Debugger::$consoleColors[$m[1]] : '0') . "m";
@@ -671,8 +659,7 @@ final class Debugger
 
 	private static function isHtmlMode()
 	{
-		return !self::$ajaxDetected && !self::$consoleMode
-			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
+		return preg_match('#^Content-Type: text/html#im', implode("\n", headers_list()));
 	}
 
 

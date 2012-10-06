@@ -21,7 +21,6 @@ $_SERVER['HTTP_HOST'] = 'nette.org';
 Debugger::$logDirectory = TEMP_DIR . '/log';
 TestHelpers::purge(Debugger::$logDirectory);
 
-Debugger::$consoleMode = FALSE;
 Debugger::$mailer = 'testMailer';
 
 Debugger::enable(Debugger::PRODUCTION, NULL, 'admin@example.com');

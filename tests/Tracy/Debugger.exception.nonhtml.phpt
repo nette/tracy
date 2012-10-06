@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger exception in non-HTML mode.
+ * Test: Nette\Diagnostics\Debugger exception in non-HTML.
  *
  * @author     David Grudl
  * @package    Nette\Diagnostics
@@ -15,18 +15,43 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debugger::$consoleMode = FALSE;
 Debugger::$productionMode = FALSE;
 header('Content-Type: text/plain');
 
 Debugger::enable();
 
 function shutdown() {
-	Assert::same('', ob_get_clean());
+	Assert::match("exception 'Exception' with message 'The my exception' in %a%
+Stack trace:
+#0 %a%: third(Array)
+#1 %a%: second(true, false)
+#2 %a%: first(10, 'any string')
+#3 {main}
+(stored in %a%)
+", ob_get_clean());
 	die(0);
 }
 ob_start();
 Debugger::$onFatalError[] = 'shutdown';
 
 
-throw new Exception('The my exception', 123);
+function first($arg1, $arg2)
+{
+	second(TRUE, FALSE);
+}
+
+
+
+function second($arg1, $arg2)
+{
+	third(array(1, 2, 3));
+}
+
+
+function third($arg1)
+{
+	throw new Exception('The my exception', 123);
+}
+
+
+first(10, 'any string');

@@ -15,8 +15,8 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debugger::$consoleMode = FALSE;
 Debugger::$productionMode = TRUE;
+header('Content-Type: text/html');
 
 
 ob_start();
