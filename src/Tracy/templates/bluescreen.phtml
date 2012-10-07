@@ -362,7 +362,7 @@ $counter = 0;
 			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle<?php echo ($collapsed = $expanded !== NULL) ? '-collapsed' : '' ?>">Source file</a></h2>
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
-				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?> &nbsp; <b>Line:</b> <?php echo $ex->getLine() ?></p>
+				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
 				<?php if (is_file($ex->getFile())): ?><?php echo self::highlightFile($ex->getFile(), $ex->getLine(), 15, isset($ex->context) ? $ex->context : NULL) ?><?php endif ?>
 			</div></div>
 
@@ -379,7 +379,7 @@ $counter = 0;
 					<li><p>
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?>
-						<?php echo Helpers::editorLink($row['file'], $row['line']), ':', $row['line'] ?>
+						<?php echo Helpers::editorLink($row['file'], $row['line']) ?>
 					<?php else: ?>
 						<i>inner-code</i><?php if (isset($row['line'])) echo ':', $row['line'] ?>
 					<?php endif ?>

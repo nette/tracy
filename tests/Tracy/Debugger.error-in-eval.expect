@@ -36,7 +36,7 @@
 			<h2><a href="#netteBsPnl1" class="nette-toggle">Source file</a></h2>
 
 			<div id="netteBsPnl1" class="inner">
-				<p><b>File:</b> <span>%a% : eval()'d code</span> &nbsp; <b>Line:</b> 1</p>
+				<p><b>File:</b> <span>%a% : eval()'d code:1</span></p>
 							</div></div>
 
 
@@ -68,7 +68,7 @@
 					</li>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b></a>:%d%
+											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-2" class="nette-toggle-collapsed">source</a>&nbsp;
 										eval
 					()
@@ -81,7 +81,7 @@
 					</li>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b></a>:%d%
+											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-3" class="nette-toggle-collapsed">source</a>&nbsp;
 										first
 					(<a href="#netteBsArgs1-3" class="nette-toggle-collapsed">arguments</a>)

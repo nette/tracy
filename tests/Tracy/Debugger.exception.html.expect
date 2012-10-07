@@ -36,7 +36,7 @@
 			<h2><a href="#netteBsPnl1" class="nette-toggle">Source file</a></h2>
 
 			<div id="netteBsPnl1" class="inner">
-				<p><b>File:</b> %a% &nbsp; <b>Line:</b> %d%</p>
+				<p><b>File:</b> %a%</p>
 				<pre>%A%</pre>			</div></div>
 
 
@@ -48,7 +48,7 @@
 				<ol>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b></a>:%d%
+											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-0" class="nette-toggle-collapsed">source</a>&nbsp;
 										third
 					(<a href="#netteBsArgs1-0" class="nette-toggle-collapsed">arguments</a>)
@@ -71,7 +71,7 @@
 					</li>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b></a>:%d%
+											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-1" class="nette-toggle-collapsed">source</a>&nbsp;
 										second
 					(<a href="#netteBsArgs1-1" class="nette-toggle-collapsed">arguments</a>)
@@ -92,7 +92,7 @@
 					</li>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b></a>:%d%
+											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-2" class="nette-toggle-collapsed">source</a>&nbsp;
 										first
 					(<a href="#netteBsArgs1-2" class="nette-toggle-collapsed">arguments</a>)

@@ -174,15 +174,14 @@ final class Debugger
 			if ($e instanceof Nette\Templating\FilterException) {
 				return array(
 					'tab' => 'Template',
-					'panel' => '<p><b>File:</b> ' . Helpers::editorLink($e->sourceFile, $e->sourceLine)
-					. '&nbsp; <b>Line:</b> ' . ($e->sourceLine ? $e->sourceLine : 'n/a') . '</p>'
+					'panel' => '<p><b>File:</b> ' . Helpers::editorLink($e->sourceFile, $e->sourceLine) . '</p>'
 					. ($e->sourceLine ? BlueScreen::highlightFile($e->sourceFile, $e->sourceLine) : '')
 				);
 			} elseif ($e instanceof Nette\Utils\NeonException && preg_match('#line (\d+)#', $e->getMessage(), $m)) {
 				if ($item = Helpers::findTrace($e->getTrace(), 'Nette\Config\Adapters\NeonAdapter::load')) {
 					return array(
 						'tab' => 'NEON',
-						'panel' => '<p><b>File:</b> ' . Helpers::editorLink($item['args'][0], $m[1]) . '&nbsp; <b>Line:</b> ' . $m[1] . '</p>'
+						'panel' => '<p><b>File:</b> ' . Helpers::editorLink($item['args'][0], $m[1]) . '</p>'
 							. BlueScreen::highlightFile($item['args'][0], $m[1])
 					);
 				} elseif ($item = Helpers::findTrace($e->getTrace(), 'Nette\Utils\Neon::decode')) {
@@ -581,7 +580,7 @@ final class Debugger
 				if (self::$showLocation) {
 					$output = substr_replace(
 						$output,
-						' <small>in ' . Helpers::editorLink($item['file'], $item['line']) . ":{$item['line']}</small>",
+						' <small>in ' . Helpers::editorLink($item['file'], $item['line']) . '</small>',
 						-8, 0);
 				}
 			}
