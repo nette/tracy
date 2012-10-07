@@ -172,63 +172,15 @@ $counter = 0;
 			overflow: auto;
 		}
 
-		#netteBluescreen pre div {
-			min-width: 100%;
-			float: left;
-			_float: none;
-			white-space: pre;
-		}
-
 		#netteBluescreen table pre {
 			padding: 0;
 			margin: 0;
 			border: none;
 		}
 
-		#netteBluescreen pre.nette-dump .nette-dump-array, #netteBluescreen pre.nette-dump .nette-dump-object {
-			color: #C22;
-		}
-
-		#netteBluescreen pre.nette-dump .nette-dump-string {
-			color: #35D;
-		}
-
-		#netteBluescreen pre.nette-dump .nette-dump-number {
-			color: #090;
-		}
-
-		#netteBluescreen pre.nette-dump .nette-dump-null, #netteBluescreen pre.nette-dump .nette-dump-bool {
-			color: #850;
-		}
-
-		#netteBluescreen pre .nette-dump-visibility {
-			font-size: 85%;
-			color: #998;
-		}
-
-		#netteBluescreen pre.nette-dump a {
-			color: #333;
-		}
-
-		#netteBluescreen div.panel {
-			padding: 1px 25px;
-		}
-
-		#netteBluescreen div.inner {
-			background: #F4F3F1;
-			padding: .1em 1em 1em;
-			border-radius: 8px;
-			-moz-border-radius: 8px;
-			-webkit-border-radius: 8px;
-		}
-
 		#netteBluescreen table {
 			border-collapse: collapse;
 			width: 100%;
-		}
-
-		#netteBluescreen .outer {
-			overflow: auto;
 		}
 
 		#netteBluescreen td, #netteBluescreen th {
@@ -264,6 +216,31 @@ $counter = 0;
 			border-top: 1px solid #DDD;
 		}
 
+		#netteBluescreen div.panel {
+			padding: 1px 25px;
+		}
+
+		#netteBluescreen div.inner {
+			background: #F4F3F1;
+			padding: .1em 1em 1em;
+			border-radius: 8px;
+			-moz-border-radius: 8px;
+			-webkit-border-radius: 8px;
+		}
+
+		#netteBluescreen .outer {
+			overflow: auto;
+		}
+
+
+		/* source code */
+		#netteBluescreen pre.php div {
+			min-width: 100%;
+			float: left;
+			_float: none;
+			white-space: pre;
+		}
+
 		#netteBluescreen .highlight {
 			background: #CD1818;
 			color: white;
@@ -285,6 +262,8 @@ $counter = 0;
 			border-bottom: 1px dotted #C1D2E1;
 		}
 
+
+		/* toggle */
 		html.js #netteBluescreen .nette-collapsed {
 			display: none;
 		}
@@ -301,6 +280,29 @@ $counter = 0;
 		#netteBluescreen .nette-toggle-collapsed:after {
 			content: " ►";
 			opacity: .4;
+		}
+
+
+		/* dump */
+		#netteBluescreen .nette-dump-array, #netteBluescreen .nette-dump-object {
+			color: #C22;
+		}
+
+		#netteBluescreen .nette-dump-string {
+			color: #35D;
+		}
+
+		#netteBluescreen .nette-dump-number {
+			color: #090;
+		}
+
+		#netteBluescreen .nette-dump-null, #netteBluescreen .nette-dump-bool {
+			color: #850;
+		}
+
+		#netteBluescreen .nette-dump-visibility {
+			font-size: 85%;
+			color: #998;
 		}
 
 	</style>

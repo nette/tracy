@@ -37,7 +37,7 @@
 
 			<div id="netteBsPnl1" class="inner">
 				<p><b>File:</b> %a%</p>
-				<pre>%A%</pre>			</div></div>
+				<pre class='php'>%A%</pre>			</div></div>
 
 
 
