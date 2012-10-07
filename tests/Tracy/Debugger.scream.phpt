@@ -17,10 +17,11 @@ require __DIR__ . '/../bootstrap.php';
 
 Debugger::$productionMode = FALSE;
 Debugger::$scream = TRUE;
+header('Content-Type: text/plain; charset=utf-8');
 
 Debugger::enable();
 
-function shutdown() {
+register_shutdown_function(function(){
 	Assert::match('
 Strict Standards: mktime(): You should be using the time() function instead in %a% on line %d%
 
@@ -30,9 +31,8 @@ Notice: Undefined variable: x in %a% on line %d%
 
 Warning: rename(..,..): %A% in %a% on line %d%
 ', ob_get_clean());
-}
+});
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 @mktime(); // E_STRICT

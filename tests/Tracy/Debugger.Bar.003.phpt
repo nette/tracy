@@ -20,8 +20,7 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-function shutdown() {
+register_shutdown_function(function(){
 	Assert::same('', ob_get_clean());
-}
+});
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';

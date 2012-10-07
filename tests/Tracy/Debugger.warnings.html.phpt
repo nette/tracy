@@ -7,8 +7,7 @@
  * @package    Nette\Diagnostics
  */
 
-use Nette\Diagnostics\Debugger,
-	Nette\StringUtils;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -21,8 +20,8 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-function shutdown() {
-	$m = StringUtils::match($output = ob_get_clean(), '#debug.innerHTML = (".*");#');
+register_shutdown_function(function(){
+	preg_match('#debug.innerHTML = (".*");#', $output = ob_get_clean(), $m);
 	Assert::match('
 Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 
@@ -45,9 +44,8 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 </tr>
 </table>
 </div>%A%', json_decode($m[1]));
-}
+});
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 function first($arg1, $arg2)

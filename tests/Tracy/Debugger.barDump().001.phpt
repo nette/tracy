@@ -7,8 +7,7 @@
  * @package    Nette\Diagnostics
  */
 
-use Nette\Diagnostics\Debugger,
-	Nette\StringUtils;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -21,12 +20,11 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-function shutdown() {
-	$m = StringUtils::match(ob_get_clean(), '#debug.innerHTML = (".*");#');
+register_shutdown_function(function(){
+	preg_match('#debug.innerHTML = (".*");#', ob_get_clean(), $m);
 	Assert::match(file_get_contents(__DIR__ . '/Debugger.barDump().001.expect'), json_decode($m[1]));
-}
+});
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 $arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2' => TRUE), (object) array('key1' => 'val1', 'key2' => TRUE));

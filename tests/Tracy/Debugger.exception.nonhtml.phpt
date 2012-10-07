@@ -20,7 +20,7 @@ header('Content-Type: text/plain');
 
 Debugger::enable();
 
-function shutdown() {
+register_shutdown_function(function(){
 	Assert::match("exception 'Exception' with message 'The my exception' in %a%
 Stack trace:
 #0 %a%: third(Array)
@@ -30,9 +30,8 @@ Stack trace:
 (stored in %a%)
 ", ob_get_clean());
 	die(0);
-}
+});
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 function first($arg1, $arg2)

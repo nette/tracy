@@ -7,8 +7,7 @@
  * @package    Nette\Diagnostics
  */
 
-use Nette\Diagnostics\Debugger,
-	Nette\StringUtils;
+use Nette\Diagnostics\Debugger;
 
 
 
@@ -22,17 +21,17 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-function shutdown() {
-	$m = StringUtils::match(ob_get_clean(), '#debug.innerHTML = (".*");#');
+register_shutdown_function(function(){
+	preg_match('#debug.innerHTML = (".*");#', ob_get_clean(), $m);
 	Assert::match(<<<EOD
 %A%<h1>Dumped variables</h1>
 
-<div class="nette-inner">
+<div class="nette-inner nette-DumpPanel">
 
 	<table>
 			<tr class="">
 		<th></th>
-		<td><pre class="nette-dump">"value" (5)
+		<td><pre class="nette-dump"><span class="nette-dump-string">"value"</span> (5)
 </pre></td>
 	</tr>
 		</table>
@@ -40,9 +39,8 @@ function shutdown() {
 %A%
 EOD
 , json_decode($m[1]));
-}
+});
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 Debugger::barDump('value');
