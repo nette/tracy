@@ -302,6 +302,17 @@ use Nette;
 		background: white;
 	}
 
+	pre.nette-dump div,
+	#nette-debug pre.nette-dump div {
+		padding-left: 3ex;
+	}
+
+	pre.nette-dump div div,
+	#nette-debug pre.nette-dump div div {
+		border-left: 1px solid rgba(0, 0, 0, .1);
+		margin-left: .5ex;
+	}
+
 	#nette-debug pre.nette-dump {
 		background: #FDF5CE;
 		padding: .4em .7em;
@@ -338,6 +349,11 @@ use Nette;
 	.nette-dump-visibility,
 	#nette-debug .nette-dump-visibility {
 		font-size: 85%; color: #999;
+	}
+
+	.nette-dump-indent,
+	#nette-debug .nette-dump-indent {
+		display: none;
 	}
 
 	@media print {

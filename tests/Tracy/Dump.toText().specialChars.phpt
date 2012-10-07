@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Assert::match( 'array (8) [
+Assert::match( 'array (8)
    0 => ""
    1 => " "
    2 => "	"
@@ -25,8 +25,6 @@ line" (10)
    5 => "Iñtërnâtiônàlizætiøn" (27)
    6 => "\x00"
    7 => "\xff"
-]
-
 ', Dump::toText(array(
 	'',
 	' ',

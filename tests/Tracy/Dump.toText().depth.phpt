@@ -35,58 +35,42 @@ $arr = array(
 $arr[] = &$arr;
 
 
-Assert::match( 'array (5) {
+Assert::match( 'array (5)
    long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-   0 => array (1) [
-      0 => array (1) [
-         0 => array (1) {
-            hello => "world" (5)
-         }
-      ]
-   ]
+   0 => array (1)
+   |  0 => array (1)
+   |  |  0 => array (1)
+   |  |  |  hello => "world" (5)
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-   1 => stdClass (1) {
-      0 => stdClass (1) {
-         0 => stdClass (1) {
-            hello => "world" (5)
-         }
-      }
-   }
-   2 => array (5) {
-      long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-      0 => array (1) [
-         0 => array (1) [
-            0 => array (1) { ... }
-         ]
-      ]
-      long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-      1 => stdClass (1) {
-         0 => stdClass (1) {
-            0 => stdClass (1) { ... }
-         }
-      }
-      2 => array (5) { RECURSION }
-   }
-}', Dump::toText($arr) );
+   1 => stdClass (1)
+   |  0 => stdClass (1)
+   |  |  0 => stdClass (1)
+   |  |  |  hello => "world" (5)
+   2 => array (5)
+   |  long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
+   |  0 => array (1)
+   |  |  0 => array (1)
+   |  |  |  0 => array (1) [ ... ]
+   |  long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
+   |  1 => stdClass (1)
+   |  |  0 => stdClass (1)
+   |  |  |  0 => stdClass (1) { ... }
+   |  2 => array (5) [ RECURSION ]
+', Dump::toText($arr) );
 
 
 
-Assert::match( 'array (5) {
+Assert::match( 'array (5)
    long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-   0 => array (1) [
-      0 => array (1) [ ... ]
-   ]
+   0 => array (1)
+   |  0 => array (1) [ ... ]
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-   1 => stdClass (1) {
-      0 => stdClass (1) { ... }
-   }
-   2 => array (5) {
-      long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-      0 => array (1) [ ... ]
-      long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-      1 => stdClass (1) { ... }
-      2 => array (5) { RECURSION }
-   }
-}
-
+   1 => stdClass (1)
+   |  0 => stdClass (1) { ... }
+   2 => array (5)
+   |  long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
+   |  0 => array (1) [ ... ]
+   |  long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
+   |  1 => stdClass (1) { ... }
+   |  2 => array (5) [ RECURSION ]
 ', Dump::toText($arr, array(Dump::DEPTH => 2, Dump::TRUNCATE => 50)) );

@@ -38,6 +38,7 @@ class Dump
 		'object' => '1;31',
 		'visibility' => '1;30',
 		'resource' => '1;37',
+		'indent' => '1;30',
 	);
 
 	/** @var array */
@@ -170,32 +171,30 @@ class Dump
 			$marker = uniqid("\x00", TRUE);
 		}
 
-		$brackets = range(0, count($var) - 1) === array_keys($var) ? "[]" : "{}";
 		$out = '<span class="nette-dump-array">array</span> (';
 
 		if (empty($var)) {
 			return $out . "0)\n";
 
 		} elseif (isset($var[$marker])) {
-			$brackets = $var[$marker];
-			return $out . (count($var) - 1) . ") $brackets[0] <i>RECURSION</i> $brackets[1]\n";
+			return $out . (count($var) - 1) . ") [ <i>RECURSION</i> ]\n";
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH]) {
 			$collapsed = count($var) >= $options[self::COLLAPSE];
-	 		$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . count($var) . ')</span> <code' . ($collapsed ? ' class="nette-collapsed"' : '') . ">$brackets[0]\n";
-			$var[$marker] = $brackets;
+	 		$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . ">";
+			$var[$marker] = TRUE;
 			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
-					$out .= str_repeat('   ', $level + 1)
+					$out .= '<span class="nette-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="nette-dump-key">' . (preg_match('#^\w+$#D', $k) ? $k : self::encodeString($k)) . '</span> => '
 						. self::dumpVar($v, $options, $level + 1);
 				}
 			}
 			unset($var[$marker]);
-			return $out . str_repeat('   ', $level) . "$brackets[1]</code>\n";
+			return $out . '</div>';
 
 		} else {
-			return $out . count($var) . ") $brackets[0] ... $brackets[1]\n";
+			return $out . count($var) . ") [ ... ]\n";
 		}
 	}
 
@@ -225,7 +224,7 @@ class Dump
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH] || $var instanceof \Closure) {
 			$collapsed = count($fields) >= $options[self::COLLAPSE];
-	 		$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . '</span> <code' . ($collapsed ? ' class="nette-collapsed"' : '') . ">{\n";
+	 		$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . "</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . ">";
 			$list[] = $var;
 			foreach ($fields as $k => &$v) {
 				$vis = '';
@@ -233,12 +232,12 @@ class Dump
 					$vis = ' <span class="nette-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 					$k = substr($k, strrpos($k, "\x00") + 1);
 				}
-				$out .= str_repeat('   ', $level + 1)
+				$out .= '<span class="nette-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 					. '<span class="nette-dump-key">' . (preg_match('#^\w+$#D', $k) ? $k : self::encodeString($k)) . "</span>$vis => "
 					. self::dumpVar($v, $options, $level + 1);
 			}
 			array_pop($list);
-			return $out . str_repeat('   ', $level) . "}</code>\n";
+			return $out . '</div>';
 
 		} else {
 			return $out . " { ... }\n";
@@ -252,12 +251,12 @@ class Dump
 		$type = get_resource_type($var);
 		$out = '<span class="nette-dump-resource">' . htmlSpecialChars($type) . ' resource</span>';
 		if (isset(self::$resources[$type])) {
-		    $out = "<span class=\"nette-toggle-collapsed\">$out</span> <code class=\"nette-collapsed\">{\n";
+		    $out = "<span class=\"nette-toggle-collapsed\">$out</span>\n<div class=\"nette-collapsed\">";
 			foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
-				$out .= str_repeat('   ', $level + 1)
+				$out .= '<span class="nette-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 					. '<span class="nette-dump-key">' . htmlSpecialChars($k) . "</span> => " . self::dumpVar($v, $options, $level + 1);
 			}
-			$out .= str_repeat('   ', $level) . "}</code>";
+			return $out . '</div>';
 		}
 		return "$out\n";
 	}
