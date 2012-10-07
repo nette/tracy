@@ -20,12 +20,11 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-function shutdown() {
+Debugger::$onFatalError[] = function() {
 	Assert::match(file_get_contents(__DIR__ . '/Debugger.E_ERROR.html.expect'), ob_get_clean());
 	die(0);
-}
+};
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 function first($arg1, $arg2)

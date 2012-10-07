@@ -21,12 +21,11 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-function shutdown() {
+Debugger::$onFatalError[] = function() {
 	Assert::match('%A%<h1>Server Error</h1>%A%', ob_get_clean());
 	die(0);
-}
+};
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 missing_funcion();

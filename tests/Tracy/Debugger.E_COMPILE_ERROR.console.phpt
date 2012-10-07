@@ -20,7 +20,7 @@ header('Content-Type: text/plain');
 
 Debugger::enable();
 
-function shutdown() {
+Debugger::$onFatalError[] = function() {
 	Assert::match("
 Fatal error: Cannot re-assign \$this in %a%
 exception 'Nette\FatalErrorException' with message 'Cannot re-assign \$this' in %a%
@@ -30,9 +30,8 @@ Stack trace:
 (stored in %a%)
 ", ob_get_clean());
 	die(0);
-}
+};
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 function first($arg1, $arg2)

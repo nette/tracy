@@ -21,7 +21,7 @@ header('Content-Type: text/plain');
 Debugger::$strictMode = TRUE;
 Debugger::enable();
 
-function shutdown() {
+Debugger::$onFatalError[] = function() {
 	Assert::match("exception 'Nette\FatalErrorException' with message 'Undefined variable: x' in %a%
 Stack trace:
 #0 %a%: %ns%Debugger::_errorHandler(8, '%a%', '%a%', %a%, Array)
@@ -32,9 +32,8 @@ Stack trace:
 (stored in %a%)
 ", ob_get_clean());
 	die(0);
-}
+};
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 function first($arg1, $arg2)

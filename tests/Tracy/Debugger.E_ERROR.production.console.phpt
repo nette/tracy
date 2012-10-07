@@ -20,12 +20,11 @@ header('Content-Type: text/plain');
 
 Debugger::enable();
 
-function shutdown() {
+Debugger::$onFatalError[] = function() {
 	Assert::match('ERROR:%A%', ob_get_clean());
 	die(0);
-}
+};
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 missing_funcion();

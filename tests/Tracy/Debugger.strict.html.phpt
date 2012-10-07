@@ -22,11 +22,11 @@ header('Content-Type: text/html');
 Debugger::$strictMode = TRUE;
 Debugger::enable();
 
-function shutdown() {
+register_shutdown_function(function(){
 	Assert::match(file_get_contents(__DIR__ . '/Debugger.strict.html.expect'), ob_get_clean());
 	die(0);
-}
-Assert::handler('shutdown');
+});
+ob_start();
 
 
 function first($arg1, $arg2)

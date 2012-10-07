@@ -20,7 +20,7 @@ header('Content-Type: text/plain');
 
 Debugger::enable();
 
-function shutdown() {
+Debugger::$onFatalError[] = function() {
 	Assert::match("exception 'Nette\FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
 Stack trace:
 #0 [internal function]: %ns%Debugger::_shutdownHandler()
@@ -28,9 +28,8 @@ Stack trace:
 (stored in %a%)
 ", ob_get_clean());
 	die(0);
-}
+};
 ob_start();
-Debugger::$onFatalError[] = 'shutdown';
 
 
 @missing_funcion();
