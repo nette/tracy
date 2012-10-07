@@ -281,7 +281,7 @@
 	// enables <a class="nette-toggle" href="#"> or <span data-ref="#"> toggling
 	Bar.initToggle = function() {
 		$(document.body).bind('click', function(e) {
-			for (var link = e.target; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode);
+			for (var link = e.target; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode) {}
 			if (!link) {
 				return;
 			}
@@ -298,7 +298,7 @@
 			var newPosition = panel.position();
 			panel.position({
 				right: newPosition.right - newPosition.width + oldPosition.width,
-				bottom: newPosition.bottom - newPosition.height + oldPosition.height,
+				bottom: newPosition.bottom - newPosition.height + oldPosition.height
 			});
 		});
 	};

@@ -652,7 +652,7 @@ $counter = 0;
 
 	bs.onclick = function(e) {
 		e = e || window.event;
-		for (var link = e.target || e.srcElement; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode);
+		for (var link = e.target || e.srcElement; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode) {}
 		if (!link) {
 			return true;
 		}
@@ -663,7 +663,7 @@ $counter = 0;
 		if (ref && ref !== '#') {
 			dest = document.getElementById(ref.substring(1));
 		} else {
-			for (dest = link.nextSibling; dest && dest.nodeType !== 1; dest = dest.nextSibling);
+			for (dest = link.nextSibling; dest && dest.nodeType !== 1; dest = dest.nextSibling) {}
 		}
 
 		link.className = 'nette-toggle' + (collapsed ? '' : '-collapsed');
