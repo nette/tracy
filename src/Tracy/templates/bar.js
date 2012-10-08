@@ -164,8 +164,8 @@
 	Panel.prototype.restorePosition = function() {
 		var m = document.cookie.match(new RegExp(this.id + '=(window|(-?[0-9]+):(-?[0-9]+))'));
 		if (m && m[2]) {
-			this.toFloat();
 			this.elem.position({right: m[2], bottom: m[3]});
+			this.toFloat();
 		} else if (m) {
 			this.toWindow();
 		} else {
