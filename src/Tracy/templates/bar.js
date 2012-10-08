@@ -20,20 +20,12 @@
 	Panel.FOCUSED = 'nette-focused';
 	Panel.zIndex = 20000;
 
-	Panel.get = function(id) {
-		return new Panel(id);
-	};
-
 	Panel.prototype.init = function() {
 		var _this = this;
 
 		this.elem.data().onmove = function(coords) {
 			_this.moveConstrains(this, coords);
 		};
-
-		$(window).bind('resize', function() {
-			_this.reposition();
-		});
 
 		this.elem.draggable({
 			rightEdge: true,
@@ -116,8 +108,8 @@
 		var doc = win.document;
 		doc.write('<!DOCTYPE html><meta http-equiv="Content-Type" content="text\/html; charset=utf-8"><style>' + $('#nette-debug-style').dom().innerHTML + '<\/style><script>' + $('#nette-debug-script').dom().innerHTML + '<\/script><body id="nette-debug">');
 		doc.body.innerHTML = '<div class="nette-panel nette-mode-window" id="' + this.id + '">' + this.elem.dom().innerHTML + '<\/div>';
-		var winPanel = win.Nette.DebugPanel.get(this.id.replace('nette-debug-panel-', ''));
-		win.Nette.DebugBar.initToggle();
+		var winPanel = win.Nette.Debug.getPanel(this.id);
+		win.Nette.Debug.initToggle();
 		winPanel.reposition();
 		doc.title = this.elem.find('h1').dom().innerHTML;
 
@@ -187,12 +179,6 @@
 			_this.moveConstrains(this, coords);
 		};
 
-		$(window).bind('resize', function() {
-			elem.position({right: elem.position().right, bottom: elem.position().bottom});
-		});
-
-		Bar.initToggle(document.body);
-
 		elem.draggable({
 			rightEdge: true,
 			bottomEdge: true,
@@ -207,7 +193,7 @@
 				_this.close();
 
 			} else if (this.rel) {
-				var panel = Panel.get(this.rel);
+				var panel = Debug.getPanel(this.rel);
 				if (e.shiftKey) {
 					panel.toFloat();
 					panel.toWindow();
@@ -227,7 +213,7 @@
 
 		}).bind('mouseenter', function(e) {
 			if (this.rel && this.rel !== 'close' && !elem.hasClass('nette-dragged')) {
-				var panel = Panel.get(this.rel), link = $(this);
+				var panel = Debug.getPanel(this.rel), link = $(this);
 				panel.focus();
 				if (panel.is(Panel.PEEK)) {
 					panel.elem.position({
@@ -239,17 +225,11 @@
 
 		}).bind('mouseleave', function(e) {
 			if (this.rel && this.rel !== 'close' && !elem.hasClass('nette-dragged')) {
-				Panel.get(this.rel).blur();
+				Debug.getPanel(this.rel).blur();
 			}
 		});
 
 		this.restorePosition();
-
-		elem.find('a').each(function() {
-			if (this.rel && this.rel !== 'close') {
-				Panel.get(this.rel).init();
-			}
-		});
 	};
 
 	Bar.prototype.close = function() {
@@ -278,8 +258,25 @@
 		}
 	};
 
+
+
+	var Debug = Nette.Debug = {};
+
+	Debug.init = function() {
+		Debug.initToggle();
+		Debug.initResize();
+		(new Bar).init();
+		$('.nette-panel').each(function() {
+			Debug.getPanel(this.id).init();
+		});
+	};
+
+	Debug.getPanel = function(id) {
+		return new Panel(id.replace('nette-debug-panel-', ''));
+	};
+
 	// enables <a class="nette-toggle" href="#"> or <span data-ref="#"> toggling
-	Bar.initToggle = function() {
+	Debug.initToggle = function() {
 		$(document.body).bind('click', function(e) {
 			for (var link = e.target; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode) {}
 			if (!link) {
@@ -299,6 +296,16 @@
 			panel.position({
 				right: newPosition.right - newPosition.width + oldPosition.width,
 				bottom: newPosition.bottom - newPosition.height + oldPosition.height
+			});
+		});
+	};
+
+	Debug.initResize = function() {
+		$(window).bind('resize', function() {
+			var bar = $('#' + Bar.prototype.id);
+			bar.position({right: bar.position().right, bottom: bar.position().bottom});
+			$('.nette-panel').each(function() {
+				Debug.getPanel(this.id).reposition();
 			});
 		});
 	};

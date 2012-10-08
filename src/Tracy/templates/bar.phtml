@@ -403,17 +403,15 @@ use Nette;
 <?php $output = ob_get_clean(); ?>
 
 
-<div id="nette-debug"></div>
-
 <script>
 (function(onloadOrig) {
 	window.onload = function() {
 		if (typeof onloadOrig === 'function') onloadOrig();
-		var debug = document.getElementById('nette-debug');
-		document.body.appendChild(debug);
+		var debug = document.body.appendChild(document.createElement('div'));
+		debug.id = 'nette-debug';
 		debug.innerHTML = <?php echo json_encode(Nette\Utils\Strings::fixEncoding($output)) ?>;
 		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) eval(scripts[i].innerHTML);
-		(new Nette.DebugBar).init();
+		Nette.Debug.init();
 		debug.style.display = 'block';
 	};
 })(window.onload);
