@@ -24,6 +24,7 @@ Assert::match( '<pre class="nette-dump"><span class="nette-dump-number">123</spa
 
 // text mode
 header('Content-Type: text/plain');
+putenv('TERM=');
 ob_start();
 Assert::same( 123, Dump::dump(123) );
 Assert::match( '123', ob_get_clean() );
