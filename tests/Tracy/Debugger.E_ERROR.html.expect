@@ -123,7 +123,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 		<div id="netteBsPnl9" class="nette-collapsed inner">
 			<h3>Headers</h3>
-						<pre>X-Powered-By: Nette Framework<br>Content-Type: text/html<br></pre>
+						<pre>%A%</pre>
 					</div></div>
 
 
