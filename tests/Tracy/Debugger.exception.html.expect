@@ -192,7 +192,7 @@
 
 		<ul>
 			<li>Report generated at %a%</li>
-							<li>CLI: %a%.phpt</li>
+							<li>CLI%a?%</li>
 						<li>PHP %a%</li>
 						<li>Nette Framework %a%</li>		</ul>
 	</div>
