@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Dump::toText() with location
+ * Test: Nette\Diagnostics\Dumper::toText() with location
  *
  * @author     David Grudl
  * @package    Nette\Diagnostics
  */
 
-use Nette\Diagnostics\Dump;
+use Nette\Diagnostics\Dumper;
 
 
 
@@ -17,4 +17,4 @@ require __DIR__ . '/../bootstrap.php';
 
 Assert::match( '"Hello" (5)
 in ' . __FILE__ . ':%d%
-', Dump::toText( trim(" Hello "), array("location" => TRUE) ) );
+', Dumper::toText( trim(" Hello "), array("location" => TRUE) ) );

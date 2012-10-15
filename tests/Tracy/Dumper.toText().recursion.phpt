@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Dump::toText() recursion
+ * Test: Nette\Diagnostics\Dumper::toText() recursion
  *
  * @author     David Grudl
  * @package    Nette\Diagnostics
  */
 
-use Nette\Diagnostics\Dump;
+use Nette\Diagnostics\Dumper;
 
 
 
@@ -26,7 +26,7 @@ Assert::match( 'array (4)
    |  1 => 2
    |  2 => 3
    |  3 => array (4) [ RECURSION ]
-', Dump::toText($arr) );
+', Dumper::toText($arr) );
 
 
 
@@ -36,4 +36,4 @@ Assert::match( 'stdClass (3)
    x => 1
    y => 2
    z => stdClass (3) { RECURSION }
-', Dump::toText($arr) );
+', Dumper::toText($arr) );

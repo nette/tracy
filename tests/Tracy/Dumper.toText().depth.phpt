@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Dump::toText() depth & truncate
+ * Test: Nette\Diagnostics\Dumper::toText() depth & truncate
  *
  * @author     David Grudl
  * @package    Nette\Diagnostics
  */
 
-use Nette\Diagnostics\Dump;
+use Nette\Diagnostics\Dumper;
 
 
 
@@ -56,7 +56,7 @@ Assert::match( 'array (5)
    |  |  0 => stdClass (1)
    |  |  |  0 => stdClass (1) { ... }
    |  2 => array (5) [ RECURSION ]
-', Dump::toText($arr) );
+', Dumper::toText($arr) );
 
 
 
@@ -73,4 +73,4 @@ Assert::match( 'array (5)
    |  long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    |  1 => stdClass (1) { ... }
    |  2 => array (5) [ RECURSION ]
-', Dump::toText($arr, array(Dump::DEPTH => 2, Dump::TRUNCATE => 50)) );
+', Dumper::toText($arr, array(Dumper::DEPTH => 2, Dumper::TRUNCATE => 50)) );

@@ -20,7 +20,7 @@ use Nette;
  *
  * @author     David Grudl
  */
-class Dump
+class Dumper
 {
 	const DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 4)
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
@@ -102,7 +102,7 @@ class Dump
 	public static function toTerminal($var, array $options = NULL)
 	{
 		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="nette-dump-(\w+)">|</span>#', function($m) {
-			return "\033[" . (isset($m[1], Dump::$terminalColors[$m[1]]) ? Dump::$terminalColors[$m[1]] : '0') . "m";
+			return "\033[" . (isset($m[1], Dumper::$terminalColors[$m[1]]) ? Dumper::$terminalColors[$m[1]] : '0') . "m";
 		}, self::toHtml($var, $options))), ENT_QUOTES);
 	}
 
@@ -308,7 +308,7 @@ class Dump
 				return array(
 					$item['file'],
 					$item['line'],
-					preg_match('#\w*dump(::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line
+					preg_match('#\w*dump(er::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line
 				);
 			}
 		}
