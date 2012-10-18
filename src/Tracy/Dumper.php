@@ -186,7 +186,7 @@ class Dumper
 			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
 					$out .= '<span class="nette-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-						. '<span class="nette-dump-key">' . (preg_match('#^\w+$#D', $k) ? $k : self::encodeString($k)) . '</span> => '
+						. '<span class="nette-dump-key">' . (preg_match('#^\w+\z#', $k) ? $k : self::encodeString($k)) . '</span> => '
 						. self::dumpVar($v, $options, $level + 1);
 				}
 			}
@@ -233,7 +233,7 @@ class Dumper
 					$k = substr($k, strrpos($k, "\x00") + 1);
 				}
 				$out .= '<span class="nette-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-					. '<span class="nette-dump-key">' . (preg_match('#^\w+$#D', $k) ? $k : self::encodeString($k)) . "</span>$vis => "
+					. '<span class="nette-dump-key">' . (preg_match('#^\w+\z#', $k) ? $k : self::encodeString($k)) . "</span>$vis => "
 					. self::dumpVar($v, $options, $level + 1);
 			}
 			array_pop($list);
