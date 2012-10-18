@@ -48,7 +48,7 @@ class Logger
 	 * @param  int     one of constant INFO, WARNING, ERROR (sends email), CRITICAL (sends email)
 	 * @return bool    was successful?
 	 */
-	public function log($message, $priority = self::INFO)
+	public function log($message, $priority = NULL)
 	{
 		if (!is_dir($this->directory)) {
 			throw new \RuntimeException("Directory '$this->directory' is not found or is not directory.");
@@ -58,7 +58,7 @@ class Logger
 			$message = implode(' ', $message);
 		}
 		$message = preg_replace('#\s*\r?\n\s*#', ' ', trim($message));
-		$res = error_log($message . PHP_EOL, 3, $this->directory . '/' . strtolower($priority) . '.log');
+		$res = error_log($message . PHP_EOL, 3, $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log');
 
 		if (($priority === self::ERROR || $priority === self::CRITICAL) && $this->email && $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
