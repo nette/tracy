@@ -225,7 +225,7 @@ final class Debugger
 		if (is_string($logDirectory)) {
 			self::$logDirectory = realpath($logDirectory);
 			if (self::$logDirectory === FALSE) {
-				die(__METHOD__ . "() error: Log directory is not found or is not directory.");
+				die(__METHOD__ . "() error: Log directory is not found or is not directory.\n");
 			}
 		} elseif ($logDirectory === FALSE) {
 			self::$logDirectory = FALSE;
@@ -244,12 +244,12 @@ final class Debugger
 			ini_set('log_errors', FALSE);
 
 		} elseif (ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')) { // intentionally ==
-			die(__METHOD__ . "() error: Unable to set 'display_errors' because function ini_set() is disabled.");
+			die(__METHOD__ . "() error: Unable to set 'display_errors' because function ini_set() is disabled.\n");
 		}
 
 		if ($email) {
 			if (!is_string($email)) {
-				die(__METHOD__ . '() error: Email address must be a string.');
+				die(__METHOD__ . "() error: Email address must be a string.\n");
 			}
 			self::$email = $email;
 		}
@@ -406,7 +406,7 @@ final class Debugger
 					if (!headers_sent()) {
 						header("X-Nette-Error-Log: $file");
 					}
-					echo "$exception\n(stored in $file)\n";
+					echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
 					if (self::$browser) {
 						exec(self::$browser . ' ' . escapeshellarg($file));
 					}
