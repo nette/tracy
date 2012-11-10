@@ -147,13 +147,13 @@ class FireLogger extends Nette\Object
 					if ($k !== $marker) {
 						$res[self::jsonDump($k)] = self::jsonDump($v, $level + 1);
 					}
-			}
+				}
 				unset($var[$marker]);
 				return $res;
 
 			} else {
 				return " \xE2\x80\xA6 ";
-		}
+			}
 
 		} elseif (is_object($var)) {
 			$arr = (array) $var;
