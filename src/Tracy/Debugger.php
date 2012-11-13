@@ -290,6 +290,7 @@ final class Debugger
 			throw new Nette\InvalidStateException('Logging directory is not specified in Nette\Diagnostics\Debugger::$logDirectory.');
 		}
 
+		$exceptionFilename = NULL;
 		if ($message instanceof \Exception) {
 			$exception = $message;
 			$message = ($message instanceof Nette\FatalErrorException
@@ -310,14 +311,7 @@ final class Debugger
 			$message = Dumper::toText($message);
 		}
 
-		self::$logger->log(array(
-			@date('[Y-m-d H-i-s]'),
-			trim($message),
-			self::$source ? ' @  ' . self::$source : NULL,
-			!empty($exceptionFilename) ? ' @@  ' . $exceptionFilename : NULL
-		), $priority);
-
-		if (!empty($exceptionFilename)) {
+		if ($exceptionFilename) {
 			$exceptionFilename = self::$logDirectory . '/' . $exceptionFilename;
 			if (empty($saved) && $logHandle = @fopen($exceptionFilename, 'w')) {
 				ob_start(); // double buffer prevents sending HTTP headers in some PHP
@@ -327,8 +321,16 @@ final class Debugger
 				ob_end_clean();
 				fclose($logHandle);
 			}
-			return strtr($exceptionFilename, '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		}
+
+		self::$logger->log(array(
+			@date('[Y-m-d H-i-s]'),
+			trim($message),
+			self::$source ? ' @  ' . self::$source : NULL,
+			$exceptionFilename ? ' @@  ' . basename($exceptionFilename) : NULL
+		), $priority);
+
+		return $exceptionFilename ? strtr($exceptionFilename, '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR) : NULL;
 	}
 
 
