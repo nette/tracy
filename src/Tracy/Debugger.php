@@ -226,7 +226,8 @@ final class Debugger
 		if (is_string($logDirectory)) {
 			self::$logDirectory = realpath($logDirectory);
 			if (self::$logDirectory === FALSE) {
-				die(__METHOD__ . "() error: Log directory is not found or is not directory.\n");
+				echo __METHOD__ . "() error: Log directory is not found or is not directory.\n";
+				exit(254);
 			}
 		} elseif ($logDirectory === FALSE) {
 			self::$logDirectory = FALSE;
@@ -245,12 +246,14 @@ final class Debugger
 			ini_set('log_errors', FALSE);
 
 		} elseif (ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')) { // intentionally ==
-			die(__METHOD__ . "() error: Unable to set 'display_errors' because function ini_set() is disabled.\n");
+			echo __METHOD__ . "() error: Unable to set 'display_errors' because function ini_set() is disabled.\n";
+			exit(254);
 		}
 
 		if ($email) {
 			if (!is_string($email)) {
-				die(__METHOD__ . "() error: Email address must be a string.\n");
+				echo __METHOD__ . "() error: Email address must be a string.\n";
+				exit(254);
 			}
 			self::$email = $email;
 		}
@@ -428,7 +431,7 @@ final class Debugger
 		}
 
 		self::$enabled = FALSE; // un-register shutdown function
-		exit(255);
+		exit(254);
 	}
 
 
