@@ -223,7 +223,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 			<li>Report generated at %a%</li>
 							<li>CLI%a?%</li>
 						<li>PHP %a%</li>
-						<li>Nette Framework %a%</li>		</ul>
+								</ul>
 	</div>
 </div>
 

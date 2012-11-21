@@ -76,7 +76,7 @@ Assert::match( '<pre class="nette-dump"><span class="nette-toggle-collapsed"><sp
 <div class="nette-collapsed">%A%', Dumper::toHtml(fopen(__FILE__, 'r')) );
 
 Assert::match( '<pre class="nette-dump"><span class="nette-dump-object">stdClass</span> (0)
-</pre>', Dumper::toHtml((object) NULL) );
+</pre>', Dumper::toHtml(new stdClass) );
 
 Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">Test</span> (3)</span>
 <div><span class="nette-dump-indent">   </span><span class="nette-dump-key">x</span> => <span class="nette-toggle"><span class="nette-dump-array">array</span> (2)</span>

@@ -64,7 +64,7 @@ Assert::match( 'array (5)
 
 Assert::match( "stream resource\n   wrapper_type%A%", Dumper::toText(fopen(__FILE__, 'r')) );
 
-Assert::match( 'stdClass (0)', Dumper::toText((object) NULL) );
+Assert::match( 'stdClass (0)', Dumper::toText(new stdClass) );
 
 Assert::match( 'Test (3)
    x => array (2)
