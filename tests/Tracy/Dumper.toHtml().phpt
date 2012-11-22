@@ -86,10 +86,18 @@ Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="
 <span class="nette-dump-indent">   </span><span class="nette-dump-key">z</span> <span class="nette-dump-visibility">protected</span> => <span class="nette-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test) );
 
-Assert::match( '<pre class="nette-dump"><span class="nette-toggle-collapsed"><span class="nette-dump-object">Test</span> (3)</span>
-<div class="nette-collapsed"><span class="nette-dump-indent">   </span><span class="nette-dump-key">x</span> => <span class="nette-toggle-collapsed"><span class="nette-dump-array">array</span> (2)</span>
+Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">Test</span> (3)</span>
+<div><span class="nette-dump-indent">   </span><span class="nette-dump-key">x</span> => <span class="nette-toggle-collapsed"><span class="nette-dump-array">array</span> (2)</span>
 <div class="nette-collapsed"><span class="nette-dump-indent">   |  </span><span class="nette-dump-key">0</span> => <span class="nette-dump-number">10</span>
 <span class="nette-dump-indent">   |  </span><span class="nette-dump-key">1</span> => <span class="nette-dump-null">NULL</span>
 </div><span class="nette-dump-indent">   </span><span class="nette-dump-key">y</span> <span class="nette-dump-visibility">private</span> => <span class="nette-dump-string">"hello"</span> (5)
 <span class="nette-dump-indent">   </span><span class="nette-dump-key">z</span> <span class="nette-dump-visibility">protected</span> => <span class="nette-dump-number">30.0</span>
-</div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE => 1)) );
+</div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE_COUNT => 1)) );
+
+Assert::match( '<pre class="nette-dump"><span class="nette-toggle-collapsed"><span class="nette-dump-object">Test</span> (3)</span>
+<div class="nette-collapsed"><span class="nette-dump-indent">   </span><span class="nette-dump-key">x</span> => <span class="nette-toggle"><span class="nette-dump-array">array</span> (2)</span>
+<div><span class="nette-dump-indent">   |  </span><span class="nette-dump-key">0</span> => <span class="nette-dump-number">10</span>
+<span class="nette-dump-indent">   |  </span><span class="nette-dump-key">1</span> => <span class="nette-dump-null">NULL</span>
+</div><span class="nette-dump-indent">   </span><span class="nette-dump-key">y</span> <span class="nette-dump-visibility">private</span> => <span class="nette-dump-string">"hello"</span> (5)
+<span class="nette-dump-indent">   </span><span class="nette-dump-key">z</span> <span class="nette-dump-visibility">protected</span> => <span class="nette-dump-number">30.0</span>
+</div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE => TRUE)) );

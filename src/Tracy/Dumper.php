@@ -24,7 +24,8 @@ class Dumper
 {
 	const DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 4)
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
-		COLLAPSE = 'collapse', // how big array/object are collapsed? (defaults to 7)
+		COLLAPSE = 'collapse', // always collapse? (defaults to false)
+		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
 		LOCATION = 'location'; // show location string? (defaults to false)
 
 	/** @var array */
@@ -76,7 +77,8 @@ class Dumper
 			. self::dumpVar($var, (array) $options + array(
 				self::DEPTH => 4,
 				self::TRUNCATE => 150,
-				self::COLLAPSE => 7,
+				self::COLLAPSE => FALSE,
+				self::COLLAPSE_COUNT => 7,
 			))
 			. ($file ? '<small>in <a href="editor://open/?file=' . rawurlencode($file) . "&amp;line=$line\">" . htmlspecialchars($file) . ":$line</a></small>" : '')
 			. "</pre>\n";
@@ -180,7 +182,7 @@ class Dumper
 			return $out . (count($var) - 1) . ") [ <i>RECURSION</i> ]\n";
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH]) {
-			$collapsed = count($var) >= $options[self::COLLAPSE];
+			$collapsed = $level ? count($var) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
 			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . ">";
 			$var[$marker] = TRUE;
 			foreach ($var as $k => &$v) {
@@ -223,7 +225,7 @@ class Dumper
 			return $out . " { <i>RECURSION</i> }\n";
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH] || $var instanceof \Closure) {
-			$collapsed = count($fields) >= $options[self::COLLAPSE];
+			$collapsed = $level ? count($fields) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
 			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . "</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . ">";
 			$list[] = $var;
 			foreach ($fields as $k => &$v) {
