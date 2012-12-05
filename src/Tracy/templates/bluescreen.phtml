@@ -317,6 +317,17 @@ $counter = 0;
 			margin-left: .5ex;
 		}
 
+		#netteBluescreen .caused {
+			float: right;
+			padding: .2em .5em;
+			background: #df8075;
+			border-radius: 0 0 0 8px;
+		}
+
+		#netteBluescreen .caused a {
+			color: white;
+		}
+
 	</style>
 	<script>document.body.className+=' js'</script>
 </head>
@@ -333,13 +344,18 @@ $counter = 0;
 			<p><?php echo htmlspecialchars($exception->getMessage()) ?> <a href="http://www.google.cz/search?sourceid=nette&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" id="netteBsSearch">search&#x25ba;</a></p>
 		</div>
 
+		<?php if ((method_exists($exception, 'getPrevious') && $prev = $exception->getPrevious()) || (isset($exception->previous) && $prev = $exception->previous)): ?>
+		<div class="caused">
+			<a href="#netteCaused">Caused by <?php echo get_class($prev) ?></a>
+		</div>
+		<?php endif ?>
 
 
 		<?php $ex = $exception; $level = 0; ?>
 		<?php do { ?>
 
 			<?php if ($level++): ?>
-			<div class="panel">
+			<div class="panel"<?php if ($level === 2) echo ' id="netteCaused"' ?>>
 			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle<?php echo ($collapsed = $level > 2) ? '-collapsed' : '' ?>">Caused by</a></h2>
 
 			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
