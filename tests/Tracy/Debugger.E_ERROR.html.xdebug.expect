@@ -1,0 +1,234 @@
+
+Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
+<!DOCTYPE html><!-- "' --></script></style></pre></xmp></table>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex">
+	<meta name="generator" content="Nette Framework">
+
+	<title>Fatal Error</title><!-- Call to undefined function missing_funcion() -->
+
+	%A%
+</head>
+
+
+
+<body>
+<div id="netteBluescreen">
+	<a id="netteBluescreenIcon" href="#" class="nette-toggle"></a>
+	<div>
+		<div id="netteBluescreenError" class="panel">
+			<h1>Fatal Error</h1>
+
+			<p>Call to undefined function missing_funcion() <a href="%a%" id="netteBsSearch">search&#x25ba;</a></p>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+			<div class="panel">
+			<h2><a href="#netteBsPnl1" class="nette-toggle">Source file</a></h2>
+
+			<div id="netteBsPnl1" class="inner">
+				<p><b>File:</b> %a%</p>
+				<pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
+<span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='highlight'>%d%:    &nbsp;&nbsp;&nbsp;&nbsp;missing_funcion();
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #D24; font-weight: bold">);
+</span></span></code></div></pre>			</div></div>
+
+
+
+									<div class="panel">
+				<h2><a href="#netteBsPnl2" class="nette-toggle">Call stack</a></h2>
+
+				<div id="netteBsPnl2" class="inner">
+				<ol>
+										<li><p>
+
+											%a%
+					<a href="#netteBsSrc1-0" class="nette-toggle-collapsed">source</a>&nbsp;
+										third
+					()
+					</p>
+
+
+
+											<div class="nette-collapsed" id="netteBsSrc1-0"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">TRUE</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">FALSE</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='highlight'>%d%:    &nbsp;&nbsp;&nbsp;&nbsp;third(array(1,&nbsp;2,&nbsp;3));
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+</span></span></code></div></pre></div>
+
+					</li>
+										<li><p>
+
+											%a%
+					<a href="#netteBsSrc1-1" class="nette-toggle-collapsed">source</a>&nbsp;
+										second
+					()
+					</p>
+
+
+
+											<div class="nette-collapsed" id="netteBsSrc1-1"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">Assert</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">match</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">file_get_contents</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">__DIR__&nbsp;</span><span style="color: #D24; font-weight: bold">.&nbsp;(</span><span style="color: #000">extension_loaded</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'xdebug'</span><span style="color: #D24; font-weight: bold">)&nbsp;?&nbsp;</span><span style="color: #080">'/Debugger.E_ERROR.html.xdebug.expect'&nbsp;</span><span style="color: #D24; font-weight: bold">:&nbsp;</span><span style="color: #080">'/Debugger.E_ERROR.html.expect'</span><span style="color: #D24; font-weight: bold">)),&nbsp;</span><span style="color: #000">ob_get_clean</span><span style="color: #D24; font-weight: bold">());
+<span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #000">0</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>%d%:</span>    };
+<span class='line'>%d%:</span>    </span><span style="color: #000">ob_start</span><span style="color: #D24; font-weight: bold">();
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='highlight'>%d%:    &nbsp;&nbsp;&nbsp;&nbsp;second(TRUE,&nbsp;FALSE);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+</span></span></code></div></pre></div>
+
+					</li>
+										<li><p>
+
+											%a%
+					<a href="#netteBsSrc1-2" class="nette-toggle-collapsed">source</a>&nbsp;
+										first
+					()
+					</p>
+
+
+
+											<div class="nette-collapsed" id="netteBsSrc1-2"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
+<span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">missing_funcion</span><span style="color: #D24; font-weight: bold">();
+<span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='highlight'>%d%:    first(10,&nbsp;'any&nbsp;string');
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    </span>
+</span></code></div></pre></div>
+
+					</li>
+									</ol>
+			</div></div>
+
+
+
+
+
+
+
+
+
+
+		<div class="panel">
+		<h2><a href="#netteBsPnl3" class="nette-toggle-collapsed">Environment</a></h2>
+
+		<div id="netteBsPnl3" class="nette-collapsed inner">
+			<h3><a href="#netteBsPnl4" class="nette-toggle">$_SERVER</a></h3>
+			<div id="netteBsPnl4" class="outer">
+			<table>%A%</table>
+			</div>
+
+
+			<h3><a href="#netteBsPnl5" class="nette-toggle">$_SESSION</a></h3>
+			<div id="netteBsPnl5" class="outer">%A%</div>
+
+
+
+
+						<h3><a href="#netteBsPnl6" class="nette-toggle-collapsed">Constants</a></h3>
+			<div id="netteBsPnl6" class="outer nette-collapsed">
+			<table>%A%</table>
+			</div>
+
+
+			<h3><a href="#netteBsPnl7" class="nette-toggle-collapsed">Included files</a> (%d%)</h3>
+			<div id="netteBsPnl7" class="outer nette-collapsed">
+			<table>%A%</table>
+			</div>
+
+
+			<h3><a href="#netteBsPnl8" class="nette-toggle-collapsed">Configuration options</a></h3>
+			<div id="netteBsPnl8" class="outer nette-collapsed">
+			%A%</div>
+		</div></div>
+
+
+
+		<div class="panel">
+		<h2><a href="#netteBsPnl9" class="nette-toggle-collapsed">HTTP request</a></h2>
+
+		<div id="netteBsPnl9" class="nette-collapsed inner">
+%A%
+						<h3>$_GET</h3>
+						<p><i>empty</i></p>
+									<h3>$_POST</h3>
+						<p><i>empty</i></p>
+									<h3>$_COOKIE</h3>
+						<p><i>empty</i></p>
+								</div></div>
+
+
+
+		<div class="panel">
+		<h2><a href="#netteBsPnl10" class="nette-toggle-collapsed">HTTP response</a></h2>
+
+		<div id="netteBsPnl10" class="nette-collapsed inner">
+			<h3>Headers</h3>
+						<pre>%A%</pre>
+					</div></div>
+
+
+
+
+
+
+		<ul>
+			<li>Report generated at %a%</li>
+							<li>CLI%a?%</li>
+						<li>PHP %a%</li>
+						<li>Nette Framework %a%</li>		</ul>
+	</div>
+</div>
+
+<script type="text/javascript">%A%</script>
+</body>
+</html>
+
+%A%<!-- Nette Debug Bar -->%A%
