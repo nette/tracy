@@ -360,22 +360,26 @@ final class Debugger
 		$error = error_get_last();
 		if (isset($types[$error['type']])) {
 			$exception = new Nette\FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL);
-			/**/if (function_exists('xdebug_get_function_stack')) {
+			if (PHP_VERSION_ID >= 50300 && function_exists('xdebug_get_function_stack')) {
 				$stack = array();
 				foreach (array_slice(array_reverse(xdebug_get_function_stack()), 1, -1) as $row) {
-					if (isset($row['class'])) {
-						$row['type'] = isset($row['type']) && $row['type'] === 'dynamic' ? '->' : '::';
+					$frame = array(
+						'file' => $row['file'],
+						'line' => $row['line'],
+						'function' => isset($row['function']) ? $row['function'] : '*unknown*',
+						'args' => array(),
+					);
+					if (!empty($row['class'])) {
+						$frame['type'] = isset($row['type']) && $row['type'] === 'dynamic' ? '->' : '::';
+						$frame['class'] = $row['class'];
 					}
-					if (isset($row['params'])) {
-						$row['args'] = $row['params'];
-					}
-					$stack[] = $row;
+					$stack[] = $frame;
 				}
 				$ref = new \ReflectionProperty('Exception', 'trace');
 				$ref->setAccessible(TRUE);
 				$ref->setValue($exception, $stack);
 			}
-			/**/self::_exceptionHandler($exception);
+			self::_exceptionHandler($exception);
 		}
 
 		// debug bar (require HTML & development mode)
