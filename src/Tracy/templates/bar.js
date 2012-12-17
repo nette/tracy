@@ -283,7 +283,7 @@
 				return;
 			}
 			var collapsed = $(link).hasClass('nette-toggle-collapsed'),
-				ref = link.getAttribute('data-ref') || link.getAttribute('href'),
+				ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
 				dest = ref && ref !== '#' ? $(ref) : $(link).next(''),
 				panel = $(link).closest('.nette-panel'),
 				oldPosition = panel.position();
