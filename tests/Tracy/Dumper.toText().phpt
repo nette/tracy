@@ -73,3 +73,25 @@ Assert::match( 'Test (3)
    y private => "hello" (5)
    z protected => 30.0
 ', Dumper::toText(new Test) );
+
+
+$objStorage = new SplObjectStorage();
+$objStorage->attach($o1 = new stdClass);
+$objStorage[$o1] = 'o1';
+$objStorage->attach($o2 = (object) array('foo' => 'bar'));
+$objStorage[$o2] = 'o2';
+
+$objStorage->next();
+$key = $objStorage->key();
+
+Assert::match( 'SplObjectStorage (2)
+   0 => array (2)
+   |  object => stdClass (0)
+   |  data => "o1" (2)
+   1 => array (2)
+   |  object => stdClass (1)
+   |  |  foo => "bar" (3)
+   |  data => "o2" (2)
+', Dumper::toText($objStorage) );
+
+Assert::same($key, $objStorage->key());
