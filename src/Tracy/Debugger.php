@@ -229,11 +229,8 @@ final class Debugger
 				echo __METHOD__ . "() error: Log directory is not found or is not directory.\n";
 				exit(254);
 			}
-		} elseif ($logDirectory === FALSE) {
+		} elseif ($logDirectory === FALSE || self::$logDirectory === NULL) {
 			self::$logDirectory = FALSE;
-
-		} elseif (self::$logDirectory === NULL) {
-			self::$logDirectory = defined('APP_DIR') ? APP_DIR . '/../log' : getcwd() . '/log';
 		}
 		if (self::$logDirectory) {
 			ini_set('error_log', self::$logDirectory . '/php_error.log');

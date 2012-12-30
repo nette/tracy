@@ -24,12 +24,10 @@ Debugger::$onFatalError[] = function() {
 	Assert::match(extension_loaded('xdebug') ? "exception 'Nette\FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
 Stack trace:
 #0 {main}
-(stored in %a%)
 " : "exception 'Nette\FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
 Stack trace:
 #0 [internal function]: %ns%Debugger::_shutdownHandler()
 #1 {main}
-(stored in %a%)
 ", ob_get_clean());
 	die(0);
 };

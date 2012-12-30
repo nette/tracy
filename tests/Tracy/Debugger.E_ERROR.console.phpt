@@ -29,14 +29,12 @@ Stack trace:
 #1 %a%: second()
 #2 %a%: first()
 #3 {main}
-(stored in %a%)
 " : "
 Fatal error: Call to undefined function missing_funcion() in %a%
 exception 'Nette\FatalErrorException' with message 'Call to undefined function missing_funcion()' in %a%
 Stack trace:
 #0 [internal function]: %ns%Debugger::_shutdownHandler()
 #1 {main}
-(stored in %a%)
 ", ob_get_clean());
 	die(0);
 };
