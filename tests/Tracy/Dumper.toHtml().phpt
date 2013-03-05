@@ -101,3 +101,7 @@ Assert::match( '<pre class="nette-dump"><span class="nette-toggle-collapsed"><sp
 </div><span class="nette-dump-indent">   </span><span class="nette-dump-key">y</span> <span class="nette-dump-visibility">private</span> => <span class="nette-dump-string">"hello"</span> (5)
 <span class="nette-dump-indent">   </span><span class="nette-dump-key">z</span> <span class="nette-dump-visibility">protected</span> => <span class="nette-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE => TRUE)) );
+
+Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">SplFileInfo</span> (1)</span>
+<div><span class="nette-dump-indent">   </span><span class="nette-dump-key">path</span> => <span class="nette-dump-string">"%a%"</span> (%d%)
+</div></pre>', Dumper::toHtml(new SplFileInfo(__FILE__)) );

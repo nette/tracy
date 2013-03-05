@@ -211,6 +211,8 @@ class Dumper
 				$fields[] = '$' . $param->getName();
 			}
 			$fields = array('file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'parameters' => implode(', ', $fields));
+		} elseif ($var instanceof \SplFileInfo) {
+			$fields = array('path' => $var->getPathname());
 		} else {
 			$fields = (array) $var;
 		}
