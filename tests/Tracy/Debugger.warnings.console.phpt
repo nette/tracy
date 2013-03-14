@@ -39,7 +39,7 @@ function third($arg1)
 	mktime(); // E_STRICT
 	mktime(0, 0, 0, 1, 23, 1978, 1); // E_DEPRECATED
 	$x++; // E_NOTICE
-	rename('..', '..'); // E_WARNING
+	min(1); // E_WARNING
 	require 'E_COMPILE_WARNING.inc'; // E_COMPILE_WARNING
 }
 
@@ -52,7 +52,7 @@ Deprecated: mktime(): The is_dst parameter is deprecated in %a% on line %d%
 
 Notice: Undefined variable: x in %a% on line %d%
 
-Warning: rename(..,..): %A% in %a% on line %d%
+Warning: %a% in %a% on line %d%
 
 Warning: Unsupported declare 'foo' in %a% on line %d%
 ", ob_get_clean());

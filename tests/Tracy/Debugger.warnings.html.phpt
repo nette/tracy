@@ -40,7 +40,7 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 </tr>
 <tr class="nette-alt">
 	<td class="nette-right">1%a%</td>
-	<td><pre>PHP Warning: rename(..,..): %A% in %a%:%d%</a></pre></td>
+	<td><pre>PHP Warning: %a% in %a%:%d%</a></pre></td>
 </tr>
 </table>
 </div>%A%', json_decode($m[1]));
@@ -65,7 +65,7 @@ function third($arg1)
 	mktime(); // E_STRICT
 	mktime(0, 0, 0, 1, 23, 1978, 1); // E_DEPRECATED
 	$x++; // E_NOTICE
-	rename('..', '..'); // E_WARNING
+	min(1); // E_WARNING
 	require 'E_COMPILE_WARNING.inc'; // E_COMPILE_WARNING
 }
 
