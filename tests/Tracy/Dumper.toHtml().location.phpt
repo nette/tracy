@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Dumper::toHtml() with location
+ * Test: Tracy\Dumper::toHtml() with location
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  */
 
-use Nette\Diagnostics\Dumper;
+use Tracy\Dumper;
 
 
 

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger Bar in non-HTML mode.
+ * Test: Tracy\Debugger Bar in non-HTML mode.
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  */
 
-use Nette\Diagnostics\Debugger;
+use Tracy\Debugger;
 
 
 

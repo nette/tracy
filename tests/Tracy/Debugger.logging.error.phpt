@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger error logging.
+ * Test: Tracy\Debugger error logging.
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  */
 
-use Nette\Diagnostics\Debugger;
+use Tracy\Debugger;
 
 
 

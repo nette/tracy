@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Dumper::toText() locale
+ * Test: Tracy\Dumper::toText() locale
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  */
 
-use Nette\Diagnostics\Dumper;
+use Tracy\Dumper;
 
 
 

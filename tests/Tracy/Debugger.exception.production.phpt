@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger exception in production mode.
+ * Test: Tracy\Debugger exception in production mode.
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  * @assertCode 500
  */
 
-use Nette\Diagnostics\Debugger;
+use Tracy\Debugger;
 
 
 

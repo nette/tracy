@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger error in toString.
+ * Test: Tracy\Debugger error in toString.
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  * @assertCode 500
  */
 
-use Nette\Diagnostics\Debugger;
+use Tracy\Debugger;
 
 
 

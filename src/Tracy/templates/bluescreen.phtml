@@ -11,9 +11,9 @@
  * @return     void
  */
 
-namespace Nette\Diagnostics;
+namespace Tracy;
 
-use Nette;
+use Tracy;
 
 
 
@@ -399,7 +399,7 @@ $counter = 0;
 
 
 
-			<?php if (isset($stack[0]['class']) && $stack[0]['class'] === 'Nette\Diagnostics\Debugger' && ($stack[0]['function'] === '_shutdownHandler' || $stack[0]['function'] === '_errorHandler')) unset($stack[0]) ?>
+			<?php if (isset($stack[0]['class']) && $stack[0]['class'] === 'Tracy\Debugger' && ($stack[0]['function'] === '_shutdownHandler' || $stack[0]['function'] === '_errorHandler')) unset($stack[0]) ?>
 			<?php if ($stack): ?>
 			<div class="panel">
 				<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle">Call stack</a></h2>

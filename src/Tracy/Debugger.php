@@ -9,9 +9,9 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette\Diagnostics;
+namespace Tracy;
 
-use Nette;
+use Tracy;
 
 
 
@@ -288,7 +288,7 @@ final class Debugger
 			return;
 
 		} elseif (!self::$logDirectory) {
-			throw new Nette\InvalidStateException('Logging directory is not specified in Nette\Diagnostics\Debugger::$logDirectory.');
+			throw new Nette\InvalidStateException('Logging directory is not specified in Tracy\Debugger::$logDirectory.');
 		}
 
 		$exceptionFilename = NULL;

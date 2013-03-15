@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger notices and warnings in production mode.
+ * Test: Tracy\Debugger notices and warnings in production mode.
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  */
 
-use Nette\Diagnostics\Debugger;
+use Tracy\Debugger;
 
 
 

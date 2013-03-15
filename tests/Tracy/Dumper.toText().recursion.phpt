@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Dumper::toText() recursion
+ * Test: Tracy\Dumper::toText() recursion
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  */
 
-use Nette\Diagnostics\Dumper;
+use Tracy\Dumper;
 
 
 

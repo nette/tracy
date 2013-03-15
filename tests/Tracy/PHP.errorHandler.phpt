@@ -4,7 +4,7 @@
  * Test: PHP error handler.
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  */
 
 

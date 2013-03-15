@@ -9,9 +9,9 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette\Diagnostics;
+namespace Tracy;
 
-use Nette;
+use Tracy;
 
 
 
@@ -65,20 +65,20 @@ final class Helpers
 	/** @deprecated */
 	public static function htmlDump($var)
 	{
-		trigger_error(__METHOD__ . '() is deprecated; use Nette\Diagnostics\Dumper::toHtml() instead.', E_USER_DEPRECATED);
+		trigger_error(__METHOD__ . '() is deprecated; use Tracy\Dumper::toHtml() instead.', E_USER_DEPRECATED);
 		return Dumper::toHtml($var);
 	}
 
 	public static function clickableDump($var)
 	{
-		trigger_error(__METHOD__ . '() is deprecated; use Nette\Diagnostics\Dumper::toHtml() instead.', E_USER_DEPRECATED);
+		trigger_error(__METHOD__ . '() is deprecated; use Tracy\Dumper::toHtml() instead.', E_USER_DEPRECATED);
 		return Dumper::toHtml($var);
 	}
 
 	/** @deprecated */
 	public static function textDump($var)
 	{
-		trigger_error(__METHOD__ . '() is deprecated; use Nette\Diagnostics\Dumper::toText() instead.', E_USER_DEPRECATED);
+		trigger_error(__METHOD__ . '() is deprecated; use Tracy\Dumper::toText() instead.', E_USER_DEPRECATED);
 		return Dumper::toText($var);
 	}
 

@@ -9,9 +9,9 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette\Diagnostics;
+namespace Tracy;
 
-use Nette;
+use Tracy;
 
 
 
@@ -62,7 +62,7 @@ class FireLogger extends Nette\Object
 		if (isset($args[0]) && $args[0] instanceof \Exception) {
 			$e = array_shift($args);
 			$trace = $e->getTrace();
-			if (isset($trace[0]['class']) && $trace[0]['class'] === 'Nette\Diagnostics\Debugger'
+			if (isset($trace[0]['class']) && $trace[0]['class'] === 'Tracy\Debugger'
 				&& ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')
 			) {
 				unset($trace[0]);
@@ -76,7 +76,7 @@ class FireLogger extends Nette\Object
 
 		} else {
 			$trace = debug_backtrace();
-			if (isset($trace[1]['class']) && $trace[1]['class'] === 'Nette\Diagnostics\Debugger'
+			if (isset($trace[1]['class']) && $trace[1]['class'] === 'Tracy\Debugger'
 				&& ($trace[1]['function'] === 'fireLog')
 			) {
 				unset($trace[0]);

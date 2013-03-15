@@ -9,9 +9,9 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette\Diagnostics;
+namespace Tracy;
 
-use Nette;
+use Tracy;
 
 
 

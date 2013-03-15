@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger notices and warnings with $strictMode in HTML.
+ * Test: Tracy\Debugger notices and warnings with $strictMode in HTML.
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  * @assertCode 500
  */
 
-use Nette\Diagnostics\Debugger;
+use Tracy\Debugger;
 
 
 

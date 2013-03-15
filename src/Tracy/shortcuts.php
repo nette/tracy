@@ -9,12 +9,12 @@
  * the file license.txt that was distributed with this source code.
  */
 
-use Nette\Diagnostics\Debugger;
+use Tracy\Debugger;
 
 
 
 /**
- * Nette\Diagnostics\Debugger::enable() shortcut.
+ * Tracy\Debugger::enable() shortcut.
  */
 function debug()
 {
@@ -25,7 +25,7 @@ function debug()
 
 
 /**
- * Nette\Diagnostics\Debugger::dump() shortcut.
+ * Tracy\Debugger::dump() shortcut.
  */
 function dump($var)
 {
@@ -38,7 +38,7 @@ function dump($var)
 
 
 /**
- * Nette\Diagnostics\Debugger::log() shortcut.
+ * Tracy\Debugger::log() shortcut.
  */
 function dlog($var = NULL)
 {

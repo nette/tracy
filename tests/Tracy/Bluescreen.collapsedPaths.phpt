@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger E_ERROR in console.
+ * Test: Tracy\Debugger E_ERROR in console.
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  * @subpackage UnitTests
  */
 
-use Nette\Diagnostics\Debugger;
+use Tracy\Debugger;
 
 
 

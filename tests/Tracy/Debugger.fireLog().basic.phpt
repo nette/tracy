@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Diagnostics\Debugger::fireLog()
+ * Test: Tracy\Debugger::fireLog()
  *
  * @author     David Grudl
- * @package    Nette\Diagnostics
+ * @package    Tracy
  */
 
-use Nette\Diagnostics\Debugger;
+use Tracy\Debugger;
 
 
 
@@ -25,7 +25,7 @@ Debugger::$productionMode = FALSE;
 $arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2' => TRUE), (object) array('key1' => 'val1', 'key2' => TRUE));
 
 // will show in Firebug "Console" tab
-Debugger::fireLog('Hello World'); // Nette\Diagnostics\Debugger::DEBUG
+Debugger::fireLog('Hello World'); // Tracy\Debugger::DEBUG
 Debugger::fireLog('Info message', Debugger::INFO);
 Debugger::fireLog('Warn message', Debugger::WARNING);
 Debugger::fireLog('Error message', Debugger::ERROR);
