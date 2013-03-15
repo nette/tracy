@@ -1,0 +1,5 @@
+[PHP]
+;extension_dir = "./ext"
+
+[Zend]
+;zend_extension="./ext/zend_extension"

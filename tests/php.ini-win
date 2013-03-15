@@ -1,0 +1,6 @@
+[PHP]
+extension_dir = "./ext"
+extension=php_mbstring.dll
+
+[Zend]
+;zend_extension="./ext/php_xdebug-2.0.5-5.3-vc6.dll"
