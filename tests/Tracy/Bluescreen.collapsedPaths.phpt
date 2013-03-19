@@ -16,7 +16,6 @@ require __DIR__ . '/../bootstrap.php';
 
 
 
-Debugger::$consoleMode = TRUE;
 Debugger::$productionMode = FALSE;
 
 Debugger::$blueScreen->collapsePaths[] = __DIR__;

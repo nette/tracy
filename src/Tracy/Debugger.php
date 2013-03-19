@@ -29,9 +29,6 @@ final class Debugger
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode;
 
-	/** @deprecated */
-	public static $consoleMode;
-
 	/** @var int timestamp with microseconds of the start of the request */
 	public static $time;
 
@@ -54,9 +51,6 @@ final class Debugger
 
 	/** @var bool display location? {@link Debugger::dump()} */
 	public static $showLocation = FALSE;
-
-	/** @deprecated */
-	public static $consoleColors;
 
 	/********************* errors and exceptions reporting ****************d*g**/
 
@@ -151,7 +145,6 @@ final class Debugger
 			self::$source = empty($_SERVER['argv']) ? 'CLI' : 'CLI: ' . implode(' ', $_SERVER['argv']);
 		}
 
-		self::$consoleColors = & Dumper::$terminalColors;
 		self::$logger = new Logger;
 		self::$logDirectory = & self::$logger->directory;
 		self::$email = & self::$logger->email;
@@ -520,44 +513,6 @@ final class Debugger
 
 
 
-	/** @deprecated */
-	public static function toStringException(\Exception $exception)
-	{
-		if (self::$enabled) {
-			self::_exceptionHandler($exception);
-		} else {
-			trigger_error($exception->getMessage(), E_USER_ERROR);
-		}
-	}
-
-
-
-	/** @deprecated */
-	public static function tryError()
-	{
-		trigger_error(__METHOD__ . '() is deprecated; use own error handler instead.', E_USER_DEPRECATED);
-		if (!self::$enabled && self::$lastError === FALSE) {
-			set_error_handler(array(__CLASS__, '_errorHandler'));
-		}
-		self::$lastError = NULL;
-	}
-
-
-
-	/** @deprecated */
-	public static function catchError(& $error)
-	{
-		trigger_error(__METHOD__ . '() is deprecated; use own error handler instead.', E_USER_DEPRECATED);
-		if (!self::$enabled && self::$lastError !== FALSE) {
-			restore_error_handler();
-		}
-		$error = self::$lastError;
-		self::$lastError = FALSE;
-		return (bool) $error;
-	}
-
-
-
 	/********************* useful tools ****************d*g**/
 
 
@@ -645,14 +600,6 @@ final class Debugger
 	{
 		return empty($_SERVER['HTTP_X_REQUESTED_WITH'])
 			&& preg_match('#^Content-Type: text/html#im', implode("\n", headers_list()));
-	}
-
-
-
-	/** @deprecated */
-	public static function addPanel(IBarPanel $panel, $id = NULL)
-	{
-		return self::$bar->addPanel($panel, $id);
 	}
 
 }
