@@ -120,7 +120,7 @@ class Dumper
 	private static function dumpVar(&$var, array $options, $level = 0)
 	{
 		if (method_exists(__CLASS__, $m = 'dump' . gettype($var))) {
-			return /**/self::$m($var, $options, $level);/**//*5.2*call_user_func_array(array(__CLASS__, $m), array(&$var, $options, $level));*/
+			return self::$m($var, $options, $level);
 		} else {
 			return "<span>unknown type</span>\n";
 		}
@@ -299,7 +299,7 @@ class Dumper
 	 */
 	private static function findLocation()
 	{
-		foreach (/*5.2*PHP_VERSION_ID < 50205 ? debug_backtrace() : */debug_backtrace(FALSE) as $item) {
+		foreach (debug_backtrace(FALSE) as $item) {
 			if (isset($item['file']) && strpos($item['file'], __DIR__) === 0) {
 				continue;
 

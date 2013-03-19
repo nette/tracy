@@ -34,13 +34,9 @@ static $errorTypes = array(
 	E_NOTICE => 'Notice',
 	E_USER_NOTICE => 'User Notice',
 	E_STRICT => 'Strict',
+	E_DEPRECATED => 'Deprecated',
+	E_USER_DEPRECATED => 'User Deprecated',
 );
-if (PHP_VERSION_ID >= 50300) {
-	$errorTypes += array(
-		E_DEPRECATED => 'Deprecated',
-		E_USER_DEPRECATED => 'User Deprecated',
-	);
-}
 
 $title = ($exception instanceof Nette\FatalErrorException && isset($errorTypes[$exception->getSeverity()])) ? $errorTypes[$exception->getSeverity()] : get_class($exception);
 

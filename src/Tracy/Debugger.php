@@ -299,7 +299,7 @@ final class Debugger
 				: get_class($exception) . ": " . $exception->getMessage())
 				. " in " . $exception->getFile() . ":" . $exception->getLine();
 
-			$hash = md5($exception /*5.2*. (method_exists($exception, 'getPrevious') ? $exception->getPrevious() : (isset($exception->previous) ? $exception->previous : ''))*/);
+			$hash = md5($exception);
 			$exceptionFilename = "exception-" . @date('Y-m-d-H-i-s') . "-$hash.html";
 			foreach (new \DirectoryIterator(self::$logDirectory) as $entry) {
 				if (strpos($entry, $hash)) {
@@ -357,7 +357,7 @@ final class Debugger
 		$error = error_get_last();
 		if (isset($types[$error['type']])) {
 			$exception = new Nette\FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL);
-			if (PHP_VERSION_ID >= 50300 && function_exists('xdebug_get_function_stack')) {
+			if (function_exists('xdebug_get_function_stack')) {
 				$stack = array();
 				foreach (array_slice(array_reverse(xdebug_get_function_stack()), 1, -1) as $row) {
 					$frame = array(
@@ -395,7 +395,7 @@ final class Debugger
 	 */
 	public static function _exceptionHandler(\Exception $exception)
 	{
-		if (!headers_sent()) { // for PHP < 5.2.4
+		if (!headers_sent()) {
 			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
 			header($protocol . ' 500', TRUE, 500);
 		}
@@ -476,7 +476,7 @@ final class Debugger
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
-			if (Helpers::findTrace(/*5.2*PHP_VERSION_ID < 50205 ? debug_backtrace() : */debug_backtrace(FALSE), '*::__toString')) {
+			if (Helpers::findTrace(debug_backtrace(FALSE), '*::__toString')) {
 				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
 				self::_exceptionHandler(new Nette\FatalErrorException($message, 0, $severity, $file, $line, $context, $previous));
 			}
@@ -496,13 +496,9 @@ final class Debugger
 			E_NOTICE => 'Notice',
 			E_USER_NOTICE => 'Notice',
 			E_STRICT => 'Strict standards',
+			E_DEPRECATED => 'Deprecated',
+			E_USER_DEPRECATED => 'Deprecated',
 		);
-		if (PHP_VERSION_ID >= 50300) {
-			$types += array(
-				E_DEPRECATED => 'Deprecated',
-				E_USER_DEPRECATED => 'Deprecated',
-			);
-		}
 
 		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message";
 		$count = & self::$errorPanel->data["$message|$file|$line"];
