@@ -20,13 +20,13 @@ use Tracy;
  *
  * @author     David Grudl
  */
-class BlueScreen extends Nette\Object
+class BlueScreen
 {
 	/** @var array */
 	private $panels = array();
 
 	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
-	public $collapsePaths = array();
+	public $collapsePaths = array(__DIR__);
 
 
 

@@ -20,7 +20,7 @@ use Tracy;
  *
  * @author     David Grudl
  */
-class Logger extends Nette\Object
+class Logger
 {
 	const DEBUG = 'debug',
 		INFO = 'info',
@@ -51,7 +51,7 @@ class Logger extends Nette\Object
 	public function log($message, $priority = self::INFO)
 	{
 		if (!is_dir($this->directory)) {
-			throw new Nette\DirectoryNotFoundException("Directory '$this->directory' is not found or is not directory.");
+			throw new \RuntimeException("Directory '$this->directory' is not found or is not directory.");
 		}
 
 		if (is_array($message)) {
@@ -63,7 +63,7 @@ class Logger extends Nette\Object
 			&& @filemtime($this->directory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
-			Nette\Callback::create($this->mailer)->invoke($message, $this->email);
+			call_user_func($this->mailer, $message, $this->email);
 		}
 		return $res;
 	}

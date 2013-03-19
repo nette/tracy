@@ -124,7 +124,7 @@ final class Debugger
 	 */
 	final public function __construct()
 	{
-		throw new Nette\StaticClassException;
+		throw new \LogicException;
 	}
 
 
@@ -152,31 +152,7 @@ final class Debugger
 		self::$emailSnooze = & Logger::$emailSnooze;
 
 		self::$fireLogger = new FireLogger;
-
 		self::$blueScreen = new BlueScreen;
-		self::$blueScreen->collapsePaths[] = NETTE_DIR;
-		self::$blueScreen->addPanel(function($e) {
-			if ($e instanceof Nette\Templating\FilterException) {
-				return array(
-					'tab' => 'Template',
-					'panel' => '<p><b>File:</b> ' . Helpers::editorLink($e->sourceFile, $e->sourceLine) . '</p>'
-					. ($e->sourceLine ? BlueScreen::highlightFile($e->sourceFile, $e->sourceLine) : '')
-				);
-			} elseif ($e instanceof Nette\Utils\NeonException && preg_match('#line (\d+)#', $e->getMessage(), $m)) {
-				if ($item = Helpers::findTrace($e->getTrace(), 'Nette\Config\Adapters\NeonAdapter::load')) {
-					return array(
-						'tab' => 'NEON',
-						'panel' => '<p><b>File:</b> ' . Helpers::editorLink($item['args'][0], $m[1]) . '</p>'
-							. BlueScreen::highlightFile($item['args'][0], $m[1])
-					);
-				} elseif ($item = Helpers::findTrace($e->getTrace(), 'Nette\Utils\Neon::decode')) {
-					return array(
-						'tab' => 'NEON',
-						'panel' => BlueScreen::highlightPhp($item['args'][0], $m[1])
-					);
-				}
-			}
-		});
 
 		self::$bar = new Bar;
 		self::$bar->addPanel(new DefaultBarPanel('time'));
@@ -281,13 +257,13 @@ final class Debugger
 			return;
 
 		} elseif (!self::$logDirectory) {
-			throw new Nette\InvalidStateException('Logging directory is not specified in Tracy\Debugger::$logDirectory.');
+			throw new \RuntimeException('Logging directory is not specified in Tracy\Debugger::$logDirectory.');
 		}
 
 		$exceptionFilename = NULL;
 		if ($message instanceof \Exception) {
 			$exception = $message;
-			$message = ($message instanceof Nette\FatalErrorException
+			$message = ($message instanceof \ErrorException
 				? 'Fatal error: ' . $exception->getMessage()
 				: get_class($exception) . ": " . $exception->getMessage())
 				. " in " . $exception->getFile() . ":" . $exception->getLine();
@@ -349,7 +325,7 @@ final class Debugger
 		);
 		$error = error_get_last();
 		if (isset($types[$error['type']])) {
-			$exception = new Nette\FatalErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'], NULL);
+			$exception = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
 			if (function_exists('xdebug_get_function_stack')) {
 				$stack = array();
 				foreach (array_slice(array_reverse(xdebug_get_function_stack()), 1, -1) as $row) {
@@ -454,7 +430,7 @@ final class Debugger
 	 * @param  int    line number the error was raised at
 	 * @param  array  an array of variables that existed in the scope the error was triggered in
 	 * @return bool   FALSE to call normal error handler, NULL otherwise
-	 * @throws Nette\FatalErrorException
+	 * @throws ErrorException
 	 * @internal
 	 */
 	public static function _errorHandler($severity, $message, $file, $line, $context)
@@ -464,22 +440,22 @@ final class Debugger
 		}
 
 		if (self::$lastError !== FALSE && ($severity & error_reporting()) === $severity) { // tryError mode
-			self::$lastError = new \ErrorException($message, 0, $severity, $file, $line);
+			self::$lastError = new ErrorException($message, 0, $severity, $file, $line);
 			return NULL;
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
 			if (Helpers::findTrace(debug_backtrace(FALSE), '*::__toString')) {
 				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
-				self::_exceptionHandler(new Nette\FatalErrorException($message, 0, $severity, $file, $line, $context, $previous));
+				self::_exceptionHandler(new ErrorException($message, 0, $severity, $file, $line, $previous, $context));
 			}
-			throw new Nette\FatalErrorException($message, 0, $severity, $file, $line, $context);
+			throw new ErrorException($message, 0, $severity, $file, $line, NULL, $context);
 
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return FALSE; // calls normal error handler to fill-in error_get_last()
 
 		} elseif (!self::$productionMode && (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))) {
-			self::_exceptionHandler(new Nette\FatalErrorException($message, 0, $severity, $file, $line, $context));
+			self::_exceptionHandler(new ErrorException($message, 0, $severity, $file, $line, NULL, $context));
 		}
 
 		static $types = array(
@@ -504,7 +480,7 @@ final class Debugger
 			return NULL;
 
 		} else {
-			$ok = self::fireLog(new \ErrorException($message, 0, $severity, $file, $line));
+			$ok = self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
 			return !self::isHtmlMode() || (!self::$bar && !$ok) ? FALSE : NULL;
 		}
 
@@ -603,3 +579,7 @@ final class Debugger
 	}
 
 }
+
+
+
+Debugger::_init();

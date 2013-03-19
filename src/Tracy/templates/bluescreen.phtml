@@ -38,7 +38,7 @@ static $errorTypes = array(
 	E_USER_DEPRECATED => 'User Deprecated',
 );
 
-$title = ($exception instanceof Nette\FatalErrorException && isset($errorTypes[$exception->getSeverity()])) ? $errorTypes[$exception->getSeverity()] : get_class($exception);
+$title = ($exception instanceof \ErrorException && isset($errorTypes[$exception->getSeverity()])) ? $errorTypes[$exception->getSeverity()] : get_class($exception);
 
 $counter = 0;
 

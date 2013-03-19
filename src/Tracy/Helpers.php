@@ -25,7 +25,7 @@ final class Helpers
 
 	/**
 	 * Returns link to editor.
-	 * @return Nette\Utils\Html
+	 * @return string
 	 */
 	public static function editorLink($file, $line)
 	{
@@ -35,13 +35,26 @@ final class Helpers
 			if (substr($dir, 0, strlen($base)) === $base) {
 				$dir = '...' . substr($dir, strlen($base));
 			}
-			return Nette\Utils\Html::el('a')
-				->href(strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line)))
-				->title("$file:$line")
-				->setHtml(htmlSpecialChars(rtrim($dir, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . '<b>' . htmlSpecialChars(basename($file)) . '</b>' . ($line ? ":$line" : ''));
+			return self::createHtml('<a href="%" title="%">%<b>%</b>%</a>',
+				strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line)),
+				"$file:$line",
+				rtrim($dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,
+				basename($file),
+				$line ? ":$line" : ''
+			);
 		} else {
-			return Nette\Utils\Html::el('span')->setText($file . ($line ? ":$line" : ''));
+			return self::createHtml('<span>%</span>', $file . ($line ? ":$line" : ''));
 		}
+	}
+
+
+
+	public static function createHtml($mask)
+	{
+		$args = func_get_args();
+		return preg_replace_callback('#%#', function() use (& $args, & $count) {
+			return htmlspecialchars($args[++$count]);
+		}, $mask);
 	}
 
 
@@ -57,6 +70,24 @@ final class Helpers
 				$index = $i;
 				return $item;
 			}
+		}
+	}
+
+
+
+	/**
+	 * Returns correctly encoded string.
+	 * @param  string  byte stream to fix
+	 * @return string
+	 */
+	public static function fixEncoding($s)
+	{
+		// removes xD800-xDFFF, x110000 and higher
+		if (PHP_VERSION_ID >= 50400) {
+			ini_set('mbstring.substitute_character', 'none');
+			return mb_convert_encoding($s, 'UTF-8', 'UTF-8');
+		} else {
+			return @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $s)); // intentionally @
 		}
 	}
 

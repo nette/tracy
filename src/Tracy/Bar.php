@@ -20,7 +20,7 @@ use Tracy;
  *
  * @author     David Grudl
  */
-class Bar extends Nette\Object
+class Bar
 {
 	/** @var array */
 	private $panels = array();
