@@ -263,10 +263,15 @@ final class Debugger
 		$exceptionFilename = NULL;
 		if ($message instanceof \Exception) {
 			$exception = $message;
-			$message = ($message instanceof \ErrorException
-				? 'Fatal error: ' . $exception->getMessage()
-				: get_class($exception) . ": " . $exception->getMessage())
-				. " in " . $exception->getFile() . ":" . $exception->getLine();
+			while ($exception) {
+				$tmp[] = ($exception instanceof \ErrorException
+					? 'Fatal error: ' . $exception->getMessage()
+					: get_class($exception) . ": " . $exception->getMessage())
+					. " in " . $exception->getFile() . ":" . $exception->getLine();
+				$exception = $exception->getPrevious();
+			}
+			$exception = $message;
+			$message = implode($tmp, "\ncaused by ");
 
 			$hash = md5($exception);
 			$exceptionFilename = "exception-" . @date('Y-m-d-H-i-s') . "-$hash.html";
