@@ -269,25 +269,20 @@ class Dumper
 
 	private static function encodeString($s)
 	{
-		static $utf, $binary;
-		if ($utf === NULL) {
-			foreach (range("\x00", "\xFF") as $ch) {
-				if (ord($ch) < 32 && strpos("\r\n\t", $ch) === FALSE) {
-					$utf[$ch] = $binary[$ch] = '\\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
-				} elseif (ord($ch) < 127) {
-					$utf[$ch] = $binary[$ch] = $ch;
-				} else {
-					$utf[$ch] = $ch; $binary[$ch] = '\\x' . dechex(ord($ch));
-				}
+		static $table;
+		if ($table === NULL) {
+			foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
+				$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
 			}
-			$binary["\\"] = '\\\\';
-			$binary["\r"] = '\\r';
-			$binary["\n"] = '\\n';
-			$binary["\t"] = '\\t';
-			$utf['\\x'] = $binary['\\x'] = '\\\\x';
+			$table["\\"] = '\\\\';
+			$table["\r"] = '\r';
+			$table["\n"] = '\n';
+			$table["\t"] = '\t';
 		}
 
-		$s = strtr($s, preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error() ? $binary : $utf);
+		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) {
+			$s = strtr($s, $table);
+		}
 		return '"' . htmlSpecialChars($s, ENT_NOQUOTES) . '"';
 	}
 
