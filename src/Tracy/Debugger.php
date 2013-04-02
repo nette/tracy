@@ -273,7 +273,7 @@ final class Debugger
 			$exception = $message;
 			$message = implode($tmp, "\ncaused by ");
 
-			$hash = md5($exception);
+			$hash = md5(preg_replace('~(Resource id #)\d+~', '$1', $exception));
 			$exceptionFilename = "exception-" . @date('Y-m-d-H-i-s') . "-$hash.html";
 			foreach (new \DirectoryIterator(self::$logDirectory) as $entry) {
 				if (strpos($entry, $hash)) {
