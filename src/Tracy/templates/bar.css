@@ -10,11 +10,6 @@
 	display: none;
 }
 
-body#nette-debug {
-	margin: 5px 5px 0;
-	display: block;
-}
-
 body #nette-debug {
 	position: absolute;
 	bottom: 0;
