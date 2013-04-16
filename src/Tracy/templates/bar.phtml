@@ -28,6 +28,7 @@ use Tracy;
 
 <style id="nette-debug-style" class="nette-debug">
 <?php require __DIR__ . '/bar.css' ?>
+<?php require __DIR__ . '/dumper.css' ?>
 </style>
 
 <!--[if lt IE 8]><style class="nette-debug">
@@ -41,6 +42,7 @@ use Tracy;
 /* <![CDATA[ */
 <?php require __DIR__ . '/netteQ.js' ?>
 <?php require __DIR__ . '/bar.js' ?>
+<?php require __DIR__ . '/dumper.js' ?>
 /* ]]> */
 </script>
 
@@ -78,6 +80,7 @@ use Tracy;
 		debug.id = 'nette-debug';
 		debug.innerHTML = <?php echo json_encode(Helpers::fixEncoding($output)) ?>;
 		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) eval(scripts[i].innerHTML);
+		Nette.Dumper.init();
 		Nette.Debug.init();
 		debug.style.display = 'block';
 	};

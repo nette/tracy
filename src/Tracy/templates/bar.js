@@ -263,7 +263,6 @@
 	var Debug = Nette.Debug = {};
 
 	Debug.init = function() {
-		Debug.initToggle();
 		Debug.initResize();
 		(new Bar).init();
 		$('.nette-panel').each(function() {
@@ -273,31 +272,6 @@
 
 	Debug.getPanel = function(id) {
 		return new Panel(id.replace('nette-debug-panel-', ''));
-	};
-
-	// enables <a class="nette-toggle" href="#"> or <span data-ref="#"> toggling
-	Debug.initToggle = function() {
-		$(document.body).bind('click', function(e) {
-			for (var link = e.target; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode) {}
-			if (!link) {
-				return;
-			}
-			var collapsed = $(link).hasClass('nette-toggle-collapsed'),
-				ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
-				dest = ref && ref !== '#' ? $(ref) : $(link).next(''),
-				panel = $(link).closest('.nette-panel'),
-				oldPosition = panel.position();
-
-			link.className = 'nette-toggle' + (collapsed ? '' : '-collapsed');
-			dest[collapsed ? 'show' : 'hide']();
-			e.preventDefault();
-
-			var newPosition = panel.position();
-			panel.position({
-				right: newPosition.right - newPosition.width + oldPosition.width,
-				bottom: newPosition.bottom - newPosition.height + oldPosition.height
-			});
-		});
 	};
 
 	Debug.initResize = function() {

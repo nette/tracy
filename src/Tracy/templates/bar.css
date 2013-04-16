@@ -254,38 +254,11 @@ body #nette-debug {
 }
 
 
-/* toggle */
-.nette-collapsed {
-	display: none;
-}
-
-.nette-toggle, .nette-toggle-collapsed {
-	cursor: pointer;
-}
-
-.nette-toggle:after {
-	content: " ▼";
-	opacity: .4;
-}
-
-.nette-toggle-collapsed:after {
-	content: " ►";
-	opacity: .4;
-}
-
-
 /* dump */
-pre.nette-dump {
-	color: #444;
-	background: white;
-}
-
-pre.nette-dump div,
 #nette-debug pre.nette-dump div {
 	padding-left: 3ex;
 }
 
-pre.nette-dump div div,
 #nette-debug pre.nette-dump div div {
 	border-left: 1px solid rgba(0, 0, 0, .1);
 	margin-left: .5ex;
@@ -304,35 +277,30 @@ pre.nette-dump div div,
 	border: none;
 }
 
-.nette-dump-array, .nette-dump-object,
 #nette-debug .nette-dump-array, #nette-debug .nette-dump-object {
 	color: #C22;
 }
 
-.nette-dump-string,
 #nette-debug .nette-dump-string {
 	color: #35D;
 }
 
-.nette-dump-number,
 #nette-debug .nette-dump-number {
 	color: #090;
 }
 
-.nette-dump-null, .nette-dump-bool,
 #nette-debug .nette-dump-null, #nette-debug .nette-dump-bool {
 	color: #850;
 }
 
-.nette-dump-visibility,
 #nette-debug .nette-dump-visibility {
 	font-size: 85%; color: #999;
 }
 
-.nette-dump-indent,
 #nette-debug .nette-dump-indent {
 	display: none;
 }
+
 
 @media print {
 	#nette-debug * {
