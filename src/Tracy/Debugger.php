@@ -580,6 +580,7 @@ final class Debugger
 	private static function isHtmlMode()
 	{
 		return empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+			&& PHP_SAPI !== 'cli'
 			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
 	}
 
