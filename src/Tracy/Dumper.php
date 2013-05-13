@@ -53,7 +53,7 @@ class Dumper
 	 */
 	public static function dump($var, array $options = NULL)
 	{
-		if (preg_match('#^Content-Type: text/html#im', implode("\n", headers_list()))) {
+		if (PHP_SAPI !== 'cli' && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) {
 			echo self::toHtml($var, $options);
 		} elseif (self::$terminalColors && substr(getenv('TERM'), 0, 5) === 'xterm') {
 			echo self::toTerminal($var, $options);
