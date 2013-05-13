@@ -55,7 +55,7 @@ class Dumper
 	{
 		if (PHP_SAPI !== 'cli' && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) {
 			echo self::toHtml($var, $options);
-		} elseif (self::$terminalColors && substr(getenv('TERM'), 0, 5) === 'xterm') {
+		} elseif (self::$terminalColors && preg_match('#^xterm|^screen#', getenv('TERM'))) {
 			echo self::toTerminal($var, $options);
 		} else {
 			echo self::toText($var, $options);
