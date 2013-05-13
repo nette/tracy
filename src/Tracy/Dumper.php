@@ -55,7 +55,9 @@ class Dumper
 	{
 		if (PHP_SAPI !== 'cli' && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) {
 			echo self::toHtml($var, $options);
-		} elseif (self::$terminalColors && preg_match('#^xterm|^screen#', getenv('TERM'))) {
+		} elseif (self::$terminalColors && preg_match('#^xterm|^screen#', getenv('TERM'))
+			&& (defined('STDOUT') && function_exists('posix_isatty') ? posix_isatty(STDOUT) : TRUE))
+		{
 			echo self::toTerminal($var, $options);
 		} else {
 			echo self::toText($var, $options);
