@@ -30,7 +30,7 @@ class TestLogger
 
 	public function log($message)
 	{
-		Assert::match($this->pattern, $message[1]);
+		Assert::match($this->pattern, $message['message']);
 	}
 }
 
