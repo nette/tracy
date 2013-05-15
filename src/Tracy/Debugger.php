@@ -299,10 +299,9 @@ final class Debugger
 		}
 
 		self::$logger->log(array(
-			@date('[Y-m-d H-i-s]'),
-			trim($message),
-			self::$source ? ' @  ' . self::$source : NULL,
-			$exceptionFilename ? ' @@  ' . basename($exceptionFilename) : NULL
+			'message' => trim($message),
+			'source'  => self::$source ? self::$source : NULL,
+			'detail'  => $exceptionFilename ? basename($exceptionFilename) : NULL
 		), $priority);
 
 		return $exceptionFilename ? strtr($exceptionFilename, '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR) : NULL;

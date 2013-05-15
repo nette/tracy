@@ -30,5 +30,8 @@ function testMailer() {}
 // throw error
 $a++;
 
-Assert::match('%a%PHP Notice: Undefined variable: a in %a%', file_get_contents($logDirectory . '/error.log'));
-Assert::true(is_file($logDirectory . '/email-sent'));
+
+$contents = trim(@file_get_contents($logDirectory . '/error.log'));
+
+Assert::match('PHP Notice: Undefined variable: a in %a%', $contents);
+Assert::true(is_file($logDirectory . '/email-sent-' . md5($contents)));
