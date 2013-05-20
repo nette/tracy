@@ -142,10 +142,13 @@ final class Debugger
 
 
 	/**
-	 * Static class constructor.
-	 * @internal
+	 * Enables displaying or logging errors and exceptions.
+	 * @param  mixed         production, development mode, autodetection or IP address(es) whitelist.
+	 * @param  string        error log directory; enables logging in production mode, FALSE means that logging is disabled
+	 * @param  string        administrator email; enables email sending in production mode
+	 * @return void
 	 */
-	public static function _init()
+	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
 	{
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		if (isset($_SERVER['REQUEST_URI'])) {
@@ -155,38 +158,6 @@ final class Debugger
 		} else {
 			self::$source = empty($_SERVER['argv']) ? 'CLI' : 'CLI: ' . implode(' ', $_SERVER['argv']);
 		}
-
-		self::$logger = new Logger;
-		self::$logDirectory = & self::$logger->directory;
-		self::$email = & self::$logger->email;
-		self::$mailer = & self::$logger->mailer;
-		self::$emailSnooze = & Logger::$emailSnooze;
-
-		self::$fireLogger = new FireLogger;
-		self::$blueScreen = new BlueScreen;
-
-		self::$bar = new Bar;
-		self::$bar->addPanel(new DefaultBarPanel('time'));
-		self::$bar->addPanel(new DefaultBarPanel('memory'));
-		self::$bar->addPanel(new DefaultBarPanel('errors'), __CLASS__ . ':errors'); // filled by _errorHandler()
-		self::$bar->addPanel(new DefaultBarPanel('dumps'), __CLASS__ . ':dumps'); // filled by barDump()
-	}
-
-
-
-	/********************* errors and exceptions reporting ****************d*g**/
-
-
-
-	/**
-	 * Enables displaying or logging errors and exceptions.
-	 * @param  mixed         production, development mode, autodetection or IP address(es) whitelist.
-	 * @param  string        error log directory; enables logging in production mode, FALSE means that logging is disabled
-	 * @param  string        administrator email; enables email sending in production mode
-	 * @return void
-	 */
-	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
-	{
 		error_reporting(E_ALL | E_STRICT);
 
 		// production/development mode detection
@@ -239,6 +210,7 @@ final class Debugger
 			register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
 			set_exception_handler(array(__CLASS__, '_exceptionHandler'));
 			set_error_handler(array(__CLASS__, '_errorHandler'));
+			class_exists('Tracy\Helpers');
 			self::$enabled = TRUE;
 		}
 	}
@@ -250,6 +222,9 @@ final class Debugger
 	 */
 	public static function getBlueScreen()
 	{
+		if (!self::$blueScreen) {
+			self::$blueScreen = new BlueScreen;
+		}
 		return self::$blueScreen;
 	}
 
@@ -260,6 +235,13 @@ final class Debugger
 	 */
 	public static function getBar()
 	{
+		if (!self::$bar) {
+			self::$bar = new Bar;
+			self::$bar->addPanel(new DefaultBarPanel('time'));
+			self::$bar->addPanel(new DefaultBarPanel('memory'));
+			self::$bar->addPanel(new DefaultBarPanel('errors'), __CLASS__ . ':errors'); // filled by _errorHandler()
+			self::$bar->addPanel(new DefaultBarPanel('dumps'), __CLASS__ . ':dumps'); // filled by barDump()
+		}
 		return self::$bar;
 	}
 
@@ -280,6 +262,13 @@ final class Debugger
 	 */
 	public static function getLogger()
 	{
+		if (!self::$logger) {
+			self::$logger = new Logger;
+			self::$logger->directory = & self::$logDirectory;
+			self::$logger->email = & self::$email;
+			self::$logger->mailer = & self::$mailer;
+			Logger::$emailSnooze = & self::$emailSnooze;
+		}
 		return self::$logger;
 	}
 
@@ -290,6 +279,9 @@ final class Debugger
 	 */
 	public static function getFireLogger()
 	{
+		if (!self::$fireLogger) {
+			self::$fireLogger = new FireLogger;
+		}
 		return self::$fireLogger;
 	}
 
@@ -606,7 +598,3 @@ final class Debugger
 	}
 
 }
-
-
-
-Debugger::_init();
