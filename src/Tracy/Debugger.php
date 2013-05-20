@@ -27,7 +27,7 @@ use Tracy;
 final class Debugger
 {
 	/** @var bool in production mode is suppressed any debugging output */
-	public static $productionMode;
+	public static $productionMode = self::DETECT;
 
 	/** @var int timestamp with microseconds of the start of the request */
 	public static $time;
@@ -77,6 +77,25 @@ final class Debugger
 	/** @var mixed {@link Debugger::tryError()} FALSE means catching is disabled */
 	private static $lastError = FALSE;
 
+	/** @internal */
+	public static $errorTypes = array(
+		E_ERROR => 'Fatal Error',
+		E_USER_ERROR => 'User Error',
+		E_RECOVERABLE_ERROR => 'Recoverable Error',
+		E_CORE_ERROR => 'Core Error',
+		E_COMPILE_ERROR => 'Compile Error',
+		E_PARSE => 'Parse Error',
+		E_WARNING => 'Warning',
+		E_CORE_WARNING => 'Core Warning',
+		E_COMPILE_WARNING => 'Compile Warning',
+		E_USER_WARNING => 'User Warning',
+		E_NOTICE => 'Notice',
+		E_USER_NOTICE => 'User Notice',
+		E_STRICT => 'Strict standards',
+		E_DEPRECATED => 'Deprecated',
+		E_USER_DEPRECATED => 'User Deprecated',
+	);
+
 	/********************* logging ****************d*g**/
 
 	/** @var Logger */
@@ -97,6 +116,13 @@ final class Debugger
 	/** @deprecated */
 	public static $emailSnooze;
 
+	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
+	const DEBUG = 'debug',
+		INFO = 'info',
+		WARNING = 'warning',
+		ERROR = 'error',
+		CRITICAL = 'critical';
+
 	/********************* debug bar ****************d*g**/
 
 	/** @var Bar */
@@ -108,14 +134,6 @@ final class Debugger
 	/** @var DefaultBarPanel */
 	private static $dumpPanel;
 
-	/********************* Firebug extension ****************d*g**/
-
-	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
-	const DEBUG = 'debug',
-		INFO = 'info',
-		WARNING = 'warning',
-		ERROR = 'error',
-		CRITICAL = 'critical';
 
 
 
@@ -136,7 +154,6 @@ final class Debugger
 	public static function _init()
 	{
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
-		self::$productionMode = self::DETECT;
 		if (isset($_SERVER['REQUEST_URI'])) {
 			self::$source = (isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
 				. (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : ''))
@@ -321,15 +338,8 @@ final class Debugger
 			return;
 		}
 
-		// fatal error handler
-		static $types = array(
-			E_ERROR => 1,
-			E_CORE_ERROR => 1,
-			E_COMPILE_ERROR => 1,
-			E_PARSE => 1,
-		);
 		$error = error_get_last();
-		if (isset($types[$error['type']])) {
+		if (in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE))) {
 			$exception = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
 			if (function_exists('xdebug_get_function_stack')) {
 				$stack = array();
@@ -353,7 +363,6 @@ final class Debugger
 			self::_exceptionHandler($exception);
 		}
 
-		// debug bar (require HTML & development mode)
 		if (!connection_aborted() && self::$bar && !self::$productionMode && self::isHtmlMode()) {
 			self::$bar->render();
 		}
@@ -464,18 +473,7 @@ final class Debugger
 			self::_exceptionHandler(new ErrorException($message, 0, $severity, $file, $line, NULL, $context));
 		}
 
-		static $types = array(
-			E_WARNING => 'Warning',
-			E_COMPILE_WARNING => 'Warning', // currently unable to handle
-			E_USER_WARNING => 'Warning',
-			E_NOTICE => 'Notice',
-			E_USER_NOTICE => 'Notice',
-			E_STRICT => 'Strict standards',
-			E_DEPRECATED => 'Deprecated',
-			E_USER_DEPRECATED => 'Deprecated',
-		);
-
-		$message = 'PHP ' . (isset($types[$severity]) ? $types[$severity] : 'Unknown error') . ": $message";
+		$message = 'PHP ' . (isset(self::$errorTypes[$severity]) ? self::$errorTypes[$severity] : 'Unknown error') . ": $message";
 		$count = & self::$errorPanel->data["$message|$file|$line"];
 
 		if ($count++) { // repeated error
