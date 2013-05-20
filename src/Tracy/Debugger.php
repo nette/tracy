@@ -340,27 +340,7 @@ final class Debugger
 
 		$error = error_get_last();
 		if (in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE))) {
-			$exception = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
-			if (function_exists('xdebug_get_function_stack')) {
-				$stack = array();
-				foreach (array_slice(array_reverse(xdebug_get_function_stack()), 1, -1) as $row) {
-					$frame = array(
-						'file' => $row['file'],
-						'line' => $row['line'],
-						'function' => isset($row['function']) ? $row['function'] : '*unknown*',
-						'args' => array(),
-					);
-					if (!empty($row['class'])) {
-						$frame['type'] = isset($row['type']) && $row['type'] === 'dynamic' ? '->' : '::';
-						$frame['class'] = $row['class'];
-					}
-					$stack[] = $frame;
-				}
-				$ref = new \ReflectionProperty('Exception', 'trace');
-				$ref->setAccessible(TRUE);
-				$ref->setValue($exception, $stack);
-			}
-			self::_exceptionHandler($exception);
+			self::_exceptionHandler(Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])));
 		}
 
 		if (!connection_aborted() && self::$bar && !self::$productionMode && self::isHtmlMode()) {
