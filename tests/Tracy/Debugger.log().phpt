@@ -36,7 +36,7 @@ class TestLogger
 
 
 test(function() {
-	Debugger::$logger = new TestLogger('Exception: First in %a%:%d%');
+	Debugger::setLogger(new TestLogger('Exception: First in %a%:%d%'));
 	$e = new Exception('First');
 	Debugger::log($e);
 });
@@ -44,7 +44,7 @@ test(function() {
 
 
 test(function() {
-	Debugger::$logger = new TestLogger("RuntimeException: Third in %a%:%d%\ncaused by InvalidArgumentException: Second in %a%:%d%\ncaused by Exception: First in %a%:%d%");
+	Debugger::setLogger(new TestLogger("RuntimeException: Third in %a%:%d%\ncaused by InvalidArgumentException: Second in %a%:%d%\ncaused by Exception: First in %a%:%d%"));
 	$e = new Exception('First');
 	$e = new InvalidArgumentException('Second', 0, $e);
 	$e = new RuntimeException('Third', 0, $e);
