@@ -51,7 +51,7 @@ $counter = 0;
 
 	<title><?php echo htmlspecialchars($title) ?></title><!-- <?php
 		$ex = $exception; echo htmlspecialchars($ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''));
-		while ((method_exists($ex, 'getPrevious') && $ex = $ex->getPrevious()) || (isset($ex->previous) && $ex = $ex->previous)) echo htmlspecialchars('; caused by ' . get_class($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''));
+		while ($ex = $ex->getPrevious()) echo htmlspecialchars('; caused by ' . get_class($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''));
 	?> -->
 
 	<style type="text/css" class="nette-debug">
@@ -72,7 +72,7 @@ $counter = 0;
 			<p><?php echo htmlspecialchars($exception->getMessage()) ?> <a href="http://www.google.cz/search?sourceid=nette&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" id="netteBsSearch">search&#x25ba;</a></p>
 		</div>
 
-		<?php if ((method_exists($exception, 'getPrevious') && $prev = $exception->getPrevious()) || (isset($exception->previous) && $prev = $exception->previous)): ?>
+		<?php if ($prev = $exception->getPrevious()): ?>
 		<div class="caused">
 			<a href="#netteCaused">Caused by <?php echo get_class($prev) ?></a>
 		</div>
@@ -200,7 +200,7 @@ $counter = 0;
 			</div></div>
 			<?php endif ?>
 
-		<?php } while ((method_exists($ex, 'getPrevious') && $ex = $ex->getPrevious()) || (isset($ex->previous) && $ex = $ex->previous)); ?>
+		<?php } while ($ex = $ex->getPrevious()); ?>
 		<?php while (--$level) echo '</div></div>' ?>
 
 
