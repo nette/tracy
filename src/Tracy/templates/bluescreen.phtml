@@ -50,8 +50,8 @@ $counter = 0;
 	<meta name="generator" content="Nette Framework">
 
 	<title><?php echo htmlspecialchars($title) ?></title><!-- <?php
-		$ex = $exception; echo htmlspecialchars($ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''));
-		while ($ex = $ex->getPrevious()) echo htmlspecialchars('; caused by ' . get_class($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''));
+		$ex = $exception; echo htmlspecialchars($ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE);
+		while ($ex = $ex->getPrevious()) echo htmlspecialchars('; caused by ' . get_class($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE);
 	?> -->
 
 	<style type="text/css" class="nette-debug">
@@ -69,7 +69,7 @@ $counter = 0;
 		<div id="netteBluescreenError" class="panel">
 			<h1><?php echo htmlspecialchars($title), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 
-			<p><?php echo htmlspecialchars($exception->getMessage()) ?> <a href="http://www.google.cz/search?sourceid=nette&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" id="netteBsSearch">search&#x25ba;</a></p>
+			<p><?php echo htmlspecialchars($exception->getMessage(), ENT_IGNORE) ?> <a href="http://www.google.cz/search?sourceid=nette&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" id="netteBsSearch">search&#x25ba;</a></p>
 		</div>
 
 		<?php if ($prev = $exception->getPrevious()): ?>
@@ -90,7 +90,7 @@ $counter = 0;
 				<div class="panel">
 					<h1><?php echo htmlspecialchars(get_class($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : '')) ?></h1>
 
-					<p><b><?php echo htmlspecialchars($ex->getMessage()) ?></b></p>
+					<p><b><?php echo htmlspecialchars($ex->getMessage(), ENT_IGNORE) ?></b></p>
 				</div>
 			<?php endif ?>
 
@@ -281,7 +281,7 @@ $counter = 0;
 			<table>
 			<?php
 			foreach (get_included_files() as $v) {
-				echo '<tr><td>', htmlspecialchars($v), "</td></tr>\n";
+				echo '<tr><td>', htmlspecialchars($v, ENT_IGNORE), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -337,7 +337,7 @@ $counter = 0;
 			<h3>Headers</h3>
 			<?php if (headers_list()): ?>
 			<pre><?php
-			foreach (headers_list() as $s) echo htmlspecialchars($s), '<br>';
+			foreach (headers_list() as $s) echo htmlspecialchars($s, ENT_IGNORE), '<br>';
 			?></pre>
 			<?php else: ?>
 			<p><i>no headers</i></p>
@@ -360,9 +360,9 @@ $counter = 0;
 		<ul>
 			<li>Report generated at <?php echo @date('Y/m/d H:i:s', Debugger::$time) ?></li>
 			<?php if (preg_match('#^https?://#', Debugger::$source)): ?>
-				<li><a href="<?php echo htmlSpecialChars(Debugger::$source) ?>"><?php echo htmlSpecialChars(Debugger::$source) ?></a></li>
+				<li><a href="<?php echo htmlSpecialChars(Debugger::$source, ENT_IGNORE | ENT_QUOTES) ?>"><?php echo htmlSpecialChars(Debugger::$source, ENT_IGNORE) ?></a></li>
 			<?php elseif (Debugger::$source): ?>
-				<li><?php echo htmlSpecialChars(Debugger::$source) ?></li>
+				<li><?php echo htmlSpecialChars(Debugger::$source, ENT_IGNORE) ?></li>
 			<?php endif ?>
 			<li>PHP <?php echo htmlSpecialChars(PHP_VERSION) ?></li>
 			<?php if (isset($_SERVER['SERVER_SOFTWARE'])): ?><li><?php echo htmlSpecialChars($_SERVER['SERVER_SOFTWARE']) ?></li><?php endif ?>
