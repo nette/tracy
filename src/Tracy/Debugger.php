@@ -450,7 +450,7 @@ final class Debugger
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
-			if (Helpers::findTrace(debug_backtrace(FALSE), '*::__toString')) {
+			if (Helpers::findTrace(debug_backtrace(PHP_VERSION_ID >= 50306 ? DEBUG_BACKTRACE_IGNORE_ARGS : FALSE), '*::__toString')) {
 				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
 				self::_exceptionHandler(new ErrorException($message, 0, $severity, $file, $line, $previous, $context));
 			}

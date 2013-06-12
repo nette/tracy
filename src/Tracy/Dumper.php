@@ -301,7 +301,7 @@ class Dumper
 	 */
 	private static function findLocation()
 	{
-		foreach (debug_backtrace(FALSE) as $item) {
+		foreach (debug_backtrace(PHP_VERSION_ID >= 50306 ? DEBUG_BACKTRACE_IGNORE_ARGS : FALSE) as $item) {
 			if (isset($item['file']) && strpos($item['file'], __DIR__) === 0) {
 				continue;
 
