@@ -21,10 +21,10 @@ header('Content-Type: text/plain');
 Debugger::enable();
 
 Debugger::$onFatalError[] = function() {
-	Assert::match(extension_loaded('xdebug') ? "exception 'Tracy\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
+	Assert::match(extension_loaded('xdebug') ? "exception 'Tracy\\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
 Stack trace:
 #0 {main}
-" : "exception 'Tracy\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
+" : "exception 'Tracy\\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%:%d%
 Stack trace:
 #0 [internal function]: %ns%Debugger::_shutdownHandler()
 #1 {main}

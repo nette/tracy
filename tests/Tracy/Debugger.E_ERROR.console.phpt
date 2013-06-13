@@ -23,7 +23,7 @@ Debugger::enable();
 Debugger::$onFatalError[] = function() {
 	Assert::match(extension_loaded('xdebug') ? "
 Fatal error: Call to undefined function missing_funcion() in %a%
-exception 'Tracy\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%
+exception 'Tracy\\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%
 Stack trace:
 #0 %a%: third()
 #1 %a%: second()
@@ -31,7 +31,7 @@ Stack trace:
 #3 {main}
 " : "
 Fatal error: Call to undefined function missing_funcion() in %a%
-exception 'Tracy\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%
+exception 'Tracy\\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%
 Stack trace:
 #0 [internal function]: %ns%Debugger::_shutdownHandler()
 #1 {main}

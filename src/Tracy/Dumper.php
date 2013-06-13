@@ -119,7 +119,7 @@ class Dumper
 	 * @param  int    current recursion level
 	 * @return string
 	 */
-	private static function dumpVar(&$var, array $options, $level = 0)
+	private static function dumpVar(& $var, array $options, $level = 0)
 	{
 		if (method_exists(__CLASS__, $m = 'dump' . gettype($var))) {
 			return self::$m($var, $options, $level);
@@ -137,21 +137,21 @@ class Dumper
 
 
 
-	private static function dumpBoolean(&$var)
+	private static function dumpBoolean(& $var)
 	{
 		return '<span class="nette-dump-bool">' . ($var ? 'TRUE' : 'FALSE') . "</span>\n";
 	}
 
 
 
-	private static function dumpInteger(&$var)
+	private static function dumpInteger(& $var)
 	{
 		return "<span class=\"nette-dump-number\">$var</span>\n";
 	}
 
 
 
-	private static function dumpDouble(&$var)
+	private static function dumpDouble(& $var)
 	{
 		$var = var_export($var, TRUE);
 		return '<span class="nette-dump-number">' . $var . (strpos($var, '.') === FALSE ? '.0' : '') . "</span>\n";
@@ -159,7 +159,7 @@ class Dumper
 
 
 
-	private static function dumpString(&$var, $options)
+	private static function dumpString(& $var, $options)
 	{
 		return '<span class="nette-dump-string">'
 			. self::encodeString($options[self::TRUNCATE] && strlen($var) > $options[self::TRUNCATE] ? substr($var, 0, $options[self::TRUNCATE]) . ' ... ' : $var)
@@ -168,7 +168,7 @@ class Dumper
 
 
 
-	private static function dumpArray(&$var, $options, $level)
+	private static function dumpArray(& $var, $options, $level)
 	{
 		static $marker;
 		if ($marker === NULL) {
@@ -187,7 +187,7 @@ class Dumper
 			$collapsed = $level ? count($var) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
 			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . ">";
 			$var[$marker] = TRUE;
-			foreach ($var as $k => &$v) {
+			foreach ($var as $k => & $v) {
 				if ($k !== $marker) {
 					$out .= '<span class="nette-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="nette-dump-key">' . (preg_match('#^\w+\z#', $k) ? $k : self::encodeString($k)) . '</span> => '
@@ -204,7 +204,7 @@ class Dumper
 
 
 
-	private static function dumpObject(&$var, $options, $level)
+	private static function dumpObject(& $var, $options, $level)
 	{
 		if ($var instanceof \Closure) {
 			$rc = new \ReflectionFunction($var);
@@ -218,7 +218,7 @@ class Dumper
 		} elseif ($var instanceof \SplObjectStorage) {
 			$fields = array();
 			foreach (clone $var as $obj) {
-				$fields[] = array('object' => $obj/**/, 'data' => $var[$obj]/**/);
+				$fields[] = array('object' => $obj, 'data' => $var[$obj]);
 			}
 		} else {
 			$fields = (array) $var;
@@ -237,7 +237,7 @@ class Dumper
 			$collapsed = $level ? count($fields) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
 			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . "</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . ">";
 			$list[] = $var;
-			foreach ($fields as $k => &$v) {
+			foreach ($fields as $k => & $v) {
 				$vis = '';
 				if ($k[0] === "\x00") {
 					$vis = ' <span class="nette-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
@@ -257,7 +257,7 @@ class Dumper
 
 
 
-	private static function dumpResource(&$var, $options, $level)
+	private static function dumpResource(& $var, $options, $level)
 	{
 		$type = get_resource_type($var);
 		$out = '<span class="nette-dump-resource">' . htmlSpecialChars($type) . ' resource</span>';

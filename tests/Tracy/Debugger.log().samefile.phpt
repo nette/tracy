@@ -21,18 +21,18 @@ Tester\Helpers::purge(Debugger::$logDirectory);
 
 
 function foo($fp) {
-    throw new Exception;
+	throw new Exception;
 }
 
 
 for ($i = 0; $i < 3; $i++) {
-    $path = TEMP_DIR . "/$i";
-    try {
-        $files[] = $file = fopen(TEMP_DIR . "/$i", 'w');
-        foo($file);
-    } catch(Exception $e) {
-        $name[] = Debugger::log($e);
-    }
+	$path = TEMP_DIR . "/$i";
+	try {
+		$files[] = $file = fopen(TEMP_DIR . "/$i", 'w');
+		foo($file);
+	} catch(Exception $e) {
+		$name[] = Debugger::log($e);
+	}
 }
 
 while (--$i > 0) {

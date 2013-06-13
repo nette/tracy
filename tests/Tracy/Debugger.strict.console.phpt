@@ -22,7 +22,7 @@ Debugger::$strictMode = TRUE;
 Debugger::enable();
 
 Debugger::$onFatalError[] = function() {
-	Assert::match("exception 'Tracy\ErrorException' with message 'Undefined variable: x' in %a%
+	Assert::match("exception 'Tracy\\ErrorException' with message 'Undefined variable: x' in %a%
 Stack trace:
 #0 %a%: %ns%Debugger::_errorHandler(8, '%a%', '%a%', %a%, Array)
 #1 %a%: third(Array)
