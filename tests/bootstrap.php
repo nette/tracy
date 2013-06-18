@@ -31,3 +31,9 @@ if (extension_loaded('xdebug')) {
 	xdebug_disable();
 	Tester\CodeCoverage\Collector::start(__DIR__ . '/coverage.dat');
 }
+
+
+function test(\Closure $function)
+{
+	$function();
+}
