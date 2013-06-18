@@ -22,7 +22,7 @@ Debugger::enable();
 
 register_shutdown_function(function(){
 	preg_match('#debug.innerHTML = (".*");#', ob_get_clean(), $m);
-	Assert::match(file_get_contents(__DIR__ . '/Debugger.barDump().001.expect'), json_decode($m[1]));
+	Assert::match(file_get_contents(__DIR__ . '/Debugger.barDump().expect'), json_decode($m[1]));
 });
 ob_start();
 
