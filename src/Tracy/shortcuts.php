@@ -14,17 +14,6 @@ use Tracy\Debugger;
 
 
 /**
- * Tracy\Debugger::enable() shortcut.
- */
-function debug()
-{
-	Debugger::$strictMode = TRUE;
-	Debugger::enable(Debugger::DEVELOPMENT);
-}
-
-
-
-/**
  * Tracy\Debugger::dump() shortcut.
  */
 function dump($var)
