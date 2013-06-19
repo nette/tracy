@@ -2,24 +2,25 @@
 ==============================================
 
 
-Library Tracy is a useful everyday helper PHP programmer. It will help you
+Tracy library is a useful PHP everyday programmer's helper. It helps you to:
 
 - quickly detect and correct errors
 - log errors
-- as listing variables
-- and measure the time
+- dump variables
+- measure the time
 
 
-PHP is a language for chopping hardly stripped errors as perfect as it gives developers a great deal of flexibility.
-That is a valuable debugging tool Tracy\Debugger. Among the diagnostic tools for PHP is the ultimate.
-If you are now experiencing Tracy first time, believe me, your life starts to divide Tracy the one before and the one with her.
+PHP is a perfect language for making hardly detectable errors because it gives a great flexibility to programmers. Tracy\Debugger is more valuable because of that. It is a ultimate tool among the diagnostic ones.
+If you are meeting Tracy the first time, believe me, your life starts to be divided one before the Tracy and the one with her.
 Welcome to the good part!
 
-The best way to install Tracy is to download latest package from http://tracy.nette.org or using Composer:
+The best way how to install Tracy is to download a latest package from http://tracy.nette.org or use a Composer:
 
-		php composer.phar require tracy/tracy
+```
+php composer.phar require tracy/tracy
+```
 
-Tracy easily activate, simply enter the code, preferably immediately after the reading framework, add:
+It is easy to activate Tracy. Preferably immediately after libraries loading add code:
 
 ```php
 use Tracy\Debugger;
@@ -27,23 +28,29 @@ use Tracy\Debugger;
 Debugger::enable();
 ```
 
-The first thing you notice on the site is Debugger Bar.
+The first thing you notice on the web site is a Debugger Bar.
+
+
+
 
 
 Debugger Bar
 ------------
 
-Debugger Bar is a floating panel that is displayed in the lower right corner of the page. We can move the mouse, and after reloading the page will remember its position.
+The Debugger Bar is a floating panel. It is displayed in the bottom right corner of a page. You can move it by the mouse. It will remember its position after the page reloading.
 
 ![Debugger-Bar](http://files.nette.org/2910/debugger-bar.png)
 
-Do Debugger Bar can add other useful panels. A number of them can be found in http://addons.nette.org.
+You can add other useful panels into the Debugger Bar. A lot of them can be found at http://addons.nette.org.
+
+
+
 
 
 Visualization of errors and exceptions
---------------------------
+--------------------------------------
 
-Surely you know how PHP reports errors: in the source code of the page will output something like this:
+Surely, you know how PHP reports errors: there is something like this in the page source code:
 
 ```pre
 <b>Parse error</b>:  syntax error, unexpected T_STRING in <b>DashboardPresenter.php</b> on line <b>8</b>
@@ -65,30 +72,27 @@ Stack trace:
   thrown in <b>D:\Web\Nette.web\libs\Nette\ObjectMixin.php</b> on line <b>69</b>
 ```
 
-In this extract is not very easy to navigate. If we switch Tracy, error or exception is displayed completely in a different form:
+It is not so easy to navigate throw this output. If you enable the Tracy, errors or exceptions are displayed completely in a different form:
 
 
-[![Uncaught exception in design Tracy](http://files.nette.org/2910/debugger1.png)](http://examples.nette.org/ndebug/nette-exception.html)
+[![Uncaught exception rendered by Tracy](http://files.nette.org/2910/debugger1.png)](http://examples.nette.org/ndebug/nette-exception.html)
 
 
-Error message literally screams, we see part of the source code with the highlighted line where the error occurred, information Call to undefined method Nette\Http\User::isLogedIn() clearly explains your error is. The entire site is also live, we can click through to more detail. Try it.
+The error message literally screams. You can see a part of the source code with the highlighted line where the error occurred. A message **Call to undefined method Nette\Http\User::isLogedIn()** clearly explains an error. The entire site is interactive. You can click through for more details. Try it.
 
-And you know what? In this way, capture and display a fatal error. Without the need to install any extension.
+And you know what? A fatal errors are captured and displayed in the same way. No need to install any extension.
 
 
-[![Uncaught exception in design Tracy](http://files.nette.org/2910/debugger2.png)](http://examples.nette.org/ndebug/nette-error.html)
+[![Fatal error rendered by Tracy](http://files.nette.org/2910/debugger2.png)](http://examples.nette.org/ndebug/nette-error.html)
 
-Errors as a typo in a variable name or an attempt to open a nonexistent file, generate reports of level E_NOTICE or E_WARNING. These can be in graphics page makes it easy to overlook even be visible at all (except by looking at the page code).
+Errors like a typo in a variable name or an attempt to open a nonexistent file generate reports of E_NOTICE or E_WARNING level. These can be easily overlooked and/or can be completly hidden in a web page graphic layout. Let Tracy to manage them:
 
 ```php
 Debugger::$strictMode = TRUE;
 ```
 
 
-To detect typos even when assigned to an object variable, we inherit his class from Nette\Object.
-
-
-We can also change the depth of nesting by `Debugger::$maxDepth` and length label displayed by `Debugger::$maxLen`. Lower values Tracy naturally accelerates.
+You can also change the nesting depth by `Debugger::$maxDepth` and displayed strings length by `Debugger::$maxLen`. Naturally, lower values accelerates Tracy rendering.
 
 ```php
 Debugger::$maxDepth = 2; // default: 3
@@ -96,54 +100,61 @@ Debugger::$maxLen = 50; // default: 150
 ```
 
 
+
+
+
 Production mode and error logging
--------------------------------
+---------------------------------
 
-As you can see, is quite eloquent Tracy, which can be appreciated in the development environment, while on the production server it would cause disaster ready. There is no debugging information list can not. Tracy therefore has autodetection environment and where to run stark example of a server error instead of showing zaloguje a visitor sees only user-comprehensible message:
+As you can see, Tracy is quite eloquent. It is appreciated in a development environment, but on a production server it would cause disaster. There cannot be listed any debugging information. Therefore Tracy has an environment autodetection and logging functionality. Instead of showing self, Tracy stores information into log file and shows a server error with user-comprehensible message to visitor:
 
-![Tracy](http://files.nette.org/2910/debugger3.png)
+![Server Error 500](http://files.nette.org/2910/debugger3.png)
 
-Output mode suppresses all debugging information that we send out via `Debugger::dump()` or `Debugger::fireLog()`, and of course all the error messages generated by PHP. So if you have forgotten the code `Debugger::dump($obj)`, do not have to worry about on a production server does not list anything.
+An output mode suppresses all debugging information which are sent out via `Debugger::dump()` or `Debugger::fireLog()`, and of course all error messages generated by PHP. So, if you forget `Debugger::dump($obj)` in the source code, you do not have to worry about it on a production server. Nothing will be listed.
 
-The mode switching is used the first parameter of `Debugger::enable()`, where you can specify either a constant `Debugger::PRODUCTION` or `Debugger::DEVELOPMENT`.
+The output mode is switched by the first parameter of `Debugger::enable()`. You can specify either a constant `Debugger::PRODUCTION` or `Debugger::DEVELOPMENT`.
 
-If it is not specified, the default value of `Debugger::DETECT` in which case the system detects a server by IP address - if available via the public IP address running in production mode, where the local and the developer. In most cases it is not necessary to set the mode to recognize and correctly depending on whether you are launching an application on your local server or in production.
+If it is not specified, the default value `Debugger::DETECT` is used. In this case the system detects a server by IP address. The production mode is choosed if an application is accessed via public IP address. A local IP address leads to development mode. It is not necessary to set the mode in most cases. The mode is correctly recognized when you are launching the application on your local server or in production.
 
-In production mode automatically Tracy all errors and exceptions captured logs to a text log. Unless you specify otherwise, it will be a set of log/error.log . Error while logging is extremely useful. Imagine that all users of your application are actually betatesters who are doing cutting-edge work for free in search of bugs and you do stupid if you threw away their valuable reports unnoticed to the recycle bin.
+In the production mode, Tracy automatically capture all errors and exceptions into a text log. Unless you specify otherwise, it will be a set of log/error.log. This error logging is extremely useful. Imagine, that all users of your application are actually betatesters. They are doing cutting-edge work for free when hunting bugs and you would be silly if you threw away their valuable reports to a recycle bin unnoticed.
 
-If you need a log in your own message or you caught an exception, use the method `log()`:
+If you need a own messages logging or you caught an exception, use the method `log()`:
 
 ```php
 Debugger::log('Unexpected error'); // text message
 
 try {
-	failureOperation();
+	criticalOperation();
 } catch (Exception $e) {
 	Debugger::log($e); // log exception
-	// or Debugger::log($e, Debugger::ERROR) // sends also an email notification
+	// or
+	Debugger::log($e, Debugger::ERROR) // sends also an email notification
 }
 ```
 
-Different directory for logging errors can be set by the second parameter methods enable():
+A directory for errors logging can be set by the second parameter of enable() method:
 
 ```php
 Debugger::enable(Debugger::DETECT, __DIR__ . '/mylog');
 ```
 
-Ringer for the real error log is a key source of information and wants to be informed immediately of any new error. Tracy him in that caters to, is capable of a new record in the log inform you by e-mail. Where do you send the e-mails we identify the variable $email:
+For a real professional is the error log a key source of information and he wants to be noticed about any new error immediately. Tracy helps him. She is capable to send an email on every new error record. The variable $email identify where to send the e-mails:
 
 ```php
 Debugger::$email = 'admin@example.com';
 ```
 
 
-However, in order to overwhelm you e-mail box, sends **only one message** and creates a file `email-sent`. Developer when you receive e-mail notifications check the log, correct application and monitoring deletes a file, which in turn activates the sending of e-mails.
+To protect your e-mail box from flood, Tracy sends **the only one message** and creates a file `email-sent`. When developer receives an e-mail notification, he checks the log, corrects application and deletes the monitoring file. It activates the e-mails sending back.
 
 
-Dump variables
----------------
 
-Each tuner is a good friend with the function `var_dump` in detail, lists the contents of the variable. Unfortunately, the environment loses HTML formatting and extract decanted into a single line of HTML code sanitizaci not to mention. In practice, it is necessary `var_dump` replace handier functions. That is just `Debugger::dump()`.
+
+
+Variables dumping
+-----------------
+
+Each debugging developer is a good friend with the function `var_dump` which lists a content of a variable in detail. Unfortunately, the output is without HTML formatting and decants dump into a single line of HTML code. Not to mention an context escaping. It is necessary replace the `var_dump` by a handier function. That is just `Debugger::dump()`.
 
 ```php
 $arr = array(10, 20.2, TRUE, NULL, 'hello');
@@ -166,37 +177,40 @@ generates the output:
 ```
 
 
-Timing
------------
 
-Another useful tool is the debugger stopwatch accurate to microseconds:
+
+
+Timing
+------
+
+An another useful tool is a debugger stopwatch with a precision of microseconds:
 
 ```php
 Debugger::timer();
 
-// sweet dreams ma cherrie
+// sweet dreams my cherrie
 sleep(2);
 
 $elapsed = Debugger::timer();
-// $elapsed ? 2
+// $elapsed = 2
 ```
 
-An optional parameter can be achieved by multiple measurements.
+Multiple measurements can be achieved by an optional parameter.
 
 ```php
 Debugger::timer('page-generating');
-// some conde
-Debugger::timer('rss-generating');
-
 // some code
+
+Debugger::timer('rss-generating');
+// some code
+
 $rssElapsed = Debugger::timer('rss-generating');
 $pageElapsed = Debugger::timer('page-generating');
 ```
 
 
-
 ```php
-Debugger::timer(); // runs timer
+Debugger::timer(); // runs the timer
 
 ... // some difficult operation
 
@@ -208,22 +222,22 @@ echo Debugger::timer(); // elapsed time in seconds
 
 
 Firebug and FireLogger
---------------------
+----------------------
 
-We can not always send debugging information to the browser window. This applies to Ajax requests, or generate XML output files. In such a case, we can send messages to a separate channel in Firebug. Errors Notice and Warning levels are to Firebug window even sent automatically. It is also possible to log exceptions caught while an application, but it is worth it to draw attention to them.
+You cannot send debugging information to the browser window always. This applies to Ajax requests, or generating XML files to output. In such cases, you can send the messages by a separate channel into Firebug. Error, Notice and Warning levels are sent to Firebug window automatically. It is also possible to log suppressed exceptions in running application when attention to them is important.
 
 How to do it?
 
 1) download and run Firefox browser
 2) download extension [Firebug](http://www.getfirebug.com)
 3) download extension  [FireLogger](http://firelogger.binaryage.com)
-4) restart browser, turn on Firebug (klávesou F12) and enable network (Net) and Logger
+4) restart browser, turn on Firebug (key F12) and enable network (Net) and Logger panels
 
 
-... Open our utility panel and click on the Console. Ha! I moved error message.
+... Open our utility panel and click on the Console. Ha!, error message has been moved there.
 
 
-Because Tracy\Debugger communicates with Firebug via HTTP headers, you must call the logging function even before the PHP script sends anything to the output. It is also possible to enable output buffering and the output delay.
+Because the Tracy\Debugger communicates with Firebug via an HTTP headers, you must call the logging function before the PHP script sends anything to the output. It is also possible to enable the output buffering and delay the output.
 
 ```php
 use Tracy\Debugger;
@@ -238,6 +252,9 @@ Debugger::fireLog(new Exception('Test Exception')); // or exceptions
 The result looks like this:
 
 ![FireLogger](http://files.nette.org/2910/firelogger.png)
+
+
+
 
 
 -----
