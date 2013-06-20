@@ -13,6 +13,7 @@
 
 
 <body>
+%A%
 <div id="netteBluescreen">
 	<a id="netteBluescreenIcon" href="#" class="nette-toggle"></a>
 	<div>

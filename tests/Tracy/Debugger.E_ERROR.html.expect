@@ -15,6 +15,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 
 <body>
+%A%
 <div id="netteBluescreen">
 	<a id="netteBluescreenIcon" href="#" class="nette-toggle"></a>
 	<div>
