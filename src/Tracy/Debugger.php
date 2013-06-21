@@ -111,10 +111,10 @@ final class Debugger
 	public static $email;
 
 	/** @deprecated */
-	public static $mailer;
+	public static $mailer = array('Tracy\Logger', 'defaultMailer');
 
 	/** @deprecated */
-	public static $emailSnooze;
+	public static $emailSnooze = 172800;
 
 	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
 	const DEBUG = 'debug',
