@@ -29,7 +29,7 @@ class Logger
 		CRITICAL = 'critical';
 
 	/** @var int interval for sending email is 2 days */
-	public static $emailSnooze = 172800;
+	public $emailSnooze = 172800;
 
 	/** @var callable handler for sending emails */
 	public $mailer = array(__CLASS__, 'defaultMailer');
@@ -61,7 +61,7 @@ class Logger
 		$res = error_log($message . PHP_EOL, 3, $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log');
 
 		if (($priority === self::ERROR || $priority === self::CRITICAL) && $this->email && $this->mailer
-			&& @filemtime($this->directory . '/email-sent') + self::$emailSnooze < time() // @ - file may not exist
+			&& @filemtime($this->directory . '/email-sent') + $this->emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
 			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));

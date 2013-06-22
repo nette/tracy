@@ -267,7 +267,7 @@ final class Debugger
 			self::$logger->directory = & self::$logDirectory;
 			self::$logger->email = & self::$email;
 			self::$logger->mailer = & self::$mailer;
-			Logger::$emailSnooze = & self::$emailSnooze;
+			self::$logger->emailSnooze = & self::$emailSnooze;
 		}
 		return self::$logger;
 	}
