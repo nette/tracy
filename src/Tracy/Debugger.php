@@ -210,7 +210,11 @@ final class Debugger
 			register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
 			set_exception_handler(array(__CLASS__, '_exceptionHandler'));
 			set_error_handler(array(__CLASS__, '_errorHandler'));
-			class_exists('Tracy\Helpers');
+
+			foreach (array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
+				'Tracy\ErrorException', 'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
+				class_exists($class);
+			}
 			self::$enabled = TRUE;
 		}
 	}
