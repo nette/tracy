@@ -63,9 +63,11 @@
 		if (this.is(Panel.WINDOW)) {
 			elem.data().win.focus();
 		} else {
-			clearTimeout(elem.data().blurTimeout);
-			elem.addClass(Panel.FOCUSED).show();
-			elem[0].style.zIndex = Panel.zIndex++;
+			clearTimeout(elem.data().displayTimeout);
+			elem.data().displayTimeout = setTimeout(function() {
+				elem.addClass(Panel.FOCUSED).show();
+				elem[0].style.zIndex = Panel.zIndex++;
+			}, 50);
 		}
 	};
 
@@ -73,7 +75,8 @@
 		var elem = this.elem;
 		elem.removeClass(Panel.FOCUSED);
 		if (this.is(Panel.PEEK)) {
-			elem.data().blurTimeout = setTimeout(function() {
+			clearTimeout(elem.data().displayTimeout);
+			elem.data().displayTimeout = setTimeout(function() {
 				elem.hide();
 			}, 50);
 		}
