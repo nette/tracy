@@ -68,11 +68,9 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 											%a%
 					<a href="#netteBsSrc1-0" class="nette-toggle-collapsed">source</a>&nbsp;
-										third
+																				third
 					()
 					</p>
-
-
 
 											<div class="nette-collapsed" id="netteBsSrc1-0"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
@@ -91,16 +89,15 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 <span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
 </span></span></code></div></pre></div>
 
-					</li>
+
+										</li>
 										<li><p>
 
 											%a%
 					<a href="#netteBsSrc1-1" class="nette-toggle-collapsed">source</a>&nbsp;
-										second
+																				second
 					()
 					</p>
-
-
 
 											<div class="nette-collapsed" id="netteBsSrc1-1"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">Assert</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">match</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">file_get_contents</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">__DIR__&nbsp;</span><span style="color: #D24; font-weight: bold">.&nbsp;(</span><span style="color: #000">extension_loaded</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'xdebug'</span><span style="color: #D24; font-weight: bold">)&nbsp;?&nbsp;</span><span style="color: #080">'/Debugger.E_ERROR.html.xdebug.expect'&nbsp;</span><span style="color: #D24; font-weight: bold">:&nbsp;</span><span style="color: #080">'/Debugger.E_ERROR.html.expect'</span><span style="color: #D24; font-weight: bold">)),&nbsp;</span><span style="color: #000">ob_get_clean</span><span style="color: #D24; font-weight: bold">());
 <span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #000">0</span><span style="color: #D24; font-weight: bold">);
@@ -119,16 +116,15 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 <span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 </span></span></code></div></pre></div>
 
-					</li>
+
+										</li>
 										<li><p>
 
 											%a%
 					<a href="#netteBsSrc1-2" class="nette-toggle-collapsed">source</a>&nbsp;
-										first
+																				first
 					()
 					</p>
-
-
 
 											<div class="nette-collapsed" id="netteBsSrc1-2"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
 <span class='line'>%d%:</span>    }
@@ -144,7 +140,8 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 </span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    </span>
 </span></code></div></pre></div>
 
-					</li>
+
+										</li>
 									</ol>
 			</div></div>
 

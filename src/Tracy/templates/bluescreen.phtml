@@ -130,6 +130,10 @@ $counter = 0;
 					(<?php if (!empty($row['args'])): ?><a href="#netteBsArgs<?php echo "$level-$key" ?>" class="nette-toggle-collapsed">arguments</a><?php endif ?>)
 					</p>
 
+					<?php if (isset($row['file']) && is_file($row['file'])): ?>
+						<div <?php if ($expanded !== $key) echo 'class="nette-collapsed"'; ?> id="netteBsSrc<?php echo "$level-$key" ?>"><?php echo self::highlightFile($row['file'], $row['line']) ?></div>
+					<?php endif ?>
+
 					<?php if (isset($row['object'])): ?>
 						<div class="nette-collapsed outer" id="netteBsObj<?php echo "$level-$key" ?>"><?php echo Dumper::toHtml($row['object']); ?></div>
 					<?php endif ?>
@@ -153,12 +157,6 @@ $counter = 0;
 						</table>
 						</div>
 					<?php endif ?>
-
-
-					<?php if (isset($row['file']) && is_file($row['file'])): ?>
-						<div <?php if ($expanded !== $key) echo 'class="nette-collapsed"'; ?> id="netteBsSrc<?php echo "$level-$key" ?>"><?php echo self::highlightFile($row['file'], $row['line']) ?></div>
-					<?php endif ?>
-
 					</li>
 					<?php endforeach ?>
 				</ol>

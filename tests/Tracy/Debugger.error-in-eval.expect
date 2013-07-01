@@ -51,9 +51,11 @@
 
 											<i>inner-code</i>:%d%
 
-										trigger_error
+																				trigger_error
 					(<a href="#netteBsArgs1-1" class="nette-toggle-collapsed">arguments</a>)
 					</p>
+
+
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-1">
 						<table>
@@ -65,30 +67,29 @@
 </td></tr>
 						</table>
 						</div>
-
-
-
-					</li>
+										</li>
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-2" class="nette-toggle-collapsed">source</a>&nbsp;
-										eval
+																				eval
 					()
 					</p>
 
-
-
 											<div class="nette-collapsed" id="netteBsSrc1-2">%A%</div>
 
-					</li>
+
+										</li>
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-3" class="nette-toggle-collapsed">source</a>&nbsp;
-										first
+																				first
 					(<a href="#netteBsArgs1-3" class="nette-toggle-collapsed">arguments</a>)
 					</p>
+
+											<div class="nette-collapsed" id="netteBsSrc1-3">%A%</div>
+
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-3">
 						<table>
@@ -100,11 +101,7 @@
 </td></tr>
 						</table>
 						</div>
-
-
-											<div class="nette-collapsed" id="netteBsSrc1-3">%A%</div>
-
-					</li>
+										</li>
 									</ol>
 			</div></div>
 

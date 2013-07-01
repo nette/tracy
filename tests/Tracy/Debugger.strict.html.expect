@@ -51,9 +51,12 @@
 
 											<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-1" class="nette-toggle-collapsed">source</a>&nbsp;
-										third
+																				third
 					(<a href="#netteBsArgs1-1" class="nette-toggle-collapsed">arguments</a>)
 					</p>
+
+											<div class="nette-collapsed" id="netteBsSrc1-1">%A%</div>
+
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-1">
 						<table>
@@ -61,18 +64,17 @@
 </td></tr>
 						</table>
 						</div>
-
-
-											<div class="nette-collapsed" id="netteBsSrc1-1">%A%</div>
-
-					</li>
+										</li>
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-2" class="nette-toggle-collapsed">source</a>&nbsp;
-										second
+																				second
 					(<a href="#netteBsArgs1-2" class="nette-toggle-collapsed">arguments</a>)
 					</p>
+
+											<div class="nette-collapsed" id="netteBsSrc1-2">%A%</div>
+
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-2">
 						<table>
@@ -84,18 +86,17 @@
 </td></tr>
 						</table>
 						</div>
-
-
-											<div class="nette-collapsed" id="netteBsSrc1-2">%A%</div>
-
-					</li>
+										</li>
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
 					<a href="#netteBsSrc1-3" class="nette-toggle-collapsed">source</a>&nbsp;
-										first
+																				first
 					(<a href="#netteBsArgs1-3" class="nette-toggle-collapsed">arguments</a>)
 					</p>
+
+											<div class="nette-collapsed" id="netteBsSrc1-3">%A%</div>
+
 
 											<div class="nette-collapsed outer" id="netteBsArgs1-3">
 						<table>
@@ -107,11 +108,7 @@
 </td></tr>
 						</table>
 						</div>
-
-
-											<div class="nette-collapsed" id="netteBsSrc1-3">%A%</div>
-
-					</li>
+										</li>
 									</ol>
 			</div></div>
 
