@@ -11,7 +11,6 @@
 </head>
 
 
-
 <body>
 %A%
 <div id="netteBluescreen">
@@ -31,15 +30,12 @@
 
 
 
-
-
 			<div class="panel">
 			<h2><a href="#netteBsPnl1" class="nette-toggle">Source file</a></h2>
 
 			<div id="netteBsPnl1" class="inner">
 				<p><b>File:</b> %a%</p>
 				<pre class='php'>%A%</pre>			</div></div>
-
 
 
 									<div class="panel">
@@ -113,7 +109,6 @@
 			</div></div>
 
 
-
 						<div class="panel">
 			<h2><a href="#netteBsPnl3" class="nette-toggle-collapsed">Variables</a></h2>
 
@@ -125,8 +120,6 @@
 			</table>
 			</div>
 			</div></div>
-
-
 
 
 
@@ -166,13 +159,11 @@
 		</div></div>
 
 
-
 		<div class="panel">
 		<h2><a href="#netteBsPnl10" class="nette-toggle-collapsed">HTTP request</a></h2>
 
 		<div id="netteBsPnl10" class="nette-collapsed inner">
 %A?%
-
 						<h3>$_GET</h3>
 						<p><i>empty</i></p>
 									<h3>$_POST</h3>
@@ -182,7 +173,6 @@
 								</div></div>
 
 
-
 		<div class="panel">
 		<h2><a href="#netteBsPnl11" class="nette-toggle-collapsed">HTTP response</a></h2>
 
@@ -190,8 +180,6 @@
 			<h3>Headers</h3>
 						<pre>%A%</pre>
 					</div></div>
-
-
 
 
 

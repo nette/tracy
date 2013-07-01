@@ -4,15 +4,12 @@
  * Test: Tracy\Dumper::toText() with location
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Dumper;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Assert::match( '"Hello" (5)

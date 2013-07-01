@@ -169,7 +169,6 @@
 	};
 
 
-
 	var Bar = Nette.DebugBar = function() {
 	};
 
@@ -260,7 +259,6 @@
 			$('#' + this.id).position({right: m[1], bottom: m[2]});
 		}
 	};
-
 
 
 	var Debug = Nette.Debug = {};

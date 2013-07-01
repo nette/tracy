@@ -14,7 +14,6 @@ namespace Tracy;
 use Tracy;
 
 
-
 class ErrorException extends \ErrorException
 {
 

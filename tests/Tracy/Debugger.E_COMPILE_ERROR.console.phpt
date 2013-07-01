@@ -4,15 +4,12 @@
  * Test: Tracy\Debugger error in console.
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Debugger;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Debugger::$productionMode = FALSE;

@@ -4,15 +4,12 @@
  * Test: Tracy\Debugger exception in non-HTML.
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Debugger;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Debugger::$productionMode = FALSE;
@@ -37,7 +34,6 @@ function first($arg1, $arg2)
 {
 	second(TRUE, FALSE);
 }
-
 
 
 function second($arg1, $arg2)

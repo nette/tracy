@@ -38,7 +38,6 @@ $counter = 0;
 </head>
 
 
-
 <body>
 <script>document.body.className+=' js'</script>
 <div id="netteBluescreen">
@@ -73,7 +72,6 @@ $counter = 0;
 			<?php endif ?>
 
 
-
 			<?php foreach ($panels as $panel): ?>
 			<?php $panel = call_user_func($panel, $ex); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 			<?php if (!empty($panel['bottom'])) { continue; } ?>
@@ -84,7 +82,6 @@ $counter = 0;
 				<?php echo $panel['panel'] ?>
 			</div></div>
 			<?php endforeach ?>
-
 
 
 			<?php $stack = $ex->getTrace(); $expanded = NULL ?>
@@ -101,7 +98,6 @@ $counter = 0;
 				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
 				<?php if (is_file($ex->getFile())): ?><?php echo self::highlightFile($ex->getFile(), $ex->getLine(), 15, isset($ex->context) ? $ex->context : NULL) ?><?php endif ?>
 			</div></div>
-
 
 
 			<?php if (isset($stack[0]['class']) && $stack[0]['class'] === 'Tracy\Debugger' && ($stack[0]['function'] === '_shutdownHandler' || $stack[0]['function'] === '_errorHandler')) unset($stack[0]) ?>
@@ -164,7 +160,6 @@ $counter = 0;
 			<?php endif ?>
 
 
-
 			<?php if (isset($ex->context) && is_array($ex->context)):?>
 			<div class="panel">
 			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Variables</a></h2>
@@ -186,7 +181,6 @@ $counter = 0;
 		<?php while (--$level) echo '</div></div>' ?>
 
 
-
 		<?php $bottomPanels = array() ?>
 		<?php foreach ($panels as $panel): ?>
 		<?php $panel = call_user_func($panel, NULL); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
@@ -198,7 +192,6 @@ $counter = 0;
 			<?php echo $panel['panel'] ?>
 		</div></div>
 		<?php endforeach ?>
-
 
 
 		<div class="panel">
@@ -277,7 +270,6 @@ $counter = 0;
 		</div></div>
 
 
-
 		<div class="panel">
 		<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">HTTP request</a></h2>
 
@@ -311,7 +303,6 @@ $counter = 0;
 		</div></div>
 
 
-
 		<div class="panel">
 		<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">HTTP response</a></h2>
 
@@ -327,7 +318,6 @@ $counter = 0;
 		</div></div>
 
 
-
 		<?php foreach ($bottomPanels as $panel): ?>
 		<div class="panel">
 			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
@@ -336,7 +326,6 @@ $counter = 0;
 			<?php echo $panel['panel'] ?>
 		</div></div>
 		<?php endforeach ?>
-
 
 
 		<ul>

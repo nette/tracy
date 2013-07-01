@@ -4,15 +4,12 @@
  * Test: Tracy\Dumper::toHtml() with location
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Dumper;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Assert::match( '<pre class="nette-dump" title="Dumper::toHtml( trim(&quot; Hello &quot;), array(&quot;location&quot; =&gt; TRUE) ) )

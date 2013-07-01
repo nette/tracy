@@ -13,7 +13,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 </head>
 
 
-
 <body>
 %A%
 <div id="netteBluescreen">
@@ -24,8 +23,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 			<p>Call to undefined function missing_funcion() <a href="%a%" id="netteBsSearch">search&#x25ba;</a></p>
 		</div>
-
-
 
 
 
@@ -56,10 +53,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #D24; font-weight: bold">);
 </span></span></code></div></pre>			</div></div>
-
-
-
-
 
 
 
@@ -103,7 +96,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 		</div></div>
 
 
-
 		<div class="panel">
 		<h2><a href="#netteBsPnl8" class="nette-toggle-collapsed">HTTP request</a></h2>
 
@@ -118,7 +110,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 								</div></div>
 
 
-
 		<div class="panel">
 		<h2><a href="#netteBsPnl9" class="nette-toggle-collapsed">HTTP response</a></h2>
 
@@ -126,8 +117,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 			<h3>Headers</h3>
 						<pre>%A%</pre>
 					</div></div>
-
-
 
 
 

@@ -4,15 +4,12 @@
  * Test: Tracy\Debugger::timer()
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Debugger;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Debugger::timer();

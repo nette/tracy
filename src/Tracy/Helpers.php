@@ -14,7 +14,6 @@ namespace Tracy;
 use Tracy;
 
 
-
 /**
  * Rendering helpers for Debugger.
  *
@@ -48,7 +47,6 @@ final class Helpers
 	}
 
 
-
 	public static function createHtml($mask)
 	{
 		$args = func_get_args();
@@ -56,7 +54,6 @@ final class Helpers
 			return htmlspecialchars($args[++$count]);
 		}, $mask);
 	}
-
 
 
 	public static function findTrace(array $trace, $method, & $index = NULL)
@@ -72,7 +69,6 @@ final class Helpers
 			}
 		}
 	}
-
 
 
 	public static function fixStack($exception)
@@ -98,7 +94,6 @@ final class Helpers
 		}
 		return $exception;
 	}
-
 
 
 	/**

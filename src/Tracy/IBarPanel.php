@@ -14,7 +14,6 @@ namespace Tracy;
 use Tracy;
 
 
-
 /**
  * Custom output for Debugger.
  *

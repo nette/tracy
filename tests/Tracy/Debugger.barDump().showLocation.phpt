@@ -4,15 +4,12 @@
  * Test: Tracy\Debugger::barDump() with showLocation.
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Debugger;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Debugger::$productionMode = FALSE;

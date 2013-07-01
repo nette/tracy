@@ -4,15 +4,12 @@
  * Test: Tracy\Debugger E_ERROR in HTML.
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Debugger;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Debugger::$productionMode = FALSE;
@@ -25,8 +22,6 @@ Debugger::$onFatalError[] = function() {
 	die(0);
 };
 ob_start();
-
-
 
 
 function first($arg1, $arg2)

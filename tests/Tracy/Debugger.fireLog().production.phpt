@@ -4,15 +4,12 @@
  * Test: Tracy\Debugger::fireLog() in production mode.
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Debugger;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 // Setup environment

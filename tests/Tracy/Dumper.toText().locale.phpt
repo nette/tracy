@@ -4,15 +4,12 @@
  * Test: Tracy\Dumper::toText() locale
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Dumper;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 setLocale(LC_ALL, 'czech');

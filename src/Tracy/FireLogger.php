@@ -14,7 +14,6 @@ namespace Tracy;
 use Tracy;
 
 
-
 /**
  * FireLogger console logger.
  *
@@ -30,7 +29,6 @@ class FireLogger
 		CRITICAL = 'critical';
 
 	private static $payload = array('logs' => array());
-
 
 
 	/**
@@ -112,7 +110,6 @@ class FireLogger
 		}
 		return TRUE;
 	}
-
 
 
 	/**

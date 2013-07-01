@@ -13,7 +13,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 </head>
 
 
-
 <body>
 %A%
 <div id="netteBluescreen">
@@ -24,8 +23,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 
 			<p>Call to undefined function missing_funcion() <a href="%a%" id="netteBsSearch">search&#x25ba;</a></p>
 		</div>
-
-
 
 
 
@@ -56,7 +53,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #D24; font-weight: bold">);
 </span></span></code></div></pre>			</div></div>
-
 
 
 									<div class="panel">
@@ -99,22 +95,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 					()
 					</p>
 
-											<div class="nette-collapsed" id="netteBsSrc1-1"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">Assert</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">match</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">file_get_contents</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">__DIR__&nbsp;</span><span style="color: #D24; font-weight: bold">.&nbsp;(</span><span style="color: #000">extension_loaded</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'xdebug'</span><span style="color: #D24; font-weight: bold">)&nbsp;?&nbsp;</span><span style="color: #080">'/Debugger.E_ERROR.html.xdebug.expect'&nbsp;</span><span style="color: #D24; font-weight: bold">:&nbsp;</span><span style="color: #080">'/Debugger.E_ERROR.html.expect'</span><span style="color: #D24; font-weight: bold">)),&nbsp;</span><span style="color: #000">ob_get_clean</span><span style="color: #D24; font-weight: bold">());
-<span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #000">0</span><span style="color: #D24; font-weight: bold">);
-<span class='line'>%d%:</span>    };
-<span class='line'>%d%:</span>    </span><span style="color: #000">ob_start</span><span style="color: #D24; font-weight: bold">();
-<span class='line'>%d%:</span>
-<span class='line'>%d%:</span>
-<span class='line'>%d%:</span>
-<span class='line'>%d%:</span>
-<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
-<span class='line'>%d%:</span>    {
-<span class='highlight'>%d%:    &nbsp;&nbsp;&nbsp;&nbsp;second(TRUE,&nbsp;FALSE);
-</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
-<span class='line'>%d%:</span>
-<span class='line'>%d%:</span>
-<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
-</span></span></code></div></pre></div>
+											<div class="nette-collapsed" id="netteBsSrc1-1"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>%A%</div>
 
 
 										</li>
@@ -144,9 +125,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 										</li>
 									</ol>
 			</div></div>
-
-
-
 
 
 
@@ -188,7 +166,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 		</div></div>
 
 
-
 		<div class="panel">
 		<h2><a href="#netteBsPnl9" class="nette-toggle-collapsed">HTTP request</a></h2>
 
@@ -203,7 +180,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 								</div></div>
 
 
-
 		<div class="panel">
 		<h2><a href="#netteBsPnl10" class="nette-toggle-collapsed">HTTP response</a></h2>
 
@@ -211,8 +187,6 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 			<h3>Headers</h3>
 						<pre>%A%</pre>
 					</div></div>
-
-
 
 
 

@@ -4,9 +4,7 @@
  * Test: PHP error handler.
  *
  * @author     David Grudl
- * @package    Tracy
  */
-
 
 
 require __DIR__ . '/../bootstrap.php';

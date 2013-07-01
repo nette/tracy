@@ -4,15 +4,12 @@
  * Test: Tracy\Debugger notices and warnings and shut-up operator.
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Debugger;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Debugger::$productionMode = FALSE;

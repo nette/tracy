@@ -4,15 +4,12 @@
  * Test: Tracy\Dumper::toHtml()
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Dumper;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 class Test

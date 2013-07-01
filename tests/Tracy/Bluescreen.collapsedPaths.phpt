@@ -4,12 +4,9 @@
  * Test: Tracy\Debugger E_ERROR in console.
  *
  * @author     David Grudl
- * @package    Tracy
- * @subpackage UnitTests
  */
 
 require __DIR__ . '/../bootstrap.php';
-
 
 
 $blueScreen = new Tracy\BlueScreen;

@@ -13,7 +13,6 @@ use Tracy in commercial projects as long as the copyright header
 remains intact.
 
 
-
 New BSD License
 ---------------
 
@@ -44,7 +43,6 @@ loss of use, data, or profits; or business interruption) however caused and on
 any theory of liability, whether in contract, strict liability, or tort
 (including negligence or otherwise) arising in any way out of the use of this
 software, even if advised of the possibility of such damage.
-
 
 
 GNU General Public License

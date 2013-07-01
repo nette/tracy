@@ -4,21 +4,17 @@
  * Test: Tracy\Debugger E_RECOVERABLE_ERROR error.
  *
  * @author     David Grudl
- * @package    Tracy
  */
 
 use Tracy\Debugger;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Debugger::$productionMode = FALSE;
 
 Debugger::enable();
-
 
 
 class TestClass

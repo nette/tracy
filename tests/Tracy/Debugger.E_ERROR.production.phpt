@@ -4,16 +4,13 @@
  * Test: Tracy\Debugger E_ERROR in production mode.
  *
  * @author     David Grudl
- * @package    Tracy
  * @assertCode 500
  */
 
 use Tracy\Debugger;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 Debugger::$productionMode = TRUE;

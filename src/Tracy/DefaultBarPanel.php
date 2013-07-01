@@ -14,7 +14,6 @@ namespace Tracy;
 use Tracy;
 
 
-
 /**
  * IDebugPanel implementation helper.
  *
@@ -32,7 +31,6 @@ final class DefaultBarPanel implements IBarPanel
 	{
 		$this->id = $id;
 	}
-
 
 
 	/**
@@ -54,7 +52,6 @@ final class DefaultBarPanel implements IBarPanel
 		}
 		return ob_get_clean();
 	}
-
 
 
 	/**

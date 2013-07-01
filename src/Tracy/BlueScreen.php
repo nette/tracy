@@ -14,7 +14,6 @@ namespace Tracy;
 use Tracy;
 
 
-
 /**
  * Red BlueScreen.
  *
@@ -29,11 +28,10 @@ class BlueScreen
 	public $collapsePaths = array(__DIR__);
 
 
-
 	/**
 	 * Add custom panel.
 	 * @param  callable
-	 * @return BlueScreen  provides a fluent interface
+	 * @return self
 	 */
 	public function addPanel($panel)
 	{
@@ -42,7 +40,6 @@ class BlueScreen
 		}
 		return $this;
 	}
-
 
 
 	/**
@@ -55,7 +52,6 @@ class BlueScreen
 		$panels = $this->panels;
 		require __DIR__ . '/templates/bluescreen.phtml';
 	}
-
 
 
 	/**
@@ -72,7 +68,6 @@ class BlueScreen
 			return static::highlightPhp($source, $line, $lines, $vars);
 		}
 	}
-
 
 
 	/**
@@ -138,7 +133,6 @@ class BlueScreen
 
 		return "<pre class='php'><div>$out</div></pre>";
 	}
-
 
 
 	/**

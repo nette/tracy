@@ -14,7 +14,6 @@ namespace Tracy;
 use Tracy;
 
 
-
 /**
  * Debug Bar.
  *
@@ -26,12 +25,11 @@ class Bar
 	private $panels = array();
 
 
-
 	/**
 	 * Add custom panel.
 	 * @param  IBarPanel
 	 * @param  string
-	 * @return Bar  provides a fluent interface
+	 * @return self
 	 */
 	public function addPanel(IBarPanel $panel, $id = NULL)
 	{
@@ -46,7 +44,6 @@ class Bar
 	}
 
 
-
 	/**
 	 * Returns panel with given id
 	 * @param  string
@@ -56,7 +53,6 @@ class Bar
 	{
 		return isset($this->panels[$id]) ? $this->panels[$id] : NULL;
 	}
-
 
 
 	/**

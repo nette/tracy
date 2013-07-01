@@ -14,7 +14,6 @@ namespace Tracy;
 use Tracy;
 
 
-
 /**
  * Logger.
  *
@@ -39,7 +38,6 @@ class Logger
 
 	/** @var string|array email or emails to which send error notifications */
 	public $email;
-
 
 
 	/**
@@ -68,7 +66,6 @@ class Logger
 		}
 		return $res;
 	}
-
 
 
 	/**
