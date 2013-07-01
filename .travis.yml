@@ -4,9 +4,8 @@ php:
     - 5.4
     - 5.5
 
-script: "VERBOSE=true ./tests/run-tests.sh -s tests/"
+script: VERBOSE=true ./tests/run-tests.sh -s tests/
 
 before_script:
-# Install Nette Tester
-  - composer install --no-interaction --dev
-
+    # Install Nette Tester
+    - composer install --no-interaction --dev
