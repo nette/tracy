@@ -53,9 +53,7 @@ class Dumper
 	{
 		if (PHP_SAPI !== 'cli' && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) {
 			echo self::toHtml($var, $options);
-		} elseif (self::$terminalColors && preg_match('#^xterm|^screen#', getenv('TERM'))
-			&& (defined('STDOUT') && function_exists('posix_isatty') ? posix_isatty(STDOUT) : TRUE))
-		{
+		} elseif (self::detectColors()) {
 			echo self::toTerminal($var, $options);
 		} else {
 			echo self::toText($var, $options);
@@ -302,6 +300,18 @@ class Dumper
 				);
 			}
 		}
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	private static function detectColors()
+	{
+		return self::$terminalColors &&
+			(getenv('ConEmuANSI') === 'ON'
+			|| getenv('ANSICON') !== FALSE
+			|| (defined('STDOUT') && function_exists('posix_isatty') && posix_isatty(STDOUT)));
 	}
 
 }

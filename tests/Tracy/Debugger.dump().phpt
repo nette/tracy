@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 header('Content-Type: text/plain');
-putenv('TERM=');
+Tracy\Dumper::$terminalColors = NULL;
 
 
 test(function() { // production mode
