@@ -197,7 +197,10 @@ class Dumper
 			foreach ($rc->getParameters() as $param) {
 				$fields[] = '$' . $param->getName();
 			}
-			$fields = array('file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'parameters' => implode(', ', $fields));
+			$fields = array(
+				'file' => $rc->getFileName(), 'line' => $rc->getStartLine(),
+				'variables' => $rc->getStaticVariables(), 'parameters' => implode(', ', $fields)
+			);
 		} elseif ($var instanceof \SplFileInfo) {
 			$fields = array('path' => $var->getPathname());
 		} elseif ($var instanceof \SplObjectStorage) {
