@@ -30,7 +30,7 @@ Stack trace:
 Fatal error: Cannot re-assign \$this in %a%
 exception 'Tracy\\ErrorException' with message 'Cannot re-assign \$this' in %a%
 Stack trace:
-#0 [internal function]: %ns%Debugger::_shutdownHandler()
+#0 [internal function]: Nette\\Diagnostics\\Debugger::_shutdownHandler()
 #1 {main}
 ", ob_get_clean());
 	die(0);

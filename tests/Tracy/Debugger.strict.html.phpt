@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger notices and warnings with $strictMode in HTML.
  *
  * @author     David Grudl
- * @assertCode 500
+ * @httpCode   500
  */
 
 use Tracy\Debugger;

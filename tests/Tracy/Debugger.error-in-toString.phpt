@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger error in toString.
  *
  * @author     David Grudl
- * @assertCode 500
+ * @httpCode   500
  */
 
 use Tracy\Debugger;

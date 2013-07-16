@@ -21,7 +21,7 @@ Debugger::enable();
 Debugger::$onFatalError[] = function() {
 	Assert::match("exception 'Tracy\\ErrorException' with message 'Undefined variable: x' in %a%
 Stack trace:
-#0 %a%: %ns%Debugger::_errorHandler(8, '%a%', '%a%', %a%, Array)
+#0 %a%: Nette\\Diagnostics\\Debugger::_errorHandler(8, '%a%', '%a%', %a%, Array)
 #1 %a%: third(Array)
 #2 %a%: second(true, false)
 #3 %a%: first(10, 'any string')

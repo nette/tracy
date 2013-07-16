@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger E_ERROR in production mode.
  *
  * @author     David Grudl
- * @assertCode 500
+ * @httpCode   500
  */
 
 use Tracy\Debugger;

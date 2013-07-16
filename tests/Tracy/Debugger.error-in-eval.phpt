@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger eval error in HTML.
  *
  * @author     David Grudl
- * @assertCode 500
+ * @httpCode   500
  */
 
 use Tracy\Debugger;
