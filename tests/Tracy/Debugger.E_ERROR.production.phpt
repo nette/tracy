@@ -12,6 +12,10 @@ use Tracy\Debugger;
 
 require __DIR__ . '/../bootstrap.php';
 
+if (PHP_SAPI === 'cli') {
+	Tester\Helpers::skip();
+}
+
 
 Debugger::$productionMode = TRUE;
 header('Content-Type: text/html');
