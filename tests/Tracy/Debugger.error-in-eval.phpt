@@ -19,7 +19,7 @@ header('Content-Type: text/html');
 Debugger::enable();
 
 register_shutdown_function(function(){
-	Assert::match(file_get_contents(__DIR__ . '/Debugger.error-in-eval.expect'), ob_get_clean());
+	Assert::matchFile(__DIR__ . '/Debugger.error-in-eval.expect', ob_get_clean());
 	die(0);
 });
 ob_start();

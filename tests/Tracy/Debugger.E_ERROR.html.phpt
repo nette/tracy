@@ -18,7 +18,7 @@ header('Content-Type: text/html');
 Debugger::enable();
 
 Debugger::$onFatalError[] = function() {
-	Assert::match(file_get_contents(__DIR__ . (extension_loaded('xdebug') ? '/Debugger.E_ERROR.html.xdebug.expect' : '/Debugger.E_ERROR.html.expect')), ob_get_clean());
+	Assert::matchFile(__DIR__ . (extension_loaded('xdebug') ? '/Debugger.E_ERROR.html.xdebug.expect' : '/Debugger.E_ERROR.html.expect'), ob_get_clean());
 	die(0);
 };
 ob_start();
