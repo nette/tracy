@@ -55,7 +55,7 @@ Assert::match( '<pre class="nette-dump"><span class="nette-dump-string">"\\x00"<
 Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-array">array</span> (5)</span>
 <div><span class="nette-dump-indent">   </span><span class="nette-dump-key">0</span> => <span class="nette-dump-number">1</span>
 <span class="nette-dump-indent">   </span><span class="nette-dump-key">1</span> => <span class="nette-dump-string">"hello"</span> (5)
-<span class="nette-dump-indent">   </span><span class="nette-dump-key">2</span> => <span class="nette-dump-array">array</span> (0)
+<span class="nette-dump-indent">   </span><span class="nette-dump-key">2</span> => <span class="nette-dump-array">array</span> ()
 <span class="nette-dump-indent">   </span><span class="nette-dump-key">3</span> => <span class="nette-toggle"><span class="nette-dump-array">array</span> (2)</span>
 <div><span class="nette-dump-indent">   |  </span><span class="nette-dump-key">0</span> => <span class="nette-dump-number">1</span>
 <span class="nette-dump-indent">   |  </span><span class="nette-dump-key">1</span> => <span class="nette-dump-number">2</span>

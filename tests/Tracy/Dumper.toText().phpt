@@ -45,7 +45,7 @@ Assert::match( '"\\x00"', Dumper::toText("\x00") );
 Assert::match( 'array (5)
    0 => 1
    1 => "hello" (5)
-   2 => array (0)
+   2 => array ()
    3 => array (2)
    |  0 => 1
    |  1 => 2

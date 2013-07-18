@@ -164,7 +164,7 @@ class Dumper
 		$out = '<span class="nette-dump-array">array</span> (';
 
 		if (empty($var)) {
-			return $out . "0)\n";
+			return $out . ")\n";
 
 		} elseif (isset($var[$marker])) {
 			return $out . (count($var) - 1) . ") [ <i>RECURSION</i> ]\n";
