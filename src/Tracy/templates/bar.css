@@ -293,7 +293,7 @@ body #nette-debug {
 	color: #850;
 }
 
-#nette-debug .nette-dump-visibility {
+#nette-debug .nette-dump-visibility, #nette-debug .nette-dump-hash {
 	font-size: 85%; color: #999;
 }
 

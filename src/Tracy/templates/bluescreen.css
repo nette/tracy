@@ -244,7 +244,7 @@ html.js #netteBluescreen .nette-collapsed {
 	color: #850;
 }
 
-#netteBluescreen .nette-dump-visibility {
+#netteBluescreen .nette-dump-visibility, #netteBluescreen .nette-dump-hash {
 	font-size: 85%;
 	color: #998;
 }

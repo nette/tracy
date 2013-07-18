@@ -61,9 +61,9 @@ Assert::match( 'array (5)
 
 Assert::match( "stream resource\n   wrapper_type%A%", Dumper::toText(fopen(__FILE__, 'r')) );
 
-Assert::match( 'stdClass (0)', Dumper::toText(new stdClass) );
+Assert::match( 'stdClass #%a%', Dumper::toText(new stdClass) );
 
-Assert::match( 'Test (3)
+Assert::match( 'Test #%a%
    x => array (2)
    |  0 => 10
    |  1 => NULL
@@ -81,12 +81,12 @@ $objStorage[$o2] = 'o2';
 $objStorage->next();
 $key = $objStorage->key();
 
-Assert::match( 'SplObjectStorage (2)
+Assert::match( 'SplObjectStorage #%a%
    0 => array (2)
-   |  object => stdClass (0)
+   |  object => stdClass #%a%
    |  data => "o1" (2)
    1 => array (2)
-   |  object => stdClass (1)
+   |  object => stdClass #%a%
    |  |  foo => "bar" (3)
    |  data => "o2" (2)
 ', Dumper::toText($objStorage) );

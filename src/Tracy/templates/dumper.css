@@ -56,7 +56,7 @@ pre.nette-dump div div {
 	color: #850;
 }
 
-.nette-dump-visibility {
+.nette-dump-visibility, .nette-dump-hash {
 	font-size: 85%; color: #999;
 }
 

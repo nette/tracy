@@ -49,7 +49,7 @@
 	</tr>
 		<tr class="nette-alt">
 		<th>7</th>
-		<td><pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">stdClass</span> (2)</span>
+		<td><pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">stdClass</span> <span class="nette-dump-hash">#%a%</span></span>
 <div><span class="nette-dump-indent">   </span><span class="nette-dump-key">key1</span> => <span class="nette-dump-string">"val1"</span> (4)
 <span class="nette-dump-indent">   </span><span class="nette-dump-key">key2</span> => <span class="nette-dump-bool">TRUE</span>
 </div></pre>

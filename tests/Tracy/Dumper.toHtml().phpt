@@ -72,10 +72,10 @@ Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="
 Assert::match( '<pre class="nette-dump"><span class="nette-toggle-collapsed"><span class="nette-dump-resource">stream resource</span></span>
 <div class="nette-collapsed">%A%', Dumper::toHtml(fopen(__FILE__, 'r')) );
 
-Assert::match( '<pre class="nette-dump"><span class="nette-dump-object">stdClass</span> (0)
+Assert::match( '<pre class="nette-dump"><span class="nette-dump-object">stdClass</span> <span class="nette-dump-hash">#%a%</span>
 </pre>', Dumper::toHtml(new stdClass) );
 
-Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">Test</span> (3)</span>
+Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">Test</span> <span class="nette-dump-hash">#%a%</span></span>
 <div><span class="nette-dump-indent">   </span><span class="nette-dump-key">x</span> => <span class="nette-toggle"><span class="nette-dump-array">array</span> (2)</span>
 <div><span class="nette-dump-indent">   |  </span><span class="nette-dump-key">0</span> => <span class="nette-dump-number">10</span>
 <span class="nette-dump-indent">   |  </span><span class="nette-dump-key">1</span> => <span class="nette-dump-null">NULL</span>
@@ -83,7 +83,7 @@ Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="
 <span class="nette-dump-indent">   </span><span class="nette-dump-key">z</span> <span class="nette-dump-visibility">protected</span> => <span class="nette-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test) );
 
-Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">Test</span> (3)</span>
+Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">Test</span> <span class="nette-dump-hash">#%a%</span></span>
 <div><span class="nette-dump-indent">   </span><span class="nette-dump-key">x</span> => <span class="nette-toggle-collapsed"><span class="nette-dump-array">array</span> (2)</span>
 <div class="nette-collapsed"><span class="nette-dump-indent">   |  </span><span class="nette-dump-key">0</span> => <span class="nette-dump-number">10</span>
 <span class="nette-dump-indent">   |  </span><span class="nette-dump-key">1</span> => <span class="nette-dump-null">NULL</span>
@@ -91,7 +91,7 @@ Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="
 <span class="nette-dump-indent">   </span><span class="nette-dump-key">z</span> <span class="nette-dump-visibility">protected</span> => <span class="nette-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE_COUNT => 1)) );
 
-Assert::match( '<pre class="nette-dump"><span class="nette-toggle-collapsed"><span class="nette-dump-object">Test</span> (3)</span>
+Assert::match( '<pre class="nette-dump"><span class="nette-toggle-collapsed"><span class="nette-dump-object">Test</span> <span class="nette-dump-hash">#%a%</span></span>
 <div class="nette-collapsed"><span class="nette-dump-indent">   </span><span class="nette-dump-key">x</span> => <span class="nette-toggle"><span class="nette-dump-array">array</span> (2)</span>
 <div><span class="nette-dump-indent">   |  </span><span class="nette-dump-key">0</span> => <span class="nette-dump-number">10</span>
 <span class="nette-dump-indent">   |  </span><span class="nette-dump-key">1</span> => <span class="nette-dump-null">NULL</span>
@@ -99,6 +99,6 @@ Assert::match( '<pre class="nette-dump"><span class="nette-toggle-collapsed"><sp
 <span class="nette-dump-indent">   </span><span class="nette-dump-key">z</span> <span class="nette-dump-visibility">protected</span> => <span class="nette-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE => TRUE)) );
 
-Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">SplFileInfo</span> (1)</span>
+Assert::match( '<pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-object">SplFileInfo</span> <span class="nette-dump-hash">#%a%</span></span>
 <div><span class="nette-dump-indent">   </span><span class="nette-dump-key">path</span> => <span class="nette-dump-string">"%a%"</span> (%d%)
 </div></pre>', Dumper::toHtml(new SplFileInfo(__FILE__)) );
