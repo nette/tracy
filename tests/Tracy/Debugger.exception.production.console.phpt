@@ -17,7 +17,7 @@ header('Content-Type: text/plain');
 
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	Assert::match('ERROR:%A%', ob_get_clean());
 	die(0);
 });

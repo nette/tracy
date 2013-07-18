@@ -17,7 +17,7 @@ header('Content-Type: text/plain');
 
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	Assert::match("exception 'Exception' with message 'The my exception' in %a%
 Stack trace:
 #0 %a%: third(Array)

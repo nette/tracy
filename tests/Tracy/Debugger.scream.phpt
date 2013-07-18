@@ -18,7 +18,7 @@ header('Content-Type: text/plain; charset=utf-8');
 
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	Assert::match('
 Strict Standards: mktime(): You should be using the time() function instead in %a% on line %d%
 

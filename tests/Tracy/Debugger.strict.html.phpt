@@ -19,7 +19,7 @@ header('Content-Type: text/html');
 Debugger::$strictMode = TRUE;
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	Assert::matchFile(__DIR__ . '/Debugger.strict.html.expect', ob_get_clean());
 	die(0);
 });

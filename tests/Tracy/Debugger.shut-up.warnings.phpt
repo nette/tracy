@@ -17,7 +17,7 @@ header('Content-Type: text/plain; charset=utf-8');
 
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	Assert::same('', ob_get_clean());
 });
 ob_start();

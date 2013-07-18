@@ -18,7 +18,7 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	preg_match('#debug.innerHTML = (".*");#', ob_get_clean(), $m);
 	Assert::match(<<<EOD
 %A%<h1>Dumped variables</h1>

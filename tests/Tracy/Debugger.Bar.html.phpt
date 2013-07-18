@@ -17,7 +17,7 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	Assert::match('%A%<!-- Nette Debug Bar -->%A%', ob_get_clean());
 });
 ob_start();

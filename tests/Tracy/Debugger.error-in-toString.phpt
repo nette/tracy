@@ -18,7 +18,7 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	Assert::match('%A%<title>User Error</title><!-- Test::__toString -->%A%', ob_get_clean());
 	die(0);
 });

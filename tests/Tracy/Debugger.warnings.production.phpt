@@ -16,7 +16,7 @@ Debugger::$productionMode = TRUE;
 
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	Assert::same('', ob_get_clean());
 });
 ob_start();

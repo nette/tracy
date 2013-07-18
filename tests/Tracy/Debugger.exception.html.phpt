@@ -18,7 +18,7 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	Assert::matchFile(__DIR__ . '/Debugger.exception.html.expect', ob_get_clean());
 	die(0);
 });
