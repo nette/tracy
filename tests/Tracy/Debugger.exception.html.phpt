@@ -5,6 +5,8 @@
  *
  * @author     David Grudl
  * @httpCode   500
+ * @exitCode   254
+ * @outputMatchFile Debugger.exception.html.expect
  */
 
 use Tracy\Debugger;
@@ -21,13 +23,6 @@ Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
 
 Debugger::enable();
-
-register_shutdown_function(function() {
-	Assert::matchFile(__DIR__ . '/Debugger.exception.html.expect', ob_get_clean());
-	die(0);
-});
-ob_start();
-
 
 function first($arg1, $arg2)
 {

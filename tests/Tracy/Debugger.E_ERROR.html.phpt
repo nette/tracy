@@ -4,6 +4,9 @@
  * Test: Tracy\Debugger E_ERROR in HTML.
  *
  * @author     David Grudl
+ * @httpCode   500
+ * @exitCode   255
+ * @outputMatch OK!%A%
  */
 
 use Tracy\Debugger;
@@ -23,7 +26,7 @@ Debugger::enable();
 
 Debugger::$onFatalError[] = function() {
 	Assert::matchFile(__DIR__ . (extension_loaded('xdebug') ? '/Debugger.E_ERROR.html.xdebug.expect' : '/Debugger.E_ERROR.html.expect'), ob_get_clean());
-	die(0);
+	echo 'OK!';
 };
 ob_start();
 

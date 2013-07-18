@@ -1,0 +1,8 @@
+
+Strict Standards: mktime(): You should be using the time() function instead in %a% on line %d%
+
+Deprecated: mktime(): The is_dst parameter is deprecated in %a% on line %d%
+
+Notice: Undefined variable: x in %a% on line %d%
+
+Warning: %a% in %a% on line %d%

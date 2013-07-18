@@ -4,6 +4,9 @@
  * Test: Tracy\Debugger notices and warnings with $strictMode in console.
  *
  * @author     David Grudl
+ * @exitCode   254
+ * @httpCode   500
+ * @outputMatchFile Debugger.strict.console.expect
  */
 
 use Tracy\Debugger;
@@ -17,20 +20,6 @@ header('Content-Type: text/plain');
 
 Debugger::$strictMode = TRUE;
 Debugger::enable();
-
-Debugger::$onFatalError[] = function() {
-	Assert::match("exception 'Tracy\\ErrorException' with message 'Undefined variable: x' in %a%
-Stack trace:
-#0 %a%: Nette\\Diagnostics\\Debugger::_errorHandler(8, '%a%', '%a%', %a%, Array)
-#1 %a%: third(Array)
-#2 %a%: second(true, false)
-#3 %a%: first(10, 'any string')
-#4 {main}
-", ob_get_clean());
-	die(0);
-};
-ob_start();
-
 
 function first($arg1, $arg2)
 {

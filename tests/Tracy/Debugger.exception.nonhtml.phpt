@@ -4,6 +4,9 @@
  * Test: Tracy\Debugger exception in non-HTML.
  *
  * @author     David Grudl
+ * @exitCode   254
+ * @httpCode   500
+ * @outputMatchFile Debugger.exception.nonhtml.expect
  */
 
 use Tracy\Debugger;
@@ -16,19 +19,6 @@ Debugger::$productionMode = FALSE;
 header('Content-Type: text/plain');
 
 Debugger::enable();
-
-register_shutdown_function(function() {
-	Assert::match("exception 'Exception' with message 'The my exception' in %a%
-Stack trace:
-#0 %a%: third(Array)
-#1 %a%: second(true, false)
-#2 %a%: first(10, 'any string')
-#3 {main}
-", ob_get_clean());
-	die(0);
-});
-ob_start();
-
 
 function first($arg1, $arg2)
 {

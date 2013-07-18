@@ -5,6 +5,8 @@
  *
  * @author     David Grudl
  * @httpCode   500
+ * @exitCode   254
+ * @outputMatch %A%<title>User Error</title><!-- Test::__toString -->%A%
  */
 
 use Tracy\Debugger;
@@ -21,13 +23,6 @@ Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
 
 Debugger::enable();
-
-register_shutdown_function(function() {
-	Assert::match('%A%<title>User Error</title><!-- Test::__toString -->%A%', ob_get_clean());
-	die(0);
-});
-ob_start();
-
 
 class Test
 {

@@ -4,6 +4,9 @@
  * Test: Tracy\Debugger error in console.
  *
  * @author     David Grudl
+ * @exitCode   255
+ * @httpCode   500
+ * @outputMatch OK!
  */
 
 use Tracy\Debugger;
@@ -30,10 +33,10 @@ Stack trace:
 Fatal error: Cannot re-assign \$this in %a%
 exception 'Tracy\\ErrorException' with message 'Cannot re-assign \$this' in %a%
 Stack trace:
-#0 [internal function]: Nette\\Diagnostics\\Debugger::_shutdownHandler()
+#0 [internal function]: Tracy\\Debugger::_shutdownHandler()
 #1 {main}
 ", ob_get_clean());
-	die(0);
+	echo 'OK!';
 };
 ob_start();
 
