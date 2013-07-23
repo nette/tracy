@@ -85,7 +85,7 @@ $counter = 0;
 
 
 			<?php $stack = $ex->getTrace(); $expanded = NULL ?>
-			<?php if (!$exception instanceof \ErrorException && $this->isCollapsed($ex->getFile())) {
+			<?php if ((!$exception instanceof \ErrorException || in_array($exception->getSeverity(), array(E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED))) && $this->isCollapsed($ex->getFile())) {
 				foreach ($stack as $key => $row) {
 					if (isset($row['file']) && !$this->isCollapsed($row['file'])) { $expanded = $key; break; }
 				}
