@@ -20,7 +20,10 @@ header('Content-Type: text/plain');
 
 Debugger::enable();
 
-Debugger::$onFatalError[] = function() {
+$onFatalErrorCalled = FALSE;
+
+register_shutdown_function(function() use (& $onFatalErrorCalled) {
+	Assert::true($onFatalErrorCalled);
 	Assert::match(extension_loaded('xdebug') ? "
 Fatal error: Call to undefined function missing_funcion() in %a%
 exception 'Tracy\\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%
@@ -37,6 +40,11 @@ Stack trace:
 #1 {main}
 ", ob_get_clean());
 	echo 'OK!';
+});
+
+
+Debugger::$onFatalError[] = function() use (& $onFatalErrorCalled) {
+	$onFatalErrorCalled = TRUE;
 };
 ob_start();
 
