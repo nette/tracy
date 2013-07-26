@@ -369,9 +369,8 @@ final class Debugger
 		$error = error_get_last();
 		if (in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE))) {
 			self::_exceptionHandler(Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])), TRUE);
-		}
 
-		if (!connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
+		} elseif (!connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
 			self::getBar()->render();
 		}
 	}

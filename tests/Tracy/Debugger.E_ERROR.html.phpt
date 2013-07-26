@@ -29,7 +29,9 @@ $onFatalErrorCalled = FALSE;
 
 register_shutdown_function(function() use (& $onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
-	Assert::matchFile(__DIR__ . (extension_loaded('xdebug') ? '/Debugger.E_ERROR.html.xdebug.expect' : '/Debugger.E_ERROR.html.expect'), ob_get_clean());
+	$output = ob_get_clean();
+	Assert::same(1, substr_count($output, '<!-- Nette Debug Bar'));
+	Assert::matchFile(__DIR__ . (extension_loaded('xdebug') ? '/Debugger.E_ERROR.html.xdebug.expect' : '/Debugger.E_ERROR.html.expect'), $output);
 	echo 'OK!';
 });
 
