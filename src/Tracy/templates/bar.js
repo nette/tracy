@@ -212,6 +212,7 @@
 						right: panel.elem.position().right + Math.round(Math.random() * 100) + 20,
 						bottom: panel.elem.position().bottom + Math.round(Math.random() * 100) + 20
 					});
+					panel.reposition();
 				}
 			}
 			e.preventDefault();
