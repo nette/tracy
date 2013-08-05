@@ -4,6 +4,7 @@
  * Test: Tracy\Debugger notices and warnings in HTML.
  *
  * @author     David Grudl
+ * @outputMatch OK!
  */
 
 use Tracy\Debugger;
@@ -12,7 +13,7 @@ use Tracy\Debugger;
 require __DIR__ . '/../bootstrap.php';
 
 if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip();
+	Tester\Environment::skip('Debugger Bar is not rendered in CLI mode');
 }
 
 
@@ -45,6 +46,7 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 </tr>
 </table>
 </div>%A%', json_decode($m[1]));
+	echo 'OK!'; // prevents PHP bug #62725
 });
 ob_start();
 

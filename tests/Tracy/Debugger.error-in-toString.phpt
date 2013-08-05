@@ -15,7 +15,7 @@ use Tracy\Debugger;
 require __DIR__ . '/../bootstrap.php';
 
 if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip();
+	Tester\Environment::skip('Debugger Bluescreen is not rendered in CLI mode');
 }
 
 

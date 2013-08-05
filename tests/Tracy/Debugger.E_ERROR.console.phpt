@@ -39,7 +39,7 @@ Stack trace:
 #0 [internal function]: Tracy\\Debugger::_shutdownHandler()
 #1 {main}
 ", ob_get_clean());
-	echo 'OK!';
+	echo 'OK!'; // prevents PHP bug #62725
 });
 
 

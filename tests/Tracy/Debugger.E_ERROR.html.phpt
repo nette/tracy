@@ -15,7 +15,7 @@ use Tracy\Debugger;
 require __DIR__ . '/../bootstrap.php';
 
 if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip();
+	Tester\Environment::skip('Debugger Bluescreen is not rendered in CLI mode');
 }
 
 
@@ -32,7 +32,7 @@ register_shutdown_function(function() use (& $onFatalErrorCalled) {
 	$output = ob_get_clean();
 	Assert::same(1, substr_count($output, '<!-- Nette Debug Bar'));
 	Assert::matchFile(__DIR__ . (extension_loaded('xdebug') ? '/Debugger.E_ERROR.html.xdebug.expect' : '/Debugger.E_ERROR.html.expect'), $output);
-	echo 'OK!';
+	echo 'OK!'; // prevents PHP bug #62725
 });
 
 

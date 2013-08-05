@@ -4,6 +4,7 @@
  * Test: Tracy\Debugger::barDump() with showLocation.
  *
  * @author     David Grudl
+ * @outputMatch OK!
  */
 
 use Tracy\Debugger;
@@ -12,7 +13,7 @@ use Tracy\Debugger;
 require __DIR__ . '/../bootstrap.php';
 
 if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip();
+	Tester\Environment::skip('Debugger Bar is not rendered in CLI mode');
 }
 
 
@@ -41,6 +42,7 @@ register_shutdown_function(function() {
 %A%
 EOD
 , json_decode($m[1]));
+	echo 'OK!'; // prevents PHP bug #62725
 });
 ob_start();
 
