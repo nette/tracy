@@ -384,6 +384,11 @@ final class Debugger
 	 */
 	public static function _exceptionHandler(\Exception $exception, $shutdown = FALSE)
 	{
+		if (!self::$enabled) {
+			return;
+		}
+		self::$enabled = FALSE; // prevent double rendering
+
 		if (!headers_sent()) {
 			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
 			$code = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== FALSE ? 503 : 500;
@@ -435,7 +440,6 @@ final class Debugger
 			}
 		}
 
-		self::$enabled = FALSE; // prevent double rendering
 		if (!$shutdown) {
 			exit(254);
 		}
