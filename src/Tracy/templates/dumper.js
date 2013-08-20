@@ -28,11 +28,13 @@
 			dest[collapsed ? 'show' : 'hide']();
 			e.preventDefault();
 
-			var newPosition = panel.position();
-			panel.position({
-				right: newPosition.right - newPosition.width + oldPosition.width,
-				bottom: newPosition.bottom - newPosition.height + oldPosition.height
-			});
+			if (panel.length) {
+				var newPosition = panel.position();
+				panel.position({
+					right: newPosition.right - newPosition.width + oldPosition.width,
+					bottom: newPosition.bottom - newPosition.height + oldPosition.height
+				});
+			}
 		});
 	};
 
