@@ -16,7 +16,7 @@ use Tracy;
 <div class="nette-inner">
 <table>
 <?php $i = 0 ?>
-<?php foreach ($data as $item => $count): list($message, $file, $line) = explode('|', $item) ?>
+<?php foreach ($data as $item => $count): list($file, $line, $message) = explode('|', $item, 3) ?>
 <tr class="<?php echo $i++ % 2 ? 'nette-alt' : '' ?>">
 	<td class="nette-right"><?php echo $count ? "$count\xC3\x97" : '' ?></td>
 	<td><pre><?php echo htmlspecialchars($message, ENT_IGNORE), ' in ', Helpers::editorLink($file, $line) ?></pre></td>
