@@ -16,9 +16,10 @@ jobsNum=20
 phpIni="$dir/php-unix.ini"
 
 # Command line arguments processing
-for i in `seq 1 $#`; do
+i=$#
+while [ $i -gt 0 ]; do
 	if [ "$1" = "-j" ]; then
-		shift
+		shift && i=$(($i - 1))
 		if [ -z "$1" ]; then
 			echo "Missing argument for -j option." >&2
 			exit 2
@@ -26,7 +27,7 @@ for i in `seq 1 $#`; do
 		jobsNum="$1"
 
 	elif [ "$1" = "-c" ]; then
-		shift
+		shift && i=$(($i - 1))
 		if [ -z "$1" ]; then
 			echo "Missing argument for -c option." >&2
 			exit 2
@@ -36,7 +37,7 @@ for i in `seq 1 $#`; do
 	else
 		set -- "$@" "$1"
 	fi
-	shift
+	shift && i=$(($i - 1))
 done
 
 # Run tests with script's arguments, doubled -c option intentionally
