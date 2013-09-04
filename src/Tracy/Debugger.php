@@ -549,14 +549,15 @@ final class Debugger
 	 * Dumps information about a variable in Nette Debug Bar.
 	 * @param  mixed  variable to dump
 	 * @param  string optional title
+	 * @param  array  dumper options
 	 * @return mixed  variable itself
 	 */
-	public static function barDump($var, $title = NULL)
+	public static function barDump($var, $title = NULL, array $options = NULL)
 	{
 		if (!self::$productionMode) {
 			$dump = array();
 			foreach ((is_array($var) ? $var : array('' => $var)) as $key => $val) {
-				$dump[$key] = Dumper::toHtml($val);
+				$dump[$key] = Dumper::toHtml($val, $options);
 			}
 			self::getBar()->getPanel(__CLASS__ . ':dumps')->data[] = array('title' => $title, 'dump' => $dump);
 		}
