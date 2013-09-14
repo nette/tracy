@@ -171,7 +171,7 @@ class Dumper
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH]) {
 			$collapsed = $level ? count($var) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
-			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . ">";
+			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed' : '') . '">' . $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . '>';
 			$var[$marker] = TRUE;
 			foreach ($var as $k => & $v) {
 				if ($k !== $marker) {
@@ -223,7 +223,7 @@ class Dumper
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH] || $var instanceof \Closure) {
 			$collapsed = $level ? count($fields) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
-			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed">' : '">') . $out . "</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . ">";
+			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed' : '') . '">' . $out . "</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . '>';
 			$list[] = $var;
 			foreach ($fields as $k => & $v) {
 				$vis = '';
