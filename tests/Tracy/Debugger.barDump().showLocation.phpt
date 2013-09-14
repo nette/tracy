@@ -32,8 +32,9 @@ register_shutdown_function(function() {
 
 	<table>
 		<tr class="">
-		<td><pre class="nette-dump"><span class="nette-dump-string">"value"</span> (5)
-</pre>
+		<td><pre class="nette-dump" title="barDump(&#039;value&#039;)
+in file %a% on line %d%"><span class="nette-dump-string">"value"</span> (5)
+<small>in <a href="%a%">%a%:%d%</a></small></pre>
 </td>
 	</tr>
 	</table>
