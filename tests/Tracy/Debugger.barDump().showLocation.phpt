@@ -31,13 +31,12 @@ register_shutdown_function(function() {
 <div class="nette-inner nette-DumpPanel">
 
 	<table>
-			<tr class="">
-		<th></th>
+		<tr class="">
 		<td><pre class="nette-dump"><span class="nette-dump-string">"value"</span> (5)
 </pre>
 </td>
 	</tr>
-		</table>
+	</table>
 </div>
 %A%
 EOD

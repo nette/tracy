@@ -39,12 +39,9 @@ use Tracy;
 
 	<table>
 	<?php $i = 0 ?>
-	<?php foreach ($item['dump'] as $key => $dump): ?>
 	<tr class="<?php echo $i++ % 2 ? 'nette-alt' : '' ?>">
-		<th><?php echo htmlspecialchars($key) ?></th>
-		<td><?php echo $dump ?></td>
+		<td><?php echo $item['dump'] ?></td>
 	</tr>
-	<?php endforeach ?>
 	</table>
 <?php endforeach ?>
 </div>
