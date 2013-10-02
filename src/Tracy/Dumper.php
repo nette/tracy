@@ -299,7 +299,7 @@ class Dumper
 				return array(
 					$item['file'],
 					$item['line'],
-					preg_match('#\w*dump(er::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line
+					trim(preg_match('#\w*dump(er::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line)
 				);
 			}
 		}
