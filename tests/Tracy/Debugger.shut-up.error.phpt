@@ -6,7 +6,7 @@
  * @author     David Grudl
  * @exitCode   255
  * @httpCode   500
- * @outputMatch exception 'Tracy\ErrorException' with message 'Call to undefined function missing_funcion()' in %A%
+ * @outputMatch exception 'Tracy\ErrorException' with message 'Call to undefined function missing_function()' in %A%
  */
 
 use Tracy\Debugger;
@@ -20,4 +20,4 @@ header('Content-Type: text/plain');
 
 Debugger::enable();
 
-@missing_funcion();
+@missing_function();

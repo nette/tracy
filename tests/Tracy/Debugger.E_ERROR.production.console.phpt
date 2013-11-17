@@ -20,4 +20,4 @@ header('Content-Type: text/plain');
 
 Debugger::enable();
 
-missing_funcion();
+missing_function();

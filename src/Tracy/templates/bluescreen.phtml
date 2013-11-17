@@ -372,7 +372,8 @@ $counter = 0;
 		}
 
 		var collapsed = link.className.indexOf('nette-toggle-collapsed') > -1,
-			ref = link.getAttribute('data-ref') || link.getAttribute('href', 2);
+			ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
+			dest;
 
 		if (ref && ref !== '#') {
 			dest = document.getElementById(ref.substring(1));

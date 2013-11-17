@@ -47,7 +47,7 @@ use Tracy;
 </script>
 
 
-<?php foreach ($panels as $id => $panel): if (!$panel['panel']) continue; ?>
+<?php foreach ($panels as $panel): if (!$panel['panel']) continue; ?>
 	<div class="nette-panel" id="nette-debug-panel-<?php echo $panel['id'] ?>">
 		<?php echo $panel['panel'] ?>
 		<div class="nette-icons">

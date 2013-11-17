@@ -35,10 +35,10 @@
 				_this.toFloat();
 			}
 
-		}).bind('mouseenter', function(e) {
+		}).bind('mouseenter', function() {
 			_this.focus();
 
-		}).bind('mouseleave', function(e) {
+		}).bind('mouseleave', function() {
 			_this.blur();
 		});
 
@@ -175,7 +175,7 @@
 	var Bar = Nette.DebugBar = function() {
 	};
 
-	Bar.prototype.id = 'nette-debug-bar',
+	Bar.prototype.id = 'nette-debug-bar';
 
 	Bar.prototype.init = function() {
 		var elem = $('#' + this.id), _this = this;
@@ -217,7 +217,7 @@
 			}
 			e.preventDefault();
 
-		}).bind('mouseenter', function(e) {
+		}).bind('mouseenter', function() {
 			if (this.rel && this.rel !== 'close' && !elem.hasClass('nette-dragged')) {
 				var panel = Debug.getPanel(this.rel), link = $(this);
 				panel.focus(function() {
@@ -230,7 +230,7 @@
 				});
 			}
 
-		}).bind('mouseleave', function(e) {
+		}).bind('mouseleave', function() {
 			if (this.rel && this.rel !== 'close' && !elem.hasClass('nette-dragged')) {
 				Debug.getPanel(this.rel).blur();
 			}

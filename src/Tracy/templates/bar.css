@@ -105,7 +105,6 @@ body #nette-debug {
 	bottom: 0;
 	overflow: auto;
 	min-height: 21px;
-	_float: left;
 
 	min-width: 50px;
 	white-space: nowrap;

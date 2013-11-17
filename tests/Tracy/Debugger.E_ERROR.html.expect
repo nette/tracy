@@ -1,5 +1,5 @@
 
-Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
+Fatal error: Call to undefined function missing_function() in %a% on line %d%
 <!DOCTYPE html><!-- "' --></script></style></pre></xmp></table>
 <html>
 <head>
@@ -7,7 +7,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 	<meta name="robots" content="noindex">
 	<meta name="generator" content="Nette Framework">
 
-	<title>Fatal Error</title><!-- Call to undefined function missing_funcion() -->
+	<title>Fatal Error</title><!-- Call to undefined function missing_function() -->
 
 	%A%
 </head>
@@ -21,7 +21,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 		<div id="netteBluescreenError" class="panel">
 			<h1>Fatal Error</h1>
 
-			<p>Call to undefined function missing_funcion() <a href="%a%" id="netteBsSearch">search&#x25ba;</a></p>
+			<p>Call to undefined function missing_function() <a href="%a%" id="netteBsSearch">search&#x25ba;</a></p>
 		</div>
 
 
@@ -47,7 +47,7 @@ Fatal error: Call to undefined function missing_funcion() in %a% on line %d%
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
-<span class='highlight'>%d%:    &nbsp;&nbsp;&nbsp;&nbsp;missing_funcion();
+<span class='highlight'>%d%:    &nbsp;&nbsp;&nbsp;&nbsp;missing_function();
 </span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>

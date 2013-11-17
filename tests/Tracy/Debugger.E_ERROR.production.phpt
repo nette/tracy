@@ -24,4 +24,4 @@ header('Content-Type: text/html');
 
 Debugger::enable();
 
-missing_funcion();
+missing_function();

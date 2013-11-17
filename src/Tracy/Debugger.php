@@ -494,10 +494,8 @@ final class Debugger
 
 		} else {
 			self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
-			return self::isHtmlMode() ? NULL : FALSE;
+			return self::isHtmlMode() ? NULL : FALSE; // FALSE calls normal error handler
 		}
-
-		return FALSE; // call normal error handler
 	}
 
 

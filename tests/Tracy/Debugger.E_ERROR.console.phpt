@@ -25,16 +25,16 @@ $onFatalErrorCalled = FALSE;
 register_shutdown_function(function() use (& $onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
 	Assert::match(extension_loaded('xdebug') ? "
-Fatal error: Call to undefined function missing_funcion() in %a%
-exception 'Tracy\\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%
+Fatal error: Call to undefined function missing_function() in %a%
+exception 'Tracy\\ErrorException' with message 'Call to undefined function missing_function()' in %a%
 Stack trace:
 #0 %a%: third()
 #1 %a%: second()
 #2 %a%: first()
 #3 {main}
 " : "
-Fatal error: Call to undefined function missing_funcion() in %a%
-exception 'Tracy\\ErrorException' with message 'Call to undefined function missing_funcion()' in %a%
+Fatal error: Call to undefined function missing_function() in %a%
+exception 'Tracy\\ErrorException' with message 'Call to undefined function missing_function()' in %a%
 Stack trace:
 #0 [internal function]: Tracy\\Debugger::_shutdownHandler()
 #1 {main}
@@ -63,7 +63,7 @@ function second($arg1, $arg2)
 
 function third($arg1)
 {
-	missing_funcion();
+	missing_function();
 }
 
 
