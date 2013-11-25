@@ -76,7 +76,7 @@ class Logger
 	 */
 	public static function defaultMailer($message, $email)
 	{
-		$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : php_uname('n');
+		$host = preg_replace('#[^\w.-]+#', '', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : php_uname('n'));
 		$parts = str_replace(
 			array("\r\n", "\n"),
 			array("\n", PHP_EOL),
