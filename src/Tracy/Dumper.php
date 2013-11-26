@@ -143,7 +143,7 @@ class Dumper
 
 	private static function dumpDouble(& $var)
 	{
-		$var = var_export($var, TRUE);
+		$var = json_encode($var);
 		return '<span class="nette-dump-number">' . $var . (strpos($var, '.') === FALSE ? '.0' : '') . "</span>\n";
 	}
 
