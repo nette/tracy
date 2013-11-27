@@ -215,7 +215,7 @@ class Dumper
 		}
 
 		static $list = array();
-		$rc = new \ReflectionClass($var);
+		$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
 		$out = '<span class="nette-dump-object"'
 			. ($rc->getFileName() ? ' data-nette-href="' . htmlspecialchars(strtr(Debugger::$editor, array('%file' => rawurlencode($rc->getFileName()), '%line' => $rc->getStartLine()))) . '"' : '')
 			. '>' . get_class($var) . '</span> <span class="nette-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
