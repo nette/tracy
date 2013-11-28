@@ -35,7 +35,7 @@
 
 			<div id="netteBsPnl1" class="inner">
 				<p><b>File:</b> %a%</p>
-				<pre class='php'>%A%</pre>			</div></div>
+				<pre data-nette-href="%a%" class='php'>%A%</pre>			</div></div>
 
 
 									<div class="panel">

@@ -37,7 +37,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 			<div id="netteBsPnl1" class="inner">
 				<p><b>File:</b> %a%</p>
-				<pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+				<pre data-nette-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {

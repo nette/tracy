@@ -65,7 +65,11 @@ class BlueScreen
 	{
 		$source = @file_get_contents($file); // intentionally @
 		if ($source) {
-			return static::highlightPhp($source, $line, $lines, $vars);
+			return substr_replace(
+				static::highlightPhp($source, $line, $lines, $vars),
+				' data-nette-href="' . htmlspecialchars(strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line))) . '"',
+				4, 0
+			);
 		}
 	}
 
