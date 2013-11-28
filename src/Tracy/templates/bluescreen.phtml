@@ -366,6 +366,10 @@ $counter = 0;
 
 	bs.onclick = function(e) {
 		e = e || window.event;
+		if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) {
+			return;
+		}
+
 		for (var link = e.target || e.srcElement; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode) {}
 		if (!link) {
 			return true;

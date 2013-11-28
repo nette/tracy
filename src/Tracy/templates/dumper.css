@@ -63,3 +63,7 @@ pre.nette-dump div div {
 .nette-dump-indent {
 	display: none;
 }
+
+span[data-nette-href] {
+	border-bottom: 1px dotted rgba(0, 0, 0, .2);
+}

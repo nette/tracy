@@ -200,7 +200,11 @@ body {
 
 #netteBluescreen a[href^=editor\:] {
 	color: inherit;
-	border-bottom: 1px dotted #C1D2E1;
+	border-bottom: 1px dotted rgba(0, 0, 0, .2);
+}
+
+#netteBluescreen span[data-nette-href] {
+	border-bottom: 1px dotted rgba(0, 0, 0, .2);
 }
 
 
