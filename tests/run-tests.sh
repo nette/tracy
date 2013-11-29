@@ -41,7 +41,7 @@ while [ $i -gt 0 ]; do
 done
 
 # Run tests with script's arguments, doubled -c option intentionally
-php -c "$phpIni" "$runnerScript" -j "$jobsNum" -c "$phpIni" "$@"
+php -n -c "$phpIni" "$runnerScript" -j "$jobsNum" -c "$phpIni" "$@"
 error=$?
 
 # Print *.actual content if tests failed
