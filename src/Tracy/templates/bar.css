@@ -8,6 +8,7 @@
 /* common styles */
 #nette-debug {
 	display: none;
+	direction: ltr;
 }
 
 body#nette-debug {
