@@ -7,7 +7,8 @@
  * @outputMatch %A%Strict Standards: Declaration of B::test() should be compatible with A::test() in %A%
  */
 
-use Tracy\Debugger;
+use Tracy\Debugger,
+	Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

@@ -9,7 +9,8 @@
  * @outputMatch %A%<title>User Error</title><!-- Test::__toString -->%A%
  */
 
-use Tracy\Debugger;
+use Tracy\Debugger,
+	Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

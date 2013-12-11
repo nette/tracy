@@ -9,7 +9,8 @@
  * @outputMatch exception 'Tracy\ErrorException' with message 'Call to undefined function missing_function()' in %A%
  */
 
-use Tracy\Debugger;
+use Tracy\Debugger,
+	Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

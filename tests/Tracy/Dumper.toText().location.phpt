@@ -6,7 +6,8 @@
  * @author     David Grudl
  */
 
-use Tracy\Dumper;
+use Tracy\Dumper,
+	Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
