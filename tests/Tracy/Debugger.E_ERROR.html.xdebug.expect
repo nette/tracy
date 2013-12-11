@@ -5,7 +5,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 <head>
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
-	<meta name="generator" content="Nette Framework">
+	<meta name="generator" content="Tracy by Nette Framework">
 
 	<title>Fatal Error</title><!-- Call to undefined function missing_function() -->
 
@@ -203,4 +203,4 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 </body>
 </html>
 
-%A%<!-- Nette Debug Bar -->%A%
+%A%<!-- Tracy Debug Bar -->%A%

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
-	<meta name="generator" content="Nette Framework">
+	<meta name="generator" content="Tracy by Nette Framework">
 
 	<title>User Error</title><!-- The my error -->
 
@@ -193,4 +193,4 @@
 </body>
 </html>
 
-%A%<!-- Nette Debug Bar -->%A%
+%A%<!-- Tracy Debug Bar -->%A%

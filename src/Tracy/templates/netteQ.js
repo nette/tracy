@@ -1,8 +1,8 @@
 /**
  * NetteQ
  *
- * This file is part of the Nette Framework.
- * Copyright (c) 2004, 2012 David Grudl (http://davidgrudl.com)
+ * This file is part of the Tracy.
+ * Copyright (c) 2004, 2013 David Grudl (http://davidgrudl.com)
  */
 
 var Nette = Nette || {};

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the Nette Framework (http://nette.org)
+ * This file is part of the Tracy (http://tracy.nette.org)
  *
  * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
@@ -83,7 +83,7 @@ class Logger
 			array(
 				'headers' => implode("\n", array(
 					"From: noreply@$host",
-					'X-Mailer: Nette Framework',
+					'X-Mailer: Tracy',
 					'Content-Type: text/plain; charset=UTF-8',
 					'Content-Transfer-Encoding: 8bit',
 				)) . "\n",

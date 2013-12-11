@@ -3,7 +3,7 @@
 /**
  * Debugger bluescreen template.
  *
- * This file is part of the Nette Framework (http://nette.org)
+ * This file is part of the Tracy (http://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * @param      array     $exception
@@ -25,7 +25,7 @@ $counter = 0;
 <head>
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
-	<meta name="generator" content="Nette Framework">
+	<meta name="generator" content="Tracy by Nette Framework">
 
 	<title><?php echo htmlspecialchars($title) ?></title><!-- <?php
 		$ex = $exception; echo htmlspecialchars($ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE);
