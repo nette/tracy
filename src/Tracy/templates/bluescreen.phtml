@@ -32,7 +32,7 @@ $counter = 0;
 		while ($ex = $ex->getPrevious()) echo htmlspecialchars('; caused by ' . get_class($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE);
 	?> -->
 
-	<style type="text/css" class="nette-debug">
+	<style type="text/css" class="tracy-debug">
 	<?php require __DIR__ . '/bluescreen.css' ?>
 	</style>
 </head>
@@ -40,18 +40,18 @@ $counter = 0;
 
 <body>
 <script>document.body.className+=' js'</script>
-<div id="netteBluescreen">
-	<a id="netteBluescreenIcon" href="#" class="nette-toggle"></a>
+<div id="tracyBluescreen">
+	<a id="tracyBluescreenIcon" href="#" class="tracy-toggle"></a>
 	<div>
-		<div id="netteBluescreenError" class="panel">
+		<div id="tracyBluescreenError" class="panel">
 			<h1><?php echo htmlspecialchars($title), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 
-			<p><?php echo htmlspecialchars($exception->getMessage(), ENT_IGNORE) ?> <a href="http://www.google.cz/search?sourceid=nette&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" id="netteBsSearch">search&#x25ba;</a></p>
+			<p><?php echo htmlspecialchars($exception->getMessage(), ENT_IGNORE) ?> <a href="http://www.google.cz/search?sourceid=tracy&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" id="tracyBsSearch">search&#x25ba;</a></p>
 		</div>
 
 		<?php if ($prev = $exception->getPrevious()): ?>
 		<div class="caused">
-			<a href="#netteCaused">Caused by <?php echo get_class($prev) ?></a>
+			<a href="#tracyCaused">Caused by <?php echo get_class($prev) ?></a>
 		</div>
 		<?php endif ?>
 
@@ -60,10 +60,10 @@ $counter = 0;
 		<?php do { ?>
 
 			<?php if ($level++): ?>
-			<div class="panel"<?php if ($level === 2) echo ' id="netteCaused"' ?>>
-			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle<?php echo ($collapsed = $level > 2) ? '-collapsed' : '' ?>">Caused by</a></h2>
+			<div class="panel"<?php if ($level === 2) echo ' id="tracyCaused"' ?>>
+			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle<?php echo ($collapsed = $level > 2) ? '-collapsed' : '' ?>">Caused by</a></h2>
 
-			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
+			<div id="tracyBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<div class="panel">
 					<h1><?php echo htmlspecialchars(get_class($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : '')) ?></h1>
 
@@ -76,9 +76,9 @@ $counter = 0;
 			<?php $panel = call_user_func($panel, $ex); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 			<?php if (!empty($panel['bottom'])) { continue; } ?>
 			<div class="panel">
-				<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
+				<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
 
-				<div id="netteBsPnl<?php echo $counter ?>" class="inner">
+				<div id="tracyBsPnl<?php echo $counter ?>" class="inner">
 				<?php echo $panel['panel'] ?>
 			</div></div>
 			<?php endforeach ?>
@@ -92,9 +92,9 @@ $counter = 0;
 			} ?>
 
 			<div class="panel">
-			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle<?php echo ($collapsed = $expanded !== NULL) ? '-collapsed' : '' ?>">Source file</a></h2>
+			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle<?php echo ($collapsed = $expanded !== NULL) ? '-collapsed' : '' ?>">Source file</a></h2>
 
-			<div id="netteBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'nette-collapsed ' : '' ?>inner">
+			<div id="tracyBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
 				<?php if (is_file($ex->getFile())): ?><?php echo self::highlightFile($ex->getFile(), $ex->getLine(), 15, isset($ex->context) ? $ex->context : NULL) ?><?php endif ?>
 			</div></div>
@@ -103,9 +103,9 @@ $counter = 0;
 			<?php if (isset($stack[0]['class']) && $stack[0]['class'] === 'Tracy\Debugger' && ($stack[0]['function'] === '_shutdownHandler' || $stack[0]['function'] === '_errorHandler')) unset($stack[0]) ?>
 			<?php if ($stack): ?>
 			<div class="panel">
-				<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle">Call stack</a></h2>
+				<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle">Call stack</a></h2>
 
-				<div id="netteBsPnl<?php echo $counter ?>" class="inner">
+				<div id="tracyBsPnl<?php echo $counter ?>" class="inner">
 				<ol>
 					<?php foreach ($stack as $key => $row): ?>
 					<li><p>
@@ -116,26 +116,26 @@ $counter = 0;
 						<i>inner-code</i><?php if (isset($row['line'])) echo ':', $row['line'] ?>
 					<?php endif ?>
 
-					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#netteBsSrc<?php echo "$level-$key" ?>" class="nette-toggle-collapsed">source</a>&nbsp; <?php endif ?>
+					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#tracyBsSrc<?php echo "$level-$key" ?>" class="tracy-toggle-collapsed">source</a>&nbsp; <?php endif ?>
 
-					<?php if (isset($row['object'])) echo "<a href='#netteBsObj$level-$key' class='nette-toggle-collapsed'>" ?>
+					<?php if (isset($row['object'])) echo "<a href='#tracyBsObj$level-$key' class='tracy-toggle-collapsed'>" ?>
 					<?php if (isset($row['class'])) echo htmlspecialchars($row['class'] . $row['type']) ?>
 					<?php if (isset($row['object'])) echo '</a>' ?>
 					<?php echo htmlspecialchars($row['function']) ?>
 
-					(<?php if (!empty($row['args'])): ?><a href="#netteBsArgs<?php echo "$level-$key" ?>" class="nette-toggle-collapsed">arguments</a><?php endif ?>)
+					(<?php if (!empty($row['args'])): ?><a href="#tracyBsArgs<?php echo "$level-$key" ?>" class="tracy-toggle-collapsed">arguments</a><?php endif ?>)
 					</p>
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?>
-						<div <?php if ($expanded !== $key) echo 'class="nette-collapsed"'; ?> id="netteBsSrc<?php echo "$level-$key" ?>"><?php echo self::highlightFile($row['file'], $row['line']) ?></div>
+						<div <?php if ($expanded !== $key) echo 'class="tracy-collapsed"'; ?> id="tracyBsSrc<?php echo "$level-$key" ?>"><?php echo self::highlightFile($row['file'], $row['line']) ?></div>
 					<?php endif ?>
 
 					<?php if (isset($row['object'])): ?>
-						<div class="nette-collapsed outer" id="netteBsObj<?php echo "$level-$key" ?>"><?php echo Dumper::toHtml($row['object']); ?></div>
+						<div class="tracy-collapsed outer" id="tracyBsObj<?php echo "$level-$key" ?>"><?php echo Dumper::toHtml($row['object']); ?></div>
 					<?php endif ?>
 
 					<?php if (!empty($row['args'])): ?>
-						<div class="nette-collapsed outer" id="netteBsArgs<?php echo "$level-$key" ?>">
+						<div class="tracy-collapsed outer" id="tracyBsArgs<?php echo "$level-$key" ?>">
 						<table>
 						<?php
 						try {
@@ -162,9 +162,9 @@ $counter = 0;
 
 			<?php if (isset($ex->context) && is_array($ex->context)):?>
 			<div class="panel">
-			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Variables</a></h2>
+			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Variables</a></h2>
 
-			<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
+			<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
 			<div class="outer">
 			<table>
 			<?php
@@ -186,20 +186,20 @@ $counter = 0;
 		<?php $panel = call_user_func($panel, NULL); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 		<?php if (!empty($panel['bottom'])) { $bottomPanels[] = $panel; continue; } ?>
 		<div class="panel">
-			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
+			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
 
-			<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
+			<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
 			<?php echo $panel['panel'] ?>
 		</div></div>
 		<?php endforeach ?>
 
 
 		<div class="panel">
-		<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Environment</a></h2>
+		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Environment</a></h2>
 
-		<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
-			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle">$_SERVER</a></h3>
-			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
+		<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
+			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle">$_SERVER</a></h3>
+			<div id="tracyBsPnl<?php echo $counter ?>" class="outer">
 			<table>
 			<?php
 			foreach ($_SERVER as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', Dumper::toHtml($v), "</td></tr>\n";
@@ -208,8 +208,8 @@ $counter = 0;
 			</div>
 
 
-			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle">$_SESSION</a></h3>
-			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
+			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle">$_SESSION</a></h3>
+			<div id="tracyBsPnl<?php echo $counter ?>" class="outer">
 			<?php if (empty($_SESSION)):?>
 			<p><i>empty</i></p>
 			<?php else: ?>
@@ -223,8 +223,8 @@ $counter = 0;
 
 
 			<?php if (!empty($_SESSION['__NF']['DATA'])):?>
-			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle">Nette Session</a></h3>
-			<div id="netteBsPnl<?php echo $counter ?>" class="outer">
+			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle">Nette Session</a></h3>
+			<div id="tracyBsPnl<?php echo $counter ?>" class="outer">
 			<table>
 			<?php
 			foreach ($_SESSION['__NF']['DATA'] as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', Dumper::toHtml($v), "</td></tr>\n";
@@ -237,8 +237,8 @@ $counter = 0;
 			<?php
 			$list = get_defined_constants(TRUE);
 			if (!empty($list['user'])):?>
-			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Constants</a></h3>
-			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
+			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Constants</a></h3>
+			<div id="tracyBsPnl<?php echo $counter ?>" class="outer tracy-collapsed">
 			<table>
 			<?php
 			foreach ($list['user'] as $k => $v) {
@@ -251,8 +251,8 @@ $counter = 0;
 			<?php endif ?>
 
 
-			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Included files</a> (<?php echo count(get_included_files()) ?>)</h3>
-			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
+			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Included files</a> (<?php echo count(get_included_files()) ?>)</h3>
+			<div id="tracyBsPnl<?php echo $counter ?>" class="outer tracy-collapsed">
 			<table>
 			<?php
 			foreach (get_included_files() as $v) {
@@ -263,17 +263,17 @@ $counter = 0;
 			</div>
 
 
-			<h3><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">Configuration options</a></h3>
-			<div id="netteBsPnl<?php echo $counter ?>" class="outer nette-collapsed">
+			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Configuration options</a></h3>
+			<div id="tracyBsPnl<?php echo $counter ?>" class="outer tracy-collapsed">
 			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+\z#s', '', ob_get_clean()) ?>
 			</div>
 		</div></div>
 
 
 		<div class="panel">
-		<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">HTTP request</a></h2>
+		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">HTTP request</a></h2>
 
-		<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
+		<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
 			<?php if (function_exists('apache_request_headers')): ?>
 			<h3>Headers</h3>
 			<div class="outer">
@@ -304,9 +304,9 @@ $counter = 0;
 
 
 		<div class="panel">
-		<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle-collapsed">HTTP response</a></h2>
+		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">HTTP response</a></h2>
 
-		<div id="netteBsPnl<?php echo $counter ?>" class="nette-collapsed inner">
+		<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
 			<h3>Headers</h3>
 			<?php if (headers_list()): ?>
 			<pre><?php
@@ -320,9 +320,9 @@ $counter = 0;
 
 		<?php foreach ($bottomPanels as $panel): ?>
 		<div class="panel">
-			<h2><a href="#netteBsPnl<?php echo ++$counter ?>" class="nette-toggle"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
+			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
 
-			<div id="netteBsPnl<?php echo $counter ?>" class="inner">
+			<div id="tracyBsPnl<?php echo $counter ?>" class="inner">
 			<?php echo $panel['panel'] ?>
 		</div></div>
 		<?php endforeach ?>
@@ -343,24 +343,24 @@ $counter = 0;
 </div>
 
 <script type="text/javascript">
-	var bs = document.getElementById('netteBluescreen');
+	var bs = document.getElementById('tracyBluescreen');
 	document.body.appendChild(bs);
 	document.onkeyup = function(e) {
 		e = e || window.event;
 		if (e.keyCode == 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
-			document.getElementById('netteBluescreenIcon').click();
+			document.getElementById('tracyBluescreenIcon').click();
 		}
 	};
 
 	for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {
-		if ((styles[i].owningElement || styles[i].ownerNode).className !== 'nette-debug') {
+		if ((styles[i].owningElement || styles[i].ownerNode).className !== 'tracy-debug') {
 			styles[i].oldDisabled = styles[i].disabled;
 			styles[i].disabled = true;
 
 		} else if (styles[i].addRule) {
-			styles[i].addRule('.nette-collapsed', 'display: none');
+			styles[i].addRule('.tracy-collapsed', 'display: none');
 		} else {
-			styles[i].insertRule('.nette-collapsed { display: none }', 0);
+			styles[i].insertRule('.tracy-collapsed { display: none }', 0);
 		}
 	}
 
@@ -370,12 +370,12 @@ $counter = 0;
 			return;
 		}
 
-		for (var link = e.target || e.srcElement; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode) {}
+		for (var link = e.target || e.srcElement; link && (!link.tagName || link.className.indexOf('tracy-toggle') < 0); link = link.parentNode) {}
 		if (!link) {
 			return true;
 		}
 
-		var collapsed = link.className.indexOf('nette-toggle-collapsed') > -1,
+		var collapsed = link.className.indexOf('tracy-toggle-collapsed') > -1,
 			ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
 			dest;
 
@@ -385,12 +385,12 @@ $counter = 0;
 			for (dest = link.nextSibling; dest && dest.nodeType !== 1; dest = dest.nextSibling) {}
 		}
 
-		link.className = 'nette-toggle' + (collapsed ? '' : '-collapsed');
+		link.className = 'tracy-toggle' + (collapsed ? '' : '-collapsed');
 		dest.style.display = collapsed ? (dest.tagName.toLowerCase() === 'div' ? 'block' : 'inline') : 'none';
 
-		if (link.id === 'netteBluescreenIcon') {
+		if (link.id === 'tracyBluescreenIcon') {
 			for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {
-				if ((styles[i].owningElement || styles[i].ownerNode).className !== 'nette-debug') {
+				if ((styles[i].owningElement || styles[i].ownerNode).className !== 'tracy-debug') {
 					styles[i].disabled = collapsed ? true : styles[i].oldDisabled;
 				}
 			}

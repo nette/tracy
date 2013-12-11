@@ -28,12 +28,12 @@ register_shutdown_function(function() {
 	Assert::match(<<<EOD
 %A%<h1>Dumped variables</h1>
 
-<div class="nette-inner nette-DumpPanel">
+<div class="tracy-inner tracy-DumpPanel">
 
 	<table>
 		<tr class="">
-		<td><pre class="nette-dump" title="barDump(&#039;value&#039;)
-in file %a% on line %d%"><span class="nette-dump-string">"value"</span> (5)
+		<td><pre class="tracy-dump" title="barDump(&#039;value&#039;)
+in file %a% on line %d%"><span class="tracy-dump-string">"value"</span> (5)
 <small>in <a href="%a%">%a%:%d%</a></small></pre>
 </td>
 	</tr>

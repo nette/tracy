@@ -6,64 +6,64 @@
  */
 
 /* toggle */
-.nette-collapsed {
+.tracy-collapsed {
 	display: none;
 }
 
-.nette-toggle, .nette-toggle-collapsed {
+.tracy-toggle, .tracy-toggle-collapsed {
 	cursor: pointer;
 }
 
-.nette-toggle:after {
+.tracy-toggle:after {
 	content: " ▼";
 	opacity: .4;
 }
 
-.nette-toggle-collapsed:after {
+.tracy-toggle-collapsed:after {
 	content: " ►";
 	opacity: .4;
 }
 
 
 /* dump */
-pre.nette-dump {
+pre.tracy-dump {
 	color: #444;
 	background: white;
 }
 
-pre.nette-dump div {
+pre.tracy-dump div {
 	padding-left: 3ex;
 }
 
-pre.nette-dump div div {
+pre.tracy-dump div div {
 	border-left: 1px solid rgba(0, 0, 0, .1);
 	margin-left: .5ex;
 }
 
-.nette-dump-array, .nette-dump-object {
+.tracy-dump-array, .tracy-dump-object {
 	color: #C22;
 }
 
-.nette-dump-string {
+.tracy-dump-string {
 	color: #35D;
 }
 
-.nette-dump-number {
+.tracy-dump-number {
 	color: #090;
 }
 
-.nette-dump-null, .nette-dump-bool {
+.tracy-dump-null, .tracy-dump-bool {
 	color: #850;
 }
 
-.nette-dump-visibility, .nette-dump-hash {
+.tracy-dump-visibility, .tracy-dump-hash {
 	font-size: 85%; color: #999;
 }
 
-.nette-dump-indent {
+.tracy-dump-indent {
 	display: none;
 }
 
-span[data-nette-href] {
+span[data-tracy-href] {
 	border-bottom: 1px dotted rgba(0, 0, 0, .2);
 }

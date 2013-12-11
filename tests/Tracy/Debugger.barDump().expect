@@ -1,22 +1,22 @@
 %A%<h1>Dumped variables</h1>
 
-<div class="nette-inner nette-DumpPanel">
+<div class="tracy-inner tracy-DumpPanel">
 	
 	<table>
 		<tr class="">
-		<td><pre class="nette-dump"><span class="nette-toggle"><span class="nette-dump-array">array</span> (8)</span>
-<div><span class="nette-dump-indent">   </span><span class="nette-dump-key">0</span> => <span class="nette-dump-number">10</span>
-<span class="nette-dump-indent">   </span><span class="nette-dump-key">1</span> => <span class="nette-dump-number">20.2</span>
-<span class="nette-dump-indent">   </span><span class="nette-dump-key">2</span> => <span class="nette-dump-bool">TRUE</span>
-<span class="nette-dump-indent">   </span><span class="nette-dump-key">3</span> => <span class="nette-dump-bool">FALSE</span>
-<span class="nette-dump-indent">   </span><span class="nette-dump-key">4</span> => <span class="nette-dump-null">NULL</span>
-<span class="nette-dump-indent">   </span><span class="nette-dump-key">5</span> => <span class="nette-dump-string">"hello"</span> (5)
-<span class="nette-dump-indent">   </span><span class="nette-dump-key">6</span> => <span class="nette-toggle"><span class="nette-dump-array">array</span> (2)</span>
-<div><span class="nette-dump-indent">   |  </span><span class="nette-dump-key">key1</span> => <span class="nette-dump-string">"val1"</span> (4)
-<span class="nette-dump-indent">   |  </span><span class="nette-dump-key">key2</span> => <span class="nette-dump-bool">TRUE</span>
-</div><span class="nette-dump-indent">   </span><span class="nette-dump-key">7</span> => <span class="nette-toggle"><span class="nette-dump-object">stdClass</span> <span class="nette-dump-hash">#%a%</span></span>
-<div><span class="nette-dump-indent">   |  </span><span class="nette-dump-key">key1</span> => <span class="nette-dump-string">"val1"</span> (4)
-<span class="nette-dump-indent">   |  </span><span class="nette-dump-key">key2</span> => <span class="nette-dump-bool">TRUE</span>
+		<td><pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (8)</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-number">20.2</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-bool">TRUE</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">3</span> => <span class="tracy-dump-bool">FALSE</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-dump-null">NULL</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">5</span> => <span class="tracy-dump-string">"hello"</span> (5)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key1</span> => <span class="tracy-dump-string">"val1"</span> (4)
+<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key2</span> => <span class="tracy-dump-bool">TRUE</span>
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">7</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key1</span> => <span class="tracy-dump-string">"val1"</span> (4)
+<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key2</span> => <span class="tracy-dump-bool">TRUE</span>
 </div></div></pre>
 </td>
 	</tr>
@@ -25,7 +25,7 @@
 	
 	<table>
 		<tr class="">
-		<td><pre class="nette-dump"><span class="nette-dump-string">"&lt;a href="#"&gt;test&lt;/a&gt;"</span> (20)
+		<td><pre class="tracy-dump"><span class="tracy-dump-string">"&lt;a href="#"&gt;test&lt;/a&gt;"</span> (20)
 </pre>
 </td>
 	</tr>

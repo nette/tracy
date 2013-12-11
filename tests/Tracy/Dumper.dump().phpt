@@ -17,7 +17,7 @@ test(function() { // html mode
 	if (headers_list()) {
 		ob_start();
 		Assert::same( 123, Dumper::dump(123) );
-		Assert::match( '<pre class="nette-dump"><span class="nette-dump-number">123</span>
+		Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-number">123</span>
 </pre>', ob_get_clean() );
 	}
 });

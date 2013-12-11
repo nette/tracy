@@ -76,7 +76,7 @@ class Dumper
 			self::LOCATION => FALSE,
 		);
 		list($file, $line, $code) = $options[self::LOCATION] ? self::findLocation() : NULL;
-		return '<pre class="nette-dump"'
+		return '<pre class="tracy-dump"'
 			. ($file ? ' title="' . htmlspecialchars("$code\nin file $file on line $line", ENT_IGNORE | ENT_QUOTES) . '">' : '>')
 			. self::dumpVar($var, $options)
 			. ($file ? '<small>in <a href="editor://open/?file=' . rawurlencode($file) . "&amp;line=$line\">" . htmlspecialchars($file, ENT_IGNORE) . ":$line</a></small>" : '')
@@ -100,7 +100,7 @@ class Dumper
 	 */
 	public static function toTerminal($var, array $options = NULL)
 	{
-		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="nette-dump-(\w+)">|</span>#', function($m) {
+		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function($m) {
 			return "\033[" . (isset($m[1], Dumper::$terminalColors[$m[1]]) ? Dumper::$terminalColors[$m[1]] : '0') . "m";
 		}, self::toHtml($var, $options))), ENT_QUOTES);
 	}
@@ -125,32 +125,32 @@ class Dumper
 
 	private static function dumpNull()
 	{
-		return "<span class=\"nette-dump-null\">NULL</span>\n";
+		return "<span class=\"tracy-dump-null\">NULL</span>\n";
 	}
 
 
 	private static function dumpBoolean(& $var)
 	{
-		return '<span class="nette-dump-bool">' . ($var ? 'TRUE' : 'FALSE') . "</span>\n";
+		return '<span class="tracy-dump-bool">' . ($var ? 'TRUE' : 'FALSE') . "</span>\n";
 	}
 
 
 	private static function dumpInteger(& $var)
 	{
-		return "<span class=\"nette-dump-number\">$var</span>\n";
+		return "<span class=\"tracy-dump-number\">$var</span>\n";
 	}
 
 
 	private static function dumpDouble(& $var)
 	{
 		$var = json_encode($var);
-		return '<span class="nette-dump-number">' . $var . (strpos($var, '.') === FALSE ? '.0' : '') . "</span>\n";
+		return '<span class="tracy-dump-number">' . $var . (strpos($var, '.') === FALSE ? '.0' : '') . "</span>\n";
 	}
 
 
 	private static function dumpString(& $var, $options)
 	{
-		return '<span class="nette-dump-string">'
+		return '<span class="tracy-dump-string">'
 			. self::encodeString($options[self::TRUNCATE] && strlen($var) > $options[self::TRUNCATE] ? substr($var, 0, $options[self::TRUNCATE]) . ' ... ' : $var)
 			. '</span>' . (strlen($var) > 1 ? ' (' . strlen($var) . ')' : '') . "\n";
 	}
@@ -163,7 +163,7 @@ class Dumper
 			$marker = uniqid("\x00", TRUE);
 		}
 
-		$out = '<span class="nette-dump-array">array</span> (';
+		$out = '<span class="tracy-dump-array">array</span> (';
 
 		if (empty($var)) {
 			return $out . ")\n";
@@ -173,12 +173,12 @@ class Dumper
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH]) {
 			$collapsed = $level ? count($var) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
-			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed' : '') . '">' . $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . '>';
+			$out = '<span class="tracy-toggle' . ($collapsed ? '-collapsed' : '') . '">' . $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$var[$marker] = TRUE;
 			foreach ($var as $k => & $v) {
 				if ($k !== $marker) {
-					$out .= '<span class="nette-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-						. '<span class="nette-dump-key">' . (preg_match('#^\w+\z#', $k) ? $k : self::encodeString($k)) . '</span> => '
+					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+						. '<span class="tracy-dump-key">' . (preg_match('#^\w+\z#', $k) ? $k : self::encodeString($k)) . '</span> => '
 						. self::dumpVar($v, $options, $level + 1);
 				}
 			}
@@ -216,9 +216,9 @@ class Dumper
 
 		static $list = array();
 		$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
-		$out = '<span class="nette-dump-object"'
-			. ($rc->getFileName() ? ' data-nette-href="' . htmlspecialchars(strtr(Debugger::$editor, array('%file' => rawurlencode($rc->getFileName()), '%line' => $rc->getStartLine()))) . '"' : '')
-			. '>' . get_class($var) . '</span> <span class="nette-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
+		$out = '<span class="tracy-dump-object"'
+			. ($rc->getFileName() ? ' data-tracy-href="' . htmlspecialchars(strtr(Debugger::$editor, array('%file' => rawurlencode($rc->getFileName()), '%line' => $rc->getStartLine()))) . '"' : '')
+			. '>' . get_class($var) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
 
 		if (empty($fields)) {
 			return $out . "\n";
@@ -228,16 +228,16 @@ class Dumper
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH] || $var instanceof \Closure) {
 			$collapsed = $level ? count($fields) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
-			$out = '<span class="nette-toggle' . ($collapsed ? '-collapsed' : '') . '">' . $out . "</span>\n<div" . ($collapsed ? ' class="nette-collapsed"' : '') . '>';
+			$out = '<span class="tracy-toggle' . ($collapsed ? '-collapsed' : '') . '">' . $out . "</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$list[] = $var;
 			foreach ($fields as $k => & $v) {
 				$vis = '';
 				if ($k[0] === "\x00") {
-					$vis = ' <span class="nette-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
+					$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 					$k = substr($k, strrpos($k, "\x00") + 1);
 				}
-				$out .= '<span class="nette-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-					. '<span class="nette-dump-key">' . (preg_match('#^\w+\z#', $k) ? $k : self::encodeString($k)) . "</span>$vis => "
+				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+					. '<span class="tracy-dump-key">' . (preg_match('#^\w+\z#', $k) ? $k : self::encodeString($k)) . "</span>$vis => "
 					. self::dumpVar($v, $options, $level + 1);
 			}
 			array_pop($list);
@@ -252,12 +252,12 @@ class Dumper
 	private static function dumpResource(& $var, $options, $level)
 	{
 		$type = get_resource_type($var);
-		$out = '<span class="nette-dump-resource">' . htmlSpecialChars($type) . ' resource</span>';
+		$out = '<span class="tracy-dump-resource">' . htmlSpecialChars($type) . ' resource</span>';
 		if (isset(self::$resources[$type])) {
-			$out = "<span class=\"nette-toggle-collapsed\">$out</span>\n<div class=\"nette-collapsed\">";
+			$out = "<span class=\"tracy-toggle-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
-				$out .= '<span class="nette-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-					. '<span class="nette-dump-key">' . htmlSpecialChars($k) . "</span> => " . self::dumpVar($v, $options, $level + 1);
+				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+					. '<span class="tracy-dump-key">' . htmlSpecialChars($k) . "</span> => " . self::dumpVar($v, $options, $level + 1);
 			}
 			return $out . '</div>';
 		}

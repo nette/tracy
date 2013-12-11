@@ -67,7 +67,7 @@ class BlueScreen
 		if ($source) {
 			return substr_replace(
 				static::highlightPhp($source, $line, $lines, $vars),
-				' data-nette-href="' . htmlspecialchars(strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line))) . '"',
+				' data-tracy-href="' . htmlspecialchars(strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line))) . '"',
 				4, 0
 			);
 		}

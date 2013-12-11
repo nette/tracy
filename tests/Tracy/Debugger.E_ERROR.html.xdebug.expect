@@ -15,13 +15,13 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 <body>
 %A%
-<div id="netteBluescreen">
-	<a id="netteBluescreenIcon" href="#" class="nette-toggle"></a>
+<div id="tracyBluescreen">
+	<a id="tracyBluescreenIcon" href="#" class="tracy-toggle"></a>
 	<div>
-		<div id="netteBluescreenError" class="panel">
+		<div id="tracyBluescreenError" class="panel">
 			<h1>Fatal Error</h1>
 
-			<p>Call to undefined function missing_function() <a href="%a%" id="netteBsSearch">search&#x25ba;</a></p>
+			<p>Call to undefined function missing_function() <a href="%a%" id="tracyBsSearch">search&#x25ba;</a></p>
 		</div>
 
 
@@ -33,9 +33,9 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 			<div class="panel">
-			<h2><a href="#netteBsPnl1" class="nette-toggle">Source file</a></h2>
+			<h2><a href="#tracyBsPnl1" class="tracy-toggle">Source file</a></h2>
 
-			<div id="netteBsPnl1" class="inner">
+			<div id="tracyBsPnl1" class="inner">
 				<p><b>File:</b> %a%</p>
 				<pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
@@ -56,19 +56,19 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 									<div class="panel">
-				<h2><a href="#netteBsPnl2" class="nette-toggle">Call stack</a></h2>
+				<h2><a href="#tracyBsPnl2" class="tracy-toggle">Call stack</a></h2>
 
-				<div id="netteBsPnl2" class="inner">
+				<div id="tracyBsPnl2" class="inner">
 				<ol>
 										<li><p>
 
 											%a%
-					<a href="#netteBsSrc1-0" class="nette-toggle-collapsed">source</a>&nbsp;
+					<a href="#tracyBsSrc1-0" class="tracy-toggle-collapsed">source</a>&nbsp;
 																				third
 					()
 					</p>
 
-											<div class="nette-collapsed" id="netteBsSrc1-0"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+											<div class="tracy-collapsed" id="tracyBsSrc1-0"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
@@ -90,24 +90,24 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 										<li><p>
 
 											%a%
-					<a href="#netteBsSrc1-1" class="nette-toggle-collapsed">source</a>&nbsp;
+					<a href="#tracyBsSrc1-1" class="tracy-toggle-collapsed">source</a>&nbsp;
 																				second
 					()
 					</p>
 
-											<div class="nette-collapsed" id="netteBsSrc1-1"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>%A%</div>
+											<div class="tracy-collapsed" id="tracyBsSrc1-1"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>%A%</div>
 
 
 										</li>
 										<li><p>
 
 											%a%
-					<a href="#netteBsSrc1-2" class="nette-toggle-collapsed">source</a>&nbsp;
+					<a href="#tracyBsSrc1-2" class="tracy-toggle-collapsed">source</a>&nbsp;
 																				first
 					()
 					</p>
 
-											<div class="nette-collapsed" id="netteBsSrc1-2"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
+											<div class="tracy-collapsed" id="tracyBsSrc1-2"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
 <span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
@@ -133,43 +133,43 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 		<div class="panel">
-		<h2><a href="#netteBsPnl3" class="nette-toggle-collapsed">Environment</a></h2>
+		<h2><a href="#tracyBsPnl3" class="tracy-toggle-collapsed">Environment</a></h2>
 
-		<div id="netteBsPnl3" class="nette-collapsed inner">
-			<h3><a href="#netteBsPnl4" class="nette-toggle">$_SERVER</a></h3>
-			<div id="netteBsPnl4" class="outer">
+		<div id="tracyBsPnl3" class="tracy-collapsed inner">
+			<h3><a href="#tracyBsPnl4" class="tracy-toggle">$_SERVER</a></h3>
+			<div id="tracyBsPnl4" class="outer">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#netteBsPnl5" class="nette-toggle">$_SESSION</a></h3>
-			<div id="netteBsPnl5" class="outer">%A%</div>
+			<h3><a href="#tracyBsPnl5" class="tracy-toggle">$_SESSION</a></h3>
+			<div id="tracyBsPnl5" class="outer">%A%</div>
 
 
 
 
-						<h3><a href="#netteBsPnl6" class="nette-toggle-collapsed">Constants</a></h3>
-			<div id="netteBsPnl6" class="outer nette-collapsed">
+						<h3><a href="#tracyBsPnl6" class="tracy-toggle-collapsed">Constants</a></h3>
+			<div id="tracyBsPnl6" class="outer tracy-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#netteBsPnl7" class="nette-toggle-collapsed">Included files</a> (%d%)</h3>
-			<div id="netteBsPnl7" class="outer nette-collapsed">
+			<h3><a href="#tracyBsPnl7" class="tracy-toggle-collapsed">Included files</a> (%d%)</h3>
+			<div id="tracyBsPnl7" class="outer tracy-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#netteBsPnl8" class="nette-toggle-collapsed">Configuration options</a></h3>
-			<div id="netteBsPnl8" class="outer nette-collapsed">
+			<h3><a href="#tracyBsPnl8" class="tracy-toggle-collapsed">Configuration options</a></h3>
+			<div id="tracyBsPnl8" class="outer tracy-collapsed">
 			%A%</div>
 		</div></div>
 
 
 		<div class="panel">
-		<h2><a href="#netteBsPnl9" class="nette-toggle-collapsed">HTTP request</a></h2>
+		<h2><a href="#tracyBsPnl9" class="tracy-toggle-collapsed">HTTP request</a></h2>
 
-		<div id="netteBsPnl9" class="nette-collapsed inner">
+		<div id="tracyBsPnl9" class="tracy-collapsed inner">
 %A%
 						<h3>$_GET</h3>
 						<p><i>empty</i></p>
@@ -181,9 +181,9 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 		<div class="panel">
-		<h2><a href="#netteBsPnl10" class="nette-toggle-collapsed">HTTP response</a></h2>
+		<h2><a href="#tracyBsPnl10" class="tracy-toggle-collapsed">HTTP response</a></h2>
 
-		<div id="netteBsPnl10" class="nette-collapsed inner">
+		<div id="tracyBsPnl10" class="tracy-collapsed inner">
 			<h3>Headers</h3>
 						<pre>%A%</pre>
 					</div></div>

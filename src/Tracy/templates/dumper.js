@@ -7,18 +7,18 @@
 
 (function(){
 
-	var $ = Nette.Query.factory;
+	var $ = Tracy.Query.factory;
 
-	var Dumper = Nette.Dumper = {};
+	var Dumper = Tracy.Dumper = {};
 
 	Dumper.init = function() {
 		$(document.body).bind('click', function(e) {
 			var link;
 
-			// enables <span data-nette-href=""> & ctrl key
-			for (link = e.target; link && (!link.getAttribute || !link.getAttribute('data-nette-href')); link = link.parentNode) {}
+			// enables <span data-tracy-href=""> & ctrl key
+			for (link = e.target; link && (!link.getAttribute || !link.getAttribute('data-tracy-href')); link = link.parentNode) {}
 			if (e.ctrlKey && link) {
-				location.href = link.getAttribute('data-nette-href');
+				location.href = link.getAttribute('data-tracy-href');
 				return false;
 			}
 
@@ -26,18 +26,18 @@
 				return;
 			}
 
-			// enables <a class="nette-toggle" href="#"> or <span data-ref="#"> toggling
-			for (link = e.target; link && (!link.tagName || link.className.indexOf('nette-toggle') < 0); link = link.parentNode) {}
+			// enables <a class="tracy-toggle" href="#"> or <span data-ref="#"> toggling
+			for (link = e.target; link && (!link.tagName || link.className.indexOf('tracy-toggle') < 0); link = link.parentNode) {}
 			if (!link) {
 				return;
 			}
-			var collapsed = $(link).hasClass('nette-toggle-collapsed'),
+			var collapsed = $(link).hasClass('tracy-toggle-collapsed'),
 				ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
 				dest = ref && ref !== '#' ? $(ref) : $(link).next(''),
-				panel = $(link).closest('.nette-panel'),
+				panel = $(link).closest('.tracy-panel'),
 				oldPosition = panel.position();
 
-			link.className = 'nette-toggle' + (collapsed ? '' : '-collapsed');
+			link.className = 'tracy-toggle' + (collapsed ? '' : '-collapsed');
 			dest[collapsed ? 'show' : 'hide']();
 			e.preventDefault();
 

@@ -1,16 +1,16 @@
 /**
- * NetteQ
+ * tracyQ
  *
  * This file is part of the Tracy.
  * Copyright (c) 2004, 2013 David Grudl (http://davidgrudl.com)
  */
 
-var Nette = Nette || {};
+var Tracy = Tracy || {};
 
 (function(){
 
 	// supported cross-browser selectors: #id  |  div  |  div.class  |  .class
-	var Query = Nette.Query = function(selector) {
+	var Query = Tracy.Query = function(selector) {
 		if (typeof selector === "string") {
 			selector = this._find(document, selector);
 
@@ -85,7 +85,7 @@ var Nette = Nette || {};
 
 		return this.each(function() {
 			var elem = this, // fixes 'this' in iE
-				data = elem.nette ? elem.nette : elem.nette = {},
+				data = elem.tracy ? elem.tracy : elem.tracy = {},
 				events = data.events = data.events || {}; // use own handler queue
 
 			if (!events[event]) {
@@ -163,7 +163,7 @@ var Nette = Nette || {};
 
 	Query.prototype.data = function() {
 		if (this[0]) {
-			return this[0].nette ? this[0].nette : this[0].nette = {};
+			return this[0].tracy ? this[0].tracy : this[0].tracy = {};
 		}
 	};
 
@@ -247,8 +247,8 @@ var Nette = Nette || {};
 	Query.prototype.position = function(coords) {
 		if (coords) {
 			return this.each(function() {
-				if (this.nette && this.nette.onmove) {
-					this.nette.onmove.call(this, coords);
+				if (this.tracy && this.tracy.onmove) {
+					this.tracy.onmove.call(this, coords);
 				}
 				for (var item in coords) {
 					this.style[item] = coords[item] + 'px';

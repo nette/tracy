@@ -26,21 +26,21 @@ use Tracy;
 <?php ob_start() ?>
 &nbsp;
 
-<style id="nette-debug-style" class="nette-debug">
+<style id="tracy-debug-style" class="tracy-debug">
 <?php require __DIR__ . '/bar.css' ?>
 <?php require __DIR__ . '/dumper.css' ?>
 </style>
 
-<!--[if lt IE 8]><style class="nette-debug">
-	#nette-debug-bar img { display: none }
-	#nette-debug-bar li { border-left: 1px solid #DCD7C8; padding: 0 3px }
-	#nette-debug-logo span { background: #edeae0; display: inline }
+<!--[if lt IE 8]><style class="tracy-debug">
+	#tracy-debug-bar img { display: none }
+	#tracy-debug-bar li { border-left: 1px solid #DCD7C8; padding: 0 3px }
+	#tracy-debug-logo span { background: #edeae0; display: inline }
 </style><![endif]-->
 
 
-<script id="nette-debug-script">
+<script id="tracy-debug-script">
 /* <![CDATA[ */
-<?php require __DIR__ . '/netteQ.js' ?>
+<?php require __DIR__ . '/tracyQ.js' ?>
 <?php require __DIR__ . '/bar.js' ?>
 <?php require __DIR__ . '/dumper.js' ?>
 /* ]]> */
@@ -48,22 +48,22 @@ use Tracy;
 
 
 <?php foreach ($panels as $panel): if (!$panel['panel']) continue; ?>
-	<div class="nette-panel" id="nette-debug-panel-<?php echo $panel['id'] ?>">
+	<div class="tracy-panel" id="tracy-debug-panel-<?php echo $panel['id'] ?>">
 		<?php echo $panel['panel'] ?>
-		<div class="nette-icons">
+		<div class="tracy-icons">
 			<a href="#" title="open in window">&curren;</a>
 			<a href="#" rel="close" title="close window">&times;</a>
 		</div>
 	</div>
 <?php endforeach ?>
 
-<div id="nette-debug-bar">
+<div id="tracy-debug-bar">
 	<ul>
-		<li id="nette-debug-logo" title="PHP <?php echo htmlSpecialChars(PHP_VERSION . " |\n"
+		<li id="tracy-debug-logo" title="PHP <?php echo htmlSpecialChars(PHP_VERSION . " |\n"
 		. (isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] . " |\n" : '')
 		. (class_exists('Nette\Framework') ? 'Nette Framework ' . \Nette\Framework::VERSION . ' (' . substr(\Nette\Framework::REVISION, 8) . ')' : '')) ?>">&nbsp;<span>Nette Framework</span></li>
 		<?php foreach ($panels as $panel): if (!$panel['tab']) continue; ?>
-		<?php if (!empty($panel['previous'])) echo '</ul><ul class="nette-previous">'; ?>
+		<?php if (!empty($panel['previous'])) echo '</ul><ul class="tracy-previous">'; ?>
 		<li><?php if ($panel['panel']): ?><a href="#" rel="<?php echo $panel['id'] ?>"><?php echo trim($panel['tab']) ?></a><?php else: echo '<span>', trim($panel['tab']), '</span>'; endif ?></li>
 		<?php endforeach ?>
 		<li><a href="#" rel="close" title="close debug bar">&times;</a></li>
@@ -77,11 +77,11 @@ use Tracy;
 	window.onload = function() {
 		if (typeof onloadOrig === 'function') onloadOrig();
 		var debug = document.body.appendChild(document.createElement('div'));
-		debug.id = 'nette-debug';
+		debug.id = 'tracy-debug';
 		debug.innerHTML = <?php echo json_encode(Helpers::fixEncoding($output)) ?>;
 		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) eval(scripts[i].innerHTML);
-		Nette.Dumper.init();
-		Nette.Debug.init();
+		Tracy.Dumper.init();
+		Tracy.Debug.init();
 		debug.style.display = 'block';
 	};
 })(window.onload);

@@ -7,17 +7,17 @@
 
 (function(){
 
-	var $ = Nette.Query.factory;
+	var $ = Tracy.Query.factory;
 
-	var Panel = Nette.DebugPanel = function(id) {
-		this.id = 'nette-debug-panel-' + id;
+	var Panel = Tracy.DebugPanel = function(id) {
+		this.id = 'tracy-debug-panel-' + id;
 		this.elem = $('#' + this.id);
 	};
 
-	Panel.PEEK = 'nette-mode-peek';
-	Panel.FLOAT = 'nette-mode-float';
-	Panel.WINDOW = 'nette-mode-window';
-	Panel.FOCUSED = 'nette-focused';
+	Panel.PEEK = 'tracy-mode-peek';
+	Panel.FLOAT = 'tracy-mode-float';
+	Panel.WINDOW = 'tracy-mode-window';
+	Panel.FOCUSED = 'tracy-focused';
 	Panel.zIndex = 20000;
 
 	Panel.prototype.init = function() {
@@ -42,7 +42,7 @@
 			_this.blur();
 		});
 
-		this.elem.find('.nette-icons').find('a').bind('click', function(e) {
+		this.elem.find('.tracy-icons').find('a').bind('click', function(e) {
 			if (this.rel === 'close') {
 				_this.toPeek();
 			} else {
@@ -112,10 +112,10 @@
 		}
 
 		var doc = win.document;
-		doc.write('<!DOCTYPE html><meta charset="utf-8"><style>' + $('#nette-debug-style').dom().innerHTML + '<\/style><script>' + $('#nette-debug-script').dom().innerHTML + '<\/script><body id="nette-debug">');
-		doc.body.innerHTML = '<div class="nette-panel nette-mode-window" id="' + this.id + '">' + this.elem.dom().innerHTML + '<\/div>';
-		var winPanel = win.Nette.Debug.getPanel(this.id);
-		win.Nette.Dumper.init();
+		doc.write('<!DOCTYPE html><meta charset="utf-8"><style>' + $('#tracy-debug-style').dom().innerHTML + '<\/style><script>' + $('#tracy-debug-script').dom().innerHTML + '<\/script><body id="tracy-debug">');
+		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.id + '">' + this.elem.dom().innerHTML + '<\/div>';
+		var winPanel = win.Tracy.Debug.getPanel(this.id);
+		win.Tracy.Dumper.init();
 		winPanel.reposition();
 		doc.title = this.elem.find('h1').dom().innerHTML;
 
@@ -172,10 +172,10 @@
 	};
 
 
-	var Bar = Nette.DebugBar = function() {
+	var Bar = Tracy.DebugBar = function() {
 	};
 
-	Bar.prototype.id = 'nette-debug-bar';
+	Bar.prototype.id = 'tracy-debug-bar';
 
 	Bar.prototype.init = function() {
 		var elem = $('#' + this.id), _this = this;
@@ -187,7 +187,7 @@
 		elem.draggable({
 			rightEdge: true,
 			bottomEdge: true,
-			draggedClass: 'nette-dragged',
+			draggedClass: 'tracy-dragged',
 			stop: function() {
 				_this.savePosition();
 			}
@@ -218,7 +218,7 @@
 			e.preventDefault();
 
 		}).bind('mouseenter', function() {
-			if (this.rel && this.rel !== 'close' && !elem.hasClass('nette-dragged')) {
+			if (this.rel && this.rel !== 'close' && !elem.hasClass('tracy-dragged')) {
 				var panel = Debug.getPanel(this.rel), link = $(this);
 				panel.focus(function() {
 					if (panel.is(Panel.PEEK)) {
@@ -231,7 +231,7 @@
 			}
 
 		}).bind('mouseleave', function() {
-			if (this.rel && this.rel !== 'close' && !elem.hasClass('nette-dragged')) {
+			if (this.rel && this.rel !== 'close' && !elem.hasClass('tracy-dragged')) {
 				Debug.getPanel(this.rel).blur();
 			}
 		});
@@ -240,7 +240,7 @@
 	};
 
 	Bar.prototype.close = function() {
-		$('#nette-debug').hide();
+		$('#tracy-debug').hide();
 		if (window.opera) {
 			$('body').show();
 		}
@@ -266,25 +266,25 @@
 	};
 
 
-	var Debug = Nette.Debug = {};
+	var Debug = Tracy.Debug = {};
 
 	Debug.init = function() {
 		Debug.initResize();
 		(new Bar).init();
-		$('.nette-panel').each(function() {
+		$('.tracy-panel').each(function() {
 			Debug.getPanel(this.id).init();
 		});
 	};
 
 	Debug.getPanel = function(id) {
-		return new Panel(id.replace('nette-debug-panel-', ''));
+		return new Panel(id.replace('tracy-debug-panel-', ''));
 	};
 
 	Debug.initResize = function() {
 		$(window).bind('resize', function() {
 			var bar = $('#' + Bar.prototype.id);
 			bar.position({right: bar.position().right, bottom: bar.position().bottom});
-			$('.nette-panel').each(function() {
+			$('.tracy-panel').each(function() {
 				Debug.getPanel(this.id).reposition();
 			});
 		});

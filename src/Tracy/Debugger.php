@@ -418,7 +418,7 @@ final class Debugger
 				} elseif (connection_aborted() || !self::fireLog($exception)) {
 					$file = self::log($exception, self::ERROR);
 					if (!headers_sent()) {
-						header("X-Nette-Error-Log: $file");
+						header("X-Tracy-Error-Log: $file");
 					}
 					echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
 					if (self::$browser) {

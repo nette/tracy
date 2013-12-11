@@ -12,9 +12,9 @@ namespace Tracy;
 use Tracy;
 
 ?>
-<style class="nette-debug">
+<style class="tracy-debug">
 
-	#nette-debug .nette-DumpPanel h2 {
+	#tracy-debug .tracy-DumpPanel h2 {
 		font: 11pt/1.5 sans-serif;
 		margin: 0;
 		padding: 2px 8px;
@@ -22,7 +22,7 @@ use Tracy;
 		color: white;
 	}
 
-	#nette-debug .nette-DumpPanel table {
+	#tracy-debug .tracy-DumpPanel table {
 		width: 100%;
 	}
 
@@ -31,7 +31,7 @@ use Tracy;
 
 <h1>Dumped variables</h1>
 
-<div class="nette-inner nette-DumpPanel">
+<div class="tracy-inner tracy-DumpPanel">
 <?php foreach ($data as $item): ?>
 	<?php if ($item['title']):?>
 	<h2><?php echo htmlspecialchars($item['title']) ?></h2>
@@ -39,7 +39,7 @@ use Tracy;
 
 	<table>
 	<?php $i = 0 ?>
-	<tr class="<?php echo $i++ % 2 ? 'nette-alt' : '' ?>">
+	<tr class="<?php echo $i++ % 2 ? 'tracy-alt' : '' ?>">
 		<td><?php echo $item['dump'] ?></td>
 	</tr>
 	</table>
