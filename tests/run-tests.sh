@@ -46,6 +46,6 @@ error=$?
 
 # Print *.actual content if tests failed
 if [ "${VERBOSE-false}" != "false" -a $error -ne 0 ]; then
-	for i in $(find . -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
+	for i in $(find "$dir" -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
 	exit $error
 fi
