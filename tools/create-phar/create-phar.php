@@ -8,19 +8,19 @@ if (!class_exists('Phar') || ini_get('phar.readonly')) {
 
 @unlink('tracy.phar'); // @ - file may not exist
 
-$p = new Phar('tracy.phar');
-$p->setStub("<?php
+$phar = new Phar('tracy.phar');
+$phar->setStub("<?php
 require 'phar://' . __FILE__ . '/tracy.php';
 __HALT_COMPILER();
 ");
 
-$p->startBuffering();
-foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../src', FilesystemIterator::SKIP_DOTS)) as $file) {
+$phar->startBuffering();
+foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../src', RecursiveDirectoryIterator::SKIP_DOTS)) as $file) {
 	echo "adding: {$iterator->getSubPathname()}\n";
-	$p[$iterator->getSubPathname()] = php_strip_whitespace($file);
+	$phar[$iterator->getSubPathname()] = php_strip_whitespace($file);
 }
 
-$p->stopBuffering();
-$p->compressFiles(Phar::GZ);
+$phar->stopBuffering();
+$phar->compressFiles(Phar::GZ);
 
 echo "OK\n";

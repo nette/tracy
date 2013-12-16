@@ -73,9 +73,6 @@ final class Debugger
 	/** @var bool {@link Debugger::enable()} */
 	private static $enabled = FALSE;
 
-	/** @var mixed {@link Debugger::tryError()} FALSE means catching is disabled */
-	private static $lastError = FALSE;
-
 	/** @internal */
 	public static $errorTypes = array(
 		E_ERROR => 'Fatal Error',
@@ -461,11 +458,6 @@ final class Debugger
 	{
 		if (self::$scream) {
 			error_reporting(E_ALL | E_STRICT);
-		}
-
-		if (self::$lastError !== FALSE && ($severity & error_reporting()) === $severity) { // tryError mode
-			self::$lastError = new ErrorException($message, 0, $severity, $file, $line);
-			return NULL;
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {

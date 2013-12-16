@@ -42,7 +42,11 @@ class Dumper
 	);
 
 	/** @var array */
-	public static $resources = array('stream' => 'stream_get_meta_data', 'stream-context' => 'stream_context_get_options', 'curl' => 'curl_getinfo');
+	public static $resources = array(
+		'stream' => 'stream_get_meta_data',
+		'stream-context' => 'stream_context_get_options',
+		'curl' => 'curl_getinfo',
+	);
 
 
 	/**
