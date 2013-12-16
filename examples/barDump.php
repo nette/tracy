@@ -8,7 +8,7 @@
 
 <?php
 
-require __DIR__ . '/../../src/tracy.php';
+require __DIR__ . '/../src/tracy.php';
 
 use Tracy\Debugger;
 
