@@ -96,7 +96,7 @@ $counter = 0;
 
 			<div id="tracyBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
-				<?php if (is_file($ex->getFile())): ?><?php echo self::highlightFile($ex->getFile(), $ex->getLine(), 15, isset($ex->context) ? $ex->context : NULL) ?><?php endif ?>
+				<?php if (is_file($ex->getFile())): ?><?php echo self::highlightFile($ex->getFile(), $ex->getLine(), 15, $ex instanceof \ErrorException && isset($ex->context) ? $ex->context : NULL) ?><?php endif ?>
 			</div></div>
 
 
@@ -160,7 +160,7 @@ $counter = 0;
 			<?php endif ?>
 
 
-			<?php if (isset($ex->context) && is_array($ex->context)):?>
+			<?php if ($ex instanceof \ErrorException && isset($ex->context) && is_array($ex->context)):?>
 			<div class="panel">
 			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Variables</a></h2>
 

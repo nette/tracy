@@ -6,7 +6,7 @@
  * @author     David Grudl
  * @exitCode   255
  * @httpCode   500
- * @outputMatch exception 'Tracy\ErrorException' with message 'Call to undefined function missing_function()' in %A%
+ * @outputMatch exception 'ErrorException' with message 'Call to undefined function missing_function()' in %A%
  */
 
 use Tracy\Debugger,

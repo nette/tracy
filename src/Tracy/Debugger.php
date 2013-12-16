@@ -11,7 +11,8 @@
 
 namespace Tracy;
 
-use Tracy;
+use Tracy,
+	ErrorException;
 
 
 /**
@@ -205,7 +206,7 @@ class Debugger
 			set_error_handler(array(__CLASS__, '_errorHandler'));
 
 			foreach (array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
-				'Tracy\ErrorException', 'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
+				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
 				class_exists($class);
 			}
 			self::$enabled = TRUE;
@@ -307,7 +308,7 @@ class Debugger
 		if ($message instanceof \Exception) {
 			$exception = $message;
 			while ($exception) {
-				$tmp[] = ($exception instanceof \ErrorException
+				$tmp[] = ($exception instanceof ErrorException
 					? 'Fatal error: ' . $exception->getMessage()
 					: get_class($exception) . ": " . $exception->getMessage())
 					. " in " . $exception->getFile() . ":" . $exception->getLine();
@@ -463,15 +464,22 @@ class Debugger
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
 			if (Helpers::findTrace(debug_backtrace(PHP_VERSION_ID >= 50306 ? DEBUG_BACKTRACE_IGNORE_ARGS : FALSE), '*::__toString')) {
 				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
-				self::_exceptionHandler(new ErrorException($message, 0, $severity, $file, $line, $previous, $context));
+				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
+				$e->context = $context;
+				self::_exceptionHandler($e);
 			}
-			throw new ErrorException($message, 0, $severity, $file, $line, NULL, $context);
+
+			$e = new ErrorException($message, 0, $severity, $file, $line);
+			$e->context = $context;
+			throw $e;
 
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return FALSE; // calls normal error handler to fill-in error_get_last()
 
 		} elseif (!self::$productionMode && (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))) {
-			self::_exceptionHandler(new ErrorException($message, 0, $severity, $file, $line, NULL, $context));
+			$e = new ErrorException($message, 0, $severity, $file, $line);
+			$e->context = $context;
+			self::_exceptionHandler($e);
 		}
 
 		$message = 'PHP ' . (isset(self::$errorTypes[$severity]) ? self::$errorTypes[$severity] : 'Unknown error') . ": $message";
