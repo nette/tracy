@@ -16,7 +16,7 @@ use Tracy;
 <div class="tracy-inner">
 <table>
 <?php $i = 0 ?>
-<?php foreach ($data as $item => $count): list($file, $line, $message) = explode('|', $item, 3) ?>
+<?php foreach ($this->data as $item => $count): list($file, $line, $message) = explode('|', $item, 3) ?>
 <tr class="<?php echo $i++ % 2 ? 'tracy-alt' : '' ?>">
 	<td class="tracy-right"><?php echo $count ? "$count\xC3\x97" : '' ?></td>
 	<td><pre><?php echo htmlspecialchars($message, ENT_IGNORE), ' in ', Helpers::editorLink($file, $line) ?></pre></td>
