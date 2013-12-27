@@ -23,7 +23,7 @@ use Tracy;
  *
  * @author     David Grudl
  */
-final class Debugger
+class Debugger
 {
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;

@@ -20,7 +20,7 @@ use Tracy;
  * @author     David Grudl
  * @internal
  */
-final class DefaultBarPanel implements IBarPanel
+class DefaultBarPanel implements IBarPanel
 {
 	private $id;
 
