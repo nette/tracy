@@ -56,7 +56,8 @@ class Logger
 			$message = implode(' ', $message);
 		}
 		$message = preg_replace('#\s*\r?\n\s*#', ' ', trim($message));
-		$res = error_log($message . PHP_EOL, 3, $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log');
+		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
+		$res = (bool) file_put_contents($file, $message . PHP_EOL, FILE_APPEND | LOCK_EX);
 
 		if (($priority === self::ERROR || $priority === self::CRITICAL) && $this->email && $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + $this->emailSnooze < time() // @ - file may not exist
