@@ -2,7 +2,7 @@
  * tracyQ
  *
  * This file is part of the Tracy.
- * Copyright (c) 2004, 2013 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004, 2014 David Grudl (http://davidgrudl.com)
  */
 
 var Tracy = Tracy || {};
