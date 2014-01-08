@@ -44,6 +44,15 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-number">0.0</spa
 Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-number">0.1</span>
 </pre>', Dumper::toHtml(0.1) );
 
+Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-number">INF</span>
+</pre>', Dumper::toHtml(INF) );
+
+Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-number">-INF</span>
+</pre>', Dumper::toHtml(-INF) );
+
+Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-number">NAN</span>
+</pre>', Dumper::toHtml(NAN) );
+
 Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-string">""</span>
 </pre>', Dumper::toHtml('') );
 

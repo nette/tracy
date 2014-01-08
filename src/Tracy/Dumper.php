@@ -143,8 +143,10 @@ class Dumper
 
 	private static function dumpDouble(& $var)
 	{
-		$var = json_encode($var);
-		return '<span class="tracy-dump-number">' . $var . (strpos($var, '.') === FALSE ? '.0' : '') . "</span>\n";
+		$var = is_finite($var)
+			? ($tmp = json_encode($var)) . (strpos($tmp, '.') === FALSE ? '.0' : '')
+			: var_export($var, TRUE);
+		return "<span class=\"tracy-dump-number\">$var</span>\n";
 	}
 
 
