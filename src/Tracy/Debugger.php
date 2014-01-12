@@ -500,6 +500,7 @@ class Debugger
 
 	/**
 	 * Dumps information about a variable in readable format.
+	 * @tracySkipLocation
 	 * @param  mixed  variable to dump
 	 * @param  bool   return output instead of printing it? (bypasses $productionMode)
 	 * @return mixed  variable itself or dump
@@ -543,6 +544,7 @@ class Debugger
 
 	/**
 	 * Dumps information about a variable in Tracy Debug Bar.
+	 * @tracySkipLocation
 	 * @param  mixed  variable to dump
 	 * @param  string optional title
 	 * @param  array  dumper options

@@ -10,6 +10,7 @@ use Tracy\Debugger;
 
 /**
  * Tracy\Debugger::dump() shortcut.
+ * @tracySkipLocation
  */
 function dump($var)
 {
