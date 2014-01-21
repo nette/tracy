@@ -27,7 +27,7 @@
 			}
 
 			// enables <a class="tracy-toggle" href="#"> or <span data-ref="#"> toggling
-			for (link = e.target; link && (!link.tagName || link.className.indexOf('tracy-toggle') < 0); link = link.parentNode) {}
+			for (link = e.target; link && (!link.tagName || typeof link.className !== 'string' || link.className.indexOf('tracy-toggle') < 0); link = link.parentNode) {}
 			if (!link) {
 				return;
 			}
