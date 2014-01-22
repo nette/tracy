@@ -17,7 +17,10 @@ use Tracy;
  */
 class Bar
 {
-	/** @var array */
+	/** @var string[] */
+	public $info = array();
+
+	/** @var IBarPanel[] */
 	private $panels = array();
 
 
@@ -98,6 +101,7 @@ class Bar
 		}
 		$session = NULL;
 
+		$info = array_filter($this->info);
 		require __DIR__ . '/templates/bar.phtml';
 	}
 

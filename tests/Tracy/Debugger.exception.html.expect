@@ -180,8 +180,7 @@
 		<ul>
 			<li>Report generated at %a%</li>
 							<li>CLI%a?%</li>
-						<li>PHP %a%</li>
-								</ul>
+						<li>PHP %a%</li>		</ul>
 	</div>
 </div>
 

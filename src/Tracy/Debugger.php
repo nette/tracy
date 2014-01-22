@@ -217,6 +217,11 @@ class Debugger
 	{
 		if (!self::$blueScreen) {
 			self::$blueScreen = new BlueScreen;
+			self::$blueScreen->info = array(
+				'PHP ' . PHP_VERSION,
+				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
+				class_exists('Nette\Framework') ? 'Nette Framework ' . \Nette\Framework::VERSION . ' (revision ' . \Nette\Framework::REVISION : NULL,
+			);
 		}
 		return self::$blueScreen;
 	}
@@ -233,6 +238,11 @@ class Debugger
 			self::$bar->addPanel(new DefaultBarPanel('memory'));
 			self::$bar->addPanel(new DefaultBarPanel('errors'), __CLASS__ . ':errors'); // filled by _errorHandler()
 			self::$bar->addPanel(new DefaultBarPanel('dumps'), __CLASS__ . ':dumps'); // filled by barDump()
+			self::$bar->info = array(
+				'PHP ' . PHP_VERSION,
+				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
+				class_exists('Nette\Framework') ? 'Nette Framework ' . \Nette\Framework::VERSION . ' (revision ' . \Nette\Framework::REVISION : NULL,
+			);
 		}
 		return self::$bar;
 	}

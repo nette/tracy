@@ -6,9 +6,10 @@
  * This file is part of the Tracy (http://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
- * @param      array     $exception
- * @param      array     $panels
- * @return     void
+ * @param  array $exception
+ * @param  array $panels
+ * @param  array $info
+ * @return void
  */
 
 namespace Tracy;
@@ -335,9 +336,7 @@ $counter = 0;
 			<?php elseif (Debugger::$source): ?>
 				<li><?php echo htmlSpecialChars(Debugger::$source, ENT_IGNORE) ?></li>
 			<?php endif ?>
-			<li>PHP <?php echo htmlSpecialChars(PHP_VERSION) ?></li>
-			<?php if (isset($_SERVER['SERVER_SOFTWARE'])): ?><li><?php echo htmlSpecialChars($_SERVER['SERVER_SOFTWARE']) ?></li><?php endif ?>
-			<?php if (class_exists('Nette\Framework')): ?><li><?php echo htmlSpecialChars('Nette Framework ' . \Nette\Framework::VERSION) ?> <i>(revision <?php echo htmlSpecialChars(\Nette\Framework::REVISION) ?>)</i></li><?php endif ?>
+			<?php foreach ($info as $item): ?><li><?php echo htmlSpecialChars($item) ?></li><?php endforeach ?>
 		</ul>
 	</div>
 </div>

@@ -17,7 +17,10 @@ use Tracy;
  */
 class BlueScreen
 {
-	/** @var array */
+	/** @var string[] */
+	public $info = array();
+
+	/** @var callable[] */
 	private $panels = array();
 
 	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
@@ -46,6 +49,7 @@ class BlueScreen
 	public function render(\Exception $exception)
 	{
 		$panels = $this->panels;
+		$info = array_filter($this->info);
 		require __DIR__ . '/templates/bluescreen.phtml';
 	}
 

@@ -8,8 +8,9 @@
  * This file is part of the Tracy (http://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
- * @param      array     $panels
- * @return     void
+ * @param  array $panels
+ * @param  array $info
+ * @return void
  */
 
 namespace Tracy;
@@ -59,9 +60,7 @@ use Tracy;
 
 <div id="tracy-debug-bar">
 	<ul>
-		<li id="tracy-debug-logo" title="PHP <?php echo htmlSpecialChars(PHP_VERSION . " |\n"
-		. (isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] . " |\n" : '')
-		. (class_exists('Nette\Framework') ? 'Nette Framework ' . \Nette\Framework::VERSION . ' (' . substr(\Nette\Framework::REVISION, 8) . ')' : '')) ?>">&nbsp;<span>Nette Framework</span></li>
+		<li id="tracy-debug-logo" title="<?php echo htmlSpecialChars(implode(" |\n", $info))?>">&nbsp;<span>Tracy</span></li>
 		<?php foreach ($panels as $panel): if (!$panel['tab']) continue; ?>
 		<?php if (!empty($panel['previous'])) echo '</ul><ul class="tracy-previous">'; ?>
 		<li><?php if ($panel['panel']): ?><a href="#" rel="<?php echo $panel['id'] ?>"><?php echo trim($panel['tab']) ?></a><?php else: echo '<span>', trim($panel['tab']), '</span>'; endif ?></li>
