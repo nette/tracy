@@ -1,7 +1,7 @@
 body {
-	font: 15px/1.5 Tahoma, Verdana, Myriad Web, Syntax, sans-serif;
+	font: 15px/1.5 Tahoma, sans-serif;
 	color: #333;
-	background: #fff url('dibi-powered.gif') no-repeat 99% 1em;
+	background: #fff;
 	margin: 1.6em;
 	padding: 0;
 }
