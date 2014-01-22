@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" href="http://www.w3.org/StyleSheets/Core/Steely" type="text/css">
+
+<h1>Exception in pure PHP</h1>
+
+<br />
+<b>Fatal error</b>:  Uncaught exception 'Nette\Security\AuthenticationException' with message 'The password is incorrect.' in W:\examples\CD-collection\app\model\Authenticator.php:38
+Stack trace:
+#0 W:\Nette\Security\User.php(87): Authenticator-&gt;authenticate(Array)
+#1 W:\examples\CD-collection\app\presenters\SignPresenter.php(36): Nette\Security\User-&gt;login('demo', 'xx')
+#2 [internal function]: SignPresenter-&gt;signInFormSucceeded(Object(Nette\Application\UI\Form))
+#3 W:\Nette\Utils\Callback.php(38): call_user_func_array(Array, Array)
+#4 [internal function]: Nette\Utils\{closure}(Object(Nette\Application\UI\Form))
+#5 W:\Nette\Utils\Callback.php(50): call_user_func_array(Object(Closure), Array)
+#6 W:\Nette\Forms\Form.php(412): Nette\Utils\Callback::invoke(Object(Closure), Object(Nette\Application\UI\Form))
+#7 W:\Nette\Application\UI\Form.php(129): Nette\Forms\Form-&gt;fireEvents()
+#8 W:\Nette\Application\UI\Presenter.php(320): Nette\Application\UI in <b>W:\examples\CD-collection\app\model\Authenticator.php</b> on line <b>38</b><br />
