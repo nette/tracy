@@ -19,7 +19,7 @@
 		"php": ">=5.3.0"
 	},
 	"require-dev": {
-		"nette/tester": "@dev"
+		"nette/tester": "~0.9.5"
 	},
 	"autoload": {
 		"classmap": ["src/Tracy"]
