@@ -22,6 +22,9 @@ use Tracy,
  */
 class Debugger
 {
+	/** @var string */
+	public static $version = '0.9.0';
+
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
 
@@ -220,7 +223,7 @@ class Debugger
 			self::$blueScreen->info = array(
 				'PHP ' . PHP_VERSION,
 				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
-				class_exists('Nette\Framework') ? 'Nette Framework ' . \Nette\Framework::VERSION . ' (revision ' . \Nette\Framework::REVISION : NULL,
+				'Tracy ' . self::$version,
 			);
 		}
 		return self::$blueScreen;
@@ -241,7 +244,7 @@ class Debugger
 			self::$bar->info = array(
 				'PHP ' . PHP_VERSION,
 				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
-				class_exists('Nette\Framework') ? 'Nette Framework ' . \Nette\Framework::VERSION . ' (revision ' . \Nette\Framework::REVISION : NULL,
+				'Tracy ' . self::$version,
 			);
 		}
 		return self::$bar;
