@@ -27,6 +27,7 @@
 
 /* dump */
 pre.tracy-dump {
+	text-align: left;
 	color: #444;
 	background: white;
 }
