@@ -1,6 +1,9 @@
 // NetBeans
 // var editor = '"C:\\Program Files\\NetBeans 6.9.1\\bin\\netbeans.exe" "%file%:%line%" --console suppress';
 
+// PhpStorm
+// var editor = '"C:\\Users\\Martin\\AppData\\Roaming\\JetBrains\\PhpStorm 7.1.1\\bin\\PhpStorm.exe" --line %line% "%file%"';
+
 // Nusphere PHPEd
 // var editor = '"C:\\Program Files\\NuSphere\\PhpED\\phped.exe" "%file%" --line=%line%';
 
