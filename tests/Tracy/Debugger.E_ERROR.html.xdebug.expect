@@ -14,7 +14,6 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 <body>
-%A%
 <div id="tracyBluescreen">
 	<a id="tracyBluescreenIcon" href="#" class="tracy-toggle"></a>
 	<div>
