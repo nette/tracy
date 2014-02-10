@@ -93,19 +93,13 @@ class Helpers
 
 
 	/**
-	 * Returns correctly encoded string.
+	 * Returns correctly UTF-8 encoded string.
 	 * @param  string  byte stream to fix
 	 * @return string
 	 */
 	public static function fixEncoding($s)
 	{
-		// removes xD800-xDFFF, x110000 and higher
-		if (PHP_VERSION_ID >= 50400) {
-			ini_set('mbstring.substitute_character', 'none');
-			return mb_convert_encoding($s, 'UTF-8', 'UTF-8');
-		} else {
-			return @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $s)); // intentionally @
-		}
+		return html_entity_decode(htmlspecialchars($s, ENT_NOQUOTES | ENT_IGNORE, 'UTF-8'), ENT_NOQUOTES, 'UTF-8');
 	}
 
 }
