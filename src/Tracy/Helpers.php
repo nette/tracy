@@ -99,7 +99,7 @@ class Helpers
 	 */
 	public static function fixEncoding($s)
 	{
-		return html_entity_decode(htmlspecialchars($s, ENT_NOQUOTES | ENT_IGNORE, 'UTF-8'), ENT_NOQUOTES, 'UTF-8');
+		return htmlspecialchars_decode(htmlspecialchars($s, ENT_NOQUOTES | ENT_IGNORE, 'UTF-8'), ENT_NOQUOTES);
 	}
 
 }
