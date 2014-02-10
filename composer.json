@@ -16,7 +16,8 @@
 		}
 	],
 	"require": {
-		"php": ">=5.3.0"
+		"php": ">=5.3.0",
+	    "ext-mbstring": "*"
 	},
 	"require-dev": {
 		"nette/tester": "~0.9.5"
