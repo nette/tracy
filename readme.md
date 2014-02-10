@@ -19,6 +19,7 @@ The best way how to install Tracy is to [download a latest package](https://gith
 ```
 php composer.phar require tracy/tracy
 ```
+**NOTE:** Tracy requires the [mbstring](http://php.net/manual/en/book.mbstring.php) PHP extension.
 
 It is easy to activate Tracy. Preferably immediately after library loading (using `require 'src/tracy.php'` or via Composer) add code:
 
