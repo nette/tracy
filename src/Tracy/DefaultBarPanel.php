@@ -11,7 +11,7 @@ use Tracy;
 
 
 /**
- * IDebugPanel implementation helper.
+ * IBarPanel implementation helper.
  *
  * @author     David Grudl
  * @internal
