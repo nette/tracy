@@ -447,7 +447,7 @@ class Debugger
 			}
 		}
 
-		if (!$shutdown) {
+		if ($shutdown) {
 			exit(254);
 		}
 	}
