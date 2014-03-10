@@ -112,6 +112,7 @@ body #tracy-debug {
 
 	z-index: 30000;
 	opacity: .9;
+	transition: opacity 0.2s;
 
 	border-radius: 3px;
 	box-shadow: 1px 1px 10px rgba(0, 0, 0, .15);
@@ -119,6 +120,7 @@ body #tracy-debug {
 
 #tracy-debug-bar:hover {
 	opacity: 1;
+	transition: opacity 0.1s;
 }
 
 #tracy-debug-bar ul {
@@ -230,12 +232,14 @@ body #tracy-debug {
 	min-height: 50px;
 	border-radius: 5px;
 	opacity: .95;
+	transition: opacity 0.2s;
 	box-shadow: 1px 1px 30px rgba(102, 102, 102, 0.36);
 	border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #tracy-debug .tracy-focused {
 	opacity: 1;
+	transition: opacity 0.1s;
 }
 
 #tracy-debug .tracy-mode-float h1 {
