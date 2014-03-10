@@ -167,40 +167,6 @@ var Tracy = Tracy || {};
 		}
 	};
 
-	Query.prototype.val = function() {
-		var elem = this[0];
-		if (!elem) {
-			return undefined;
-
-		} else if (!elem.nodeName) { // radio
-			for (var i = 0, len = elem.length; i < len; i++) {
-				if (this[i].checked) { return this[i].value; }
-			}
-			return null;
-
-		} else if (elem.nodeName.toLowerCase() === 'select') {
-			var index = elem.selectedIndex, options = elem.options;
-
-			if (index < 0) {
-				return null;
-
-			} else if (elem.type === 'select-one') {
-				return options[index].value;
-			}
-
-			for (var i = 0, values = [], len = options.length; i < len; i++) {
-				if (options[i].selected) { values.push(options[i].value); }
-			}
-			return values;
-
-		} else if (elem.type === 'checkbox') {
-			return elem.checked;
-
-		} else if (elem.value) {
-			return elem.value.replace(/^\s+|\s+$/g, '');
-		}
-	};
-
 	Query.prototype._trav = function(elem, selector, fce) {
 		selector = selector.split('.');
 		while (elem && !(elem.nodeType === 1 &&
