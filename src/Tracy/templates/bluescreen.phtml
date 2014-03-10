@@ -385,7 +385,7 @@ $counter = 0;
 		}
 
 		link.className = 'tracy-toggle' + (collapsed ? '' : '-collapsed');
-		dest.style.display = collapsed ? (dest.tagName.toLowerCase() === 'div' ? 'block' : 'inline') : 'none';
+		dest.className = collapsed ? '' : 'tracy-collapsed';
 
 		if (link.id === 'tracyBluescreenIcon') {
 			for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {

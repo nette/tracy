@@ -38,7 +38,7 @@
 				oldPosition = panel.position();
 
 			link.className = 'tracy-toggle' + (collapsed ? '' : '-collapsed');
-			dest[collapsed ? 'show' : 'hide']();
+			dest[collapsed ? 'removeClass' : 'addClass']('tracy-collapsed');
 			e.preventDefault();
 
 			if (panel.length) {
