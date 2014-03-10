@@ -343,7 +343,13 @@ $counter = 0;
 </div>
 
 <script type="text/javascript">
-<?php readfile(__DIR__ . '/bluescreen.js') ?>
+(function() {
+	if (!document.addEventListener) {
+		document.getElementById('tracyBluescreenError').innerHTML += '<div id=tracyBluescreenIEWarning>Warning: Tracy requires IE 9+<\/div>';
+		return;
+	}
+	<?php readfile(__DIR__ . '/bluescreen.js') ?>
+})();
 </script>
 </body>
 </html>

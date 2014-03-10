@@ -82,6 +82,13 @@ html {
 	opacity: 1;
 }
 
+#tracyBluescreenIEWarning {
+	background: black;
+	margin: 1em;
+	padding: .5em;
+	text-align: center;
+}
+
 #tracyBluescreen h1 {
 	font-size: 18pt;
 	font-weight: normal;
