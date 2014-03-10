@@ -9,7 +9,6 @@
 	var bs = document.getElementById('tracyBluescreen');
 	document.body.appendChild(bs);
 	document.onkeyup = function(e) {
-		e = e || window.event;
 		if (e.keyCode == 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
 			document.getElementById('tracyBluescreenIcon').click();
 		}
@@ -17,7 +16,7 @@
 
 	for (var i = 0, styles = []; i < document.styleSheets.length; i++) {
 		var style = document.styleSheets[i];
-		if ((style.owningElement || style.ownerNode).className !== 'tracy-debug') {
+		if (style.ownerNode.className !== 'tracy-debug') {
 			style.oldDisabled = style.disabled;
 			style.disabled = true;
 			styles.push(style);
@@ -25,7 +24,6 @@
 	}
 
 	bs.onclick = function(e) {
-		e = e || window.event;
 
 		if (e.ctrlKey) {
 			for (var link = e.target; link && (!link.getAttribute || !link.getAttribute('data-tracy-href')); link = link.parentNode) {}
@@ -46,23 +44,17 @@
 
 		var collapsed = link.className.match(/(^|\s)tracy-collapsed(\s|$)/),
 			ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
-			dest;
+			dest = ref && ref !== '#' ? document.getElementById(ref.substring(1)) : link.nextElementSibling;
 
-		if (ref && ref !== '#') {
-			dest = document.getElementById(ref.substring(1));
-		} else {
-			for (dest = link.nextSibling; dest && dest.nodeType !== 1; dest = dest.nextSibling) {}
-		}
-
-		link.className = (collapsed ? link.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') : link.className + ' tracy-collapsed').replace(/^\s+|\s+$/g,'');
-		dest.className = (collapsed ? dest.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') : dest.className + ' tracy-collapsed').replace(/^\s+|\s+$/g,'');
+		link.className = (link.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') + (collapsed ? '' : ' tracy-collapsed')).trim();
+		dest.className = (dest.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') + (collapsed ? '' : ' tracy-collapsed')).trim();
 
 		if (link.id === 'tracyBluescreenIcon') {
 			for (i = 0; i < styles.length; i++) {
 				styles[i].disabled = collapsed ? true : styles[i].oldDisabled;
 			}
 		}
-		e.preventDefault ? e.preventDefault() : e.returnValue = false;
-		e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
+		e.preventDefault();
+		e.stopPropagation();
 	};
 })();
