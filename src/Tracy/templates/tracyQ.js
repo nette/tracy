@@ -9,10 +9,9 @@ var Tracy = Tracy || {};
 
 (function(){
 
-	// supported cross-browser selectors: #id  |  div  |  div.class  |  .class
 	var Query = Tracy.Query = function(selector) {
-		if (typeof selector === "string") {
-			selector = this._find(document, selector);
+		if (typeof selector === 'string') {
+			selector = document.querySelectorAll(selector);
 
 		} else if (!selector || selector.nodeType || selector.length === undefined || selector === window) {
 			selector = [selector];
@@ -30,33 +29,7 @@ var Tracy = Tracy || {};
 	Query.prototype.length = 0;
 
 	Query.prototype.find = function(selector) {
-		return new Query(this._find(this[0], selector));
-	};
-
-	Query.prototype._find = function(context, selector) {
-		if (!context || !selector) {
-			return [];
-
-		} else if (document.querySelectorAll) {
-			return context.querySelectorAll(selector);
-
-		} else if (selector.charAt(0) === '#') { // #id
-			return [document.getElementById(selector.substring(1))];
-
-		} else { // div  |  div.class  |  .class
-			selector = selector.split('.');
-			var elms = context.getElementsByTagName(selector[0] || '*');
-
-			if (selector[1]) {
-				var list = [], pattern = new RegExp('(^|\\s)' + selector[1] + '(\\s|$)');
-				for (var i = 0, len = elms.length; i < len; i++) {
-					if (pattern.test(elms[i].className)) { list.push(elms[i]); }
-				}
-				return list;
-			} else {
-				return elms;
-			}
-		}
+		return new Query(this[0] && selector ? this[0].querySelectorAll(selector) : []);
 	};
 
 	Query.prototype.dom = function() {
@@ -70,9 +43,9 @@ var Tracy = Tracy || {};
 		return this;
 	};
 
-	// cross-browser event attach
+	// event attach
 	Query.prototype.bind = function(event, handler) {
-		if (document.addEventListener && (event === 'mouseenter' || event === 'mouseleave')) { // simulate mouseenter & mouseleave using mouseover & mouseout
+		if (event === 'mouseenter' || event === 'mouseleave') { // simulate mouseenter & mouseleave using mouseover & mouseout
 			var old = handler;
 			event = event === 'mouseenter' ? 'mouseover' : 'mouseout';
 			handler = function(e) {
@@ -82,52 +55,22 @@ var Tracy = Tracy || {};
 				old.call(this, e);
 			};
 		}
-
 		return this.each(function() {
-			var elem = this, // fixes 'this' in iE
-				data = elem.tracy ? elem.tracy : elem.tracy = {},
-				events = data.events = data.events || {}; // use own handler queue
-
-			if (!events[event]) {
-				var handlers = events[event] = [],
-					generic = function(e) { // dont worry, 'e' is passed in IE
-					if (!e.target) {
-						e.target = e.srcElement;
-					}
-					if (!e.preventDefault) {
-						e.preventDefault = function() { e.returnValue = false; };
-					}
-					if (!e.stopPropagation) {
-						e.stopPropagation = function() { e.cancelBubble = true; };
-					}
-					e.stopImmediatePropagation = function() { this.stopPropagation(); i = handlers.length; };
-					for (var i = 0; i < handlers.length; i++) {
-						handlers[i].call(elem, e);
-					}
-				};
-
-				if (document.addEventListener) { // non-IE
-					elem.addEventListener(event, generic, false);
-				} else if (document.attachEvent) { // IE < 9
-					elem.attachEvent('on' + event, generic);
-				}
-			}
-
-			events[event].push(handler);
+			this.addEventListener(event, handler);
 		});
 	};
 
 	// adds class to element
 	Query.prototype.addClass = function(className) {
 		return this.each(function() {
-			this.className = (this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ') + ' ' + className).replace(/^\s+|\s+$/g,'');
+			this.className = (this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ') + ' ' + className).trim();
 		});
 	};
 
 	// removes class from element
 	Query.prototype.removeClass = function(className) {
 		return this.each(function() {
-			this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ').replace(/^\s+|\s+$/g,'');
+			this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ').trim();
 		});
 	};
 
@@ -154,10 +97,8 @@ var Tracy = Tracy || {};
 	};
 
 	Query.prototype.css = function(property) {
-		if (this[0] && this[0].currentStyle) {
-			return this[0].currentStyle[property];
-		} else if (this[0] && window.getComputedStyle) {
-			return document.defaultView.getComputedStyle(this[0], null).getPropertyValue(property)
+		if (this[0]) {
+			return document.defaultView.getComputedStyle(this[0], null).getPropertyValue(property);
 		}
 	};
 
@@ -167,14 +108,12 @@ var Tracy = Tracy || {};
 		}
 	};
 
-	Query.prototype._trav = function(elem, selector, fce) {
-		selector = selector.split('.');
-		while (elem && !(elem.nodeType === 1 &&
-			(!selector[0] || elem.tagName.toLowerCase() === selector[0]) &&
-			(!selector[1] || (new Query(elem)).hasClass(selector[1])))) {
-			elem = elem[fce];
+	Query.prototype._trav = function(el, selector, fce) {
+		var matches = el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector;
+		while (el && selector && !(el.nodeType === 1 && matches.call(el, selector))) {
+			el = el[fce];
 		}
-		return new Query(elem || []);
+		return new Query(el || []);
 	};
 
 	Query.prototype.closest = function(selector) {
@@ -182,11 +121,11 @@ var Tracy = Tracy || {};
 	};
 
 	Query.prototype.prev = function(selector) {
-		return this._trav(this[0] && this[0].previousSibling, selector, 'previousSibling');
+		return this._trav(this[0] && this[0].previousElementSibling, selector, 'previousElementSibling');
 	};
 
 	Query.prototype.next = function(selector) {
-		return this._trav(this[0] && this[0].nextSibling, selector, 'nextSibling');
+		return this._trav(this[0] && this[0].nextElementSibling, selector, 'nextElementSibling');
 	};
 
 	// returns total offset for element
