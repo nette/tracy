@@ -1,7 +1,6 @@
 [Tracy](http://tracy.nette.org) - PHP debugger
 ==============================================
 
-
 Tracy library is a useful PHP everyday programmer's helper. It helps you to:
 
 - quickly detect and correct errors
@@ -31,9 +30,6 @@ Debugger::enable();
 The first thing you notice on the web site is a Debugger Bar.
 
 
-
-
-
 Debugger Bar
 ------------
 
@@ -42,9 +38,6 @@ The Debugger Bar is a floating panel. It is displayed in the bottom right corner
 ![Debugger-Bar](http://nette.github.io/tracy/images/tracy-bar.png)
 
 You can add other useful panels into the Debugger Bar.
-
-
-
 
 
 Visualization of errors and exceptions
@@ -74,17 +67,13 @@ Stack trace:
 
 It is not so easy to navigate throw this output. If you enable the Tracy, errors or exceptions are displayed completely in a different form:
 
-
 [![Uncaught exception rendered by Tracy](http://nette.github.io/tracy/images/tracy-exception.png)](http://nette.github.io/tracy/tracy-exception.html)
-
 
 The error message literally screams. You can see a part of the source code with the highlighted line where the error occurred. A message clearly explains an error. The entire site is [interactive, try it](http://nette.github.io/tracy/tracy-exception.html).
 
 And you know what? A fatal errors are captured and displayed in the same way. No need to install any extension (click for live example):
 
-
 [![Fatal error rendered by Tracy](http://nette.github.io/tracy/images/tracy-error.png)](http://nette.github.io/tracy/tracy-error.html)
-
 
 Errors like a typo in a variable name or an attempt to open a nonexistent file generate reports of E_NOTICE or E_WARNING level. These can be easily overlooked and/or can be completly hidden in a web page graphic layout. Let Tracy to manage them:
 
@@ -97,9 +86,6 @@ Debugger::$strictMode = TRUE;
 ```
 
 [![Notice rendered by Tracy](http://nette.github.io/tracy/images/tracy-notice.png)](http://nette.github.io/tracy/tracy-notice.html)
-
-
-
 
 
 Production mode and error logging
@@ -143,11 +129,7 @@ For a real professional is the error log a key source of information and he want
 Debugger::$email = 'admin@example.com';
 ```
 
-
 To protect your e-mail box from flood, Tracy sends **the only one message** and creates a file `email-sent`. When developer receives an e-mail notification, he checks the log, corrects application and deletes the monitoring file. It activates the e-mails sending back.
-
-
-
 
 
 Variables dumping
@@ -172,9 +154,6 @@ You can also change the nesting depth by `Debugger::$maxDepth` and displayed str
 Debugger::$maxDepth = 2; // default: 3
 Debugger::$maxLen = 50; // default: 150
 ```
-
-
-
 
 Timing
 ------
@@ -204,7 +183,6 @@ $rssElapsed = Debugger::timer('rss-generating');
 $pageElapsed = Debugger::timer('page-generating');
 ```
 
-
 ```php
 Debugger::timer(); // runs the timer
 
@@ -212,9 +190,6 @@ Debugger::timer(); // runs the timer
 
 echo Debugger::timer(); // elapsed time in seconds
 ```
-
-
-
 
 
 Firebug and FireLogger
@@ -231,7 +206,6 @@ How to do it?
 
 ... Open our utility panel and click on the Console. Ha!, error message has been moved there.
 
-
 Because the Tracy\Debugger communicates with Firebug via an HTTP headers, you must call the logging function before the PHP script sends anything to the output. It is also possible to enable the output buffering and delay the output.
 
 ```php
@@ -247,9 +221,6 @@ Debugger::fireLog(new Exception('Test Exception')); // or exceptions
 The result looks like this:
 
 ![FireLogger](http://nette.github.io/tracy/images/firelogger.png)
-
-
-
 
 
 -----
