@@ -117,6 +117,7 @@ class Debugger
 		INFO = 'info',
 		WARNING = 'warning',
 		ERROR = 'error',
+		EXCEPTION = 'exception',
 		CRITICAL = 'critical';
 
 	/********************* debug bar ****************d*g**/
@@ -301,7 +302,7 @@ class Debugger
 	/**
 	 * Logs message or exception to file (if not disabled) and sends email notification (if enabled).
 	 * @param  string|Exception
-	 * @param  int  one of constant Debugger::INFO, WARNING, ERROR (sends email), CRITICAL (sends email)
+	 * @param  int  one of constant Debugger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
 	 * @return string logged error filename
 	 */
 	public static function log($message, $priority = self::INFO)
@@ -405,7 +406,7 @@ class Debugger
 		try {
 			if (self::$productionMode) {
 				try {
-					self::log($exception, self::ERROR);
+					self::log($exception, self::EXCEPTION);
 				} catch (\Exception $e) {
 					echo 'FATAL ERROR: unable to log error';
 				}

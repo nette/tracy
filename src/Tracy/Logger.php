@@ -21,6 +21,7 @@ class Logger
 		INFO = 'info',
 		WARNING = 'warning',
 		ERROR = 'error',
+		EXCEPTION = 'exception',
 		CRITICAL = 'critical';
 
 	/** @var int interval for sending email is 2 days */
@@ -39,8 +40,8 @@ class Logger
 	/**
 	 * Logs message or exception to file and sends email notification.
 	 * @param  string|array
-	 * @param  int     one of constant INFO, WARNING, ERROR (sends email), CRITICAL (sends email)
-	 * @return bool    was successful?
+	 * @param  int   one of constant Debugger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
+	 * @return bool  was successful?
 	 */
 	public function log($message, $priority = NULL)
 	{
@@ -55,7 +56,7 @@ class Logger
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
 		$res = (bool) file_put_contents($file, $message . PHP_EOL, FILE_APPEND | LOCK_EX);
 
-		if (($priority === self::ERROR || $priority === self::CRITICAL) && $this->email && $this->mailer
+		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL)) && $this->email && $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + $this->emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
