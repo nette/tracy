@@ -71,7 +71,7 @@ class Bar
 				);
 			} catch (\Exception $e) {
 				$panels[] = array(
-					'id' => "error-" . preg_replace('#[^a-z0-9]+#i', '-', $id),
+					'id' => 'error-' . preg_replace('#[^a-z0-9]+#i', '-', $id),
 					'tab' => "Error in $id",
 					'panel' => '<h1>Error: ' . $id . '</h1><div class="tracy-inner">' . nl2br(htmlSpecialChars($e, ENT_IGNORE)) . '</div>',
 				);

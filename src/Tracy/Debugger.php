@@ -320,15 +320,15 @@ class Debugger
 			while ($exception) {
 				$tmp[] = ($exception instanceof ErrorException
 					? 'Fatal error: ' . $exception->getMessage()
-					: get_class($exception) . ": " . $exception->getMessage())
-					. " in " . $exception->getFile() . ":" . $exception->getLine();
+					: get_class($exception) . ': ' . $exception->getMessage())
+					. ' in ' . $exception->getFile() . ':' . $exception->getLine();
 				$exception = $exception->getPrevious();
 			}
 			$exception = $message;
 			$message = implode($tmp, "\ncaused by ");
 
 			$hash = md5(preg_replace('~(Resource id #)\d+~', '$1', $exception));
-			$exceptionFilename = "exception-" . @date('Y-m-d-H-i-s') . "-$hash.html";
+			$exceptionFilename = 'exception-' . @date('Y-m-d-H-i-s') . "-$hash.html";
 			foreach (new \DirectoryIterator(self::$logDirectory) as $entry) {
 				if (strpos($entry, $hash)) {
 					$exceptionFilename = $entry;
@@ -443,7 +443,7 @@ class Debugger
 			if (self::$productionMode) {
 				echo self::isHtmlMode() ? '<meta name=robots content=noindex>FATAL ERROR' : 'FATAL ERROR';
 			} else {
-				echo "FATAL ERROR: thrown ", get_class($e), ': ', $e->getMessage(),
+				echo 'FATAL ERROR: thrown ', get_class($e), ': ', $e->getMessage(),
 					"\nwhile processing ", get_class($exception), ': ', $exception->getMessage(), "\n";
 			}
 		}

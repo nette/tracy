@@ -171,10 +171,10 @@ class FireLogger
 			}
 
 		} elseif (is_resource($var)) {
-			return "resource " . get_resource_type($var);
+			return 'resource ' . get_resource_type($var);
 
 		} else {
-			return "unknown type";
+			return 'unknown type';
 		}
 	}
 

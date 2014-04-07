@@ -101,7 +101,7 @@ class Dumper
 	public static function toTerminal($var, array $options = NULL)
 	{
 		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function($m) {
-			return "\033[" . (isset($m[1], Dumper::$terminalColors[$m[1]]) ? Dumper::$terminalColors[$m[1]] : '0') . "m";
+			return "\033[" . (isset($m[1], Dumper::$terminalColors[$m[1]]) ? Dumper::$terminalColors[$m[1]] : '0') . 'm';
 		}, self::toHtml($var, $options))), ENT_QUOTES);
 	}
 
