@@ -97,7 +97,7 @@ class Helpers
 	 * @param  string  byte stream to fix
 	 * @return string
 	 */
-	public static function fixEncoding($s)
+	public static function fixEncoding($s, $encoding = 'UTF-8')
 	{
 		if (PHP_VERSION_ID < 50400) {
 			return @iconv('UTF-16', $encoding . '//IGNORE', iconv($encoding, 'UTF-16//IGNORE', $s)); // intentionally @
