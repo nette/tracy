@@ -95,6 +95,7 @@ class Helpers
 	/**
 	 * Returns correctly UTF-8 encoded string.
 	 * @param  string  byte stream to fix
+	 * @param  string  encoding
 	 * @return string
 	 */
 	public static function fixEncoding($s, $encoding = 'UTF-8')
