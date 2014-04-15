@@ -95,9 +95,10 @@ class Helpers
 	/**
 	 * Returns correctly UTF-8 encoded string.
 	 * @param  string  byte stream to fix
+	 * @param  string  encoding
 	 * @return string
 	 */
-	public static function fixEncoding($s)
+	public static function fixEncoding($s, $encoding = 'UTF-8')
 	{
 		if (PHP_VERSION_ID < 50400) {
 			return @iconv('UTF-16', 'UTF-8//IGNORE', iconv('UTF-8', 'UTF-16//IGNORE', $s)); // intentionally @
