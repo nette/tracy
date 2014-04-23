@@ -69,7 +69,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">3</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-number">2</span>
-</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-toggle-collapsed"><span class="tracy-dump-array">array</span> (7)</span>
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-array">array</span> (7)</span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-number">2</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">3</span> => <span class="tracy-dump-number">3</span>
@@ -79,7 +79,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">7</span> => <span class="tracy-dump-number">7</span>
 </div></div></pre>', Dumper::toHtml(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2, 3, 4, 5, 6, 7))) );
 
-Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle-collapsed"><span class="tracy-dump-resource">stream resource</span></span>
+Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span></span>
 <div class="tracy-collapsed">%A%', Dumper::toHtml(fopen(__FILE__, 'r')) );
 
 Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span>
@@ -94,14 +94,14 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="
 </div></pre>', Dumper::toHtml(new Test) );
 
 Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle-collapsed"><span class="tracy-dump-array">array</span> (2)</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-array">array</span> (2)</span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">NULL</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-string">"hello"</span> (5)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE_COUNT => 1)) );
 
-Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle-collapsed"><span class="tracy-dump-object" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-object" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">NULL</span>

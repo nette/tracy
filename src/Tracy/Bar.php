@@ -69,6 +69,7 @@ class Bar
 				$panelHtml = $tab ? (string) $panel->getPanel() : NULL;
 				if ($tab && $panel instanceof \Nette\Diagnostics\IBarPanel) {
 					$panelHtml = preg_replace('~(["\'.\s#])nette-(debug|inner|collapsed|toggle|toggle-collapsed)(["\'\s])~', '$1tracy-$2$3', $panelHtml);
+					$panelHtml = str_replace('tracy-toggle-collapsed', 'tracy-toggle tracy-collapsed', $panelHtml);
 				}
 				$panels[] = array('id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml);
 
