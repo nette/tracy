@@ -376,7 +376,8 @@ $counter = 0;
 
 		var collapsed = link.className.indexOf('tracy-toggle-collapsed') > -1,
 			ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
-			dest;
+			dest,
+			TRIM_RE = /^\s+|\s+$/g;
 
 		if (ref && ref !== '#') {
 			dest = document.getElementById(ref.substring(1));
@@ -385,7 +386,11 @@ $counter = 0;
 		}
 
 		link.className = 'tracy-toggle' + (collapsed ? '' : '-collapsed');
-		dest.className = collapsed ? '' : 'tracy-collapsed';
+		if (collapsed) {
+			dest.className = dest.className.replace('tracy-collapsed', '').replace(TRIM_RE, '');
+		} else {
+			dest.className = dest.className.concat(' tracy-collapsed').replace(TRIM_RE, '');
+		}
 
 		if (link.id === 'tracyBluescreenIcon') {
 			for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {
