@@ -27,7 +27,7 @@
 			}
 
 			// enables <a class="tracy-toggle" href="#"> or <span data-ref="#"> toggling
-			for (link = e.target; link && (!link.tagName || typeof link.className !== 'string' || !link.className.match(/\btracy-toggle(-collapsed)?\b/)); link = link.parentNode) {}
+			for (link = e.target; link && !$(link).hasClass('tracy-toggle') && !$(link).hasClass('tracy-toggle-collapsed'); link = link.parentNode) {}
 			if (!link) {
 				return;
 			}
@@ -37,7 +37,7 @@
 				panel = $(link).closest('.tracy-panel'),
 				oldPosition = panel.position();
 
-			link.className = 'tracy-toggle' + (collapsed ? '' : '-collapsed');
+			$(link).removeClass(collapsed ? 'tracy-toggle-collapsed' : 'tracy-toggle').addClass(collapsed ? 'tracy-toggle' : 'tracy-toggle-collapsed');
 			dest[collapsed ? 'removeClass' : 'addClass']('tracy-collapsed');
 			e.preventDefault();
 

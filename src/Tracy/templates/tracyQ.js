@@ -120,14 +120,14 @@ var Tracy = Tracy || {};
 	// adds class to element
 	Query.prototype.addClass = function(className) {
 		return this.each(function() {
-			this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ') + ' ' + className;
+			this.className = (this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ') + ' ' + className).replace(/^\s+|\s+$/g,'');
 		});
 	};
 
 	// removes class from element
 	Query.prototype.removeClass = function(className) {
 		return this.each(function() {
-			this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ');
+			this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ').replace(/^\s+|\s+$/g,'');
 		});
 	};
 
