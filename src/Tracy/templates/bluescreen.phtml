@@ -117,14 +117,14 @@ $counter = 0;
 						<i>inner-code</i><?php if (isset($row['line'])) echo ':', $row['line'] ?>
 					<?php endif ?>
 
-					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#tracyBsSrc<?php echo "$level-$key" ?>" class="tracy-toggle-collapsed">source</a>&nbsp; <?php endif ?>
+					<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#tracyBsSrc<?php echo "$level-$key" ?>" class="tracy-toggle tracy-collapsed">source</a>&nbsp; <?php endif ?>
 
-					<?php if (isset($row['object'])) echo "<a href='#tracyBsObj$level-$key' class='tracy-toggle-collapsed'>" ?>
+					<?php if (isset($row['object'])) echo "<a href='#tracyBsObj$level-$key' class='tracy-toggle tracy-collapsed'>" ?>
 					<?php if (isset($row['class'])) echo htmlspecialchars($row['class'] . $row['type']) ?>
 					<?php if (isset($row['object'])) echo '</a>' ?>
 					<?php echo htmlspecialchars($row['function']) ?>
 
-					(<?php if (!empty($row['args'])): ?><a href="#tracyBsArgs<?php echo "$level-$key" ?>" class="tracy-toggle-collapsed">arguments</a><?php endif ?>)
+					(<?php if (!empty($row['args'])): ?><a href="#tracyBsArgs<?php echo "$level-$key" ?>" class="tracy-toggle tracy-collapsed">arguments</a><?php endif ?>)
 					</p>
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?>
@@ -163,7 +163,7 @@ $counter = 0;
 
 			<?php if ($ex instanceof \ErrorException && isset($ex->context) && is_array($ex->context)):?>
 			<div class="panel">
-			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Variables</a></h2>
+			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed">Variables</a></h2>
 
 			<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
 			<div class="outer">
@@ -187,7 +187,7 @@ $counter = 0;
 		<?php $panel = call_user_func($panel, NULL); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 		<?php if (!empty($panel['bottom'])) { $bottomPanels[] = $panel; continue; } ?>
 		<div class="panel">
-			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
+			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed"><?php echo htmlSpecialChars($panel['tab']) ?></a></h2>
 
 			<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
 			<?php echo $panel['panel'] ?>
@@ -196,7 +196,7 @@ $counter = 0;
 
 
 		<div class="panel">
-		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Environment</a></h2>
+		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
 		<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
 			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle">$_SERVER</a></h3>
@@ -238,7 +238,7 @@ $counter = 0;
 			<?php
 			$list = get_defined_constants(TRUE);
 			if (!empty($list['user'])):?>
-			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Constants</a></h3>
+			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed">Constants</a></h3>
 			<div id="tracyBsPnl<?php echo $counter ?>" class="outer tracy-collapsed">
 			<table>
 			<?php
@@ -252,7 +252,7 @@ $counter = 0;
 			<?php endif ?>
 
 
-			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Included files</a> (<?php echo count(get_included_files()) ?>)</h3>
+			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed">Included files</a> (<?php echo count(get_included_files()) ?>)</h3>
 			<div id="tracyBsPnl<?php echo $counter ?>" class="outer tracy-collapsed">
 			<table>
 			<?php
@@ -264,7 +264,7 @@ $counter = 0;
 			</div>
 
 
-			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">Configuration options</a></h3>
+			<h3><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
 			<div id="tracyBsPnl<?php echo $counter ?>" class="outer tracy-collapsed">
 			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+\z#s', '', ob_get_clean()) ?>
 			</div>
@@ -272,7 +272,7 @@ $counter = 0;
 
 
 		<div class="panel">
-		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">HTTP request</a></h2>
+		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
 
 		<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
 			<?php if (function_exists('apache_request_headers')): ?>
@@ -305,7 +305,7 @@ $counter = 0;
 
 
 		<div class="panel">
-		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle-collapsed">HTTP response</a></h2>
+		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
 
 		<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
 			<h3>Headers</h3>
@@ -369,12 +369,12 @@ $counter = 0;
 			return;
 		}
 
-		for (var link = e.target || e.srcElement; link && (!link.tagName || !link.className.match(/(^|\s)tracy-toggle(-collapsed)?(\s|$)/)); link = link.parentNode) {}
+		for (var link = e.target || e.srcElement; link && (!link.tagName || !link.className.match(/(^|\s)tracy-toggle(\s|$)/)); link = link.parentNode) {}
 		if (!link) {
 			return true;
 		}
 
-		var collapsed = link.className.match(/(^|\s)tracy-toggle-collapsed(\s|$)/),
+		var collapsed = link.className.match(/(^|\s)tracy-collapsed(\s|$)/),
 			ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
 			dest;
 
@@ -384,8 +384,8 @@ $counter = 0;
 			for (dest = link.nextSibling; dest && dest.nodeType !== 1; dest = dest.nextSibling) {}
 		}
 
-		link.className = (link.className.replace(/(^|\s)tracy-toggle(-collapsed)?(\s|$)/, ' ') + ' tracy-toggle' + (collapsed ? '' : '-collapsed')).replace(/^\s+|\s+$/g,'');
-		dest.className = (dest.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') + (collapsed ? '' : ' tracy-collapsed')).replace(/^\s+|\s+$/g,'');
+		link.className = (collapsed ? link.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') : link.className + ' tracy-collapsed').replace(/^\s+|\s+$/g,'');
+		dest.className = (collapsed ? dest.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') : dest.className + ' tracy-collapsed').replace(/^\s+|\s+$/g,'');
 
 		if (link.id === 'tracyBluescreenIcon') {
 			for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {

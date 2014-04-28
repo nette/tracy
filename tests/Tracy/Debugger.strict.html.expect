@@ -45,9 +45,9 @@
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
-					<a href="#tracyBsSrc1-1" class="tracy-toggle-collapsed">source</a>&nbsp;
+					<a href="#tracyBsSrc1-1" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
 																				third
-					(<a href="#tracyBsArgs1-1" class="tracy-toggle-collapsed">arguments</a>)
+					(<a href="#tracyBsArgs1-1" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
 											<div class="tracy-collapsed" id="tracyBsSrc1-1">%A%</div>
@@ -63,9 +63,9 @@
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
-					<a href="#tracyBsSrc1-2" class="tracy-toggle-collapsed">source</a>&nbsp;
+					<a href="#tracyBsSrc1-2" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
 																				second
-					(<a href="#tracyBsArgs1-2" class="tracy-toggle-collapsed">arguments</a>)
+					(<a href="#tracyBsArgs1-2" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
 											<div class="tracy-collapsed" id="tracyBsSrc1-2">%A%</div>
@@ -85,9 +85,9 @@
 										<li><p>
 
 											<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
-					<a href="#tracyBsSrc1-3" class="tracy-toggle-collapsed">source</a>&nbsp;
+					<a href="#tracyBsSrc1-3" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
 																				first
-					(<a href="#tracyBsArgs1-3" class="tracy-toggle-collapsed">arguments</a>)
+					(<a href="#tracyBsArgs1-3" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
 											<div class="tracy-collapsed" id="tracyBsSrc1-3">%A%</div>
@@ -109,7 +109,7 @@
 
 
 						<div class="panel">
-			<h2><a href="#tracyBsPnl3" class="tracy-toggle-collapsed">Variables</a></h2>
+			<h2><a href="#tracyBsPnl3" class="tracy-toggle tracy-collapsed">Variables</a></h2>
 
 			<div id="tracyBsPnl3" class="tracy-collapsed inner">
 			<div class="outer">
@@ -125,7 +125,7 @@
 
 
 		<div class="panel">
-		<h2><a href="#tracyBsPnl4" class="tracy-toggle-collapsed">Environment</a></h2>
+		<h2><a href="#tracyBsPnl4" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
 		<div id="tracyBsPnl4" class="tracy-collapsed inner">
 			<h3><a href="#tracyBsPnl5" class="tracy-toggle">$_SERVER</a></h3>
@@ -140,26 +140,26 @@
 
 
 
-						<h3><a href="#tracyBsPnl7" class="tracy-toggle-collapsed">Constants</a></h3>
+						<h3><a href="#tracyBsPnl7" class="tracy-toggle tracy-collapsed">Constants</a></h3>
 			<div id="tracyBsPnl7" class="outer tracy-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#tracyBsPnl8" class="tracy-toggle-collapsed">Included files</a> (%d%)</h3>
+			<h3><a href="#tracyBsPnl8" class="tracy-toggle tracy-collapsed">Included files</a> (%d%)</h3>
 			<div id="tracyBsPnl8" class="outer tracy-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#tracyBsPnl9" class="tracy-toggle-collapsed">Configuration options</a></h3>
+			<h3><a href="#tracyBsPnl9" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
 			<div id="tracyBsPnl9" class="outer tracy-collapsed">
 			%A%</div>
 		</div></div>
 
 
 		<div class="panel">
-		<h2><a href="#tracyBsPnl10" class="tracy-toggle-collapsed">HTTP request</a></h2>
+		<h2><a href="#tracyBsPnl10" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
 
 		<div id="tracyBsPnl10" class="tracy-collapsed inner">
 %A?%
@@ -173,7 +173,7 @@
 
 
 		<div class="panel">
-		<h2><a href="#tracyBsPnl11" class="tracy-toggle-collapsed">HTTP response</a></h2>
+		<h2><a href="#tracyBsPnl11" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
 
 		<div id="tracyBsPnl11" class="tracy-collapsed inner">
 			<h3>Headers</h3>

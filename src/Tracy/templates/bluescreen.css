@@ -213,7 +213,11 @@ html.js #tracyBluescreen .tracy-collapsed {
 	display: none;
 }
 
-#tracyBluescreen .tracy-toggle, #tracyBluescreen .tracy-toggle-collapsed {
+html.js #tracyBluescreen .tracy-toggle.tracy-collapsed {
+	display: inline;
+}
+
+#tracyBluescreen .tracy-toggle {
 	cursor: pointer;
 }
 
@@ -222,7 +226,7 @@ html.js #tracyBluescreen .tracy-collapsed {
 	opacity: .4;
 }
 
-#tracyBluescreen .tracy-toggle-collapsed:after {
+#tracyBluescreen .tracy-toggle.tracy-collapsed:after {
 	content: " ►";
 	opacity: .4;
 }

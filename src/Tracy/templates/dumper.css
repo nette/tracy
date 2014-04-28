@@ -10,7 +10,11 @@
 	display: none;
 }
 
-.tracy-toggle, .tracy-toggle-collapsed {
+.tracy-toggle.tracy-collapsed {
+	display: inline;
+}
+
+.tracy-toggle {
 	cursor: pointer;
 }
 
@@ -19,9 +23,8 @@
 	opacity: .4;
 }
 
-.tracy-toggle-collapsed:after {
+.tracy-toggle.tracy-collapsed:after {
 	content: " ►";
-	opacity: .4;
 }
 
 
