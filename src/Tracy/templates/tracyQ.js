@@ -133,7 +133,7 @@ var Tracy = Tracy || {};
 
 	// tests whether element has given class
 	Query.prototype.hasClass = function(className) {
-		return this[0] && this[0].className.replace(/^|\s+|$/g, ' ').indexOf(' '+className+' ') > -1;
+		return this[0] && this[0].className && this[0].className.replace(/^|\s+|$/g, ' ').indexOf(' '+className+' ') > -1;
 	};
 
 	Query.prototype.show = function() {
