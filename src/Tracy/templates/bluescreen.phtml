@@ -355,11 +355,6 @@ $counter = 0;
 		if ((styles[i].owningElement || styles[i].ownerNode).className !== 'tracy-debug') {
 			styles[i].oldDisabled = styles[i].disabled;
 			styles[i].disabled = true;
-
-		} else if (styles[i].addRule) {
-			styles[i].addRule('.tracy-collapsed', 'display: none');
-		} else {
-			styles[i].insertRule('.tracy-collapsed { display: none }', 0);
 		}
 	}
 
