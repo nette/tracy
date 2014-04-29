@@ -27,17 +27,17 @@
 			}
 
 			// enables <a class="tracy-toggle" href="#"> or <span data-ref="#"> toggling
-			for (link = e.target; link && !$(link).hasClass('tracy-toggle'); link = link.parentNode) {}
-			if (!link) {
+			link = $(e.target).closest('.tracy-toggle');
+			if (!link.length) {
 				return;
 			}
-			var collapsed = $(link).hasClass('tracy-collapsed'),
-				ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
-				dest = ref && ref !== '#' ? $(ref) : $(link).next(''),
-				panel = $(link).closest('.tracy-panel'),
+			var collapsed = link.hasClass('tracy-collapsed'),
+				ref = link[0].getAttribute('data-ref') || link[0].getAttribute('href', 2),
+				dest = ref && ref !== '#' ? $(ref) : link.next(''),
+				panel = link.closest('.tracy-panel'),
 				oldPosition = panel.position();
 
-			$(link)[collapsed ? 'removeClass' : 'addClass']('tracy-collapsed');
+			link[collapsed ? 'removeClass' : 'addClass']('tracy-collapsed');
 			dest[collapsed ? 'removeClass' : 'addClass']('tracy-collapsed');
 			e.preventDefault();
 

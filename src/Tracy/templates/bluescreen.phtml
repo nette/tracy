@@ -342,6 +342,7 @@ $counter = 0;
 </div>
 
 <script type="text/javascript">
+(function(){
 	var bs = document.getElementById('tracyBluescreen');
 	document.body.appendChild(bs);
 	document.onkeyup = function(e) {
@@ -351,10 +352,12 @@ $counter = 0;
 		}
 	};
 
-	for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {
-		if ((styles[i].owningElement || styles[i].ownerNode).className !== 'tracy-debug') {
-			styles[i].oldDisabled = styles[i].disabled;
-			styles[i].disabled = true;
+	for (var i = 0, styles = []; i < document.styleSheets.length; i++) {
+		var style = document.styleSheets[i];
+		if ((style.owningElement || style.ownerNode).className !== 'tracy-debug') {
+			style.oldDisabled = style.disabled;
+			style.disabled = true;
+			styles.push(style);
 		}
 	}
 
@@ -383,15 +386,14 @@ $counter = 0;
 		dest.className = (collapsed ? dest.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') : dest.className + ' tracy-collapsed').replace(/^\s+|\s+$/g,'');
 
 		if (link.id === 'tracyBluescreenIcon') {
-			for (var i = 0, styles = document.styleSheets; i < styles.length; i++) {
-				if ((styles[i].owningElement || styles[i].ownerNode).className !== 'tracy-debug') {
-					styles[i].disabled = collapsed ? true : styles[i].oldDisabled;
-				}
+			for (i = 0; i < styles.length; i++) {
+				styles[i].disabled = collapsed ? true : styles[i].oldDisabled;
 			}
 		}
 		e.preventDefault ? e.preventDefault() : e.returnValue = false;
 		e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
 	};
+})();
 </script>
 </body>
 </html>
