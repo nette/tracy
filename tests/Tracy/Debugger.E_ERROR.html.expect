@@ -124,6 +124,8 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 			<li>Report generated at %a%</li>
 							<li>CLI%a?%</li>
 						<li>PHP %a%</li>		</ul>
+
+		<div id="tracyLogo"><a href="http://tracy.nette.org"></a></div>
 	</div>
 </div>
 
