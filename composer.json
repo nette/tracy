@@ -21,7 +21,8 @@
 		"nette/tester": "~1.0"
 	},
 	"autoload": {
-		"classmap": ["src/Tracy"]
+		"classmap": ["src/Tracy"],
+		"files": ["src/shortcuts.php"]
 	},
 	"extra": {
 		"branch-alias": {
