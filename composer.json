@@ -23,10 +23,5 @@
 	"autoload": {
 		"classmap": ["src/Tracy"],
 		"files": ["src/shortcuts.php"]
-	},
-	"extra": {
-		"branch-alias": {
-			"dev-master": "2.3-dev"
-		}
 	}
 }
