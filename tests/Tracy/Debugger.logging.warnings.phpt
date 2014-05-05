@@ -25,4 +25,4 @@ Debugger::enable(Debugger::PRODUCTION, $logDirectory, 'admin@example.com');
 $a++;
 
 Assert::match('%a%PHP Notice: Undefined variable: a in %a%', file_get_contents($logDirectory . '/error.log'));
-Assert::true(is_file($logDirectory . '/email-sent'));
+Assert::true(is_file($logDirectory . '/email-sent-error'));

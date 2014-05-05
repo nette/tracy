@@ -70,7 +70,7 @@ class Logger implements ILogger
 		}
 
 		if (in_array($priority, [self::ERROR, self::EXCEPTION, self::CRITICAL], TRUE)) {
-			$this->sendEmail($message);
+			$this->sendEmail($message, $priority);
 		}
 
 		return $exceptionFile;
@@ -158,15 +158,15 @@ class Logger implements ILogger
 	 * @param  string|\Exception|\Throwable
 	 * @return void
 	 */
-	protected function sendEmail($message)
+	protected function sendEmail($message, $priority)
 	{
 		$snooze = is_numeric($this->emailSnooze)
 			? $this->emailSnooze
 			: @strtotime($this->emailSnooze) - time(); // @ timezone may not be set
 
 		if ($this->email && $this->mailer
-			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ file may not exist
-			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ file may not be writable
+			&& @filemtime($this->directory . '/email-sent-' . $priority) + $snooze < time() // @ file may not exist
+			&& @file_put_contents($this->directory . '/email-sent-' . $priority, 'sent') // @ file may not be writable
 		) {
 			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
 		}
