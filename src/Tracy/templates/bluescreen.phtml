@@ -47,7 +47,7 @@ $counter = 0;
 		<div id="tracyBluescreenError" class="panel">
 			<h1><?php echo htmlspecialchars($title), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 
-			<p><?php echo htmlspecialchars($exception->getMessage(), ENT_IGNORE) ?> <a href="http://www.google.com/search?sourceid=tracy&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" id="tracyBsSearch">search&#x25ba;</a></p>
+			<p><?php echo htmlspecialchars($exception->getMessage(), ENT_IGNORE) ?> <a href="https://www.google.com/search?sourceid=tracy&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" id="tracyBsSearch">search&#x25ba;</a></p>
 		</div>
 
 		<?php if ($prev = $exception->getPrevious()): ?>
