@@ -20,7 +20,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 		<div id="tracyBluescreenError" class="panel">
 			<h1>Fatal Error</h1>
 
-			<p>Call to undefined function missing_function() <a href="%a%" id="tracyBsSearch">search&#x25ba;</a></p>
+			<p>Call to undefined function missing_function() <a href="%a%" id="tracyBsSearch" rel="noreferrer">search&#x25ba;</a></p>
 		</div>
 
 
@@ -125,7 +125,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 							<li>CLI%a?%</li>
 						<li>PHP %a%</li>		</ul>
 
-		<div id="tracyLogo"><a href="http://tracy.nette.org"></a></div>
+		<div id="tracyLogo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
 </div>
 

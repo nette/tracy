@@ -18,7 +18,7 @@
 		<div id="tracyBluescreenError" class="panel">
 			<h1>Notice</h1>
 
-			<p>Undefined variable: x <a href="%a%" id="tracyBsSearch">search&#x25ba;</a></p>
+			<p>Undefined variable: x <a href="%a%" id="tracyBsSearch" rel="noreferrer">search&#x25ba;</a></p>
 		</div>
 
 
@@ -188,7 +188,7 @@
 							<li>CLI%a?%</li>
 						<li>PHP %a%</li>		</ul>
 
-		<div id="tracyLogo"><a href="http://tracy.nette.org"></a></div>
+		<div id="tracyLogo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
 </div>
 

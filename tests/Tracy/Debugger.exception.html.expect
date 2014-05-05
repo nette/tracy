@@ -18,7 +18,7 @@
 		<div id="tracyBluescreenError" class="panel">
 			<h1>Exception #123</h1>
 
-			<p>The my exception <a href="%a%" id="tracyBsSearch">search&#x25ba;</a></p>
+			<p>The my exception <a href="%a%" id="tracyBsSearch" rel="noreferrer">search&#x25ba;</a></p>
 		</div>
 
 
@@ -181,7 +181,7 @@
 							<li>CLI%a?%</li>
 						<li>PHP %a%</li>		</ul>
 
-		<div id="tracyLogo"><a href="http://tracy.nette.org"></a></div>
+		<div id="tracyLogo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
 </div>
 
