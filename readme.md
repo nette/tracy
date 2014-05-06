@@ -1,6 +1,9 @@
 [Tracy](http://tracy.nette.org) - PHP debugger
 ==============================================
 
+[![Downloads this Month](https://img.shields.io/packagist/dm/tracy/tracy.svg)](https://packagist.org/packages/tracy/tracy)
+[![Build Status](https://travis-ci.org/nette/tracy.svg?branch=master)](https://travis-ci.org/nette/tracy)
+
 Tracy library is a useful PHP everyday programmer's helper. It helps you to:
 
 - quickly detect and correct errors
@@ -221,8 +224,3 @@ Debugger::fireLog(new Exception('Test Exception')); // or exceptions
 The result looks like this:
 
 ![FireLogger](http://nette.github.io/tracy/images/firelogger.png)
-
-
------
-
-[![Build Status](https://secure.travis-ci.org/nette/tracy.png?branch=master)](http://travis-ci.org/nette/tracy)
