@@ -185,7 +185,7 @@
 							<li>CLI%a?%</li>
 						<li>PHP %a%</li>		</ul>
 
-		<div id="tracyLogo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
+		<div id="tracyBluescreenLogo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
 </div>
 
