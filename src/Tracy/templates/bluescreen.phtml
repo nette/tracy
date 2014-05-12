@@ -62,7 +62,7 @@ $counter = 0;
 
 			<?php if ($level++): ?>
 			<div class="panel"<?php if ($level === 2) echo ' id="tracyCaused"' ?>>
-			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle<?php echo ($collapsed = $level > 2) ? '-collapsed' : '' ?>">Caused by</a></h2>
+			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle<?php echo ($collapsed = $level > 2) ? ' tracy-collapsed' : '' ?>">Caused by</a></h2>
 
 			<div id="tracyBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<div class="panel">
@@ -93,7 +93,7 @@ $counter = 0;
 			} ?>
 
 			<div class="panel">
-			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle<?php echo ($collapsed = $expanded !== NULL) ? '-collapsed' : '' ?>">Source file</a></h2>
+			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle<?php echo ($collapsed = $expanded !== NULL) ? ' tracy-collapsed' : '' ?>">Source file</a></h2>
 
 			<div id="tracyBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
