@@ -85,7 +85,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapse
 Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span>
 </pre>', Dumper::toHtml(new stdClass) );
 
-Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">NULL</span>
@@ -93,7 +93,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test) );
 
-Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-array">array</span> (2)</span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">NULL</span>
@@ -101,7 +101,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE_COUNT => 1)) );
 
-Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-object" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">NULL</span>
@@ -109,7 +109,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapse
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE => TRUE)) );
 
-Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object" data-tracy-href="editor:%a%">Closure</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Closure</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">file</span> => <span class="tracy-dump-string">"%a%"</span> (%i%)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">line</span> => <span class="tracy-dump-number">%i%</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">variables</span> => <span class="tracy-dump-array">array</span> ()
