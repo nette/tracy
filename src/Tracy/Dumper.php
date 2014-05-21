@@ -219,7 +219,7 @@ class Dumper
 		static $list = array();
 		$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
 		$out = '<span class="tracy-dump-object"'
-			. ($rc->getFileName() ? ' data-tracy-href="' . htmlspecialchars(strtr(Debugger::$editor, array('%file' => rawurlencode($rc->getFileName()), '%line' => $rc->getStartLine()))) . '"' : '')
+			. ($options[self::LOCATION] && $rc->getFileName() ? ' data-tracy-href="' . htmlspecialchars(strtr(Debugger::$editor, array('%file' => rawurlencode($rc->getFileName()), '%line' => $rc->getStartLine()))) . '"' : '')
 			. '>' . get_class($var) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
 
 		if (empty($fields)) {
