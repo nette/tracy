@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Tracy (version 2.2.0, http://tracy.nette.org)
+ * Tracy (http://tracy.nette.org)
  *
  * Copyright (c) 2004, 2014 David Grudl (http://davidgrudl.com)
  */
