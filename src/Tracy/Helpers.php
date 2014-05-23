@@ -47,7 +47,7 @@ class Helpers
 	{
 		$args = func_get_args();
 		return preg_replace_callback('#%#', function() use (& $args, & $count) {
-			return htmlspecialchars($args[++$count]);
+			return htmlspecialchars($args[++$count], ENT_IGNORE | ENT_QUOTES);
 		}, $mask);
 	}
 
