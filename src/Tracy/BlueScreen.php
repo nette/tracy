@@ -65,11 +65,11 @@ class BlueScreen
 	{
 		$source = @file_get_contents($file); // intentionally @
 		if ($source) {
-			return substr_replace(
-				static::highlightPhp($source, $line, $lines, $vars),
-				' data-tracy-href="' . htmlspecialchars(strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line))) . '"',
-				4, 0
-			);
+			$source = static::highlightPhp($source, $line, $lines, $vars);
+			if ($editor = Helpers::editorUri($file, $line)) {
+				$source = substr_replace($source, ' data-tracy-href="' . htmlspecialchars($editor) . '"', 4, 0);
+			}
+			return $source;
 		}
 	}
 

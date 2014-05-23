@@ -34,7 +34,7 @@ class Debugger
 	/** @var string  requested URI or command line */
 	public static $source;
 
-	/** @var string URL pattern mask to open editor */
+	/** @var string URI pattern mask to open editor */
 	public static $editor = 'editor://open/?file=%file&line=%line';
 
 	/** @var string command to open browser (use 'start ""' in Windows) */
