@@ -33,7 +33,7 @@
 			<h2><a href="#tracyBsPnl1" class="tracy-toggle">Source file</a></h2>
 
 			<div id="tracyBsPnl1" class="inner">
-				<p><b>File:</b> <span>%a% : eval()'d code:1</span></p>
+				<p><b>File:</b> <span>%a% : eval()&#039;d code:1</span></p>
 							</div></div>
 
 
