@@ -34,7 +34,7 @@ register_shutdown_function(function() {
 	<table>
 		<tr class="">
 		<td><pre class="tracy-dump" title="barDump(&#039;value&#039;)
-in file %a% on line %d%"><span class="tracy-dump-string">"value"</span> (5)
+in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-string">"value"</span> (5)
 <small>in <a href="%a%">%a%:%d%</a></small></pre>
 </td>
 	</tr>
