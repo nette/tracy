@@ -213,11 +213,11 @@ html {
 
 #tracyBluescreen a[href^=editor\:] {
 	color: inherit;
-	border-bottom: 1px dotted rgba(0, 0, 0, .2);
+	border-bottom: 1px dotted rgba(0, 0, 0, .3);
 }
 
 #tracyBluescreen span[data-tracy-href] {
-	border-bottom: 1px dotted rgba(0, 0, 0, .2);
+	border-bottom: 1px dotted rgba(0, 0, 0, .3);
 }
 
 

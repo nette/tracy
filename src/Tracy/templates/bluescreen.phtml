@@ -147,7 +147,7 @@ $counter = 0;
 						}
 						foreach ($row['args'] as $k => $v) {
 							echo '<tr><th>', htmlspecialchars(isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</th><td>';
-							echo Dumper::toHtml($v);
+							echo Dumper::toHtml($v, array(Dumper::LOCATION => Dumper::LOCATION_CLASS));
 							echo "</td></tr>\n";
 						}
 						?>
@@ -170,7 +170,7 @@ $counter = 0;
 			<table>
 			<?php
 			foreach ($ex->context as $k => $v) {
-					echo '<tr><th>$', htmlspecialchars($k), '</th><td>', Dumper::toHtml($v), "</td></tr>\n";
+					echo '<tr><th>$', htmlspecialchars($k), '</th><td>', Dumper::toHtml($v, array(Dumper::LOCATION => Dumper::LOCATION_CLASS)), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -216,7 +216,7 @@ $counter = 0;
 			<?php else: ?>
 			<table>
 			<?php
-			foreach ($_SESSION as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', $k === '__NF' ? '<i>Nette Session</i>' : Dumper::toHtml($v), "</td></tr>\n";
+			foreach ($_SESSION as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', $k === '__NF' ? '<i>Nette Session</i>' : Dumper::toHtml($v, array(Dumper::LOCATION => Dumper::LOCATION_CLASS)), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>
@@ -228,7 +228,7 @@ $counter = 0;
 			<div id="tracyBsPnl<?php echo $counter ?>" class="outer">
 			<table>
 			<?php
-			foreach ($_SESSION['__NF']['DATA'] as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', Dumper::toHtml($v), "</td></tr>\n";
+			foreach ($_SESSION['__NF']['DATA'] as $k => $v) echo '<tr><th>', htmlspecialchars($k), '</th><td>', Dumper::toHtml($v, array(Dumper::LOCATION => Dumper::LOCATION_CLASS)), "</td></tr>\n";
 			?>
 			</table>
 			</div>
@@ -365,6 +365,15 @@ $counter = 0;
 
 	bs.onclick = function(e) {
 		e = e || window.event;
+
+		if (e.ctrlKey) {
+			for (var link = e.target; link && (!link.getAttribute || !link.getAttribute('data-tracy-href')); link = link.parentNode) {}
+			if (link) {
+				location.href = link.getAttribute('data-tracy-href');
+				return false;
+			}
+		}
+
 		if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) {
 			return;
 		}
