@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger Bar in HTML.
- *
- * @author     David Grudl
  * @outputMatch %A%<!-- Tracy Debug Bar -->%A%
  */
 

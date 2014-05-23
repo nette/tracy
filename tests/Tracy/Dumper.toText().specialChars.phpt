@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Dumper::toText() special chars
- *
- * @author     David Grudl
  */
 
 use Tracy\Dumper,

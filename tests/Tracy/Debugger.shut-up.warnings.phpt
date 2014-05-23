@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger notices and warnings and shut-up operator.
- *
- * @author     David Grudl
  * @outputMatch
  */
 

@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger Bar in production mode.
- *
- * @author     David Grudl
  * @outputMatch
  */
 

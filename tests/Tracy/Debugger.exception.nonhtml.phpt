@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger exception in non-HTML.
- *
- * @author     David Grudl
  * @exitCode   254
  * @httpCode   500
  * @outputMatchFile Debugger.exception.nonhtml.expect

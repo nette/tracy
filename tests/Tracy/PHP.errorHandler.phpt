@@ -2,8 +2,6 @@
 
 /**
  * Test: PHP error handler.
- *
- * @author     David Grudl
  */
 
 use Tester\Assert;

@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger notices and warnings with $strictMode in HTML.
- *
- * @author     David Grudl
  * @httpCode   500
  * @exitCode   254
  * @outputMatchFile Debugger.strict.html.expect

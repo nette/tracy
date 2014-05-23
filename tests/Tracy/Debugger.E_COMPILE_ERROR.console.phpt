@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger error in console.
- *
- * @author     David Grudl
  * @exitCode   255
  * @httpCode   500
  * @outputMatch OK!

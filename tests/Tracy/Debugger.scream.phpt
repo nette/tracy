@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger notices and warnings in scream mode.
- *
- * @author     David Grudl
  * @outputMatchFile Debugger.scream.expect
  */
 

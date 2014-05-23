@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger logging exceptions in log message.
- *
- * @author     David Grudl
  */
 
 use Tracy\Debugger,

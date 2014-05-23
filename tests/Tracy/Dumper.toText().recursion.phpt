@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Dumper::toText() recursion
- *
- * @author     David Grudl
  */
 
 use Tracy\Dumper,

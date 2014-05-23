@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Dumper::toText() depth & truncate
- *
- * @author     David Grudl
  */
 
 use Tracy\Dumper,

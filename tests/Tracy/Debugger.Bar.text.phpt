@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger Bar in non-HTML mode.
- *
- * @author     David Grudl
  * @outputMatch
  */
 

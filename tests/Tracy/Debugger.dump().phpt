@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger::dump() production vs development
- *
- * @author     David Grudl
  */
 
 use Tracy\Debugger,

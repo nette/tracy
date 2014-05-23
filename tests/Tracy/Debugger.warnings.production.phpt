@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger notices and warnings in production mode.
- *
- * @author     David Grudl
  * @outputMatch
  */
 

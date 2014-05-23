@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger notices and warnings logging.
- *
- * @author     David Grudl
  */
 
 use Tracy\Debugger,
