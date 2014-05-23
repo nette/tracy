@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Dumper::toHtml() with location
- *
- * @author     David Grudl
  */
 
 use Tracy\Dumper,

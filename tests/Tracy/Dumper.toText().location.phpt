@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Dumper::toText() with location
- *
- * @author     David Grudl
  */
 
 use Tracy\Dumper,

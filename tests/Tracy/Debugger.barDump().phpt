@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger::barDump()
- *
- * @author     David Grudl
  * @outputMatch OK!
  */
 

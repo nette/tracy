@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger::timer()
- *
- * @author     David Grudl
  */
 
 use Tracy\Debugger,

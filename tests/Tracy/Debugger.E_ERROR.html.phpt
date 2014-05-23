@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger E_ERROR in HTML.
- *
- * @author     David Grudl
  * @httpCode   500
  * @exitCode   255
  * @outputMatch OK!

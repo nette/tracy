@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger eval error in HTML.
- *
- * @author     David Grudl
  * @httpCode   500
  * @exitCode   254
  * @outputMatchFile Debugger.error-in-eval.expect

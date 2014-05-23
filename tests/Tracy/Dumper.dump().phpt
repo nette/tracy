@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Dumper::dump() modes
- *
- * @author     David Grudl
  */
 
 use Tracy\Dumper,

@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger E_RECOVERABLE_ERROR error.
- *
- * @author     David Grudl
  */
 
 use Tracy\Debugger,

@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger::fireLog() and exception.
- *
- * @author     David Grudl
  */
 
 use Tracy\Debugger,

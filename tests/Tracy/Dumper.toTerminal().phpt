@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Dumper::toTerminal()
- *
- * @author     David Grudl
  */
 
 use Tracy\Dumper,

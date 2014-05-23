@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger error logging.
- *
- * @author     David Grudl
  * @exitCode   255
  * @httpCode   500
  * @outputMatch %A%OK!

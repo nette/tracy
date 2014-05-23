@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger::barDump() with showLocation.
- *
- * @author     David Grudl
  * @outputMatch OK!
  */
 

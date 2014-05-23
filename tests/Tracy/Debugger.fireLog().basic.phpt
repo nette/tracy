@@ -2,8 +2,6 @@
 
 /**
  * Test: Tracy\Debugger::fireLog()
- *
- * @author     David Grudl
  */
 
 use Tracy\Debugger,
