@@ -30,7 +30,7 @@ class Helpers
 			if (substr($dir, 0, strlen($base)) === $base) {
 				$dir = '...' . substr($dir, strlen($base));
 			}
-			return self::createHtml('<a href="%" title="%">%<b>%</b>%</a>',
+			return self::formatHtml('<a href="%" title="%">%<b>%</b>%</a>',
 				$editor,
 				"$file:$line",
 				rtrim($dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,
@@ -38,7 +38,7 @@ class Helpers
 				$line ? ":$line" : ''
 			);
 		} else {
-			return self::createHtml('<span>%</span>', $file . ($line ? ":$line" : ''));
+			return self::formatHtml('<span>%</span>', $file . ($line ? ":$line" : ''));
 		}
 	}
 
@@ -55,7 +55,7 @@ class Helpers
 	}
 
 
-	public static function createHtml($mask)
+	public static function formatHtml($mask)
 	{
 		$args = func_get_args();
 		return preg_replace_callback('#%#', function() use (& $args, & $count) {

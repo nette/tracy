@@ -84,7 +84,7 @@ class Dumper
 
 		list($file, $line, $code) = $loc ? self::findLocation() : NULL;
 		return '<pre class="tracy-dump"'
-			. ($file && $loc & self::LOCATION_SOURCE ? Helpers::createHtml(' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)) . '>' : '>')
+			. ($file && $loc & self::LOCATION_SOURCE ? Helpers::formatHtml(' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)) . '>' : '>')
 			. self::dumpVar($var, $options)
 			. ($file && $loc & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
