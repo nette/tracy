@@ -21,7 +21,12 @@ class Dumper
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
 		COLLAPSE = 'collapse', // always collapse? (defaults to false)
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
-		LOCATION = 'location'; // show location string? (defaults to false)
+		LOCATION = 'location'; // show location string? (defaults to 0)
+
+	const
+		LOCATION_SOURCE = 1, // shows where dump was called
+		LOCATION_LINK = 2, // appends clickable anchor
+		LOCATION_CLASS = 4; // shows where class is defined
 
 	/** @var array */
 	public static $terminalColors = array(
@@ -73,13 +78,15 @@ class Dumper
 			self::TRUNCATE => 150,
 			self::COLLAPSE => FALSE,
 			self::COLLAPSE_COUNT => 7,
-			self::LOCATION => FALSE,
 		);
-		list($file, $line, $code) = $options[self::LOCATION] ? self::findLocation() : NULL;
+		$loc = & $options[self::LOCATION];
+		$loc = $loc === TRUE ? ~0 : (int) $loc;
+
+		list($file, $line, $code) = $loc ? self::findLocation() : NULL;
 		return '<pre class="tracy-dump"'
-			. ($file ? Helpers::createHtml(' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)) . '>' : '>')
+			. ($file && $loc & self::LOCATION_SOURCE ? Helpers::createHtml(' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)) . '>' : '>')
 			. self::dumpVar($var, $options)
-			. ($file ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
+			. ($file && $loc & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
 	}
 
@@ -219,7 +226,7 @@ class Dumper
 		static $list = array();
 		$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
 		$out = '<span class="tracy-dump-object"'
-			. ($options[self::LOCATION] && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine())) ? ' data-tracy-href="' . htmlspecialchars($editor) . '"' : '')
+			. ($options[self::LOCATION] & self::LOCATION_CLASS && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine())) ? ' data-tracy-href="' . htmlspecialchars($editor) . '"' : '')
 			. '>' . get_class($var) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
 
 		if (empty($fields)) {
