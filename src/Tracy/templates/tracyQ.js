@@ -251,7 +251,7 @@ var Tracy = Tracy || {};
 			started = false;
 
 			dE.onmousemove = function(e) {
-				e = e || event;
+				e = e || window.event;
 				if (!started) {
 					if (options.draggedClass) {
 						$el.addClass(options.draggedClass);
@@ -275,7 +275,7 @@ var Tracy = Tracy || {};
 						$el.removeClass(options.draggedClass);
 					}
 					if (options.stop) {
-						options.stop(e || event, $el);
+						options.stop(e || window.event, $el);
 					}
 				}
 				Query.dragging = dE.onmousemove = dE.onmouseup = null;
