@@ -22,6 +22,7 @@ class Dumper
 		COLLAPSE = 'collapse', // always collapse? (defaults to false)
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
 		LOCATION = 'location'; // show location string? (defaults to 0)
+		LOCATION_FROM_REFLECTION = 'reflocation'; // use file location from instance instead of debug_backtrace
 
 	const
 		LOCATION_SOURCE = 1, // shows where dump was called
@@ -78,11 +79,20 @@ class Dumper
 			self::TRUNCATE => 150,
 			self::COLLAPSE => FALSE,
 			self::COLLAPSE_COUNT => 7,
+			self::LOCATION_FROM_REFLECTION => FALSE
 		);
 		$loc = & $options[self::LOCATION];
 		$loc = $loc === TRUE ? ~0 : (int) $loc;
 
-		list($file, $line, $code) = $loc ? self::findLocation() : NULL;
+		if ($loc && $options[self::LOCATION_FROM_REFLECTION] && is_object($var)) {
+			$reflection = new \ReflectionClass($var);
+			$file = $reflection->getFileName();
+			$line = $reflection->getStartLine();
+			$code = $reflection->getStartLine();
+		} else {
+			list($file, $line, $code) = $loc ? self::findLocation()) : NULL;
+		}
+		
 		return '<pre class="tracy-dump"'
 			. ($file && $loc & self::LOCATION_SOURCE ? Helpers::formatHtml(' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)) . '>' : '>')
 			. self::dumpVar($var, $options)
