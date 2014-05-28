@@ -223,11 +223,16 @@ class Dumper
 			$fields = (array) $var;
 		}
 
-		static $list = array();
-		$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
+		$editor = NULL;
+		if ($options[self::LOCATION] & self::LOCATION_CLASS) {
+			$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
+			$editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine());
+		}
 		$out = '<span class="tracy-dump-object"'
-			. ($options[self::LOCATION] & self::LOCATION_CLASS && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine())) ? ' data-tracy-href="' . htmlspecialchars($editor) . '"' : '')
+			. ($editor ? Helpers::formatHtml(' title="Declared in file % on line %" data-tracy-href="%"', $rc->getFileName(), $rc->getStartLine(), $editor) : '')
 			. '>' . get_class($var) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
+
+		static $list = array();
 
 		if (empty($fields)) {
 			return $out . "\n";
