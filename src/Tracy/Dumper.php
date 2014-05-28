@@ -84,7 +84,7 @@ class Dumper
 		$loc = & $options[self::LOCATION];
 		$loc = $loc === TRUE ? ~0 : (int) $loc;
 
-		if ($loc && self::LOCATION_FROM_REFLECTION && is_object($var)) {
+		if ($loc && $options[self::LOCATION_FROM_REFLECTION] && is_object($var)) {
 			$reflection = new \ReflectionClass($var);
 			$file = $reflection->getFileName();
 			$line = $reflection->getStartLine();
