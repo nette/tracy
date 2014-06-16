@@ -56,7 +56,7 @@ class Logger
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
 		$res = (bool) file_put_contents($file, $message . PHP_EOL, FILE_APPEND | LOCK_EX);
 
-		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL)) && $this->email && $this->mailer
+		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL), TRUE) && $this->email && $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + $this->emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
