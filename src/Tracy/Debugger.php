@@ -406,17 +406,18 @@ class Debugger
 			}
 		}
 
+		$logMsg = 'Unable to log error. Check if directory is writable and path is absolute.';
 		if (self::$productionMode) {
 			try {
 				self::log($exception, self::EXCEPTION);
 			} catch (\Exception $e) {
-				echo 'FATAL ERROR: unable to log error';
 			}
 
+			$error = isset($e) ? $logMsg : NULL;
 			if (self::isHtmlMode()) {
 				require __DIR__ . '/templates/error.phtml';
 			} else {
-				echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
+				echo "ERROR: application encountered an error and can not continue.\n$error\n";
 			}
 
 		} elseif (!connection_aborted() && self::isHtmlMode()) {
@@ -424,13 +425,17 @@ class Debugger
 			self::getBar()->render();
 
 		} elseif (connection_aborted() || !self::fireLog($exception)) {
-			$file = self::log($exception, self::EXCEPTION);
-			if ($file && !headers_sent()) {
-				header("X-Tracy-Error-Log: $file");
-			}
-			echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
-			if ($file && self::$browser) {
-				exec(self::$browser . ' ' . escapeshellarg($file));
+			try {
+				$file = self::log($exception, self::EXCEPTION);
+				if ($file && !headers_sent()) {
+					header("X-Tracy-Error-Log: $file");
+				}
+				echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
+				if ($file && self::$browser) {
+					exec(self::$browser . ' ' . escapeshellarg($file));
+				}
+			} catch (\Exception $e) {
+				echo "$exception\n$logMsg {$e->getMessage()}\n";
 			}
 		}
 
