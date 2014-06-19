@@ -406,49 +406,42 @@ class Debugger
 			}
 		}
 
-		try {
-			if (self::$productionMode) {
-				try {
-					self::log($exception, self::EXCEPTION);
-				} catch (\Exception $e) {
-					echo 'FATAL ERROR: unable to log error';
-				}
-
-				if (self::isHtmlMode()) {
-					require __DIR__ . '/templates/error.phtml';
-
-				} else {
-					echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
-				}
-
-			} else {
-				if (!connection_aborted() && self::isHtmlMode()) {
-					self::getBlueScreen()->render($exception);
-					self::getBar()->render();
-
-				} elseif (connection_aborted() || !self::fireLog($exception)) {
-					$file = self::log($exception, self::EXCEPTION);
-					if ($file && !headers_sent()) {
-						header("X-Tracy-Error-Log: $file");
-					}
-					echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
-					if ($file && self::$browser) {
-						exec(self::$browser . ' ' . escapeshellarg($file));
-					}
-				}
+		if (self::$productionMode) {
+			try {
+				self::log($exception, self::EXCEPTION);
+			} catch (\Exception $e) {
+				echo 'FATAL ERROR: unable to log error';
 			}
 
+			if (self::isHtmlMode()) {
+				require __DIR__ . '/templates/error.phtml';
+			} else {
+				echo "ERROR: the server encountered an internal error and was unable to complete your request.\n";
+			}
+
+		} elseif (!connection_aborted() && self::isHtmlMode()) {
+			self::getBlueScreen()->render($exception);
+			self::getBar()->render();
+
+		} elseif (connection_aborted() || !self::fireLog($exception)) {
+			$file = self::log($exception, self::EXCEPTION);
+			if ($file && !headers_sent()) {
+				header("X-Tracy-Error-Log: $file");
+			}
+			echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
+			if ($file && self::$browser) {
+				exec(self::$browser . ' ' . escapeshellarg($file));
+			}
+		}
+
+		try {
 			foreach (self::$onFatalError as $handler) {
 				call_user_func($handler, $exception);
 			}
-
 		} catch (\Exception $e) {
-			if (self::$productionMode) {
-				echo self::isHtmlMode() ? '<meta name=robots content=noindex>FATAL ERROR' : 'FATAL ERROR';
-			} else {
-				echo 'FATAL ERROR: thrown ', get_class($e), ': ', $e->getMessage(),
-					"\nwhile processing ", get_class($exception), ': ', $exception->getMessage(), "\n";
-			}
+			try {
+				self::log($e, self::EXCEPTION);
+			} catch (\Exception $e) {}
 		}
 
 		if ($exit) {
