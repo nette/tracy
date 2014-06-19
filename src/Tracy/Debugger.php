@@ -172,15 +172,14 @@ class Debugger
 		if ($email !== NULL) {
 			self::$email = $email;
 		}
-		if (is_string($logDirectory)) {
-			self::$logDirectory = realpath($logDirectory);
-			if (self::$logDirectory === FALSE) {
-				self::_exceptionHandler(new \RuntimeException("Log directory is not found or is not directory."));
-			}
-		} elseif ($logDirectory === FALSE) {
-			self::$logDirectory = NULL;
+		if ($logDirectory !== NULL) {
+			self::$logDirectory = $logDirectory;
 		}
 		if (self::$logDirectory) {
+			if (!is_dir(self::$logDirectory) || !preg_match('#([a-z]:)?[/\\\\]#Ai', self::$logDirectory)) {
+				self::$logDirectory = NULL;
+				self::_exceptionHandler(new \RuntimeException('Logging directory not found or is not absolute path.'));
+			}
 			ini_set('error_log', self::$logDirectory . '/php_error.log');
 		}
 
