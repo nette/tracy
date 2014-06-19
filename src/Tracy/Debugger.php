@@ -144,6 +144,7 @@ class Debugger
 	 */
 	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
 	{
+		self::$enabled = TRUE;
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		if (isset($_SERVER['REQUEST_URI'])) {
 			self::$source = (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
@@ -168,11 +169,13 @@ class Debugger
 		}
 
 		// logging configuration
+		if ($email !== NULL) {
+			self::$email = $email;
+		}
 		if (is_string($logDirectory)) {
 			self::$logDirectory = realpath($logDirectory);
 			if (self::$logDirectory === FALSE) {
-				echo __METHOD__ . "() error: Log directory is not found or is not directory.\n";
-				exit(254);
+				self::_exceptionHandler(new \RuntimeException("Log directory is not found or is not directory."));
 			}
 		} elseif ($logDirectory === FALSE || self::$logDirectory === NULL) {
 			self::$logDirectory = FALSE;
@@ -188,28 +191,16 @@ class Debugger
 			ini_set('log_errors', FALSE);
 
 		} elseif (ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')) { // intentionally ==
-			echo __METHOD__ . "() error: Unable to set 'display_errors' because function ini_set() is disabled.\n";
-			exit(254);
+			self::_exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
 		}
 
-		if ($email) {
-			if (!is_string($email) && !is_array($email)) {
-				echo __METHOD__ . "() error: Email address must be a string.\n";
-				exit(254);
-			}
-			self::$email = $email;
-		}
+		register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
+		set_exception_handler(array(__CLASS__, '_exceptionHandler'));
+		set_error_handler(array(__CLASS__, '_errorHandler'));
 
-		if (!self::$enabled) {
-			register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
-			set_exception_handler(array(__CLASS__, '_exceptionHandler'));
-			set_error_handler(array(__CLASS__, '_errorHandler'));
-
-			foreach (array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
-				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
-				class_exists($class);
-			}
-			self::$enabled = TRUE;
+		foreach (array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
+			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
+			class_exists($class);
 		}
 	}
 
