@@ -424,12 +424,12 @@ class Debugger
 					self::getBar()->render();
 
 				} elseif (connection_aborted() || !self::fireLog($exception)) {
-					$file = self::log($exception, self::ERROR);
-					if (!headers_sent()) {
+					$file = self::log($exception, self::EXCEPTION);
+					if ($file && !headers_sent()) {
 						header("X-Tracy-Error-Log: $file");
 					}
 					echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
-					if (self::$browser) {
+					if ($file && self::$browser) {
 						exec(self::$browser . ' ' . escapeshellarg($file));
 					}
 				}

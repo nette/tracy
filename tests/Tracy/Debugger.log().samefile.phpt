@@ -12,8 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
-Debugger::$logDirectory = TEMP_DIR . '/log';
-Tester\Helpers::purge(Debugger::$logDirectory);
+Debugger::$logDirectory = TEMP_DIR;
 
 
 function foo($fp) {
