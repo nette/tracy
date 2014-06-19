@@ -41,7 +41,7 @@ class Logger
 	 * Logs message or exception to file and sends email notification.
 	 * @param  string|array
 	 * @param  int   one of constant Debugger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
-	 * @return bool  was successful?
+	 * @return void
 	 */
 	public function log($message, $priority = NULL)
 	{
@@ -54,7 +54,9 @@ class Logger
 		}
 		$message = preg_replace('#\s*\r?\n\s*#', ' ', trim($message));
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
-		$res = (bool) file_put_contents($file, $message . PHP_EOL, FILE_APPEND | LOCK_EX);
+		if (!@file_put_contents($file, $message . PHP_EOL, FILE_APPEND | LOCK_EX)) {
+			throw new \RuntimeException("Unable to write to log file '$file'. Is directory writable?");
+		}
 
 		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL), TRUE) && $this->email && $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + $this->emailSnooze < time() // @ - file may not exist
@@ -62,7 +64,6 @@ class Logger
 		) {
 			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
 		}
-		return $res;
 	}
 
 
