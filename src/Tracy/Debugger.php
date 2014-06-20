@@ -100,7 +100,7 @@ class Debugger
 	/** @var FireLogger */
 	private static $fireLogger;
 
-	/** @var string name of the directory where errors should be logged; FALSE means that logging is disabled */
+	/** @var string name of the directory where errors should be logged */
 	public static $logDirectory;
 
 	/** @var string|array email(s) to which send error notifications */
@@ -177,8 +177,8 @@ class Debugger
 			if (self::$logDirectory === FALSE) {
 				self::_exceptionHandler(new \RuntimeException("Log directory is not found or is not directory."));
 			}
-		} elseif ($logDirectory === FALSE || self::$logDirectory === NULL) {
-			self::$logDirectory = FALSE;
+		} elseif ($logDirectory === FALSE) {
+			self::$logDirectory = NULL;
 		}
 		if (self::$logDirectory) {
 			ini_set('error_log', self::$logDirectory . '/php_error.log');
@@ -298,11 +298,8 @@ class Debugger
 	 */
 	public static function log($message, $priority = self::INFO)
 	{
-		if (self::$logDirectory === FALSE) {
+		if (!self::$logDirectory) {
 			return;
-
-		} elseif (!self::$logDirectory) {
-			throw new \RuntimeException('Logging directory is not specified in Tracy\Debugger::$logDirectory.');
 		}
 
 		$exceptionFilename = NULL;
