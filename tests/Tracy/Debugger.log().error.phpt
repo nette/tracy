@@ -12,6 +12,9 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // no error
+Debugger::log('Hello');
+
+// no error
 Debugger::$logDirectory = TEMP_DIR;
 Debugger::log('Hello');
 
