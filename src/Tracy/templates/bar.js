@@ -290,4 +290,35 @@
 		});
 	};
 
+
+	var Async = function() {
+		this.requests = {};
+	};
+
+	Async.prototype.get = function(id, json, onSuccess, onError) {
+		onSuccess = onSuccess || function() {};
+		onError = onError || function() {};
+
+		if (typeof this.requests[id] !== 'undefined') {
+			this.requests[id].abort();
+		}
+
+		var request = new XMLHttpRequest(), _this = this;
+		request.open('GET', document.URL, true);
+		request.setRequestHeader('X-Tracy-Async', id);
+		request.setRequestHeader('X-Tracy-Async-Parameters', json);
+		request.onreadystatechange = function() {
+			if (request.readyState === XMLHttpRequest.DONE && request.status !== 0) { // 0 = aborted
+				delete _this.requests[id];
+				request.status === 200
+					? onSuccess(JSON.parse(request.responseText))
+					: onError(request.responseText + request.status);
+			}
+		};
+		request.send();
+		this.requests[id] = request;
+	};
+
+	Tracy.Async = new Async();
+
 })();

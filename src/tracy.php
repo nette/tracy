@@ -6,6 +6,7 @@
  * Copyright (c) 2004, 2014 David Grudl (http://davidgrudl.com)
  */
 
+require __DIR__ . '/Tracy/IAsyncHandler.php';
 require __DIR__ . '/Tracy/IBarPanel.php';
 require __DIR__ . '/Tracy/Bar.php';
 require __DIR__ . '/Tracy/BlueScreen.php';
