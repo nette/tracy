@@ -231,7 +231,6 @@ class Debugger
 			self::$bar->addPanel(new DefaultBarPanel('time'));
 			self::$bar->addPanel(new DefaultBarPanel('memory'));
 			self::$bar->addPanel(new DefaultBarPanel('errors'), __CLASS__ . ':errors'); // filled by _errorHandler()
-			self::$bar->addPanel(new DefaultBarPanel('dumps'), __CLASS__ . ':dumps'); // filled by barDump()
 			self::$bar->info = array(
 				'PHP ' . PHP_VERSION,
 				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
@@ -555,7 +554,11 @@ class Debugger
 	public static function barDump($var, $title = NULL, array $options = NULL)
 	{
 		if (!self::$productionMode) {
-			self::getBar()->getPanel(__CLASS__ . ':dumps')->data[] = array('title' => $title, 'dump' => Dumper::toHtml($var, (array) $options + array(
+			static $panel;
+			if (!$panel) {
+				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'));
+			}
+			$panel->data[] = array('title' => $title, 'dump' => Dumper::toHtml($var, (array) $options + array(
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLen,
 				Dumper::LOCATION => self::$showLocation,
