@@ -224,7 +224,7 @@ class Debugger
 	public static function getLogger()
 	{
 		if (!self::$logger) {
-			self::$logger = new Logger(self::$logDirectory, self::$email);
+			self::$logger = new Logger(self::$logDirectory, self::$email, self::getBlueScreen());
 			self::$logger->directory = & self::$logDirectory; // back compatiblity
 			self::$logger->email = & self::$email;
 		}
@@ -251,20 +251,6 @@ class Debugger
 	public static function isEnabled()
 	{
 		return self::$enabled;
-	}
-
-
-	/**
-	 * Logs message or exception to file (if not disabled) and sends email notification (if enabled).
-	 * @param  string|Exception
-	 * @param  int  one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
-	 * @return string logged error filename
-	 */
-	public static function log($message, $priority = ILogger::INFO)
-	{
-		if (self::getLogger()->directory) {
-			return self::getLogger()->log($message, $priority);
-		}
 	}
 
 
@@ -484,6 +470,19 @@ class Debugger
 			)));
 		}
 		return $var;
+	}
+
+
+	/**
+	 * Logs message or exception to file .
+	 * @param  string|Exception
+	 * @return string logged error filename
+	 */
+	public static function log($message, $priority = ILogger::INFO)
+	{
+		if (self::getLogger()->directory) {
+			return self::getLogger()->log($message, $priority);
+		}
 	}
 
 
