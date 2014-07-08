@@ -17,17 +17,24 @@ use Tracy;
  */
 class Logger implements ILogger
 {
+	/** @var string name of the directory where errors should be logged; FALSE means that logging is disabled */
+	public $directory;
+
+	/** @var string|array email or emails to which send error notifications */
+	public $email;
+
 	/** @var int interval for sending email is 2 days */
 	public $emailSnooze = 172800;
 
 	/** @var callable handler for sending emails */
 	public $mailer = array(__CLASS__, 'defaultMailer');
 
-	/** @var string name of the directory where errors should be logged; FALSE means that logging is disabled */
-	public $directory;
 
-	/** @var string|array email or emails to which send error notifications */
-	public $email;
+	public function __construct($directory, $email = NULL)
+	{
+		$this->directory = $directory;
+		$this->email = $email;
+	}
 
 
 	/**

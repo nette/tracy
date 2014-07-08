@@ -230,7 +230,7 @@ class Debugger
 	public static function getLogger()
 	{
 		if (!self::$logger) {
-			self::$logger = new Logger;
+			self::$logger = new Logger(self::$logDirectory, self::$email);
 			self::$logger->directory = & self::$logDirectory;
 			self::$logger->email = & self::$email;
 			self::$logger->mailer = & self::$mailer;
