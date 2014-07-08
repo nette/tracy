@@ -139,4 +139,17 @@ class Helpers
 		return isset($types[$type]) ? $types[$type] : 'Unknown error';
 	}
 
+
+	/** @internal */
+	public static function getSource()
+	{
+		if (isset($_SERVER['REQUEST_URI'])) {
+			return (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
+				. (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '')
+				. $_SERVER['REQUEST_URI'];
+		} else {
+			return empty($_SERVER['argv']) ? 'CLI' : 'CLI: ' . implode(' ', $_SERVER['argv']);
+		}
+	}
+
 }

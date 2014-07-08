@@ -31,7 +31,7 @@ class Debugger
 	/** @var int timestamp with microseconds of the start of the request */
 	public static $time;
 
-	/** @var string  requested URI or command line */
+	/** @deprecated */
 	public static $source;
 
 	/** @var string URI pattern mask to open editor */
@@ -127,13 +127,6 @@ class Debugger
 	{
 		self::$enabled = TRUE;
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
-		if (isset($_SERVER['REQUEST_URI'])) {
-			self::$source = (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
-				. (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '')
-				. $_SERVER['REQUEST_URI'];
-		} else {
-			self::$source = empty($_SERVER['argv']) ? 'CLI' : 'CLI: ' . implode(' ', $_SERVER['argv']);
-		}
 		error_reporting(E_ALL | E_STRICT);
 
 		// production/development mode detection
@@ -322,7 +315,7 @@ class Debugger
 		self::getLogger()->log(array(
 			@date('[Y-m-d H-i-s]'),
 			trim($message),
-			self::$source ? ' @  ' . self::$source : NULL,
+			' @  ' . Helpers::getSource(),
 			$exceptionFilename ? ' @@  ' . basename($exceptionFilename) : NULL
 		), $priority);
 

@@ -18,6 +18,7 @@ use Tracy;
 
 
 $title = $exception instanceof \ErrorException ? Helpers::errorTypeToString($exception->getSeverity()) : get_class($exception);
+$source = Helpers::getSource();
 
 $counter = 0;
 
@@ -331,10 +332,10 @@ $counter = 0;
 
 		<ul>
 			<li>Report generated at <?php echo @date('Y/m/d H:i:s', Debugger::$time) ?></li>
-			<?php if (preg_match('#^https?://#', Debugger::$source)): ?>
-				<li><a href="<?php echo htmlSpecialChars(Debugger::$source, ENT_IGNORE | ENT_QUOTES) ?>"><?php echo htmlSpecialChars(Debugger::$source, ENT_IGNORE) ?></a></li>
-			<?php elseif (Debugger::$source): ?>
-				<li><?php echo htmlSpecialChars(Debugger::$source, ENT_IGNORE) ?></li>
+			<?php if (preg_match('#^https?://#', $source)): ?>
+				<li><a href="<?php echo htmlSpecialChars($source, ENT_IGNORE | ENT_QUOTES) ?>"><?php echo htmlSpecialChars($source, ENT_IGNORE) ?></a></li>
+			<?php else: ?>
+				<li><?php echo htmlSpecialChars($source, ENT_IGNORE) ?></li>
 			<?php endif ?>
 			<?php foreach ($info as $item): ?><li><?php echo htmlSpecialChars($item) ?></li><?php endforeach ?>
 		</ul>
