@@ -15,15 +15,8 @@ use Tracy;
  *
  * @author     David Grudl
  */
-class Logger
+class Logger implements ILogger
 {
-	const DEBUG = 'debug',
-		INFO = 'info',
-		WARNING = 'warning',
-		ERROR = 'error',
-		EXCEPTION = 'exception',
-		CRITICAL = 'critical';
-
 	/** @var int interval for sending email is 2 days */
 	public $emailSnooze = 172800;
 
@@ -40,7 +33,7 @@ class Logger
 	/**
 	 * Logs message or exception to file and sends email notification.
 	 * @param  string|array
-	 * @param  int   one of constant Debugger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
+	 * @param  int   one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
 	 * @return void
 	 */
 	public function log($message, $priority = NULL)

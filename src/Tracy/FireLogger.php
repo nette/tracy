@@ -16,14 +16,8 @@ use Tracy;
  * @see http://firelogger.binaryage.com
  * @author     David Grudl
  */
-class FireLogger
+class FireLogger implements ILogger
 {
-	const DEBUG = 'debug',
-		INFO = 'info',
-		WARNING = 'warning',
-		ERROR = 'error',
-		CRITICAL = 'critical';
-
 	/** @var int  */
 	public $maxDepth = 3;
 

@@ -94,10 +94,10 @@ class Debugger
 
 	/********************* logging ****************d*g**/
 
-	/** @var Logger */
+	/** @var ILogger */
 	private static $logger;
 
-	/** @var FireLogger */
+	/** @var ILogger */
 	private static $fireLogger;
 
 	/** @var string name of the directory where errors should be logged */
@@ -113,12 +113,12 @@ class Debugger
 	public static $emailSnooze = 172800;
 
 	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
-	const DEBUG = 'debug',
-		INFO = 'info',
-		WARNING = 'warning',
-		ERROR = 'error',
-		EXCEPTION = 'exception',
-		CRITICAL = 'critical';
+	const DEBUG = ILogger::DEBUG,
+		INFO = ILogger::INFO,
+		WARNING = ILogger::WARNING,
+		ERROR = ILogger::ERROR,
+		EXCEPTION = ILogger::EXCEPTION,
+		CRITICAL = ILogger::CRITICAL;
 
 	/********************* debug bar ****************d*g**/
 
@@ -244,14 +244,14 @@ class Debugger
 	/**
 	 * @return void
 	 */
-	public static function setLogger($logger)
+	public static function setLogger(ILogger $logger)
 	{
 		self::$logger = $logger;
 	}
 
 
 	/**
-	 * @return Logger
+	 * @return ILogger
 	 */
 	public static function getLogger()
 	{
@@ -267,7 +267,7 @@ class Debugger
 
 
 	/**
-	 * @return FireLogger
+	 * @return ILogger
 	 */
 	public static function getFireLogger()
 	{
@@ -291,10 +291,10 @@ class Debugger
 	/**
 	 * Logs message or exception to file (if not disabled) and sends email notification (if enabled).
 	 * @param  string|Exception
-	 * @param  int  one of constant Debugger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
+	 * @param  int  one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
 	 * @return string logged error filename
 	 */
-	public static function log($message, $priority = self::INFO)
+	public static function log($message, $priority = ILogger::INFO)
 	{
 		if (!self::$logDirectory) {
 			return;

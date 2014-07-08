@@ -15,14 +15,14 @@ require __DIR__ . '/../bootstrap.php';
 Debugger::$logDirectory = TEMP_DIR;
 
 
-class TestLogger
+class TestLogger implements Tracy\ILogger
 {
 	function __construct($pattern)
 	{
 		$this->pattern = $pattern;
 	}
 
-	public function log($message)
+	public function log($message, $priority = NULL)
 	{
 		Assert::match($this->pattern, $message[1]);
 	}
