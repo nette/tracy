@@ -331,7 +331,7 @@ $counter = 0;
 
 
 		<ul>
-			<li>Report generated at <?php echo @date('Y/m/d H:i:s', Debugger::$time) ?></li>
+			<li>Report generated at <?php echo @date('Y/m/d H:i:s') ?></li>
 			<?php if (preg_match('#^https?://#', $source)): ?>
 				<li><a href="<?php echo htmlSpecialChars($source, ENT_IGNORE | ENT_QUOTES) ?>"><?php echo htmlSpecialChars($source, ENT_IGNORE) ?></a></li>
 			<?php else: ?>
