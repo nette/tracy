@@ -24,7 +24,14 @@ class FireLogger
 		ERROR = 'error',
 		CRITICAL = 'critical';
 
-	private static $payload = array('logs' => array());
+	/** @var int  */
+	public $maxDepth = 3;
+
+	/** @var int  */
+	public $maxLenght = 150;
+
+	/** @var array  */
+	private $payload = array('logs' => array());
 
 
 	/**
@@ -32,7 +39,7 @@ class FireLogger
 	 * @param  mixed
 	 * @return bool    was successful?
 	 */
-	public static function log($message, $priority = self::DEBUG)
+	public function log($message, $priority = self::DEBUG)
 	{
 		if (!isset($_SERVER['HTTP_X_FIRELOGGER']) || headers_sent()) {
 			return FALSE;
@@ -41,7 +48,7 @@ class FireLogger
 		$item = array(
 			'name' => 'PHP',
 			'level' => $priority,
-			'order' => count(self::$payload['logs']),
+			'order' => count($this->payload['logs']),
 			'time' => str_pad(number_format((microtime(TRUE) - Debugger::$time) * 1000, 1, '.', ' '), 8, '0', STR_PAD_LEFT) . ' ms',
 			'template' => '',
 			'message' => '',
@@ -100,8 +107,8 @@ class FireLogger
 
 		$item['args'] = $args;
 
-		self::$payload['logs'][] = self::jsonDump($item, -1);
-		foreach (str_split(base64_encode(@json_encode(self::$payload)), 4990) as $k => $v) { // intentionally @
+		$this->payload['logs'][] = $this->jsonDump($item, -1);
+		foreach (str_split(base64_encode(@json_encode($this->payload)), 4990) as $k => $v) { // intentionally @
 			header("FireLogger-de11e-$k:$v");
 		}
 		return TRUE;
@@ -114,14 +121,14 @@ class FireLogger
 	 * @param  int    current recursion level
 	 * @return string
 	 */
-	private static function jsonDump(& $var, $level = 0)
+	private function jsonDump(& $var, $level = 0)
 	{
 		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
 			return $var;
 
 		} elseif (is_string($var)) {
-			if (Debugger::$maxLen && strlen($var) > Debugger::$maxLen) {
-				$var = substr($var, 0, Debugger::$maxLen) . " \xE2\x80\xA6 ";
+			if ($this->maxLenght && strlen($var) > $this->maxLenght) {
+				$var = substr($var, 0, $this->maxLenght) . " \xE2\x80\xA6 ";
 			}
 			return Helpers::fixEncoding($var);
 
@@ -133,12 +140,12 @@ class FireLogger
 			if (isset($var[$marker])) {
 				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
 
-			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth) {
+			} elseif ($level < $this->maxDepth || !$this->maxDepth) {
 				$var[$marker] = TRUE;
 				$res = array();
 				foreach ($var as $k => & $v) {
 					if ($k !== $marker) {
-						$res[self::jsonDump($k)] = self::jsonDump($v, $level + 1);
+						$res[$this->jsonDump($k)] = $this->jsonDump($v, $level + 1);
 					}
 				}
 				unset($var[$marker]);
@@ -154,14 +161,14 @@ class FireLogger
 			if (in_array($var, $list, TRUE)) {
 				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
 
-			} elseif ($level < Debugger::$maxDepth || !Debugger::$maxDepth) {
+			} elseif ($level < $this->maxDepth || !$this->maxDepth) {
 				$list[] = $var;
 				$res = array("\x00" => '(object) ' . get_class($var));
 				foreach ($arr as $k => & $v) {
 					if ($k[0] === "\x00") {
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$res[self::jsonDump($k)] = self::jsonDump($v, $level + 1);
+					$res[$this->jsonDump($k)] = $this->jsonDump($v, $level + 1);
 				}
 				array_pop($list);
 				return $res;
