@@ -14,31 +14,34 @@ use Tracy,
 /**
  * Debugger: displays and logs errors.
  *
- * Behavior is determined by two factors: mode & output
- * - modes: production / development
- * - output: HTML / AJAX / CLI / other (e.g. XML)
- *
  * @author     David Grudl
  */
 class Debugger
 {
+	/** server modes {@link Debugger::enable()} */
+	const DEVELOPMENT = FALSE,
+		PRODUCTION = TRUE,
+		DETECT = NULL;
+
 	/** @var string */
 	public static $version = '2.3-dev';
 
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
 
-	/** @var int timestamp with microseconds of the start of the request */
-	public static $time;
+	/** @var bool {@link Debugger::enable()} */
+	private static $enabled = FALSE;
 
-	/** @deprecated */
-	public static $source;
+	/********************* errors and exceptions reporting ****************d*g**/
 
-	/** @var string URI pattern mask to open editor */
-	public static $editor = 'editor://open/?file=%file&line=%line';
+	/** @var bool|int determines whether any error will cause immediate death; if integer that it's matched against error severity */
+	public static $strictMode = FALSE;
 
-	/** @var string command to open browser (use 'start ""' in Windows) */
-	public static $browser;
+	/** @var bool disables the @ (shut-up) operator so that notices and warnings are no longer hidden */
+	public static $scream = FALSE;
+
+	/** @var array of callables specifies the functions that are automatically called after fatal error */
+	public static $onFatalError = array();
 
 	/********************* Debugger::dump() ****************d*g**/
 
@@ -51,35 +54,7 @@ class Debugger
 	/** @var bool display location? {@link Debugger::dump()} */
 	public static $showLocation = FALSE;
 
-	/********************* errors and exceptions reporting ****************d*g**/
-
-	/** server modes {@link Debugger::enable()} */
-	const DEVELOPMENT = FALSE,
-		PRODUCTION = TRUE,
-		DETECT = NULL;
-
-	/** @var BlueScreen */
-	private static $blueScreen;
-
-	/** @var bool|int determines whether any error will cause immediate death; if integer that it's matched against error severity */
-	public static $strictMode = FALSE; // $immediateDeath
-
-	/** @var bool disables the @ (shut-up) operator so that notices and warnings are no longer hidden */
-	public static $scream = FALSE;
-
-	/** @var array of callables specifies the functions that are automatically called after fatal error */
-	public static $onFatalError = array();
-
-	/** @var bool {@link Debugger::enable()} */
-	private static $enabled = FALSE;
-
 	/********************* logging ****************d*g**/
-
-	/** @var ILogger */
-	private static $logger;
-
-	/** @var ILogger */
-	private static $fireLogger;
 
 	/** @var string name of the directory where errors should be logged */
 	public static $logDirectory;
@@ -95,10 +70,33 @@ class Debugger
 		EXCEPTION = ILogger::EXCEPTION,
 		CRITICAL = ILogger::CRITICAL;
 
-	/********************* debug bar ****************d*g**/
+	/********************* misc ****************d*g**/
+
+	/** @var int timestamp with microseconds of the start of the request */
+	public static $time;
+
+	/** @deprecated */
+	public static $source;
+
+	/** @var string URI pattern mask to open editor */
+	public static $editor = 'editor://open/?file=%file&line=%line';
+
+	/** @var string command to open browser (use 'start ""' in Windows) */
+	public static $browser;
+
+	/********************* services ****************d*g**/
+
+	/** @var BlueScreen */
+	private static $blueScreen;
 
 	/** @var Bar */
 	private static $bar;
+
+	/** @var ILogger */
+	private static $logger;
+
+	/** @var ILogger */
+	private static $fireLogger;
 
 
 	/**
@@ -112,9 +110,9 @@ class Debugger
 
 	/**
 	 * Enables displaying or logging errors and exceptions.
-	 * @param  mixed         production, development mode, autodetection or IP address(es) whitelist.
-	 * @param  string        error log directory; enables logging in production mode, FALSE means that logging is disabled
-	 * @param  string        administrator email; enables email sending in production mode
+	 * @param  mixed   production, development mode, autodetection or IP address(es) whitelist.
+	 * @param  string  error log directory; enables logging in production mode, FALSE means that logging is disabled
+	 * @param  string  administrator email; enables email sending in production mode
 	 * @return void
 	 */
 	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
@@ -170,6 +168,167 @@ class Debugger
 			class_exists($class);
 		}
 	}
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isEnabled()
+	{
+		return self::$enabled;
+	}
+
+
+	/**
+	 * Shutdown handler to catch fatal errors and execute of the planned activities.
+	 * @return void
+	 * @internal
+	 */
+	public static function shutdownHandler()
+	{
+		if (!self::$enabled) {
+			return;
+		}
+
+		$error = error_get_last();
+		if (in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE), TRUE)) {
+			self::exceptionHandler(Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])), FALSE);
+
+		} elseif (!connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
+			self::getBar()->render();
+		}
+	}
+
+
+	/**
+	 * Handler to catch uncaught exception.
+	 * @return void
+	 * @internal
+	 */
+	public static function exceptionHandler(\Exception $exception, $exit = TRUE)
+	{
+		if (!self::$enabled) {
+			return;
+		}
+		self::$enabled = FALSE; // prevent double rendering
+
+		if (!headers_sent()) {
+			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+			$code = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== FALSE ? 503 : 500;
+			header("$protocol $code", TRUE, $code);
+			if (self::isHtmlMode()) {
+				header('Content-Type: text/html; charset=UTF-8');
+			}
+		}
+
+		$logMsg = 'Unable to log error. Check if directory is writable and path is absolute.';
+		if (self::$productionMode) {
+			try {
+				self::log($exception, self::EXCEPTION);
+			} catch (\Exception $e) {
+			}
+
+			$error = isset($e) ? $logMsg : NULL;
+			if (self::isHtmlMode()) {
+				require __DIR__ . '/templates/error.phtml';
+			} else {
+				echo "ERROR: application encountered an error and can not continue.\n$error\n";
+			}
+
+		} elseif (!connection_aborted() && self::isHtmlMode()) {
+			self::getBlueScreen()->render($exception);
+			self::getBar()->render();
+
+		} elseif (connection_aborted() || !self::fireLog($exception)) {
+			try {
+				$file = self::log($exception, self::EXCEPTION);
+				if ($file && !headers_sent()) {
+					header("X-Tracy-Error-Log: $file");
+				}
+				echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
+				if ($file && self::$browser) {
+					exec(self::$browser . ' ' . escapeshellarg($file));
+				}
+			} catch (\Exception $e) {
+				echo "$exception\n$logMsg {$e->getMessage()}\n";
+			}
+		}
+
+		try {
+			foreach (self::$onFatalError as $handler) {
+				call_user_func($handler, $exception);
+			}
+		} catch (\Exception $e) {
+			try {
+				self::log($e, self::EXCEPTION);
+			} catch (\Exception $e) {}
+		}
+
+		if ($exit) {
+			exit(254);
+		}
+	}
+
+
+	/**
+	 * Handler to catch warnings and notices.
+	 * @return bool   FALSE to call normal error handler, NULL otherwise
+	 * @throws ErrorException
+	 * @internal
+	 */
+	public static function errorHandler($severity, $message, $file, $line, $context)
+	{
+		if (self::$scream) {
+			error_reporting(E_ALL | E_STRICT);
+		}
+
+		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
+			if (Helpers::findTrace(debug_backtrace(PHP_VERSION_ID >= 50306 ? DEBUG_BACKTRACE_IGNORE_ARGS : FALSE), '*::__toString')) {
+				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
+				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
+				$e->context = $context;
+				self::exceptionHandler($e);
+			}
+
+			$e = new ErrorException($message, 0, $severity, $file, $line);
+			$e->context = $context;
+			throw $e;
+
+		} elseif (($severity & error_reporting()) !== $severity) {
+			return FALSE; // calls normal error handler to fill-in error_get_last()
+
+		} elseif (!self::$productionMode && (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))) {
+			$e = new ErrorException($message, 0, $severity, $file, $line);
+			$e->context = $context;
+			self::exceptionHandler($e);
+		}
+
+		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ": $message";
+		$count = & self::getBar()->getPanel(__CLASS__ . ':errors')->data["$file|$line|$message"];
+
+		if ($count++) { // repeated error
+			return NULL;
+
+		} elseif (self::$productionMode) {
+			self::log("$message in $file:$line", self::ERROR);
+			return NULL;
+
+		} else {
+			self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
+			return self::isHtmlMode() ? NULL : FALSE; // FALSE calls normal error handler
+		}
+	}
+
+
+	private static function isHtmlMode()
+	{
+		return empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+			&& PHP_SAPI !== 'cli'
+			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
+	}
+
+
+	/********************* services ****************d*g**/
 
 
 	/**
@@ -241,163 +400,6 @@ class Debugger
 			self::$fireLogger = new FireLogger;
 		}
 		return self::$fireLogger;
-	}
-
-
-	/**
-	 * Is Debug enabled?
-	 * @return bool
-	 */
-	public static function isEnabled()
-	{
-		return self::$enabled;
-	}
-
-
-	/**
-	 * Shutdown handler to catch fatal errors and execute of the planned activities.
-	 * @return void
-	 * @internal
-	 */
-	public static function shutdownHandler()
-	{
-		if (!self::$enabled) {
-			return;
-		}
-
-		$error = error_get_last();
-		if (in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE), TRUE)) {
-			self::exceptionHandler(Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])), FALSE);
-
-		} elseif (!connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
-			self::getBar()->render();
-		}
-	}
-
-
-	/**
-	 * Handler to catch uncaught exception.
-	 * @param  \Exception
-	 * @return void
-	 * @internal
-	 */
-	public static function exceptionHandler(\Exception $exception, $exit = TRUE)
-	{
-		if (!self::$enabled) {
-			return;
-		}
-		self::$enabled = FALSE; // prevent double rendering
-
-		if (!headers_sent()) {
-			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
-			$code = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== FALSE ? 503 : 500;
-			header("$protocol $code", TRUE, $code);
-			if (self::isHtmlMode()) {
-				header('Content-Type: text/html; charset=UTF-8');
-			}
-		}
-
-		$logMsg = 'Unable to log error. Check if directory is writable and path is absolute.';
-		if (self::$productionMode) {
-			try {
-				self::log($exception, self::EXCEPTION);
-			} catch (\Exception $e) {
-			}
-
-			$error = isset($e) ? $logMsg : NULL;
-			if (self::isHtmlMode()) {
-				require __DIR__ . '/templates/error.phtml';
-			} else {
-				echo "ERROR: application encountered an error and can not continue.\n$error\n";
-			}
-
-		} elseif (!connection_aborted() && self::isHtmlMode()) {
-			self::getBlueScreen()->render($exception);
-			self::getBar()->render();
-
-		} elseif (connection_aborted() || !self::fireLog($exception)) {
-			try {
-				$file = self::log($exception, self::EXCEPTION);
-				if ($file && !headers_sent()) {
-					header("X-Tracy-Error-Log: $file");
-				}
-				echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
-				if ($file && self::$browser) {
-					exec(self::$browser . ' ' . escapeshellarg($file));
-				}
-			} catch (\Exception $e) {
-				echo "$exception\n$logMsg {$e->getMessage()}\n";
-			}
-		}
-
-		try {
-			foreach (self::$onFatalError as $handler) {
-				call_user_func($handler, $exception);
-			}
-		} catch (\Exception $e) {
-			try {
-				self::log($e, self::EXCEPTION);
-			} catch (\Exception $e) {}
-		}
-
-		if ($exit) {
-			exit(254);
-		}
-	}
-
-
-	/**
-	 * Handler to catch warnings and notices.
-	 * @param  int    level of the error raised
-	 * @param  string error message
-	 * @param  string file that the error was raised in
-	 * @param  int    line number the error was raised at
-	 * @param  array  an array of variables that existed in the scope the error was triggered in
-	 * @return bool   FALSE to call normal error handler, NULL otherwise
-	 * @throws ErrorException
-	 * @internal
-	 */
-	public static function errorHandler($severity, $message, $file, $line, $context)
-	{
-		if (self::$scream) {
-			error_reporting(E_ALL | E_STRICT);
-		}
-
-		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
-			if (Helpers::findTrace(debug_backtrace(PHP_VERSION_ID >= 50306 ? DEBUG_BACKTRACE_IGNORE_ARGS : FALSE), '*::__toString')) {
-				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
-				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
-				$e->context = $context;
-				self::exceptionHandler($e);
-			}
-
-			$e = new ErrorException($message, 0, $severity, $file, $line);
-			$e->context = $context;
-			throw $e;
-
-		} elseif (($severity & error_reporting()) !== $severity) {
-			return FALSE; // calls normal error handler to fill-in error_get_last()
-
-		} elseif (!self::$productionMode && (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))) {
-			$e = new ErrorException($message, 0, $severity, $file, $line);
-			$e->context = $context;
-			self::exceptionHandler($e);
-		}
-
-		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ": $message";
-		$count = & self::getBar()->getPanel(__CLASS__ . ':errors')->data["$file|$line|$message"];
-
-		if ($count++) { // repeated error
-			return NULL;
-
-		} elseif (self::$productionMode) {
-			self::log("$message in $file:$line", self::ERROR);
-			return NULL;
-
-		} else {
-			self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
-			return self::isHtmlMode() ? NULL : FALSE; // FALSE calls normal error handler
-		}
 	}
 
 
@@ -496,14 +498,6 @@ class Debugger
 		if (!self::$productionMode) {
 			return self::getFireLogger()->log($message);
 		}
-	}
-
-
-	private static function isHtmlMode()
-	{
-		return empty($_SERVER['HTTP_X_REQUESTED_WITH'])
-			&& PHP_SAPI !== 'cli'
-			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
 	}
 
 }
