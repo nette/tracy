@@ -73,25 +73,6 @@ class Debugger
 	/** @var bool {@link Debugger::enable()} */
 	private static $enabled = FALSE;
 
-	/** @internal */
-	public static $errorTypes = array(
-		E_ERROR => 'Fatal Error',
-		E_USER_ERROR => 'User Error',
-		E_RECOVERABLE_ERROR => 'Recoverable Error',
-		E_CORE_ERROR => 'Core Error',
-		E_COMPILE_ERROR => 'Compile Error',
-		E_PARSE => 'Parse Error',
-		E_WARNING => 'Warning',
-		E_CORE_WARNING => 'Core Warning',
-		E_COMPILE_WARNING => 'Compile Warning',
-		E_USER_WARNING => 'User Warning',
-		E_NOTICE => 'Notice',
-		E_USER_NOTICE => 'User Notice',
-		E_STRICT => 'Strict standards',
-		E_DEPRECATED => 'Deprecated',
-		E_USER_DEPRECATED => 'User Deprecated',
-	);
-
 	/********************* logging ****************d*g**/
 
 	/** @var ILogger */
@@ -479,7 +460,7 @@ class Debugger
 			self::_exceptionHandler($e);
 		}
 
-		$message = 'PHP ' . (isset(self::$errorTypes[$severity]) ? self::$errorTypes[$severity] : 'Unknown error') . ": $message";
+		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ": $message";
 		$count = & self::getBar()->getPanel(__CLASS__ . ':errors')->data["$file|$line|$message"];
 
 		if ($count++) { // repeated error

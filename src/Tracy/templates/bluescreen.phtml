@@ -17,7 +17,7 @@ namespace Tracy;
 use Tracy;
 
 
-$title = ($exception instanceof \ErrorException && isset(Debugger::$errorTypes[$exception->getSeverity()])) ? Debugger::$errorTypes[$exception->getSeverity()] : get_class($exception);
+$title = $exception instanceof \ErrorException ? Helpers::errorTypeToString($exception->getSeverity()) : get_class($exception);
 
 $counter = 0;
 
