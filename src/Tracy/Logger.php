@@ -27,13 +27,14 @@ class Logger implements ILogger
 	public $emailSnooze = 172800;
 
 	/** @var callable handler for sending emails */
-	public $mailer = array(__CLASS__, 'defaultMailer');
+	public $mailer;
 
 
 	public function __construct($directory, $email = NULL)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
+		$this->mailer = array($this, 'defaultMailer');
 	}
 
 
@@ -74,7 +75,7 @@ class Logger implements ILogger
 	 * @return void
 	 * @internal
 	 */
-	public static function defaultMailer($message, $email)
+	public function defaultMailer($message, $email)
 	{
 		$host = preg_replace('#[^\w.-]+#', '', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : php_uname('n'));
 		$parts = str_replace(
