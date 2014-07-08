@@ -19,7 +19,7 @@ $_SERVER['HTTP_HOST'] = 'nette.org';
 
 Debugger::$logDirectory = TEMP_DIR;
 
-Debugger::$mailer = function() {};
+Debugger::getLogger()->mailer = function() {};
 
 Debugger::enable(Debugger::PRODUCTION, NULL, 'admin@example.com');
 

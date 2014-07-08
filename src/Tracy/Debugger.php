@@ -87,12 +87,6 @@ class Debugger
 	/** @var string|array email(s) to which send error notifications */
 	public static $email;
 
-	/** @deprecated */
-	public static $mailer = array('Tracy\Logger', 'defaultMailer');
-
-	/** @deprecated */
-	public static $emailSnooze = 172800;
-
 	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
 	const DEBUG = ILogger::DEBUG,
 		INFO = ILogger::INFO,
@@ -231,10 +225,8 @@ class Debugger
 	{
 		if (!self::$logger) {
 			self::$logger = new Logger(self::$logDirectory, self::$email);
-			self::$logger->directory = & self::$logDirectory;
+			self::$logger->directory = & self::$logDirectory; // back compatiblity
 			self::$logger->email = & self::$email;
-			self::$logger->mailer = & self::$mailer;
-			self::$logger->emailSnooze = & self::$emailSnooze;
 		}
 		return self::$logger;
 	}
