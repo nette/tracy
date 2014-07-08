@@ -146,7 +146,7 @@ class Debugger
 		if (self::$logDirectory) {
 			if (!is_dir(self::$logDirectory) || !preg_match('#([a-z]:)?[/\\\\]#Ai', self::$logDirectory)) {
 				self::$logDirectory = NULL;
-				self::_exceptionHandler(new \RuntimeException('Logging directory not found or is not absolute path.'));
+				self::exceptionHandler(new \RuntimeException('Logging directory not found or is not absolute path.'));
 			}
 			ini_set('error_log', self::$logDirectory . '/php_error.log');
 		}
@@ -158,12 +158,12 @@ class Debugger
 			ini_set('log_errors', FALSE);
 
 		} elseif (ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')) { // intentionally ==
-			self::_exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
+			self::exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
 		}
 
-		register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
-		set_exception_handler(array(__CLASS__, '_exceptionHandler'));
-		set_error_handler(array(__CLASS__, '_errorHandler'));
+		register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
+		set_exception_handler(array(__CLASS__, 'exceptionHandler'));
+		set_error_handler(array(__CLASS__, 'errorHandler'));
 
 		foreach (array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
 			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
@@ -198,7 +198,7 @@ class Debugger
 			self::$bar = new Bar;
 			self::$bar->addPanel(new DefaultBarPanel('time'));
 			self::$bar->addPanel(new DefaultBarPanel('memory'));
-			self::$bar->addPanel(new DefaultBarPanel('errors'), __CLASS__ . ':errors'); // filled by _errorHandler()
+			self::$bar->addPanel(new DefaultBarPanel('errors'), __CLASS__ . ':errors'); // filled by errorHandler()
 			self::$bar->info = array(
 				'PHP ' . PHP_VERSION,
 				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
@@ -259,7 +259,7 @@ class Debugger
 	 * @return void
 	 * @internal
 	 */
-	public static function _shutdownHandler()
+	public static function shutdownHandler()
 	{
 		if (!self::$enabled) {
 			return;
@@ -267,7 +267,7 @@ class Debugger
 
 		$error = error_get_last();
 		if (in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE), TRUE)) {
-			self::_exceptionHandler(Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])), FALSE);
+			self::exceptionHandler(Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])), FALSE);
 
 		} elseif (!connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
 			self::getBar()->render();
@@ -281,7 +281,7 @@ class Debugger
 	 * @return void
 	 * @internal
 	 */
-	public static function _exceptionHandler(\Exception $exception, $exit = TRUE)
+	public static function exceptionHandler(\Exception $exception, $exit = TRUE)
 	{
 		if (!self::$enabled) {
 			return;
@@ -357,7 +357,7 @@ class Debugger
 	 * @throws ErrorException
 	 * @internal
 	 */
-	public static function _errorHandler($severity, $message, $file, $line, $context)
+	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
 		if (self::$scream) {
 			error_reporting(E_ALL | E_STRICT);
@@ -368,7 +368,7 @@ class Debugger
 				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
 				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
 				$e->context = $context;
-				self::_exceptionHandler($e);
+				self::exceptionHandler($e);
 			}
 
 			$e = new ErrorException($message, 0, $severity, $file, $line);
@@ -381,7 +381,7 @@ class Debugger
 		} elseif (!self::$productionMode && (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			$e->context = $context;
-			self::_exceptionHandler($e);
+			self::exceptionHandler($e);
 		}
 
 		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ": $message";

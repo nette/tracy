@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Tracy\Debugger::_exceptionHandler() error.
+ * Test: Tracy\Debugger::exceptionHandler() error.
  * @exitCode   254
  * @httpCode   500
  * @outputMatch ERROR: application encountered an error and can not continue.%A%Unable to log error. Check if directory is writable and path is absolute.

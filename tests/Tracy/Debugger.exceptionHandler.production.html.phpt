@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Tracy\Debugger::_exceptionHandler() error.
+ * Test: Tracy\Debugger::exceptionHandler() error.
  * @exitCode   254
  * @httpCode   500
  * @outputMatch %A%<title>Server Error</title>%A%Unable to log error%A%

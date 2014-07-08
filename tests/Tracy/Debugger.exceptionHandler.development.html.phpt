@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Test: Tracy\Debugger::_exceptionHandler() error.
+ * Test: Tracy\Debugger::exceptionHandler() error.
  * @exitCode   254
  * @httpCode   500
- * @outputMatch exception 'Exception' in%A%Unable to log error.%A%
+ * @outputMatch %A%<title>Exception</title><!-- %A%
  */
 
 use Tracy\Debugger;
@@ -12,7 +12,9 @@ use Tracy\Debugger;
 
 require __DIR__ . '/../bootstrap.php';
 
-header('Content-Type: text/plain');
+if (PHP_SAPI === 'cli') {
+	Tester\Environment::skip('HTML is not rendered in CLI mode');
+}
 
 Debugger::enable(Debugger::DEVELOPMENT);
 Debugger::$logDirectory = 'unknown';

@@ -58,7 +58,7 @@ class FireLogger implements ILogger
 			$e = array_shift($args);
 			$trace = $e->getTrace();
 			if (isset($trace[0]['class']) && $trace[0]['class'] === 'Tracy\Debugger'
-				&& ($trace[0]['function'] === '_shutdownHandler' || $trace[0]['function'] === '_errorHandler')
+				&& ($trace[0]['function'] === 'shutdownHandler' || $trace[0]['function'] === 'errorHandler')
 			) {
 				unset($trace[0]);
 			}
