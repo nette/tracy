@@ -262,56 +262,9 @@ class Debugger
 	 */
 	public static function log($message, $priority = ILogger::INFO)
 	{
-		if (!self::$logDirectory) {
-			return;
+		if (self::getLogger()->directory) {
+			return self::getLogger()->log($message, $priority);
 		}
-
-		$exceptionFilename = NULL;
-		if ($message instanceof \Exception) {
-			$exception = $message;
-			while ($exception) {
-				$tmp[] = ($exception instanceof ErrorException
-					? 'Fatal error: ' . $exception->getMessage()
-					: get_class($exception) . ': ' . $exception->getMessage())
-					. ' in ' . $exception->getFile() . ':' . $exception->getLine();
-				$exception = $exception->getPrevious();
-			}
-			$exception = $message;
-			$message = implode($tmp, "\ncaused by ");
-
-			$hash = md5(preg_replace('~(Resource id #)\d+~', '$1', $exception));
-			$exceptionFilename = 'exception-' . @date('Y-m-d-H-i-s') . "-$hash.html";
-			foreach (new \DirectoryIterator(self::$logDirectory) as $entry) {
-				if (strpos($entry, $hash)) {
-					$exceptionFilename = $entry;
-					$saved = TRUE;
-					break;
-				}
-			}
-		} elseif (!is_string($message)) {
-			$message = Dumper::toText($message);
-		}
-
-		if ($exceptionFilename) {
-			$exceptionFilename = self::$logDirectory . '/' . $exceptionFilename;
-			if (empty($saved) && $logHandle = @fopen($exceptionFilename, 'w')) {
-				ob_start(); // double buffer prevents sending HTTP headers in some PHP
-				ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 4096);
-				self::getBlueScreen()->render($exception);
-				ob_end_flush();
-				ob_end_clean();
-				fclose($logHandle);
-			}
-		}
-
-		self::getLogger()->log(array(
-			@date('[Y-m-d H-i-s]'),
-			trim($message),
-			' @  ' . Helpers::getSource(),
-			$exceptionFilename ? ' @@  ' . basename($exceptionFilename) : NULL
-		), $priority);
-
-		return $exceptionFilename ? strtr($exceptionFilename, '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR) : NULL;
 	}
 
 
