@@ -297,9 +297,12 @@ class Debugger
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return FALSE; // calls normal error handler to fill-in error_get_last()
 
-		} elseif (!self::$productionMode && (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))) {
+		} elseif (!self::$productionMode && !isset($_GET['_tracy_skip_error'])
+			&& (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))
+		) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			$e->context = $context;
+			$e->skippable = TRUE;
 			self::exceptionHandler($e);
 		}
 
