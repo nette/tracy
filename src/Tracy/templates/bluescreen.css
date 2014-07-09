@@ -68,13 +68,18 @@ html {
 	display: block;
 }
 
-#tracyBluescreenError #tracyBsSearch {
-	color: #CD1818;
+#tracyBluescreenError a {
+	color: white !important;
+	opacity: 0;
 	font-size: .7em;
 }
 
-#tracyBluescreenError:hover #tracyBsSearch {
-	color: #ED8383;
+#tracyBluescreenError:hover a {
+	opacity: .6;
+}
+
+#tracyBluescreenError a:hover {
+	opacity: 1;
 }
 
 #tracyBluescreen h1 {

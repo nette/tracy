@@ -18,7 +18,7 @@
 		<div id="tracyBluescreenError" class="panel">
 			<h1>Exception #123</h1>
 
-			<p>The my exception <a href="%a%" id="tracyBsSearch" rel="noreferrer">search&#x25ba;</a></p>
+			<p>The my exception			<a href="%a%" rel="noreferrer">search&#x25ba;</a></p>
 		</div>
 
 

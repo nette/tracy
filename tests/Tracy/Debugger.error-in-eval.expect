@@ -18,7 +18,7 @@
 		<div id="tracyBluescreenError" class="panel">
 			<h1>User Error</h1>
 
-			<p>The my error <a href="%a%" id="tracyBsSearch" rel="noreferrer">search&#x25ba;</a></p>
+			<p>The my error			<a href="%a%" rel="noreferrer">search&#x25ba;</a></p>
 		</div>
 
 
