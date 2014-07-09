@@ -476,7 +476,7 @@ class Debugger
 
 
 	/**
-	 * Logs message or exception to file .
+	 * Logs message or exception to file.
 	 * @param  string|Exception
 	 * @return string logged error filename
 	 */
