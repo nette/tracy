@@ -182,8 +182,8 @@
 
 		<ul>
 			<li>Report generated at %a%</li>
-							<li>CLI%a?%</li>
-						<li>PHP %a%</li>		</ul>
+			<li>CLI%a?%</li>
+			<li>PHP %a%</li>		</ul>
 
 		<div id="tracyBluescreenLogo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>

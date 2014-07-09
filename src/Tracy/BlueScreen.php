@@ -50,6 +50,12 @@ class BlueScreen
 	{
 		$panels = $this->panels;
 		$info = array_filter($this->info);
+		$source = Helpers::getSource();
+		$sourceIsUrl = preg_match('#^https?://#', $source);
+		$title = $exception instanceof \ErrorException
+			? Helpers::errorTypeToString($exception->getSeverity())
+			: get_class($exception);
+
 		require __DIR__ . '/templates/bluescreen.phtml';
 	}
 

@@ -9,16 +9,15 @@
  * @param  array $exception
  * @param  array $panels
  * @param  array $info
+ * @param  string $title
+ * @param  string $source
+ * @param  bool $sourceIsUrl
  * @return void
  */
 
 namespace Tracy;
 
 use Tracy;
-
-
-$title = $exception instanceof \ErrorException ? Helpers::errorTypeToString($exception->getSeverity()) : get_class($exception);
-$source = Helpers::getSource();
 
 $counter = 0;
 
@@ -333,11 +332,7 @@ $counter = 0;
 
 		<ul>
 			<li>Report generated at <?php echo @date('Y/m/d H:i:s') ?></li>
-			<?php if (preg_match('#^https?://#', $source)): ?>
-				<li><a href="<?php echo htmlSpecialChars($source, ENT_IGNORE | ENT_QUOTES) ?>"><?php echo htmlSpecialChars($source, ENT_IGNORE) ?></a></li>
-			<?php else: ?>
-				<li><?php echo htmlSpecialChars($source, ENT_IGNORE) ?></li>
-			<?php endif ?>
+			<li><?php if ($sourceIsUrl): ?><a href="<?php echo htmlSpecialChars($source, ENT_IGNORE | ENT_QUOTES) ?>"><?php endif ?><?php echo htmlSpecialChars($source, ENT_IGNORE) ?><?php if ($sourceIsUrl): ?></a><?php endif ?></li>
 			<?php foreach ($info as $item): ?><li><?php echo htmlSpecialChars($item) ?></li><?php endforeach ?>
 		</ul>
 
