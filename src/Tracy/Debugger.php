@@ -43,6 +43,9 @@ class Debugger
 	/** @var array of callables specifies the functions that are automatically called after fatal error */
 	public static $onFatalError = array();
 
+	/** @var int  log bluescreen in production mode for this error severity */
+	public static $logSeverity = 0;
+
 	/********************* Debugger::dump() ****************d*g**/
 
 	/** @var int  how many nested levels of array/object properties display {@link Debugger::dump()} */
@@ -296,6 +299,13 @@ class Debugger
 
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return FALSE; // calls normal error handler to fill-in error_get_last()
+
+		} elseif (($severity & self::$logSeverity) === $severity) {
+			$e = new ErrorException($message, 0, $severity, $file, $line);
+			$e->context = $context;
+			self::log($e, self::ERROR);
+
+			return NULL;
 
 		} elseif (!self::$productionMode && (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
