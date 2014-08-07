@@ -73,6 +73,9 @@ class Debugger
 	/** @var bool {@link Debugger::enable()} */
 	private static $enabled = FALSE;
 
+	/** @var bool prevent double rendering */
+	private static $done;
+
 	/** @internal */
 	public static $errorTypes = array(
 		E_ERROR => 'Fatal Error',
@@ -147,7 +150,6 @@ class Debugger
 	 */
 	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
 	{
-		self::$enabled = TRUE;
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		if (isset($_SERVER['REQUEST_URI'])) {
 			self::$source = (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
@@ -197,13 +199,17 @@ class Debugger
 			self::_exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
 		}
 
-		register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
-		set_exception_handler(array(__CLASS__, '_exceptionHandler'));
-		set_error_handler(array(__CLASS__, '_errorHandler'));
+		if (!self::$enabled) {
+			register_shutdown_function(array(__CLASS__, '_shutdownHandler'));
+			set_exception_handler(array(__CLASS__, '_exceptionHandler'));
+			set_error_handler(array(__CLASS__, '_errorHandler'));
 
-		foreach (array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
-			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
-			class_exists($class);
+			foreach (array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
+				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
+				class_exists($class);
+			}
+
+			self::$enabled = TRUE;
 		}
 	}
 
@@ -361,7 +367,7 @@ class Debugger
 	 */
 	public static function _shutdownHandler()
 	{
-		if (!self::$enabled) {
+		if (self::$done) {
 			return;
 		}
 
@@ -383,10 +389,10 @@ class Debugger
 	 */
 	public static function _exceptionHandler(\Exception $exception, $exit = TRUE)
 	{
-		if (!self::$enabled) {
+		if (self::$done) {
 			return;
 		}
-		self::$enabled = FALSE; // prevent double rendering
+		self::$done = TRUE;
 
 		if (!headers_sent()) {
 			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
