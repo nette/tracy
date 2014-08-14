@@ -23,6 +23,8 @@ class Debugger
 		PRODUCTION = TRUE,
 		DETECT = NULL;
 
+	const COOKIE_SECRET = 'tracy-debug';
+
 	/** @var string */
 	public static $version = '2.3-dev';
 
@@ -517,12 +519,20 @@ class Debugger
 	 */
 	public static function detectDebugMode($list = NULL)
 	{
-		$list = is_string($list) ? preg_split('#[,\s]+#', $list) : (array) $list;
+		$addr = isset($_SERVER['REMOTE_ADDR'])
+			? $_SERVER['REMOTE_ADDR']
+			: php_uname('n');
+		$secret = isset($_COOKIE[self::COOKIE_SECRET]) && is_string($_COOKIE[self::COOKIE_SECRET])
+			? $_COOKIE[self::COOKIE_SECRET]
+			: NULL;
+		$list = is_string($list)
+			? preg_split('#[,\s]+#', $list)
+			: (array) $list;
 		if (!isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 			$list[] = '127.0.0.1';
 			$list[] = '::1';
 		}
-		return in_array(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : php_uname('n'), $list, TRUE);
+		return in_array($addr, $list, TRUE) || in_array("$secret@$addr", $list, TRUE);
 	}
 
 }

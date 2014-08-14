@@ -60,6 +60,21 @@ test(function(){ // missing $_SERVER['REMOTE_ADDR']
 });
 
 
+test(function(){ // secret
+	unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+	$_SERVER['REMOTE_ADDR'] = '192.168.1.1';
+	$_COOKIE[Debugger::COOKIE_SECRET] = '*secret*';
+
+	Assert::false( Debugger::detectDebugMode() );
+	Assert::true( Debugger::detectDebugMode('192.168.1.1') );
+	Assert::false( Debugger::detectDebugMode('abc@192.168.1.1') );
+	Assert::true( Debugger::detectDebugMode('*secret*@192.168.1.1') );
+
+	$_COOKIE[Debugger::COOKIE_SECRET] = array('*secret*');
+	Assert::false( Debugger::detectDebugMode('*secret*@192.168.1.1') );
+});
+
+
 test(function(){
 	unset($_SERVER['HTTP_X_FORWARDED_FOR']);
 	$_SERVER['REMOTE_ADDR'] = 'xx';
