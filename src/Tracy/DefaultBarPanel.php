@@ -36,6 +36,7 @@ class DefaultBarPanel implements IBarPanel
 	public function getTab()
 	{
 		ob_start();
+		$data = $this->data;
 		require __DIR__ . "/templates/bar.{$this->id}.tab.phtml";
 		return ob_get_clean();
 	}
@@ -49,6 +50,7 @@ class DefaultBarPanel implements IBarPanel
 	{
 		ob_start();
 		if (is_file(__DIR__ . "/templates/bar.{$this->id}.panel.phtml")) {
+			$data = $this->data;
 			require __DIR__ . "/templates/bar.{$this->id}.panel.phtml";
 		}
 		return ob_get_clean();
