@@ -21,7 +21,8 @@ class Dumper
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
 		COLLAPSE = 'collapse', // always collapse? (defaults to false)
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
-		LOCATION = 'location'; // show location string? (defaults to 0)
+		LOCATION = 'location', // show location string? (defaults to 0)
+		OBJECT_EXPORTERS = 'exporters'; // custom exporters for objects (defaults to Dumper::$objectexporters)
 
 	const
 		LOCATION_SOURCE = 1, // shows where dump was called
@@ -47,6 +48,13 @@ class Dumper
 		'stream' => 'stream_get_meta_data',
 		'stream-context' => 'stream_context_get_options',
 		'curl' => 'curl_getinfo',
+	);
+
+	/** @var array */
+	public static $objectExporters = array(
+		'Closure' => 'Tracy\Dumper::exportClosure',
+		'SplFileInfo' => 'Tracy\Dumper::exportSplFileInfo',
+		'SplObjectStorage' => 'Tracy\Dumper::exportSplObjectStorage',
 	);
 
 
@@ -78,9 +86,11 @@ class Dumper
 			self::TRUNCATE => 150,
 			self::COLLAPSE => FALSE,
 			self::COLLAPSE_COUNT => 7,
+			self::OBJECT_EXPORTERS => NULL,
 		);
 		$loc = & $options[self::LOCATION];
 		$loc = $loc === TRUE ? ~0 : (int) $loc;
+		$options[self::OBJECT_EXPORTERS] = (array) $options[self::OBJECT_EXPORTERS] + self::$objectExporters;
 
 		list($file, $line, $code) = $loc ? self::findLocation() : NULL;
 		return '<pre class="tracy-dump"'
@@ -202,25 +212,12 @@ class Dumper
 
 	private static function dumpObject(& $var, $options, $level)
 	{
-		if ($var instanceof \Closure) {
-			$rc = new \ReflectionFunction($var);
-			$fields = array();
-			foreach ($rc->getParameters() as $param) {
-				$fields[] = '$' . $param->getName();
+		$fields = (array) $var;
+		foreach ($options[self::OBJECT_EXPORTERS] as $type => $dumper) {
+			if ($var instanceof $type) {
+				$fields = call_user_func($dumper, $var);
+				break;
 			}
-			$fields = array(
-				'file' => $rc->getFileName(), 'line' => $rc->getStartLine(),
-				'variables' => $rc->getStaticVariables(), 'parameters' => implode(', ', $fields)
-			);
-		} elseif ($var instanceof \SplFileInfo) {
-			$fields = array('path' => $var->getPathname());
-		} elseif ($var instanceof \SplObjectStorage) {
-			$fields = array();
-			foreach (clone $var as $obj) {
-				$fields[] = array('object' => $obj, 'data' => $var[$obj]);
-			}
-		} else {
-			$fields = (array) $var;
 		}
 
 		$editor = NULL;
@@ -296,6 +293,47 @@ class Dumper
 			$s = strtr($s, $table);
 		}
 		return '"' . htmlSpecialChars($s, ENT_NOQUOTES) . '"';
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private static function exportClosure(\Closure $obj)
+	{
+		$rc = new \ReflectionFunction($obj);
+		$res = array();
+		foreach ($rc->getParameters() as $param) {
+			$res[] = '$' . $param->getName();
+		}
+		return array(
+			'file' => $rc->getFileName(),
+			'line' => $rc->getStartLine(),
+			'variables' => $rc->getStaticVariables(),
+			'parameters' => implode(', ', $res),
+		);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private static function exportSplFileInfo(\SplFileInfo $obj)
+	{
+		return array('path' => $obj->getPathname());
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private static function exportSplObjectStorage(\SplObjectStorage $obj)
+	{
+		$res = array();
+		foreach (clone $obj as $item) {
+			$res[] = array('object' => $item, 'data' => $obj[$item]);
+		}
+		return $res;
 	}
 
 
