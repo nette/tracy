@@ -39,19 +39,19 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 				<p><b>File:</b> %a%</p>
 				<pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
-<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
-<span class='line'>%d%:</span>    &nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
+<span class='line'>%d%:</span>        </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
 <span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
-<span class='line'>%d%:</span>    function&nbsp;</span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
-<span class='highlight'>%d%:    &nbsp;&nbsp;&nbsp;&nbsp;missing_function();
+<span class='highlight'>%d%:        missing_function();
 </span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
-<span class='line'>%d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">,&nbsp;</span><span style="color: #080">'any&nbsp;string'</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>%d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #080">'any string'</span><span style="color: #D24; font-weight: bold">);
 </span></span></code></div></pre>			</div></div>
 
 
