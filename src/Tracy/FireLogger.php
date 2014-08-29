@@ -121,10 +121,7 @@ class FireLogger implements ILogger
 			return $var;
 
 		} elseif (is_string($var)) {
-			if ($this->maxLength && strlen($var) > $this->maxLength) {
-				$var = substr($var, 0, $this->maxLength) . " \xE2\x80\xA6 ";
-			}
-			return Helpers::fixEncoding($var);
+			return Dumper::encodeString($var, $this->maxLength);
 
 		} elseif (is_array($var)) {
 			static $marker;
