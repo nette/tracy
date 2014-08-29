@@ -114,6 +114,7 @@ class BlueScreen
 			}, $out);
 		}
 
+		$out = str_replace('&nbsp;', ' ', $out);
 		return "<pre class='php'><div>$out</div></pre>";
 	}
 
