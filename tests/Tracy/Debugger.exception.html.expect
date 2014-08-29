@@ -56,11 +56,7 @@
 
 											<div class="tracy-collapsed outer" id="tracyBsArgs1-0">
 						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (3)</span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">1</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-number">2</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-number">3</span>
-</div></pre>
+						<tr><th>$arg1</th><td><pre class="tracy-dump" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>
 						</table>
 						</div>

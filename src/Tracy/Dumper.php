@@ -22,7 +22,8 @@ class Dumper
 		COLLAPSE = 'collapse', // always collapse? (defaults to false)
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
 		LOCATION = 'location', // show location string? (defaults to 0)
-		OBJECT_EXPORTERS = 'exporters'; // custom exporters for objects (defaults to Dumper::$objectexporters)
+		OBJECT_EXPORTERS = 'exporters', // custom exporters for objects (defaults to Dumper::$objectexporters)
+		LIVE = 'live'; // will be rendered using JavaScript
 
 	const
 		LOCATION_SOURCE = 1, // shows where dump was called
@@ -56,6 +57,9 @@ class Dumper
 		'SplFileInfo' => 'Tracy\Dumper::exportSplFileInfo',
 		'SplObjectStorage' => 'Tracy\Dumper::exportSplObjectStorage',
 	);
+
+	/** @var array  */
+	private static $liveStorage = array();
 
 
 	/**
@@ -91,14 +95,16 @@ class Dumper
 		$loc = & $options[self::LOCATION];
 		$loc = $loc === TRUE ? ~0 : (int) $loc;
 		$options[self::OBJECT_EXPORTERS] = (array) $options[self::OBJECT_EXPORTERS] + self::$objectExporters;
+		$live = !empty($options[self::LIVE]) && $var && (is_array($var) || is_object($var) || is_resource($var));
 		list($file, $line, $code) = $loc ? self::findLocation() : NULL;
 		$locAttrs = $file && $loc & self::LOCATION_SOURCE ? Helpers::formatHtml(
 			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
 		) : NULL;
 
-		return '<pre class="tracy-dump"'
-			. $locAttrs . '>'
-			. self::dumpVar($var, $options)
+		return '<pre class="tracy-dump' . ($live && $options[self::COLLAPSE] ? ' tracy-collapsed' : '') . '"'
+			. $locAttrs
+			. ($live ? " data-tracy-dump='" . str_replace("'", '&#039;', json_encode(self::toJson($var, $options))) . "'>" : '>')
+			. ($live ? '' : self::dumpVar($var, $options))
 			. ($file && $loc & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
 	}
@@ -200,7 +206,7 @@ class Dumper
 			$var[$marker] = TRUE;
 			foreach ($var as $k => & $v) {
 				if ($k !== $marker) {
-					$k = preg_match('#^\w+\z#', $k) ? $k : '"' . htmlspecialchars(self::encodeString($k, $options[self::TRUNCATE])) . '"';
+					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . htmlspecialchars(self::encodeString($k, $options[self::TRUNCATE])) . '"';
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . $k . '</span> => '
 						. self::dumpVar($v, $options, $level + 1);
@@ -217,14 +223,7 @@ class Dumper
 
 	private static function dumpObject(& $var, $options, $level)
 	{
-		$fields = (array) $var;
-		foreach ($options[self::OBJECT_EXPORTERS] as $type => $dumper) {
-			if ($var instanceof $type) {
-				$fields = call_user_func($dumper, $var);
-				break;
-			}
-		}
-
+		$fields = self::exportObject($var, $options[self::OBJECT_EXPORTERS]);
 		$editor = NULL;
 		if ($options[self::LOCATION] & self::LOCATION_CLASS) {
 			$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
@@ -255,7 +254,7 @@ class Dumper
 					$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 					$k = substr($k, strrpos($k, "\x00") + 1);
 				}
-				$k = preg_match('#^\w+\z#', $k) ? $k : '"' . htmlspecialchars(self::encodeString($k, $options[self::TRUNCATE])) . '"';
+				$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . htmlspecialchars(self::encodeString($k, $options[self::TRUNCATE])) . '"';
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 					. '<span class="tracy-dump-key">' . $k . "</span>$vis => "
 					. self::dumpVar($v, $options, $level + 1);
@@ -287,6 +286,104 @@ class Dumper
 
 
 	/**
+	 * @return mixed
+	 */
+	private static function toJson(& $var, $options, $level = 0)
+	{
+		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
+			return is_finite($var) ? $var : array('type' => (string) $var);
+
+		} elseif (is_string($var)) {
+			return self::encodeString($var, $options[self::TRUNCATE]);
+
+		} elseif (is_array($var)) {
+			static $marker;
+			if ($marker === NULL) {
+				$marker = uniqid("\x00", TRUE);
+			}
+			if (isset($var[$marker]) || $level >= $options[self::DEPTH]) {
+				return array(NULL);
+			}
+			$res = array();
+			$var[$marker] = TRUE;
+			foreach ($var as $k => & $v) {
+				if ($k !== $marker) {
+					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
+					$res[] = array($k, self::toJson($v, $options, $level + 1));
+				}
+			}
+			unset($var[$marker]);
+			return $res;
+
+		} elseif (is_object($var)) {
+			$obj = & self::$liveStorage[spl_object_hash($var)];
+			if ($obj && $obj['level'] <= $level) {
+				return array('object' => $obj['id']);
+			}
+
+			if ($options[self::LOCATION] & self::LOCATION_CLASS) {
+				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
+				$editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine());
+			}
+			static $counter = 1;
+			$obj = $obj ?: array(
+				'id' => '0' . $counter++, // differentiate from resources
+				'name' => get_class($var),
+				'editor' => empty($editor) ? NULL : array('file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor),
+				'level' => $level,
+				'object' => $var,
+			);
+
+			if ($level < $options[self::DEPTH] || !$options[self::DEPTH]) {
+				$obj['level'] = $level;
+				$obj['items'] = array();
+
+				foreach (self::exportObject($var, $options[self::OBJECT_EXPORTERS]) as $k => $v) {
+					$vis = 0;
+					if ($k[0] === "\x00") {
+						$vis = $k[1] === '*' ? 1 : 2;
+						$k = substr($k, strrpos($k, "\x00") + 1);
+					}
+					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
+					$obj['items'][] = array($k, self::toJson($v, $options, $level + 1), $vis);
+				}
+			}
+			return array('object' => $obj['id']);
+
+		} elseif (is_resource($var)) {
+			$obj = & self::$liveStorage[(string) $var];
+			if (!$obj) {
+				$type = get_resource_type($var);
+				$obj = array('id' => (int) $var, 'name' => $type . ' resource');
+				if (isset(self::$resources[$type])) {
+					foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
+						$obj['items'][] = array($k, self::toJson($v, $options, $level + 1));
+					}
+				}
+			}
+			return array('resource' => $obj['id']);
+
+		} else {
+			return 'unknown type';
+		}
+	}
+
+
+	/** @return array  */
+	public static function fetchLiveData()
+	{
+		$res = array();
+		foreach (self::$liveStorage as $obj) {
+			$id = $obj['id'];
+			unset($obj['level'], $obj['object'], $obj['id']);
+			$res[$id] = $obj;
+		}
+		self::$liveStorage = array();
+		return $res;
+	}
+
+
+	/**
 	 * @internal
 	 * @return string UTF-8
 	 */
@@ -313,6 +410,20 @@ class Dumper
 		}
 
 		return $s;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private static function exportObject($obj, array $exporters)
+	{
+		foreach ($exporters as $type => $dumper) {
+			if ($obj instanceof $type) {
+				return call_user_func($dumper, $obj);
+			}
+		}
+		return (array) $obj;
 	}
 
 

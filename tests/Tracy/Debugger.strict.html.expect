@@ -56,7 +56,7 @@
 
 											<div class="tracy-collapsed outer" id="tracyBsArgs1-1">
 						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump">%A%</pre>
+						<tr><th>$arg1</th><td><pre class="tracy-dump" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>
 						</table>
 						</div>
@@ -115,7 +115,7 @@
 			<div id="tracyBsPnl3" class="tracy-collapsed inner">
 			<div class="outer">
 			<table>
-			<tr><th>$arg1</th><td><pre class="tracy-dump">%A%</pre>
+			<tr><th>$arg1</th><td><pre class="tracy-dump" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>%A?%
 			</table>
 			</div>
