@@ -216,6 +216,10 @@ html {
 	font-style: normal;
 }
 
+#tracyBluescreen pre:hover span[title] {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
 #tracyBluescreen a[href^=editor\:] {
 	color: inherit;
 	border-bottom: 1px dotted rgba(0, 0, 0, .3);
