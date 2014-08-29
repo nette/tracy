@@ -22,7 +22,7 @@ class FireLogger implements ILogger
 	public $maxDepth = 3;
 
 	/** @var int  */
-	public $maxLenght = 150;
+	public $maxLength = 150;
 
 	/** @var array  */
 	private $payload = array('logs' => array());
@@ -121,8 +121,8 @@ class FireLogger implements ILogger
 			return $var;
 
 		} elseif (is_string($var)) {
-			if ($this->maxLenght && strlen($var) > $this->maxLenght) {
-				$var = substr($var, 0, $this->maxLenght) . " \xE2\x80\xA6 ";
+			if ($this->maxLength && strlen($var) > $this->maxLength) {
+				$var = substr($var, 0, $this->maxLength) . " \xE2\x80\xA6 ";
 			}
 			return Helpers::fixEncoding($var);
 
