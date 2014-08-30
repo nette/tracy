@@ -28,8 +28,8 @@ use Tracy;
 &nbsp;
 
 <style id="tracy-debug-style" class="tracy-debug">
-<?php require __DIR__ . '/bar.css' ?>
-<?php require __DIR__ . '/dumper.css' ?>
+<?php readfile(__DIR__ . '/bar.css') ?>
+<?php readfile(__DIR__ . '/dumper.css') ?>
 </style>
 
 <!--[if lt IE 8]><style class="tracy-debug">
@@ -41,9 +41,9 @@ use Tracy;
 
 <script id="tracy-debug-script">
 /* <![CDATA[ */
-<?php require __DIR__ . '/tracyQ.js' ?>
-<?php require __DIR__ . '/bar.js' ?>
-<?php require __DIR__ . '/dumper.js' ?>
+<?php readfile(__DIR__ . '/tracyQ.js') ?>
+<?php readfile(__DIR__ . '/bar.js') ?>
+<?php readfile(__DIR__ . '/dumper.js') ?>
 /* ]]> */
 </script>
 
