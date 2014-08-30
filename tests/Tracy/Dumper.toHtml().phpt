@@ -77,7 +77,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">7</span> => <span class="tracy-dump-number">7</span>
 </div></div></pre>', Dumper::toHtml(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2, 3, 4, 5, 6, 7))) );
 
-Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span></span>
+Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div class="tracy-collapsed">%A%', Dumper::toHtml(fopen(__FILE__, 'r')) );
 
 Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span>
