@@ -231,11 +231,11 @@ html {
 
 
 /* toggle */
-html.js #tracyBluescreen .tracy-collapsed {
+html.tracy-js #tracyBluescreen .tracy-collapsed {
 	display: none;
 }
 
-html.js #tracyBluescreen .tracy-toggle.tracy-collapsed {
+html.tracy-js #tracyBluescreen .tracy-toggle.tracy-collapsed {
 	display: inline;
 }
 
