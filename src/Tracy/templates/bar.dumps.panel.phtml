@@ -11,6 +11,8 @@ namespace Tracy;
 
 use Tracy;
 
+$repository = array();
+
 ?>
 <style class="tracy-debug">
 
@@ -33,6 +35,7 @@ use Tracy;
 	<h2><?php echo htmlspecialchars($item['title']) ?></h2>
 	<?php endif ?>
 
-	<?php echo $item['dump'] ?>
+	<?php echo $item['dump']; $repository += $item['repository'] ?>
 <?php endforeach ?>
 </div>
+<?php if ($repository): ?><script>Tracy.Dumper.init(<?php echo json_encode($repository) ?>)</script><?php endif ?>

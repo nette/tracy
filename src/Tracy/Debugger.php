@@ -481,11 +481,17 @@ class Debugger
 			if (!$panel) {
 				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'));
 			}
-			$panel->data[] = array('title' => $title, 'dump' => Dumper::toHtml($var, (array) $options + array(
-				Dumper::DEPTH => self::$maxDepth,
-				Dumper::TRUNCATE => self::$maxLen,
-				Dumper::LOCATION => self::$showLocation,
-			)));
+			$id = Dumper::startSnapshot();
+			$panel->data[] = array(
+				'title' => $title,
+				'dump' => Dumper::toHtml($var, (array) $options + array(
+					Dumper::DEPTH => self::$maxDepth,
+					Dumper::TRUNCATE => self::$maxLen,
+					Dumper::LOCATION => self::$showLocation,
+					Dumper::LIVE => TRUE,
+				)),
+				'repository' => Dumper::fetchSnapshot($id)
+			);
 		}
 		return $var;
 	}
