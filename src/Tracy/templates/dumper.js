@@ -7,9 +7,14 @@
 
 (function(){
 
-	var Dumper = Tracy.Dumper = {};
+	Tracy.Dumper = Tracy.Dumper || {};
 
-	Dumper.init = function() {
+	Tracy.Dumper.init = function() {
+		if (this.inited) {
+			return;
+		}
+		this.inited = true;
+
 		document.body.addEventListener('click', function(e) {
 			var link;
 
