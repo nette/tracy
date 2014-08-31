@@ -7,20 +7,7 @@
 <div class="tracy-inner tracy-DumpPanel">
 
 	<pre class="tracy-dump" title="barDump($arr)
-in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (8)</span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-number">20.2</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-bool">true</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">3</span> => <span class="tracy-dump-bool">false</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-dump-null">null</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">5</span> => <span class="tracy-dump-string">"hello"</span> (5)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key1</span> => <span class="tracy-dump-string">"val1"</span> (4)
-<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key2</span> => <span class="tracy-dump-bool">true</span>
-</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">7</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key1</span> => <span class="tracy-dump-string">"val1"</span> (4)
-<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key2</span> => <span class="tracy-dump-bool">true</span>
-</div></div></pre>
+in file %a% on line %d%" data-tracy-href="editor:%a%" data-tracy-snapshot='{"1":{"name":"stdClass","hash":"%h%","editor":null,"items":[["key1","val1",0],["key2",true,0]]}}' data-tracy-dump='[[0,10],[1,20.2],[2,true],[3,false],[4,null],[5,"hello"],[6,[["key1","val1"],["key2",true]]],[7,{"object":1}]]'></pre>
 		<h2>String</h2>
 
 	<pre class="tracy-dump" title="barDump(&#039;&lt;a href=&quot;#&quot;&gt;test&lt;/a&gt;&#039;, &#039;String&#039;)
