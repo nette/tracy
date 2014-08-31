@@ -2,8 +2,6 @@
  * This file is part of the Tracy (http://tracy.nette.org)
  */
 
-var Tracy = Tracy || {};
-
 (function(){
 
 	var Query = Tracy.Query = function(selector) {
@@ -60,20 +58,20 @@ var Tracy = Tracy || {};
 	// adds class to element
 	Query.prototype.addClass = function(className) {
 		return this.each(function() {
-			this.className = (this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ') + ' ' + className).trim();
+			return Tracy.addClass(this, className);
 		});
 	};
 
 	// removes class from element
 	Query.prototype.removeClass = function(className) {
 		return this.each(function() {
-			this.className = this.className.replace(/^|\s+|$/g, ' ').replace(' '+className+' ', ' ').trim();
+			Tracy.removeClass(this, className);
 		});
 	};
 
 	// tests whether element has given class
 	Query.prototype.hasClass = function(className) {
-		return this[0] && this[0].className && this[0].className.replace(/^|\s+|$/g, ' ').indexOf(' '+className+' ') > -1;
+		return Tracy.hasClass(this[0], className);
 	};
 
 	Query.prototype.show = function() {
@@ -105,24 +103,16 @@ var Tracy = Tracy || {};
 		}
 	};
 
-	Query.prototype._trav = function(el, selector, fce) {
-		var matches = el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector;
-		while (el && selector && !(el.nodeType === 1 && matches.call(el, selector))) {
-			el = el[fce];
-		}
-		return new Query(el || []);
-	};
-
 	Query.prototype.closest = function(selector) {
-		return this._trav(this[0], selector, 'parentNode');
+		return Tracy.closest(this[0], selector);
 	};
 
 	Query.prototype.prev = function(selector) {
-		return this._trav(this[0] && this[0].previousElementSibling, selector, 'previousElementSibling');
+		return Tracy.closest(this[0] && this[0].previousElementSibling, selector, 'previousElementSibling');
 	};
 
 	Query.prototype.next = function(selector) {
-		return this._trav(this[0] && this[0].nextElementSibling, selector, 'nextElementSibling');
+		return Tracy.closest(this[0] && this[0].nextElementSibling, selector, 'nextElementSibling');
 	};
 
 	// returns total offset for element
