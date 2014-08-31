@@ -184,6 +184,7 @@ body #tracy-debug {
 	background: white;
 	color: #333;
 	text-align: left;
+	z-index: 20001;
 }
 
 #tracy-debug h1 {
