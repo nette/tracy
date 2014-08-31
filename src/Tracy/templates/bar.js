@@ -40,6 +40,20 @@
 
 		}).bind('mouseleave', function() {
 			_this.blur();
+
+		}).bind('click', function() {
+			_this.oldPosition = _this.elem.position();
+		});
+
+		document.documentElement.addEventListener('click', function() {
+			if (_this.oldPosition) {
+				var pos = _this.elem.position();
+				_this.elem.position({
+					right: pos.right - pos.width + _this.oldPosition.width,
+					bottom: pos.bottom - pos.height + _this.oldPosition.height
+				});
+			}
+			_this.oldPosition = null;
 		});
 
 		this.elem.find('.tracy-icons').find('a').bind('click', function(e) {
