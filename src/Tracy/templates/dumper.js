@@ -7,17 +7,14 @@
 
 (function(){
 
-	var $ = Tracy.Query.factory;
-
 	var Dumper = Tracy.Dumper = {};
 
 	Dumper.init = function() {
-		$(document.body).bind('click', function(e) {
+		document.body.addEventListener('click', function(e) {
 			var link;
 
 			// enables <span data-tracy-href=""> & ctrl key
-			for (link = e.target; link && (!link.getAttribute || !link.getAttribute('data-tracy-href')); link = link.parentNode) {}
-			if (e.ctrlKey && link) {
+			if (e.ctrlKey && (link = Tracy.closest(e.target, '[data-tracy-href]'))) {
 				location.href = link.getAttribute('data-tracy-href');
 				return false;
 			}
@@ -27,17 +24,15 @@
 			}
 
 			// enables <a class="tracy-toggle" href="#"> or <span data-ref="#"> toggling
-			link = $(e.target).closest('.tracy-toggle');
-			if (!link.length) {
-				return;
-			}
-			var collapsed = link.hasClass('tracy-collapsed'),
-				ref = link[0].getAttribute('data-ref') || link[0].getAttribute('href', 2),
-				dest = ref && ref !== '#' ? $(ref) : link.next('');
+			if (link = Tracy.closest(e.target, '.tracy-toggle')) {
+				var collapsed = Tracy.hasClass(link, 'tracy-collapsed'),
+					ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
+					dest = ref && ref !== '#' ? document.getElementById(ref.substring(1)) : link.nextElementSibling;
 
-			link[collapsed ? 'removeClass' : 'addClass']('tracy-collapsed');
-			dest[collapsed ? 'removeClass' : 'addClass']('tracy-collapsed');
-			e.preventDefault();
+				Tracy[collapsed ? 'removeClass' : 'addClass'](link, 'tracy-collapsed');
+				Tracy[collapsed ? 'removeClass' : 'addClass'](dest, 'tracy-collapsed');
+				e.preventDefault();
+			}
 		});
 	};
 
