@@ -33,21 +33,11 @@
 			}
 			var collapsed = link.hasClass('tracy-collapsed'),
 				ref = link[0].getAttribute('data-ref') || link[0].getAttribute('href', 2),
-				dest = ref && ref !== '#' ? $(ref) : link.next(''),
-				panel = link.closest('.tracy-panel'),
-				oldPosition = panel.position();
+				dest = ref && ref !== '#' ? $(ref) : link.next('');
 
 			link[collapsed ? 'removeClass' : 'addClass']('tracy-collapsed');
 			dest[collapsed ? 'removeClass' : 'addClass']('tracy-collapsed');
 			e.preventDefault();
-
-			if (panel.length) {
-				var newPosition = panel.position();
-				panel.position({
-					right: newPosition.right - newPosition.width + oldPosition.width,
-					bottom: newPosition.bottom - newPosition.height + oldPosition.height
-				});
-			}
 		});
 	};
 
