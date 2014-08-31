@@ -17,7 +17,7 @@
 
 	for (var i = 0, styles = []; i < document.styleSheets.length; i++) {
 		var style = document.styleSheets[i];
-		if (style.ownerNode.className !== 'tracy-debug') {
+		if (!Tracy.hasClass(style.ownerNode, 'tracy-debug')) {
 			style.oldDisabled = style.disabled;
 			style.disabled = true;
 			styles.push(style);
@@ -37,17 +37,17 @@
 			return;
 		}
 
-		for (var link = e.target; link && (!link.tagName || !link.className.match(/(^|\s)tracy-toggle(\s|$)/)); link = link.parentNode) {}
+		for (var link = e.target; link && (!link.tagName || !Tracy.hasClass(link, 'tracy-toggle')); link = link.parentNode) {}
 		if (!link) {
 			return true;
 		}
 
-		var collapsed = link.className.match(/(^|\s)tracy-collapsed(\s|$)/),
+		var collapsed = Tracy.hasClass(link, 'tracy-collapsed'),
 			ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
 			dest = ref && ref !== '#' ? document.getElementById(ref.substring(1)) : link.nextElementSibling;
 
-		link.className = (link.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') + (collapsed ? '' : ' tracy-collapsed')).trim();
-		dest.className = (dest.className.replace(/(^|\s)tracy-collapsed(\s|$)/, ' ') + (collapsed ? '' : ' tracy-collapsed')).trim();
+		Tracy[collapsed ? 'removeClass' : 'addClass'](link, 'tracy-collapsed');
+		Tracy[collapsed ? 'removeClass' : 'addClass'](dest, 'tracy-collapsed');
 
 		if (link.id === 'tracyBluescreenIcon') {
 			for (i = 0; i < styles.length; i++) {
