@@ -349,7 +349,9 @@ $counter = 0;
 		return;
 	}
 	<?php readfile(__DIR__ . '/Tracy.js') ?>
+	<?php readfile(__DIR__ . '/dumper.js') ?>
 	<?php readfile(__DIR__ . '/bluescreen.js') ?>
+	Tracy.Dumper.init();
 })();
 </script>
 </body>
