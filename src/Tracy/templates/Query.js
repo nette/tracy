@@ -1,8 +1,5 @@
 /**
- * tracyQ
- *
- * This file is part of the Tracy.
- * Copyright (c) 2004, 2014 David Grudl (http://davidgrudl.com)
+ * This file is part of the Tracy (http://tracy.nette.org)
  */
 
 var Tracy = Tracy || {};
