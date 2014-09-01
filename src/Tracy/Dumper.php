@@ -175,7 +175,8 @@ class Dumper
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH]) {
 			$collapsed = $level ? count($var) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
-			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">' . $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
+				. $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$var[$marker] = TRUE;
 			foreach ($var as $k => & $v) {
 				if ($k !== $marker) {
@@ -231,7 +232,8 @@ class Dumper
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH] || $var instanceof \Closure) {
 			$collapsed = $level ? count($fields) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
-			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">' . $out . "</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
+				. $out . "</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$list[] = $var;
 			foreach ($fields as $k => & $v) {
 				$vis = '';
@@ -256,7 +258,8 @@ class Dumper
 	private static function dumpResource(& $var, $options, $level)
 	{
 		$type = get_resource_type($var);
-		$out = '<span class="tracy-dump-resource">' . htmlSpecialChars($type) . ' resource</span> <span class="tracy-dump-hash">#' . intval($var) . '</span>';
+		$out = '<span class="tracy-dump-resource">' . htmlSpecialChars($type) . ' resource</span> '
+			. '<span class="tracy-dump-hash">#' . intval($var) . '</span>';
 		if (isset(self::$resources[$type])) {
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {

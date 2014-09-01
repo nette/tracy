@@ -195,7 +195,9 @@ class Debugger
 			ini_set('html_errors', FALSE);
 			ini_set('log_errors', FALSE);
 
-		} elseif (ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')) { // intentionally ==
+		} elseif (ini_get('display_errors') != !self::$productionMode // intentionally ==
+			&& ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')
+		) {
 			self::_exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
 		}
 
