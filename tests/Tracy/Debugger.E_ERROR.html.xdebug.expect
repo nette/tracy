@@ -199,7 +199,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 	</div>
 </div>
 
-<script type="text/javascript">%A%</script>
+<script>%A%</script>
 </body>
 </html>
 

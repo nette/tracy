@@ -153,7 +153,9 @@ class Debugger
 			ini_set('html_errors', FALSE);
 			ini_set('log_errors', FALSE);
 
-		} elseif (ini_get('display_errors') != !self::$productionMode && ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')) { // intentionally ==
+		} elseif (ini_get('display_errors') != !self::$productionMode // intentionally ==
+			&& ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')
+		) {
 			self::exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
 		}
 
@@ -194,7 +196,10 @@ class Debugger
 
 		$error = error_get_last();
 		if (in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR), TRUE)) {
-			self::exceptionHandler(Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])), FALSE);
+			self::exceptionHandler(
+				Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])),
+				FALSE
+			);
 
 		} elseif (!connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
 			self::getBar()->render();

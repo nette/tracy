@@ -26,7 +26,9 @@ class Helpers
 	{
 		if ($editor = self::editorUri($file, $line)) {
 			$dir = dirname(strtr($file, '/', DIRECTORY_SEPARATOR));
-			$base = isset($_SERVER['SCRIPT_FILENAME']) ? dirname(dirname(strtr($_SERVER['SCRIPT_FILENAME'], '/', DIRECTORY_SEPARATOR))) : dirname($dir);
+			$base = isset($_SERVER['SCRIPT_FILENAME'])
+				? dirname(dirname(strtr($_SERVER['SCRIPT_FILENAME'], '/', DIRECTORY_SEPARATOR)))
+				: dirname($dir);
 			if (substr($dir, 0, strlen($base)) === $base) {
 				$dir = '...' . substr($dir, strlen($base));
 			}

@@ -62,7 +62,8 @@ class Logger implements ILogger
 			throw new \RuntimeException("Unable to write to log file '$file'. Is directory writable?");
 		}
 
-		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL), TRUE) && $this->email && $this->mailer
+		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL), TRUE)
+			&& $this->email && $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + $this->emailSnooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
@@ -80,8 +81,10 @@ class Logger implements ILogger
 	{
 		if ($value instanceof \Exception) {
 			while ($value) {
-				$tmp[] = ($value instanceof \ErrorException ? 'Fatal error: ' . $value->getMessage() : get_class($value) . ': ' . $value->getMessage())
-					. ' in ' . $value->getFile() . ':' . $value->getLine();
+				$tmp[] = ($value instanceof \ErrorException ?
+					'Fatal error: ' . $value->getMessage()
+					: get_class($value) . ': ' . $value->getMessage()
+				) . ' in ' . $value->getFile() . ':' . $value->getLine();
 				$value = $value->getPrevious();
 			}
 			$value = implode($tmp, "\ncaused by ");
