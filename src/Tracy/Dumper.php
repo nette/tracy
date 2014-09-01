@@ -23,12 +23,14 @@ class Dumper
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
 		LOCATION = 'location', // show location string? (defaults to 0)
 		OBJECT_EXPORTERS = 'exporters', // custom exporters for objects (defaults to Dumper::$objectexporters)
-		LIVE = 'live'; // will be rendered using JavaScript
+		LIVE = 'live'; // render dump with JavaScript; snapshot name or TRUE for independent snapshot
 
 	const
 		LOCATION_SOURCE = 1, // shows where dump was called
 		LOCATION_LINK = 2, // appends clickable anchor
 		LOCATION_CLASS = 4; // shows where class is defined
+
+	const SHUTDOWN_SNAPSHOT = 'tracy-shutdown';
 
 	/** @var array */
 	public static $terminalColors = array(
@@ -58,7 +60,7 @@ class Dumper
 		'SplObjectStorage' => 'Tracy\Dumper::exportSplObjectStorage',
 	);
 
-	/** @var array  */
+	/** @var array */
 	private static $liveStorage = array();
 
 
@@ -129,6 +131,17 @@ class Dumper
 		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function($m) {
 			return "\033[" . (isset($m[1], Dumper::$terminalColors[$m[1]]) ? Dumper::$terminalColors[$m[1]] : '0') . 'm';
 		}, self::toHtml($var, $options))), ENT_QUOTES);
+	}
+
+
+	/**
+	 * Returns unique snapshot identifier
+	 * @return int
+	 */
+	public static function startSnapshot()
+	{
+		static $id = 1;
+		return $id++;
 	}
 
 
@@ -290,6 +303,12 @@ class Dumper
 	 */
 	private static function toJson(& $var, $options, $level = 0)
 	{
+		static $counter = 1;
+
+		if ($options[self::LIVE] === TRUE) {
+			$options[self::LIVE] = self::startSnapshot();
+		}
+
 		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
 			return is_finite($var) ? $var : array('type' => (string) $var);
 
@@ -316,7 +335,8 @@ class Dumper
 			return $res;
 
 		} elseif (is_object($var)) {
-			$obj = & self::$liveStorage[spl_object_hash($var)];
+			$hash = spl_object_hash($var);
+			$obj = & self::$liveStorage[$options[self::LIVE] . $hash];
 			if ($obj && $obj['level'] <= $level) {
 				return array('object' => $obj['id']);
 			}
@@ -325,9 +345,10 @@ class Dumper
 				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
 				$editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine());
 			}
-			static $counter = 1;
+
 			$obj = $obj ?: array(
-				'id' => '0' . $counter++, // differentiate from resources
+				'id' => $counter++,
+				'hash' => substr(md5($hash), 0, 4),
 				'name' => get_class($var),
 				'editor' => empty($editor) ? NULL : array('file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor),
 				'level' => $level,
@@ -351,10 +372,10 @@ class Dumper
 			return array('object' => $obj['id']);
 
 		} elseif (is_resource($var)) {
-			$obj = & self::$liveStorage[(string) $var];
+			$obj = & self::$liveStorage[$options[self::LIVE] . $var];
 			if (!$obj) {
 				$type = get_resource_type($var);
-				$obj = array('id' => (int) $var, 'name' => $type . ' resource');
+				$obj = array('id' => $counter++, 'hash' => (int) $var, 'name' => $type . ' resource');
 				if (isset(self::$resources[$type])) {
 					foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
 						$obj['items'][] = array($k, self::toJson($v, $options, $level + 1));
