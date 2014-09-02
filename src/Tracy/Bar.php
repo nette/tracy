@@ -60,6 +60,7 @@ class Bar
 	 */
 	public function render()
 	{
+		Dumper::startSnapshot();
 		$obLevel = ob_get_level();
 		$panels = array();
 		foreach ($this->panels as $id => $panel) {

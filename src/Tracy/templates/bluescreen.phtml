@@ -13,6 +13,7 @@
  * @param  string $source
  * @param  bool $sourceIsUrl
  * @param  string $skipError
+ * @param  int $snapshotId
  * @return void
  */
 
@@ -354,7 +355,7 @@ $counter = 0;
 })();
 </script>
 <script>
-Tracy && Tracy.Dumper.init(<?php echo json_encode(Dumper::fetchLiveData()) ?>);
+Tracy && Tracy.Dumper.init(<?php echo json_encode(Dumper::fetchSnapshot($snapshotId)) ?>);
 </script>
 </body>
 </html>

@@ -58,8 +58,11 @@ class Dumper
 		'SplObjectStorage' => 'Tracy\Dumper::exportSplObjectStorage',
 	);
 
-	/** @var array  */
-	private static $liveStorage = array();
+	/** @var array[]  */
+	private static $repository = array();
+
+	/** @var int[]  */
+	private static $snapshots = array();
 
 
 	/**
@@ -290,7 +293,8 @@ class Dumper
 	 */
 	private static function toJson(& $var, $options, $level = 0)
 	{
-		static $counter = 1;
+		static $counter = 1, $snapshotCounter = 0;
+		$snapshot = count(self::$snapshots) ?: '0' . ($level ? $snapshotCounter : ++$snapshotCounter);
 
 		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
 			return is_finite($var) ? $var : array('type' => (string) $var);
@@ -319,7 +323,7 @@ class Dumper
 
 		} elseif (is_object($var)) {
 			$hash = spl_object_hash($var);
-			$obj = & self::$liveStorage[$hash];
+			$obj = & self::$repository[$snapshot . $hash];
 			if ($obj && $obj['level'] <= $level) {
 				return array('object' => $obj['id']);
 			}
@@ -354,7 +358,7 @@ class Dumper
 			return array('object' => $obj['id']);
 
 		} elseif (is_resource($var)) {
-			$obj = & self::$liveStorage[(string) $var];
+			$obj = & self::$repository[$snapshot . $var];
 			if (!$obj) {
 				$type = get_resource_type($var);
 				$obj = array('id' => $counter++, 'name' => $type . ' resource', 'hash' => (int) $var);
@@ -372,16 +376,30 @@ class Dumper
 	}
 
 
-	/** @return array  */
-	public static function fetchLiveData()
+	/**
+	 * Returns snapshot identifier.
+	 * @return int
+	 */
+	public static function startSnapshot()
+	{
+		self::$snapshots[] = count(self::$repository);
+		return count(self::$snapshots);
+	}
+
+
+	/**
+	 * Returns and deletes snapshot data.
+	 * @return array
+	 */
+	public static function fetchSnapshot($id = NULL)
 	{
 		$res = array();
-		foreach (self::$liveStorage as $obj) {
-			$id = $obj['id'];
+		foreach (array_splice(self::$repository, $id ? self::$snapshots[$id - 1] : 0) as $obj) {
+			$oid = $obj['id'];
 			unset($obj['level'], $obj['object'], $obj['id']);
-			$res[$id] = $obj;
+			$res[$oid] = $obj;
 		}
-		self::$liveStorage = array();
+		array_splice(self::$snapshots, $id ? $id - 1 : 0);
 		return $res;
 	}
 

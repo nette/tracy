@@ -39,7 +39,7 @@ Assert::match(
 
 Assert::match( '<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()
 </pre>', Dumper::toHtml(array(), $options) );
-Assert::same( array(), Dumper::fetchLiveData() );
+Assert::same( array(), Dumper::fetchSnapshot() );
 
 
 Assert::match(
@@ -51,7 +51,7 @@ Assert::match(
 	'<pre class="tracy-dump" data-tracy-dump=\'{"object":2}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
 );
-$data = Dumper::fetchLiveData();
+$data = Dumper::fetchSnapshot();
 Assert::notSame($data[1]['hash'], $data[2]['hash']);
 Assert::same( array(
 	1 => array('name' => 'stdClass', 'hash' => $data[1]['hash'], 'editor' => NULL, 'items' => array()),
@@ -64,7 +64,7 @@ Assert::match(
 );
 Assert::match(
 	'{"3":{"name":"stream resource","hash":%d%,"items":[["wrapper_type","plainfile"],%a%]}}',
-	json_encode(Dumper::fetchLiveData())
+	json_encode(Dumper::fetchSnapshot())
 );
 
 
@@ -72,7 +72,7 @@ Assert::match(
 	'<pre class="tracy-dump tracy-collapsed" data-tracy-dump=\'{"object":4}\'></pre>',
 	Dumper::toHtml(new Test, $options + array(Dumper::COLLAPSE => TRUE))
 );
-$data = Dumper::fetchLiveData();
+$data = Dumper::fetchSnapshot();
 Assert::same( array(
 	4 => array(
 		'name' => 'Test',
@@ -95,5 +95,5 @@ in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%" 
 
 Assert::match(
 	'{"5":{"name":"Test","hash":"%h%","editor":{"file":"%a%","line":%d%,"url":"editor:%a%"},"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",30,1]]}}',
-	json_encode(Dumper::fetchLiveData())
+	json_encode(Dumper::fetchSnapshot())
 );

@@ -48,6 +48,7 @@ class BlueScreen
 	 */
 	public function render(\Exception $exception)
 	{
+		$snapshotId = Dumper::startSnapshot();
 		$panels = $this->panels;
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
