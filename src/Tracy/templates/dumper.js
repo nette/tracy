@@ -13,9 +13,15 @@
 			liveItems[id] = liveData[id];
 		}
 		Array.prototype.forEach.call(document.querySelectorAll('.tracy-dump[data-tracy-dump]'), function(dest) {
-			dest.appendChild(build(JSON.parse(dest.getAttribute('data-tracy-dump')), Tracy.hasClass(dest, 'tracy-collapsed')));
-			Tracy.removeClass(dest, 'tracy-collapsed');
-			dest.removeAttribute('data-tracy-dump');
+			try {
+				dest.appendChild(build(JSON.parse(dest.getAttribute('data-tracy-dump')), Tracy.hasClass(dest, 'tracy-collapsed')));
+				Tracy.removeClass(dest, 'tracy-collapsed');
+				dest.removeAttribute('data-tracy-dump');
+			} catch (e) {
+				if (!(e instanceof UnknownEntityException)) {
+					throw e;
+				}
+			}
 		});
 
 		if (this.inited) {
@@ -81,6 +87,10 @@
 		} else if (type === 'object') {
 			var id = data.object || data.resource,
 				object = liveItems[id];
+
+			if (!object) {
+				throw new UnknownEntityException;
+			}
 
 			return buildStruct([
 				createEl('span', {
@@ -152,5 +162,7 @@
 			]);
 		}
 	};
+
+	var UnknownEntityException = function() {};
 
 })();
