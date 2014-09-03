@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Tester\Assert;
+use Tester\Expect;
 use Tracy\Dumper;
 
 
@@ -45,13 +46,14 @@ Assert::match('stdClass #%a%
 
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":"01"}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml((object) $keys, [Dumper::SNAPSHOT => &$snapshot])
 );
 
-Assert::same([
-	'01' => [
+Assert::equal([
+	1 => [
 		'name' => 'stdClass',
+		'hash' => Expect::match('%h%'),
 		'editor' => null,
 		'items' => [
 			['""', 0, 0],

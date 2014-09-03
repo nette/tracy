@@ -39,26 +39,26 @@ Assert::match(
 
 // twice live dump
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"01":{"name":"stdClass","editor":null,"items":[]}}\' data-tracy-dump=\'{"object":"01"}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","editor":null,"items":[]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new stdClass, $options)
 );
 
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"02":{"name":"stdClass","editor":null,"items":[]}}\' data-tracy-dump=\'{"object":"02"}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","editor":null,"items":[]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
 );
 
 
 // live dump and resource
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"stream resource","items":[%a%]}}\' data-tracy-dump=\'{"resource":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"stream resource","hash":%d%,"items":[%a%]}}\' data-tracy-dump=\'{"resource":%d%}\'></pre>',
 	Dumper::toHtml(fopen(__FILE__, 'r'), $options)
 );
 
 
 // live dump and collapse
 Assert::match(
-	'<pre class="tracy-dump tracy-collapsed" data-tracy-snapshot=\'{"03":{"name":"Test","editor":null,"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"object":"03"}\'></pre>',
+	'<pre class="tracy-dump tracy-collapsed" data-tracy-snapshot=\'{"1":{"name":"Test","hash":"%h%","editor":null,"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new Test, $options + [Dumper::COLLAPSE => true])
 );
 
@@ -66,6 +66,6 @@ Assert::match(
 // live dump & location
 Assert::match(
 	'<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&#039;location&#039; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
-in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-snapshot=\'{"04":{"name":"Test","editor":{"file":"%a%","line":%d%,"url":"editor:\/\/open\/?file=%a%\u0026line=%d%\u0026search=\u0026replace="},"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"object":"04"}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%</b>:%d%</a></small></pre>',
+in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-snapshot=\'{"1":{"name":"Test","hash":"%h%","editor":{"file":"%a%","line":%d%,"url":"editor:\/\/open\/?file=%a%\u0026line=%d%\u0026search=\u0026replace="},"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"object":1}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%</b>:%d%</a></small></pre>',
 	Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
 );
