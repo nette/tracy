@@ -98,7 +98,7 @@
 						'data-tracy-href': object.editor ? object.editor.url : null
 					}, [object.name]),
 					' ',
-					createEl('span', {'class': 'tracy-dump-hash'}, ['#' + id])
+					createEl('span', {'class': 'tracy-dump-hash'}, ['#' + object.hash])
 				],
 				' { ... }',
 				object.items,

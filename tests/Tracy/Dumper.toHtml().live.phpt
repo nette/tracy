@@ -43,34 +43,40 @@ Assert::same( array(), Dumper::fetchLiveData() );
 
 
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":"01"}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new stdClass, $options)
 );
 
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":"02"}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":2}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
 );
+$data = Dumper::fetchLiveData();
+Assert::notSame($data[1]['hash'], $data[2]['hash']);
 Assert::same( array(
-	'01' => array('name' => 'stdClass', 'editor' => NULL, 'items' => array()),
-	'02' => array('name' => 'stdClass', 'editor' => NULL, 'items' => array()),
-), Dumper::fetchLiveData() );
-
+	1 => array('name' => 'stdClass', 'hash' => $data[1]['hash'], 'editor' => NULL, 'items' => array()),
+	2 => array('name' => 'stdClass', 'hash' => $data[2]['hash'], 'editor' => NULL, 'items' => array()),
+), $data );
 
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-dump=\'{"resource":%d%}\'></pre>',
 	Dumper::toHtml(fopen(__FILE__, 'r'), $options)
 );
-Assert::same( 1, count(Dumper::fetchLiveData()) );
+Assert::match(
+	'{"3":{"name":"stream resource","hash":%d%,"items":[["wrapper_type","plainfile"],%a%]}}',
+	json_encode(Dumper::fetchLiveData())
+);
 
 
 Assert::match(
-	'<pre class="tracy-dump tracy-collapsed" data-tracy-dump=\'{"object":"03"}\'></pre>',
+	'<pre class="tracy-dump tracy-collapsed" data-tracy-dump=\'{"object":4}\'></pre>',
 	Dumper::toHtml(new Test, $options + array(Dumper::COLLAPSE => TRUE))
 );
+$data = Dumper::fetchLiveData();
 Assert::same( array(
-	'03' => array(
+	4 => array(
 		'name' => 'Test',
+		'hash' => $data[4]['hash'],
 		'editor' => NULL,
 		'items' => array(
 			array('x', array(array(0, 10), array(1, NULL)), 0),
@@ -78,30 +84,16 @@ Assert::same( array(
 			array('z', 30.0, 1),
 		),
 	),
-), Dumper::fetchLiveData() );
+), $data );
 
 
 Assert::match(
 	'<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + array(&#039;location&#039; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS))
-in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%" data-tracy-dump=\'{"object":"04"}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%" title="%a%:%d%">%a%:%d%</a></small></pre>',
+in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%" data-tracy-dump=\'{"object":5}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%" title="%a%:%d%">%a%:%d%</a></small></pre>',
 	Dumper::toHtml(new Test, $options + array('location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS))
 );
 
-$data = Dumper::fetchLiveData();
-Assert::type( 'int', $data['04']['editor']['line'] );
-Assert::type( 'string', $data['04']['editor']['url'] );
-unset($data['04']['editor']['line'], $data['04']['editor']['url']);
-
-Assert::same( array(
-	'04' => array(
-		'name' => 'Test',
-		'editor' => array(
-			'file' => __FILE__,
-		),
-		'items' => array(
-			array('x', array(array(0, 10), array(1, NULL)), 0),
-			array('y', 'hello', 2),
-			array('z', 30.0, 1),
-		),
-	),
-), $data );
+Assert::match(
+	'{"5":{"name":"Test","hash":"%h%","editor":{"file":"%a%","line":%d%,"url":"editor:%a%"},"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",30,1]]}}',
+	json_encode(Dumper::fetchLiveData())
+);
