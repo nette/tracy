@@ -371,7 +371,8 @@ class Dumper
 			return $res;
 
 		} elseif (is_object($var)) {
-			$obj = &$options[self::SNAPSHOT][spl_object_hash($var)];
+			$hash = spl_object_hash($var);
+			$obj = &$options[self::SNAPSHOT][$hash];
 			if ($obj && $obj['level'] <= $level) {
 				return ['object' => $obj['id']];
 			}
@@ -382,10 +383,10 @@ class Dumper
 				$editor = $rc->getFileName() ? Helpers::editorUri($rc->getFileName(), $rc->getStartLine()) : null;
 				$editorInfo = $editor ? ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor] : null;
 			}
-			static $counter = 1;
 			$obj = $obj ?: [
-				'id' => '0' . $counter++, // differentiate from resources
+				'id' => count($options[self::SNAPSHOT]),
 				'name' => Helpers::getClass($var),
+				'hash' => substr(md5($hash), 0, 4),
 				'editor' => $editorInfo,
 				'level' => $level,
 				'object' => $var,
@@ -411,7 +412,7 @@ class Dumper
 			$obj = &$options[self::SNAPSHOT][(string) $var];
 			if (!$obj) {
 				$type = get_resource_type($var);
-				$obj = ['id' => (int) $var, 'name' => $type . ' resource'];
+				$obj = ['id' => count($options[self::SNAPSHOT]), 'name' => $type . ' resource', 'hash' => (int) $var];
 				if (isset(self::$resources[$type])) {
 					foreach ((self::$resources[$type])($var) as $k => $v) {
 						$obj['items'][] = [$k, self::toJson($v, $options, $level + 1)];

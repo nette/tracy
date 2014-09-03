@@ -89,10 +89,10 @@ Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'[]\'><span class="t
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1, Dumper::COLLAPSE => false]));
 
-Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"01":{"name":"Test","editor":null,"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"object":"01"}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"Test","hash":"%a%","editor":null,"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"object":1}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
 </pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE => true]));
 
-Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"02":{"name":"Test","editor":null,"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"object":"02"}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"Test","hash":"%a%","editor":null,"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"object":1}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
 </pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE => 3]));
 
 Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Closure</span> <span class="tracy-dump-hash">#%a%</span></span>

@@ -48,17 +48,17 @@ Assert::match(
 
 // snapshot created twice
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":"01"}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new stdClass, $options)
 );
 
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":"02"}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":2}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
 );
-Assert::same([
-	'01' => ['name' => 'stdClass', 'editor' => null, 'items' => []],
-	'02' => ['name' => 'stdClass', 'editor' => null, 'items' => []],
+Assert::equal([
+	1 => ['name' => 'stdClass', 'hash' => Value::match('%h%'), 'editor' => null, 'items' => []],
+	2 => ['name' => 'stdClass', 'hash' => Value::match('%h%'), 'editor' => null, 'items' => []],
 ], formatSnapshot($snapshot));
 
 
@@ -79,7 +79,7 @@ Assert::count(1, $snapshot);
 // snapshot and collapse
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump tracy-collapsed" data-tracy-dump=\'{"object":"03"}\'></pre>',
+	'<pre class="tracy-dump tracy-collapsed" data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new Test, $options + [Dumper::COLLAPSE => true])
 );
 
@@ -87,13 +87,14 @@ Assert::match(
 // snapshot content check
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":"04"}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new Test, $options)
 );
 
-Assert::same([
-	'04' => [
+Assert::equal([
+	1 => [
 		'name' => 'Test',
+		'hash' => Value::match('%h%'),
 		'editor' => null,
 		'items' => [
 			['x', [[0, 10], [1, null]], 0],
@@ -108,13 +109,14 @@ Assert::same([
 $snapshot = [];
 Assert::match(
 	'<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&#039;location&#039; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
-in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-dump=\'{"object":"05"}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%:%d%</a></small></pre>',
+in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-dump=\'{"object":1}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%:%d%</a></small></pre>',
 	Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
 );
 
 Assert::equal([
-	'05' => [
+	1 => [
 		'name' => 'Test',
+		'hash' => Value::match('%h%'),
 		'editor' => [
 			'file' => __DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'DumpClass.php',
 			'line' => Value::type('int'),
