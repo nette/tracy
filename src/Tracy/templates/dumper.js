@@ -3,26 +3,24 @@
  */
 
 (function() {
-	var COLLAPSE_COUNT = 7,
-		liveItems = {};
+	var COLLAPSE_COUNT = 7;
 
 	Tracy.Dumper = Tracy.Dumper || {};
 
-	Tracy.Dumper.init = function(liveData) {
-		for (var id in liveData || {}) {
-			liveItems[id] = liveData[id];
-		}
-		Array.prototype.forEach.call(document.querySelectorAll('.tracy-dump[data-tracy-dump]'), function(dest) {
-			try {
-				dest.appendChild(build(JSON.parse(dest.getAttribute('data-tracy-dump')), Tracy.hasClass(dest, 'tracy-collapsed')));
-				Tracy.removeClass(dest, 'tracy-collapsed');
-				dest.removeAttribute('data-tracy-dump');
-			} catch (e) {
-				if (!(e instanceof UnknownEntityException)) {
-					throw e;
+	Tracy.Dumper.init = function(repository) {
+		if (repository) {
+			Array.prototype.forEach.call(document.querySelectorAll('.tracy-dump[data-tracy-dump]'), function(el) {
+				try {
+					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, Tracy.hasClass(el, 'tracy-collapsed')));
+					Tracy.removeClass(el, 'tracy-collapsed');
+					el.removeAttribute('data-tracy-dump');
+				} catch (e) {
+					if (!(e instanceof UnknownEntityException)) {
+						throw e;
+					}
 				}
-			}
-		});
+			});
+		}
 
 		if (this.inited) {
 			return;
@@ -56,7 +54,7 @@
 	};
 
 
-	var build = function(data, collapsed) {
+	var build = function(data, repository, collapsed) {
 		var type = data === null ? 'null' : typeof data;
 
 		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
@@ -76,7 +74,8 @@
 				],
 				' [ ... ]',
 				data[0] === null ? null : data,
-				collapsed || data.length >= COLLAPSE_COUNT
+				collapsed || data.length >= COLLAPSE_COUNT,
+				repository
 			);
 
 		} else if (type === 'object' && data.type) {
@@ -86,26 +85,31 @@
 
 		} else if (type === 'object') {
 			var id = data.object || data.resource,
-				object = liveItems[id];
+				object = repository[id];
 
 			if (!object) {
 				throw new UnknownEntityException;
 			}
 
 			return buildStruct([
-				createEl('span', {
-					'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
-					title: object.editor ? 'Declared in file ' + object.editor.file + ' on line ' + object.editor.line : null,
-					'data-tracy-href': object.editor ? object.editor.url : null
-				}, [object.name]),
-				' ',
-				createEl('span', {'class': 'tracy-dump-hash'}, ['#' + id])
-			], ' { ... }', object.items, collapsed !== false || (object.items && object.items.length >= COLLAPSE_COUNT));
+					createEl('span', {
+						'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
+						title: object.editor ? 'Declared in file ' + object.editor.file + ' on line ' + object.editor.line : null,
+						'data-tracy-href': object.editor ? object.editor.url : null
+					}, [object.name]),
+					' ',
+					createEl('span', {'class': 'tracy-dump-hash'}, ['#' + id])
+				],
+				' { ... }',
+				object.items,
+				collapsed !== false || (object.items && object.items.length >= COLLAPSE_COUNT),
+				repository
+			);
 		}
 	};
 
 
-	var buildStruct = function(span, ellipsis, items, collapsed) {
+	var buildStruct = function(span, ellipsis, items, collapsed, repository) {
 		var res, toggle, div, handler;
 
 		if (!items || !items.length) {
@@ -122,10 +126,10 @@
 		if (collapsed) {
 			toggle.addEventListener('click', handler = function() {
 				toggle.removeEventListener('click', handler);
-				createItems(div, items);
+				createItems(div, items, repository);
 			});
 		} else {
-			createItems(div, items);
+			createItems(div, items, repository);
 		}
 		return res;
 	};
@@ -150,7 +154,7 @@
 	};
 
 
-	var createItems = function(el, items) {
+	var createItems = function(el, items, repository) {
 		for (var i in items) {
 			var vis = items[i][2];
 			createEl(el, [], [
@@ -158,7 +162,7 @@
 				vis ? ' ' : null,
 				vis ? createEl('span', {'class': 'tracy-dump-visibility'}, [vis === 1 ? 'protected' : 'private']) : null,
 				' => ',
-				build(items[i][1])
+				build(items[i][1], repository)
 			]);
 		}
 	};
