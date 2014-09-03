@@ -51,7 +51,7 @@ Assert::match(
 
 
 // clear manual snapshots
-$data = Dumper::fetchSnapshot($id);
+$data = Dumper::endSnapshot($id);
 Assert::match('%h%', $hash = $data[3]['hash']);
 Assert::same(
 	array(
@@ -69,7 +69,9 @@ Assert::match(
 	Dumper::toHtml($obj, $options)
 );
 
-$data = Dumper::fetchSnapshot();
+Assert::null(Dumper::endSnapshot(NULL, FALSE));
+
+$data = Dumper::endSnapshot(NULL);
 Assert::same(
 	array(
 		1 => array('name' => 'stdClass', 'hash' => $hash, 'editor' => NULL, 'items' => array(array('a', array('object' => 1), 0))),

@@ -388,19 +388,21 @@ class Dumper
 
 
 	/**
-	 * Returns and deletes snapshot data.
-	 * @return array
+	 * Closes snapshot and optionally fetches data.
+	 * @return array|NULL
 	 */
-	public static function fetchSnapshot($id = NULL)
+	public static function endSnapshot($id = NULL, $fetch = TRUE)
 	{
-		$res = array();
-		foreach (array_splice(self::$repository, $id ? self::$snapshots[$id - 1] : 0) as $obj) {
-			$oid = $obj['id'];
-			unset($obj['level'], $obj['object'], $obj['id']);
-			$res[$oid] = $obj;
+		$tmp = array_splice(self::$snapshots, $id ? $id - 1 : 0);
+		if ($fetch) {
+			$res = array();
+			foreach (array_splice(self::$repository, $id ? $tmp[0] : 0) as $obj) {
+				$oid = $obj['id'];
+				unset($obj['level'], $obj['object'], $obj['id']);
+				$res[$oid] = $obj;
+			}
+			return $res;
 		}
-		array_splice(self::$snapshots, $id ? $id - 1 : 0);
-		return $res;
 	}
 
 

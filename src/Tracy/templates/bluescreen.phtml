@@ -355,7 +355,7 @@ $counter = 0;
 })();
 </script>
 <script>
-Tracy && Tracy.Dumper.init(<?php echo json_encode(Dumper::fetchSnapshot($snapshotId)) ?>);
+Tracy && Tracy.Dumper.init(<?php echo json_encode(Dumper::endSnapshot($snapshotId)) ?>);
 </script>
 </body>
 </html>

@@ -490,7 +490,7 @@ class Debugger
 					Dumper::LOCATION => self::$showLocation,
 					Dumper::LIVE => TRUE,
 				)),
-				'repository' => Dumper::fetchSnapshot($id)
+				'repository' => Dumper::endSnapshot($id)
 			);
 		}
 		return $var;
