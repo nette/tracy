@@ -2,9 +2,7 @@
 
 <div class="tracy-inner tracy-DumpPanel">
 	
-	<table>
-		<tr class="">
-		<td><pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (8)</span>
+	<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (8)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-number">20.2</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-bool">TRUE</span>
@@ -18,16 +16,8 @@
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key1</span> => <span class="tracy-dump-string">"val1"</span> (4)
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">key2</span> => <span class="tracy-dump-bool">TRUE</span>
 </div></div></pre>
-</td>
-	</tr>
-	</table>
 		<h2>String</h2>
 	
-	<table>
-		<tr class="">
-		<td><pre class="tracy-dump"><span class="tracy-dump-string">"&lt;a href="#"&gt;test&lt;/a&gt;"</span> (20)
+	<pre class="tracy-dump"><span class="tracy-dump-string">"&lt;a href="#"&gt;test&lt;/a&gt;"</span> (20)
 </pre>
-</td>
-	</tr>
-	</table>
 </div>%A%

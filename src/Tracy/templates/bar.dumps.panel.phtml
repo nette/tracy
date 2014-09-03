@@ -22,10 +22,6 @@ use Tracy;
 		color: white;
 	}
 
-	#tracy-debug .tracy-DumpPanel table {
-		width: 100%;
-	}
-
 </style>
 
 
@@ -37,11 +33,6 @@ use Tracy;
 	<h2><?php echo htmlspecialchars($item['title']) ?></h2>
 	<?php endif ?>
 
-	<table>
-	<?php $i = 0 ?>
-	<tr class="<?php echo $i++ % 2 ? 'tracy-alt' : '' ?>">
-		<td><?php echo $item['dump'] ?></td>
-	</tr>
-	</table>
+	<?php echo $item['dump'] ?>
 <?php endforeach ?>
 </div>

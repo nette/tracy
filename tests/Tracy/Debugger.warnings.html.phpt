@@ -27,19 +27,19 @@ register_shutdown_function(function() {
 Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 
 	Assert::match('%A%<table>
-<tr class="">
+<tr>
 	<td class="tracy-right">1%a%</td>
 	<td><pre>PHP Strict standards: mktime(): You should be using the time() function instead in %a%:%d%</a></pre></td>
 </tr>
-<tr class="tracy-alt">
+<tr>
 	<td class="tracy-right">1%a%</td>
 	<td><pre>PHP Deprecated: mktime(): The is_dst parameter is deprecated in %a%:%d%</a></pre></td>
 </tr>
-<tr class="">
+<tr>
 	<td class="tracy-right">1%a%</td>
 	<td><pre>PHP Notice: Undefined variable: x in %a%:%d%</a></pre></td>
 </tr>
-<tr class="tracy-alt">
+<tr>
 	<td class="tracy-right">1%a%</td>
 	<td><pre>PHP Warning: %a% in %a%:%d%</a></pre></td>
 </tr>
