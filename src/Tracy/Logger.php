@@ -77,7 +77,7 @@ class Logger implements ILogger
 	/**
 	 * @return string
 	 */
-	private function formatMessage($value, $exceptionFile = NULL)
+	protected function formatMessage($value, $exceptionFile = NULL)
 	{
 		if ($value instanceof \Exception) {
 			while ($value) {
@@ -107,7 +107,7 @@ class Logger implements ILogger
 	/**
 	 * @return string logged error filename
 	 */
-	private function logException(\Exception $exception)
+	protected function logException(\Exception $exception)
 	{
 		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		$hash = md5(preg_replace('~(Resource id #)\d+~', '$1', $exception));
