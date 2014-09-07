@@ -62,12 +62,8 @@ class Logger implements ILogger
 			throw new \RuntimeException("Unable to write to log file '$file'. Is directory writable?");
 		}
 
-		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL), TRUE)
-			&& $this->email && $this->mailer
-			&& @filemtime($this->directory . '/email-sent') + $this->emailSnooze < time() // @ - file may not exist
-			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
-		) {
-			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
+		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL), TRUE)) {
+			$this->sendEmail($message);
 		}
 
 		return $exceptionFile;
@@ -129,6 +125,21 @@ class Logger implements ILogger
 		}
 
 		return $file;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return void
+	 */
+	protected function sendEmail($message)
+	{
+		if ($this->email && $this->mailer
+			&& @filemtime($this->directory . '/email-sent') + $this->emailSnooze < time() // @ - file may not exist
+			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
+		) {
+			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
+		}
 	}
 
 
