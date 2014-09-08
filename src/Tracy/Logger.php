@@ -48,22 +48,22 @@ class Logger implements ILogger
 	 * @param  int   one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
 	 * @return string logged error filename
 	 */
-	public function log($value, $priority = self::INFO)
+	public function log($message, $priority = self::INFO)
 	{
 		if (!is_dir($this->directory)) {
 			throw new \RuntimeException("Directory '$this->directory' is not found or is not directory.");
 		}
 
-		$exceptionFile = $value instanceof \Exception ? $this->logException($value) : NULL;
-		$message = $this->formatMessage($value, $exceptionFile);
+		$exceptionFile = $message instanceof \Exception ? $this->logException($message) : NULL;
+		$line = $this->formatMessage($message, $exceptionFile);
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
 
-		if (!@file_put_contents($file, $message . PHP_EOL, FILE_APPEND | LOCK_EX)) {
+		if (!@file_put_contents($file, $line . PHP_EOL, FILE_APPEND | LOCK_EX)) {
 			throw new \RuntimeException("Unable to write to log file '$file'. Is directory writable?");
 		}
 
 		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL), TRUE)) {
-			$this->sendEmail($message);
+			$this->sendEmail($line);
 		}
 
 		return $exceptionFile;
@@ -73,27 +73,27 @@ class Logger implements ILogger
 	/**
 	 * @return string
 	 */
-	protected function formatMessage($value, $exceptionFile = NULL)
+	protected function formatMessage($message, $exceptionFile = NULL)
 	{
-		if ($value instanceof \Exception) {
-			while ($value) {
-				$tmp[] = ($value instanceof \ErrorException ?
-					'Fatal error: ' . $value->getMessage()
-					: get_class($value) . ': ' . $value->getMessage()
-				) . ' in ' . $value->getFile() . ':' . $value->getLine();
-				$value = $value->getPrevious();
+		if ($message instanceof \Exception) {
+			while ($message) {
+				$tmp[] = ($message instanceof \ErrorException ?
+					'Fatal error: ' . $message->getMessage()
+					: get_class($message) . ': ' . $message->getMessage()
+				) . ' in ' . $message->getFile() . ':' . $message->getLine();
+				$message = $message->getPrevious();
 			}
-			$value = implode($tmp, "\ncaused by ");
+			$message = implode($tmp, "\ncaused by ");
 
-		} elseif (!is_string($value)) {
-			$value = Dumper::toText($value);
+		} elseif (!is_string($message)) {
+			$message = Dumper::toText($message);
 		}
 
-		$value = trim(preg_replace('#\s*\r?\n\s*#', ' ', $value));
+		$message = trim(preg_replace('#\s*\r?\n\s*#', ' ', $message));
 
 		return implode(' ', array(
 			@date('[Y-m-d H-i-s]'),
-			$value,
+			$message,
 			' @  ' . Helpers::getSource(),
 			$exceptionFile ? ' @@  ' . basename($exceptionFile) : NULL
 		));
