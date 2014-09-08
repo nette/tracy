@@ -109,7 +109,7 @@
 			removeClass(Panel.FLOAT).
 			addClass(Panel.PEEK).
 			hide();
-		document.cookie = this.id + '=; path=/'; // delete position
+		localStorage.removeItem(this.id); // delete position
 	};
 
 	Panel.prototype.toWindow = function() {
@@ -142,7 +142,7 @@
 			}
 		});
 
-		document.cookie = this.id + '=window; path=/'; // save position
+		localStorage.setItem(this.id, JSON.stringify({window: true}));
 		this.elem.hide().
 			removeClass(Panel.FLOAT).
 			removeClass(Panel.PEEK).
@@ -158,7 +158,7 @@
 			var pos = this.elem.position();
 			if (pos.width) { // is visible?
 				this.elem.position({right: pos.right, bottom: pos.bottom});
-				document.cookie = this.id + '=' + pos.right + ':' + pos.bottom + '; path=/';
+				localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom}));
 			}
 		}
 	};
@@ -171,14 +171,14 @@
 	};
 
 	Panel.prototype.restorePosition = function() {
-		var m = document.cookie.match(new RegExp(this.id + '=(window|(-?[0-9]+):(-?[0-9]+))'));
-		if (m && m[2]) {
-			this.elem.position({right: m[2], bottom: m[3]});
-			this.toFloat();
-		} else if (m) {
+		var pos = JSON.parse(localStorage.getItem(this.id));
+		if (!pos) {
+			this.elem.addClass(Panel.PEEK);
+		} else if (pos.window) {
 			this.toWindow();
 		} else {
-			this.elem.addClass(Panel.PEEK);
+			this.elem.position(pos);
+			this.toFloat();
 		}
 	};
 
@@ -266,13 +266,13 @@
 
 	Bar.prototype.savePosition = function() {
 		var pos = $('#' + this.id).position();
-		document.cookie = this.id + '=' + pos.right + ':' + pos.bottom + '; path=/';
+		localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom}));
 	};
 
 	Bar.prototype.restorePosition = function() {
-		var m = document.cookie.match(new RegExp(this.id + '=(-?[0-9]+):(-?[0-9]+)'));
-		if (m) {
-			$('#' + this.id).position({right: m[1], bottom: m[2]});
+		var pos = JSON.parse(localStorage.getItem(this.id));
+		if (pos) {
+			$('#' + this.id).position(pos);
 		}
 	};
 
