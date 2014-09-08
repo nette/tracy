@@ -55,7 +55,7 @@ class Logger implements ILogger
 		}
 
 		$exceptionFile = $value instanceof \Exception ? $this->logException($value) : NULL;
-		$message = $this->formatMessage($value);
+		$message = $this->formatMessage($value, $exceptionFile);
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
 
 		if (!@file_put_contents($file, $message . PHP_EOL, FILE_APPEND | LOCK_EX)) {
