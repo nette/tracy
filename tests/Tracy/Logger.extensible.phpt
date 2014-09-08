@@ -20,9 +20,13 @@ class CustomLogger extends Logger
 	public function log($value, $priority = self::INFO)
 	{
 		$exceptionFile = $value instanceof \Exception ? $this->logException($value) : NULL;
-		$message = $this->formatMessage($value);
 
-		$this->collector[] = array($priority, $message, $exceptionFile);
+		$this->collector[] = array(
+			$priority,
+			$this->formatMessage($value),
+			$this->formatLogLine($value, $exceptionFile),
+			$exceptionFile
+		);
 
 		return $exceptionFile;
 	}
@@ -36,8 +40,9 @@ test(function() {
 	$logger->log(new Exception('First'), 'a');
 
 	Assert::match('a', $logger->collector[0][0]);
-	Assert::match('[%a%] Exception: First in %a%:%d% %A%', $logger->collector[0][1]);
-	Assert::match('%a%%ds%exception-%a%.html', $logger->collector[0][2]);
+	Assert::match('Exception: First in %a%:%d%', $logger->collector[0][1]);
+	Assert::match('[%a%] Exception: First in %a%:%d%  @  CLI: %a%  @@  exception-%a%.html', $logger->collector[0][2]);
+	Assert::match('%a%%ds%exception-%a%.html', $logger->collector[0][3]);
 });
 
 test(function() {
@@ -45,6 +50,7 @@ test(function() {
 	$logger->log('message', 'b');
 
 	Assert::match('b', $logger->collector[0][0]);
-	Assert::match('[%a%] message %A%', $logger->collector[0][1]);
-	Assert::null($logger->collector[0][2]);
+	Assert::match('message', $logger->collector[0][1]);
+	Assert::match('[%a%] message  @  CLI: %a%', $logger->collector[0][2]);
+	Assert::null($logger->collector[0][3]);
 });

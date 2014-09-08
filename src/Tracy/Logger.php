@@ -55,7 +55,7 @@ class Logger implements ILogger
 		}
 
 		$exceptionFile = $message instanceof \Exception ? $this->logException($message) : NULL;
-		$line = $this->formatMessage($message, $exceptionFile);
+		$line = $this->formatLogLine($message, $exceptionFile);
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
 
 		if (!@file_put_contents($file, $line . PHP_EOL, FILE_APPEND | LOCK_EX)) {
@@ -73,7 +73,7 @@ class Logger implements ILogger
 	/**
 	 * @return string
 	 */
-	protected function formatMessage($message, $exceptionFile = NULL)
+	protected function formatMessage($message)
 	{
 		if ($message instanceof \Exception) {
 			while ($message) {
@@ -89,11 +89,18 @@ class Logger implements ILogger
 			$message = Dumper::toText($message);
 		}
 
-		$message = trim(preg_replace('#\s*\r?\n\s*#', ' ', $message));
+		return trim($message);
+	}
 
+
+	/**
+	 * @return string
+	 */
+	protected function formatLogLine($message, $exceptionFile = NULL)
+	{
 		return implode(' ', array(
 			@date('[Y-m-d H-i-s]'),
-			$message,
+			preg_replace('#\s*\r?\n\s*#', ' ', $this->formatMessage($message)),
 			' @  ' . Helpers::getSource(),
 			$exceptionFile ? ' @@  ' . basename($exceptionFile) : NULL
 		));
