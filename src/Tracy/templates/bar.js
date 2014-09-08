@@ -131,7 +131,7 @@
 		doc.title = this.elem.find('h1').dom().innerHTML;
 
 		var _this = this;
-		$([win]).bind('unload', function() {
+		$([win]).bind('beforeunload', function() {
 			_this.toPeek();
 			win.close(); // forces closing, can be invoked by F5
 		});
