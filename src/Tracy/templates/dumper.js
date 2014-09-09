@@ -11,8 +11,8 @@
 		if (repository) {
 			Array.prototype.forEach.call(document.querySelectorAll('.tracy-dump[data-tracy-dump]'), function(el) {
 				try {
-					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, Tracy.hasClass(el, 'tracy-collapsed')));
-					Tracy.removeClass(el, 'tracy-collapsed');
+					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
+					el.classList.remove('tracy-collapsed');
 					el.removeAttribute('data-tracy-dump');
 				} catch (e) {
 					if (!(e instanceof UnknownEntityException)) {
@@ -42,12 +42,12 @@
 
 			// enables <a class="tracy-toggle" href="#"> or <span data-ref="#"> toggling
 			if (link = Tracy.closest(e.target, '.tracy-toggle')) {
-				var collapsed = Tracy.hasClass(link, 'tracy-collapsed'),
+				var collapsed = link.classList.contains('tracy-collapsed'),
 					ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
 					dest = ref && ref !== '#' ? document.getElementById(ref.substring(1)) : link.nextElementSibling;
 
-				Tracy[collapsed ? 'removeClass' : 'addClass'](link, 'tracy-collapsed');
-				Tracy[collapsed ? 'removeClass' : 'addClass'](dest, 'tracy-collapsed');
+				link.classList.toggle('tracy-collapsed', !collapsed);
+				dest.classList.toggle('tracy-collapsed', !collapsed);
 				e.preventDefault();
 			}
 		});

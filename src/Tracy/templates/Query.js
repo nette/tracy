@@ -52,18 +52,18 @@
 
 	Query.prototype.addClass = function(className) {
 		return this.each(function() {
-			return Tracy.addClass(this, className);
+			this.classList.add(className);
 		});
 	};
 
 	Query.prototype.removeClass = function(className) {
 		return this.each(function() {
-			Tracy.removeClass(this, className);
+			this.classList.remove(className);
 		});
 	};
 
 	Query.prototype.hasClass = function(className) {
-		return Tracy.hasClass(this[0], className);
+		return this[0] && this[0].classList && this[0].classList.contains(className);
 	};
 
 	Query.prototype.show = function() {

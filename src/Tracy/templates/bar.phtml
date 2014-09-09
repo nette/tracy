@@ -66,8 +66,8 @@ use Tracy;
 <script>
 (function() {
 	var debug = document.body.appendChild(document.createElement('div'));
-	if (!document.addEventListener) {
-		debug.innerHTML = '<div style="position:fixed;right:0;bottom:0;z-index:30000;font:normal normal 12px/21px sans-serif;color:#333;background:#EDEAE0;border:1px solid #ccc;padding:.2em">Warning: Tracy requires IE 9+<\/div>';
+	if (!document.documentElement.classList) {
+		debug.innerHTML = '<div style="position:fixed;right:0;bottom:0;z-index:30000;font:normal normal 12px/21px sans-serif;color:#333;background:#EDEAE0;border:1px solid #ccc;padding:.2em">Warning: Tracy requires IE 10+<\/div>';
 		return;
 	}
 
