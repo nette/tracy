@@ -123,12 +123,12 @@
 		}
 
 		var doc = win.document;
-		doc.write('<!DOCTYPE html><meta charset="utf-8"><style>' + $('#tracy-debug-style').dom().innerHTML + '<\/style><script>' + $('#tracy-debug-script').dom().innerHTML + '<\/script><body id="tracy-debug">');
-		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.id + '">' + this.elem.dom().innerHTML + '<\/div>';
+		doc.write('<!DOCTYPE html><meta charset="utf-8"><style>' + $('#tracy-debug-style')[0].innerHTML + '<\/style><script>' + $('#tracy-debug-script')[0].innerHTML + '<\/script><body id="tracy-debug">');
+		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.id + '">' + this.elem[0].innerHTML + '<\/div>';
 		var winPanel = win.Tracy.Debug.getPanel(this.id);
 		win.Tracy.Dumper.init();
 		winPanel.reposition();
-		doc.title = this.elem.find('h1').dom().innerHTML;
+		doc.title = this.elem.find('h1')[0].innerHTML;
 
 		var _this = this;
 		$([win]).bind('beforeunload', function() {

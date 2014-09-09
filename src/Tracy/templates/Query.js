@@ -27,10 +27,6 @@
 		return new Query(this[0] && selector ? this[0].querySelectorAll(selector) : []);
 	};
 
-	Query.prototype.dom = function() {
-		return this[0];
-	};
-
 	Query.prototype.each = function(callback) {
 		for (var i = 0; i < this.length; i++) {
 			if (callback.apply(this[i]) === false) { break; }
@@ -38,7 +34,6 @@
 		return this;
 	};
 
-	// event attach
 	Query.prototype.bind = function(event, handler) {
 		if (event === 'mouseenter' || event === 'mouseleave') { // simulate mouseenter & mouseleave using mouseover & mouseout
 			var old = handler;
@@ -55,21 +50,18 @@
 		});
 	};
 
-	// adds class to element
 	Query.prototype.addClass = function(className) {
 		return this.each(function() {
 			return Tracy.addClass(this, className);
 		});
 	};
 
-	// removes class from element
 	Query.prototype.removeClass = function(className) {
 		return this.each(function() {
 			Tracy.removeClass(this, className);
 		});
 	};
 
-	// tests whether element has given class
 	Query.prototype.hasClass = function(className) {
 		return Tracy.hasClass(this[0], className);
 	};
@@ -79,7 +71,7 @@
 		return this.each(function() {
 			var tag = this.tagName, el;
 			if (!Query.displays[tag]) {
-				Query.displays[tag] = (new Query(document.body.appendChild(el = document.createElement(tag)))).css('display');
+				Query.displays[tag] = document.defaultView.getComputedStyle(document.body.appendChild(el = document.createElement(tag)), null).getPropertyValue('display');
 				document.body.removeChild(el);
 			}
 			this.style.display = Query.displays[tag];
@@ -92,28 +84,10 @@
 		});
 	};
 
-	Query.prototype.css = function(property) {
-		if (this[0]) {
-			return document.defaultView.getComputedStyle(this[0], null).getPropertyValue(property);
-		}
-	};
-
 	Query.prototype.data = function() {
 		if (this[0]) {
 			return this[0].tracy ? this[0].tracy : this[0].tracy = {};
 		}
-	};
-
-	Query.prototype.closest = function(selector) {
-		return Tracy.closest(this[0], selector);
-	};
-
-	Query.prototype.prev = function(selector) {
-		return Tracy.closest(this[0] && this[0].previousElementSibling, selector, 'previousElementSibling');
-	};
-
-	Query.prototype.next = function(selector) {
-		return Tracy.closest(this[0] && this[0].nextElementSibling, selector, 'nextElementSibling');
 	};
 
 	// returns total offset for element
