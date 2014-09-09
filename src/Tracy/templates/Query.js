@@ -77,9 +77,10 @@
 	Query.prototype.show = function() {
 		Query.displays = Query.displays || {};
 		return this.each(function() {
-			var tag = this.tagName;
+			var tag = this.tagName, el;
 			if (!Query.displays[tag]) {
-				Query.displays[tag] = (new Query(document.body.appendChild(document.createElement(tag)))).css('display');
+				Query.displays[tag] = (new Query(document.body.appendChild(el = document.createElement(tag)))).css('display');
+				document.body.removeChild(el);
 			}
 			this.style.display = Query.displays[tag];
 		});
