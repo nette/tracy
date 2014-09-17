@@ -56,6 +56,7 @@ class Dumper
 		'Closure' => 'Tracy\Dumper::exportClosure',
 		'SplFileInfo' => 'Tracy\Dumper::exportSplFileInfo',
 		'SplObjectStorage' => 'Tracy\Dumper::exportSplObjectStorage',
+		'__PHP_Incomplete_Class' => 'Tracy\Dumper::exportPhpIncompleteClass',
 	);
 
 	/** @var array  */
@@ -465,6 +466,27 @@ class Dumper
 			$res[] = array('object' => $item, 'data' => $obj[$item]);
 		}
 		return $res;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private static function exportPhpIncompleteClass(\__PHP_Incomplete_Class $obj)
+	{
+		$info = array('className' => NULL, 'private' => array(), 'protected' => array(), 'public' => array());
+		foreach ((array) $obj as $name => $value) {
+			if ($name === '__PHP_Incomplete_Class_Name') {
+				$info['className'] = $value;
+			} elseif (preg_match('#^\x0\*\x0(.+)\z#', $name, $m)) {
+				$info['protected'][$m[1]] = $value;
+			} elseif (preg_match('#^\x0(.+)\x0(.+)\z#', $name, $m)) {
+				$info['private'][$m[1] . '::$' . $m[2]] = $value;
+			} else {
+				$info['public'][$name] = $value;
+			}
+		}
+		return $info;
 	}
 
 
