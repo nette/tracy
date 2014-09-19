@@ -96,6 +96,14 @@ $counter = 0;
 			} ?>
 
 			<div class="panel">
+				<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed">Exception</a></h2>
+			
+				<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
+					<?php echo Dumper::toHtml($ex) ?>
+				</div>
+			</div>
+
+			<div class="panel">
 			<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle<?php echo ($collapsed = $expanded !== NULL) ? ' tracy-collapsed' : '' ?>">Source file</a></h2>
 
 			<div id="tracyBsPnl<?php echo $counter ?>" class="<?php echo $collapsed ? 'tracy-collapsed ' : '' ?>inner">
