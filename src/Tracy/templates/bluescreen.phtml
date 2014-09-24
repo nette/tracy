@@ -348,7 +348,6 @@ $counter = 0;
 		document.getElementById('tracyBluescreenError').innerHTML += '<div id=tracyBluescreenIEWarning>Warning: Tracy requires IE 10+<\/div>';
 		return;
 	}
-	<?php readfile(__DIR__ . '/Tracy.js') ?>
 	<?php readfile(__DIR__ . '/dumper.js') ?>
 	<?php readfile(__DIR__ . '/bluescreen.js') ?>
 })();

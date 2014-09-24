@@ -3,6 +3,7 @@
  */
 
 (function(){
+	Tracy = window.Tracy || {};
 
 	var Query = Tracy.Query = function(selector) {
 		if (typeof selector === 'string') {
