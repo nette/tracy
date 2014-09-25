@@ -304,7 +304,7 @@ class Debugger
 		} elseif (($severity & error_reporting()) !== $severity) {
 			return FALSE; // calls normal error handler to fill-in error_get_last()
 
-		} elseif (($severity & self::$logSeverity) === $severity) {
+		} elseif (self::$productionMode && ($severity & self::$logSeverity) === $severity) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			$e->context = $context;
 			self::log($e, self::ERROR);
