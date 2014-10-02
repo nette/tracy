@@ -6,12 +6,20 @@ php:
     - 5.6
     - hhvm
 
+env:
+    - PHP_BIN=php
+    - PHP_BIN=php-cgi
+
 matrix:
     allow_failures:
         - php: hhvm
 
+    exclude:
+        - php: hhvm
+          env: PHP_BIN=php-cgi
+
 script:
-    - vendor/bin/tester tests -s
+    - vendor/bin/tester -p $PHP_BIN tests -s
     - php code-checker/src/code-checker.php -d src
 
 after_failure:
