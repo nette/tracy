@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger error logging.
  * @exitCode   255
  * @httpCode   500
- * @outputMatch %A%OK!
+ * @outputMatch %A?%OK!
  */
 
 use Tracy\Debugger,

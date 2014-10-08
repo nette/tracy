@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger exception in production & console mode.
  * @exitCode   254
  * @httpCode   500
- * @outputMatch ERROR:%A%
+ * @outputMatch 
  */
 
 use Tracy\Debugger,
