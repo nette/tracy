@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger::enable() error.
  * @exitCode   254
  * @httpCode   500
- * @outputMatch ERROR: application encountered an error and can not continue.
+ * @outputMatch 
  */
 
 use Tracy\Debugger;
