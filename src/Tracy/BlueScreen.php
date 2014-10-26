@@ -24,7 +24,15 @@ class BlueScreen
 	private $panels = array();
 
 	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
-	public $collapsePaths = array(__DIR__);
+	public $collapsePaths = array();
+
+
+	public function __construct()
+	{
+		$this->collapsePaths[] = preg_match('#(.+/vendor)/tracy/tracy/src/Tracy$#', strtr(__DIR__, '\\', '/'), $m)
+			? $m[1]
+			: __DIR__;
+	}
 
 
 	/**
