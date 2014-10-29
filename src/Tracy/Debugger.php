@@ -228,18 +228,17 @@ class Debugger
 			}
 		}
 
-		$logMsg = 'Unable to log error. Check if directory is writable and path is absolute.';
 		if (self::$productionMode) {
 			try {
 				self::log($exception, self::EXCEPTION);
 			} catch (\Exception $e) {
 			}
 
-			$error = isset($e) ? $logMsg : NULL;
+			$error = isset($e) ? "Unable to log error.\n" : NULL;
 			if (self::isHtmlMode()) {
 				require __DIR__ . '/templates/error.phtml';
 			} elseif (PHP_SAPI === 'cli') {
-				fwrite(STDERR, "ERROR: application encountered an error and can not continue.\n$error\n");
+				fwrite(STDERR, "ERROR: application encountered an error and can not continue.\n$error");
 			}
 
 		} elseif (!connection_aborted() && self::isHtmlMode()) {
@@ -257,7 +256,7 @@ class Debugger
 					exec(self::$browser . ' ' . escapeshellarg($file));
 				}
 			} catch (\Exception $e) {
-				echo "$exception\n$logMsg {$e->getMessage()}\n";
+				echo "$exception\nUnable to log error: {$e->getMessage()}\n";
 			}
 		}
 
@@ -492,9 +491,9 @@ class Debugger
 
 
 	/**
-	 * Logs message or exception to file.
+	 * Logs message or exception.
 	 * @param  string|Exception
-	 * @return string logged error filename
+	 * @return mixed
 	 */
 	public static function log($message, $priority = ILogger::INFO)
 	{
