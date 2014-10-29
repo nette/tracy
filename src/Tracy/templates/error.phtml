@@ -2,7 +2,7 @@
 
 /**
  * Default error page.
- * @param  string $error
+ * @param  bool $logged
  */
 
 namespace Tracy;
@@ -27,5 +27,5 @@ namespace Tracy;
 	<p>We're sorry! The server encountered an internal error and
 	was unable to complete your request. Please try again later.</p>
 
-	<p><small>error 500<?php if (!empty($error)) echo "<br>Tracy says: ", htmlspecialchars($error) ?></small></p>
+	<p><small>error 500<?php if (!$logged): ?><br>Tracy is unable to log error.<?php endif ?></small></p>
 </div>
