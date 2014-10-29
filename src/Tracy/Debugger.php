@@ -306,7 +306,9 @@ class Debugger
 		} elseif (self::$productionMode && ($severity & self::$logSeverity) === $severity) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			$e->context = $context;
-			self::log($e, self::ERROR);
+			try {
+				self::log($e, self::ERROR);
+			} catch (\Exception $foo) {}
 			return NULL;
 
 		} elseif (!self::$productionMode && !isset($_GET['_tracy_skip_error'])
@@ -325,7 +327,9 @@ class Debugger
 			return NULL;
 
 		} elseif (self::$productionMode) {
-			self::log("$message in $file:$line", self::ERROR);
+			try {
+				self::log("$message in $file:$line", self::ERROR);
+			} catch (\Exception $foo) {}
 			return NULL;
 
 		} else {
@@ -497,9 +501,7 @@ class Debugger
 	 */
 	public static function log($message, $priority = ILogger::INFO)
 	{
-		if (self::getLogger()->directory) {
-			return self::getLogger()->log($message, $priority);
-		}
+		return self::getLogger()->log($message, $priority);
 	}
 
 
