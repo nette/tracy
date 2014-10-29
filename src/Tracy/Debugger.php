@@ -498,9 +498,7 @@ class Debugger
 	 */
 	public static function log($message, $priority = ILogger::INFO)
 	{
-		if (self::getLogger()->directory) {
-			return self::getLogger()->log($message, $priority);
-		}
+		return self::getLogger()->log($message, $priority);
 	}
 
 

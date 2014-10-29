@@ -50,6 +50,10 @@ class Logger implements ILogger
 	 */
 	public function log($message, $priority = self::INFO)
 	{
+		if (empty($this->directory)) {
+			return NULL;
+		}
+
 		if (!is_dir($this->directory)) {
 			throw new \RuntimeException("Directory '$this->directory' is not found or is not directory.");
 		}
