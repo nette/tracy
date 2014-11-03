@@ -31,6 +31,9 @@ class Debugger
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
 
+	/** @var bool enable xdebug backtrace (if xdebug is present) */
+	public static $xdebugBacktrace = TRUE;
+
 	/** @var bool {@link Debugger::enable()} */
 	private static $enabled = FALSE;
 
@@ -196,11 +199,13 @@ class Debugger
 
 		$error = error_get_last();
 		if (in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR), TRUE)) {
-			self::exceptionHandler(
-				Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])),
-				FALSE
-			);
+			$exception = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
 
+			if (self::$xdebugBacktrace) {
+				$exception = Helpers::fixStack($exception);
+			}
+
+			self::exceptionHandler($exception, FALSE);
 		} elseif (!connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
 			self::getBar()->render();
 		}
