@@ -245,7 +245,8 @@ class Debugger
 			self::getBlueScreen()->render($exception);
 			self::getBar()->render();
 
-		} elseif (connection_aborted() || !self::fireLog($exception)) {
+		} else {
+			self::fireLog($exception);
 			try {
 				$file = self::log($exception, self::EXCEPTION);
 				if ($file && !headers_sent()) {
