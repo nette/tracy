@@ -5,14 +5,16 @@
 (function() {
 	var COLLAPSE_COUNT = 7;
 
+	Tracy = window.Tracy || {};
+
 	Tracy.Dumper = Tracy.Dumper || {};
 
 	Tracy.Dumper.init = function(repository) {
 		if (repository) {
 			Array.prototype.forEach.call(document.querySelectorAll('.tracy-dump[data-tracy-dump]'), function(el) {
 				try {
-					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, Tracy.hasClass(el, 'tracy-collapsed')));
-					Tracy.removeClass(el, 'tracy-collapsed');
+					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
+					el.classList.remove('tracy-collapsed');
 					el.removeAttribute('data-tracy-dump');
 				} catch (e) {
 					if (!(e instanceof UnknownEntityException)) {
@@ -31,7 +33,7 @@
 			var link;
 
 			// enables <span data-tracy-href=""> & ctrl key
-			if (e.ctrlKey && (link = Tracy.closest(e.target, '[data-tracy-href]'))) {
+			if (e.ctrlKey && (link = closest(e.target, '[data-tracy-href]'))) {
 				location.href = link.getAttribute('data-tracy-href');
 				return false;
 			}
@@ -41,13 +43,13 @@
 			}
 
 			// enables <a class="tracy-toggle" href="#"> or <span data-ref="#"> toggling
-			if (link = Tracy.closest(e.target, '.tracy-toggle')) {
-				var collapsed = Tracy.hasClass(link, 'tracy-collapsed'),
+			if (link = closest(e.target, '.tracy-toggle')) {
+				var collapsed = link.classList.contains('tracy-collapsed'),
 					ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
 					dest = ref && ref !== '#' ? document.getElementById(ref.substring(1)) : link.nextElementSibling;
 
-				Tracy[collapsed ? 'removeClass' : 'addClass'](link, 'tracy-collapsed');
-				Tracy[collapsed ? 'removeClass' : 'addClass'](dest, 'tracy-collapsed');
+				link.classList.toggle('tracy-collapsed', !collapsed);
+				dest.classList.toggle('tracy-collapsed', !collapsed);
 				e.preventDefault();
 			}
 		});
@@ -168,5 +170,15 @@
 	};
 
 	var UnknownEntityException = function() {};
+
+
+	// finds closing maching element
+	var closest = function(el, selector, func) {
+		var matches = el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector;
+		while (el && selector && !(el.nodeType === 1 && matches.call(el, selector))) {
+			el = el[func || 'parentNode'];
+		}
+		return el;
+	};
 
 })();
