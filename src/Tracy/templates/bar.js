@@ -113,11 +113,11 @@
 	};
 
 	Panel.prototype.toWindow = function() {
-		var offset = this.elem.offset();
-		offset.left += typeof window.screenLeft === 'number' ? window.screenLeft : (window.screenX + 10);
-		offset.top += typeof window.screenTop === 'number' ? window.screenTop : (window.screenY + 50);
+		var pos = this.elem.position();
+		pos.left += typeof window.screenLeft === 'number' ? window.screenLeft : (window.screenX + 10);
+		pos.top += typeof window.screenTop === 'number' ? window.screenTop : (window.screenY + 50);
 
-		var win = window.open('', this.id.replace(/-/g, '_'), 'left='+offset.left+',top='+offset.top+',width='+offset.width+',height='+(offset.height+15)+',resizable=yes,scrollbars=yes');
+		var win = window.open('', this.id.replace(/-/g, '_'), 'left='+pos.left+',top='+pos.top+',width='+(pos.width+5)+',height='+(pos.height+5)+',resizable=yes,scrollbars=yes');
 		if (!win) {
 			return;
 		}
@@ -127,7 +127,6 @@
 		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.id + '">' + this.elem[0].innerHTML + '<\/div>';
 		var winPanel = win.Tracy.Debug.getPanel(this.id);
 		win.Tracy.Dumper.init();
-		winPanel.reposition();
 		if (this.elem.find('h1').length) {
 			doc.title = this.elem.find('h1')[0].innerHTML;
 		}
@@ -153,10 +152,7 @@
 	};
 
 	Panel.prototype.reposition = function() {
-		if (this.is(Panel.WINDOW)) {
-			var dE = document.documentElement;
-			window.resizeBy(dE.scrollWidth - dE.clientWidth, dE.scrollHeight - dE.clientHeight);
-		} else {
+		if (!this.is(Panel.WINDOW)) {
 			var pos = this.elem.position();
 			if (pos.width) { // is visible?
 				this.elem.position({right: pos.right, bottom: pos.bottom});
