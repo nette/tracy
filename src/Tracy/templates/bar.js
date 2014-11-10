@@ -128,7 +128,6 @@
 		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.id + '">' + this.elem[0].innerHTML + '<\/div>';
 		var winPanel = win.Tracy.Debug.getPanel(this.id);
 		win.Tracy.Dumper.init();
-		winPanel.reposition();
 		if (this.elem.find('h1').length) {
 			doc.title = this.elem.find('h1')[0].innerHTML;
 		}
@@ -154,10 +153,7 @@
 	};
 
 	Panel.prototype.reposition = function() {
-		if (this.is(Panel.WINDOW)) {
-			var dE = document.documentElement;
-			window.resizeBy(dE.scrollWidth - dE.clientWidth, dE.scrollHeight - dE.clientHeight);
-		} else {
+		if (!this.is(Panel.WINDOW)) {
 			var pos = this.elem.position();
 			if (pos.width) { // is visible?
 				this.elem.position({right: pos.right, bottom: pos.bottom});
