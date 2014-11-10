@@ -128,7 +128,9 @@
 		var winPanel = win.Tracy.Debug.getPanel(this.id);
 		win.Tracy.Dumper.init();
 		winPanel.reposition();
-		doc.title = this.elem.find('h1')[0].innerHTML;
+		if (this.elem.find('h1').length) {
+			doc.title = this.elem.find('h1')[0].innerHTML;
+		}
 
 		var _this = this;
 		$([win]).bind('beforeunload', function() {
