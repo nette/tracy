@@ -117,7 +117,8 @@
 		offset.left += typeof window.screenLeft === 'number' ? window.screenLeft : (window.screenX + 10);
 		offset.top += typeof window.screenTop === 'number' ? window.screenTop : (window.screenY + 50);
 
-		var win = window.open('', this.id.replace(/-/g, '_'), 'left='+offset.left+',top='+offset.top+',width='+offset.width+',height='+(offset.height+15)+',resizable=yes,scrollbars=yes');
+		var win = window.open('', this.id.replace(/-/g, '_'), 'left=' + offset.left + ',top=' + offset.top
+			+ ',width=' + this.elem[0].offsetWidth + ',height=' + (this.elem[0].offsetHeight + 15) + ',resizable=yes,scrollbars=yes');
 		if (!win) {
 			return;
 		}
