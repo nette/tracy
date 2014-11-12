@@ -63,8 +63,17 @@ class OutputDebugger
 	{
 		$res = '<style>code, pre {white-space:nowrap} a {text-decoration:none} pre {color:gray;display:inline} big {color:red}</style><code>';
 		foreach ($this->list as $item) {
+			$stack = array();
+			foreach (array_slice($item[3], 1) as $t) {
+				$t += array('class' => '', 'type' => '', 'function' => '');
+				$stack[] = "$t[class]$t[type]$t[function]()"
+					. (isset($t['file'], $t['line']) ? ' in ' . basename($t['file']) . ":$t[line]" : '');
+			}
+
 			$res .= Helpers::editorLink($item[0], $item[1]) . ' '
-				. str_replace(self::BOM, '<big>BOM</big>', Dumper::toHtml($item[2])) . "<br>\n";
+				. '<span title="' . htmlspecialchars(implode("\n", $stack)) . '">'
+				. str_replace(self::BOM, '<big>BOM</big>', Dumper::toHtml($item[2]))
+				. "</span><br>\n";
 		}
 		return $res . '</code>';
 	}
