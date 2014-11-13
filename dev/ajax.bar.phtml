@@ -1,0 +1,40 @@
+<?php
+/**
+ * @var string  $id
+ * @var string  $json
+ */
+?>
+<script>
+
+	var Milo = Milo || {};
+
+	(function() {
+		if (typeof Milo.AjaxPanel === 'undefined') {
+			Milo.AjaxPanel = {};
+
+			var $ = Tracy.Query.factory;
+
+			$('div.milo-ajax-panel .ajax').bind('click', function() {
+				var el = $(this.parentNode).find('.payload')[0];
+				Tracy.Async.get(
+					this.getAttribute('data-id'),
+					this.getAttribute('data-parameters'),
+					function (responseText) {
+						el.innerHTML = responseText;
+					},
+					function (errorMessage) {
+						console.log(errorMessage);
+					}
+				);
+
+				return false;
+			});
+		}
+	})();
+
+</script>
+<h1>AJAX Panel</h1>
+<div class="milo-ajax-panel">
+	<a class="ajax" href="#" data-id="<?php echo $id ?>" data-parameters="<?php echo $json ?>">Refresh</a><br>
+	<div class="payload">(payload)</div>
+</div>

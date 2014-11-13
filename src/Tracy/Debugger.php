@@ -106,6 +106,11 @@ class Debugger
 	/** @var ILogger */
 	private static $fireLogger;
 
+	/********************* asynchronous calls ************/
+
+	/** @var IAsyncHandler[] */
+	private static $asyncHandlers = array();
+
 
 	/**
 	 * Static class - cannot be instantiated.
@@ -420,6 +425,44 @@ class Debugger
 			self::$fireLogger = new FireLogger;
 		}
 		return self::$fireLogger;
+	}
+
+
+	/**
+	 * @param  IAsyncHandler
+	 * @param  string
+	 */
+	public static function addAsyncHandler(IAsyncHandler $handler, $id = NULL)
+	{
+		if ($id === NULL) {
+			$c = 0;
+			do {
+				$id = get_class($handler) . ($c++ ? "-$c" : '');
+			} while (isset(self::$asyncHandlers[$id]));
+		}
+
+		if (self::$enabled && !self::$productionMode && isset($_SERVER['HTTP_X_TRACY_ASYNC']) && $_SERVER['HTTP_X_TRACY_ASYNC'] === "$id") {
+			try {
+				set_error_handler(function($severity, $message, $file, $line){
+					restore_error_handler();
+					throw new \ErrorException($message, 0, $severity, $file, $line);
+				});
+				$result = json_encode($handler->handleAsyncCall(json_decode($_SERVER['HTTP_X_TRACY_ASYNC_PARAMETERS'], TRUE)));
+				restore_error_handler();
+
+				header('Content-Type: application/json; charset=utf-8');
+				echo $result;
+
+			} catch (\Exception $e) {
+				header('HTTP/1.1 500 Internal Server Error');
+				header('Content-Type: text/plain; charset=utf-8');
+				echo $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine();
+			}
+			die();
+		}
+
+		self::$asyncHandlers["$id"] = $handler;
+		$handler->setHandlerId($id);
 	}
 
 
