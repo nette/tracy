@@ -248,12 +248,12 @@ html.tracy-js #tracyBluescreen .tracy-toggle.tracy-collapsed {
 }
 
 #tracyBluescreen .tracy-toggle:after {
-	content: " ▼";
+	content: "\00a0▼";
 	opacity: .4;
 }
 
 #tracyBluescreen .tracy-toggle.tracy-collapsed:after {
-	content: " ►";
+	content: "\00a0►";
 	opacity: .4;
 }
 
