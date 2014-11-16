@@ -16,12 +16,12 @@
 }
 
 .tracy-toggle:after {
-	content: " ▼";
+	content: "\00a0▼";
 	opacity: .4;
 }
 
 .tracy-toggle.tracy-collapsed:after {
-	content: " ►";
+	content: "\00a0►";
 }
 
 
