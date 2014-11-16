@@ -35,7 +35,7 @@ $counter = 0;
 	?> -->
 
 	<style type="text/css" class="tracy-debug">
-	<?php echo preg_replace('#\s+#', ' ', file_get_contents(__DIR__ . '/bluescreen.css')) ?>
+	<?php echo preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . '/bluescreen.css')) ?>
 	</style>
 	<script>document.documentElement.className+=' tracy-js'</script>
 </head>
