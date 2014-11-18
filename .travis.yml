@@ -20,7 +20,7 @@ matrix:
 
 script:
     - vendor/bin/tester -p $PHP_BIN tests -s
-    - php code-checker/src/code-checker.php -d src
+    - php code-checker/src/code-checker.php
 
 after_failure:
     # Print *.actual content
