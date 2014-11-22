@@ -23,6 +23,9 @@ class Bar
 	/** @var IBarPanel[] */
 	private $panels = array();
 
+	/** @var bool */
+	private $enabled = TRUE;
+
 
 	/**
 	 * Add custom panel.
@@ -55,11 +58,36 @@ class Bar
 
 
 	/**
+	 * Disables Bar output.
+	 * @return self
+	 */
+	public function disable()
+	{
+		$this->enabled = FALSE;
+		return $this;
+	}
+
+	/**
+	 * Enables Bar output.
+	 * @return self
+	 */
+	public function enable()
+	{
+		$this->enabled = TRUE;
+		return $this;
+	}
+
+
+	/**
 	 * Renders debug bar.
 	 * @return void
 	 */
 	public function render()
 	{
+		if (!$this->enabled) {
+			return;
+		}
+
 		$obLevel = ob_get_level();
 		$panels = array();
 		foreach ($this->panels as $id => $panel) {
