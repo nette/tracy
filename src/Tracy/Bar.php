@@ -24,7 +24,7 @@ class Bar
 	private $panels = array();
 
 	/** @var bool */
-	private $enabled = TRUE;
+	private $disabled = FALSE;
 
 
 	/**
@@ -58,22 +58,13 @@ class Bar
 
 
 	/**
-	 * Disables Bar output.
+	 * Disables or enables Bar output.
+	 * @param bool $disabled
 	 * @return self
 	 */
-	public function disable()
+	public function disable($disabled = TRUE)
 	{
-		$this->enabled = FALSE;
-		return $this;
-	}
-
-	/**
-	 * Enables Bar output.
-	 * @return self
-	 */
-	public function enable()
-	{
-		$this->enabled = TRUE;
+		$this->disabled = $disabled;
 		return $this;
 	}
 
@@ -84,7 +75,7 @@ class Bar
 	 */
 	public function render()
 	{
-		if (!$this->enabled) {
+		if ($this->disabled) {
 			return;
 		}
 
