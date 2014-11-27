@@ -23,8 +23,8 @@ class Logger implements ILogger
 	/** @var string|array email or emails to which send error notifications */
 	public $email;
 
-	/** @var int interval for sending email is 2 days */
-	public $emailSnooze = 172800;
+	/** @var mixed interval for sending email is 2 days */
+	public $emailSnooze = '2 days';
 
 	/** @var callable handler for sending emails */
 	public $mailer;
@@ -143,8 +143,12 @@ class Logger implements ILogger
 	 */
 	protected function sendEmail($message)
 	{
+		$snooze = is_numeric($this->emailSnooze)
+			? $this->emailSnooze
+			: strtotime($this->emailSnooze) - time();
+
 		if ($this->email && $this->mailer
-			&& @filemtime($this->directory . '/email-sent') + $this->emailSnooze < time() // @ - file may not exist
+			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
 			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
