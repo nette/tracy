@@ -92,6 +92,9 @@ class Debugger
 	/** @var string command to open browser (use 'start ""' in Windows) */
 	public static $browser;
 
+	/** @var string custom static error template */
+	public static $errorTemplate;
+
 	/********************* services ****************d*g**/
 
 	/** @var BlueScreen */
@@ -236,7 +239,7 @@ class Debugger
 
 			$error = isset($e) ? "Unable to log error.\n" : NULL;
 			if (self::isHtmlMode()) {
-				require __DIR__ . '/templates/error.phtml';
+				require self::$errorTemplate ?: __DIR__ . '/templates/error.phtml';
 			} elseif (PHP_SAPI === 'cli') {
 				fwrite(STDERR, "ERROR: application encountered an error and can not continue.\n$error");
 			}
