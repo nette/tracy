@@ -14,7 +14,6 @@ namespace Tracy;
 <meta name=generator content="Tracy">
 <title>Server Error</title>
 
-<div id="tracy-error-body">
 <style>
 	body { color: #333; background: white; width: 500px; margin: 100px auto }
 	h1 { font: bold 47px/1.5 sans-serif; margin: .6em 0 }
@@ -28,9 +27,3 @@ namespace Tracy;
 was unable to complete your request. Please try again later.</p>
 
 <p><small>error 500<?php if (!empty($error)) echo "<br>Tracy says: ", htmlspecialchars($error) ?></small></p>
-<div>
-
-<script>
-document.documentElement.innerHTML = '<title>Server Error<\/title>' +
-	document.getElementById('tracy-error-body').innerHTML;
-</script>
