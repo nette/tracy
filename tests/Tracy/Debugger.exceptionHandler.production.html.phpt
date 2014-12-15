@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger::exceptionHandler() error.
  * @exitCode   254
  * @httpCode   500
- * @outputMatch %A%<title>Server Error</title>%A%Unable to log error%A%
+ * @outputMatch %A%<title>Server Error</title>%A%Tracy is unable to log error%A%
  */
 
 use Tracy\Debugger;

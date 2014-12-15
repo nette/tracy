@@ -237,11 +237,12 @@ class Debugger
 			} catch (\Exception $e) {
 			}
 
-			$error = isset($e) ? "Unable to log error.\n" : NULL;
 			if (self::isHtmlMode()) {
+				$logged = empty($e);
 				require self::$errorTemplate ?: __DIR__ . '/templates/error.phtml';
 			} elseif (PHP_SAPI === 'cli') {
-				fwrite(STDERR, "ERROR: application encountered an error and can not continue.\n$error");
+				fwrite(STDERR, 'ERROR: application encountered an error and can not continue. '
+					. (isset($e) ? "Unable to log error.\n" : "Error was logged.\n"));
 			}
 
 		} elseif (!connection_aborted() && self::isHtmlMode()) {
