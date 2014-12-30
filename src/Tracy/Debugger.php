@@ -23,7 +23,7 @@ use Tracy,
 class Debugger
 {
 	/** @var string */
-	public static $version = '2.2.5';
+	public static $version = '2.2.6';
 
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
