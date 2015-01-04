@@ -3,4 +3,5 @@
 .travis.yml export-ignore
 examples export-ignore
 tests export-ignore
+tools/create-phar export-ignore
 *.sh eol=lf
