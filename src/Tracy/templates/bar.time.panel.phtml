@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Debug Bar: panel "time" template.
+ *
+ * This file is part of the Tracy (http://tracy.nette.org)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
+ */
+
+namespace Tracy;
+
+use Tracy;
+
+if (empty($data)) {
+	return;
+}
+?>
+<h1>Times: <?php echo count($data) ?></h1>
+<div class="tracy-inner tracy-timePanel">
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Since start</th>
+		<th>Since last</th>
+		<th title="Since last with same name">Delta</th>
+	</tr>
+<?php $last = Debugger::$time; ?>
+<?php foreach ($data as $item): ?>
+	<tr>
+		<th><?php echo htmlspecialchars($item['name']); ?></th>
+		<td style="text-align: right;"><?php echo number_format(($item['time'] - Debugger::$time) * 1000, 1, '.', ' '); ?>&nbsp;ms</td>
+		<td style="text-align: right;"><?php echo number_format(($item['time'] - $last) * 1000, 1, '.', ' '); ?>&nbsp;ms</td>
+		<td style="text-align: right;"><?php echo number_format($item['delta'] * 1000, 1, '.', ' '); ?>&nbsp;ms</td>
+	</tr>
+<?php $last = $item['time']; ?>
+<?php endforeach ?>
+</table>
+</div>
