@@ -3,7 +3,8 @@
  */
 
 (function() {
-	var COLLAPSE_COUNT = 7;
+	var COLLAPSE_COUNT = 7,
+		COLLAPSE_COUNT_TOP = 14;
 
 	Tracy = window.Tracy || {};
 
@@ -57,7 +58,8 @@
 
 
 	var build = function(data, repository, collapsed) {
-		var type = data === null ? 'null' : typeof data;
+		var type = data === null ? 'null' : typeof data,
+			collapseCount = typeof collapsed === 'undefined' ? COLLAPSE_COUNT : COLLAPSE_COUNT_TOP;
 
 		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
 			data = type === 'string' ? '"' + data + '"' : (data + '').toUpperCase();
@@ -76,7 +78,7 @@
 				],
 				' [ ... ]',
 				data[0] === null ? null : data,
-				collapsed || data.length >= COLLAPSE_COUNT,
+				collapsed === true || data.length >= collapseCount,
 				repository
 			);
 
@@ -104,7 +106,7 @@
 				],
 				' { ... }',
 				object.items,
-				collapsed !== false || (object.items && object.items.length >= COLLAPSE_COUNT),
+				collapsed === true || (object.items && object.items.length >= collapseCount),
 				repository
 			);
 		}

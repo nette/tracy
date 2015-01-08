@@ -19,7 +19,7 @@ class Dumper
 {
 	const DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 4)
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
-		COLLAPSE = 'collapse', // always collapse? (defaults to false)
+		COLLAPSE = 'collapse', // collapse top array/object or how big are collapsed? (defaults to 14)
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
 		LOCATION = 'location', // show location string? (defaults to 0)
 		OBJECT_EXPORTERS = 'exporters', // custom exporters for objects (defaults to Dumper::$objectexporters)
@@ -89,7 +89,7 @@ class Dumper
 		$options = (array) $options + array(
 			self::DEPTH => 4,
 			self::TRUNCATE => 150,
-			self::COLLAPSE => FALSE,
+			self::COLLAPSE => 14,
 			self::COLLAPSE_COUNT => 7,
 			self::OBJECT_EXPORTERS => NULL,
 		);
@@ -102,7 +102,7 @@ class Dumper
 			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
 		) : NULL;
 
-		return '<pre class="tracy-dump' . ($live && $options[self::COLLAPSE] ? ' tracy-collapsed' : '') . '"'
+		return '<pre class="tracy-dump' . ($live && $options[self::COLLAPSE] === TRUE ? ' tracy-collapsed' : '') . '"'
 			. $locAttrs
 			. ($live ? " data-tracy-dump='" . str_replace("'", '&#039;', json_encode(self::toJson($var, $options))) . "'>" : '>')
 			. ($live ? '' : self::dumpVar($var, $options))
@@ -201,7 +201,8 @@ class Dumper
 			return $out . (count($var) - 1) . ") [ <i>RECURSION</i> ]\n";
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH]) {
-			$collapsed = $level ? count($var) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
+			$collapsed = $level ? count($var) >= $options[self::COLLAPSE_COUNT]
+				: (is_int($options[self::COLLAPSE]) ? count($var) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
 			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
 				. $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$var[$marker] = TRUE;
@@ -245,7 +246,8 @@ class Dumper
 			return $out . " { <i>RECURSION</i> }\n";
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH] || $var instanceof \Closure) {
-			$collapsed = $level ? count($fields) >= $options[self::COLLAPSE_COUNT] : $options[self::COLLAPSE];
+			$collapsed = $level ? count($fields) >= $options[self::COLLAPSE_COUNT]
+				: (is_int($options[self::COLLAPSE]) ? count($fields) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
 			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
 				. $out . "</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$list[] = $var;
