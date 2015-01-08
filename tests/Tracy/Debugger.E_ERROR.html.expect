@@ -60,6 +60,13 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 
+				<div class="panel">
+		<h2><a href="#tracyBsPnl2" class="tracy-toggle tracy-collapsed">Exception</a></h2>
+		<div id="tracyBsPnl2" class="tracy-collapsed inner">
+		<pre class="tracy-dump" data-tracy-dump='{"object":"01"}'></pre>
+		</div></div>
+
+
 
 
 		<div class="panel">

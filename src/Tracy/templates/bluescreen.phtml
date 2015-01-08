@@ -185,6 +185,15 @@ $counter = 0;
 		<?php while (--$level) echo '</div></div>' ?>
 
 
+		<?php if (count((array) $exception) > count((array) new \Exception)):?>
+		<div class="panel">
+		<h2><a href="#tracyBsPnl<?php echo ++$counter ?>" class="tracy-toggle tracy-collapsed">Exception</a></h2>
+		<div id="tracyBsPnl<?php echo $counter ?>" class="tracy-collapsed inner">
+		<?php echo Dumper::toHtml($exception, array(Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE)) ?>
+		</div></div>
+		<?php endif ?>
+
+
 		<?php $bottomPanels = array() ?>
 		<?php foreach ($panels as $panel): ?>
 		<?php $panel = call_user_func($panel, NULL); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
