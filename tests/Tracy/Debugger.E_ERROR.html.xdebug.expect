@@ -32,9 +32,9 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 			<div class="panel">
-			<h2><a href="#tracyBsPnl1" class="tracy-toggle">Source file</a></h2>
+			<h2><a href="#tracyBsPnl%d%" class="tracy-toggle">Source file</a></h2>
 
-			<div id="tracyBsPnl1" class="inner">
+			<div id="tracyBsPnl%d%" class="inner">
 				<p><b>File:</b> %a%</p>
 				<pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
@@ -55,9 +55,9 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 									<div class="panel">
-				<h2><a href="#tracyBsPnl2" class="tracy-toggle">Call stack</a></h2>
+				<h2><a href="#tracyBsPnl%d%" class="tracy-toggle">Call stack</a></h2>
 
-				<div id="tracyBsPnl2" class="inner">
+				<div id="tracyBsPnl%d%" class="inner">
 				<ol>
 										<li><p>
 
@@ -132,43 +132,43 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 		<div class="panel">
-		<h2><a href="#tracyBsPnl3" class="tracy-toggle tracy-collapsed">Environment</a></h2>
+		<h2><a href="#tracyBsPnl%d%" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
-		<div id="tracyBsPnl3" class="tracy-collapsed inner">
-			<h3><a href="#tracyBsPnl4" class="tracy-toggle">$_SERVER</a></h3>
-			<div id="tracyBsPnl4" class="outer">
+		<div id="tracyBsPnl%d%" class="tracy-collapsed inner">
+			<h3><a href="#tracyBsPnl%d%" class="tracy-toggle">$_SERVER</a></h3>
+			<div id="tracyBsPnl%d%" class="outer">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#tracyBsPnl5" class="tracy-toggle">$_SESSION</a></h3>
-			<div id="tracyBsPnl5" class="outer">%A%</div>
+			<h3><a href="#tracyBsPnl%d%" class="tracy-toggle">$_SESSION</a></h3>
+			<div id="tracyBsPnl%d%" class="outer">%A%</div>
 
 
 
 
-						<h3><a href="#tracyBsPnl6" class="tracy-toggle tracy-collapsed">Constants</a></h3>
-			<div id="tracyBsPnl6" class="outer tracy-collapsed">
+						<h3><a href="#tracyBsPnl%d%" class="tracy-toggle tracy-collapsed">Constants</a></h3>
+			<div id="tracyBsPnl%d%" class="outer tracy-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#tracyBsPnl7" class="tracy-toggle tracy-collapsed">Included files</a> (%d%)</h3>
-			<div id="tracyBsPnl7" class="outer tracy-collapsed">
+			<h3><a href="#tracyBsPnl%d%" class="tracy-toggle tracy-collapsed">Included files</a> (%d%)</h3>
+			<div id="tracyBsPnl%d%" class="outer tracy-collapsed">
 			<table>%A%</table>
 			</div>
 
 
-			<h3><a href="#tracyBsPnl8" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
-			<div id="tracyBsPnl8" class="outer tracy-collapsed">
+			<h3><a href="#tracyBsPnl%d%" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
+			<div id="tracyBsPnl%d%" class="outer tracy-collapsed">
 			%A%</div>
 		</div></div>
 
 
 		<div class="panel">
-		<h2><a href="#tracyBsPnl9" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
+		<h2><a href="#tracyBsPnl%d%" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
 
-		<div id="tracyBsPnl9" class="tracy-collapsed inner">
+		<div id="tracyBsPnl%d%" class="tracy-collapsed inner">
 %A%
 						<h3>$_GET</h3>
 						<p><i>empty</i></p>
@@ -180,9 +180,9 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 		<div class="panel">
-		<h2><a href="#tracyBsPnl10" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
+		<h2><a href="#tracyBsPnl%d%" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
 
-		<div id="tracyBsPnl10" class="tracy-collapsed inner">
+		<div id="tracyBsPnl%d%" class="tracy-collapsed inner">
 			<h3>Headers</h3>
 						<pre>%A%</pre>
 					</div></div>
