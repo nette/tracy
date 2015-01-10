@@ -167,10 +167,8 @@ class Debugger
 			set_exception_handler(array(__CLASS__, 'exceptionHandler'));
 			set_error_handler(array(__CLASS__, 'errorHandler'));
 
-			foreach (array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
-				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
-				class_exists($class);
-			}
+			array_map('class_exists', array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
+				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger'));
 
 			self::$enabled = TRUE;
 		}
