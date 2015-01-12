@@ -5,6 +5,7 @@ php:
     - 5.5
     - 5.6
     - hhvm
+    - hhvm-nightly
 
 env:
     - PHP_BIN=php
@@ -13,9 +14,13 @@ env:
 matrix:
     allow_failures:
         - php: hhvm
+        - php: hhvm-nightly
 
     exclude:
         - php: hhvm
+          env: PHP_BIN=php-cgi
+
+        - php: hhvm-nightly
           env: PHP_BIN=php-cgi
 
 script:
