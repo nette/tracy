@@ -15,7 +15,7 @@ test(function() {
 	$e = new Exception('First');
 	$logger = new Logger(TEMP_DIR);
 	$logger->log($e, 'a');
-	Assert::match('[%a%] Exception: First in %a%:%d% %A%', file_get_contents($logger->directory . '/a.log'));
+	Assert::match(php_uname('n') . ' [%a%] Exception: First in %a%:%d% %A%', file_get_contents($logger->directory . '/a.log'));
 });
 
 test(function() {
@@ -24,5 +24,5 @@ test(function() {
 	$e = new RuntimeException('Third', 0, $e);
 	$logger = new Logger(TEMP_DIR);
 	$logger->log($e, 'b');
-	Assert::match('[%a%] RuntimeException: Third in %a%:%d% caused by InvalidArgumentException: Second in %a%:%d% caused by Exception: First in %a%:%d% %A%', file_get_contents($logger->directory . '/b.log'));
+	Assert::match(php_uname('n') . ' [%a%] RuntimeException: Third in %a%:%d% caused by InvalidArgumentException: Second in %a%:%d% caused by Exception: First in %a%:%d% %A%', file_get_contents($logger->directory . '/b.log'));
 });
