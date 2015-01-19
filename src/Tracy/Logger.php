@@ -100,7 +100,12 @@ class Logger implements ILogger
 	 */
 	protected function formatLogLine($message, $exceptionFile = NULL)
 	{
+		$addr = isset($_SERVER['REMOTE_ADDR'])
+			? $_SERVER['REMOTE_ADDR']
+			: php_uname('n');
+
 		return implode(' ', array(
+			$addr,
 			@date('[Y-m-d H-i-s]'),
 			preg_replace('#\s*\r?\n\s*#', ' ', $this->formatMessage($message)),
 			' @  ' . Helpers::getSource(),
