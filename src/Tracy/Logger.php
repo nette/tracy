@@ -65,7 +65,7 @@ class Logger implements ILogger
 		}
 
 		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL), TRUE)) {
-			$this->sendEmail($line);
+			$this->sendEmail($message);
 		}
 
 		return $exceptionFile;
@@ -177,7 +177,7 @@ class Logger implements ILogger
 					'Content-Transfer-Encoding: 8bit',
 				)) . "\n",
 				'subject' => "PHP: An error occurred on the server $host",
-				'body' => "[" . @date('Y-m-d H:i:s') . "] $message", // @ - timezone may not be set
+				'body' => $this->formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
 			)
 		);
 
