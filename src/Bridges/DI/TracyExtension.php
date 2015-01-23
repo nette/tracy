@@ -65,7 +65,9 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 		unset($options['bar'], $options['blueScreen']);
 		foreach ($options as $key => $value) {
-			$initialize->addBody('Tracy\Debugger::$? = ?;', array($key, $value));
+			if ($value !== NULL) {
+				$initialize->addBody('Tracy\Debugger::$? = ?;', array($key, $value));
+			}
 		}
 
 		if ($this->debugMode) {
