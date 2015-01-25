@@ -19,7 +19,7 @@
 	},
 	"require-dev": {
 		"nette/di": "~2.3",
-		"nette/tester": "~1.0"
+		"nette/tester": "~1.3"
 	},
 	"autoload": {
 		"classmap": ["src"],
