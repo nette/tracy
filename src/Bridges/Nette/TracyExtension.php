@@ -5,7 +5,7 @@
  * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  */
 
-namespace Tracy\Bridges\DI;
+namespace Tracy\Bridges\Nette;
 
 use Nette;
 

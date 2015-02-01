@@ -5,7 +5,7 @@
  */
 
 use Nette\DI,
-	Tracy\Bridges\DI\TracyExtension,
+	Tracy\Bridges\Nette\TracyExtension,
 	Tester\Assert;
 
 
