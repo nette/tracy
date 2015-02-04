@@ -187,9 +187,6 @@ class Debugger
 		} elseif ($logDirectory === FALSE) {
 			self::$logDirectory = NULL;
 		}
-		if (self::$logDirectory) {
-			ini_set('error_log', self::$logDirectory . '/php_error.log');
-		}
 
 		// php configuration
 		if (function_exists('ini_set')) {
