@@ -149,7 +149,6 @@ class Debugger
 				self::$logDirectory = NULL;
 				self::exceptionHandler(new \RuntimeException('Logging directory not found or is not absolute path.'));
 			}
-			ini_set('error_log', self::$logDirectory . '/php_error.log');
 		}
 
 		// php configuration
