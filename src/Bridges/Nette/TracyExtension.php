@@ -86,7 +86,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		foreach ((array) $this->config['blueScreen'] as $item) {
 			$initialize->addBody($container->formatPhp(
 				'$this->getService(?)->addPanel(?);',
-				Nette\DI\Compiler::filterArguments(array($this->prefix('bluescreen'), $item))
+				Nette\DI\Compiler::filterArguments(array($this->prefix('blueScreen'), $item))
 			));
 		}
 	}
