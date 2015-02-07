@@ -9,7 +9,7 @@ require __DIR__ . '/../src/tracy.php';
 use Tracy\Debugger;
 
 
-Debugger::enable();
+Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 
 
