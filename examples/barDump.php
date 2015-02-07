@@ -12,7 +12,7 @@ require __DIR__ . '/../src/tracy.php';
 
 use Tracy\Debugger;
 
-Debugger::enable();
+Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/log');
 
 $arr = array(10, 20.2, TRUE, NULL, 'hello', (object) NULL, array());
 
