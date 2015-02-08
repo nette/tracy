@@ -380,11 +380,6 @@ class Debugger
 			self::$bar = new Bar;
 			self::$bar->addPanel(new DefaultBarPanel('info'), 'Tracy:info');
 			self::$bar->addPanel(new DefaultBarPanel('errors'), 'Tracy:errors'); // filled by errorHandler()
-			self::$bar->info = array(
-				'PHP ' . PHP_VERSION,
-				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
-				'Tracy ' . self::VERSION,
-			);
 		}
 		return self::$bar;
 	}
