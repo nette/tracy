@@ -378,7 +378,7 @@ class Debugger
 	{
 		if (!self::$bar) {
 			self::$bar = new Bar;
-			self::$bar->addPanel(new DefaultBarPanel('time'));
+			self::$bar->addPanel(new DefaultBarPanel('time'), 'time');
 			self::$bar->addPanel(new DefaultBarPanel('memory'));
 			self::$bar->addPanel(new DefaultBarPanel('errors'), __CLASS__ . ':errors'); // filled by errorHandler()
 			self::$bar->info = array(
@@ -469,6 +469,13 @@ class Debugger
 		$now = microtime(TRUE);
 		$delta = isset($time[$name]) ? $now - $time[$name] : 0;
 		$time[$name] = $now;
+		if (!self::$productionMode) {
+			static $panel;
+			if (!$panel) {
+				$panel = self::getBar()->getPanel('time');
+			}
+			$panel->data[] = array('name' => $name, 'time' => $now, 'delta' => $delta);
+		}
 		return $delta;
 	}
 
