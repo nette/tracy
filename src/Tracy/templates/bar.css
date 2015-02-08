@@ -94,15 +94,15 @@ body #tracy-debug {
 
 /* bar */
 #tracy-debug-bar {
-	font: normal normal 12px/21px Tahoma, sans-serif;
+	font: normal normal 12px/20px Tahoma, sans-serif;
 	color: #333;
 	border: 1px solid #c9c9c9;
-	background: #EDEAE0 url('data:image/png;base64,R0lGODlhAQAVALMAAOTh1/Px6eHe1fHv5e/s4vLw6Ofk2u3q4PPw6PPx6PDt5PLw5+Dd1OXi2Ojm3Orn3iH5BAAAAAAALAAAAAABABUAAAQPMISEyhpYkfOcaQAgCEwEADs=') top;
+	background: #EDEAE0 url('data:image/png;base64,R0lGODlhAQAUALMAAOzq4e/t5e7s4/Dt5vDu5e3r4vDu5uvp4O/t5AAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAABABQAAAQM0EgySEAYi1LA+UcEADs=') top;
 	position: fixed;
 	right: 0;
 	bottom: 0;
 	overflow: auto;
-	min-height: 21px;
+	min-height: 20px;
 
 	min-width: 50px;
 	white-space: nowrap;
@@ -122,8 +122,8 @@ body #tracy-debug {
 
 #tracy-debug-bar ul {
 	list-style: none none;
-	margin-left: 4px;
 	clear: left;
+	text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 #tracy-debug-bar li {
@@ -136,23 +136,29 @@ body #tracy-debug {
 }
 
 #tracy-debug-bar ul.tracy-previous li:first-child {
-	width: 45px;
+	width: 53px;
+	text-align: right;
 }
 
-#tracy-debug-bar img {
+#tracy-debug-bar img, #tracy-debug-bar svg {
 	vertical-align: middle;
 	position: relative;
-	top: -1px;
-	margin-right: 3px;
+	top: -2px;
+	margin-right: 2px;
 }
 
-#tracy-debug-bar li a {
+#tracy-debug-bar svg {
+	width: 16px;
+	height: 16px;
+}
+
+#tracy-debug-bar li > a, #tracy-debug-bar li > span {
 	color: #000;
 	display: block;
-	padding: 0 4px;
+	padding: 0 6px;
 }
 
-#tracy-debug-bar li a:hover {
+#tracy-debug-bar li > a:hover {
 	color: black;
 	background: #c3c1b8;
 }
@@ -162,18 +168,13 @@ body #tracy-debug {
 	font-weight: bold;
 }
 
-#tracy-debug-bar li > span {
-	padding: 0 4px;
-}
-
 #tracy-debug-logo {
-	background: url('data:image/gif;base64,R0lGODlhLgALANU/AO3r4v7+/P79+pSSjeTi2vDu5ysrKllYVvPx6razraqoovr49YqJhJyalN3b1Pz69fb07oSCfdTRyaWinPf17/799kZFQ8bEvWRjYfTy6+3r57y6s4aFgfr48W5safTy7Xp4daGfmejl2peVkODd1cvJwXZ0cZCOio2Mh2ppZvLx7Ovo3vj28Xh2c317eIF/e4iGgbGvqHBvbOnn4HJxbZ+dmF9dWvLw6Pj27/z79/38+lJRT/379OTi1////////yH5BAEAAD8ALAAAAAAuAAsAAAb/QFZmSMxAhEQEy/dr/gQLRMD5CwQoiOEiN8s5dR1NgPQaoBo184CgGLhRp9K0ChhFSoJmoBAbnAYwEyoDI1M+NyhrMyMNCmk1IxMaE2cNEyMmJV4BCi4jIA5TGScmIyGQNTcSGBc+nB4bRhkFD309BSwUDDE8PAE4HDUZPgURMT0vCTk+GyYJIjcFBTcLAjEpFAQeCgBzTw0nAE0QDAozDgQXLRNLJbAVIRwIAiEwJHlUPxQwbyQ6VDkGcFghakALGS8i0IAhQYCAEyBE+JBwQIKPEwy65ftBTIYLCR3y5eAAguCPDy44uDiAgkQFAT5I7NjA40GBFCN8NKBBYaOenYQImABskUKjChtrTlgw4YCjAgspMNjAcADDAw0GSPhw5coJixQgMmzUccCCxg8GUlTgUcKGgQkLLBwg2SICh7cBDhjwCCJFBApM4toQmy9AChsrAu9oAVhABgYnLhgI0YEFhAcIDth4AOCFhc8GDiT+QTZFgY0LABC40YTCCgIQ9FQAQEIEgH9NchRwUEAADwA9CAhn/YOFasI/ggAAOw==') 0 50% no-repeat;
-	min-width: 47px;
 	cursor: move;
 }
 
-#tracy-debug-logo span {
-	display: none;
+#tracy-debug-logo svg {
+	width: 44px;
+	margin: 0 3px 0 6px;
 }
 
 
