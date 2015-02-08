@@ -325,7 +325,7 @@ class Debugger
 		}
 
 		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ": $message";
-		$count = & self::getBar()->getPanel(__CLASS__ . ':errors')->data["$file|$line|$message"];
+		$count = & self::getBar()->getPanel('Tracy:errors')->data["$file|$line|$message"];
 
 		if ($count++) { // repeated error
 			return NULL;
@@ -378,9 +378,8 @@ class Debugger
 	{
 		if (!self::$bar) {
 			self::$bar = new Bar;
-			self::$bar->addPanel(new DefaultBarPanel('time'));
-			self::$bar->addPanel(new DefaultBarPanel('memory'));
-			self::$bar->addPanel(new DefaultBarPanel('errors'), __CLASS__ . ':errors'); // filled by errorHandler()
+			self::$bar->addPanel(new DefaultBarPanel('info'), 'Tracy:info');
+			self::$bar->addPanel(new DefaultBarPanel('errors'), 'Tracy:errors'); // filled by errorHandler()
 			self::$bar->info = array(
 				'PHP ' . PHP_VERSION,
 				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,

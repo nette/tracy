@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * Debug Bar: panel "info" template.
+ *
+ * This file is part of the Tracy (http://tracy.nette.org)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
+ */
+
+namespace Tracy;
+
+use Tracy;
+
+$info = array_filter(array(
+	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
+	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ') . ' MB',
+	'Included files' => count(get_included_files()),
+	'Classes + interfaces + traits' => count(get_declared_classes()) . ' + '
+		. count(get_declared_interfaces()) . ' + ' . (PHP_VERSION_ID >= 50400 ? count(get_declared_traits()) : '0'),
+	'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL,
+	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : NULL,
+	'PHP' => PHP_VERSION,
+	'Tracy' => Debugger::VERSION,
+	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
+) + (array) $this->data);
+
+?>
+<style class="tracy-debug">
+	#tracy-debug .tracy-InfoPanel td {
+		white-space: nowrap;
+	}
+	#tracy-debug .tracy-InfoPanel td:nth-child(2) {
+		font-weight: bold;
+	}
+	#tracy-debug .tracy-InfoPanel td[colspan='2'] b {
+		float: right;
+		margin-left: 2em;
+	}
+</style>
+
+<h1>System info</h1>
+
+<div class="tracy-inner tracy-InfoPanel">
+<table>
+<?php foreach ($info as $key => $val): ?>
+<tr>
+<?php if (iconv_strlen($val, 'UTF-8') > 25): ?>
+	<td colspan=2><?php echo htmlspecialchars($key, NULL, 'UTF-8') ?> <b><?php echo htmlspecialchars($val, NULL, 'UTF-8') ?></b></td>
+<?php else: ?>
+	<td><?php echo htmlspecialchars($key, NULL, 'UTF-8') ?></td><td><?php echo htmlspecialchars($val, NULL, 'UTF-8') ?></td>
+<?php endif ?>
+</tr>
+<?php endforeach ?>
+</table>
+</div>
