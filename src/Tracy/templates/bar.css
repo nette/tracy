@@ -143,7 +143,10 @@ body #tracy-debug {
 	vertical-align: middle;
 	position: relative;
 	top: -1px;
-	margin-right: 3px;
+}
+
+#tracy-debug-bar .tracy-label {
+	margin-left: 3px;
 }
 
 #tracy-debug-bar li a {
