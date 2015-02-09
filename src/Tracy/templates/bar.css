@@ -165,11 +165,6 @@ body #tracy-debug {
 	background: #c3c1b8;
 }
 
-#tracy-debug-bar li .tracy-warning {
-	color: #D32B2B;
-	font-weight: bold;
-}
-
 #tracy-debug-logo {
 	cursor: move;
 }
