@@ -25,7 +25,7 @@ Debugger::enable();
 register_shutdown_function(function() {
 	preg_match('#debug.innerHTML = (".*");#', ob_get_clean(), $m);
 	Assert::match(<<<EOD
-%A%<h1>Dumped variables</h1>
+%A%<h1>Dumps</h1>
 
 <div class="tracy-inner tracy-DumpPanel">
 
