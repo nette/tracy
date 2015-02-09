@@ -131,7 +131,6 @@ body #tracy-debug {
 }
 
 #tracy-debug-bar ul.tracy-previous li {
-	font-size: 90%;
 	opacity: .6;
 	background: #F5F3EE;
 }
