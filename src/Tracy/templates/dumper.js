@@ -43,11 +43,21 @@
 				return;
 			}
 
-			// enables <a class="tracy-toggle" href="#"> or <span data-ref="#"> toggling
+			// enables <a class="tracy-toggle" href="#"> or <span data-tracy-ref="#"> toggling
 			if (link = closest(e.target, '.tracy-toggle')) {
 				var collapsed = link.classList.contains('tracy-collapsed'),
-					ref = link.getAttribute('data-ref') || link.getAttribute('href', 2),
-					dest = ref && ref !== '#' ? document.getElementById(ref.substring(1)) : link.nextElementSibling;
+					ref = link.getAttribute('data-tracy-ref') || link.getAttribute('href', 2),
+					dest = link;
+
+				if (!ref || ref === '#') {
+					ref = '+';
+				} else if (ref.substr(0, 1) === '#') {
+					dest = document;
+				}
+				ref = ref.match(/(\^\s*([^+\s]*)\s*)?(\+\s*(\S*)\s*)?(.*)/);
+				dest = ref[1] ? closest(dest.parentNode, ref[2]) : dest;
+				dest = ref[3] ? closest(dest.nextElementSibling, ref[4], 'nextElementSibling') : dest;
+				dest = ref[5] ? dest.querySelector(ref[5]) : dest;
 
 				link.classList.toggle('tracy-collapsed', !collapsed);
 				dest.classList.toggle('tracy-collapsed', !collapsed);
