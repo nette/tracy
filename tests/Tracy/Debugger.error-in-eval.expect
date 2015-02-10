@@ -12,10 +12,10 @@
 
 
 <body>
-<div id="tracyBluescreen">
-	<a id="tracyBluescreenIcon" href="#" class="tracy-toggle"></a>
+<div id="tracy-bs">
+	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
-		<div id="tracyBluescreenError" class="panel">
+		<div id="tracy-bs-error" class="panel">
 			<h1>User Error</h1>
 
 			<p>The my error			<a href="%a%" rel="noreferrer">search&#x25ba;</a>
@@ -193,7 +193,7 @@
 			<li>CLI%a?%</li>
 			<li>PHP %a%</li>		</ul>
 
-		<div id="tracyBluescreenLogo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
+		<div id="tracy-bs-logo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
 </div>
 

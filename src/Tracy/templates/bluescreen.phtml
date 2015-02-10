@@ -42,10 +42,10 @@ $counter = 0;
 
 
 <body>
-<div id="tracyBluescreen">
-	<a id="tracyBluescreenIcon" href="#" class="tracy-toggle"></a>
+<div id="tracy-bs">
+	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
-		<div id="tracyBluescreenError" class="panel">
+		<div id="tracy-bs-error" class="panel">
 			<h1><?php echo htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8'), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 
 			<p><?php echo htmlspecialchars($exception->getMessage(), ENT_IGNORE, 'UTF-8') ?>
@@ -347,14 +347,14 @@ $counter = 0;
 			<?php foreach ($info as $item): ?><li><?php echo htmlSpecialChars($item, ENT_NOQUOTES, 'UTF-8') ?></li><?php endforeach ?>
 		</ul>
 
-		<div id="tracyBluescreenLogo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
+		<div id="tracy-bs-logo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
 </div>
 
 <script>
 (function() {
 	if (!document.documentElement.classList) {
-		document.getElementById('tracyBluescreenError').innerHTML += '<div id=tracyBluescreenIEWarning>Warning: Tracy requires IE 10+<\/div>';
+		document.getElementById('tracy-bs-error').innerHTML += '<div id=tracy-bs-ie-warning>Warning: Tracy requires IE 10+<\/div>';
 		return;
 	}
 	<?php readfile(__DIR__ . '/dumper.js') ?>
