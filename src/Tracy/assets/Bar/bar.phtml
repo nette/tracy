@@ -38,13 +38,14 @@ use Tracy;
 </script>
 
 
-<?php foreach ($panels as $panel): if (!$panel['panel']) continue; ?>
+<?php foreach ($panels as $panel): if (!empty($panel['previous'])) continue ?>
 	<div class="tracy-panel" id="tracy-debug-panel-<?php echo $panel['id'] ?>">
-		<?php echo $panel['panel'] ?>
+		<?php if ($panel['panel']): echo $panel['panel'] ?>
 		<div class="tracy-icons">
 			<a href="#" title="open in window">&curren;</a>
 			<a href="#" rel="close" title="close window">&times;</a>
 		</div>
+		<?php endif ?>
 	</div>
 <?php endforeach ?>
 

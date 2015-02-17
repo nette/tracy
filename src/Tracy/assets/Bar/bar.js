@@ -190,7 +190,7 @@
 			this.elem.classList.add(Panel.PEEK);
 		} else if (pos.window) {
 			this.toWindow();
-		} else {
+		} else if (this.elem.querySelector('*')) {
 			setPosition(this.elem, pos);
 			this.toFloat();
 		}
