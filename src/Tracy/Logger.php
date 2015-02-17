@@ -17,7 +17,7 @@ use Tracy;
  */
 class Logger implements ILogger
 {
-	/** @var string name of the directory where errors should be logged; FALSE means that logging is disabled */
+	/** @var string name of the directory where errors should be logged */
 	public $directory;
 
 	/** @var string|array email or emails to which send error notifications */

@@ -124,7 +124,7 @@ class Debugger
 	/**
 	 * Enables displaying or logging errors and exceptions.
 	 * @param  mixed   production, development mode, autodetection or IP address(es) whitelist.
-	 * @param  string  error log directory; enables logging in production mode, FALSE means that logging is disabled
+	 * @param  string  error log directory
 	 * @param  string  administrator email; enables email sending in production mode
 	 * @return void
 	 */

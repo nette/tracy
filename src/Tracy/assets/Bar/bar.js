@@ -180,8 +180,8 @@
 	Panel.prototype.moveConstrains = function(el, coords) { // forces constrained inside window
 		var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
 			height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-		coords.right = Math.min(Math.max(coords.right, -.2 * el.offsetWidth), width - .8 * el.offsetWidth);
-		coords.bottom = Math.min(Math.max(coords.bottom, -.2 * el.offsetHeight), height - el.offsetHeight);
+		coords.right = Math.min(Math.max(coords.right, -0.2 * el.offsetWidth), width - 0.8 * el.offsetWidth);
+		coords.bottom = Math.min(Math.max(coords.bottom, -0.2 * el.offsetHeight), height - el.offsetHeight);
 	};
 
 	Panel.prototype.restorePosition = function() {
@@ -326,7 +326,7 @@
 				return;
 			}
 			target = target.parentNode;
-		};
+		}
 		return true;
 	}
 
