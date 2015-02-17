@@ -12,7 +12,7 @@
 
 	Tracy.Dumper.init = function(repository) {
 		if (repository) {
-			Array.prototype.forEach.call(document.querySelectorAll('.tracy-dump[data-tracy-dump]'), function(el) {
+			[].forEach.call(document.querySelectorAll('.tracy-dump[data-tracy-dump]'), function(el) {
 				try {
 					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
 					el.classList.remove('tracy-collapsed');

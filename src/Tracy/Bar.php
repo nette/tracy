@@ -106,7 +106,7 @@ class Bar
 		}
 		$session = NULL;
 
-		require __DIR__ . '/templates/bar.phtml';
+		require __DIR__ . '/assets/Bar/bar.phtml';
 	}
 
 }

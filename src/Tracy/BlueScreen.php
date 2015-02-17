@@ -67,7 +67,7 @@ class BlueScreen
 			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
 			: NULL;
 
-		require __DIR__ . '/templates/bluescreen.phtml';
+		require __DIR__ . '/assets/BlueScreen/bluescreen.phtml';
 	}
 
 
