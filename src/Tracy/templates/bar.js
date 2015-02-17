@@ -118,13 +118,13 @@
 			doc.title = this.elem.find('h1')[0].innerHTML;
 		}
 
-		var _this = this;
-		$([win]).bind('beforeunload', function() {
+		var _this = this, _$ = win.Tracy.Query.factory;
+		_$([win]).bind('beforeunload', function() {
 			_this.toPeek();
 			win.close(); // forces closing, can be invoked by F5
 		});
 
-		$(doc).bind('keyup', function(e) {
+		_$(doc).bind('keyup', function(e) {
 			if (e.keyCode === 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
 				win.close();
 			}
@@ -157,11 +157,11 @@
 
 	Panel.prototype.restorePosition = function() {
 		var m = document.cookie.match(new RegExp(this.id + '=(window|(-?[0-9]+):(-?[0-9]+))'));
-		if (m && m[2]) {
+		if (m && !m[2]) {
+			this.toWindow();
+		} else if (m && this.elem.dom().getElementsByTagName('*').length) {
 			this.elem.position({right: m[2], bottom: m[3]});
 			this.toFloat();
-		} else if (m) {
-			this.toWindow();
 		} else {
 			this.elem.addClass(Panel.PEEK);
 		}
