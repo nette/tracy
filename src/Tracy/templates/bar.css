@@ -140,11 +140,16 @@ body #tracy-debug {
 	width: 45px;
 }
 
-#tracy-debug-bar img {
+#tracy-debug-bar img, #tracy-debug-bar svg {
 	vertical-align: middle;
 	position: relative;
 	top: -1px;
 	margin-right: 3px;
+}
+
+#tracy-debug-bar svg {
+	width: 16px;
+	height: 16px;
 }
 
 #tracy-debug-bar li a {
