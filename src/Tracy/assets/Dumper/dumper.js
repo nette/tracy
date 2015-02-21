@@ -67,7 +67,7 @@
 	};
 
 
-	var build = function(data, repository, collapsed) {
+	var build = function(data, repository, collapsed, parentIds) {
 		var type = data === null ? 'null' : typeof data,
 			collapseCount = typeof collapsed === 'undefined' ? COLLAPSE_COUNT : COLLAPSE_COUNT_TOP;
 
@@ -89,7 +89,8 @@
 				' [ ... ]',
 				data[0] === null ? null : data,
 				collapsed === true || data.length >= collapseCount,
-				repository
+				repository,
+				parentIds
 			);
 
 		} else if (type === 'object' && data.type) {
@@ -104,6 +105,9 @@
 			if (!object) {
 				throw new UnknownEntityException;
 			}
+			parentIds = parentIds || [];
+			recursive = parentIds.indexOf(id) > -1;
+			parentIds.push(id);
 
 			return buildStruct([
 					createEl('span', {
@@ -116,14 +120,15 @@
 				],
 				' { ... }',
 				object.items,
-				collapsed === true || (object.items && object.items.length >= collapseCount),
-				repository
+				collapsed === true || recursive || (object.items && object.items.length >= collapseCount),
+				repository,
+				parentIds
 			);
 		}
 	};
 
 
-	var buildStruct = function(span, ellipsis, items, collapsed, repository) {
+	var buildStruct = function(span, ellipsis, items, collapsed, repository, parentIds) {
 		var res, toggle, div, handler;
 
 		if (!items || !items.length) {
@@ -140,10 +145,10 @@
 		if (collapsed) {
 			toggle.addEventListener('click', handler = function() {
 				toggle.removeEventListener('click', handler);
-				createItems(div, items, repository);
+				createItems(div, items, repository, parentIds);
 			});
 		} else {
-			createItems(div, items, repository);
+			createItems(div, items, repository, parentIds);
 		}
 		return res;
 	};
@@ -168,7 +173,7 @@
 	};
 
 
-	var createItems = function(el, items, repository) {
+	var createItems = function(el, items, repository, parentIds) {
 		for (var i in items) {
 			var vis = items[i][2];
 			createEl(el, [], [
@@ -176,7 +181,7 @@
 				vis ? ' ' : null,
 				vis ? createEl('span', {'class': 'tracy-dump-visibility'}, [vis === 1 ? 'protected' : 'private']) : null,
 				' => ',
-				build(items[i][1], repository)
+				build(items[i][1], repository, null, parentIds)
 			]);
 		}
 	};
