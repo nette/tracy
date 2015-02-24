@@ -18,7 +18,7 @@ use Tracy,
  */
 class Debugger
 {
-	const VERSION = '2.3-dev';
+	const VERSION = '2.3.0';
 
 	/** server modes {@link Debugger::enable()} */
 	const DEVELOPMENT = FALSE,

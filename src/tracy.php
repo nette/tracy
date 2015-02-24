@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Tracy (version 2.3-dev, http://tracy.nette.org)
+ * Tracy (version 2.3.0, http://tracy.nette.org)
  *
- * Copyright (c) 2004, 2014 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  */
 
 require __DIR__ . '/Tracy/IBarPanel.php';
