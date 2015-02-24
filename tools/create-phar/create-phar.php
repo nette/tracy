@@ -23,7 +23,7 @@ foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterato
 		continue;
 
 	} elseif ($file->getExtension() === 'phtml') {
-		$s = preg_replace_callback('#<\?php (require |readfile\(|.*file_get_contents\().*(/\w+\.(js|css))\'\)* \?>#', function($m) use ($file) {
+		$s = preg_replace_callback('#<\?php (require |readfile\(|.*file_get_contents\().*?(/.+\.(js|css))\'\)* \?>#', function($m) use ($file) {
 			return file_get_contents($file->getPath() . $m[2]);
 		}, $s);
 		$s = preg_replace_callback('#(<(script|style).*>)(.*)(</)#Uis', function($m) {
