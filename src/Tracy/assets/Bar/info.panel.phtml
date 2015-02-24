@@ -12,8 +12,8 @@ namespace Tracy;
 use Tracy;
 
 $info = array_filter(array(
-	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
-	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ') . ' MB',
+	'Execution time' => str_replace(' ', ' ', number_format($this->time * 1000, 1, '.', ' ')) . ' ms',
+	'Peak of allocated memory' => str_replace(' ', ' ', number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ')) . ' MB',
 	'Included files' => count(get_included_files()),
 	'Classes + interfaces + traits' => count(get_declared_classes()) . ' + '
 		. count(get_declared_interfaces()) . ' + ' . (PHP_VERSION_ID >= 50400 ? count(get_declared_traits()) : '0'),
