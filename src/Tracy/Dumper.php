@@ -507,7 +507,7 @@ class Dumper
 					$reflection = isset($item['class'])
 						? new \ReflectionMethod($item['class'], $item['function'])
 						: new \ReflectionFunction($item['function']);
-					if (preg_match('#\s@tracySkipLocation\s#', $reflection->getDocComment())) {
+					if ($reflection->isInternal() || preg_match('#\s@tracySkipLocation\s#', $reflection->getDocComment())) {
 						$location = $item;
 						continue;
 					}
