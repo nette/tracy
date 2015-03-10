@@ -22,7 +22,7 @@ use Tracy,
  */
 class Debugger
 {
-	const VERSION = '2.2.6';
+	const VERSION = '2.2.7';
 
 	/** @deprecated */
 	public static $version = self::VERSION;
