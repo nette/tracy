@@ -75,7 +75,11 @@ use Tracy;
 		var debug = document.body.appendChild(document.createElement('div'));
 		debug.id = 'tracy-debug';
 		debug.innerHTML = <?php echo json_encode(Helpers::fixEncoding($output)) ?>;
-		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) eval(scripts[i].innerHTML);
+		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) {
+			(window.execScript || function(data) {
+				window['eval'].call(window, data);
+			})(scripts[i].innerHTML);
+		}
 		Tracy.Dumper.init(<?php echo json_encode(Dumper::fetchLiveData()) ?>);
 		Tracy.Debug.init();
 		debug.style.display = 'block';
