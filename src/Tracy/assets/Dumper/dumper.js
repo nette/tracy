@@ -73,7 +73,7 @@
 
 		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
 			data = type === 'string' ? '"' + data + '"' : (data + '').toUpperCase();
-			return createEl(null, [], [
+			return createEl(null, null, [
 				createEl(
 					'span',
 					{'class': 'tracy-dump-' + type.replace('ean', '')},
@@ -94,8 +94,8 @@
 			);
 
 		} else if (type === 'object' && data.type) {
-			return createEl(null, [], [
-				createEl('span', [], [data.type + '\n'])
+			return createEl(null, null, [
+				createEl('span', null, [data.type + '\n'])
 			]);
 
 		} else if (type === 'object') {
@@ -133,10 +133,10 @@
 
 		if (!items || !items.length) {
 			span.push(!items || items.length ? ellipsis + '\n' : '\n');
-			return createEl(null, [], span);
+			return createEl(null, null, span);
 		}
 
-		res = createEl(null, [], [
+		res = createEl(null, null, [
 			toggle = createEl('span', {'class': collapsed ? 'tracy-toggle tracy-collapsed' : 'tracy-toggle'}, span),
 			'\n',
 			div = createEl('div', {'class': collapsed ? 'tracy-collapsed' : ''})
@@ -158,12 +158,13 @@
 		if (!(el instanceof Node)) {
 			el = el ? document.createElement(el) : document.createDocumentFragment();
 		}
-		for (var id in attrs || []) {
+		for (var id in attrs || {}) {
 			if (attrs[id] !== null) {
 				el.setAttribute(id, attrs[id]);
 			}
 		}
-		for (id in content || []) {
+		content = content || [];
+		for (id = 0; id < content.length; id++) {
 			var child = content[id];
 			if (child !== null) {
 				el.appendChild(child instanceof Node ? child : document.createTextNode(child));
@@ -174,9 +175,9 @@
 
 
 	var createItems = function(el, items, repository, parentIds) {
-		for (var i in items) {
+		for (var i = 0; i < items.length; i++) {
 			var vis = items[i][2];
-			createEl(el, [], [
+			createEl(el, null, [
 				createEl('span', {'class': 'tracy-dump-key'}, [items[i][0]]),
 				vis ? ' ' : null,
 				vis ? createEl('span', {'class': 'tracy-dump-visibility'}, [vis === 1 ? 'protected' : 'private']) : null,
