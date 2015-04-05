@@ -19,6 +19,7 @@ $info = array_filter(array(
 		. count(get_declared_interfaces()) . ' + ' . (PHP_VERSION_ID >= 50400 ? count(get_declared_traits()) : '0'),
 	'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL,
 	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : NULL,
+	'HHVM' => defined('HHVM_VERSION') ? HHVM_VERSION : NULL,
 	'PHP' => PHP_VERSION,
 	'Tracy' => Debugger::VERSION,
 	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
