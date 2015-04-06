@@ -132,7 +132,7 @@ class Debugger
 	 * @param  string  sender email; in 'From' header when sending email
 	 * @return void
 	 */
-	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL, $fromEmail = NULL)
+	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
 	{
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		error_reporting(E_ALL | E_STRICT);
@@ -144,9 +144,6 @@ class Debugger
 		// logging configuration
 		if ($email !== NULL) {
 			self::$email = $email;
-		}
-		if ($fromEmail !== NULL) {
-			self::$fromEmail = $fromEmail;
 		}
 		if ($logDirectory !== NULL) {
 			self::$logDirectory = $logDirectory;
@@ -407,7 +404,7 @@ class Debugger
 	public static function getLogger()
 	{
 		if (!self::$logger) {
-			self::$logger = new Logger(self::$logDirectory, self::$email, self::getBlueScreen(), self::$fromEmail);
+			self::$logger = new Logger(self::$logDirectory, self::$email, self::getBlueScreen());
 			self::$logger->directory = & self::$logDirectory; // back compatiblity
 			self::$logger->email = & self::$email;
 			self::$logger->fromEmail = & self::$fromEmail;

@@ -36,11 +36,10 @@ class Logger implements ILogger
 	private $blueScreen;
 
 
-	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL, $fromEmail = NULL)
+	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
-		$this->fromEmail = $fromEmail;
 		$this->blueScreen = $blueScreen;
 		$this->mailer = array($this, 'defaultMailer');
 	}
@@ -167,7 +166,7 @@ class Logger implements ILogger
 			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
-			call_user_func($this->mailer, $message, implode(', ', (array) $this->email), $this->fromEmail);
+			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
 		}
 	}
 
@@ -179,10 +178,10 @@ class Logger implements ILogger
 	 * @return void
 	 * @internal
 	 */
-	public function defaultMailer($message, $email, $fromEmail)
+	public function defaultMailer($message, $email)
 	{
 		$host = preg_replace('#[^\w.-]+#', '', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : php_uname('n'));
-		$fromEmail = ($fromEmail) ? $fromEmail : "noreply@$host";
+		$fromEmail = $this->fromEmail ? $this->fromEmail : "noreply@$host";
 		$parts = str_replace(
 			array("\r\n", "\n"),
 			array("\n", PHP_EOL),
