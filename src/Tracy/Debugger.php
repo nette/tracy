@@ -71,6 +71,9 @@ class Debugger
 
 	/** @var string|array email(s) to which send error notifications */
 	public static $email;
+	
+	/** @var string email from which send error notifications */
+	public static $fromEmail;
 
 	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
 	const DEBUG = ILogger::DEBUG,
@@ -126,9 +129,10 @@ class Debugger
 	 * @param  mixed   production, development mode, autodetection or IP address(es) whitelist.
 	 * @param  string  error log directory
 	 * @param  string  administrator email; enables email sending in production mode
+	 * @param  string  sender email; in 'From' header when sending email
 	 * @return void
 	 */
-	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
+	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL, $fromEmail = NULL)
 	{
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		error_reporting(E_ALL | E_STRICT);
@@ -140,6 +144,9 @@ class Debugger
 		// logging configuration
 		if ($email !== NULL) {
 			self::$email = $email;
+		}
+		if ($fromEmail !== NULL) {
+			self::$fromEmail = $fromEmail;
 		}
 		if ($logDirectory !== NULL) {
 			self::$logDirectory = $logDirectory;
@@ -400,9 +407,10 @@ class Debugger
 	public static function getLogger()
 	{
 		if (!self::$logger) {
-			self::$logger = new Logger(self::$logDirectory, self::$email, self::getBlueScreen());
+			self::$logger = new Logger(self::$logDirectory, self::$email, self::getBlueScreen(), self::$fromEmail);
 			self::$logger->directory = & self::$logDirectory; // back compatiblity
 			self::$logger->email = & self::$email;
+			self::$logger->fromEmail = & self::$fromEmail;
 		}
 		return self::$logger;
 	}

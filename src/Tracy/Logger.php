@@ -22,6 +22,9 @@ class Logger implements ILogger
 
 	/** @var string|array email or emails to which send error notifications */
 	public $email;
+	
+	/** @var string email from which send error notifications */
+	public $fromEmail;
 
 	/** @var mixed interval for sending email is 2 days */
 	public $emailSnooze = '2 days';
@@ -33,10 +36,11 @@ class Logger implements ILogger
 	private $blueScreen;
 
 
-	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL)
+	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL, $fromEmail = NULL)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
+		$this->fromEmail = $fromEmail;
 		$this->blueScreen = $blueScreen;
 		$this->mailer = array($this, 'defaultMailer');
 	}
@@ -163,7 +167,7 @@ class Logger implements ILogger
 			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
-			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
+			call_user_func($this->mailer, $message, implode(', ', (array) $this->email), $this->fromEmail);
 		}
 	}
 
@@ -175,15 +179,16 @@ class Logger implements ILogger
 	 * @return void
 	 * @internal
 	 */
-	public function defaultMailer($message, $email)
+	public function defaultMailer($message, $email, $fromEmail)
 	{
 		$host = preg_replace('#[^\w.-]+#', '', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : php_uname('n'));
+		$fromEmail = ($fromEmail) ? $fromEmail : "noreply@$host";
 		$parts = str_replace(
 			array("\r\n", "\n"),
 			array("\n", PHP_EOL),
 			array(
 				'headers' => implode("\n", array(
-					"From: noreply@$host",
+					"From: $fromEmail",
 					'X-Mailer: Tracy',
 					'Content-Type: text/plain; charset=UTF-8',
 					'Content-Transfer-Encoding: 8bit',
