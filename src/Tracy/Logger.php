@@ -22,7 +22,7 @@ class Logger implements ILogger
 
 	/** @var string|array email or emails to which send error notifications */
 	public $email;
-	
+
 	/** @var string email from which send error notifications */
 	public $fromEmail;
 

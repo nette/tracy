@@ -71,7 +71,7 @@ class Debugger
 
 	/** @var string|array email(s) to which send error notifications */
 	public static $email;
-	
+
 	/** @var string email from which send error notifications */
 	public static $fromEmail;
 
