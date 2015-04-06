@@ -129,7 +129,6 @@ class Debugger
 	 * @param  mixed   production, development mode, autodetection or IP address(es) whitelist.
 	 * @param  string  error log directory
 	 * @param  string  administrator email; enables email sending in production mode
-	 * @param  string  sender email; in 'From' header when sending email
 	 * @return void
 	 */
 	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
