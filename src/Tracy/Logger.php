@@ -157,7 +157,7 @@ class Logger implements ILogger
 	{
 		$snooze = is_numeric($this->emailSnooze)
 			? $this->emailSnooze
-			: strtotime($this->emailSnooze) - time();
+			: @strtotime($this->emailSnooze) - time(); // @ - timezone may not be set
 
 		if ($this->email && $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ - file may not exist
