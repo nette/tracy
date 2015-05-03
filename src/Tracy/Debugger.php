@@ -72,6 +72,9 @@ class Debugger
 	/** @var string|array email(s) to which send error notifications */
 	public static $email;
 
+	/** @var string email from which send error notifications */
+	public static $fromEmail;
+
 	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
 	const DEBUG = ILogger::DEBUG,
 		INFO = ILogger::INFO,
@@ -403,6 +406,7 @@ class Debugger
 			self::$logger = new Logger(self::$logDirectory, self::$email, self::getBlueScreen());
 			self::$logger->directory = & self::$logDirectory; // back compatiblity
 			self::$logger->email = & self::$email;
+			self::$logger->fromEmail = & self::$fromEmail;
 		}
 		return self::$logger;
 	}
