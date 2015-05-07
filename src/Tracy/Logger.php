@@ -35,13 +35,17 @@ class Logger implements ILogger
 	/** @var BlueScreen */
 	private $blueScreen;
 
+	/** @var string */
+	public $baseUrlLogDir;
 
-	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL)
+
+	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL, $baseUrlLogDir = null)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
 		$this->blueScreen = $blueScreen;
 		$this->mailer = array($this, 'defaultMailer');
+		$this->baseUrlLogDir = $baseUrlLogDir;
 	}
 
 
@@ -193,7 +197,7 @@ class Logger implements ILogger
 				)) . "\n",
 				'subject' => "PHP: An error occurred on the server $host",
 				'body' => $this->formatMessage($message) . "\n\nsource: " . Helpers::getSource()
-					. ($exceptionFile ? ' @@  ' . basename($exceptionFile) : NULL),
+					. ($exceptionFile ? ' @@  ' . ($this->baseUrlLogDir ?: null) . basename($exceptionFile) : NULL),
 			)
 		);
 
