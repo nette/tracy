@@ -35,13 +35,17 @@ class Logger implements ILogger
 	/** @var BlueScreen */
 	private $blueScreen;
 
+	/** @var string */
+	public $baseUrlLogDir;
 
-	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL)
+
+	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL, $baseUrlLogDir = null)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
 		$this->blueScreen = $blueScreen;
 		$this->mailer = array($this, 'defaultMailer');
+		$this->baseUrlLogDir = $baseUrlLogDir;
 	}
 
 
@@ -72,7 +76,7 @@ class Logger implements ILogger
 		}
 
 		if (in_array($priority, array(self::ERROR, self::EXCEPTION, self::CRITICAL), TRUE)) {
-			$this->sendEmail($message);
+			$this->sendEmail($message, $exceptionFile);
 		}
 
 		return $exceptionFile;
@@ -156,7 +160,7 @@ class Logger implements ILogger
 	 * @param  string
 	 * @return void
 	 */
-	protected function sendEmail($message)
+	protected function sendEmail($message, $exceptionFile = null)
 	{
 		$snooze = is_numeric($this->emailSnooze)
 			? $this->emailSnooze
@@ -166,7 +170,7 @@ class Logger implements ILogger
 			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ - file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
 		) {
-			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
+			call_user_func($this->mailer, $message, implode(', ', (array) $this->email), $exceptionFile);
 		}
 	}
 
@@ -178,7 +182,7 @@ class Logger implements ILogger
 	 * @return void
 	 * @internal
 	 */
-	public function defaultMailer($message, $email)
+	public function defaultMailer($message, $email, $exceptionFile = null)
 	{
 		$host = preg_replace('#[^\w.-]+#', '', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : php_uname('n'));
 		$parts = str_replace(
@@ -192,7 +196,8 @@ class Logger implements ILogger
 					'Content-Transfer-Encoding: 8bit',
 				)) . "\n",
 				'subject' => "PHP: An error occurred on the server $host",
-				'body' => $this->formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
+				'body' => $this->formatMessage($message) . "\n\nsource: " . Helpers::getSource()
+					. ($exceptionFile ? ' @@  ' . ($this->baseUrlLogDir ?: null) . basename($exceptionFile) : NULL),
 			)
 		);
 
