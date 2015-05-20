@@ -11,23 +11,23 @@ use Tracy\Dumper,
 require __DIR__ . '/../bootstrap.php';
 
 
-$arr = array(
+$arr = [
 	'long' => str_repeat('Nette Framework', 1000),
 
-	array(
-		array(
-			array('hello' => 'world'),
-		),
-	),
+	[
+		[
+			['hello' => 'world'],
+		],
+	],
 
 	'long2' => str_repeat('Nette Framework', 1000),
 
-	(object) array(
-		(object) array(
-			(object) array('hello' => 'world'),
-		),
-	),
-);
+	(object) [
+		(object) [
+			(object) ['hello' => 'world'],
+		],
+	],
+];
 $arr[] = &$arr;
 
 
@@ -68,4 +68,4 @@ Assert::match( 'array (5)
    |  long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    |  1 => stdClass #%a% { ... }
    |  2 => array (5) [ RECURSION ]
-', Dumper::toText($arr, array(Dumper::DEPTH => 2, Dumper::TRUNCATE => 50)) );
+', Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]) );

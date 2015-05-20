@@ -21,7 +21,7 @@ Assert::match( "array (9)
    6 => \"Iñtërnâtiônàlizætiøn\" (27)
    7 => \"\\x00\"
    8 => \"\\xff\"
-", Dumper::toText(array(
+", Dumper::toText([
 	'',
 	' ',
 	"utf \n\r\t string",
@@ -31,4 +31,4 @@ Assert::match( "array (9)
 	"I\xc3\xb1t\xc3\xabrn\xc3\xa2ti\xc3\xb4n\xc3\xa0liz\xc3\xa6ti\xc3\xb8n", // Iñtërnâtiônàlizætiøn,
 	"\x00",
 	"\xFF",
-)));
+]));

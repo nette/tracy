@@ -48,7 +48,7 @@ class Debugger
 	public static $scream = FALSE;
 
 	/** @var array of callables specifies the functions that are automatically called after fatal error */
-	public static $onFatalError = array();
+	public static $onFatalError = [];
 
 	/********************* Debugger::dump() ****************d*g**/
 
@@ -164,12 +164,12 @@ class Debugger
 		}
 
 		if (!self::$enabled) {
-			register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
-			set_exception_handler(array(__CLASS__, 'exceptionHandler'));
-			set_error_handler(array(__CLASS__, 'errorHandler'));
+			register_shutdown_function([__CLASS__, 'shutdownHandler']);
+			set_exception_handler([__CLASS__, 'exceptionHandler']);
+			set_error_handler([__CLASS__, 'errorHandler']);
 
-			array_map('class_exists', array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
-				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger'));
+			array_map('class_exists', ['Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
+				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger']);
 
 			self::$enabled = TRUE;
 		}
@@ -197,7 +197,7 @@ class Debugger
 		}
 
 		$error = error_get_last();
-		if (in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR), TRUE)) {
+		if (in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], TRUE)) {
 			self::exceptionHandler(
 				Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])),
 				FALSE
@@ -361,11 +361,11 @@ class Debugger
 	{
 		if (!self::$blueScreen) {
 			self::$blueScreen = new BlueScreen;
-			self::$blueScreen->info = array(
+			self::$blueScreen->info = [
 				'PHP ' . PHP_VERSION,
 				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
 				'Tracy ' . self::VERSION,
-			);
+			];
 		}
 		return self::$blueScreen;
 	}
@@ -434,18 +434,18 @@ class Debugger
 	{
 		if ($return) {
 			ob_start();
-			Dumper::dump($var, array(
+			Dumper::dump($var, [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLen,
-			));
+			]);
 			return ob_get_clean();
 
 		} elseif (!self::$productionMode) {
-			Dumper::dump($var, array(
+			Dumper::dump($var, [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLen,
 				Dumper::LOCATION => self::$showLocation,
-			));
+			]);
 		}
 
 		return $var;
@@ -459,7 +459,7 @@ class Debugger
 	 */
 	public static function timer($name = NULL)
 	{
-		static $time = array();
+		static $time = [];
 		$now = microtime(TRUE);
 		$delta = isset($time[$name]) ? $now - $time[$name] : 0;
 		$time[$name] = $now;
@@ -482,11 +482,11 @@ class Debugger
 			if (!$panel) {
 				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'));
 			}
-			$panel->data[] = array('title' => $title, 'dump' => Dumper::toHtml($var, (array) $options + array(
+			$panel->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, (array) $options + [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLen,
 				Dumper::LOCATION => self::$showLocation,
-			)));
+			])];
 		}
 		return $var;
 	}

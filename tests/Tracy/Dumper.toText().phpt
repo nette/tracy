@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 class Test
 {
-	public $x = array(10, NULL);
+	public $x = [10, NULL];
 
 	private $y = 'hello';
 
@@ -56,7 +56,7 @@ Assert::match( 'array (5)
    |  5 => 5
    |  6 => 6
    |  7 => 7
-', Dumper::toText(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2, 3, 4, 5, 6, 7))) );
+', Dumper::toText([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]) );
 
 Assert::match( "stream resource #%d%\n   wrapper_type%A%", Dumper::toText(fopen(__FILE__, 'r')) );
 
@@ -74,7 +74,7 @@ Assert::match( 'Test #%a%
 $objStorage = new SplObjectStorage();
 $objStorage->attach($o1 = new stdClass);
 $objStorage[$o1] = 'o1';
-$objStorage->attach($o2 = (object) array('foo' => 'bar'));
+$objStorage->attach($o2 = (object) ['foo' => 'bar']);
 $objStorage[$o2] = 'o2';
 
 $objStorage->next();

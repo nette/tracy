@@ -27,13 +27,13 @@ use Tracy;
 	<meta name="robots" content="noindex">
 	<meta name="generator" content="Tracy by Nette Framework">
 
-	<title><?php echo htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8') ?></title><!-- <?php
+	<title><?= htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8') ?></title><!-- <?php
 		$ex = $exception; echo htmlspecialchars($ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE, 'UTF-8');
 		while ($ex = $ex->getPrevious()) echo htmlspecialchars('; caused by ' . get_class($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE, 'UTF-8');
 	?> -->
 
 	<style type="text/css" class="tracy-debug">
-	<?php echo preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . '/bluescreen.css')) ?>
+	<?= preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . '/bluescreen.css')) ?>
 	</style>
 	<script>document.documentElement.className+=' tracy-js'</script>
 </head>
@@ -44,16 +44,16 @@ use Tracy;
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
 		<div id="tracy-bs-error" class="panel">
-			<h1><?php echo htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8'), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
+			<h1><?= htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8'), ($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 
-			<p><?php echo htmlspecialchars($exception->getMessage(), ENT_IGNORE, 'UTF-8') ?>
-			<a href="https://www.google.com/search?sourceid=tracy&amp;q=<?php echo urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" rel="noreferrer">search&#x25ba;</a>
-			<?php if ($skipError): ?><a href="<?php echo htmlSpecialChars($skipError, ENT_IGNORE | ENT_QUOTES, 'UTF-8') ?>">skip error&#x25ba;</a><?php endif ?></p>
+			<p><?= htmlspecialchars($exception->getMessage(), ENT_IGNORE, 'UTF-8') ?>
+			<a href="https://www.google.com/search?sourceid=tracy&amp;q=<?= urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" rel="noreferrer">search&#x25ba;</a>
+			<?php if ($skipError): ?><a href="<?= htmlSpecialChars($skipError, ENT_IGNORE | ENT_QUOTES, 'UTF-8') ?>">skip error&#x25ba;</a><?php endif ?></p>
 		</div>
 
 		<?php if ($prev = $exception->getPrevious()): ?>
 		<div class="caused">
-			<a href="#tracyCaused">Caused by <?php echo get_class($prev) ?></a>
+			<a href="#tracyCaused">Caused by <?= get_class($prev) ?></a>
 		</div>
 		<?php endif ?>
 
@@ -63,13 +63,13 @@ use Tracy;
 
 			<?php if ($level++): ?>
 			<div class="panel"<?php if ($level === 2) echo ' id="tracyCaused"' ?>>
-			<h2><a data-tracy-ref="^+" class="tracy-toggle<?php echo ($collapsed = $level > 2) ? ' tracy-collapsed' : '' ?>">Caused by</a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = $level > 2) ? ' tracy-collapsed' : '' ?>">Caused by</a></h2>
 
-			<div class="<?php echo $collapsed ? 'tracy-collapsed ' : '' ?>inner">
+			<div class="<?= $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<div class="panel">
-					<h1><?php echo htmlspecialchars(get_class($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_NOQUOTES, 'UTF-8') ?></h1>
+					<h1><?= htmlspecialchars(get_class($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_NOQUOTES, 'UTF-8') ?></h1>
 
-					<p><b><?php echo htmlspecialchars($ex->getMessage(), ENT_IGNORE, 'UTF-8') ?></b></p>
+					<p><b><?= htmlspecialchars($ex->getMessage(), ENT_IGNORE, 'UTF-8') ?></b></p>
 				</div>
 			<?php endif ?>
 
@@ -78,27 +78,27 @@ use Tracy;
 			<?php $panel = call_user_func($panel, $ex); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 			<?php if (!empty($panel['bottom'])) { continue; } ?>
 			<div class="panel">
-				<h2><a data-tracy-ref="^+" class="tracy-toggle"><?php echo htmlSpecialChars($panel['tab'], ENT_NOQUOTES, 'UTF-8') ?></a></h2>
+				<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= htmlSpecialChars($panel['tab'], ENT_NOQUOTES, 'UTF-8') ?></a></h2>
 
 				<div class="inner">
-				<?php echo $panel['panel'] ?>
+				<?= $panel['panel'] ?>
 			</div></div>
 			<?php endforeach ?>
 
 
 			<?php $stack = $ex->getTrace(); $expanded = NULL ?>
-			<?php if ((!$exception instanceof \ErrorException || in_array($exception->getSeverity(), array(E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED))) && $this->isCollapsed($ex->getFile())) {
+			<?php if ((!$exception instanceof \ErrorException || in_array($exception->getSeverity(), [E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED])) && $this->isCollapsed($ex->getFile())) {
 				foreach ($stack as $key => $row) {
 					if (isset($row['file']) && !$this->isCollapsed($row['file'])) { $expanded = $key; break; }
 				}
 			} ?>
 
 			<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle<?php echo ($collapsed = $expanded !== NULL) ? ' tracy-collapsed' : '' ?>">Source file</a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = $expanded !== NULL) ? ' tracy-collapsed' : '' ?>">Source file</a></h2>
 
-			<div class="<?php echo $collapsed ? 'tracy-collapsed ' : '' ?>inner">
-				<p><b>File:</b> <?php echo Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
-				<?php if (is_file($ex->getFile())): ?><?php echo self::highlightFile($ex->getFile(), $ex->getLine(), 15, $ex instanceof \ErrorException && isset($ex->context) ? $ex->context : NULL) ?><?php endif ?>
+			<div class="<?= $collapsed ? 'tracy-collapsed ' : '' ?>inner">
+				<p><b>File:</b> <?= Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
+				<?php if (is_file($ex->getFile())): ?><?= self::highlightFile($ex->getFile(), $ex->getLine(), 15, $ex instanceof \ErrorException && isset($ex->context) ? $ex->context : NULL) ?><?php endif ?>
 			</div></div>
 
 
@@ -113,7 +113,7 @@ use Tracy;
 					<li><p>
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?>
-						<?php echo Helpers::editorLink($row['file'], $row['line']) ?>
+						<?= Helpers::editorLink($row['file'], $row['line']) ?>
 					<?php else: ?>
 						<i>inner-code</i><?php if (isset($row['line'])) echo ':', $row['line'] ?>
 					<?php endif ?>
@@ -123,17 +123,17 @@ use Tracy;
 					<?php if (isset($row['object'])) echo "<a data-tracy-ref='^p + .object' class='tracy-toggle tracy-collapsed'>" ?>
 					<?php if (isset($row['class'])) echo htmlspecialchars($row['class'] . $row['type'], ENT_NOQUOTES, 'UTF-8') ?>
 					<?php if (isset($row['object'])) echo '</a>' ?>
-					<?php echo htmlspecialchars($row['function'], ENT_NOQUOTES, 'UTF-8') ?>
+					<?= htmlspecialchars($row['function'], ENT_NOQUOTES, 'UTF-8') ?>
 
 					(<?php if (!empty($row['args'])): ?><a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a><?php endif ?>)
 					</p>
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?>
-						<div class="<?php if ($expanded !== $key) echo 'tracy-collapsed ' ?>file"><?php echo self::highlightFile($row['file'], $row['line']) ?></div>
+						<div class="<?php if ($expanded !== $key) echo 'tracy-collapsed ' ?>file"><?= self::highlightFile($row['file'], $row['line']) ?></div>
 					<?php endif ?>
 
 					<?php if (isset($row['object'])): ?>
-						<div class="tracy-collapsed outer object"><?php echo Dumper::toHtml($row['object'], array(Dumper::LIVE => TRUE)) ?></div>
+						<div class="tracy-collapsed outer object"><?= Dumper::toHtml($row['object'], [Dumper::LIVE => TRUE]) ?></div>
 					<?php endif ?>
 
 					<?php if (!empty($row['args'])): ?>
@@ -144,11 +144,11 @@ use Tracy;
 							$r = isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']);
 							$params = $r->getParameters();
 						} catch (\Exception $e) {
-							$params = array();
+							$params = [];
 						}
 						foreach ($row['args'] as $k => $v) {
 							echo '<tr><th>', htmlspecialchars(isset($params[$k]) ? '$' . $params[$k]->name : "#$k", ENT_IGNORE, 'UTF-8'), '</th><td>';
-							echo Dumper::toHtml($v, array(Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE));
+							echo Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]);
 							echo "</td></tr>\n";
 						}
 						?>
@@ -171,7 +171,7 @@ use Tracy;
 			<table>
 			<?php
 			foreach ($ex->context as $k => $v) {
-					echo '<tr><th>$', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, array(Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE)), "</td></tr>\n";
+				echo '<tr><th>$', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -187,20 +187,20 @@ use Tracy;
 		<div class="panel">
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
 		<div class="tracy-collapsed inner">
-		<?php echo Dumper::toHtml($exception, array(Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE)) ?>
+		<?= Dumper::toHtml($exception, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]) ?>
 		</div></div>
 		<?php endif ?>
 
 
-		<?php $bottomPanels = array() ?>
+		<?php $bottomPanels = [] ?>
 		<?php foreach ($panels as $panel): ?>
 		<?php $panel = call_user_func($panel, NULL); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 		<?php if (!empty($panel['bottom'])) { $bottomPanels[] = $panel; continue; } ?>
 		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed"><?php echo htmlSpecialChars($panel['tab'], ENT_NOQUOTES, 'UTF-8') ?></a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed"><?= htmlSpecialChars($panel['tab'], ENT_NOQUOTES, 'UTF-8') ?></a></h2>
 
 			<div class="tracy-collapsed inner">
-			<?php echo $panel['panel'] ?>
+			<?= $panel['panel'] ?>
 		</div></div>
 		<?php endforeach ?>
 
@@ -226,7 +226,7 @@ use Tracy;
 			<?php else: ?>
 			<table>
 			<?php
-			foreach ($_SESSION as $k => $v) echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', $k === '__NF' ? '<i>Nette Session</i>' : Dumper::toHtml($v, array(Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE)), "</td></tr>\n";
+			foreach ($_SESSION as $k => $v) echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', $k === '__NF' ? '<i>Nette Session</i>' : Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>
@@ -238,7 +238,7 @@ use Tracy;
 			<div class="outer">
 			<table>
 			<?php
-			foreach ($_SESSION['__NF']['DATA'] as $k => $v) echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, array(Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE)), "</td></tr>\n";
+			foreach ($_SESSION['__NF']['DATA'] as $k => $v) echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]), "</td></tr>\n";
 			?>
 			</table>
 			</div>
@@ -262,7 +262,7 @@ use Tracy;
 			<?php endif ?>
 
 
-			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Included files</a> (<?php echo count(get_included_files()) ?>)</h3>
+			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Included files</a> (<?= count(get_included_files()) ?>)</h3>
 			<div class="outer tracy-collapsed">
 			<table>
 			<?php
@@ -297,8 +297,8 @@ use Tracy;
 			<?php endif ?>
 
 
-			<?php foreach (array('_GET', '_POST', '_COOKIE') as $name): ?>
-			<h3>$<?php echo htmlspecialchars($name, ENT_NOQUOTES, 'UTF-8') ?></h3>
+			<?php foreach (['_GET', '_POST', '_COOKIE'] as $name): ?>
+			<h3>$<?= htmlspecialchars($name, ENT_NOQUOTES, 'UTF-8') ?></h3>
 			<?php if (empty($GLOBALS[$name])):?>
 			<p><i>empty</i></p>
 			<?php else: ?>
@@ -331,18 +331,18 @@ use Tracy;
 
 		<?php foreach ($bottomPanels as $panel): ?>
 		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle"><?php echo htmlSpecialChars($panel['tab'], ENT_NOQUOTES, 'UTF-8') ?></a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= htmlSpecialChars($panel['tab'], ENT_NOQUOTES, 'UTF-8') ?></a></h2>
 
 			<div class="inner">
-			<?php echo $panel['panel'] ?>
+			<?= $panel['panel'] ?>
 		</div></div>
 		<?php endforeach ?>
 
 
 		<ul>
-			<li>Report generated at <?php echo @date('Y/m/d H:i:s') ?></li>
-			<li><?php if ($sourceIsUrl): ?><a href="<?php echo htmlSpecialChars($source, ENT_IGNORE | ENT_QUOTES, 'UTF-8') ?>"><?php endif ?><?php echo htmlSpecialChars($source, ENT_IGNORE, 'UTF-8') ?><?php if ($sourceIsUrl): ?></a><?php endif ?></li>
-			<?php foreach ($info as $item): ?><li><?php echo htmlSpecialChars($item, ENT_NOQUOTES, 'UTF-8') ?></li><?php endforeach ?>
+			<li>Report generated at <?= @date('Y/m/d H:i:s') ?></li>
+			<li><?php if ($sourceIsUrl): ?><a href="<?= htmlSpecialChars($source, ENT_IGNORE | ENT_QUOTES, 'UTF-8') ?>"><?php endif ?><?= htmlSpecialChars($source, ENT_IGNORE, 'UTF-8') ?><?php if ($sourceIsUrl): ?></a><?php endif ?></li>
+			<?php foreach ($info as $item): ?><li><?= htmlSpecialChars($item, ENT_NOQUOTES, 'UTF-8') ?></li><?php endforeach ?>
 		</ul>
 
 		<div id="tracy-bs-logo"><a href="http://tracy.nette.org" rel="noreferrer"></a></div>
@@ -360,7 +360,7 @@ use Tracy;
 })();
 </script>
 <script>
-Tracy && Tracy.Dumper.init(<?php echo json_encode(Dumper::fetchLiveData()) ?>);
+Tracy && Tracy.Dumper.init(<?= json_encode(Dumper::fetchLiveData()) ?>);
 </script>
 </body>
 </html>

@@ -18,13 +18,13 @@ use Tracy;
 class BlueScreen
 {
 	/** @var string[] */
-	public $info = array();
+	public $info = [];
 
 	/** @var callable[] */
-	private $panels = array();
+	private $panels = [];
 
 	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
-	public $collapsePaths = array();
+	public $collapsePaths = [];
 
 
 	public function __construct()
@@ -108,7 +108,7 @@ class BlueScreen
 			ini_set('highlight.string', '#080');
 		}
 
-		$source = str_replace(array("\r\n", "\r"), "\n", $source);
+		$source = str_replace(["\r\n", "\r"], "\n", $source);
 		$source = explode("\n", highlight_string($source, TRUE));
 		$out = $source[0]; // <code><span color=highlight.html>
 		$source = str_replace('<br />', "\n", $source[1]);
@@ -118,7 +118,7 @@ class BlueScreen
 			$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function($m) use ($vars) {
 				return array_key_exists($m[1], $vars)
 					? '" title="'
-						. str_replace('"', '&quot;', trim(strip_tags(Dumper::toHtml($vars[$m[1]], array(Dumper::DEPTH => 1)))))
+						. str_replace('"', '&quot;', trim(strip_tags(Dumper::toHtml($vars[$m[1]], [Dumper::DEPTH => 1]))))
 						. $m[0]
 					: $m[0];
 			}, $out);
@@ -156,7 +156,7 @@ class BlueScreen
 
 		foreach ($source as $n => $s) {
 			$spans += substr_count($s, '<span') - substr_count($s, '</span');
-			$s = str_replace(array("\r", "\n"), array('', ''), $s);
+			$s = str_replace(["\r", "\n"], ['', ''], $s);
 			preg_match_all('#<[^>]+>#', $s, $tags);
 			if ($n == $line) {
 				$out .= sprintf(

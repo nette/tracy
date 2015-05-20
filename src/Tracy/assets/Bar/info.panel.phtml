@@ -11,7 +11,7 @@ namespace Tracy;
 
 use Tracy;
 
-$info = array_filter(array(
+$info = array_filter([
 	'Execution time' => str_replace(' ', ' ', number_format($this->time * 1000, 1, '.', ' ')) . ' ms',
 	'Peak of allocated memory' => str_replace(' ', ' ', number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ')) . ' MB',
 	'Included files' => count(get_included_files()),
@@ -23,7 +23,7 @@ $info = array_filter(array(
 	'PHP' => PHP_VERSION,
 	'Tracy' => Debugger::VERSION,
 	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
-) + (array) $this->data);
+] + (array) $this->data);
 
 ?>
 <style class="tracy-debug">
@@ -46,9 +46,9 @@ $info = array_filter(array(
 <?php foreach ($info as $key => $val): ?>
 <tr>
 <?php if (iconv_strlen($val, 'UTF-8') > 25): ?>
-	<td colspan=2><?php echo htmlspecialchars($key, NULL, 'UTF-8') ?> <b><?php echo htmlspecialchars($val, NULL, 'UTF-8') ?></b></td>
+	<td colspan=2><?= htmlspecialchars($key, NULL, 'UTF-8') ?> <b><?= htmlspecialchars($val, NULL, 'UTF-8') ?></b></td>
 <?php else: ?>
-	<td><?php echo htmlspecialchars($key, NULL, 'UTF-8') ?></td><td><?php echo htmlspecialchars($val, NULL, 'UTF-8') ?></td>
+	<td><?= htmlspecialchars($key, NULL, 'UTF-8') ?></td><td><?= htmlspecialchars($val, NULL, 'UTF-8') ?></td>
 <?php endif ?>
 </tr>
 <?php endforeach ?>

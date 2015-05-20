@@ -52,7 +52,7 @@ class Helpers
 	public static function editorUri($file, $line = NULL)
 	{
 		if (Debugger::$editor && $file && is_file($file)) {
-			return strtr(Debugger::$editor, array('%file' => rawurlencode($file), '%line' => $line ? (int) $line : ''));
+			return strtr(Debugger::$editor, ['%file' => rawurlencode($file), '%line' => $line ? (int) $line : '']);
 		}
 	}
 
@@ -85,14 +85,14 @@ class Helpers
 	public static function fixStack($exception)
 	{
 		if (function_exists('xdebug_get_function_stack')) {
-			$stack = array();
+			$stack = [];
 			foreach (array_slice(array_reverse(xdebug_get_function_stack()), 2, -1) as $row) {
-				$frame = array(
+				$frame = [
 					'file' => $row['file'],
 					'line' => $row['line'],
 					'function' => isset($row['function']) ? $row['function'] : '*unknown*',
-					'args' => array(),
-				);
+					'args' => [],
+				];
 				if (!empty($row['class'])) {
 					$frame['type'] = isset($row['type']) && $row['type'] === 'dynamic' ? '->' : '::';
 					$frame['class'] = $row['class'];
@@ -121,7 +121,7 @@ class Helpers
 	/** @internal */
 	public static function errorTypeToString($type)
 	{
-		$types = array(
+		$types = [
 			E_ERROR => 'Fatal Error',
 			E_USER_ERROR => 'User Error',
 			E_RECOVERABLE_ERROR => 'Recoverable Error',
@@ -137,7 +137,7 @@ class Helpers
 			E_STRICT => 'Strict standards',
 			E_DEPRECATED => 'Deprecated',
 			E_USER_DEPRECATED => 'User Deprecated',
-		);
+		];
 		return isset($types[$type]) ? $types[$type] : 'Unknown error';
 	}
 

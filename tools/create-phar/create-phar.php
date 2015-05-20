@@ -19,7 +19,7 @@ foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterato
 	echo "adding: {$iterator->getSubPathname()}\n";
 	$s = php_strip_whitespace($file);
 
-	if (in_array($file->getExtension(), array('js', 'css'))) {
+	if (in_array($file->getExtension(), ['js', 'css'])) {
 		continue;
 
 	} elseif ($file->getExtension() === 'phtml') {

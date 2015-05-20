@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 class Test
 {
-	public $x = array(10, NULL);
+	public $x = [10, NULL];
 
 	private $y = 'hello';
 
@@ -75,7 +75,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">5</span> => <span class="tracy-dump-number">5</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">6</span> => <span class="tracy-dump-number">6</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">7</span> => <span class="tracy-dump-number">7</span>
-</div></div></pre>', Dumper::toHtml(array(1, 'hello', array(), array(1, 2), array(1 => 1, 2, 3, 4, 5, 6, 7))) );
+</div></div></pre>', Dumper::toHtml([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]) );
 
 Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div class="tracy-collapsed">%A%', Dumper::toHtml(fopen(__FILE__, 'r')) );
@@ -97,7 +97,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">NULL</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-string">"hello"</span> (5)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
-</div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE_COUNT => 1)) );
+</div></pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1]) );
 
 Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-array">array</span> (2)</span>
@@ -105,7 +105,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">NULL</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-string">"hello"</span> (5)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
-</div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE_COUNT => 1, Dumper::COLLAPSE => FALSE)) );
+</div></pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1, Dumper::COLLAPSE => FALSE]) );
 
 Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
@@ -113,7 +113,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapse
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">NULL</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-string">"hello"</span> (5)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
-</div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE => TRUE)) );
+</div></pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE => TRUE]) );
 
 Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
@@ -121,7 +121,7 @@ Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle tracy-collapse
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">NULL</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-string">"hello"</span> (5)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
-</div></pre>', Dumper::toHtml(new Test, array(Dumper::COLLAPSE => 3)) );
+</div></pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE => 3]) );
 
 Assert::match( '<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Closure</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">file</span> => <span class="tracy-dump-string">"%a%"</span> (%i%)

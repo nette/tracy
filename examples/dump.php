@@ -13,14 +13,14 @@ Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/log');
 
 class Test
 {
-	public $x = array(10, NULL);
+	public $x = [10, NULL];
 
 	private $y = 'hello';
 
 	protected $z = 30;
 }
 
-$arr = array(10, 20.2, TRUE, NULL, 'hello', (object) NULL, array(), fopen(__FILE__, 'r'));
+$arr = [10, 20.2, TRUE, NULL, 'hello', (object) NULL, [], fopen(__FILE__, 'r')];
 
 $obj = new Test;
 

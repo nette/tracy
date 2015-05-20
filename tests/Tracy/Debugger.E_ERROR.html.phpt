@@ -49,7 +49,7 @@ function first($arg1, $arg2)
 
 function second($arg1, $arg2)
 {
-	third(array(1, 2, 3));
+	third([1, 2, 3]);
 }
 
 

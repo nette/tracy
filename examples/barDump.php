@@ -14,7 +14,7 @@ use Tracy\Debugger;
 
 Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/log');
 
-$arr = array(10, 20.2, TRUE, NULL, 'hello', (object) NULL, array());
+$arr = [10, 20.2, TRUE, NULL, 'hello', (object) NULL, []];
 
 
 Debugger::barDump(get_defined_vars());

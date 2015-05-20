@@ -11,7 +11,7 @@ use Tracy\Dumper,
 require __DIR__ . '/../bootstrap.php';
 
 
-$arr = array(1, 2, 3);
+$arr = [1, 2, 3];
 $arr[] = & $arr;
 Assert::match( 'array (4)
    0 => 1
@@ -25,7 +25,7 @@ Assert::match( 'array (4)
 ', Dumper::toText($arr) );
 
 
-$arr = (object) array('x' => 1, 'y' => 2);
+$arr = (object) ['x' => 1, 'y' => 2];
 $arr->z = & $arr;
 Assert::match( 'stdClass #%a%
    x => 1

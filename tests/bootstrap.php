@@ -12,7 +12,7 @@ if (@!include __DIR__ . '/../vendor/autoload.php') {
 // configure environment
 Tester\Environment::setup();
 date_default_timezone_set('Europe/Prague');
-$_GET = $_POST = $_COOKIE = array();
+$_GET = $_POST = $_COOKIE = [];
 
 
 // create temporary directory

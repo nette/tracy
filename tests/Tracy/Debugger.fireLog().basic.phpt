@@ -21,7 +21,7 @@ $_SERVER['HTTP_X_FIRELOGGER'] = TRUE;
 Debugger::$productionMode = FALSE;
 
 
-$arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2' => TRUE), (object) array('key1' => 'val1', 'key2' => TRUE));
+$arr = [10, 20.2, TRUE, FALSE, NULL, 'hello', ['key1' => 'val1', 'key2' => TRUE], (object) ['key1' => 'val1', 'key2' => TRUE]];
 
 // will show in Firebug "Console" tab
 Debugger::fireLog('Hello World'); // Tracy\Debugger::DEBUG

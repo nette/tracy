@@ -31,7 +31,7 @@ class Dumper
 		LOCATION_CLASS = 4; // shows where class is defined
 
 	/** @var array */
-	public static $terminalColors = array(
+	public static $terminalColors = [
 		'bool' => '1;33',
 		'null' => '1;33',
 		'number' => '1;32',
@@ -42,25 +42,25 @@ class Dumper
 		'visibility' => '1;30',
 		'resource' => '1;37',
 		'indent' => '1;30',
-	);
+	];
 
 	/** @var array */
-	public static $resources = array(
+	public static $resources = [
 		'stream' => 'stream_get_meta_data',
 		'stream-context' => 'stream_context_get_options',
 		'curl' => 'curl_getinfo',
-	);
+	];
 
 	/** @var array */
-	public static $objectExporters = array(
+	public static $objectExporters = [
 		'Closure' => 'Tracy\Dumper::exportClosure',
 		'SplFileInfo' => 'Tracy\Dumper::exportSplFileInfo',
 		'SplObjectStorage' => 'Tracy\Dumper::exportSplObjectStorage',
 		'__PHP_Incomplete_Class' => 'Tracy\Dumper::exportPhpIncompleteClass',
-	);
+	];
 
 	/** @var array  */
-	private static $liveStorage = array();
+	private static $liveStorage = [];
 
 
 	/**
@@ -86,13 +86,13 @@ class Dumper
 	 */
 	public static function toHtml($var, array $options = NULL)
 	{
-		$options = (array) $options + array(
+		$options = (array) $options + [
 			self::DEPTH => 4,
 			self::TRUNCATE => 150,
 			self::COLLAPSE => 14,
 			self::COLLAPSE_COUNT => 7,
 			self::OBJECT_EXPORTERS => NULL,
-		);
+		];
 		$loc = & $options[self::LOCATION];
 		$loc = $loc === TRUE ? ~0 : (int) $loc;
 		$options[self::OBJECT_EXPORTERS] = (array) $options[self::OBJECT_EXPORTERS] + self::$objectExporters;
@@ -237,7 +237,7 @@ class Dumper
 			) : '')
 			. '>' . get_class($var) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
 
-		static $list = array();
+		static $list = [];
 
 		if (empty($fields)) {
 			return $out . "\n";
@@ -294,7 +294,7 @@ class Dumper
 	private static function toJson(& $var, $options, $level = 0)
 	{
 		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
-			return is_finite($var) ? $var : array('type' => (string) $var);
+			return is_finite($var) ? $var : ['type' => (string) $var];
 
 		} elseif (is_string($var)) {
 			return self::encodeString($var, $options[self::TRUNCATE]);
@@ -305,14 +305,14 @@ class Dumper
 				$marker = uniqid("\x00", TRUE);
 			}
 			if (isset($var[$marker]) || $level >= $options[self::DEPTH]) {
-				return array(NULL);
+				return [NULL];
 			}
-			$res = array();
+			$res = [];
 			$var[$marker] = TRUE;
 			foreach ($var as $k => & $v) {
 				if ($k !== $marker) {
 					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
-					$res[] = array($k, self::toJson($v, $options, $level + 1));
+					$res[] = [$k, self::toJson($v, $options, $level + 1)];
 				}
 			}
 			unset($var[$marker]);
@@ -321,7 +321,7 @@ class Dumper
 		} elseif (is_object($var)) {
 			$obj = & self::$liveStorage[spl_object_hash($var)];
 			if ($obj && $obj['level'] <= $level) {
-				return array('object' => $obj['id']);
+				return ['object' => $obj['id']];
 			}
 
 			if ($options[self::LOCATION] & self::LOCATION_CLASS) {
@@ -329,17 +329,17 @@ class Dumper
 				$editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine());
 			}
 			static $counter = 1;
-			$obj = $obj ?: array(
+			$obj = $obj ?: [
 				'id' => '0' . $counter++, // differentiate from resources
 				'name' => get_class($var),
-				'editor' => empty($editor) ? NULL : array('file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor),
+				'editor' => empty($editor) ? NULL : ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor],
 				'level' => $level,
 				'object' => $var,
-			);
+			];
 
 			if ($level < $options[self::DEPTH] || !$options[self::DEPTH]) {
 				$obj['level'] = $level;
-				$obj['items'] = array();
+				$obj['items'] = [];
 
 				foreach (self::exportObject($var, $options[self::OBJECT_EXPORTERS]) as $k => $v) {
 					$vis = 0;
@@ -348,23 +348,23 @@ class Dumper
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
-					$obj['items'][] = array($k, self::toJson($v, $options, $level + 1), $vis);
+					$obj['items'][] = [$k, self::toJson($v, $options, $level + 1), $vis];
 				}
 			}
-			return array('object' => $obj['id']);
+			return ['object' => $obj['id']];
 
 		} elseif (is_resource($var)) {
 			$obj = & self::$liveStorage[(string) $var];
 			if (!$obj) {
 				$type = get_resource_type($var);
-				$obj = array('id' => (int) $var, 'name' => $type . ' resource');
+				$obj = ['id' => (int) $var, 'name' => $type . ' resource'];
 				if (isset(self::$resources[$type])) {
 					foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
-						$obj['items'][] = array($k, self::toJson($v, $options, $level + 1));
+						$obj['items'][] = [$k, self::toJson($v, $options, $level + 1)];
 					}
 				}
 			}
-			return array('resource' => $obj['id']);
+			return ['resource' => $obj['id']];
 
 		} else {
 			return 'unknown type';
@@ -375,13 +375,13 @@ class Dumper
 	/** @return array  */
 	public static function fetchLiveData()
 	{
-		$res = array();
+		$res = [];
 		foreach (self::$liveStorage as $obj) {
 			$id = $obj['id'];
 			unset($obj['level'], $obj['object'], $obj['id']);
 			$res[$id] = $obj;
 		}
-		self::$liveStorage = array();
+		self::$liveStorage = [];
 		return $res;
 	}
 
@@ -436,16 +436,16 @@ class Dumper
 	private static function exportClosure(\Closure $obj)
 	{
 		$rc = new \ReflectionFunction($obj);
-		$res = array();
+		$res = [];
 		foreach ($rc->getParameters() as $param) {
 			$res[] = '$' . $param->getName();
 		}
-		return array(
+		return [
 			'file' => $rc->getFileName(),
 			'line' => $rc->getStartLine(),
 			'variables' => $rc->getStaticVariables(),
 			'parameters' => implode(', ', $res),
-		);
+		];
 	}
 
 
@@ -454,7 +454,7 @@ class Dumper
 	 */
 	private static function exportSplFileInfo(\SplFileInfo $obj)
 	{
-		return array('path' => $obj->getPathname());
+		return ['path' => $obj->getPathname()];
 	}
 
 
@@ -463,9 +463,9 @@ class Dumper
 	 */
 	private static function exportSplObjectStorage(\SplObjectStorage $obj)
 	{
-		$res = array();
+		$res = [];
 		foreach (clone $obj as $item) {
-			$res[] = array('object' => $item, 'data' => $obj[$item]);
+			$res[] = ['object' => $item, 'data' => $obj[$item]];
 		}
 		return $res;
 	}
@@ -476,7 +476,7 @@ class Dumper
 	 */
 	private static function exportPhpIncompleteClass(\__PHP_Incomplete_Class $obj)
 	{
-		$info = array('className' => NULL, 'private' => array(), 'protected' => array(), 'public' => array());
+		$info = ['className' => NULL, 'private' => [], 'protected' => [], 'public' => []];
 		foreach ((array) $obj as $name => $value) {
 			if ($name === '__PHP_Incomplete_Class_Name') {
 				$info['className'] = $value;
@@ -519,11 +519,11 @@ class Dumper
 		if (isset($location['file'], $location['line']) && is_file($location['file'])) {
 			$lines = file($location['file']);
 			$line = $lines[$location['line'] - 1];
-			return array(
+			return [
 				$location['file'],
 				$location['line'],
 				trim(preg_match('#\w*dump(er::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line)
-			);
+			];
 		}
 	}
 

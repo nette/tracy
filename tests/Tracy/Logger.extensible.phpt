@@ -15,18 +15,18 @@ require __DIR__ . '/../bootstrap.php';
 class CustomLogger extends Logger
 {
 
-	public $collector = array();
+	public $collector = [];
 
 	public function log($value, $priority = self::INFO)
 	{
 		$exceptionFile = $value instanceof \Exception ? $this->logException($value) : NULL;
 
-		$this->collector[] = array(
+		$this->collector[] = [
 			$priority,
 			$this->formatMessage($value),
 			$this->formatLogLine($value, $exceptionFile),
 			$exceptionFile
-		);
+		];
 
 		return $exceptionFile;
 	}

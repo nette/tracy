@@ -13,7 +13,7 @@ require __DIR__ . '/../src/tracy.php';
 use Tracy\Debugger;
 
 
-$arr = array(10, 20, array('key1' => 'val1', 'key2' => TRUE));
+$arr = [10, 20, ['key1' => 'val1', 'key2' => TRUE]];
 
 // will show in FireLogger tab in Firebug
 Debugger::fireLog('Hello World');
@@ -29,7 +29,7 @@ function first($arg1, $arg2)
 
 function second($arg1, $arg2)
 {
-	third(array(1, 2, 3));
+	third([1, 2, 3]);
 }
 
 

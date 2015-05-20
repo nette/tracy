@@ -29,8 +29,8 @@ test(function(){ // localhost
 	Assert::true( Debugger::detectDebugMode('a,192.168.1.1,b') );
 	Assert::true( Debugger::detectDebugMode('a 192.168.1.1 b') );
 
-	Assert::false( Debugger::detectDebugMode(array()) );
-	Assert::true( Debugger::detectDebugMode(array('192.168.1.1')) );
+	Assert::false( Debugger::detectDebugMode([]) );
+	Assert::true( Debugger::detectDebugMode(['192.168.1.1']) );
 });
 
 
@@ -56,7 +56,7 @@ test(function(){ // missing $_SERVER['REMOTE_ADDR']
 	Assert::false( Debugger::detectDebugMode('127.0.0.1') );
 
 	Assert::true( Debugger::detectDebugMode(php_uname('n')) );
-	Assert::true( Debugger::detectDebugMode(array(php_uname('n'))) );
+	Assert::true( Debugger::detectDebugMode([php_uname('n')]) );
 });
 
 
@@ -70,7 +70,7 @@ test(function(){ // secret
 	Assert::false( Debugger::detectDebugMode('abc@192.168.1.1') );
 	Assert::true( Debugger::detectDebugMode('*secret*@192.168.1.1') );
 
-	$_COOKIE[Debugger::COOKIE_SECRET] = array('*secret*');
+	$_COOKIE[Debugger::COOKIE_SECRET] = ['*secret*'];
 	Assert::false( Debugger::detectDebugMode('*secret*@192.168.1.1') );
 });
 

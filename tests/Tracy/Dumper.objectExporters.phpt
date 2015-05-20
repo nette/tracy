@@ -21,14 +21,14 @@ Assert::match( 'stdClass #%a%
 ', Dumper::toText($obj) );
 
 
-$exporters = array(
+$exporters = [
 	'stdClass' => function($var) {
-		return array('x' => $var->a + 1);
+		return ['x' => $var->a + 1];
 	},
-);
+];
 Assert::match( 'stdClass #%a%
    x => 2
-', Dumper::toText($obj, array(Dumper::OBJECT_EXPORTERS => $exporters))
+', Dumper::toText($obj, [Dumper::OBJECT_EXPORTERS => $exporters])
 );
 
 
