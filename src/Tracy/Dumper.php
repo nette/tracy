@@ -26,9 +26,9 @@ class Dumper
 		LIVE = 'live'; // will be rendered using JavaScript
 
 	const
-		LOCATION_SOURCE = 1, // shows where dump was called
-		LOCATION_LINK = 2, // appends clickable anchor
-		LOCATION_CLASS = 4; // shows where class is defined
+		LOCATION_SOURCE = 0b0001, // shows where dump was called
+		LOCATION_LINK = 0b0010, // appends clickable anchor
+		LOCATION_CLASS = 0b0100; // shows where class is defined
 
 	/** @var array */
 	public static $terminalColors = [
@@ -128,7 +128,7 @@ class Dumper
 	public static function toTerminal($var, array $options = NULL)
 	{
 		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function($m) {
-			return "\033[" . (isset($m[1], Dumper::$terminalColors[$m[1]]) ? Dumper::$terminalColors[$m[1]] : '0') . 'm';
+			return "\033[" . (isset($m[1], self::$terminalColors[$m[1]]) ? self::$terminalColors[$m[1]] : '0') . 'm';
 		}, self::toHtml($var, $options))), ENT_QUOTES);
 	}
 
@@ -498,7 +498,7 @@ class Dumper
 	 */
 	private static function findLocation()
 	{
-		foreach (debug_backtrace(PHP_VERSION_ID >= 50306 ? DEBUG_BACKTRACE_IGNORE_ARGS : FALSE) as $item) {
+		foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $item) {
 			if (isset($item['class']) && $item['class'] === __CLASS__) {
 				$location = $item;
 				continue;

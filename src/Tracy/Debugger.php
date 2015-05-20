@@ -131,7 +131,7 @@ class Debugger
 	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
 	{
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
-		error_reporting(E_ALL | E_STRICT);
+		error_reporting(E_ALL);
 
 		if ($mode !== NULL || self::$productionMode === NULL) {
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
@@ -289,11 +289,11 @@ class Debugger
 	public static function errorHandler($severity, $message, $file, $line, $context)
 	{
 		if (self::$scream) {
-			error_reporting(E_ALL | E_STRICT);
+			error_reporting(E_ALL);
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
-			if (Helpers::findTrace(debug_backtrace(PHP_VERSION_ID >= 50306 ? DEBUG_BACKTRACE_IGNORE_ARGS : FALSE), '*::__toString')) {
+			if (Helpers::findTrace(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), '*::__toString')) {
 				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
 				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
 				$e->context = $context;

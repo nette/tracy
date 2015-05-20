@@ -35,14 +35,14 @@ class OutputDebugger
 				$this->list[] = [$file, 1, self::BOM];
 			}
 		}
-		ob_start([$this, 'handler'], PHP_VERSION_ID >= 50400 ? 1 : 2);
+		ob_start([$this, 'handler'], 1);
 	}
 
 
 	/** @internal */
 	public function handler($s, $phase)
 	{
-		$trace = debug_backtrace(PHP_VERSION_ID >= 50306 ? DEBUG_BACKTRACE_IGNORE_ARGS : FALSE);
+		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 		if (isset($trace[0]['file'], $trace[0]['line'])) {
 			$stack = $trace;
 			unset($stack[0]['line'], $stack[0]['args']);
