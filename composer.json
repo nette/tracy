@@ -25,10 +25,5 @@
 		"classmap": ["src"],
 		"files": ["src/shortcuts.php"]
 	},
-	"minimum-stability": "dev",
-	"extra": {
-		"branch-alias": {
-			"dev-master": "2.3-dev"
-		}
-	}
+	"minimum-stability": "dev"
 }
