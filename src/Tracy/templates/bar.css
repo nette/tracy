@@ -31,6 +31,7 @@ body #tracy-debug {
 	opacity: 1;
 	border-radius: 0;
 	box-shadow: none;
+	text-shadow: none;
 }
 
 #tracy-debug b, #tracy-debug strong {
