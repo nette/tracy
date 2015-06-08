@@ -17,9 +17,6 @@ use Tracy;
  */
 class Bar
 {
-	/** @deprecated */
-	public $info = [];
-
 	/** @var IBarPanel[] */
 	private $panels = [];
 

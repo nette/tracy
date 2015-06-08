@@ -27,9 +27,6 @@ class Debugger
 
 	const COOKIE_SECRET = 'tracy-debug';
 
-	/** @deprecated */
-	public static $version = self::VERSION;
-
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
 
@@ -84,9 +81,6 @@ class Debugger
 
 	/** @var int timestamp with microseconds of the start of the request */
 	public static $time;
-
-	/** @deprecated */
-	public static $source;
 
 	/** @var string URI pattern mask to open editor */
 	public static $editor = 'editor://open/?file=%file&line=%line';
