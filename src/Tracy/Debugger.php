@@ -208,7 +208,7 @@ class Debugger
 	 * @return void
 	 * @internal
 	 */
-	public static function exceptionHandler(\Exception $exception, $exit = TRUE)
+	public static function exceptionHandler($exception, $exit = TRUE)
 	{
 		if (self::$done) {
 			return;
