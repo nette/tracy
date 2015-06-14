@@ -9,13 +9,14 @@ require __DIR__ . '/../src/tracy.php';
 use Tracy\Debugger;
 
 
-Debugger::enable(Debugger::DETECT, __DIR__ . '/log');s
+Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 /*
 // Use own theme for Tracy as per the project
 $blueScreen = Debugger::getBlueScreen();
 $blueScreen->setThemeDir(__DIR__."/assets/")
-           ->setTheme('bluescreen.black.css');*/
+           ->setTheme('bluescreen.black.css');
+*/
 
 function first($arg1, $arg2)
 {
