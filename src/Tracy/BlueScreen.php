@@ -26,6 +26,11 @@ class BlueScreen
 	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
 	public $collapsePaths = [];
 
+    /** @var theme directory path */
+    public $themeDir;
+
+    /** @var  stylesheet for theming tracy */
+    public $theme;
 
 	public function __construct()
 	{
@@ -34,6 +39,43 @@ class BlueScreen
 			: __DIR__;
 	}
 
+    /**
+     * Set your theme directory path here
+     *
+     * @param $dir
+     * @return $this
+     */
+    public function setThemeDir($dir)
+    {
+        $this->themeDir = $dir;
+
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getThemeDir()
+    {
+        return isset($this->themeDir) ? $this->themeDir : null;
+    }
+
+    /**
+     * Set style sheet
+     * @param $theme
+     */
+    public function setTheme($theme)
+    {
+        $this->theme = $theme;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTheme()
+    {
+        return isset($this->theme) ? $this->theme : 'default';
+    }
 
 	/**
 	 * Add custom panel.
@@ -66,6 +108,9 @@ class BlueScreen
 		$skipError = $sourceIsUrl && $exception instanceof \ErrorException && !empty($exception->skippable)
 			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
 			: NULL;
+
+        $themeDir = $this->getThemeDir();
+        $theme = $this->getTheme();
 
 		require __DIR__ . '/assets/BlueScreen/bluescreen.phtml';
 	}

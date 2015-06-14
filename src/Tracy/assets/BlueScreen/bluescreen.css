@@ -59,7 +59,7 @@ html {
 }
 
 #tracy-bs-error {
-	background: #CD1818;
+    background: #CD1818;
 	color: white;
 	font: 13pt/1.5 Verdana, sans-serif !important;
 	display: block;

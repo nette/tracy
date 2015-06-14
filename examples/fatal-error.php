@@ -12,6 +12,9 @@ use Tracy\Debugger;
 Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 
+$blueScreen = Debugger::getBlueScreen();
+$blueScreen->setThemeDir(__DIR__."/assets/")
+           ->setTheme('bluescreen.black.css');
 
 function first($arg1, $arg2)
 {
