@@ -51,10 +51,10 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen.
-	 * @param  \Exception
+	 * @param  \Exception|\Throwable
 	 * @return void
 	 */
-	public function render(\Exception $exception)
+	public function render($exception)
 	{
 		$panels = $this->panels;
 		$info = array_filter($this->info);

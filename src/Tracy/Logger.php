@@ -47,7 +47,7 @@ class Logger implements ILogger
 
 	/**
 	 * Logs message or exception to file and sends email notification.
-	 * @param  string|\Exception
+	 * @param  string|\Exception|\Throwable
 	 * @param  int   one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
 	 * @return string logged error filename
 	 */
@@ -59,7 +59,9 @@ class Logger implements ILogger
 			throw new \RuntimeException("Directory '$this->directory' is not found or is not directory.");
 		}
 
-		$exceptionFile = $message instanceof \Exception ? $this->getExceptionFile($message) : NULL;
+		$exceptionFile = $message instanceof \Exception || $message instanceof \Throwable
+			? $this->getExceptionFile($message)
+			: NULL;
 		$line = $this->formatLogLine($message, $exceptionFile);
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
 
@@ -67,7 +69,7 @@ class Logger implements ILogger
 			throw new \RuntimeException("Unable to write to log file '$file'. Is directory writable?");
 		}
 
-		if ($message instanceof \Exception) {
+		if ($exceptionFile) {
 			$this->logException($message, $exceptionFile);
 		}
 
@@ -84,10 +86,10 @@ class Logger implements ILogger
 	 */
 	protected function formatMessage($message)
 	{
-		if ($message instanceof \Exception) {
+		if ($message instanceof \Exception || $message instanceof \Throwable) {
 			while ($message) {
-				$tmp[] = ($message instanceof \ErrorException ?
-					'Fatal error: ' . $message->getMessage()
+				$tmp[] = ($message instanceof \ErrorException
+					? 'Fatal error: ' . $message->getMessage()
 					: get_class($message) . ': ' . $message->getMessage()
 				) . ' in ' . $message->getFile() . ':' . $message->getLine();
 				$message = $message->getPrevious();
@@ -117,9 +119,10 @@ class Logger implements ILogger
 
 
 	/**
+	 * @param  \Exception|\Throwable
 	 * @return string
 	 */
-	protected function getExceptionFile(\Exception $exception)
+	protected function getExceptionFile($exception)
 	{
 		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		$hash = md5(preg_replace('~(Resource id #)\d+~', '$1', $exception));
@@ -134,9 +137,10 @@ class Logger implements ILogger
 
 	/**
 	 * Logs exception to the file if file doesn't exist.
+	 * @param  \Exception|\Throwable
 	 * @return string logged error filename
 	 */
-	protected function logException(\Exception $exception, $file = NULL)
+	protected function logException($exception, $file = NULL)
 	{
 		$file = $file ?: $this->getExceptionFile($exception);
 		if ($handle = @fopen($file, 'x')) {
