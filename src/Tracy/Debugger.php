@@ -313,7 +313,7 @@ class Debugger
 		}
 
 		$exceptionFilename = NULL;
-		if ($message instanceof \Exception) {
+		if ($message instanceof \Exception || $message instanceof \Throwable) {
 			$exception = $message;
 			while ($exception) {
 				$tmp[] = ($exception instanceof ErrorException
@@ -384,11 +384,11 @@ class Debugger
 
 	/**
 	 * Handler to catch uncaught exception.
-	 * @param  \Exception
+	 * @param  \Exception|\Throwable
 	 * @return void
 	 * @internal
 	 */
-	public static function _exceptionHandler(\Exception $exception, $exit = TRUE)
+	public static function _exceptionHandler($exception, $exit = TRUE)
 	{
 		if (self::$done) {
 			return;
