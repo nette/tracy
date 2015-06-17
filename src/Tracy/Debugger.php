@@ -211,10 +211,11 @@ class Debugger
 
 	/**
 	 * Handler to catch uncaught exception.
+	 * @param  \Exception|\Throwable
 	 * @return void
 	 * @internal
 	 */
-	public static function exceptionHandler(\Exception $exception, $exit = TRUE)
+	public static function exceptionHandler($exception, $exit = TRUE)
 	{
 		if (self::$done) {
 			return;
@@ -494,7 +495,7 @@ class Debugger
 
 	/**
 	 * Logs message or exception.
-	 * @param  string|Exception
+	 * @param  string|\Exception|\Throwable
 	 * @return mixed
 	 */
 	public static function log($message, $priority = ILogger::INFO)
