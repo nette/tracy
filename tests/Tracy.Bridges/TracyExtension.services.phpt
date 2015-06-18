@@ -4,9 +4,9 @@
  * Test: TracyExtension accessors.
  */
 
-use Nette\DI,
-	Tracy\Bridges\Nette\TracyExtension,
-	Tester\Assert;
+use Nette\DI;
+use Tracy\Bridges\Nette\TracyExtension;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

@@ -83,8 +83,8 @@ class TracyExtension extends Nette\DI\CompilerExtension
 					'$this->getService(?)->addPanel(?);',
 					Nette\DI\Compiler::filterArguments([
 						$this->prefix('bar'),
-						is_string($item) ? new Nette\DI\Statement($item) : $item]
-					)
+						is_string($item) ? new Nette\DI\Statement($item) : $item,
+					])
 				));
 			}
 		}

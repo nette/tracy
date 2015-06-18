@@ -7,8 +7,8 @@
  * @outputMatch %A?%OK!
  */
 
-use Tracy\Debugger,
-	Tester\Assert;
+use Tracy\Debugger;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -19,12 +19,12 @@ $_SERVER['HTTP_HOST'] = 'nette.org';
 
 Debugger::$logDirectory = TEMP_DIR;
 
-Debugger::getLogger()->mailer = function() {};
+Debugger::getLogger()->mailer = function () {};
 
 Debugger::enable(Debugger::PRODUCTION, NULL, 'admin@example.com');
 
 
-register_shutdown_function(function() {
+register_shutdown_function(function () {
 	Assert::match('%a%Fatal error: Call to undefined function missing_function() in %a%', file_get_contents(Debugger::$logDirectory . '/exception.log'));
 	Assert::true(is_file(Debugger::$logDirectory . '/email-sent'));
 	echo 'OK!'; // prevents PHP bug #62725

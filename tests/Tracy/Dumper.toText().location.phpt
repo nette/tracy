@@ -4,13 +4,13 @@
  * Test: Tracy\Dumper::toText() with location
  */
 
-use Tracy\Dumper,
-	Tester\Assert;
+use Tracy\Dumper;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::match( '"Hello" (5)
+Assert::match('"Hello" (5)
 in %a%:%d%
-', Dumper::toText( trim(" Hello "), ["location" => TRUE] ) );
+', Dumper::toText(trim(' Hello '), ['location' => TRUE]));

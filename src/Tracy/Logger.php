@@ -113,7 +113,7 @@ class Logger implements ILogger
 			@date('[Y-m-d H-i-s]'),
 			preg_replace('#\s*\r?\n\s*#', ' ', $this->formatMessage($message)),
 			' @  ' . Helpers::getSource(),
-			$exceptionFile ? ' @@  ' . basename($exceptionFile) : NULL
+			$exceptionFile ? ' @@  ' . basename($exceptionFile) : NULL,
 		]);
 	}
 
@@ -145,7 +145,7 @@ class Logger implements ILogger
 		$file = $file ?: $this->getExceptionFile($exception);
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
-			ob_start(function($buffer) use ($handle) { fwrite($handle, $buffer); }, 4096);
+			ob_start(function ($buffer) use ($handle) { fwrite($handle, $buffer); }, 4096);
 			$bs = $this->blueScreen ?: new BlueScreen;
 			$bs->render($exception);
 			ob_end_flush();
@@ -190,7 +190,7 @@ class Logger implements ILogger
 			["\n", PHP_EOL],
 			[
 				'headers' => implode("\n", [
-					"From: " . ($this->fromEmail ?: "noreply@$host"),
+					'From: ' . ($this->fromEmail ?: "noreply@$host"),
 					'X-Mailer: Tracy',
 					'Content-Type: text/plain; charset=UTF-8',
 					'Content-Transfer-Encoding: 8bit',

@@ -4,8 +4,8 @@
  * Test: Tracy\Logger it can be extended.
  */
 
-use Tracy\Logger,
-	Tester\Assert;
+use Tracy\Logger;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -25,7 +25,7 @@ class CustomLogger extends Logger
 			$priority,
 			$this->formatMessage($value),
 			$this->formatLogLine($value, $exceptionFile),
-			$exceptionFile
+			$exceptionFile,
 		];
 
 		return $exceptionFile;
@@ -35,7 +35,7 @@ class CustomLogger extends Logger
 
 
 
-test(function() {
+test(function () {
 	$logger = new CustomLogger(TEMP_DIR);
 	$logger->log(new Exception('First'), 'a');
 
@@ -45,7 +45,7 @@ test(function() {
 	Assert::match('%a%%ds%exception-%a%.html', $logger->collector[0][3]);
 });
 
-test(function() {
+test(function () {
 	$logger = new CustomLogger(TEMP_DIR);
 	$logger->log('message', 'b');
 

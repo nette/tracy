@@ -7,8 +7,8 @@
 
 namespace Tracy;
 
-use Tracy,
-	ErrorException;
+use Tracy;
+use ErrorException;
 
 
 /**
@@ -266,7 +266,8 @@ class Debugger
 		} catch (\Exception $e) {
 			try {
 				self::log($e, self::EXCEPTION);
-			} catch (\Exception $e) {}
+			} catch (\Exception $e) {
+			}
 		}
 
 		if ($exit) {
@@ -307,7 +308,8 @@ class Debugger
 			$e->context = $context;
 			try {
 				self::log($e, self::ERROR);
-			} catch (\Exception $foo) {}
+			} catch (\Exception $foo) {
+			}
 			return NULL;
 
 		} elseif (!self::$productionMode && !isset($_GET['_tracy_skip_error'])
@@ -328,7 +330,8 @@ class Debugger
 		} elseif (self::$productionMode) {
 			try {
 				self::log("$message in $file:$line", self::ERROR);
-			} catch (\Exception $foo) {}
+			} catch (\Exception $foo) {
+			}
 			return NULL;
 
 		} else {

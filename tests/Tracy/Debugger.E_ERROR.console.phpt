@@ -7,8 +7,8 @@
  * @outputMatch OK!
  */
 
-use Tracy\Debugger,
-	Tester\Assert;
+use Tracy\Debugger;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -21,7 +21,7 @@ Debugger::enable();
 
 $onFatalErrorCalled = FALSE;
 
-register_shutdown_function(function() use (& $onFatalErrorCalled) {
+register_shutdown_function(function () use (& $onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
 	Assert::match(extension_loaded('xdebug') ? "
 Fatal error: Call to undefined function missing_function() in %a%
@@ -44,7 +44,7 @@ Unable to log error: Directory is not specified.
 });
 
 
-Debugger::$onFatalError[] = function() use (& $onFatalErrorCalled) {
+Debugger::$onFatalError[] = function () use (& $onFatalErrorCalled) {
 	$onFatalErrorCalled = TRUE;
 };
 ob_start();

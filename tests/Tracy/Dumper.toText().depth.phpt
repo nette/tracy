@@ -4,8 +4,8 @@
  * Test: Tracy\Dumper::toText() depth & truncate
  */
 
-use Tracy\Dumper,
-	Tester\Assert;
+use Tracy\Dumper;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -31,7 +31,7 @@ $arr = [
 $arr[] = &$arr;
 
 
-Assert::match( 'array (5)
+Assert::match('array (5)
    long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
    0 => array (1)
    |  0 => array (1)
@@ -52,10 +52,10 @@ Assert::match( 'array (5)
    |  |  0 => stdClass #%a%
    |  |  |  0 => stdClass #%a% { ... }
    |  2 => array (5) [ RECURSION ]
-', Dumper::toText($arr) );
+', Dumper::toText($arr));
 
 
-Assert::match( 'array (5)
+Assert::match('array (5)
    long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    0 => array (1)
    |  0 => array (1) [ ... ]
@@ -68,4 +68,4 @@ Assert::match( 'array (5)
    |  long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    |  1 => stdClass #%a% { ... }
    |  2 => array (5) [ RECURSION ]
-', Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]) );
+', Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));

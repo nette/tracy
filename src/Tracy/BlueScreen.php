@@ -115,7 +115,7 @@ class BlueScreen
 		$out .= static::highlightLine($source, $line, $lines);
 
 		if ($vars) {
-			$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function($m) use ($vars) {
+			$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function ($m) use ($vars) {
 				return array_key_exists($m[1], $vars)
 					? '" title="'
 						. str_replace('"', '&quot;', trim(strip_tags(Dumper::toHtml($vars[$m[1]], [Dumper::DEPTH => 1]))))
@@ -139,7 +139,7 @@ class BlueScreen
 		$source = explode("\n", "\n" . str_replace("\r\n", "\n", $html));
 		$out = '';
 		$spans = 1;
-		$start = $i = max(1, $line - floor($lines * 2/3));
+		$start = $i = max(1, $line - floor($lines * 2 / 3));
 		while (--$i >= 1) { // find last highlighted block
 			if (preg_match('#.*(</?span[^>]*>)#', $source[$i], $m)) {
 				if ($m[1] !== '</span>') {
