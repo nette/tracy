@@ -4,8 +4,8 @@
  * Test: Tracy\Debugger logging E_NOTICE (bluescreen) in development mode.
  */
 
-use Tracy\Debugger,
-  Tester\Assert;
+use Tracy\Debugger;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
