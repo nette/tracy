@@ -7,8 +7,8 @@
  * @outputMatch OK!
  */
 
-use Tracy\Debugger,
-	Tester\Assert;
+use Tracy\Debugger;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -26,7 +26,7 @@ Debugger::enable();
 
 $onFatalErrorCalled = FALSE;
 
-register_shutdown_function(function() use (& $onFatalErrorCalled) {
+register_shutdown_function(function () use (& $onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
 	$output = ob_get_clean();
 	Assert::same(1, substr_count($output, '<!-- Tracy Debug Bar'));
@@ -35,7 +35,7 @@ register_shutdown_function(function() use (& $onFatalErrorCalled) {
 });
 
 
-Debugger::$onFatalError[] = function() use (& $onFatalErrorCalled) {
+Debugger::$onFatalError[] = function () use (& $onFatalErrorCalled) {
 	$onFatalErrorCalled = TRUE;
 };
 ob_start();

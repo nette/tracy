@@ -7,8 +7,8 @@
 
 namespace Tracy;
 
-use Tracy,
-	ErrorException;
+use Tracy;
+use ErrorException;
 
 
 /**
@@ -206,7 +206,7 @@ class Debugger
 			set_error_handler(array(__CLASS__, '_errorHandler'));
 
 			foreach (array('Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
-				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ) as $class) {
+				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger') as $class) {
 				class_exists($class);
 			}
 
@@ -342,7 +342,7 @@ class Debugger
 			$exceptionFilename = self::$logDirectory . '/' . $exceptionFilename;
 			if (empty($saved) && $logHandle = @fopen($exceptionFilename, 'w')) {
 				ob_start(); // double buffer prevents sending HTTP headers in some PHP
-				ob_start(function($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 4096);
+				ob_start(function ($buffer) use ($logHandle) { fwrite($logHandle, $buffer); }, 4096);
 				self::getBlueScreen()->render($exception);
 				ob_end_flush();
 				ob_end_clean();
@@ -444,7 +444,8 @@ class Debugger
 		} catch (\Exception $e) {
 			try {
 				self::log($e, self::EXCEPTION);
-			} catch (\Exception $e) {}
+			} catch (\Exception $e) {
+			}
 		}
 
 		if ($exit) {

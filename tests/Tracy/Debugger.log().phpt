@@ -4,8 +4,8 @@
  * Test: Tracy\Debugger logging exceptions in log message.
  */
 
-use Tracy\Debugger,
-	Tester\Assert;
+use Tracy\Debugger;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -29,14 +29,14 @@ class TestLogger
 }
 
 
-test(function() {
+test(function () {
 	Debugger::setLogger(new TestLogger('Exception: First in %a%:%d%'));
 	$e = new Exception('First');
 	Debugger::log($e);
 });
 
 
-test(function() {
+test(function () {
 	Debugger::setLogger(new TestLogger("RuntimeException: Third in %a%:%d%\ncaused by InvalidArgumentException: Second in %a%:%d%\ncaused by Exception: First in %a%:%d%"));
 	$e = new Exception('First');
 	$e = new InvalidArgumentException('Second', 0, $e);

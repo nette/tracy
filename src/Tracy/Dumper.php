@@ -100,7 +100,7 @@ class Dumper
 	 */
 	public static function toTerminal($var, array $options = NULL)
 	{
-		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function($m) {
+		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m) {
 			return "\033[" . (isset($m[1], Dumper::$terminalColors[$m[1]]) ? Dumper::$terminalColors[$m[1]] : '0') . 'm';
 		}, self::toHtml($var, $options))), ENT_QUOTES);
 	}
@@ -264,7 +264,7 @@ class Dumper
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-					. '<span class="tracy-dump-key">' . htmlSpecialChars($k, ENT_IGNORE, 'UTF-8') . "</span> => " . self::dumpVar($v, $options, $level + 1);
+					. '<span class="tracy-dump-key">' . htmlSpecialChars($k, ENT_IGNORE, 'UTF-8') . '</span> => ' . self::dumpVar($v, $options, $level + 1);
 			}
 			return $out . '</div>';
 		}
@@ -283,7 +283,7 @@ class Dumper
 			foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
 				$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
 			}
-			$table["\\"] = '\\\\';
+			$table['\\'] = '\\\\';
 			$table["\r"] = '\r';
 			$table["\n"] = '\n';
 			$table["\t"] = '\t';
@@ -321,7 +321,8 @@ class Dumper
 						$location = $item;
 						continue;
 					}
-				} catch (\ReflectionException $e) {}
+				} catch (\ReflectionException $e) {
+				}
 			}
 			break;
 		}
@@ -332,7 +333,7 @@ class Dumper
 			return array(
 				$location['file'],
 				$location['line'],
-				trim(preg_match('#\w*dump(er::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line)
+				trim(preg_match('#\w*dump(er::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line),
 			);
 		}
 	}
