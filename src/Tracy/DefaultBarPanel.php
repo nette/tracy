@@ -7,8 +7,6 @@
 
 namespace Tracy;
 
-use Tracy;
-
 
 /**
  * IBarPanel implementation helper.
