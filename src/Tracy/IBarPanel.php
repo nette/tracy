@@ -12,8 +12,6 @@ use Tracy;
 
 /**
  * Custom output for Debugger.
- *
- * @author     David Grudl
  */
 interface IBarPanel
 {

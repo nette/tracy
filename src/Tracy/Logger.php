@@ -12,8 +12,6 @@ use Tracy;
 
 /**
  * Logger.
- *
- * @author     David Grudl
  */
 class Logger implements ILogger
 {

@@ -14,7 +14,6 @@ use Tracy;
  * FireLogger console logger.
  *
  * @see http://firelogger.binaryage.com
- * @author     David Grudl
  */
 class FireLogger implements ILogger
 {

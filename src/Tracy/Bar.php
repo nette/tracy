@@ -12,8 +12,6 @@ use Tracy;
 
 /**
  * Debug Bar.
- *
- * @author     David Grudl
  */
 class Bar
 {
