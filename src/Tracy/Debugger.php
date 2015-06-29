@@ -13,8 +13,6 @@ use ErrorException;
 
 /**
  * Debugger: displays and logs errors.
- *
- * @author     David Grudl
  */
 class Debugger
 {

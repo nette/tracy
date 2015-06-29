@@ -12,8 +12,6 @@ use Tracy;
 
 /**
  * IBarPanel implementation helper.
- *
- * @author     David Grudl
  * @internal
  */
 class DefaultBarPanel implements IBarPanel

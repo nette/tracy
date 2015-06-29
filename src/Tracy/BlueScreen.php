@@ -12,8 +12,6 @@ use Tracy;
 
 /**
  * Red BlueScreen.
- *
- * @author     David Grudl
  */
 class BlueScreen
 {

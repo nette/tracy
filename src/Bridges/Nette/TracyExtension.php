@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Tracy extension for Nette DI.
- *
- * @author     David Grudl
  */
 class TracyExtension extends Nette\DI\CompilerExtension
 {

@@ -11,7 +11,7 @@ use Tracy;
 
 
 /**
- * @author     David Grudl
+ * Debugger for outputs.
  */
 class OutputDebugger
 {

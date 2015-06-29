@@ -12,8 +12,6 @@ use Tracy;
 
 /**
  * Rendering helpers for Debugger.
- *
- * @author     David Grudl
  */
 class Helpers
 {

@@ -12,8 +12,6 @@ use Tracy;
 
 /**
  * Dumps a variable.
- *
- * @author     David Grudl
  */
 class Dumper
 {
