@@ -276,7 +276,7 @@ use Tracy;
 
 			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
 			<div class="outer tracy-collapsed">
-			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+\z#s', '', ob_get_clean()) ?>
+			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+\z#s', '', ob_get_clean()) // @ phpinfo can be disabled ?>
 			</div>
 		</div></div>
 
@@ -340,7 +340,7 @@ use Tracy;
 
 
 		<ul>
-			<li>Report generated at <?php echo @date('Y/m/d H:i:s') ?></li>
+			<li>Report generated at <?php echo @date('Y/m/d H:i:s') // @ timezone may not be set ?></li>
 			<li><?php if ($sourceIsUrl): ?><a href="<?php echo htmlSpecialChars($source, ENT_IGNORE | ENT_QUOTES, 'UTF-8') ?>"><?php endif ?><?php echo htmlSpecialChars($source, ENT_IGNORE, 'UTF-8') ?><?php if ($sourceIsUrl): ?></a><?php endif ?></li>
 			<?php foreach ($info as $item): ?><li><?php echo htmlSpecialChars($item, ENT_NOQUOTES, 'UTF-8') ?></li><?php endforeach ?>
 		</ul>

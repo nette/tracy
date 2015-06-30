@@ -82,7 +82,7 @@ class Bar
 			}
 		}
 
-		@session_start();
+		@session_start(); // @ session may be already started or it is not possible to start session
 		$session = & $_SESSION['__NF']['debuggerbar'];
 		if (preg_match('#^Location:#im', implode("\n", headers_list()))) {
 			$session[] = $panels;
