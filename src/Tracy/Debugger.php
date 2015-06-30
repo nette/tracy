@@ -19,7 +19,8 @@ class Debugger
 	const VERSION = '2.4-dev';
 
 	/** server modes {@link Debugger::enable()} */
-	const DEVELOPMENT = FALSE,
+	const
+		DEVELOPMENT = FALSE,
 		PRODUCTION = TRUE,
 		DETECT = NULL;
 
@@ -68,7 +69,8 @@ class Debugger
 	public static $email;
 
 	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
-	const DEBUG = ILogger::DEBUG,
+	const
+		DEBUG = ILogger::DEBUG,
 		INFO = ILogger::INFO,
 		WARNING = ILogger::WARNING,
 		ERROR = ILogger::ERROR,

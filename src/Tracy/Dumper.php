@@ -15,7 +15,8 @@ use Tracy;
  */
 class Dumper
 {
-	const DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 4)
+	const
+		DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 4)
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
 		COLLAPSE = 'collapse', // collapse top array/object or how big are collapsed? (defaults to 14)
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
