@@ -72,11 +72,11 @@ class BlueScreen
 	 * @param  string
 	 * @param  int
 	 * @param  int
-	 * @return string
+	 * @return string|NULL
 	 */
 	public static function highlightFile($file, $line, $lines = 15, array $vars = NULL)
 	{
-		$source = @file_get_contents($file); // intentionally @
+		$source = @file_get_contents($file); // @ file may not exist
 		if ($source) {
 			$source = static::highlightPhp($source, $line, $lines, $vars);
 			if ($editor = Helpers::editorUri($file, $line)) {
