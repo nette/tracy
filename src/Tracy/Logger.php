@@ -61,7 +61,7 @@ class Logger implements ILogger
 		$line = $this->formatLogLine($message, $exceptionFile);
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
 
-		if (!@file_put_contents($file, $line . PHP_EOL, FILE_APPEND | LOCK_EX)) {
+		if (!@file_put_contents($file, $line . PHP_EOL, FILE_APPEND | LOCK_EX)) { // @ is escalated to exception
 			throw new \RuntimeException("Unable to write to log file '$file'. Is directory writable?");
 		}
 
@@ -106,7 +106,7 @@ class Logger implements ILogger
 	protected function formatLogLine($message, $exceptionFile = NULL)
 	{
 		return implode(' ', [
-			@date('[Y-m-d H-i-s]'),
+			@date('[Y-m-d H-i-s]'), // @ timezone may not be set
 			preg_replace('#\s*\r?\n\s*#', ' ', $this->formatMessage($message)),
 			' @  ' . Helpers::getSource(),
 			$exceptionFile ? ' @@  ' . basename($exceptionFile) : NULL,
@@ -127,7 +127,7 @@ class Logger implements ILogger
 				return $dir . $file;
 			}
 		}
-		return $dir . 'exception-' . @date('Y-m-d-H-i-s') . "-$hash.html";
+		return $dir . 'exception-' . @date('Y-m-d-H-i-s') . "-$hash.html"; // @ timezone may not be set
 	}
 
 
@@ -139,7 +139,7 @@ class Logger implements ILogger
 	protected function logException($exception, $file = NULL)
 	{
 		$file = $file ?: $this->getExceptionFile($exception);
-		if ($handle = @fopen($file, 'x')) {
+		if ($handle = @fopen($file, 'x')) { // @ file may already exist
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
 			ob_start(function ($buffer) use ($handle) { fwrite($handle, $buffer); }, 4096);
 			$bs = $this->blueScreen ?: new BlueScreen;
@@ -160,11 +160,11 @@ class Logger implements ILogger
 	{
 		$snooze = is_numeric($this->emailSnooze)
 			? $this->emailSnooze
-			: @strtotime($this->emailSnooze) - time(); // @ - timezone may not be set
+			: @strtotime($this->emailSnooze) - time(); // @ timezone may not be set
 
 		if ($this->email && $this->mailer
-			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ - file may not exist
-			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ - file may not be writable
+			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ file may not exist
+			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ file may not be writable
 		) {
 			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
 		}
