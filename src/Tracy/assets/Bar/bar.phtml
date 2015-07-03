@@ -10,6 +10,7 @@
  *
  * @param  array $panels
  * @param  array $info
+ * @param  array $liveData
  * @return void
  */
 
@@ -80,7 +81,7 @@ use Tracy;
 				window['eval'].call(window, data);
 			})(scripts[i].innerHTML);
 		}
-		Tracy.Dumper.init(<?php echo json_encode(Dumper::fetchLiveData()) ?>);
+		Tracy.Dumper.init(<?php echo json_encode($liveData) ?>);
 		Tracy.Debug.init();
 		debug.style.display = 'block';
 	});
