@@ -1,3 +1,8 @@
+html.arrow {
+	background: url(arrow.png) no-repeat bottom right;
+	height: 100%;
+}
+
 body {
 	font: 15px/1.5 Tahoma, sans-serif;
 	color: #333;

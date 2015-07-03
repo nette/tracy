@@ -1,17 +1,8 @@
-<?php ob_start(); // needed by FireLogger ?>
-
-<!DOCTYPE html><link rel="stylesheet" href="assets/style.css">
-
-<h1>FireLogger demo</h1>
-
-<p>Requires Firefox, Firebug and <a href="http://firelogger.binaryage.com">FireLogger</a>.</p>
-
 <?php
 
 require __DIR__ . '/../src/tracy.php';
 
 use Tracy\Debugger;
-
 
 $arr = [10, 20, ['key1' => 'val1', 'key2' => TRUE]];
 
@@ -43,3 +34,10 @@ try {
 } catch (Exception $e) {
 	Debugger::fireLog($e);
 }
+
+?>
+<!DOCTYPE html><link rel="stylesheet" href="assets/style.css">
+
+<h1>Tracy: FireLogger demo</h1>
+
+<p>Requires Firefox, Firebug and <a href="http://firelogger.binaryage.com">FireLogger</a>.</p>
