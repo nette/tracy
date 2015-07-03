@@ -120,7 +120,7 @@ class Logger implements ILogger
 	 * @param  \Exception|\Throwable
 	 * @return string
 	 */
-	protected function getExceptionFile($exception)
+	public function getExceptionFile($exception)
 	{
 		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		$hash = md5(preg_replace('~(Resource id #)\d+~', '$1', $exception));
