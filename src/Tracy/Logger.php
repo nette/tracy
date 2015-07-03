@@ -123,13 +123,13 @@ class Logger implements ILogger
 	public function getExceptionFile($exception)
 	{
 		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
-		$hash = md5(preg_replace('~(Resource id #)\d+~', '$1', $exception));
+		$hash = substr(md5(preg_replace('~(Resource id #)\d+~', '$1', $exception)), 0, 10);
 		foreach (new \DirectoryIterator($this->directory) as $file) {
 			if (strpos($file, $hash)) {
 				return $dir . $file;
 			}
 		}
-		return $dir . 'exception-' . @date('Y-m-d-H-i-s') . "-$hash.html"; // @ timezone may not be set
+		return $dir . 'exception--' . @date('Y-m-d--H-i') . "--$hash.html"; // @ timezone may not be set
 	}
 
 
