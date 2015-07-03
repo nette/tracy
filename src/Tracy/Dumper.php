@@ -57,6 +57,9 @@ class Dumper
 		'__PHP_Incomplete_Class' => 'Tracy\Dumper::exportPhpIncompleteClass',
 	];
 
+	/** @var string @internal */
+	public static $livePrefix;
+
 	/** @var array  */
 	private static $liveStorage = [];
 
@@ -328,7 +331,7 @@ class Dumper
 			}
 			static $counter = 1;
 			$obj = $obj ?: [
-				'id' => '0' . $counter++, // differentiate from resources
+				'id' => self::$livePrefix . '0' . $counter++, // differentiate from resources
 				'name' => get_class($var),
 				'editor' => empty($editor) ? NULL : ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor],
 				'level' => $level,
@@ -355,7 +358,7 @@ class Dumper
 			$obj = & self::$liveStorage[(string) $var];
 			if (!$obj) {
 				$type = get_resource_type($var);
-				$obj = ['id' => (int) $var, 'name' => $type . ' resource'];
+				$obj = ['id' => self::$livePrefix . (int) $var, 'name' => $type . ' resource'];
 				if (isset(self::$resources[$type])) {
 					foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
 						$obj['items'][] = [$k, self::toJson($v, $options, $level + 1)];

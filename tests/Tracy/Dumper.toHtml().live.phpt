@@ -58,7 +58,7 @@ Assert::same([
 
 
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"resource":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"resource":"%d%"}\'></pre>',
 	Dumper::toHtml(fopen(__FILE__, 'r'), $options)
 );
 Assert::count(1, Dumper::fetchLiveData());
