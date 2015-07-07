@@ -177,8 +177,10 @@ class BlueScreen
 	 */
 	public function isCollapsed($file)
 	{
+		$file = strtr($file, '\\', '/') . '/';
 		foreach ($this->collapsePaths as $path) {
-			if (strpos(strtr($file, '\\', '/'), strtr("$path/", '\\', '/')) === 0) {
+			$path = strtr($path, '\\', '/') . '/';
+			if (strncmp($file, $path, strlen($path)) === 0) {
 				return TRUE;
 			}
 		}
