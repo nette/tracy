@@ -252,6 +252,9 @@ var Tracy = Tracy || {};
 			started = false;
 
 			dE.onmousemove = function(e) {
+				if (!e.buttons) {
+					return dE.onmouseup(e);
+				}
 				e = e || window.event;
 				if (!started) {
 					if (options.draggedClass) {
