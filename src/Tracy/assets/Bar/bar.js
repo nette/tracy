@@ -338,6 +338,9 @@
 		options = options || {};
 
 		var onmousemove = function(e) {
+			if (!e.buttons) {
+				return onmouseup(e);
+			}
 			if (!started) {
 				if (options.draggedClass) {
 					elem.classList.add(options.draggedClass);
