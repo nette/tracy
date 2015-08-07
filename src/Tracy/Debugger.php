@@ -68,6 +68,12 @@ class Debugger
 	/** @var string|array email(s) to which send error notifications */
 	public static $email;
 
+	/** @var array php severity levels which throw exception */
+	public static $throwOnSeverity = [
+		E_RECOVERABLE_ERROR,
+		E_USER_ERROR,
+	];
+
 	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
 	const
 		DEBUG = ILogger::DEBUG,
@@ -288,14 +294,16 @@ class Debugger
 			error_reporting(E_ALL);
 		}
 
-		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
+		if (self::$throwOnSeverity === true || (is_array(self::$throwOnSeverity) && in_array($severity, self::$throwOnSeverity))) {
 			if (Helpers::findTrace(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), '*::__toString')) {
 				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
 				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
 				$e->context = $context;
 				self::exceptionHandler($e);
 			}
-
+			if(!error_reporting()) {
+				return true;
+			}
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			$e->context = $context;
 			throw $e;
