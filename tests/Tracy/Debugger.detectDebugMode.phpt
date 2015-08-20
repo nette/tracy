@@ -70,8 +70,26 @@ test(function () { // secret
 	Assert::false(Debugger::detectDebugMode('abc@192.168.1.1'));
 	Assert::true(Debugger::detectDebugMode('*secret*@192.168.1.1'));
 
-	$_COOKIE[Debugger::COOKIE_SECRET] = ['*secret*'];
+	$_COOKIE[Debugger::COOKIE_SECRET] = ['17fbf884a396643b9e297e8ee6bf2a587c00baf9'];
+	Assert::false(Debugger::detectDebugMode('17fbf884a396643b9e297e8ee6bf2a587c00baf9@192.168.1.1@sha'));
+});
+
+
+test(function () { // secret
+	unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+	$_SERVER['REMOTE_ADDR'] = '192.168.1.1';
+	$_COOKIE[Debugger::COOKIE_SECRET_SHA] = '*secret*';
+
+	Assert::false(Debugger::detectDebugMode());
+	Assert::true(Debugger::detectDebugMode('192.168.1.1'));
+	Assert::false(Debugger::detectDebugMode('abc@192.168.1.1'));
 	Assert::false(Debugger::detectDebugMode('*secret*@192.168.1.1'));
+	Assert::false(Debugger::detectDebugMode('*secret*@192.168.1.1@sha'));
+	Assert::true(Debugger::detectDebugMode('17fbf884a396643b9e297e8ee6bf2a587c00baf9@192.168.1.1'));
+	Assert::true(Debugger::detectDebugMode('17fbf884a396643b9e297e8ee6bf2a587c00baf9@192.168.1.1@sha'));
+
+	$_COOKIE[Debugger::COOKIE_SECRET_SHA] = ['*secret*'];
+	Assert::false(Debugger::detectDebugMode('17fbf884a396643b9e297e8ee6bf2a587c00baf9@192.168.1.1@sha'));
 });
 
 
