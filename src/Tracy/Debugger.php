@@ -22,7 +22,7 @@ use ErrorException;
  */
 class Debugger
 {
-	const VERSION = '2.2.7';
+	const VERSION = '2.2.8';
 
 	/** @deprecated */
 	public static $version = self::VERSION;
