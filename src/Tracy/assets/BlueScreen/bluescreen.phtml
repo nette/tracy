@@ -102,7 +102,7 @@ use Tracy;
 			</div></div>
 
 
-			<?php if (isset($stack[0]['class']) && $stack[0]['class'] === Tracy\Debugger::class && ($stack[0]['function'] === 'shutdownHandler' || $stack[0]['function'] === 'errorHandler')) unset($stack[0]) ?>
+			<?php if (isset($stack[0]['class']) && $stack[0]['class'] === Debugger::class && ($stack[0]['function'] === 'shutdownHandler' || $stack[0]['function'] === 'errorHandler')) unset($stack[0]) ?>
 			<?php if ($stack): ?>
 			<div class="panel">
 				<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
