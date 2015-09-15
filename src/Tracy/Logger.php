@@ -86,7 +86,7 @@ class Logger implements ILogger
 		if ($message instanceof \Exception || $message instanceof \Throwable) {
 			while ($message) {
 				$tmp[] = ($message instanceof \ErrorException
-					? 'Fatal error: ' . $message->getMessage()
+					? Helpers::errorTypeToString($message->getSeverity()) . ': ' . $message->getMessage()
 					: get_class($message) . ': ' . $message->getMessage()
 				) . ' in ' . $message->getFile() . ':' . $message->getLine();
 				$message = $message->getPrevious();
