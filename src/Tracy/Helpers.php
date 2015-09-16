@@ -21,17 +21,15 @@ class Helpers
 	public static function editorLink($file, $line = NULL)
 	{
 		if ($editor = self::editorUri($file, $line)) {
-			$dir = dirname(strtr($file, '/', DIRECTORY_SEPARATOR));
-			$base = isset($_SERVER['SCRIPT_FILENAME'])
-				? dirname(dirname(strtr($_SERVER['SCRIPT_FILENAME'], '/', DIRECTORY_SEPARATOR)))
-				: dirname($dir);
-			if (substr($dir, 0, strlen($base)) === $base) {
-				$dir = '...' . substr($dir, strlen($base));
+			$file = strtr($file, '\\', '/');
+			if (preg_match('#(^[a-z]:)?/.{1,50}$#i', $file, $m) && strlen($file) > strlen($m[0])) {
+				$file = '...' . $m[0];
 			}
+			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 			return self::formatHtml('<a href="%" title="%">%<b>%</b>%</a>',
 				$editor,
 				$file . ($line ? ":$line" : ''),
-				rtrim($dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,
+				rtrim(dirname($file), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,
 				basename($file),
 				$line ? ":$line" : ''
 			);
