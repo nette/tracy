@@ -51,11 +51,10 @@ class Helpers
 	}
 
 
-	public static function formatHtml($mask)
+	public static function formatHtml($mask, ...$args)
 	{
-		$args = func_get_args();
-		return preg_replace_callback('#%#', function () use (& $args, & $count) {
-			return htmlspecialchars($args[++$count], ENT_IGNORE | ENT_QUOTES, 'UTF-8');
+		return preg_replace_callback('#%#', function () use (& $args) {
+			return htmlspecialchars(each($args)[1], ENT_IGNORE | ENT_QUOTES, 'UTF-8');
 		}, $mask);
 	}
 
