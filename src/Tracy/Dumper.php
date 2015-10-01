@@ -237,7 +237,7 @@ class Dumper
 			. ($editor ? Helpers::formatHtml(
 				' title="Declared in file % on line %" data-tracy-href="%"', $rc->getFileName(), $rc->getStartLine(), $editor
 			) : '')
-			. '>' . get_class($var) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
+			. '>' . htmlspecialchars(Helpers::getClass($var)) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
 
 		static $list = [];
 
@@ -333,7 +333,7 @@ class Dumper
 			static $counter = 1;
 			$obj = $obj ?: [
 				'id' => self::$livePrefix . '0' . $counter++, // differentiate from resources
-				'name' => get_class($var),
+				'name' => Helpers::getClass($var),
 				'editor' => empty($editor) ? NULL : ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor],
 				'level' => $level,
 				'object' => $var,

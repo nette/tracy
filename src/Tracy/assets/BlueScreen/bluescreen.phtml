@@ -29,7 +29,7 @@ use Tracy;
 
 	<title><?= htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8') ?></title><!-- <?php
 		$ex = $exception; echo htmlspecialchars($ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE, 'UTF-8');
-		while ($ex = $ex->getPrevious()) echo htmlspecialchars('; caused by ' . get_class($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE, 'UTF-8');
+		while ($ex = $ex->getPrevious()) echo htmlspecialchars('; caused by ' . Helpers::getClass($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE, 'UTF-8');
 	?> -->
 
 	<style type="text/css" class="tracy-debug">
@@ -53,7 +53,7 @@ use Tracy;
 
 		<?php if ($prev = $exception->getPrevious()): ?>
 		<div class="caused">
-			<a href="#tracyCaused">Caused by <?= get_class($prev) ?></a>
+			<a href="#tracyCaused">Caused by <?= htmlspecialchars(Helpers::getClass($prev), ENT_NOQUOTES, 'UTF-8') ?></a>
 		</div>
 		<?php endif ?>
 
@@ -67,7 +67,7 @@ use Tracy;
 
 			<div class="<?= $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<div class="panel">
-					<h1><?= htmlspecialchars(get_class($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_NOQUOTES, 'UTF-8') ?></h1>
+					<h1><?= htmlspecialchars(Helpers::getClass($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_NOQUOTES, 'UTF-8') ?></h1>
 
 					<p><b><?= htmlspecialchars($ex->getMessage(), ENT_IGNORE, 'UTF-8') ?></b></p>
 				</div>

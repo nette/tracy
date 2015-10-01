@@ -63,7 +63,7 @@ class FireLogger implements ILogger
 			}
 
 			$file = str_replace(dirname(dirname(dirname($e->getFile()))), "\xE2\x80\xA6", $e->getFile());
-			$item['template'] = ($e instanceof \ErrorException ? '' : get_class($e) . ': ')
+			$item['template'] = ($e instanceof \ErrorException ? '' : Helpers::getClass($e) . ': ')
 				. $e->getMessage() . ($e->getCode() ? ' #' . $e->getCode() : '') . ' in ' . $file . ':' . $e->getLine();
 			$item['pathname'] = $e->getFile();
 			$item['lineno'] = $e->getLine();
@@ -153,7 +153,7 @@ class FireLogger implements ILogger
 
 			} elseif ($level < $this->maxDepth || !$this->maxDepth) {
 				$list[] = $var;
-				$res = ["\x00" => '(object) ' . get_class($var)];
+				$res = ["\x00" => '(object) ' . Helpers::getClass($var)];
 				foreach ($arr as $k => & $v) {
 					if ($k[0] === "\x00") {
 						$k = substr($k, strrpos($k, "\x00") + 1);
