@@ -222,7 +222,7 @@ class Dumper
 		$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
 		$out = '<span class="tracy-dump-object"'
 			. ($options[self::LOCATION] && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine())) ? ' data-tracy-href="' . htmlspecialchars($editor) . '"' : '')
-			. '>' . get_class($var) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
+			. '>' . htmlspecialchars(Helpers::getClass($var)) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
 
 		if (empty($fields)) {
 			return $out . "\n";

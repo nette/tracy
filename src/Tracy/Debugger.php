@@ -318,7 +318,7 @@ class Debugger
 			while ($exception) {
 				$tmp[] = ($exception instanceof ErrorException
 					? 'Fatal error: ' . $exception->getMessage()
-					: get_class($exception) . ': ' . $exception->getMessage())
+					: Helpers::getClass($exception) . ': ' . $exception->getMessage())
 					. ' in ' . $exception->getFile() . ':' . $exception->getLine();
 				$exception = $exception->getPrevious();
 			}
