@@ -2,7 +2,8 @@
 
 <div class="tracy-inner tracy-DumpPanel">
 	
-	<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (8)</span>
+	<pre class="tracy-dump" title="barDump($arr)
+in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (8)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-number">20.2</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-bool">TRUE</span>
@@ -18,6 +19,7 @@
 </div></div></pre>
 		<h2>String</h2>
 	
-	<pre class="tracy-dump"><span class="tracy-dump-string">"&lt;a href="#"&gt;test&lt;/a&gt;"</span> (20)
+	<pre class="tracy-dump" title="barDump(&#039;&lt;a href=&quot;#&quot;&gt;test&lt;/a&gt;&#039;, &#039;String&#039;)
+in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-string">"&lt;a href="#"&gt;test&lt;/a&gt;"</span> (20)
 </pre>
 </div>%A%
