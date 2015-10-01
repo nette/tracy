@@ -58,7 +58,7 @@ class BlueScreen
 		$sourceIsUrl = preg_match('#^https?://#', $source);
 		$title = $exception instanceof \ErrorException
 			? Helpers::errorTypeToString($exception->getSeverity())
-			: get_class($exception);
+			: Helpers::getClass($exception);
 		$skipError = $sourceIsUrl && $exception instanceof \ErrorException && !empty($exception->skippable)
 			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
 			: NULL;

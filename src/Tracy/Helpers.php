@@ -75,6 +75,15 @@ class Helpers
 	}
 
 
+	/**
+	 * @return string
+	 */
+	public static function getClass($obj)
+	{
+		return current(explode("\x00", get_class($obj)));
+	}
+
+
 	/** @internal */
 	public static function fixStack($exception)
 	{
