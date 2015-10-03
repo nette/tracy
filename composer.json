@@ -2,16 +2,16 @@
 	"name": "tracy/tracy",
 	"description": "Tracy: useful PHP debugger",
 	"keywords": ["debug", "debugger", "nette"],
-	"homepage": "http://tracy.nette.org",
+	"homepage": "https://tracy.nette.org",
 	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"authors": [
 		{
 			"name": "David Grudl",
-			"homepage": "http://davidgrudl.com"
+			"homepage": "https://davidgrudl.com"
 		},
 		{
 			"name": "Nette Community",
-			"homepage": "http://nette.org/contributors"
+			"homepage": "https://nette.org/contributors"
 		}
 	],
 	"require": {

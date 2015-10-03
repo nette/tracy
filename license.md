@@ -16,7 +16,7 @@ remains intact.
 New BSD License
 ---------------
 
-Copyright (c) 2004, 2014 David Grudl (http://davidgrudl.com)
+Copyright (c) 2004, 2014 David Grudl (https://davidgrudl.com)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,

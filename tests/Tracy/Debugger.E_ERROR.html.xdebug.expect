@@ -195,7 +195,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 			<li>CLI%a?%</li>
 			<li>PHP %a%</li>		</ul>
 
-		<div id="tracy-bs-logo"><a href="http://tracy.nette.org"></a></div>
+		<div id="tracy-bs-logo"><a href="https://tracy.nette.org"></a></div>
 	</div>
 </div>
 
