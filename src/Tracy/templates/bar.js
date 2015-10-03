@@ -1,5 +1,5 @@
 /**
- * This file is part of the Tracy (http://tracy.nette.org)
+ * This file is part of the Tracy (https://tracy.nette.org)
  */
 
 (function(){
