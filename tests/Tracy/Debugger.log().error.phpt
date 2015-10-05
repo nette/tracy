@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 Assert::exception(function () {
 	Debugger::log('Hello');
-}, 'LogicException', 'Directory is not specified.');
+}, LogicException::class, 'Directory is not specified.');
 
 
 // no error
@@ -24,4 +24,4 @@ Debugger::log('Hello');
 Debugger::$logDirectory = TEMP_DIR . '/unknown';
 Assert::exception(function () {
 	Debugger::log('Hello');
-}, 'RuntimeException', "Directory '%a%' is not found or is not directory.");
+}, RuntimeException::class, "Directory '%a%' is not found or is not directory.");
