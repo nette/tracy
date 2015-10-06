@@ -152,4 +152,64 @@ class Helpers
 		}
 	}
 
+
+	/** @internal */
+	public static function improveException($e)
+	{
+		$message = $e->getMessage();
+		if (!$e instanceof \Error && !$e instanceof \ErrorException) {
+			// do nothing
+		} elseif (preg_match('#^Call to undefined function (\S+)\(#', $message, $m)) {
+			$fs = get_defined_functions();
+			$hint = self::getSuggestion(array_merge($fs['internal'], $fs['user']), $m[1]);
+			$message .= ", did you mean $hint()?";
+
+		} elseif (preg_match('#^Call to undefined method (\S+)::(\w+)#', $message, $m)) {
+			$hint = self::getSuggestion(get_class_methods($m[1]), $m[2]);
+			$message .= ", did you mean $hint()?";
+
+		} elseif (preg_match('#^Undefined variable: (\w+)#', $message, $m) && !empty($e->context)) {
+			$hint = self::getSuggestion(array_keys($e->context), $m[1]);
+			$message = "Undefined variable $$m[1], did you mean $$hint?";
+
+		} elseif (preg_match('#^Undefined property: (\S+)::\$(\w+)#', $message, $m)) {
+			$rc = new \ReflectionClass($m[1]);
+			$items = array_diff($rc->getProperties(\ReflectionProperty::IS_PUBLIC), $rc->getProperties(\ReflectionProperty::IS_STATIC));
+			$hint = self::getSuggestion($items, $m[2]);
+			$message .= ", did you mean $$hint?";
+
+		} elseif (preg_match('#^Access to undeclared static property: (\S+)::\$(\w+)#', $message, $m)) {
+			$rc = new \ReflectionClass($m[1]);
+			$items = array_intersect($rc->getProperties(\ReflectionProperty::IS_PUBLIC), $rc->getProperties(\ReflectionProperty::IS_STATIC));
+			$hint = self::getSuggestion($items, $m[2]);
+			$message .= ", did you mean $$hint?";
+		}
+
+		if (isset($hint)) {
+			$ref = new \ReflectionProperty($e, 'message');
+			$ref->setAccessible(TRUE);
+			$ref->setValue($e, $message);
+		}
+	}
+
+
+	/**
+	 * Finds the best suggestion.
+	 * @return string|NULL
+	 * @internal
+	 */
+	public static function getSuggestion(array $items, $value)
+	{
+		$best = NULL;
+		$min = (int) (strlen($value) / 4) + 2;
+		foreach (array_unique($items) as $item) {
+			$item = is_object($item) ? $item->getName() : $item;
+			if (($len = levenshtein($item, $value)) > 0 && $len < $min) {
+				$min = $len;
+				$best = $item;
+			}
+		}
+		return $best;
+	}
+
 }
