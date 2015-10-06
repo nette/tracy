@@ -231,6 +231,8 @@ class Debugger
 			}
 		}
 
+		Helpers::improveException($exception);
+
 		if (self::$productionMode) {
 			try {
 				self::log($exception, self::EXCEPTION);
