@@ -28,7 +28,7 @@ function second($arg1, $arg2)
 
 function third($arg1)
 {
-	missing_funcion();
+	echo html_special_chars($arg1); // this function doesn't exist
 }
 
 
