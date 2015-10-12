@@ -159,9 +159,9 @@ class Helpers
 		$message = $e->getMessage();
 		if (!$e instanceof \Error && !$e instanceof \ErrorException) {
 			// do nothing
-		} elseif (preg_match('#^Call to undefined function (\S+)\(#', $message, $m)) {
-			$fs = get_defined_functions();
-			$hint = self::getSuggestion(array_merge($fs['internal'], $fs['user']), $m[1]);
+		} elseif (preg_match('#^Call to undefined function (\S+\\\\)?(\w+)\(#', $message, $m)) {
+			$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
+			$hint = self::getSuggestion($funcs, $m[1] . $m[2]) ?: self::getSuggestion($funcs, $m[2]);
 			$message .= ", did you mean $hint()?";
 
 		} elseif (preg_match('#^Call to undefined method (\S+)::(\w+)#', $message, $m)) {
