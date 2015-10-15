@@ -18,9 +18,9 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
 		<div id="tracy-bs-error" class="panel">
-			<h1>Fatal Error</h1>
+			<p>Fatal Error</p>
 
-			<p>Call to undefined function missing_function()			<a href="%a%">search&#x25ba;</a></p>
+			<h1>Call to undefined function missing_function()			<a href="%a%">search&#x25ba;</a></h1>
 		</div>
 
 

@@ -16,10 +16,10 @@
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
 		<div id="tracy-bs-error" class="panel">
-			<h1>Exception #123</h1>
+			<p>Exception #123</p>
 
-			<p>The my exception			<a href="%a%" rel="noreferrer">search&#x25ba;</a>
-			</p>
+			<h1>The my exception			<a href="%a%" rel="noreferrer">search&#x25ba;</a>
+			</h1>
 		</div>
 
 
