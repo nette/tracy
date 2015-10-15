@@ -16,10 +16,10 @@
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
 		<div id="tracy-bs-error" class="panel">
-			<h1>Notice</h1>
+			<p>Notice</p>
 
-			<p>Undefined variable: x			<a href="%a%" rel="noreferrer">search&#x25ba;</a>
-			</p>
+			<h1>Undefined variable: x			<a href="%a%" rel="noreferrer">search&#x25ba;</a>
+			</h1>
 		</div>
 
 

@@ -62,7 +62,6 @@ html {
 	background: #CD1818;
 	color: white;
 	font: 13pt/1.5 Verdana, sans-serif !important;
-	display: block;
 }
 
 #tracy-bs-error a {
@@ -87,15 +86,14 @@ html {
 }
 
 #tracy-bs h1 {
-	font-size: 18pt;
+	font-size: 15pt;
 	font-weight: normal;
-	text-shadow: 1px 1px 0 rgba(0, 0, 0, .4);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, .3);
 	margin: .7em 0;
 }
 
 #tracy-bs h2 {
 	font: 14pt/1.5 sans-serif !important;
-	color: #888;
 	margin: .6em 0;
 }
 
