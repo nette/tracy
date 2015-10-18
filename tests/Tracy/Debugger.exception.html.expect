@@ -47,8 +47,7 @@
 
 											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-																				third
-					(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					third(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
 											<div class="tracy-collapsed file">%A%</div>
@@ -65,8 +64,7 @@
 
 											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-																				second
-					(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					second(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
 											<div class="tracy-collapsed file">%A%</div>
@@ -87,8 +85,7 @@
 
 											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-																				first
-					(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					first(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
 											<div class="tracy-collapsed file">%A%</div>
