@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger error in toString.
  * @httpCode   500
  * @exitCode   254
- * @outputMatch %A%<title>User Error</title><!-- Test::__toString -->%A%
+ * @outputMatch %A%<title>User Error: Test::__toString</title>%A%
  */
 
 use Tracy\Debugger;

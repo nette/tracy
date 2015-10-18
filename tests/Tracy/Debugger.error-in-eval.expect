@@ -5,7 +5,7 @@
 	<meta name="robots" content="noindex">
 	<meta name="generator" content="Tracy by Nette Framework">
 
-	<title>User Error</title><!-- The my error -->
+	<title>User Error: The my error</title>
 
 	%A%
 </head>
