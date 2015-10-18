@@ -120,12 +120,12 @@ use Tracy;
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?><a data-tracy-ref="^p + .file" class="tracy-toggle<?php if ($expanded !== $key) echo ' tracy-collapsed' ?>">source</a>&nbsp; <?php endif ?>
 
-					<?php if (isset($row['object'])) echo "<a data-tracy-ref='^p + .object' class='tracy-toggle tracy-collapsed'>" ?>
-					<?php if (isset($row['class'])) echo htmlspecialchars($row['class'] . $row['type'], ENT_NOQUOTES, 'UTF-8') ?>
-					<?php if (isset($row['object'])) echo '</a>' ?>
-					<?= htmlspecialchars($row['function'], ENT_NOQUOTES, 'UTF-8') ?>
-
-					(<?php if (!empty($row['args'])): ?><a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a><?php endif ?>)
+					<?php
+						if (isset($row['object'])) echo "<a data-tracy-ref='^p + .object' class='tracy-toggle tracy-collapsed'>";
+						if (isset($row['class'])) echo htmlspecialchars($row['class'] . $row['type'], ENT_NOQUOTES, 'UTF-8');
+						if (isset($row['object'])) echo '</a>';
+						echo htmlspecialchars($row['function'], ENT_NOQUOTES, 'UTF-8'), '(';
+						if (!empty($row['args'])): ?><a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a><?php endif ?>)
 					</p>
 
 					<?php if (isset($row['file']) && is_file($row['file'])): ?>
