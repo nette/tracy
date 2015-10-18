@@ -69,7 +69,7 @@
 
 	var build = function(data, repository, collapsed, parentIds) {
 		var type = data === null ? 'null' : typeof data,
-			collapseCount = typeof collapsed === 'undefined' ? COLLAPSE_COUNT : COLLAPSE_COUNT_TOP;
+			collapseCount = typeof collapsed === 'undefined' ? COLLAPSE_COUNT_TOP : COLLAPSE_COUNT;
 
 		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
 			data = type === 'string' ? '"' + data + '"' : (data + '').toUpperCase();
