@@ -5,7 +5,7 @@
 	<meta name="robots" content="noindex">
 	<meta name="generator" content="Tracy by Nette Framework">
 
-	<title>Notice</title><!-- Undefined variable: x -->
+	<title>Notice: Undefined variable: x</title>
 
 	%A%
 </head>

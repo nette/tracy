@@ -5,7 +5,7 @@
 	<meta name="robots" content="noindex">
 	<meta name="generator" content="Tracy by Nette Framework">
 
-	<title>Exception</title><!-- The my exception #123 -->
+	<title>Exception: The my exception #123</title>
 
 	%A%
 </head>

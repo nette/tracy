@@ -27,10 +27,10 @@ use Tracy;
 	<meta name="robots" content="noindex">
 	<meta name="generator" content="Tracy by Nette Framework">
 
-	<title><?= htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8') ?></title><!-- <?php
-		$ex = $exception; echo htmlspecialchars($ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE, 'UTF-8');
-		while ($ex = $ex->getPrevious()) echo htmlspecialchars('; caused by ' . Helpers::getClass($ex) . ' ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE, 'UTF-8');
-	?> -->
+	<title><?= htmlspecialchars($title . ': ' . $exception->getMessage() . ($exception->getCode() ? ' #' . $exception->getCode() : ''), ENT_IGNORE, 'UTF-8') ?></title>
+	<?php if ($ex = $exception->getPrevious()): ?>
+<!--<?php do { echo str_replace('--', '- ', htmlspecialchars("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE, 'UTF-8')); } while ($ex = $ex->getPrevious()); ?> -->
+	<?php endif ?>
 
 	<style type="text/css" class="tracy-debug">
 	<?= preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . '/bluescreen.css')) ?>
