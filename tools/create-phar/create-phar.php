@@ -29,15 +29,15 @@ foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterato
 		$s = preg_replace_callback('#(<(script|style).*>)(.*)(</)#Uis', function ($m) {
 			list(, $begin, $type, $s, $end) = $m;
 
-			if (strpos($s, '<?php') !== FALSE) {
+			if (strpos($s, '<?') !== FALSE) {
 				return $m[0];
 
 			} elseif ($type === 'script' && function_exists('curl_init')) {
-				$curl = curl_init('https://closure-compiler.appspot.com/compile');
+				$curl = curl_init('http://closure-compiler.appspot.com/compile');
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($curl, CURLOPT_POST, 1);
 				curl_setopt($curl, CURLOPT_POSTFIELDS, 'output_info=compiled_code&js_code=' . urlencode($s));
-				$s = curl_exec($curl);
+				$s = curl_exec($curl) ?: $s;
 				curl_close($curl);
 
 			} elseif ($type === 'style') {
