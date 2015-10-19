@@ -23,7 +23,7 @@
 
 	document.addEventListener('keyup', function(e) {
 		if (e.keyCode === 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) { // ESC
-			document.getElementById('tracy-bs-toggle').click();
+			Tracy.Toggle.toggle(document.getElementById('tracy-bs-toggle'));
 		}
 	});
 })();
