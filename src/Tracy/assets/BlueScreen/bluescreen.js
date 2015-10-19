@@ -3,7 +3,8 @@
  */
 
 (function(){
-	document.body.appendChild(document.getElementById('tracy-bs'));
+	var blueScreen = document.getElementById('tracy-bs');
+	document.body.appendChild(blueScreen);
 
 	for (var i = 0, styles = []; i < document.styleSheets.length; i++) {
 		var style = document.styleSheets[i];
@@ -26,4 +27,8 @@
 			Tracy.Toggle.toggle(document.getElementById('tracy-bs-toggle'));
 		}
 	});
+
+	var id = location.href + document.getElementById('tracy-bs-error').textContent;
+	Tracy.Toggle.persist(blueScreen, localStorage.getItem('tracy-toggles-bskey') === id);
+	localStorage.setItem('tracy-toggles-bskey', id);
 })();

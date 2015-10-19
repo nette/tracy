@@ -75,6 +75,7 @@
 			_this.savePosition();
 		});
 
+		Tracy.Toggle.persist(elem);
 		this.restorePosition();
 	};
 
