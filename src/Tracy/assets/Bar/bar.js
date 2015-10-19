@@ -71,6 +71,10 @@
 			});
 		});
 
+		window.addEventListener('unload', function() {
+			_this.savePosition();
+		});
+
 		this.restorePosition();
 	};
 
@@ -119,7 +123,6 @@
 		this.elem.classList.remove(Panel.FLOAT);
 		this.elem.classList.add(Panel.PEEK);
 		this.elem.style.display = 'none';
-		localStorage.removeItem(this.id); // delete position
 	};
 
 	Panel.prototype.toWindow = function() {
@@ -159,7 +162,6 @@
 			}
 		});
 
-		localStorage.setItem(this.id, JSON.stringify({window: true}));
 		this.elem.style.display = 'none';
 		this.elem.classList.remove(Panel.FLOAT);
 		this.elem.classList.remove(Panel.PEEK);
@@ -168,12 +170,9 @@
 	};
 
 	Panel.prototype.reposition = function() {
-		if (!this.is(Panel.WINDOW)) {
-			var pos = getPosition(this.elem);
-			if (pos.width) { // is visible?
-				setPosition(this.elem, {right: pos.right, bottom: pos.bottom});
-				localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom}));
-			}
+		var pos = getPosition(this.elem);
+		if (pos.width) { // is visible?
+			setPosition(this.elem, {right: pos.right, bottom: pos.bottom});
 		}
 	};
 
@@ -182,6 +181,17 @@
 			height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 		coords.right = Math.min(Math.max(coords.right, -0.2 * el.offsetWidth), width - 0.8 * el.offsetWidth);
 		coords.bottom = Math.min(Math.max(coords.bottom, -0.2 * el.offsetHeight), height - el.offsetHeight);
+	};
+
+	Panel.prototype.savePosition = function() {
+		var pos = getPosition(this.elem);
+		if (this.is(Panel.WINDOW)) {
+			localStorage.setItem(this.id, JSON.stringify({window: true}));
+		} else if (pos.width) {
+			localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom}));
+		} else {
+			localStorage.removeItem(this.id);
+		}
 	};
 
 	Panel.prototype.restorePosition = function() {
@@ -213,10 +223,7 @@
 		draggable(elem, {
 			rightEdge: true,
 			bottomEdge: true,
-			draggedClass: 'tracy-dragged',
-			stop: function() {
-				_this.savePosition();
-			}
+			draggedClass: 'tracy-dragged'
 		});
 
 		[].forEach.call(elem.querySelectorAll('a'), function(a) {
@@ -239,7 +246,6 @@
 							right: getPosition(panel.elem).right + Math.round(Math.random() * 100) + 20,
 							bottom: getPosition(panel.elem).bottom + Math.round(Math.random() * 100) + 20
 						});
-						panel.reposition();
 					}
 				}
 				e.preventDefault();
@@ -265,6 +271,10 @@
 					Debug.getPanel(this.rel).blur();
 				}
 			});
+		});
+
+		window.addEventListener('unload', function() {
+			_this.savePosition();
 		});
 
 		this.restorePosition();
