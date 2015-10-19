@@ -124,8 +124,8 @@
 		]);
 
 		if (collapsed) {
-			toggle.addEventListener('click', handler = function() {
-				toggle.removeEventListener('click', handler);
+			toggle.addEventListener('tracy-toggle', handler = function() {
+				toggle.removeEventListener('tracy-toggle', handler);
 				createItems(div, items, repository, parentIds);
 			});
 		} else {

@@ -14,10 +14,10 @@
 		}
 	}
 
-	document.getElementById('tracy-bs-toggle').addEventListener('click', function(e) {
+	document.getElementById('tracy-bs-toggle').addEventListener('tracy-toggle', function(e) {
 		var collapsed = this.classList.contains('tracy-collapsed');
 		for (i = 0; i < styles.length; i++) {
-			styles[i].disabled = collapsed ? true : styles[i].oldDisabled;
+			styles[i].disabled = collapsed ? styles[i].oldDisabled : true;
 		}
 	});
 
