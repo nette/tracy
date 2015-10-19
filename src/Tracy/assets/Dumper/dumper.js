@@ -93,6 +93,11 @@
 				parentIds
 			);
 
+		} else if (type === 'object' && data.number) {
+			return createEl(null, null, [
+				createEl('span', {'class': 'tracy-dump-number'}, [data.number + '\n'])
+			]);
+
 		} else if (type === 'object' && data.type) {
 			return createEl(null, null, [
 				createEl('span', null, [data.type + '\n'])
