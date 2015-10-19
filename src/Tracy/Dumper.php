@@ -295,8 +295,13 @@ class Dumper
 	 */
 	private static function toJson(& $var, $options, $level = 0)
 	{
-		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
-			return is_finite($var) ? $var : ['type' => (string) $var];
+		if (is_bool($var) || is_null($var) || is_int($var)) {
+			return $var;
+
+		} elseif (is_float($var)) {
+			return is_finite($var)
+				? (strpos($tmp = json_encode($var), '.') ? $var : ['number' => "$tmp.0"])
+				: ['type' => (string) $var];
 
 		} elseif (is_string($var)) {
 			return self::encodeString($var, $options[self::TRUNCATE]);
@@ -369,7 +374,7 @@ class Dumper
 			return ['resource' => $obj['id']];
 
 		} else {
-			return 'unknown type';
+			return ['type' => 'unknown type'];
 		}
 	}
 
