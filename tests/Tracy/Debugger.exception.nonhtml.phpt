@@ -2,7 +2,7 @@
 
 /**
  * Test: Tracy\Debugger exception in non-HTML.
- * @exitCode   254
+ * @exitCode   255
  * @httpCode   500
  * @outputMatchFile Debugger.exception.nonhtml.expect
  */

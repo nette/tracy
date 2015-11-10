@@ -2,7 +2,7 @@
 
 /**
  * Test: Tracy\Debugger exception in production & console mode.
- * @exitCode   254
+ * @exitCode   255
  * @httpCode   500
  * @outputMatch
  */

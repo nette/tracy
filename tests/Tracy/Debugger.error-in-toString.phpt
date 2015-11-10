@@ -3,7 +3,7 @@
 /**
  * Test: Tracy\Debugger error in toString.
  * @httpCode   500
- * @exitCode   254
+ * @exitCode   255
  * @outputMatch %A%<title>User Error: Test::__toString</title>%A%
  */
 

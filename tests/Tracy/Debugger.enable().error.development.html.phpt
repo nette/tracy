@@ -2,7 +2,7 @@
 
 /**
  * Test: Tracy\Debugger::enable() error.
- * @exitCode   254
+ * @exitCode   255
  * @httpCode   500
  * @outputMatch %A%<title>RuntimeException: Logging directory not found or is not absolute path.</title>%A%
  */

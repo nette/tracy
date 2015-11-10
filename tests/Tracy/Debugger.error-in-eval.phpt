@@ -3,7 +3,7 @@
 /**
  * Test: Tracy\Debugger eval error in HTML.
  * @httpCode   500
- * @exitCode   254
+ * @exitCode   255
  * @outputMatchFile Debugger.error-in-eval.expect
  */
 

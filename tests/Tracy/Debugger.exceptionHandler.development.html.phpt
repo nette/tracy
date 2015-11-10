@@ -2,7 +2,7 @@
 
 /**
  * Test: Tracy\Debugger::exceptionHandler() error.
- * @exitCode   254
+ * @exitCode   255
  * @httpCode   500
  * @outputMatch %A%<title>Exception: </title>%A%
  */

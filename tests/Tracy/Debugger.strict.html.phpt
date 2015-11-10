@@ -3,7 +3,7 @@
 /**
  * Test: Tracy\Debugger notices and warnings with $strictMode in HTML.
  * @httpCode   500
- * @exitCode   254
+ * @exitCode   255
  * @outputMatchFile Debugger.strict.html.expect
  */
 

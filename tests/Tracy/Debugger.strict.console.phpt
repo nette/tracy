@@ -2,7 +2,7 @@
 
 /**
  * Test: Tracy\Debugger notices and warnings with $strictMode in console.
- * @exitCode   254
+ * @exitCode   255
  * @httpCode   500
  * @outputMatchFile Debugger.strict.console.expect
  */

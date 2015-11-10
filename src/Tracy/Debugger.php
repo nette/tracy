@@ -276,7 +276,7 @@ class Debugger
 		}
 
 		if ($exit) {
-			exit(254);
+			exit(255);
 		}
 	}
 

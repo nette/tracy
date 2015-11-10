@@ -3,7 +3,7 @@
 /**
  * Test: Tracy\Debugger exception in HTML.
  * @httpCode   500
- * @exitCode   254
+ * @exitCode   255
  * @outputMatchFile Debugger.exception.html.expect
  */
 

@@ -3,7 +3,7 @@
 /**
  * Test: Tracy\Debugger exception in production mode.
  * @httpCode   500
- * @exitCode   254
+ * @exitCode   255
  * @outputMatch %A%<h1>Server Error</h1>%A%
  */
 
