@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger errors and shut-up operator.
  * @exitCode   255
  * @httpCode   500
- * @outputMatch ErrorException: Call to undefined function missing_function() in %A%
+ * @outputMatch Error%a?%: Call to undefined function missing_function() in %A%
  */
 
 use Tracy\Debugger;

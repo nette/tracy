@@ -1,5 +1,3 @@
-
-Fatal error: Call to undefined function missing_function() in %a% on line %d%
 <!DOCTYPE html><!-- "' --></script></style></pre></xmp></table></a></abbr></address></article></aside></audio></b></bdi></bdo></blockquote></button></canvas></caption></cite></code></datalist></del></details></dfn></div></dl></em></fieldset></figcaption></figure></footer></form></h1></h2></h3></h4></h5></h6></header></hgroup></i></iframe></ins></kbd></label></legend></map></mark></menu></meter></nav></noscript></object></ol></optgroup></output></progress></q></rp></rt></ruby></s></samp></section></select></small></span></strong></sub></summary></sup></textarea></time></title></tr></u></ul></var></video>
 <html>
 <head>
@@ -7,7 +5,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 	<meta name="robots" content="noindex">
 	<meta name="generator" content="Tracy by Nette Framework">
 
-	<title>Fatal Error: Call to undefined function missing_function()</title>
+	<title>Error: Call to undefined function missing_function()</title>
 
 	%A%
 </head>
@@ -18,7 +16,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
 		<div id="tracy-bs-error" class="panel">
-			<p>Fatal Error</p>
+			<p>Error</p>
 
 			<h1>Call to undefined function missing_function()			<a href="%a%" rel="noreferrer">search&#x25ba;</a>
 			</h1>
@@ -55,16 +53,104 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 </span></span></code></div></pre>			</div></div>
 
 
+									<div class="panel">
+				<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+
+				<div class="inner">
+				<ol>
+										<li><p>
+
+											%a%
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
+					third(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='line'>%d%:</span>        </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">TRUE</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">FALSE</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='highlight'>%d%:        third([1, 2, 3]);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+</span></span></code></div></pre></div>
+
+
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$arg1</th><td><pre class="tracy-dump" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+										<li><p>
+
+											%a%
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
+					second(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>%A%</div>
+
+
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">TRUE</span>
+</pre>
+</td></tr>
+<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">FALSE</span>
+</pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+										<li><p>
+
+											%a%
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
+					first(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>        </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">([</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">]);
+<span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='line'>%d%:</span>        </span><span style="color: #000">missing_function</span><span style="color: #D24; font-weight: bold">();
+<span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='highlight'>%d%:    first(10, 'any string');
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    </span>
+</span></code></div></pre></div>
+
+
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-number">10</span>
+</pre>
+</td></tr>
+<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"any string"</span> (10)
+</pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+									</ol>
+			</div></div>
 
 
 
 
 
-				<div class="panel">
-		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
-		<div class="tracy-collapsed inner">
-		<pre class="tracy-dump" data-tracy-dump='{"object":"01"}'></pre>
-		</div></div>
 
 
 
