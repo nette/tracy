@@ -20,7 +20,8 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 		<div id="tracy-bs-error" class="panel">
 			<p>Fatal Error</p>
 
-			<h1>Call to undefined function missing_function()			<a href="%a%">search&#x25ba;</a></h1>
+			<h1>Call to undefined function missing_function()			<a href="%a%" rel="noreferrer">search&#x25ba;</a>
+			</h1>
 		</div>
 
 
@@ -36,7 +37,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 			<div class="inner">
 				<p><b>File:</b> %a%</p>
-				<pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+				<pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
@@ -63,11 +64,10 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 											%a%
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-																				third
-					()
+					third()
 					</p>
 
-											<div class="tracy-collapsed"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
@@ -77,7 +77,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
-<span class='highlight'>%d%:        third(array(1, 2, 3));
+<span class='highlight'>%d%:        third([1, 2, 3]);
 </span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
@@ -90,11 +90,10 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 											%a%
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-																				second
-					()
+					second()
 					</p>
 
-											<div class="tracy-collapsed"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>%A%</div>
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>%A%</div>
 
 
 										</li>
@@ -102,11 +101,10 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 											%a%
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-																				first
-					()
+					first()
 					</p>
 
-											<div class="tracy-collapsed"><pre class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>        </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(array(</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">));
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>        </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">([</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">]);
 <span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
@@ -127,6 +125,13 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 
 
 
+
+
+				<div class="panel">
+		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
+		<div class="tracy-collapsed inner">
+		<pre class="tracy-dump" data-tracy-dump='{"object":"01"}'></pre>
+		</div></div>
 
 
 
@@ -195,7 +200,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 			<li>CLI%a?%</li>
 			<li>PHP %a%</li>		</ul>
 
-		<div id="tracy-bs-logo"><a href="https://tracy.nette.org"></a></div>
+		<div id="tracy-bs-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
 </div>
 
