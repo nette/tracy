@@ -30,7 +30,7 @@ register_shutdown_function(function () use (& $onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
 	$output = ob_get_clean();
 	Assert::same(1, substr_count($output, '<!-- Tracy Debug Bar'));
-	Assert::matchFile(__DIR__ . (extension_loaded('xdebug') ? '/Debugger.E_ERROR.html.xdebug.expect' : '/Debugger.E_ERROR.html.expect'), $output);
+	Assert::matchFile(__DIR__ . '/Debugger.E_ERROR.html' . (PHP_MAJOR_VERSION > 5 ? '' : (extension_loaded('xdebug') ? '.xdebug' : '.php5')) . '.expect', $output);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

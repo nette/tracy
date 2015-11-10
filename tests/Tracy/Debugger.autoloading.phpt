@@ -2,7 +2,7 @@
 
 /**
  * Test: Tracy\Debugger autoloading.
- * @outputMatch %A%Strict Standards: Declaration of B::test() should be compatible %a% A::test() in %A%
+ * @outputMatch %A%: Declaration of B::test(%a?%) should be compatible %a% A::test() in %A%
  */
 
 use Tracy\Debugger;
