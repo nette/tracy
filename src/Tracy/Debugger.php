@@ -247,17 +247,20 @@ class Debugger
 
 		} else {
 			self::fireLog($exception);
+			$s = get_class($exception) . ($exception->getMessage() === '' ? '' : ': ' . $exception->getMessage())
+				. ' in ' . $exception->getFile() . ':' . $exception->getLine()
+				. "\nStack trace:\n" . $exception->getTraceAsString();
 			try {
 				$file = self::log($exception, self::EXCEPTION);
 				if ($file && !headers_sent()) {
 					header("X-Tracy-Error-Log: $file");
 				}
-				echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
+				echo "$s\n" . ($file ? "(stored in $file)\n" : '');
 				if ($file && self::$browser) {
 					exec(self::$browser . ' ' . escapeshellarg($file));
 				}
 			} catch (\Exception $e) {
-				echo "$exception\nUnable to log error: {$e->getMessage()}\n";
+				echo "$s\nUnable to log error: {$e->getMessage()}\n";
 			}
 		}
 

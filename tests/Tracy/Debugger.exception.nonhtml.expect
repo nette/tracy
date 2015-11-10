@@ -1,4 +1,4 @@
-exception 'Exception' with message 'The my exception' in %a%
+Exception: The my exception in %a%
 Stack trace:
 #0 %a%: third(Array)
 #1 %a%: second(true, false)
