@@ -282,7 +282,7 @@ class Debugger
 		}
 
 		if ($exit) {
-			exit(254);
+			exit($exception instanceof \Error ? 255 : 254);
 		}
 	}
 
