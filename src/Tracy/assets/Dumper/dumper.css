@@ -2,30 +2,6 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
-/* toggle */
-.tracy-collapsed {
-	display: none;
-}
-
-.tracy-toggle.tracy-collapsed {
-	display: inline;
-}
-
-.tracy-toggle {
-	cursor: pointer;
-}
-
-.tracy-toggle:after {
-	content: " ▼";
-	opacity: .4;
-}
-
-.tracy-toggle.tracy-collapsed:after {
-	content: " ►";
-}
-
-
-/* dump */
 pre.tracy-dump {
 	text-align: left;
 	color: #444;
