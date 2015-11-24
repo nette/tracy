@@ -323,6 +323,10 @@ class Debugger
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			$e->context = $context;
 			$e->skippable = TRUE;
+			do {
+				$level = ob_get_level();
+				@ob_end_clean(); // @ may not exist or is not removable
+			} while ($level !== ob_get_level());
 			self::exceptionHandler($e);
 		}
 
