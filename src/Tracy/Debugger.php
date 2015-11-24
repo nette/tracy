@@ -230,6 +230,7 @@ class Debugger
 		if (self::$productionMode) {
 			try {
 				self::log($exception, self::EXCEPTION);
+			} catch (\Throwable $e) {
 			} catch (\Exception $e) {
 			}
 
@@ -259,18 +260,25 @@ class Debugger
 				if ($file && self::$browser) {
 					exec(self::$browser . ' ' . escapeshellarg($file));
 				}
+			} catch (\Throwable $e) {
+				echo "$s\nUnable to log error: {$e->getMessage()}\n";
 			} catch (\Exception $e) {
 				echo "$s\nUnable to log error: {$e->getMessage()}\n";
 			}
 		}
 
 		try {
+			$e = NULL;
 			foreach (self::$onFatalError as $handler) {
 				call_user_func($handler, $exception);
 			}
+		} catch (\Throwable $e) {
 		} catch (\Exception $e) {
+		}
+		if ($e) {
 			try {
 				self::log($e, self::EXCEPTION);
+			} catch (\Throwable $e) {
 			} catch (\Exception $e) {
 			}
 		}
@@ -295,7 +303,7 @@ class Debugger
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
 			if (Helpers::findTrace(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), '*::__toString')) {
-				$previous = isset($context['e']) && $context['e'] instanceof \Exception ? $context['e'] : NULL;
+				$previous = isset($context['e']) && ($context['e'] instanceof \Exception || $context['e'] instanceof \Throwable) ? $context['e'] : NULL;
 				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
 				$e->context = $context;
 				self::exceptionHandler($e);
@@ -313,6 +321,7 @@ class Debugger
 			$e->context = $context;
 			try {
 				self::log($e, self::ERROR);
+			} catch (\Throwable $e) {
 			} catch (\Exception $foo) {
 			}
 			return NULL;
@@ -339,6 +348,7 @@ class Debugger
 		} elseif (self::$productionMode) {
 			try {
 				self::log("$message in $file:$line", self::ERROR);
+			} catch (\Throwable $e) {
 			} catch (\Exception $foo) {
 			}
 			return NULL;
