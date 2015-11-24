@@ -33,7 +33,7 @@ class OutputDebugger
 				$this->list[] = [$file, 1, self::BOM];
 			}
 		}
-		ob_start([$this, 'handler'], 1);
+		ob_start([$this, 'handler'], 1, 0);
 	}
 
 
