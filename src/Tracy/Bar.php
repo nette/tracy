@@ -73,7 +73,10 @@ class Bar
 				}
 				$panels[] = array('id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml);
 
+			} catch (\Throwable $e) {
 			} catch (\Exception $e) {
+			}
+			if (isset($e)) {
 				$panels[] = array(
 					'id' => "error-$idHtml",
 					'tab' => "Error in $id",
