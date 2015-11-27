@@ -32,8 +32,8 @@ class Debugger
 	/** @var bool {@link Debugger::enable()} */
 	private static $enabled = FALSE;
 
-	/** @var bool prevent double rendering */
-	private static $done;
+	/** @var string reserved memory; also prevents double rendering */
+	private static $reserved;
 
 	/********************* errors and exceptions reporting ****************d*g**/
 
@@ -124,6 +124,7 @@ class Debugger
 	 */
 	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
 	{
+		self::$reserved = str_repeat('t', 3e5);
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		error_reporting(E_ALL);
 
@@ -186,7 +187,7 @@ class Debugger
 	 */
 	public static function shutdownHandler()
 	{
-		if (self::$done) {
+		if (!self::$reserved) {
 			return;
 		}
 
@@ -211,10 +212,10 @@ class Debugger
 	 */
 	public static function exceptionHandler($exception, $exit = TRUE)
 	{
-		if (self::$done) {
+		if (!self::$reserved) {
 			return;
 		}
-		self::$done = TRUE;
+		self::$reserved = NULL;
 
 		if (!headers_sent()) {
 			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
