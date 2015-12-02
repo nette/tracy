@@ -163,10 +163,7 @@ class Bar
 					$e = new \Exception('Support for Nette\Diagnostics\IBarPanel is deprecated');
 				}
 
-			} catch (\Exception $e) {
 			} catch (\Throwable $e) {
-			}
-			if (isset($e)) {
 				while (ob_get_level() > $obLevel) { // restore ob-level if broken
 					ob_end_clean();
 				}
