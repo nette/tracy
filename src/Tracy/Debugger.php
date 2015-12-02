@@ -282,7 +282,7 @@ class Debugger
 
 	/**
 	 * Handler to catch uncaught exception.
-	 * @param  \Exception|\Throwable  $exception
+	 * @param  \Throwable  $exception
 	 * @return void
 	 * @internal
 	 */
@@ -306,7 +306,6 @@ class Debugger
 		if (self::$productionMode) {
 			try {
 				self::log($exception, self::EXCEPTION);
-			} catch (\Exception $e) {
 			} catch (\Throwable $e) {
 			}
 
@@ -338,8 +337,6 @@ class Debugger
 				if ($file && self::$browser) {
 					exec(self::$browser . ' ' . escapeshellarg($file));
 				}
-			} catch (\Exception $e) {
-				echo "$s\nUnable to log error: {$e->getMessage()}\n";
 			} catch (\Throwable $e) {
 				echo "$s\nUnable to log error: {$e->getMessage()}\n";
 			}
@@ -350,13 +347,9 @@ class Debugger
 			foreach (self::$onFatalError as $handler) {
 				call_user_func($handler, $exception);
 			}
-		} catch (\Exception $e) {
 		} catch (\Throwable $e) {
-		}
-		if ($e) {
 			try {
 				self::log($e, self::EXCEPTION);
-			} catch (\Exception $e) {
 			} catch (\Throwable $e) {
 			}
 		}
@@ -381,7 +374,7 @@ class Debugger
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
 			if (Helpers::findTrace(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), '*::__toString')) {
-				$previous = isset($context['e']) && ($context['e'] instanceof \Exception || $context['e'] instanceof \Throwable) ? $context['e'] : null;
+				$previous = isset($context['e']) && $context['e'] instanceof \Throwable ? $context['e'] : null;
 				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
 				$e->context = $context;
 				self::exceptionHandler($e);
@@ -400,7 +393,6 @@ class Debugger
 			Helpers::improveException($e);
 			try {
 				self::log($e, self::ERROR);
-			} catch (\Exception $foo) {
 			} catch (\Throwable $foo) {
 			}
 			return null;
@@ -425,7 +417,6 @@ class Debugger
 		} elseif (self::$productionMode) {
 			try {
 				self::log("$message in $file:$line", self::ERROR);
-			} catch (\Exception $foo) {
 			} catch (\Throwable $foo) {
 			}
 			return null;
