@@ -21,4 +21,4 @@ Debugger::enable();
 
 
 // in this case autoloading is not triggered
-include 'E_STRICT.inc';
+include 'E_STRICT.php';
