@@ -52,7 +52,7 @@ class FireLogger implements ILogger
 			$item['template'] = array_shift($args);
 		}
 
-		if (isset($args[0]) && ($args[0] instanceof \Exception || $args[0] instanceof \Throwable)) {
+		if (isset($args[0]) && $args[0] instanceof \Throwable) {
 			$e = array_shift($args);
 			$trace = $e->getTrace();
 			if (
