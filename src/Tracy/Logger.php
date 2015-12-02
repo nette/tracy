@@ -59,7 +59,7 @@ class Logger implements ILogger
 			throw new \RuntimeException("Logging directory '$this->directory' is not found or is not directory.");
 		}
 
-		$exceptionFile = $message instanceof \Exception || $message instanceof \Throwable
+		$exceptionFile = $message instanceof \Throwable
 			? $this->getExceptionFile($message)
 			: null;
 		$line = static::formatLogLine($message, $exceptionFile);
@@ -87,7 +87,7 @@ class Logger implements ILogger
 	 */
 	public static function formatMessage($message)
 	{
-		if ($message instanceof \Exception || $message instanceof \Throwable) {
+		if ($message instanceof \Throwable) {
 			while ($message) {
 				$tmp[] = ($message instanceof \ErrorException
 					? Helpers::errorTypeToString($message->getSeverity()) . ': ' . $message->getMessage()
@@ -121,7 +121,7 @@ class Logger implements ILogger
 
 
 	/**
-	 * @param  \Exception|\Throwable  $exception
+	 * @param  \Throwable  $exception
 	 * @return string
 	 */
 	public function getExceptionFile($exception)
@@ -146,7 +146,7 @@ class Logger implements ILogger
 
 	/**
 	 * Logs exception to the file if file doesn't exist.
-	 * @param  \Exception|\Throwable  $exception
+	 * @param  \Throwable  $exception
 	 * @return string logged error filename
 	 */
 	protected function logException($exception, $file = null)
