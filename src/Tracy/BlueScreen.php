@@ -71,7 +71,7 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen.
-	 * @param  \Exception|\Throwable  $exception
+	 * @param  \Throwable  $exception
 	 * @return void
 	 */
 	public function render($exception)
@@ -90,7 +90,7 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen to file (if file exists, it will not be overwritten).
-	 * @param  \Exception|\Throwable  $exception
+	 * @param  \Throwable  $exception
 	 * @param  string  $file file path
 	 * @return void
 	 */
@@ -162,7 +162,6 @@ class BlueScreen
 				}
 				$res[] = (object) $panel;
 				continue;
-			} catch (\Exception $e) {
 			} catch (\Throwable $e) {
 			}
 			while (ob_get_level() > $obLevel) { // restore ob-level if broken
