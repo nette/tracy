@@ -68,6 +68,25 @@ class BlueScreen
 
 
 	/**
+	 * Renders blue screen to file (if file exists, it will not be overwritten).
+	 * @param  \Exception|\Throwable
+	 * @param  string file path
+	 * @return void
+	 */
+	public function renderToFile($exception, $file)
+	{
+		if ($handle = @fopen($file, 'x')) {
+			ob_start(); // double buffer prevents sending HTTP headers in some PHP
+			ob_start(function ($buffer) use ($handle) { fwrite($handle, $buffer); }, 4096);
+			$this->render($exception);
+			ob_end_flush();
+			ob_end_clean();
+			fclose($handle);
+		}
+	}
+
+
+	/**
 	 * Returns syntax highlighted source code.
 	 * @param  string
 	 * @param  int
