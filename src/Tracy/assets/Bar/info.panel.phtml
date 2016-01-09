@@ -21,6 +21,7 @@ $info = array_filter([
 	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : NULL,
 	'HHVM' => defined('HHVM_VERSION') ? HHVM_VERSION : NULL,
 	'PHP' => PHP_VERSION,
+	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : NULL,
 	'Tracy' => Debugger::VERSION,
 	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
 ] + (array) $this->data);
