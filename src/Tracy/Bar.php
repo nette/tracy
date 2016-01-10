@@ -16,6 +16,9 @@ class Bar
 	/** @var IBarPanel[] */
 	private $panels = [];
 
+	/** @var bool */
+	private $disabled = false;
+
 
 	/**
 	 * Add custom panel.
@@ -48,11 +51,27 @@ class Bar
 
 
 	/**
+	 * Disables or enables Bar output.
+	 * @param bool $disabled
+	 * @return self
+	 */
+	public function disable($disabled = true)
+	{
+		$this->disabled = $disabled;
+		return $this;
+	}
+
+
+	/**
 	 * Renders debug bar.
 	 * @return void
 	 */
 	public function render()
 	{
+		if ($this->disabled) {
+			return;
+		}
+
 		@session_start(); // @ session may be already started or it is not possible to start session
 		$session = & $_SESSION['__NF']['debuggerbar'];
 		$redirect = preg_match('#^Location:#im', implode("\n", headers_list()));
