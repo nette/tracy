@@ -32,6 +32,9 @@ class Debugger
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
 
+	/** @var bool whether to display debug bar in development mode */
+	public static $showBar = TRUE;
+
 	/** @var bool {@link Debugger::enable()} */
 	private static $enabled = FALSE;
 
@@ -204,7 +207,7 @@ class Debugger
 				FALSE
 			);
 
-		} elseif (!connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
+		} elseif (self::$showBar && !connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
 			self::getBar()->render();
 		}
 	}
@@ -251,7 +254,9 @@ class Debugger
 
 		} elseif (!connection_aborted() && self::isHtmlMode()) {
 			self::getBlueScreen()->render($exception);
-			self::getBar()->render();
+			if (self::$showBar) {
+				self::getBar()->render();
+			}
 
 		} else {
 			self::fireLog($exception);
