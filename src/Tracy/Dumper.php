@@ -174,7 +174,7 @@ class Dumper
 	{
 		$var = is_finite($var)
 			? ($tmp = json_encode($var)) . (strpos($tmp, '.') === FALSE ? '.0' : '')
-			: var_export($var, TRUE);
+			: str_replace('.0', '', var_export($var, TRUE)); // workaround for PHP 7.0.2
 		return "<span class=\"tracy-dump-number\">$var</span>\n";
 	}
 
