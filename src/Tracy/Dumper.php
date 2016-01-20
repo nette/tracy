@@ -411,15 +411,26 @@ class Dumper
 		}
 
 		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) {
-			if ($maxLength && strlen($s) > $maxLength) {
-				$s = substr($s, 0, $maxLength) . ' ... ';
+			if ($shortened = ($maxLength && strlen($s) > $maxLength)) {
+				$s = substr($s, 0, $maxLength);
 			}
 			$s = strtr($s, $table);
-		} elseif ($maxLength && strlen(utf8_decode($s)) > $maxLength) {
-			$s = iconv_substr($s, 0, $maxLength, 'UTF-8') . ' ... ';
+
+		} elseif ($shortened = ($maxLength && strlen(utf8_decode($s)) > $maxLength)) {
+			if (function_exists('iconv_substr')) {
+				$s = iconv_substr($s, 0, $maxLength, 'UTF-8');
+			} else {
+				$i = $len = 0;
+				do {
+					if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength)) {
+						$s = substr($s, 0, $i);
+						break;
+					}
+				} while (isset($s[++$i]));
+			}
 		}
 
-		return $s;
+		return $s . (empty($shortened) ? '' : ' ... ');
 	}
 
 
