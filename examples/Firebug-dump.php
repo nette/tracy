@@ -16,13 +16,10 @@ function first($arg1, $arg2)
 	second(TRUE, FALSE);
 }
 
-
-
 function second($arg1, $arg2)
 {
 	third([1, 2, 3]);
 }
-
 
 function third($arg1)
 {
