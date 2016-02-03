@@ -17,6 +17,7 @@ require __DIR__ . '/../bootstrap.php';
 Debugger::$productionMode = FALSE;
 header('Content-Type: text/plain');
 
+ob_start();
 Debugger::enable();
 
 $onFatalErrorCalled = FALSE;
@@ -47,7 +48,6 @@ Unable to log error: Directory is not specified.
 Debugger::$onFatalError[] = function () use (& $onFatalErrorCalled) {
 	$onFatalErrorCalled = TRUE;
 };
-ob_start();
 
 
 function first($arg1, $arg2)

@@ -41,6 +41,9 @@ class Debugger
 	/** @var string reserved memory; also prevents double rendering */
 	private static $reserved;
 
+	/** @var int initial output buffer level */
+	private static $obLevel;
+
 	/********************* errors and exceptions reporting ****************d*g**/
 
 	/** @var bool|int determines whether any error will cause immediate death; if integer that it's matched against error severity */
@@ -135,6 +138,7 @@ class Debugger
 	{
 		self::$reserved = str_repeat('t', 3e5);
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
+		self::$obLevel = ob_get_level();
 		error_reporting(E_ALL | E_STRICT);
 
 		if ($mode !== NULL || self::$productionMode === NULL) {
@@ -209,6 +213,7 @@ class Debugger
 
 		} elseif (self::$showBar && !connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
 			self::$reserved = NULL;
+			self::removeOutputBuffers();
 			self::getBar()->render();
 		}
 	}
@@ -237,6 +242,7 @@ class Debugger
 		}
 
 		Helpers::improveException($exception);
+		self::removeOutputBuffers();
 
 		if (self::$productionMode) {
 			try {
@@ -345,10 +351,6 @@ class Debugger
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			$e->context = $context;
 			$e->skippable = TRUE;
-			do {
-				$level = ob_get_level();
-				@ob_end_clean(); // @ may not exist or is not removable
-			} while ($level !== ob_get_level());
 			self::exceptionHandler($e);
 		}
 
@@ -378,6 +380,22 @@ class Debugger
 		return empty($_SERVER['HTTP_X_REQUESTED_WITH'])
 			&& PHP_SAPI !== 'cli'
 			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
+	}
+
+
+	private static function removeOutputBuffers()
+	{
+		while (ob_get_level() > self::$obLevel) {
+			$tmp = ob_get_status(TRUE);
+			$status = end($tmp);
+			if (in_array($status['name'], array('ob_gzhandler', 'zlib output compression'))) {
+				break;
+			}
+			$fnc = $status['chunk_size'] ? 'ob_end_flush' : 'ob_end_clean';
+			if (!@$fnc()) { // @ may be not removable
+				break;
+			}
+		}
 	}
 
 

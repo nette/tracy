@@ -21,6 +21,7 @@ if (PHP_SAPI === 'cli') {
 Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
 
+ob_start();
 Debugger::enable();
 
 
@@ -38,7 +39,7 @@ register_shutdown_function(function () use (& $onFatalErrorCalled) {
 Debugger::$onFatalError[] = function () use (& $onFatalErrorCalled) {
 	$onFatalErrorCalled = TRUE;
 };
-ob_start();
+
 
 
 function first($arg1, $arg2)
