@@ -21,6 +21,7 @@ Debugger::$logDirectory = TEMP_DIR;
 
 Debugger::getLogger()->mailer = function () {};
 
+ob_start();
 Debugger::enable(Debugger::PRODUCTION, NULL, 'admin@example.com');
 
 
@@ -29,7 +30,6 @@ register_shutdown_function(function () {
 	Assert::true(is_file(Debugger::$logDirectory . '/email-sent'));
 	echo 'OK!'; // prevents PHP bug #62725
 });
-ob_start();
 
 
 missing_function();

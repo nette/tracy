@@ -14,6 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 Debugger::$productionMode = FALSE;
 header('Content-Type: text/plain');
 
+ob_start();
 Debugger::enable();
 
 
@@ -38,7 +39,6 @@ function third($arg1)
 	require 'E_COMPILE_WARNING.php'; // E_COMPILE_WARNING
 }
 
-ob_start();
 first(10, 'any string');
 Assert::match("
 %a%: mktime(): You should be using the time() function instead in %a% on line %d%

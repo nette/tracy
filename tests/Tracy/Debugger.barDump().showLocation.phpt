@@ -20,6 +20,7 @@ Debugger::$productionMode = FALSE;
 Debugger::$showLocation = TRUE;
 header('Content-Type: text/html');
 
+ob_start();
 Debugger::enable();
 
 register_shutdown_function(function () {
@@ -38,7 +39,6 @@ EOD
 , json_decode($m[1]));
 	echo 'OK!'; // prevents PHP bug #62725
 });
-ob_start();
 
 
 Debugger::barDump('value');
