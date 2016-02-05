@@ -555,6 +555,7 @@ class Dumper
 		return self::$terminalColors &&
 			(getenv('ConEmuANSI') === 'ON'
 			|| getenv('ANSICON') !== FALSE
+			|| getenv('term') === 'xterm-256color'
 			|| (defined('STDOUT') && function_exists('posix_isatty') && posix_isatty(STDOUT)));
 	}
 
