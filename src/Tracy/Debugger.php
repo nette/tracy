@@ -202,6 +202,7 @@ class Debugger
 			);
 
 		} elseif (self::$showBar && !connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
+			self::$reserved = NULL;
 			self::getBar()->render();
 		}
 	}
