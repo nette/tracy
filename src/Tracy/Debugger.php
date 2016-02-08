@@ -456,7 +456,7 @@ class Debugger
 	public static function dump($var, $return = FALSE)
 	{
 		if ($return) {
-			ob_start(NULL, 0, PHP_OUTPUT_HANDLER_REMOVABLE);
+			ob_start();
 			Dumper::dump($var, [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLen,

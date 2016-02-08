@@ -31,7 +31,7 @@ class DefaultBarPanel implements IBarPanel
 	 */
 	public function getTab()
 	{
-		ob_start(NULL, 0, PHP_OUTPUT_HANDLER_REMOVABLE);
+		ob_start();
 		$data = $this->data;
 		require __DIR__ . "/assets/Bar/{$this->id}.tab.phtml";
 		return ob_get_clean();
@@ -44,7 +44,7 @@ class DefaultBarPanel implements IBarPanel
 	 */
 	public function getPanel()
 	{
-		ob_start(NULL, 0, PHP_OUTPUT_HANDLER_REMOVABLE);
+		ob_start();
 		if (is_file(__DIR__ . "/assets/Bar/{$this->id}.panel.phtml")) {
 			$data = $this->data;
 			require __DIR__ . "/assets/Bar/{$this->id}.panel.phtml";
