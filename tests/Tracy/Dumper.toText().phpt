@@ -58,7 +58,7 @@ Assert::match('array (5)
    |  7 => 7
 ', Dumper::toText([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]));
 
-Assert::match("stream resource #%d%\n   wrapper_type%A%", Dumper::toText(fopen(__FILE__, 'r')));
+Assert::match("stream resource #%d%\n   %S%%A%", Dumper::toText(fopen(__FILE__, 'r')));
 
 Assert::match('stdClass #%a%', Dumper::toText(new stdClass));
 
