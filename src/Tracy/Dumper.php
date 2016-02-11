@@ -22,7 +22,8 @@ class Dumper
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
 		LOCATION = 'location', // show location string? (defaults to 0)
 		OBJECT_EXPORTERS = 'exporters', // custom exporters for objects (defaults to Dumper::$objectexporters)
-		LIVE = 'live'; // will be rendered using JavaScript
+		LIVE = 'live', // will be rendered using JavaScript
+		DEBUGINFO = 'debuginfo'; // use magic method __debugInfo if exists (defaults to true)
 
 	const
 		LOCATION_SOURCE = 0b0001, // shows where dump was called
@@ -94,6 +95,7 @@ class Dumper
 			self::COLLAPSE => 14,
 			self::COLLAPSE_COUNT => 7,
 			self::OBJECT_EXPORTERS => NULL,
+			self::DEBUGINFO => TRUE,
 		];
 		$loc = & $options[self::LOCATION];
 		$loc = $loc === TRUE ? ~0 : (int) $loc;
@@ -227,7 +229,7 @@ class Dumper
 
 	private static function dumpObject(& $var, $options, $level)
 	{
-		$fields = self::exportObject($var, $options[self::OBJECT_EXPORTERS]);
+		$fields = self::exportObject($var, $options[self::OBJECT_EXPORTERS], $options[self::DEBUGINFO]);
 		$editor = NULL;
 		if ($options[self::LOCATION] & self::LOCATION_CLASS) {
 			$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
@@ -348,7 +350,7 @@ class Dumper
 				$obj['level'] = $level;
 				$obj['items'] = [];
 
-				foreach (self::exportObject($var, $options[self::OBJECT_EXPORTERS]) as $k => $v) {
+				foreach (self::exportObject($var, $options[self::OBJECT_EXPORTERS], $options[self::DEBUGINFO]) as $k => $v) {
 					$vis = 0;
 					if ($k[0] === "\x00") {
 						$vis = $k[1] === '*' ? 1 : 2;
@@ -437,13 +439,18 @@ class Dumper
 	/**
 	 * @return array
 	 */
-	private static function exportObject($obj, array $exporters)
+	private static function exportObject($obj, array $exporters, $useDebugInfo)
 	{
 		foreach ($exporters as $type => $dumper) {
 			if ($obj instanceof $type) {
 				return call_user_func($dumper, $obj);
 			}
 		}
+
+		if ($useDebugInfo && method_exists($obj, '__debugInfo')) {
+			return $obj->__debugInfo();
+		}
+
 		return (array) $obj;
 	}
 
