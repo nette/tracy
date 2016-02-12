@@ -100,7 +100,7 @@ class Dumper
 
 		$options[self::OBJECT_EXPORTERS] = (array) $options[self::OBJECT_EXPORTERS] + self::$objectExporters;
 		uksort($options[self::OBJECT_EXPORTERS], function ($a, $b) {
-			return class_exists($a, FALSE) && is_subclass_of($a, $b) ? -1 : 1;
+			return $b === '' || (class_exists($a, FALSE) && is_subclass_of($a, $b)) ? -1 : 1;
 		});
 
 		$live = !empty($options[self::LIVE]) && $var && (is_array($var) || is_object($var) || is_resource($var));
@@ -445,7 +445,7 @@ class Dumper
 	private static function exportObject($obj, array $exporters)
 	{
 		foreach ($exporters as $type => $dumper) {
-			if ($obj instanceof $type) {
+			if (!$type || $obj instanceof $type) {
 				return call_user_func($dumper, $obj);
 			}
 		}
