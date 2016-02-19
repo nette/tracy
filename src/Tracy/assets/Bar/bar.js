@@ -338,7 +338,7 @@
 		options = options || {};
 
 		var onmousemove = function(e) {
-			if (!e.buttons) {
+			if (e.buttons === 0) {
 				return onmouseup(e);
 			}
 			if (!started) {
