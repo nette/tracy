@@ -97,7 +97,12 @@ class Dumper
 		];
 		$loc = & $options[self::LOCATION];
 		$loc = $loc === TRUE ? ~0 : (int) $loc;
+
 		$options[self::OBJECT_EXPORTERS] = (array) $options[self::OBJECT_EXPORTERS] + self::$objectExporters;
+		uksort($options[self::OBJECT_EXPORTERS], function ($a, $b) {
+			return class_exists($a, FALSE) && is_subclass_of($a, $b) ? -1 : 1;
+		});
+
 		$live = !empty($options[self::LIVE]) && $var && (is_array($var) || is_object($var) || is_resource($var));
 		list($file, $line, $code) = $loc ? self::findLocation() : NULL;
 		$locAttrs = $file && $loc & self::LOCATION_SOURCE ? Helpers::formatHtml(
