@@ -207,7 +207,7 @@ class Debugger
 
 		} elseif (self::$showBar && !connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
 			self::$reserved = NULL;
-			self::removeOutputBuffers();
+			self::removeOutputBuffers(FALSE);
 			self::getBar()->render();
 		}
 	}
@@ -236,7 +236,7 @@ class Debugger
 		}
 
 		Helpers::improveException($exception);
-		self::removeOutputBuffers();
+		self::removeOutputBuffers(TRUE);
 
 		if (self::$productionMode) {
 			try {
@@ -377,14 +377,14 @@ class Debugger
 	}
 
 
-	private static function removeOutputBuffers()
+	private static function removeOutputBuffers($errorOccurred)
 	{
 		while (ob_get_level() > self::$obLevel) {
 			$status = ob_get_status();
 			if (in_array($status['name'], ['ob_gzhandler', 'zlib output compression'])) {
 				break;
 			}
-			$fnc = $status['chunk_size'] ? 'ob_end_flush' : 'ob_end_clean';
+			$fnc = $status['chunk_size'] || !$errorOccurred ? 'ob_end_flush' : 'ob_end_clean';
 			if (!@$fnc()) { // @ may be not removable
 				break;
 			}
