@@ -5,14 +5,11 @@
 <h1>Exception in pure PHP</h1>
 
 <br />
-<b>Fatal error</b>:  Uncaught exception 'Nette\Security\AuthenticationException' with message 'The password is incorrect.' in W:\examples\CD-collection\app\model\Authenticator.php:38
+<b>Fatal error</b>:  Uncaught Nette\MemberAccessException: Call to undefined method Nette\Application\UI\Form::addTest()? in /sandbox/vendor/nette/utils/src/Utils/ObjectMixin.php:100
 Stack trace:
-#0 W:\Nette\Security\User.php(87): Authenticator-&gt;authenticate(Array)
-#1 W:\examples\CD-collection\app\presenters\SignPresenter.php(36): Nette\Security\User-&gt;login('demo', 'xx')
-#2 [internal function]: SignPresenter-&gt;signInFormSucceeded(Object(Nette\Application\UI\Form))
-#3 W:\Nette\Utils\Callback.php(38): call_user_func_array(Array, Array)
-#4 [internal function]: Nette\Utils\{closure}(Object(Nette\Application\UI\Form))
-#5 W:\Nette\Utils\Callback.php(50): call_user_func_array(Object(Closure), Array)
-#6 W:\Nette\Forms\Form.php(412): Nette\Utils\Callback::invoke(Object(Closure), Object(Nette\Application\UI\Form))
-#7 W:\Nette\Application\UI\Form.php(129): Nette\Forms\Form-&gt;fireEvents()
-#8 W:\Nette\Application\UI\Presenter.php(320): Nette\Application\UI in <b>W:\examples\CD-collection\app\model\Authenticator.php</b> on line <b>38</b><br />
+#0 /sandbox/vendor/nette/utils/src/Utils/Object.php(75): Nette\Utils\ObjectMixin::call(Object(Nette\Application\UI\Form), 'addTest', Array)
+#1 /sandbox/app/forms/SignFormFactory.php(32): Nette\Object-&gt;__call('addTest', Array)
+#2 /sandbox/app/presenters/SignPresenter.php(21): App\Forms\SignFormFactory-&gt;create()
+#3 /sandbox/vendor/nette/component-model/src/ComponentModel/Container.php(181): App\Presenters\SignPresenter-&gt;createComponentSignInForm('signInForm')
+#4 /sandbox/vendor/nette/component-model/src/ComponentModel/Container.php(139): Nette\ComponentModel\Container-&gt;createComponent('signInForm')
+#5 /sandbox/temp/cache/latte/x-sandbox-app-presenters-templates-Sign-in-latte-Template53adebb15206b353f351f6bfca2c36cc.php(17): Nette\ComponentModel\Co in <b>/sandbox/vendor/nette/utils/src/Utils/ObjectMixin.php</b> on line <b>100</b><br />
