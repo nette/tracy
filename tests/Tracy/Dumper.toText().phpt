@@ -62,6 +62,10 @@ Assert::match("stream resource #%d%\n   %S%%A%", Dumper::toText(fopen(__FILE__, 
 
 Assert::match('stdClass #%a%', Dumper::toText(new stdClass));
 
+Assert::match('stdClass #%a%
+   "" => "foo" (3)
+', Dumper::toText((object) ['' => 'foo']));
+
 Assert::match('Test #%a%
    x => array (2)
    |  0 => 10
