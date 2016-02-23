@@ -260,7 +260,7 @@ class Dumper
 			$list[] = $var;
 			foreach ($fields as $k => & $v) {
 				$vis = '';
-				if ($k[0] === "\x00") {
+				if (isset($k[0]) && $k[0] === "\x00") {
 					$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 					$k = substr($k, strrpos($k, "\x00") + 1);
 				}
@@ -355,7 +355,7 @@ class Dumper
 
 				foreach (self::exportObject($var, $options[self::OBJECT_EXPORTERS]) as $k => $v) {
 					$vis = 0;
-					if ($k[0] === "\x00") {
+					if (isset($k[0]) && $k[0] === "\x00") {
 						$vis = $k[1] === '*' ? 1 : 2;
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
