@@ -48,8 +48,13 @@ Assert::match('__PHP_Incomplete_Class #%a%
    |  b => 2', Dumper::toText($obj));
 
 
-$exporters = array(
+
+
+Dumper::$objectExporters = array(
 	NULL => function ($var) { return array('type' => 'NULL'); },
+	'Iterator' => function ($var) { return array('type' => 'Default Iterator'); },
+);
+$exporters = array(
 	'Iterator' => function ($var) { return array('type' => 'Iterator'); },
 	'SplFileInfo' => function ($var) { return array('type' => 'SplFileInfo'); },
 	'SplFileObject' => function ($var) { return array('type' => 'SplFileObject'); },
@@ -69,4 +74,12 @@ Assert::match('ArrayIterator #%a%
 Assert::match('stdClass #%a%
    type => "NULL" (4)
 ', Dumper::toText(new stdClass, array(Dumper::OBJECT_EXPORTERS => $exporters))
+);
+Assert::match('ArrayIterator #%a%
+   type => "Default Iterator" (16)
+', Dumper::toText(new ArrayIterator(array()))
+);
+Assert::match('stdClass #%a%
+   type => "NULL" (4)
+', Dumper::toText(new stdClass)
 );
