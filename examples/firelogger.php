@@ -6,7 +6,7 @@ use Tracy\Debugger;
 
 $arr = [10, 20, ['key1' => 'val1', 'key2' => TRUE]];
 
-// will show in FireLogger tab in Firebug
+// will show in FireLogger
 Debugger::fireLog('Hello World');
 Debugger::fireLog($arr);
 
@@ -37,4 +37,4 @@ try {
 
 <h1>Tracy: FireLogger demo</h1>
 
-<p>Requires Firefox, Firebug and <a href="http://firelogger.binaryage.com">FireLogger</a>.</p>
+<p>How to <a href="https://tracy.nette.org/#toc-firelogger">enable FireLogger</a>?</p>
