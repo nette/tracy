@@ -23,7 +23,7 @@ Debugger::$productionMode = FALSE;
 
 $arr = array(10, 20.2, TRUE, FALSE, NULL, 'hello', array('key1' => 'val1', 'key2' => TRUE), (object) array('key1' => 'val1', 'key2' => TRUE));
 
-// will show in Firebug "Console" tab
+// will show in FireLogger
 Debugger::fireLog('Hello World'); // Tracy\Debugger::DEBUG
 Debugger::fireLog('Info message', Debugger::INFO);
 Debugger::fireLog('Warn message', Debugger::WARNING);
