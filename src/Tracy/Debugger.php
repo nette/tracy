@@ -88,6 +88,12 @@ class Debugger
 	/** @var int timestamp with microseconds of the start of the request */
 	public static $time;
 
+	/** @var float of CPU usage of the start of the request */
+	public static $rusage;
+
+	/** @bool of availability of getrusage function */
+	public static $getrusage;
+
 	/** @var string URI pattern mask to open editor */
 	public static $editor = 'editor://open/?file=%file&line=%line';
 
@@ -134,6 +140,13 @@ class Debugger
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		self::$obLevel = ob_get_level();
 		error_reporting(E_ALL);
+
+		// get initial rusage for CPU output in info panel
+		self::$getrusage = function_exists('getrusage');
+		if(self::$getrusage) {
+			$dat = getrusage();
+			self::$rusage = $dat["ru_utime.tv_sec"]*1e6+$dat["ru_utime.tv_usec"];
+		}
 
 		if ($mode !== NULL || self::$productionMode === NULL) {
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
