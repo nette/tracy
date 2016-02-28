@@ -11,8 +11,17 @@ namespace Tracy;
 
 use Tracy;
 
+if (isset($this->cpuUsage) && $this->time) {
+	foreach (getrusage() as $key => $val) {
+		$this->cpuUsage[$key] -= $val;
+	}
+	$userUsage = -round(($this->cpuUsage['ru_utime.tv_sec'] * 1e6 + $this->cpuUsage['ru_utime.tv_usec']) / $this->time / 10000);
+	$systemUsage = -round(($this->cpuUsage['ru_stime.tv_sec'] * 1e6 + $this->cpuUsage['ru_stime.tv_usec']) / $this->time / 10000);
+}
+
 $info = array_filter([
 	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
+	'CPU usage user + system' => isset($userUsage) ? (int) $userUsage . ' % + ' . (int) $systemUsage . ' %' : NULL,
 	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ') . ' MB',
 	'Included files' => count(get_included_files()),
 	'Classes + interfaces + traits' => count(get_declared_classes()) . ' + '
