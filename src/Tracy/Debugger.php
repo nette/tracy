@@ -103,6 +103,9 @@ class Debugger
 	/** @var string custom static error template */
 	public static $errorTemplate;
 
+	/** @var array */
+	private static $cpuUsage;
+
 	/********************* services ****************d*g**/
 
 	/** @var BlueScreen */
@@ -136,14 +139,14 @@ class Debugger
 	 */
 	public static function enable($mode = NULL, $logDirectory = NULL, $email = NULL)
 	{
-		self::$reserved = str_repeat('t', 3e5);
-		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
-		self::$obLevel = ob_get_level();
-		error_reporting(E_ALL | E_STRICT);
-
 		if ($mode !== NULL || self::$productionMode === NULL) {
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
 		}
+
+		self::$reserved = str_repeat('t', 3e5);
+		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
+		self::$obLevel = ob_get_level();
+		self::$cpuUsage = !self::$productionMode && function_exists('getrusage') ? getrusage() : NULL;
 
 		// logging configuration
 		if ($email !== NULL) {
@@ -170,6 +173,7 @@ class Debugger
 		) {
 			self::exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
 		}
+		error_reporting(E_ALL | E_STRICT);
 
 		if (!self::$enabled) {
 			register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
@@ -426,7 +430,8 @@ class Debugger
 	{
 		if (!self::$bar) {
 			self::$bar = new Bar;
-			self::$bar->addPanel(new DefaultBarPanel('info'), 'Tracy:info');
+			self::$bar->addPanel($info = new DefaultBarPanel('info'), 'Tracy:info');
+			$info->cpuUsage = self::$cpuUsage;
 			self::$bar->addPanel(new DefaultBarPanel('errors'), 'Tracy:errors'); // filled by errorHandler()
 		}
 		return self::$bar;
