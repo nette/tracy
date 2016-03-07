@@ -300,7 +300,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php endif ?>
 
 
-			<?php foreach (['_GET', '_POST', '_COOKIE'] as $name): ?>
+			<?php foreach (['_GET', '_POST', '_COOKIE', '_PHP_INPUT'] as $name): ?>
 			<h3>$<?= htmlspecialchars($name, ENT_NOQUOTES, 'UTF-8') ?></h3>
 			<?php if (empty($GLOBALS[$name])):?>
 			<p><i>empty</i></p>

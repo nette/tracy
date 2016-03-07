@@ -63,6 +63,8 @@ class BlueScreen
 			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
 			: NULL;
 
+		$_PHP_INPUT = file_get_contents('php://input'); //PATCH request
+
 		require __DIR__ . '/assets/BlueScreen/bluescreen.phtml';
 	}
 
