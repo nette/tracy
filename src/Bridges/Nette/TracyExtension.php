@@ -8,7 +8,6 @@
 namespace Tracy\Bridges\Nette;
 
 use Nette;
-use Tracy;
 
 
 /**
@@ -49,7 +48,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$container = $this->getContainerBuilder();
 
 		$container->addDefinition($this->prefix('logger'))
-			->setClass(Tracy\ILogger::class)
+			->setClass('Tracy\ILogger')
 			->setFactory('Tracy\Debugger::getLogger');
 
 		$container->addDefinition($this->prefix('blueScreen'))
