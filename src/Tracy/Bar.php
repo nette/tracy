@@ -107,7 +107,7 @@ class Bar
 				$panel['id'] .= '-' . $reqId;
 				$panels[] = $panel;
 			}
-			$liveData += $info['liveData'];
+			$liveData = array_merge($liveData, $info['liveData']);
 		}
 		$session = NULL;
 
