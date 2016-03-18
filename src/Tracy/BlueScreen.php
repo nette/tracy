@@ -135,7 +135,7 @@ class BlueScreen
 		$source = explode("\n", "\n" . str_replace("\r\n", "\n", $html));
 		$out = '';
 		$spans = 1;
-		$start = $i = max(1, $line - floor($lines * 2 / 3));
+		$start = $i = max(1, min($line, count($source) - 1) - floor($lines * 2 / 3));
 		while (--$i >= 1) { // find last highlighted block
 			if (preg_match('#.*(</?span[^>]*>)#', $source[$i], $m)) {
 				if ($m[1] !== '</span>') {
