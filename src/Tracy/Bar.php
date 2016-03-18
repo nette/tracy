@@ -54,7 +54,7 @@ class Bar
 	public function render()
 	{
 		@session_start(); // @ session may be already started or it is not possible to start session
-		$session = & $_SESSION['__NF']['debuggerbar'];
+		$session = & $_SESSION['__NF']['tracybar-2.3'];
 		$redirect = preg_match('#^Location:#im', implode("\n", headers_list()));
 		if ($redirect) {
 			Dumper::fetchLiveData();
