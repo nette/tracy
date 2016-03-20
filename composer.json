@@ -1,5 +1,5 @@
 {
-	"name": "tracy/tracy",
+	"name": "jcmarchi/tracy",
 	"description": "Tracy: useful PHP debugger",
 	"keywords": ["debug", "debugger", "nette"],
 	"homepage": "https://tracy.nette.org",
