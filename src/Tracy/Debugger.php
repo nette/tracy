@@ -169,16 +169,17 @@ class Debugger
 		}
 		error_reporting(E_ALL);
 
-		if (!self::$enabled) {
-			register_shutdown_function([__CLASS__, 'shutdownHandler']);
-			set_exception_handler([__CLASS__, 'exceptionHandler']);
-			set_error_handler([__CLASS__, 'errorHandler']);
-
-			array_map('class_exists', ['Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
-				'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger']);
-
-			self::$enabled = TRUE;
+		if (self::$enabled) {
+			return;
 		}
+		self::$enabled = TRUE;
+
+		register_shutdown_function([__CLASS__, 'shutdownHandler']);
+		set_exception_handler([__CLASS__, 'exceptionHandler']);
+		set_error_handler([__CLASS__, 'errorHandler']);
+
+		array_map('class_exists', ['Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
+			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger']);
 	}
 
 
@@ -209,7 +210,7 @@ class Debugger
 				FALSE
 			);
 
-		} elseif (self::$showBar && !connection_aborted() && !self::$productionMode && self::isHtmlMode()) {
+		} elseif (self::$showBar && !connection_aborted() && !self::$productionMode && Helpers::isHtmlMode()) {
 			self::$reserved = NULL;
 			self::removeOutputBuffers(FALSE);
 			self::getBar()->render();
@@ -234,7 +235,7 @@ class Debugger
 			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
 			$code = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== FALSE ? 503 : 500;
 			header("$protocol $code", TRUE, $code);
-			if (self::isHtmlMode()) {
+			if (Helpers::isHtmlMode()) {
 				header('Content-Type: text/html; charset=UTF-8');
 			}
 		}
@@ -249,7 +250,7 @@ class Debugger
 			} catch (\Exception $e) {
 			}
 
-			if (self::isHtmlMode()) {
+			if (Helpers::isHtmlMode()) {
 				$logged = empty($e);
 				require self::$errorTemplate ?: __DIR__ . '/assets/Debugger/error.500.phtml';
 			} elseif (PHP_SAPI === 'cli') {
@@ -257,7 +258,7 @@ class Debugger
 					. (isset($e) ? "Unable to log error.\n" : "Error was logged.\n"));
 			}
 
-		} elseif (!connection_aborted() && self::isHtmlMode()) {
+		} elseif (!connection_aborted() && Helpers::isHtmlMode()) {
 			self::getBlueScreen()->render($exception);
 			if (self::$showBar) {
 				self::getBar()->render();
@@ -368,16 +369,8 @@ class Debugger
 
 		} else {
 			self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
-			return self::isHtmlMode() ? NULL : FALSE; // FALSE calls normal error handler
+			return Helpers::isHtmlMode() ? NULL : FALSE; // FALSE calls normal error handler
 		}
-	}
-
-
-	private static function isHtmlMode()
-	{
-		return empty($_SERVER['HTTP_X_REQUESTED_WITH'])
-			&& PHP_SAPI !== 'cli'
-			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
 	}
 
 

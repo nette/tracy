@@ -54,11 +54,11 @@ class Bar
 	public function render()
 	{
 		@session_start(); // @ session may be already started or it is not possible to start session
-		$session = & $_SESSION['__NF']['tracybar-2.3'];
-		$redirect = preg_match('#^Location:#im', implode("\n", headers_list()));
-		if ($redirect) {
+		$previousBars = & $_SESSION['__NF']['tracybar-2.3'];
+		$isRedirect = preg_match('#^Location:#im', implode("\n", headers_list()));
+		if ($isRedirect) {
 			Dumper::fetchLiveData();
-			Dumper::$livePrefix = count($session) . 'p';
+			Dumper::$livePrefix = count($previousBars) . 'p';
 		}
 
 		$obLevel = ob_get_level();
@@ -90,14 +90,14 @@ class Bar
 			}
 		}
 
-		if ($redirect) {
-			$session[] = ['panels' => $panels, 'liveData' => Dumper::fetchLiveData()];
+		if ($isRedirect) {
+			$previousBars[] = ['panels' => $panels, 'liveData' => Dumper::fetchLiveData()];
 			return;
 		}
 
 		$liveData = Dumper::fetchLiveData();
 
-		foreach (array_reverse((array) $session) as $reqId => $info) {
+		foreach (array_reverse((array) $previousBars) as $reqId => $info) {
 			$panels[] = [
 				'tab' => '<span title="Previous request before redirect">previous</span>',
 				'panel' => NULL,
@@ -109,7 +109,7 @@ class Bar
 			}
 			$liveData += $info['liveData'];
 		}
-		$session = NULL;
+		$previousBars = NULL;
 
 		require __DIR__ . '/assets/Bar/bar.phtml';
 	}

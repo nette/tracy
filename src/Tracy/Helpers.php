@@ -213,4 +213,20 @@ class Helpers
 		return $best;
 	}
 
+
+	/** @internal */
+	public static function isHtmlMode()
+	{
+		return !self::isAjax()
+			&& PHP_SAPI !== 'cli'
+			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
+	}
+
+
+	/** @internal */
+	public static function isAjax()
+	{
+		return isset($_SERVER['HTTP_X_REQUESTED_WITH']);
+	}
+
 }
