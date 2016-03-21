@@ -13,8 +13,17 @@ namespace Tracy;
  */
 class Bar
 {
+	/** @var Session */
+	private $session;
+
 	/** @var IBarPanel[] */
 	private $panels = [];
+
+
+	public function __construct(Session $session)
+	{
+		$this->session = $session;
+	}
 
 
 	/**
@@ -53,8 +62,7 @@ class Bar
 	 */
 	public function render()
 	{
-		@session_start(); // @ session may be already started or it is not possible to start session
-		$previousBars = & $_SESSION['__NF']['tracybar-2.3'];
+		$previousBars = & $this->session->getContent()['redirect'];
 		$isRedirect = preg_match('#^Location:#im', implode("\n", headers_list()));
 		if ($isRedirect) {
 			Dumper::fetchLiveData();
