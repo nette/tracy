@@ -64,15 +64,18 @@ class Bar
 	{
 		$previousBars = & $this->session->getContent()['redirect'];
 		$isRedirect = preg_match('#^Location:#im', implode("\n", headers_list()));
+		$suffix = '';
 		if ($isRedirect) {
 			Dumper::fetchLiveData();
 			Dumper::$livePrefix = count($previousBars) . 'p';
+			$suffix = '-r' . count($previousBars);
 		}
 
 		$obLevel = ob_get_level();
 		$panels = [];
+
 		foreach ($this->panels as $id => $panel) {
-			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id);
+			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
 			try {
 				$tab = (string) $panel->getTab();
 				$panelHtml = $tab ? (string) $panel->getPanel() : NULL;
@@ -80,41 +83,31 @@ class Bar
 					$panelHtml = preg_replace('~(["\'.\s#])nette-(debug|inner|collapsed|toggle|toggle-collapsed)(["\'\s])~', '$1tracy-$2$3', $panelHtml);
 					$panelHtml = str_replace('tracy-toggle-collapsed', 'tracy-toggle tracy-collapsed', $panelHtml);
 				}
-				$panels[] = ['id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml];
 
 			} catch (\Throwable $e) {
 			} catch (\Exception $e) {
 			}
 			if (isset($e)) {
-				$panels[] = [
-					'id' => "error-$idHtml",
-					'tab' => "Error in $id",
-					'panel' => '<h1>Error: ' . $id . '</h1><div class="tracy-inner">'
-						. nl2br(htmlSpecialChars($e, ENT_IGNORE, 'UTF-8')) . '</div>',
-				];
 				while (ob_get_level() > $obLevel) { // restore ob-level if broken
 					ob_end_clean();
 				}
+				$idHtml = "error-$idHtml";
+				$tab = "Error in $id";
+				$panel = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(htmlSpecialChars($e, ENT_IGNORE, 'UTF-8')) . '</div>';
 			}
-		}
-
-		if ($isRedirect) {
-			$previousBars[] = ['panels' => $panels, 'liveData' => Dumper::fetchLiveData()];
-			return;
+			$panels[] = (object) ['id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml];
 		}
 
 		$liveData = Dumper::fetchLiveData();
 
-		foreach (array_reverse((array) $previousBars) as $reqId => $info) {
-			$panels[] = [
-				'tab' => '<span title="Previous request before redirect">previous</span>',
-				'panel' => NULL,
-				'previous' => TRUE,
-			];
-			foreach ($info['panels'] as $panel) {
-				$panel['id'] .= '-' . $reqId;
-				$panels[] = $panel;
-			}
+		if ($isRedirect) {
+			$previousBars[] = ['panels' => $panels, 'liveData' => $liveData];
+			return;
+		}
+
+		$rows[] = (object) ['type' => 'main', 'panels' => $panels];
+		foreach (array_reverse((array) $previousBars) as $info) {
+			$rows[] = (object) ['type' => 'redirect', 'panels' => $info['panels']];
 			$liveData += $info['liveData'];
 		}
 		$previousBars = NULL;

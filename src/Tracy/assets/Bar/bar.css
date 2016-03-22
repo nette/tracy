@@ -129,14 +129,14 @@ body #tracy-debug {
 	float: left;
 }
 
-#tracy-debug-bar ul.tracy-previous li {
+#tracy-debug-bar ul:not(:first-child) li {
 	opacity: .6;
 	background: #F5F3EE;
 }
 
-#tracy-debug-bar ul.tracy-previous li:first-child {
+#tracy-debug-bar ul:not(:first-child) li:first-child {
 	width: 4.1em;
-	text-align: right;
+	text-align: center;
 }
 
 #tracy-debug-bar img {
@@ -166,7 +166,7 @@ body #tracy-debug {
 	background: #c3c1b8;
 }
 
-#tracy-debug-logo {
+#tracy-debug-bar li:first-child {
 	cursor: move;
 }
 
