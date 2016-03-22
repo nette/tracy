@@ -59,7 +59,7 @@ use Tracy;
 		</li>
 		<?php foreach ($panels as $panel): if (!$panel['tab']) continue; ?>
 		<?php if (!empty($panel['previous'])) echo '</ul><ul class="tracy-previous">'; ?>
-		<li><?php if ($panel['panel']): ?><a href="#" rel="<?= $panel['id'] ?>"><?= trim($panel['tab']) ?></a><?php else: echo '<span>', trim($panel['tab']), '</span>'; endif ?></li>
+		<li><?php if ($panel['panel']): ?><a href="#" rel="tracy-debug-panel-<?= $panel['id'] ?>"><?= trim($panel['tab']) ?></a><?php else: echo '<span>', trim($panel['tab']), '</span>'; endif ?></li>
 		<?php endforeach ?>
 		<li><a href="#" rel="close" title="close debug bar">&times;</a></li>
 	</ul>

@@ -6,7 +6,7 @@
 	Tracy = window.Tracy || {};
 
 	var Panel = Tracy.DebugPanel = function(id) {
-		this.id = 'tracy-debug-panel-' + id;
+		this.id = id;
 		this.elem = document.getElementById(this.id);
 		this.elem.Tracy = this.elem.Tracy || {};
 	};
@@ -233,7 +233,7 @@
 					_this.close();
 
 				} else if (this.rel) {
-					var panel = Debug.getPanel(this.rel);
+					var panel = Debug.panels[this.rel];
 					if (e.shiftKey) {
 						panel.toFloat();
 						panel.toWindow();
@@ -254,7 +254,7 @@
 
 			a.addEventListener('mouseover', function(e) {
 				if (isTargetChanged(e.relatedTarget, this) && this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
-					var panel = Debug.getPanel(this.rel), link = this;
+					var panel = Debug.panels[this.rel], link = this;
 					panel.focus(function() {
 						if (panel.is(Panel.PEEK)) {
 							var pos = getPosition(panel.elem);
@@ -269,7 +269,7 @@
 
 			a.addEventListener('mouseout', function(e) {
 				if (isTargetChanged(e.relatedTarget, this) && this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
-					Debug.getPanel(this.rel).blur();
+					Debug.panels[this.rel].blur();
 				}
 			});
 		});
@@ -307,25 +307,28 @@
 
 	var Debug = Tracy.Debug = {};
 
-	Debug.init = function() {
-		Debug.initResize();
-		(new Bar).init();
-		[].forEach.call(document.querySelectorAll('.tracy-panel'), function(panel) {
-			Debug.getPanel(panel.id).init();
-		});
-	};
+	Debug.bar = new Bar;
 
-	Debug.getPanel = function(id) {
-		return new Panel(id.replace('tracy-debug-panel-', ''));
+	Debug.panels = {};
+
+	Debug.init = function() {
+		Debug.bar.init();
+
+		[].forEach.call(document.querySelectorAll('.tracy-panel'), function(panel) {
+			Debug.panels[panel.id] = new Panel(panel.id);
+			Debug.panels[panel.id].init();
+		});
+
+		Debug.initResize();
 	};
 
 	Debug.initResize = function() {
 		window.addEventListener('resize', function() {
 			var bar = document.getElementById(Bar.prototype.id);
 			setPosition(bar, {right: getPosition(bar).right, bottom: getPosition(bar).bottom});
-			[].forEach.call(document.querySelectorAll('.tracy-panel'), function(panel) {
-				Debug.getPanel(panel.id).reposition();
-			});
+			for (var id in Debug.panels) {
+				Debug.panels[id].reposition();
+			}
 		});
 	};
 
