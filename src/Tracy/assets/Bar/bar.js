@@ -56,8 +56,8 @@
 					right: pos.right - pos.width + _this.oldPosition.width,
 					bottom: pos.bottom - pos.height + _this.oldPosition.height
 				});
+				_this.oldPosition = null;
 			}
-			_this.oldPosition = null;
 		});
 
 		[].forEach.call(elem.querySelectorAll('.tracy-icons a'), function(a) {
@@ -202,8 +202,8 @@
 		} else if (pos.window) {
 			this.toWindow();
 		} else if (this.elem.querySelector('*')) {
-			setPosition(this.elem, pos);
 			this.toFloat();
+			setPosition(this.elem, pos);
 		}
 	};
 
