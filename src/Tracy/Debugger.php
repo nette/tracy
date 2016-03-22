@@ -186,6 +186,10 @@ class Debugger
 
 		if (!self::$productionMode) {
 			self::getSession()->open(session_save_path() ?: ini_get('upload_tmp_dir') ?: self::$logDirectory);
+			if (self::getBar()->dispatch()) {
+				self::$showBar = FALSE;
+				exit;
+			}
 		}
 	}
 

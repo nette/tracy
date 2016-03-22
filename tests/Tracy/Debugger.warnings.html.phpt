@@ -18,15 +18,17 @@ if (PHP_SAPI === 'cli') {
 
 Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
+ini_set('session.save_path', TEMP_DIR);
 
 ob_start();
 Debugger::enable();
 
 register_shutdown_function(function () {
-	preg_match('#debug.innerHTML = (".*");#', $output = ob_get_clean(), $m);
+	$output = ob_get_clean();
 	Assert::match('
 Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 
+	$content = reset(Debugger::getSession()->getContent()['bar'])['content'];
 	Assert::match('%A%<table>
 <tr>
 	<td class="tracy-right">1%a%</td>
@@ -45,7 +47,7 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 	<td><pre>PHP Warning: %a% in %a%:%d%</a></pre></td>
 </tr>
 </table>
-</div>%A%', json_decode($m[1]));
+</div>%A%', $content);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

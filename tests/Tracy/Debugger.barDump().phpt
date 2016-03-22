@@ -18,13 +18,15 @@ if (PHP_SAPI === 'cli') {
 
 Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
+ini_set('session.save_path', TEMP_DIR);
 
 ob_start();
 Debugger::enable();
 
 register_shutdown_function(function () {
-	preg_match('#debug.innerHTML = (".*");#', ob_get_clean(), $m);
-	Assert::matchFile(__DIR__ . '/Debugger.barDump().expect', json_decode($m[1]));
+	ob_end_clean();
+	$content = reset(Debugger::getSession()->getContent()['bar'])['content'];
+	Assert::matchFile(__DIR__ . '/Debugger.barDump().expect', $content);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 
