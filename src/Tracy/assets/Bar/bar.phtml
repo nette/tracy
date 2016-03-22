@@ -39,7 +39,12 @@ $tabs = function ($panels) {
 		<li><span title="Previous request before redirect">redirect</span></li>
 		<?php $tabs($row->panels) ?>
 	</ul>
-<?php 	endif ?>
+<?php  endif; if ($row->type === 'ajax'): ?>
+	<ul id="tracy-ajax-bar">
+		<li>AJAX</li>
+		<?php $tabs($row->panels) ?>
+	</ul>
+<?php endif ?>
 <?php endforeach ?>
 
 <?php if ($rows[0]->type === 'main'): ?></div><?php endif ?>
