@@ -19,9 +19,16 @@ body #tracy-debug {
 	right: 0;
 }
 
-#tracy-debug * {
+/* #tracy-debug * { */ 
+#tracy-debug[class~='tracy'] *, .tracy-inner *, .tracy-panel *, .tracy-dump * {
 	font: inherit;
+	color: inherit;
+	background: transparent;
+	margin: 0;
+	padding: 0;
 	border: none;
+	text-align: inherit;
+	list-style: inherit;
 	opacity: 1;
 	border-radius: 0;
 	box-shadow: none;
