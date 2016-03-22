@@ -29,6 +29,6 @@
 	});
 
 	var id = location.href + document.getElementById('tracy-bs-error').textContent;
-	Tracy.Toggle.persist(blueScreen, localStorage.getItem('tracy-toggles-bskey') === id);
-	localStorage.setItem('tracy-toggles-bskey', id);
+	Tracy.Toggle.persist(blueScreen, sessionStorage.getItem('tracy-toggles-bskey') === id);
+	sessionStorage.setItem('tracy-toggles-bskey', id);
 })();

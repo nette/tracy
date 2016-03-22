@@ -63,7 +63,7 @@
 			}
 		});
 
-		var toggles = JSON.parse(localStorage.getItem('tracy-toggles-' + baseEl.id));
+		var toggles = JSON.parse(sessionStorage.getItem('tracy-toggles-' + baseEl.id));
 		if (toggles && restore !== false) {
 			toggles.forEach(function(item) {
 				var el = baseEl;
@@ -87,7 +87,7 @@
 				} while (el && el !== baseEl);
 				return item;
 			});
-			localStorage.setItem('tracy-toggles-' + baseEl.id, JSON.stringify(toggles));
+			sessionStorage.setItem('tracy-toggles-' + baseEl.id, JSON.stringify(toggles));
 		});
 	}
 
