@@ -1,57 +1,20 @@
 <?php
 
 /**
- * Debug Bar screen template.
+ * Debug Bar template.
  *
- * It uses Font Awesome by Dave Gandy - http://fontawesome.io
- *
- * This file is part of the Tracy (https://tracy.nette.org)
- * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
+ * This file is part of the Tracy (http://tracy.nette.org)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * @param  array $panels
- * @param  array $info
- * @param  array $liveData
- * @return void
  */
 
 namespace Tracy;
 
 use Tracy;
 
+
 ?>
-
-
-
-
-<!-- Tracy Debug Bar -->
-
-<?php ob_start() ?>
-&nbsp;
-
-<style id="tracy-debug-style" class="tracy-debug">
-<?php readfile(__DIR__ . '/bar.css') ?>
-<?php readfile(__DIR__ . '/../Toggle/toggle.css') ?>
-<?php readfile(__DIR__ . '/../Dumper/dumper.css') ?>
-</style>
-
-<script id="tracy-debug-script">
-<?php readfile(__DIR__ . '/bar.js') ?>
-<?php readfile(__DIR__ . '/../Toggle/toggle.js') ?>
-<?php readfile(__DIR__ . '/../Dumper/dumper.js') ?>
-</script>
-
-
-<?php foreach ($panels as $panel): if (!empty($panel['previous'])) continue ?>
-	<div class="tracy-panel" id="tracy-debug-panel-<?= $panel['id'] ?>">
-		<?php if ($panel['panel']): echo $panel['panel'] ?>
-		<div class="tracy-icons">
-			<a href="#" title="open in window">&curren;</a>
-			<a href="#" rel="close" title="close window">&times;</a>
-		</div>
-		<?php endif ?>
-	</div>
-<?php endforeach ?>
-
 <div id="tracy-debug-bar">
 	<ul>
 		<li id="tracy-debug-logo" title="Tracy Debugger <?= Debugger::VERSION, " \nhttps://tracy.nette.org" ?>">
@@ -64,30 +27,3 @@ use Tracy;
 		<li><a href="#" rel="close" title="close debug bar">&times;</a></li>
 	</ul>
 </div>
-<?php $output = ob_get_clean(); ?>
-
-
-<script>
-(function() {
-	if (!document.documentElement.classList) {
-		document.write('<div style="position:fixed;right:0;bottom:0;z-index:30000;font:normal normal 12px/21px sans-serif;color:#333;background:#EDEAE0;border:1px solid #ccc;padding:.2em">Warning: Tracy requires IE 10+<\/div>');
-		return;
-	}
-
-	window.addEventListener('load', function() {
-		var debug = document.body.appendChild(document.createElement('div'));
-		debug.id = 'tracy-debug';
-		debug.innerHTML = <?= json_encode(Helpers::fixEncoding($output)) ?>;
-		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) {
-			(window.execScript || function(data) {
-				window['eval'].call(window, data);
-			})(scripts[i].innerHTML);
-		}
-		Tracy.Dumper.init(<?= json_encode($liveData) ?>);
-		Tracy.Debug.init();
-		debug.style.display = 'block';
-	});
-})();
-</script>
-
-<!-- /Tracy Debug Bar -->

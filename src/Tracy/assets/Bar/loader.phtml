@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Debug Bar loader template.
+ *
+ * It uses Font Awesome by Dave Gandy - http://fontawesome.io
+ *
+ * This file is part of the Tracy (https://tracy.nette.org)
+ * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
+ */
+
+namespace Tracy;
+
+use Tracy;
+
+?>
+
+
+
+
+<!-- Tracy Debug Bar -->
+<div id="tracy-debug"></div>
+<link rel="stylesheet" href="?_tracy_bar=css&amp;v=<?=urlencode(Debugger::VERSION)?>" id="tracy-debug-style" />
+<script src="?_tracy_bar=js&amp;v=<?=urlencode(Debugger::VERSION)?>" id="tracy-debug-script"></script>
+<?php if ($contentId): ?>
+<script src="?_tracy_bar=content.<?=urlencode($contentId)?>"></script>
+<?php else: ?>
+<script>
+Tracy.Debug.init(<?= json_encode($content) ?>, <?= json_encode($liveData) ?>);
+</script>
+<?php endif ?>

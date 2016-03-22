@@ -19,12 +19,14 @@ if (PHP_SAPI === 'cli') {
 Debugger::$productionMode = FALSE;
 Debugger::$showLocation = TRUE;
 header('Content-Type: text/html');
+ini_set('session.save_path', TEMP_DIR);
 
 ob_start();
 Debugger::enable();
 
 register_shutdown_function(function () {
-	preg_match('#debug.innerHTML = (".*");#', ob_get_clean(), $m);
+	ob_end_clean();
+	$content = reset(Debugger::getSession()->getContent()['bar'])['content'];
 	Assert::match(<<<EOD
 %A%<h1>Dumps</h1>
 
@@ -36,7 +38,7 @@ in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-st
 </div>
 %A%
 EOD
-, json_decode($m[1]));
+, $content);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

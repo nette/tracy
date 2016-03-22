@@ -5,6 +5,8 @@
 (function(){
 	Tracy = window.Tracy || {};
 
+	var layer = document.getElementById('tracy-debug');
+
 	var Panel = Tracy.DebugPanel = function(id) {
 		this.id = id;
 		this.elem = document.getElementById(this.id);
@@ -133,16 +135,17 @@
 			return;
 		}
 
+		function escape(s) {
+			return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+		}
+
 		var doc = win.document;
-		doc.write('<!DOCTYPE html><meta charset="utf-8"><style>'
-			+ document.getElementById('tracy-debug-style').innerHTML
-			+ '<\/style><script>'
-			+ document.getElementById('tracy-debug-script').innerHTML
-			+ '<\/script><body id="tracy-debug">'
+		doc.write('<!DOCTYPE html><meta charset="utf-8">'
+			+ '<link rel="stylesheet" href="' + escape(document.getElementById('tracy-debug-style').href) + '">'
+			+ '<script src="' + escape(document.getElementById('tracy-debug-script').src) + '" onload="Tracy.Dumper.init()" async><\/script>'
+			+ '<body id="tracy-debug">'
 		);
-		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.id + '">' + this.elem.innerHTML + '<\/div>';
-		var winPanel = win.Tracy.Debug.getPanel(this.id);
-		win.Tracy.Dumper.init();
+		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window">' + this.elem.innerHTML + '<\/div>';
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').innerHTML;
 		}
@@ -303,7 +306,16 @@
 
 	Debug.panels = {};
 
-	Debug.init = function() {
+	Debug.init = function(content, dumpData) {
+		if (!document.documentElement.classList) {
+			console.log('Warning: Tracy requires IE 10+');
+			return;
+		}
+
+		layer.innerHTML = content;
+		evalScripts(layer);
+		Tracy.Dumper.init(dumpData);
+		layer.style.display = 'block';
 		Debug.bar.init();
 
 		[].forEach.call(document.querySelectorAll('.tracy-panel'), function(panel) {
@@ -331,6 +343,13 @@
 		});
 	};
 
+	function evalScripts(elem) {
+		[].forEach.call(elem.querySelectorAll('script'), function(script) {
+			(window.execScript || function(data) {
+				window['eval'].call(window, data);
+			})(script.innerHTML);
+		});
+	};
 
 	// emulate mouseenter & mouseleave
 	function isTargetChanged(target, dest) {
