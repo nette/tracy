@@ -73,7 +73,9 @@
 			});
 		});
 
-		Tracy.Toggle.persist(elem);
+		if (!this.is('tracy-ajax')) {
+			Tracy.Toggle.persist(elem);
+		}
 		this.restorePosition();
 	};
 
@@ -226,6 +228,13 @@
 			draggedClass: 'tracy-dragged'
 		});
 
+		this.initTabs(elem);
+		this.restorePosition();
+	};
+
+	Bar.prototype.initTabs = function(elem) {
+		var elem = document.getElementById(this.id), _this = this;
+
 		[].forEach.call(elem.querySelectorAll('a'), function(a) {
 			a.addEventListener('click', function(e) {
 				if (this.rel === 'close') {
@@ -272,8 +281,6 @@
 				}
 			});
 		});
-
-		this.restorePosition();
 	};
 
 	Bar.prototype.close = function() {
@@ -324,6 +331,35 @@
 		});
 
 		Debug.captureWindow();
+		Debug.captureAjax();
+	};
+
+	Debug.loadAjax = function(content, dumpData) {
+		[].forEach.call(layer.querySelectorAll('.tracy-panel.tracy-ajax'), function(panel) {
+			Debug.panels[panel.id].savePosition();
+			delete Debug.panels[panel.id];
+			panel.parentNode.removeChild(panel);
+		});
+
+		var ajaxBar = document.getElementById('tracy-ajax-bar');
+		if (ajaxBar) {
+			ajaxBar.parentNode.removeChild(ajaxBar);
+		}
+
+		layer.insertAdjacentHTML('beforeend', content);
+		evalScripts(layer);
+		ajaxBar = document.getElementById('tracy-ajax-bar');
+		document.getElementById(Bar.prototype.id).appendChild(ajaxBar);
+
+		[].forEach.call(document.querySelectorAll('.tracy-panel'), function(panel) {
+			if (!Debug.panels[panel.id]) {
+				Debug.panels[panel.id] = new Panel(panel.id);
+				Debug.panels[panel.id].init();
+			}
+		});
+
+		Tracy.Dumper.init(dumpData, layer);
+		Debug.bar.initTabs(ajaxBar);
 	};
 
 	Debug.captureWindow = function() {
@@ -343,11 +379,32 @@
 		});
 	};
 
+	Debug.captureAjax = function() {
+		var old = XMLHttpRequest.prototype.getAllResponseHeaders;
+		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
+			if (this.readyState === 4 && document.cookie.match(/tracy-ajax=1/)) {
+				document.cookie = 'tracy-ajax=; path=/';
+				Debug.loadScript('?_tracy_bar=content.ajax&v=' + Math.random());
+			}
+			return old.call(this);
+		}
+	};
+
+	Debug.loadScript = function(url) {
+		if (Debug.scriptElem) {
+			Debug.scriptElem.parentNode.removeChild(Debug.scriptElem)
+		}
+		Debug.scriptElem = document.createElement('script');
+		Debug.scriptElem.src = url;
+		document.documentElement.appendChild(Debug.scriptElem);
+	};
+
 	function evalScripts(elem) {
 		[].forEach.call(elem.querySelectorAll('script'), function(script) {
 			(window.execScript || function(data) {
 				window['eval'].call(window, data);
 			})(script.innerHTML);
+			script.parentNode.removeChild(script);
 		});
 	};
 

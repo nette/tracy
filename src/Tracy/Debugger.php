@@ -221,7 +221,7 @@ class Debugger
 				FALSE
 			);
 
-		} elseif (self::$showBar && !connection_aborted() && !self::$productionMode && Helpers::isHtmlMode()) {
+		} elseif (self::$showBar && !self::$productionMode) {
 			self::$reserved = NULL;
 			self::removeOutputBuffers(FALSE);
 			self::getBar()->render();
@@ -380,7 +380,7 @@ class Debugger
 
 		} else {
 			self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
-			return Helpers::isHtmlMode() ? NULL : FALSE; // FALSE calls normal error handler
+			return Helpers::isHtmlMode() || Helpers::isAjax() ? NULL : FALSE; // FALSE calls normal error handler
 		}
 	}
 

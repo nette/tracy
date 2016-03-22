@@ -17,7 +17,7 @@ use Tracy;
 foreach ($rows as $row) {
 	foreach ($row->panels as $panel) {
 ?>
-	<div class="tracy-panel" id="tracy-debug-panel-<?= $panel->id ?>">
+	<div class="tracy-panel <?= $row->type === 'ajax' ? 'tracy-ajax' : '' ?>" id="tracy-debug-panel-<?= $panel->id ?>">
 		<?php if ($panel->panel): echo $panel->panel ?>
 		<div class="tracy-icons">
 			<a href="#" title="open in window">&curren;</a>

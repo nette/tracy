@@ -62,6 +62,10 @@ class Bar
 	 */
 	public function render()
 	{
+		if (!Helpers::isHtmlMode() && !Helpers::isAjax()) {
+			return;
+		}
+
 		$previousBars = & $this->session->getContent()['redirect'];
 		$isRedirect = preg_match('#^Location:#im', implode("\n", headers_list()));
 		$suffix = '';
@@ -69,6 +73,8 @@ class Bar
 			Dumper::fetchLiveData();
 			Dumper::$livePrefix = count($previousBars) . 'p';
 			$suffix = '-r' . count($previousBars);
+		} elseif (Helpers::isAjax()) {
+			$suffix = '-ajax';
 		}
 
 		$obLevel = ob_get_level();
@@ -105,7 +111,7 @@ class Bar
 			return;
 		}
 
-		$rows[] = (object) ['type' => 'main', 'panels' => $panels];
+		$rows[] = (object) ['type' => Helpers::isAjax() ? 'ajax' : 'main', 'panels' => $panels];
 		foreach (array_reverse((array) $previousBars) as $info) {
 			$rows[] = (object) ['type' => 'redirect', 'panels' => $info['panels']];
 			$liveData += $info['liveData'];
@@ -118,11 +124,13 @@ class Bar
 		$content = Helpers::fixEncoding(ob_get_clean());
 
 		if ($this->session->getId()) {
-			$contentId = md5(uniqid('', TRUE));
+			$contentId = Helpers::isAjax() ? 'ajax' : md5(uniqid('', TRUE));
 			$this->session->getContent()['bar'][$contentId] = ['content' => $content, 'liveData' => $liveData];
 		}
 
-		require __DIR__ . '/assets/Bar/loader.phtml';
+		if (Helpers::isHtmlMode()) {
+			require __DIR__ . '/assets/Bar/loader.phtml';
+		}
 	}
 
 
@@ -132,6 +140,11 @@ class Bar
 	 */
 	public function dispatch()
 	{
+		if (Helpers::isAjax()) {
+			$this->session->getContent(); // locks session file
+			setcookie('tracy-ajax', 1, 0, '/');
+		}
+
 		$asset = isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : NULL;
 
 		if (preg_match('#^content.(\w+)$#', $asset, $m)) {
@@ -139,7 +152,8 @@ class Bar
 			header('Content-Type: text/javascript');
 			header('Cache-Control: max-age=60');
 			if (isset($session[$m[1]])) {
-				echo 'Tracy.Debug.init(', json_encode($session[$m[1]]['content']), ', ', json_encode($session[$m[1]]['liveData']), ');';
+				$method = $m[1] === 'ajax' ? 'loadAjax' : 'init';
+				echo "Tracy.Debug.$method(", json_encode($session[$m[1]]['content']), ', ', json_encode($session[$m[1]]['liveData']), ');';
 				unset($session[$m[1]]);
 			}
 			return TRUE;
