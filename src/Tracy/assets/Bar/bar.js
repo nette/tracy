@@ -49,7 +49,7 @@
 			_this.oldPosition = getPosition(elem);
 		});
 
-		document.documentElement.addEventListener('click', function() {
+		elem.addEventListener('tracy-toggle', function() {
 			if (_this.oldPosition) {
 				var pos = getPosition(elem);
 				setPosition(elem, {
@@ -69,10 +69,6 @@
 				}
 				e.preventDefault();
 			});
-		});
-
-		window.addEventListener('unload', function() {
-			_this.savePosition();
 		});
 
 		Tracy.Toggle.persist(elem);
@@ -274,10 +270,6 @@
 			});
 		});
 
-		window.addEventListener('unload', function() {
-			_this.savePosition();
-		});
-
 		this.restorePosition();
 	};
 
@@ -319,15 +311,22 @@
 			Debug.panels[panel.id].init();
 		});
 
-		Debug.initResize();
+		Debug.captureWindow();
 	};
 
-	Debug.initResize = function() {
+	Debug.captureWindow = function() {
 		window.addEventListener('resize', function() {
 			var bar = document.getElementById(Bar.prototype.id);
 			setPosition(bar, {right: getPosition(bar).right, bottom: getPosition(bar).bottom});
 			for (var id in Debug.panels) {
 				Debug.panels[id].reposition();
+			}
+		});
+
+		window.addEventListener('unload', function() {
+			Debug.bar.savePosition();
+			for (var id in Debug.panels) {
+				Debug.panels[id].savePosition();
 			}
 		});
 	};
