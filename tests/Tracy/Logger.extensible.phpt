@@ -41,7 +41,7 @@ test(function () {
 
 	Assert::match('a', $logger->collector[0][0]);
 	Assert::match('Exception: First in %a%:%d%', $logger->collector[0][1]);
-	Assert::match('[%a%] Exception: First in %a%:%d%  @  CLI: %a%  @@  exception-%a%.html', $logger->collector[0][2]);
+	Assert::match('[%a%] Exception: First in %a%:%d%  @  CLI (PID: %d%): %a%  @@  exception-%a%.html', $logger->collector[0][2]);
 	Assert::match('%a%%ds%exception-%a%.html', $logger->collector[0][3]);
 });
 
@@ -51,6 +51,6 @@ test(function () {
 
 	Assert::match('b', $logger->collector[0][0]);
 	Assert::match('message', $logger->collector[0][1]);
-	Assert::match('[%a%] message  @  CLI: %a%', $logger->collector[0][2]);
+	Assert::match('[%a%] message  @  CLI (PID: %d%): %a%', $logger->collector[0][2]);
 	Assert::null($logger->collector[0][3]);
 });

@@ -155,7 +155,8 @@ class Helpers
 				. (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '')
 				. $_SERVER['REQUEST_URI'];
 		} else {
-			return empty($_SERVER['argv']) ? 'CLI' : 'CLI: ' . implode(' ', $_SERVER['argv']);
+			return 'CLI (PID: ' . getmypid() . ')'
+				. (empty($_SERVER['argv']) ? '' : ': ' . implode(' ', $_SERVER['argv']));
 		}
 	}
 
