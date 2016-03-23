@@ -18,7 +18,7 @@
 		<div id="tracy-bs-error" class="panel">
 			<p>Exception #123</p>
 
-			<h1>The my exception			<a href="%a%" rel="noreferrer">search&#x25ba;</a>
+			<h1>The my exception			<a href="%a%" rel="noreferrer noopener">search&#x25ba;</a>
 			</h1>
 		</div>
 
