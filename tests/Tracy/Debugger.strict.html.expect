@@ -18,7 +18,7 @@
 		<div id="tracy-bs-error" class="panel">
 			<p>Notice</p>
 
-			<h1>Undefined variable: x			<a href="%a%" rel="noreferrer">search&#x25ba;</a>
+			<h1>Undefined variable: x			<a href="%a%" rel="noreferrer noopener">search&#x25ba;</a>
 			</h1>
 		</div>
 
