@@ -20,6 +20,6 @@ in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-toggle"
 		<h2>String</h2>
 	
 	<pre class="tracy-dump" title="barDump(&#039;&lt;a href=&quot;#&quot;&gt;test&lt;/a&gt;&#039;, &#039;String&#039;)
-in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-string">"&lt;a href="#"&gt;test&lt;/a&gt;"</span> (20)
+in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-string">"&lt;a href=&quot;#&quot;&gt;test&lt;/a&gt;"</span> (20)
 </pre>
 </div>%A%

@@ -99,7 +99,7 @@ class Bar
 				}
 				$idHtml = "error-$idHtml";
 				$tab = "Error in $id";
-				$panel = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(htmlSpecialChars($e, ENT_IGNORE, 'UTF-8')) . '</div>';
+				$panel = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(Helpers::escapeHtml($e)) . '</div>';
 			}
 			$panels[] = (object) ['id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml];
 		}

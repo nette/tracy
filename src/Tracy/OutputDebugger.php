@@ -69,7 +69,7 @@ class OutputDebugger
 			}
 
 			$res .= Helpers::editorLink($item[0], $item[1]) . ' '
-				. '<span title="' . htmlspecialchars(implode("\n", $stack), ENT_IGNORE | ENT_QUOTES, 'UTF-8') . '">'
+				. '<span title="' . Helpers::escapeHtml(implode("\n")) . '">'
 				. str_replace(self::BOM, '<big>BOM</big>', Dumper::toHtml($item[2]))
 				. "</span><br>\n";
 		}

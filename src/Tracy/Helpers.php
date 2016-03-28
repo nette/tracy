@@ -55,8 +55,14 @@ class Helpers
 	{
 		$args = func_get_args();
 		return preg_replace_callback('#%#', function () use (& $args, & $count) {
-			return htmlspecialchars($args[++$count], ENT_IGNORE | ENT_QUOTES, 'UTF-8');
+			return Helpers::escapeHtml($args[++$count]);
 		}, $mask);
+	}
+
+
+	public static function escapeHtml($s)
+	{
+		return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	}
 
 

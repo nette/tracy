@@ -187,7 +187,7 @@ class Dumper
 	private static function dumpString(& $var, $options)
 	{
 		return '<span class="tracy-dump-string">"'
-			. htmlspecialchars(self::encodeString($var, $options[self::TRUNCATE]), ENT_NOQUOTES, 'UTF-8')
+			. Helpers::escapeHtml(self::encodeString($var, $options[self::TRUNCATE]))
 			. '"</span>' . (strlen($var) > 1 ? ' (' . strlen($var) . ')' : '') . "\n";
 	}
 
@@ -215,7 +215,7 @@ class Dumper
 			$var[$marker] = TRUE;
 			foreach ($var as $k => & $v) {
 				if ($k !== $marker) {
-					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . htmlspecialchars(self::encodeString($k, $options[self::TRUNCATE]), ENT_NOQUOTES, 'UTF-8') . '"';
+					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . $k . '</span> => '
 						. self::dumpVar($v, $options, $level + 1);
@@ -242,7 +242,7 @@ class Dumper
 			. ($editor ? Helpers::formatHtml(
 				' title="Declared in file % on line %" data-tracy-href="%"', $rc->getFileName(), $rc->getStartLine(), $editor
 			) : '')
-			. '>' . htmlspecialchars(Helpers::getClass($var)) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
+			. '>' . Helpers::escapeHtml(Helpers::getClass($var)) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
 
 		static $list = [];
 
@@ -264,7 +264,7 @@ class Dumper
 					$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 					$k = substr($k, strrpos($k, "\x00") + 1);
 				}
-				$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . htmlspecialchars(self::encodeString($k, $options[self::TRUNCATE]), ENT_NOQUOTES, 'UTF-8') . '"';
+				$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 					. '<span class="tracy-dump-key">' . $k . "</span>$vis => "
 					. self::dumpVar($v, $options, $level + 1);
@@ -281,13 +281,13 @@ class Dumper
 	private static function dumpResource(& $var, $options, $level)
 	{
 		$type = get_resource_type($var);
-		$out = '<span class="tracy-dump-resource">' . htmlSpecialChars($type, ENT_IGNORE, 'UTF-8') . ' resource</span> '
+		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($type) . ' resource</span> '
 			. '<span class="tracy-dump-hash">#' . intval($var) . '</span>';
 		if (isset(self::$resources[$type])) {
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-					. '<span class="tracy-dump-key">' . htmlSpecialChars($k, ENT_IGNORE, 'UTF-8') . '</span> => ' . self::dumpVar($v, $options, $level + 1);
+					. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => ' . self::dumpVar($v, $options, $level + 1);
 			}
 			return $out . '</div>';
 		}

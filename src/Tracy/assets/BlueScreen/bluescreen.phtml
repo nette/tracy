@@ -29,9 +29,9 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 	<meta name="robots" content="noindex">
 	<meta name="generator" content="Tracy by Nette Framework">
 
-	<title><?= htmlspecialchars($title . ': ' . $exception->getMessage() . $code, ENT_IGNORE, 'UTF-8') ?></title>
+	<title><?= Helpers::escapeHtml($title . ': ' . $exception->getMessage() . $code) ?></title>
 	<?php if ($ex = $exception->getPrevious()): ?>
-<!--<?php do { echo str_replace('--', '- ', htmlspecialchars("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_IGNORE, 'UTF-8')); } while ($ex = $ex->getPrevious()); ?> -->
+<!--<?php do { echo str_replace('--', '- ', Helpers::escapeHtml("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''))); } while ($ex = $ex->getPrevious()); ?> -->
 	<?php endif ?>
 
 	<style type="text/css" class="tracy-debug">
@@ -46,17 +46,17 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
 		<div id="tracy-bs-error" class="panel">
-			<?php if ($exception->getMessage()): ?><p><?= htmlspecialchars($title . $code, ENT_IGNORE, 'UTF-8') ?></p><?php endif ?>
+			<?php if ($exception->getMessage()): ?><p><?= Helpers::escapeHtml($title . $code) ?></p><?php endif ?>
 
 
-			<h1><?= htmlspecialchars($exception->getMessage() ?: $title . $code, ENT_IGNORE, 'UTF-8') ?>
+			<h1><?= Helpers::escapeHtml($exception->getMessage() ?: $title . $code) ?>
 			<a href="https://www.google.com/search?sourceid=tracy&amp;q=<?= urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
-			<?php if ($skipError): ?><a href="<?= htmlSpecialChars($skipError, ENT_IGNORE | ENT_QUOTES, 'UTF-8') ?>">skip error&#x25ba;</a><?php endif ?></h1>
+			<?php if ($skipError): ?><a href="<?= Helpers::escapeHtml($skipError) ?>">skip error&#x25ba;</a><?php endif ?></h1>
 		</div>
 
 		<?php if ($prev = $exception->getPrevious()): ?>
 		<div class="caused">
-			<a href="#tracyCaused">Caused by <?= htmlspecialchars(Helpers::getClass($prev), ENT_NOQUOTES, 'UTF-8') ?></a>
+			<a href="#tracyCaused">Caused by <?= Helpers::escapeHtml(Helpers::getClass($prev)) ?></a>
 		</div>
 		<?php endif ?>
 
@@ -70,9 +70,9 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 			<div class="<?= $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<div class="panel">
-					<h2><?= htmlspecialchars(Helpers::getClass($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : ''), ENT_NOQUOTES, 'UTF-8') ?></h2>
+					<h2><?= Helpers::escapeHtml(Helpers::getClass($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : '')) ?></h2>
 
-					<h2><?= htmlspecialchars($ex->getMessage(), ENT_IGNORE, 'UTF-8') ?></h2>
+					<h2><?= Helpers::escapeHtml($ex->getMessage()) ?></h2>
 				</div>
 			<?php endif ?>
 
@@ -81,7 +81,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php $panel = call_user_func($panel, $ex); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 			<?php if (!empty($panel['bottom'])) { continue; } ?>
 			<div class="panel">
-				<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= htmlSpecialChars($panel['tab'], ENT_NOQUOTES, 'UTF-8') ?></a></h2>
+				<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel['tab']) ?></a></h2>
 
 				<div class="inner">
 				<?= $panel['panel'] ?>
@@ -125,9 +125,9 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 					<?php
 						if (isset($row['object'])) echo "<a data-tracy-ref='^p + .object' class='tracy-toggle tracy-collapsed'>";
-						if (isset($row['class'])) echo htmlspecialchars($row['class'] . $row['type'], ENT_NOQUOTES, 'UTF-8');
+						if (isset($row['class'])) echo Helpers::escapeHtml($row['class'] . $row['type']);
 						if (isset($row['object'])) echo '</a>';
-						echo htmlspecialchars($row['function'], ENT_NOQUOTES, 'UTF-8'), '(';
+						echo Helpers::escapeHtml($row['function']), '(';
 						if (!empty($row['args'])): ?><a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a><?php endif ?>)
 					</p>
 
@@ -150,7 +150,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 							$params = [];
 						}
 						foreach ($row['args'] as $k => $v) {
-							echo '<tr><th>', htmlspecialchars(isset($params[$k]) ? '$' . $params[$k]->name : "#$k", ENT_IGNORE, 'UTF-8'), '</th><td>';
+							echo '<tr><th>', Helpers::escapeHtml(isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</th><td>';
 							echo Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]);
 							echo "</td></tr>\n";
 						}
@@ -174,7 +174,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<table>
 			<?php
 			foreach ($ex->context as $k => $v) {
-				echo '<tr><th>$', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]), "</td></tr>\n";
+				echo '<tr><th>$', Helpers::escapeHtml($k), '</th><td>', Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -200,7 +200,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 		<?php $panel = call_user_func($panel, NULL); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
 		<?php if (!empty($panel['bottom'])) { $bottomPanels[] = $panel; continue; } ?>
 		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed"><?= htmlSpecialChars($panel['tab'], ENT_NOQUOTES, 'UTF-8') ?></a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed"><?= Helpers::escapeHtml($panel['tab']) ?></a></h2>
 
 			<div class="tracy-collapsed inner">
 			<?= $panel['panel'] ?>
@@ -216,7 +216,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<div class="outer">
 			<table>
 			<?php
-			foreach ($_SERVER as $k => $v) echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v), "</td></tr>\n";
+			foreach ($_SERVER as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Dumper::toHtml($v), "</td></tr>\n";
 			?>
 			</table>
 			</div>
@@ -229,7 +229,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php else: ?>
 			<table>
 			<?php
-			foreach ($_SESSION as $k => $v) echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', $k === '__NF' ? '<i>Nette Session</i>' : Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]), "</td></tr>\n";
+			foreach ($_SESSION as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', $k === '__NF' ? '<i>Nette Session</i>' : Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]), "</td></tr>\n";
 			?>
 			</table>
 			<?php endif ?>
@@ -241,7 +241,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<div class="outer">
 			<table>
 			<?php
-			foreach ($_SESSION['__NF']['DATA'] as $k => $v) echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]), "</td></tr>\n";
+			foreach ($_SESSION['__NF']['DATA'] as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Dumper::toHtml($v, [Dumper::LOCATION => Dumper::LOCATION_CLASS, Dumper::LIVE => TRUE]), "</td></tr>\n";
 			?>
 			</table>
 			</div>
@@ -256,7 +256,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<table>
 			<?php
 			foreach ($list['user'] as $k => $v) {
-				echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th>';
+				echo '<tr><th>', Helpers::escapeHtml($k), '</th>';
 				echo '<td>', Dumper::toHtml($v), "</td></tr>\n";
 			}
 			?>
@@ -270,7 +270,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<table>
 			<?php
 			foreach (get_included_files() as $v) {
-				echo '<tr><td>', htmlspecialchars($v, ENT_IGNORE, 'UTF-8'), "</td></tr>\n";
+				echo '<tr><td>', Helpers::escapeHtml($v), "</td></tr>\n";
 			}
 			?>
 			</table>
@@ -293,7 +293,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<div class="outer">
 			<table>
 			<?php
-			foreach (apache_request_headers() as $k => $v) echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', htmlspecialchars($v, ENT_IGNORE, 'UTF-8'), "</td></tr>\n";
+			foreach (apache_request_headers() as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Helpers::escapeHtml($v), "</td></tr>\n";
 			?>
 			</table>
 			</div>
@@ -301,14 +301,14 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 
 			<?php foreach (['_GET', '_POST', '_COOKIE'] as $name): ?>
-			<h3>$<?= htmlspecialchars($name, ENT_NOQUOTES, 'UTF-8') ?></h3>
+			<h3>$<?= Helpers::escapeHtml($name) ?></h3>
 			<?php if (empty($GLOBALS[$name])):?>
 			<p><i>empty</i></p>
 			<?php else: ?>
 			<div class="outer">
 			<table>
 			<?php
-			foreach ($GLOBALS[$name] as $k => $v) echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v), "</td></tr>\n";
+			foreach ($GLOBALS[$name] as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Dumper::toHtml($v), "</td></tr>\n";
 			?>
 			</table>
 			</div>
@@ -324,7 +324,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<h3>Headers</h3>
 			<?php if (headers_list()): ?>
 			<pre><?php
-			foreach (headers_list() as $s) echo htmlspecialchars($s, ENT_IGNORE, 'UTF-8'), '<br>';
+			foreach (headers_list() as $s) echo Helpers::escapeHtml($s), '<br>';
 			?></pre>
 			<?php else: ?>
 			<p><i>no headers</i></p>
@@ -334,7 +334,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 		<?php foreach ($bottomPanels as $panel): ?>
 		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= htmlSpecialChars($panel['tab'], ENT_NOQUOTES, 'UTF-8') ?></a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel['tab']) ?></a></h2>
 
 			<div class="inner">
 			<?= $panel['panel'] ?>
@@ -344,8 +344,8 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 		<ul>
 			<li>Report generated at <?= @date('Y/m/d H:i:s') // @ timezone may not be set ?></li>
-			<li><?php if ($sourceIsUrl): ?><a href="<?= htmlSpecialChars($source, ENT_IGNORE | ENT_QUOTES, 'UTF-8') ?>"><?php endif ?><?= htmlSpecialChars($source, ENT_IGNORE, 'UTF-8') ?><?php if ($sourceIsUrl): ?></a><?php endif ?></li>
-			<?php foreach ($info as $item): ?><li><?= htmlSpecialChars($item, ENT_NOQUOTES, 'UTF-8') ?></li><?php endforeach ?>
+			<li><?php if ($sourceIsUrl): ?><a href="<?= Helpers::escapeHtml($source) ?>"><?php endif ?><?= Helpers::escapeHtml($source) ?><?php if ($sourceIsUrl): ?></a><?php endif ?></li>
+			<?php foreach ($info as $item): ?><li><?= Helpers::escapeHtml($item) ?></li><?php endforeach ?>
 		</ul>
 
 		<div id="tracy-bs-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
