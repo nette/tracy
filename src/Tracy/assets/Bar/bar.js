@@ -401,10 +401,12 @@
 
 	function evalScripts(elem) {
 		[].forEach.call(elem.querySelectorAll('script'), function(script) {
-			(window.execScript || function(data) {
-				window['eval'].call(window, data);
-			})(script.innerHTML);
-			script.parentNode.removeChild(script);
+			if (!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') {
+				(window.execScript || function (data) {
+					window['eval'].call(window, data);
+				})(script.innerHTML);
+				script.parentNode.removeChild(script);
+			}
 		});
 	};
 
