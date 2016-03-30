@@ -62,7 +62,7 @@
 			}
 		});
 
-		[].forEach.call(elem.querySelectorAll('.tracy-icons a'), function(a) {
+		forEach(elem.querySelectorAll('.tracy-icons a'), function(a) {
 			a.addEventListener('click', function(e) {
 				if (this.rel === 'close') {
 					_this.toPeek();
@@ -235,7 +235,7 @@
 	Bar.prototype.initTabs = function(elem) {
 		var elem = document.getElementById(this.id), _this = this;
 
-		[].forEach.call(elem.querySelectorAll('a'), function(a) {
+		forEach(elem.getElementsByTagName('a'), function(a) {
 			a.addEventListener('click', function(e) {
 				if (this.rel === 'close') {
 					_this.close();
@@ -325,7 +325,7 @@
 		layer.style.display = 'block';
 		Debug.bar.init();
 
-		[].forEach.call(document.querySelectorAll('.tracy-panel'), function(panel) {
+		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
 			Debug.panels[panel.id] = new Panel(panel.id);
 			Debug.panels[panel.id].init();
 		});
@@ -335,7 +335,7 @@
 	};
 
 	Debug.loadAjax = function(content, dumpData) {
-		[].forEach.call(layer.querySelectorAll('.tracy-panel.tracy-ajax'), function(panel) {
+		forEach(layer.querySelectorAll('.tracy-panel.tracy-ajax'), function(panel) {
 			Debug.panels[panel.id].savePosition();
 			delete Debug.panels[panel.id];
 			panel.parentNode.removeChild(panel);
@@ -351,7 +351,7 @@
 		ajaxBar = document.getElementById('tracy-ajax-bar');
 		document.getElementById(Bar.prototype.id).appendChild(ajaxBar);
 
-		[].forEach.call(document.querySelectorAll('.tracy-panel'), function(panel) {
+		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
 			if (!Debug.panels[panel.id]) {
 				Debug.panels[panel.id] = new Panel(panel.id);
 				Debug.panels[panel.id].init();
@@ -400,7 +400,7 @@
 	};
 
 	function evalScripts(elem) {
-		[].forEach.call(elem.querySelectorAll('script'), function(script) {
+		forEach(elem.getElementsByTagName('script'), function(script) {
 			if (!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') {
 				(window.execScript || function (data) {
 					window['eval'].call(window, data);
@@ -517,6 +517,10 @@
 			width: elem.offsetWidth,
 			height: elem.offsetHeight
 		};
+	}
+
+	function forEach(arr, cb) {
+		Array.prototype.forEach.call(arr, cb);
 	}
 
 })();
