@@ -26,10 +26,10 @@ foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterato
 		$s = preg_replace_callback('#<\?(?:php|=) (require |readfile\(|.*file_get_contents\().*?(/.+\.(js|css))\'\)* \?>#', function ($m) use ($file) {
 			return file_get_contents($file->getPath() . $m[2]);
 		}, $s);
-		$s = preg_replace_callback('#(<(script|style).*>)(.*)(</)#Uis', function ($m) {
+		$s = preg_replace_callback('#(<(script|style).*(?<!\?)>)(.*)(</)#Uis', function ($m) {
 			list(, $begin, $type, $s, $end) = $m;
 
-			if (strpos($s, '<?') !== FALSE) {
+			if ($s === '' || strpos($s, '<?') !== FALSE) {
 				return $m[0];
 
 			} elseif ($type === 'script' && function_exists('curl_init')) {
