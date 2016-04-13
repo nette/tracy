@@ -22,7 +22,7 @@ use Tracy;
 <div id="tracy-debug"></div>
 <link rel="stylesheet" href="?_tracy_bar=css&amp;v=<?=urlencode(Debugger::VERSION)?>" id="tracy-debug-style" />
 <script src="?_tracy_bar=js&amp;v=<?=urlencode(Debugger::VERSION)?>" id="tracy-debug-script"></script>
-<?php if ($contentId): ?>
+<?php if (isset($contentId)): ?>
 <script src="?_tracy_bar=content.<?=urlencode($contentId)?>"></script>
 <?php else: ?>
 <script>

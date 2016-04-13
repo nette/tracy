@@ -23,7 +23,6 @@ Tester\Helpers::purge(TEMP_DIR);
 
 if (extension_loaded('xdebug')) {
 	xdebug_disable();
-	Tester\CodeCoverage\Collector::start(__DIR__ . '/coverage.dat');
 }
 
 
