@@ -9,7 +9,7 @@
 }
 
 body#tracy-debug {
-	margin: 5px 5px 0;
+	margin: 0;
 	display: block;
 }
 
@@ -233,6 +233,10 @@ body #tracy-debug {
 	transition: opacity 0.2s;
 	box-shadow: 1px 1px 30px rgba(102, 102, 102, 0.36);
 	border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#tracy-debug .tracy-mode-window {
+	padding: 10px;
 }
 
 #tracy-debug .tracy-focused {
