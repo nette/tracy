@@ -148,6 +148,7 @@
 			+ '<body id="tracy-debug">'
 		);
 		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window">' + this.elem.innerHTML + '<\/div>';
+		evalScripts(doc.body, win);
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').innerHTML;
 		}
@@ -399,13 +400,13 @@
 		document.documentElement.appendChild(Debug.scriptElem);
 	};
 
-	function evalScripts(elem) {
+	function evalScripts(elem, scope) {
+		scope = scope || window;
 		forEach(elem.getElementsByTagName('script'), function(script) {
 			if (!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') {
-				(window.execScript || function (data) {
-					window['eval'].call(window, data);
+				(scope.execScript || function (data) {
+					scope['eval'].call(scope, data);
 				})(script.innerHTML);
-				script.parentNode.removeChild(script);
 			}
 		});
 	};
