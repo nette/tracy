@@ -45,16 +45,16 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	public function loadConfiguration()
 	{
 		$this->validateConfig($this->defaults);
-		$container = $this->getContainerBuilder();
+		$builder = $this->getContainerBuilder();
 
-		$container->addDefinition($this->prefix('logger'))
+		$builder->addDefinition($this->prefix('logger'))
 			->setClass('Tracy\ILogger')
 			->setFactory('Tracy\Debugger::getLogger');
 
-		$container->addDefinition($this->prefix('blueScreen'))
+		$builder->addDefinition($this->prefix('blueScreen'))
 			->setFactory('Tracy\Debugger::getBlueScreen');
 
-		$container->addDefinition($this->prefix('bar'))
+		$builder->addDefinition($this->prefix('bar'))
 			->setFactory('Tracy\Debugger::getBar');
 	}
 
@@ -62,14 +62,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
 		$initialize = $class->getMethod('initialize');
-		$container = $this->getContainerBuilder();
+		$builder = $this->getContainerBuilder();
 
 		$options = $this->config;
 		unset($options['bar'], $options['blueScreen']);
 		foreach ($options as $key => $value) {
 			if ($value !== NULL) {
 				$key = ($key === 'fromEmail' ? 'getLogger()->' : '$') . $key;
-				$initialize->addBody($container->formatPhp(
+				$initialize->addBody($builder->formatPhp(
 					'Tracy\Debugger::' . $key . ' = ?;',
 					Nette\DI\Compiler::filterArguments([$value])
 				));
@@ -78,7 +78,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 		if ($this->debugMode) {
 			foreach ((array) $this->config['bar'] as $item) {
-				$initialize->addBody($container->formatPhp(
+				$initialize->addBody($builder->formatPhp(
 					'$this->getService(?)->addPanel(?);',
 					Nette\DI\Compiler::filterArguments([
 						$this->prefix('bar'),
@@ -89,7 +89,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		}
 
 		foreach ((array) $this->config['blueScreen'] as $item) {
-			$initialize->addBody($container->formatPhp(
+			$initialize->addBody($builder->formatPhp(
 				'$this->getService(?)->addPanel(?);',
 				Nette\DI\Compiler::filterArguments([$this->prefix('blueScreen'), $item])
 			));
