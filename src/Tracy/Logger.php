@@ -31,6 +31,9 @@ class Logger implements ILogger
 	/** @var BlueScreen */
 	private $blueScreen;
 
+	/** @var bool Can I link to old trace file with same error? */
+	private $allowLinkOldTrace = TRUE;
+
 
 	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL)
 	{
@@ -123,10 +126,12 @@ class Logger implements ILogger
 	public function getExceptionFile($exception)
 	{
 		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
-		$hash = substr(md5(preg_replace('~(Resource id #)\d+~', '$1', $exception)), 0, 10);
-		foreach (new \DirectoryIterator($this->directory) as $file) {
-			if (strpos($file, $hash)) {
-				return $dir . $file;
+		$hash = substr(md5(preg_replace('~(Resource id #)\d+~', '$1', $exception) . (self::$allowLinkOldTrace ? '' : 'at'.microtime() )), 0, 10);
+		if( self::$allowLinkOldTrace ){
+			foreach (new \DirectoryIterator($this->directory) as $file) {
+				if (strpos($file, $hash)) {
+					return $dir . $file;
+				}
 			}
 		}
 		return $dir . 'exception--' . @date('Y-m-d--H-i') . "--$hash.html"; // @ timezone may not be set
