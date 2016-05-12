@@ -132,7 +132,7 @@
 		offset.top += typeof window.screenTop === 'number' ? window.screenTop : (window.screenY + 50);
 
 		var win = window.open('', this.id.replace(/-/g, '_'), 'left=' + offset.left + ',top=' + offset.top
-			+ ',width=' + this.elem.offsetWidth + ',height=' + (this.elem.offsetHeight + 15) + ',resizable=yes,scrollbars=yes');
+			+ ',width=' + this.elem.offsetWidth + ',height=' + this.elem.offsetHeight + ',resizable=yes,scrollbars=yes');
 		if (!win) {
 			return;
 		}
