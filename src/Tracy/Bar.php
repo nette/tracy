@@ -80,6 +80,12 @@ class Bar
 		$obLevel = ob_get_level();
 		$panels = [];
 
+		set_error_handler(function ($severity, $message, $file, $line) {
+			if (error_reporting() & $severity) {
+				throw new \ErrorException($message, 0, $severity, $file, $line);
+			}
+		});
+
 		foreach ($this->panels as $id => $panel) {
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
 			try {
@@ -99,10 +105,12 @@ class Bar
 				}
 				$idHtml = "error-$idHtml";
 				$tab = "Error in $id";
-				$panel = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(Helpers::escapeHtml($e)) . '</div>';
+				$panelHtml = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(Helpers::escapeHtml($e)) . '</div>';
 			}
 			$panels[] = (object) ['id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml];
 		}
+
+		restore_error_handler();
 
 		$liveData = Dumper::fetchLiveData();
 
