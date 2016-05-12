@@ -15,9 +15,9 @@ require __DIR__ . '/../bootstrap.php';
 $compiler = new DI\Compiler;
 $compiler->addExtension('tracy', new TracyExtension);
 
-eval($compiler->compile([], 'Container1'));
+eval(@$compiler->compile([], 'Container')); // @ compatiblity with DI 2.3 & 2.4
 
-$container = new Container1;
+$container = new Container;
 Assert::type('Tracy\Logger', $container->getService('tracy.logger'));
 Assert::type('Tracy\BlueScreen', $container->getService('tracy.blueScreen'));
 Assert::type('Tracy\Bar', $container->getService('tracy.bar'));
