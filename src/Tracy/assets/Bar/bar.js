@@ -425,8 +425,18 @@
 	var dragging;
 
 	function draggable(elem, options) {
-		var dE = document.documentElement, started, pos, deltaX, deltaY;
+		var dE = document.documentElement, started, deltaX, deltaY, clientX, clientY;
 		options = options || {};
+
+		var redraw = function () {
+			if (dragging) {
+				var pos = {};
+				pos[options.rightEdge ? 'right' : 'left'] = options.rightEdge ? deltaX - clientX : clientX + deltaX;
+				pos[options.bottomEdge ? 'bottom' : 'top'] = options.bottomEdge ? deltaY - clientY : clientY + deltaY;
+				setPosition(elem, pos);
+				requestAnimationFrame(redraw);
+			}
+		};
 
 		var onmousemove = function(e) {
 			if (e.buttons === 0) {
@@ -442,10 +452,8 @@
 				started = true;
 			}
 
-			var pos = {};
-			pos[options.rightEdge ? 'right' : 'left'] = options.rightEdge ? deltaX - e.clientX : e.clientX + deltaX;
-			pos[options.bottomEdge ? 'bottom' : 'top'] = options.bottomEdge ? deltaY - e.clientY : e.clientY + deltaY;
-			setPosition(elem, pos);
+			clientX = e.clientX;
+			clientY = e.clientY;
 			return false;
 		};
 
@@ -472,13 +480,16 @@
 				return onmouseup(e);
 			}
 
-			pos = getPosition(elem);
+			var pos = getPosition(elem);
+			clientX = e.clientX;
+			clientY = e.clientY;
 			deltaX = options.rightEdge ? pos.right + e.clientX : pos.left - e.clientX;
 			deltaY = options.bottomEdge ? pos.bottom + e.clientY : pos.top - e.clientY;
 			dragging = true;
 			started = false;
 			dE.addEventListener('mousemove', onmousemove);
 			dE.addEventListener('mouseup', onmouseup);
+			requestAnimationFrame(redraw);
 		});
 
 		(options.handle || elem).addEventListener('click', function(e) {
