@@ -49,7 +49,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php if ($exception->getMessage()): ?><p><?= Helpers::escapeHtml($title . $code) ?></p><?php endif ?>
 
 
-			<h1><?= Helpers::escapeHtml($exception->getMessage() ?: $title . $code) ?>
+			<h1><span><?= Helpers::escapeHtml(trim($exception->getMessage() ?: $title . $code)) ?></span>
 			<a href="https://www.google.com/search?sourceid=tracy&amp;q=<?= urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
 			<?php if ($skipError): ?><a href="<?= Helpers::escapeHtml($skipError) ?>">skip error&#x25ba;</a><?php endif ?></h1>
 		</div>
