@@ -92,6 +92,10 @@ html {
 	margin: .7em 0;
 }
 
+#tracy-bs h1 span {
+	white-space: pre;
+}
+
 #tracy-bs h2 {
 	font: 14pt/1.5 sans-serif !important;
 	margin: .6em 0;
