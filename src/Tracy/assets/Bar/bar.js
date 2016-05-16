@@ -357,7 +357,7 @@
 		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
 			if (this.readyState === 4 && document.cookie.match(/tracy-ajax=1/)) {
 				document.cookie = 'tracy-ajax=; path=/';
-				Debug.loadScript('?_tracy_bar=content.ajax&v=' + Math.random());
+				Debug.loadScript('?_tracy_bar=content.ajax&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 			}
 			return old.call(this);
 		}
