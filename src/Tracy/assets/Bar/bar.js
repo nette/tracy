@@ -355,11 +355,11 @@
 	Debug.captureAjax = function() {
 		var old = XMLHttpRequest.prototype.getAllResponseHeaders;
 		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
-			if (this.readyState === 4 && document.cookie.match(/tracy-ajax=1/)) {
-				document.cookie = 'tracy-ajax=; path=/';
+			var headers = old.call(this);
+			if (headers.match(/^X-Tracy-Ajax: 1/m)) {
 				Debug.loadScript('?_tracy_bar=content.ajax&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 			}
-			return old.call(this);
+			return headers;
 		}
 	};
 

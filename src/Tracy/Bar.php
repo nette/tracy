@@ -151,7 +151,7 @@ class Bar
 	{
 		if (Helpers::isAjax()) {
 			$this->session->getContent(); // locks session file
-			setcookie('tracy-ajax', 1, 0, '/');
+			header('X-Tracy-Ajax: 1');
 		}
 		header_remove('Pragma');
 
