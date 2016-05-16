@@ -374,11 +374,11 @@
 
 	function evalScripts(elem) {
 		forEach(elem.getElementsByTagName('script'), function(script) {
-			if (!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') {
+			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 				(window.execScript || function (data) {
 					window['eval'].call(window, data);
 				})(script.innerHTML);
-				script.parentNode.removeChild(script);
+				script.tracyEvaluated = true;
 			}
 		});
 	};
