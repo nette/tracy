@@ -91,6 +91,9 @@ class Debugger
 	/** @var string URI pattern mask to open editor */
 	public static $editor = 'editor://open/?file=%file&line=%line';
 
+	/** @var array replacements in path */
+	public static $editorMapping = array();
+
 	/** @var string command to open browser (use 'start ""' in Windows) */
 	public static $browser;
 
