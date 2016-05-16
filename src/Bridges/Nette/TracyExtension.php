@@ -86,6 +86,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 					])
 				));
 			}
+			$initialize->addBody('if ($tmp = $this->getByType("Nette\Http\Session", FALSE)) { $tmp->start(); Tracy\Debugger::dispatch(); };');
 		}
 
 		foreach ((array) $this->config['blueScreen'] as $item) {

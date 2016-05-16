@@ -20,13 +20,14 @@ Debugger::$productionMode = FALSE;
 Debugger::$showLocation = TRUE;
 header('Content-Type: text/html');
 ini_set('session.save_path', TEMP_DIR);
+session_start();
 
 ob_start();
 Debugger::enable();
 
 register_shutdown_function(function () {
 	ob_end_clean();
-	$content = reset(Debugger::getSession()->getContent()['bar'])['content'];
+	$content = reset($_SESSION['_tracy']['bar'])['content'];
 	Assert::match(<<<EOD
 %A%<h1>Dumps</h1>
 

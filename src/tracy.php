@@ -17,5 +17,4 @@ require __DIR__ . '/Tracy/Helpers.php';
 require __DIR__ . '/Tracy/Logger.php';
 require __DIR__ . '/Tracy/Debugger.php';
 require __DIR__ . '/Tracy/OutputDebugger.php';
-require __DIR__ . '/Tracy/Session.php';
 require __DIR__ . '/shortcuts.php';

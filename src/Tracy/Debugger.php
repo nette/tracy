@@ -117,9 +117,6 @@ class Debugger
 	/** @var ILogger */
 	private static $fireLogger;
 
-	/** @var Session */
-	private static $session;
-
 
 	/**
 	 * Static class - cannot be instantiated.
@@ -187,12 +184,26 @@ class Debugger
 		array_map('class_exists', ['Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
 			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger']);
 
-		if (!self::$productionMode) {
-			self::getSession()->open(session_save_path() ?: ini_get('upload_tmp_dir') ?: self::$logDirectory);
-			if (self::getBar()->dispatch()) {
-				self::$showBar = FALSE;
-				exit;
-			}
+		if (!self::$productionMode && self::getBar()->dispatchAssets()) {
+			exit;
+		} elseif (session_status() === PHP_SESSION_ACTIVE) {
+			self::dispatch();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	public static function dispatch()
+	{
+		if (self::$productionMode) {
+
+		} elseif (session_status() !== PHP_SESSION_ACTIVE) {
+			trigger_error('Session must be started in order to dispatch.');
+
+		} elseif (self::getBar()->dispatchContent()) {
+			exit;
 		}
 	}
 
@@ -429,7 +440,7 @@ class Debugger
 	public static function getBar()
 	{
 		if (!self::$bar) {
-			self::$bar = new Bar(self::getSession());
+			self::$bar = new Bar;
 			self::$bar->addPanel($info = new DefaultBarPanel('info'), 'Tracy:info');
 			$info->cpuUsage = self::$cpuUsage;
 			self::$bar->addPanel(new DefaultBarPanel('errors'), 'Tracy:errors'); // filled by errorHandler()
@@ -470,19 +481,6 @@ class Debugger
 			self::$fireLogger = new FireLogger;
 		}
 		return self::$fireLogger;
-	}
-
-
-	/**
-	 * @return Session
-	 * @internal
-	 */
-	public static function getSession()
-	{
-		if (!self::$session) {
-			self::$session = new Session;
-		}
-		return self::$session;
 	}
 
 

@@ -19,6 +19,7 @@ if (PHP_SAPI === 'cli') {
 Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
 ini_set('session.save_path', TEMP_DIR);
+session_start();
 
 ob_start();
 Debugger::enable();
@@ -28,7 +29,7 @@ register_shutdown_function(function () {
 	Assert::match('
 Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 
-	$content = reset(Debugger::getSession()->getContent()['bar'])['content'];
+	$content = reset($_SESSION['_tracy']['bar'])['content'];
 	Assert::match('%A%<table>
 <tr>
 	<td class="tracy-right">1%a%</td>
