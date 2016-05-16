@@ -19,13 +19,14 @@ if (PHP_SAPI === 'cli') {
 Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
 ini_set('session.save_path', TEMP_DIR);
+session_start();
 
 ob_start();
 Debugger::enable();
 
 register_shutdown_function(function () {
 	ob_end_clean();
-	$content = reset(Debugger::getSession()->getContent()['bar'])['content'];
+	$content = reset($_SESSION['_tracy']['bar'])['content'];
 	Assert::matchFile(__DIR__ . '/Debugger.barDump().expect', $content);
 	echo 'OK!'; // prevents PHP bug #62725
 });
