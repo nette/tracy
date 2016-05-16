@@ -110,6 +110,7 @@ body #tracy-debug {
 	z-index: 30000;
 	opacity: .9;
 	transition: opacity 0.2s;
+	will-change: opacity, right, bottom;
 
 	border-radius: 3px;
 	box-shadow: 1px 1px 10px rgba(0, 0, 0, .15);
@@ -231,15 +232,12 @@ body #tracy-debug {
 	border-radius: 5px;
 	opacity: .95;
 	transition: opacity 0.2s;
+	will-change: opacity, right, bottom;
 	box-shadow: 1px 1px 30px rgba(102, 102, 102, 0.36);
 	border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-#tracy-debug .tracy-mode-window {
-	padding: 10px;
-}
-
-#tracy-debug .tracy-focused {
+#tracy-debug .tracy-mode-float.tracy-focused {
 	opacity: 1;
 	transition: opacity 0.1s;
 }
@@ -254,6 +252,10 @@ body #tracy-debug {
 	top: 0;
 	right: 5px;
 	font-size: 18px;
+}
+
+#tracy-debug .tracy-mode-window {
+	padding: 10px;
 }
 
 #tracy-debug .tracy-icons a {
