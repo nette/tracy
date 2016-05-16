@@ -152,6 +152,7 @@ class Bar
 			$this->session->getContent(); // locks session file
 			setcookie('tracy-ajax', 1, 0, '/');
 		}
+		header_remove('Pragma');
 
 		$asset = isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : NULL;
 
