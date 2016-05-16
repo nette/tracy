@@ -137,6 +137,7 @@ class Bar
 		}
 
 		if (Helpers::isHtmlMode()) {
+			$stopXdebug = extension_loaded('xdebug') ? ['XDEBUG_SESSION_STOP' => 1] : [];
 			require __DIR__ . '/assets/Bar/loader.phtml';
 		}
 	}
@@ -160,6 +161,7 @@ class Bar
 			$session = & $this->session->getContent()['bar'];
 			header('Content-Type: text/javascript');
 			header('Cache-Control: max-age=60');
+			header_remove('Set-Cookie');
 			if (isset($session[$m[1]])) {
 				$method = $m[1] === 'ajax' ? 'loadAjax' : 'init';
 				echo "Tracy.Debug.$method(", json_encode($session[$m[1]]['content']), ', ', json_encode($session[$m[1]]['liveData']), ');';
@@ -170,6 +172,7 @@ class Bar
 		} elseif ($asset === 'css') {
 			header('Content-Type: text/css');
 			header('Cache-Control: max-age=864000');
+			header_remove('Set-Cookie');
 			readfile(__DIR__ . '/assets/Bar/bar.css');
 			readfile(__DIR__ . '/assets/Toggle/toggle.css');
 			readfile(__DIR__ . '/assets/Dumper/dumper.css');
@@ -178,6 +181,7 @@ class Bar
 		} elseif ($asset === 'js') {
 			header('Content-Type: text/javascript');
 			header('Cache-Control: max-age=864000');
+			header_remove('Set-Cookie');
 			readfile(__DIR__ . '/assets/Bar/bar.js');
 			readfile(__DIR__ . '/assets/Toggle/toggle.js');
 			readfile(__DIR__ . '/assets/Dumper/dumper.js');

@@ -357,7 +357,7 @@
 		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
 			var headers = old.call(this);
 			if (headers.match(/^X-Tracy-Ajax: 1/m)) {
-				Debug.loadScript('?_tracy_bar=content.ajax&v=' + Math.random());
+				Debug.loadScript('?_tracy_bar=content.ajax&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 			}
 			return headers;
 		}
