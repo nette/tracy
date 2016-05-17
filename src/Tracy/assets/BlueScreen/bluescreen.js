@@ -8,9 +8,8 @@
 	var BlueScreen = Tracy.BlueScreen = {},
 		inited;
 
-	BlueScreen.init = function() {
+	BlueScreen.init = function(ajax) {
 		var blueScreen = document.getElementById('tracy-bs');
-		document.body.appendChild(blueScreen);
 
 		for (var i = 0, styles = []; i < document.styleSheets.length; i++) {
 			var style = document.styleSheets[i];
@@ -28,9 +27,12 @@
 			}
 		});
 
-		var id = location.href + document.getElementById('tracy-bs-error').textContent;
-		Tracy.Toggle.persist(blueScreen, sessionStorage.getItem('tracy-toggles-bskey') === id);
-		sessionStorage.setItem('tracy-toggles-bskey', id);
+		if (!ajax) {
+			document.body.appendChild(blueScreen);
+			var id = location.href + document.getElementById('tracy-bs-error').textContent;
+			Tracy.Toggle.persist(blueScreen, sessionStorage.getItem('tracy-toggles-bskey') === id);
+			sessionStorage.setItem('tracy-toggles-bskey', id);
+		}
 
 		if (inited) {
 			return;
@@ -44,4 +46,17 @@
 			}
 		});
 	}
+
+	BlueScreen.loadAjax = function(content, dumps) {
+		var ajaxBs = document.getElementById('tracy-bs');
+		if (ajaxBs) {
+			ajaxBs.parentNode.removeChild(ajaxBs);
+		}
+		document.body.insertAdjacentHTML('beforeend', content);
+		ajaxBs = document.getElementById('tracy-bs');
+		Tracy.Dumper.init(dumps, ajaxBs);
+		BlueScreen.init(true);
+		window.scrollTo(0, 0);
+	};
+
 })();

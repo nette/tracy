@@ -10,6 +10,9 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) { // AJAX request
 	Debugger::barDump('AJAX request');
+	if (!empty($_GET['error'])) {
+		this_is_fatal_error();
+	}
 	$data = [rand(), rand(), rand()];
 	header('Content-Type: application/json');
 	header('Cache-Control: no-cache');
@@ -24,7 +27,14 @@ Debugger::barDump('classic request');
 
 <h1>Tracy: AJAX demo</h1>
 
-<button>Click here</button> <span id=result></span>
+<p>
+	<button>AJAX request</button> <span id=result>see Debug Bar in the bottom right corner</span>
+</p>
+
+<p>
+	<button class=error>Request with error</button> use ESC to toggle BlueScreen
+</p>
+
 
 <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
 <script>
@@ -38,7 +48,7 @@ $('button').click(function() {
 		jqxhr.abort();
 	}
 
-	jqxhr = $.getJSON('?', function(data) {
+	jqxhr = $.getJSON('?', {error: $(this).hasClass('error') * 1}, function(data) {
 		$('#result').text('loaded: ' + data);
 
 	}).fail(function() {
