@@ -93,7 +93,7 @@ html {
 }
 
 #tracy-bs h1 span {
-	white-space: pre;
+	white-space: pre-wrap;
 }
 
 #tracy-bs h2 {
