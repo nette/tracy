@@ -354,17 +354,21 @@
 	};
 
 	Debug.captureAjax = function() {
+		if (!layer.dataset.id) {
+			return;
+		}
 		var oldSend = XMLHttpRequest.prototype.send;
 		XMLHttpRequest.prototype.send = function() {
 			var oldHandler = this.onreadystatechange;
 			this.onreadystatechange = function() {
 				if (this.readyState === 4 /*done*/ && this.getResponseHeader('X-Tracy-Ajax')) {
-					Debug.loadScript('?_tracy_bar=content.ajax&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+					Debug.loadScript('?_tracy_bar=content-ajax.' + layer.dataset.id + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 				}
 				if (oldHandler) {
 					oldHandler.call(this);
 				}
 			};
+			this.setRequestHeader('X-Tracy-Ajax', layer.dataset.id);
 			oldSend.apply(this, arguments);
 		}
 	};

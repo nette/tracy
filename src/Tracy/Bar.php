@@ -124,9 +124,13 @@ class Bar
 		require __DIR__ . '/assets/Bar/panels.phtml';
 		require __DIR__ . '/assets/Bar/bar.phtml';
 		$content = Helpers::fixEncoding(ob_get_clean());
+		$contentId = NULL;
 
 		if ($this->dispatched) {
-			$contentId = Helpers::isAjax() ? 'ajax' : md5(uniqid('', TRUE));
+			$contentId = Helpers::isAjax()
+				? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax'
+				: substr(md5(uniqid('', TRUE)), 0, 10);
+
 			$_SESSION['_tracy']['bar'][$contentId] = ['content' => $content, 'liveData' => $liveData];
 		}
 
@@ -175,14 +179,14 @@ class Bar
 		if (Helpers::isAjax()) {
 			header('X-Tracy-Ajax: 1'); // session must be already locked
 		}
-		if (preg_match('#^content.(\w+)$#', isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : '', $m)) {
-			$session = & $_SESSION['_tracy']['bar'];
+		if (preg_match('#^content(-ajax)?.(\w+)$#', isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : '', $m)) {
+			$session = & $_SESSION['_tracy']['bar'][$m[2] . $m[1]];
 			header('Content-Type: text/javascript');
 			header('Cache-Control: max-age=60');
-			if (isset($session[$m[1]])) {
-				$method = $m[1] === 'ajax' ? 'loadAjax' : 'init';
-				echo "Tracy.Debug.$method(", json_encode($session[$m[1]]['content']), ', ', json_encode($session[$m[1]]['liveData']), ');';
-				unset($session[$m[1]]);
+			if ($session) {
+				$method = $m[1] ? 'loadAjax' : 'init';
+				echo "Tracy.Debug.$method(", json_encode($session['content']), ', ', json_encode($session['liveData']), ');';
+				$session = NULL;
 			}
 			return TRUE;
 		}
