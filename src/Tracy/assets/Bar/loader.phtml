@@ -26,6 +26,6 @@ use Tracy;
 <script src="?<?=http_build_query(['_tracy_bar' => "content.$contentId"] + $stopXdebug, NULL, '&amp;')?>"></script>
 <?php else: ?>
 <script>
-Tracy.Debug.init(<?= json_encode($content) ?>, <?= json_encode($liveData) ?>);
+Tracy.Debug.init(<?= json_encode($content) ?>, <?= json_encode($dumps) ?>);
 </script>
 <?php endif ?>
