@@ -348,13 +348,14 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 	}
 	<?php readfile(__DIR__ . '/../Toggle/toggle.js') ?>
 	<?php readfile(__DIR__ . '/../Dumper/dumper.js') ?>
+	<?php readfile(__DIR__ . '/bluescreen.js') ?>
 })();
 </script>
 <script>
 Tracy && Tracy.Dumper.init(<?= json_encode(Dumper::fetchLiveData()) ?>);
 </script>
 <script>
-Tracy && <?php readfile(__DIR__ . '/bluescreen.js') ?>
+Tracy && Tracy.BlueScreen.init();
 </script>
 </body>
 </html>
