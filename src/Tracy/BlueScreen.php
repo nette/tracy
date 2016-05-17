@@ -52,18 +52,15 @@ class BlueScreen
 	 */
 	public function render($exception)
 	{
-		$panels = $this->panels;
-		$info = array_filter($this->info);
-		$source = Helpers::getSource();
-		$sourceIsUrl = preg_match('#^https?://#', $source);
-		$title = $exception instanceof \ErrorException
-			? Helpers::errorTypeToString($exception->getSeverity())
-			: Helpers::getClass($exception);
-		$skipError = $sourceIsUrl && $exception instanceof \ErrorException && !empty($exception->skippable)
-			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
-			: NULL;
+		if (Helpers::isAjax() && session_status() === PHP_SESSION_ACTIVE) {
+			ob_start(function () {});
+			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/content.phtml');
+			$contentId = $_SERVER['HTTP_X_TRACY_AJAX'];
+			$_SESSION['_tracy']['bluescreen'][$contentId] = ['content' => ob_get_clean(), 'dumps' => Dumper::fetchLiveData()];
 
-		require __DIR__ . '/assets/BlueScreen/page.phtml';
+		} else {
+			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/page.phtml');
+		}
 	}
 
 
@@ -78,11 +75,27 @@ class BlueScreen
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
 			ob_start(function ($buffer) use ($handle) { fwrite($handle, $buffer); }, 4096);
-			$this->render($exception);
+			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/page.phtml');
 			ob_end_flush();
 			ob_end_clean();
 			fclose($handle);
 		}
+	}
+
+
+	private function renderTemplate($exception, $template)
+	{
+		$panels = $this->panels;
+		$info = array_filter($this->info);
+		$source = Helpers::getSource();
+		$sourceIsUrl = preg_match('#^https?://#', $source);
+		$title = $exception instanceof \ErrorException
+			? Helpers::errorTypeToString($exception->getSeverity())
+			: Helpers::getClass($exception);
+		$skipError = $sourceIsUrl && $exception instanceof \ErrorException && !empty($exception->skippable)
+			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
+			: NULL;
+		require $template;
 	}
 
 

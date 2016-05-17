@@ -155,6 +155,7 @@ class Bar
 			readfile(__DIR__ . '/assets/Bar/bar.css');
 			readfile(__DIR__ . '/assets/Toggle/toggle.css');
 			readfile(__DIR__ . '/assets/Dumper/dumper.css');
+			readfile(__DIR__ . '/assets/BlueScreen/bluescreen.css');
 			return TRUE;
 
 		} elseif ($asset === 'js') {
@@ -164,6 +165,7 @@ class Bar
 			readfile(__DIR__ . '/assets/Bar/bar.js');
 			readfile(__DIR__ . '/assets/Toggle/toggle.js');
 			readfile(__DIR__ . '/assets/Dumper/dumper.js');
+			readfile(__DIR__ . '/assets/BlueScreen/bluescreen.js');
 			return TRUE;
 		}
 	}
@@ -186,6 +188,11 @@ class Bar
 			if ($session) {
 				$method = $m[1] ? 'loadAjax' : 'init';
 				echo "Tracy.Debug.$method(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
+				$session = NULL;
+			}
+			$session = & $_SESSION['_tracy']['bluescreen'][$m[2]];
+			if ($session) {
+				echo "Tracy.BlueScreen.loadAjax(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
 				$session = NULL;
 			}
 			return TRUE;
