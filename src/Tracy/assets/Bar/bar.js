@@ -147,6 +147,12 @@
 			doc.title = this.elem.querySelector('h1').innerHTML;
 		}
 
+		for (var i = 0, scripts = doc.body.getElementsByTagName('script'); i < scripts.length; i++) {
+			(win.execScript || function(data) {
+				win['eval'].call(win, data);
+			})(scripts[i].innerHTML);
+		}
+
 		var _this = this;
 		win.addEventListener('beforeunload', function() {
 			_this.toPeek();
