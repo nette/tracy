@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * Debugger bluescreen template.
+ *
+ * This file is part of the Tracy (https://tracy.nette.org)
+ * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
+ *
+ * @param  array $exception
+ * @param  string $title
+ * @return void
+ */
+
+namespace Tracy;
+
+$code = $exception->getCode() ? ' #' . $exception->getCode() : '';
+
+?><!DOCTYPE html><!-- "' --></script></style></pre></xmp></table></a></abbr></address></article></aside></audio></b></bdi></bdo></blockquote></button></canvas></caption></cite></code></datalist></del></details></dfn></div></dl></em></fieldset></figcaption></figure></footer></form></h1></h2></h3></h4></h5></h6></header></hgroup></i></iframe></ins></kbd></label></legend></map></mark></menu></meter></nav></noscript></object></ol></optgroup></output></progress></q></rp></rt></ruby></s></samp></section></select></small></span></strong></sub></summary></sup></textarea></time></title></tr></u></ul></var></video>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex">
+	<meta name="generator" content="Tracy by Nette Framework">
+
+	<title><?= Helpers::escapeHtml($title . ': ' . $exception->getMessage() . $code) ?></title>
+	<?php if ($ex = $exception->getPrevious()): ?>
+<!--<?php do { echo str_replace('--', '- ', Helpers::escapeHtml("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''))); } while ($ex = $ex->getPrevious()); ?> -->
+	<?php endif ?>
+
+	<style type="text/css" class="tracy-debug">
+	<?= preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . '/bluescreen.css')) ?>
+	</style>
+	<script>document.documentElement.className+=' tracy-js'</script>
+</head>
+
+
+<body>
+<?php require __DIR__ . '/content.phtml' ?>
+
+<script>
+(function() {
+	if (!document.documentElement.dataset) {
+		document.getElementById('tracy-bs-error').innerHTML += '<div id=tracy-bs-ie-warning>Warning: Tracy requires IE 11+<\/div>';
+		return;
+	}
+	<?php readfile(__DIR__ . '/../Toggle/toggle.js') ?>
+	<?php readfile(__DIR__ . '/../Dumper/dumper.js') ?>
+	<?php readfile(__DIR__ . '/bluescreen.js') ?>
+})();
+</script>
+<script>
+Tracy && Tracy.Dumper.init(<?= json_encode(Dumper::fetchLiveData()) ?>);
+</script>
+<script>
+Tracy && Tracy.BlueScreen.init();
+</script>
+</body>
+</html>
