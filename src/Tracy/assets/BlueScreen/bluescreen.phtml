@@ -342,8 +342,8 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 <script>
 (function() {
-	if (!document.documentElement.classList) {
-		document.getElementById('tracy-bs-error').innerHTML += '<div id=tracy-bs-ie-warning>Warning: Tracy requires IE 10+<\/div>';
+	if (!document.documentElement.dataset) {
+		document.getElementById('tracy-bs-error').innerHTML += '<div id=tracy-bs-ie-warning>Warning: Tracy requires IE 11+<\/div>';
 		return;
 	}
 	<?php readfile(__DIR__ . '/../Toggle/toggle.js') ?>

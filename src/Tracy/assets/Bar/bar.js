@@ -288,8 +288,8 @@
 	Debug.panels = {};
 
 	Debug.init = function(content, dumpData) {
-		if (!document.documentElement.classList) {
-			console.log('Warning: Tracy requires IE 10+');
+		if (!document.documentElement.dataset) {
+			console.log('Warning: Tracy requires IE 11+');
 			return;
 		}
 
