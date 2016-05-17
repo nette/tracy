@@ -265,18 +265,6 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php endif ?>
 
 
-			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Included files</a> (<?= count(get_included_files()) ?>)</h3>
-			<div class="outer tracy-collapsed">
-			<table>
-			<?php
-			foreach (get_included_files() as $v) {
-				echo '<tr><td>', Helpers::escapeHtml($v), "</td></tr>\n";
-			}
-			?>
-			</table>
-			</div>
-
-
 			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
 			<div class="outer tracy-collapsed">
 			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+\z#s', '', ob_get_clean()) // @ phpinfo can be disabled ?>
