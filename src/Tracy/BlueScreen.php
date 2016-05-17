@@ -153,7 +153,7 @@ class BlueScreen
 		}
 
 		$out = str_replace('&nbsp;', ' ', $out);
-		return "<pre class='php'><div>$out</div></pre>";
+		return "<pre class='code'><div>$out</div></pre>";
 	}
 
 

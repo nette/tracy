@@ -36,7 +36,7 @@
 
 			<div class="inner">
 				<p><b>File:</b> %a%</p>
-				<pre data-tracy-href="%a%" class='php'>%A%</pre>			</div></div>
+				<pre data-tracy-href="%a%" class='code'>%A%</pre>			</div></div>
 
 
 									<div class="panel">

@@ -36,7 +36,7 @@
 
 			<div class="inner">
 				<p><b>File:</b> %a%</p>
-				<pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+				<pre data-tracy-href="%a%" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
@@ -66,7 +66,7 @@
 					third(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
-											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
@@ -98,7 +98,7 @@
 					second(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
-											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>%A%</div>
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>%A%</div>
 
 
 											<div class="tracy-collapsed outer args">
@@ -119,7 +119,7 @@
 					first(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
-											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='php'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>        </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">([</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">]);
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>        </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">([</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">]);
 <span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
