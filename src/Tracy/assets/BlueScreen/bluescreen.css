@@ -200,7 +200,7 @@ html {
 
 
 /* source code */
-#tracy-bs pre.php div {
+#tracy-bs pre.code > div {
 	min-width: 100%;
 	float: left;
 	white-space: pre;
