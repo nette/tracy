@@ -354,11 +354,19 @@
 	};
 
 	Debug.captureAjax = function() {
-		var old = XMLHttpRequest.prototype.getAllResponseHeaders;
+		if (!layer.dataset.id) {
+			return;
+		}
+		var oldSend = XMLHttpRequest.prototype.send;
+		XMLHttpRequest.prototype.send = function() {
+			this.setRequestHeader('X-Tracy-Ajax', layer.dataset.id);
+			oldSend.apply(this, arguments);
+		}
+		var oldGet = XMLHttpRequest.prototype.getAllResponseHeaders;
 		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
-			var headers = old.call(this);
+			var headers = oldGet.call(this);
 			if (headers.match(/^X-Tracy-Ajax: 1/m)) {
-				Debug.loadScript('?_tracy_bar=content.ajax&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+				Debug.loadScript('?_tracy_bar=content-ajax.' + layer.dataset.id + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 			}
 			return headers;
 		}

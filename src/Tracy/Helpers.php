@@ -226,7 +226,7 @@ class Helpers
 	/** @internal */
 	public static function isHtmlMode()
 	{
-		return !self::isAjax()
+		return empty($_SERVER['HTTP_X_REQUESTED_WITH']) && empty($_SERVER['HTTP_X_TRACY_AJAX'])
 			&& PHP_SAPI !== 'cli'
 			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
 	}
@@ -235,7 +235,7 @@ class Helpers
 	/** @internal */
 	public static function isAjax()
 	{
-		return isset($_SERVER['HTTP_X_REQUESTED_WITH']);
+		return isset($_SERVER['HTTP_X_TRACY_AJAX']) && preg_match('#^\w{10}\z#', $_SERVER['HTTP_X_TRACY_AJAX']);
 	}
 
 }
