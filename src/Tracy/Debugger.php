@@ -198,11 +198,17 @@ class Debugger
 	public static function dispatch()
 	{
 		if (self::$productionMode) {
+			return;
 
 		} elseif (session_status() !== PHP_SESSION_ACTIVE) {
-			trigger_error('Session must be started in order to dispatch.');
-
-		} elseif (self::getBar()->dispatchContent()) {
+			ini_set('session.use_cookies', '1');
+			ini_set('session.use_only_cookies', '1');
+			ini_set('session.use_trans_sid', '0');
+			ini_set('session.cookie_path', '/');
+			ini_set('session.cookie_httponly', '1');
+			session_start();
+		}
+		if (self::getBar()->dispatchContent()) {
 			exit;
 		}
 	}
