@@ -106,17 +106,17 @@ class Bar
 
 		restore_error_handler();
 
-		$liveData = Dumper::fetchLiveData();
+		$dumps = Dumper::fetchLiveData();
 
 		if ($isRedirect) {
-			$previousBars[] = ['panels' => $panels, 'liveData' => $liveData];
+			$previousBars[] = ['panels' => $panels, 'dumps' => $dumps];
 			return;
 		}
 
 		$rows[] = (object) ['type' => Helpers::isAjax() ? 'ajax' : 'main', 'panels' => $panels];
 		foreach (array_reverse((array) $previousBars) as $info) {
 			$rows[] = (object) ['type' => 'redirect', 'panels' => $info['panels']];
-			$liveData += $info['liveData'];
+			$dumps += $info['dumps'];
 		}
 		$previousBars = NULL;
 
@@ -131,7 +131,7 @@ class Bar
 				? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax'
 				: substr(md5(uniqid('', TRUE)), 0, 10);
 
-			$_SESSION['_tracy']['bar'][$contentId] = ['content' => $content, 'liveData' => $liveData];
+			$_SESSION['_tracy']['bar'][$contentId] = ['content' => $content, 'dumps' => $dumps];
 		}
 
 		if (Helpers::isHtmlMode()) {
@@ -185,7 +185,7 @@ class Bar
 			header('Cache-Control: max-age=60');
 			if ($session) {
 				$method = $m[1] ? 'loadAjax' : 'init';
-				echo "Tracy.Debug.$method(", json_encode($session['content']), ', ', json_encode($session['liveData']), ');';
+				echo "Tracy.Debug.$method(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
 				$session = NULL;
 			}
 			return TRUE;

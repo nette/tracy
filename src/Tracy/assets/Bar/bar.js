@@ -287,7 +287,7 @@
 
 	Debug.panels = {};
 
-	Debug.init = function(content, dumpData) {
+	Debug.init = function(content, dumps) {
 		if (!document.documentElement.dataset) {
 			console.log('Warning: Tracy requires IE 11+');
 			return;
@@ -295,7 +295,7 @@
 
 		layer.innerHTML = content;
 		evalScripts(layer);
-		Tracy.Dumper.init(dumpData);
+		Tracy.Dumper.init(dumps);
 		layer.style.display = 'block';
 		Debug.bar.init();
 
@@ -308,7 +308,7 @@
 		Debug.captureAjax();
 	};
 
-	Debug.loadAjax = function(content, dumpData) {
+	Debug.loadAjax = function(content, dumps) {
 		forEach(layer.querySelectorAll('.tracy-panel.tracy-ajax'), function(panel) {
 			Debug.panels[panel.id].savePosition();
 			delete Debug.panels[panel.id];
@@ -332,7 +332,7 @@
 			}
 		});
 
-		Tracy.Dumper.init(dumpData, layer);
+		Tracy.Dumper.init(dumps, layer);
 		Debug.bar.initTabs(ajaxBar);
 	};
 
