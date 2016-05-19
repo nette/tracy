@@ -29,4 +29,5 @@ function first($user, $pass)
 }
 
 
+echo @$undefined;
 first('root', 'xxx');

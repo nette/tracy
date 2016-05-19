@@ -112,6 +112,17 @@
 
 
 
+				<div class="panel">
+		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last error</a></h2>
+		<div class="tracy-collapsed inner">
+
+		<h3>Notice: Undefined variable: undefined</h3>
+					<p><a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a> <a data-tracy-ref="^+" class="tracy-toggle">source</a>&nbsp;</p>
+			<div>%A%</div>
+
+		</div></div>
+
+
 
 
 		<div class="panel">
