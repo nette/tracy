@@ -214,7 +214,7 @@
 	};
 
 	Bar.prototype.initTabs = function(elem) {
-		var elem = document.getElementById(this.id), _this = this;
+		var _this = this;
 
 		forEach(elem.getElementsByTagName('a'), function(a) {
 			a.addEventListener('click', function(e) {
