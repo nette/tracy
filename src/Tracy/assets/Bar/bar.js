@@ -357,24 +357,13 @@
 		if (!layer.dataset.id) {
 			return;
 		}
-		var reURLInformation = new RegExp('^(https?:)//(([^:/?#]*)(?::([0-9]+))?)(/[^?#]*)');
-	        var oldOpen = XMLHttpRequest.prototype.open;
-	        XMLHttpRequest.prototype.open = function(){
-			var parts=arguments[1].match(reURLInformation);
-			if (parts==null){
-				this.isCrossDomain=false;
-			}else{
-				this.isCrossDomain = parts[1]!=window.location.hostname;
-			}
+		var oldOpen = XMLHttpRequest.prototype.open;
+		XMLHttpRequest.prototype.open = function(){
 			oldOpen.apply(this,arguments);
-	        }
-		var oldSend = XMLHttpRequest.prototype.send;
-		XMLHttpRequest.prototype.send = function() {
-			if (!this.isCrossDomain) {
+			if (!(arguments[1].indexOf('//') >= 0 && arguments[1].indexOf(location.origin + '/') !== 0)) {
 				this.setRequestHeader('X-Tracy-Ajax', layer.dataset.id);
 			}
-			oldSend.apply(this, arguments);
-		}
+		};
 		var oldGet = XMLHttpRequest.prototype.getAllResponseHeaders;
 		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
 			var headers = oldGet.call(this);
