@@ -367,7 +367,7 @@
 		var oldGet = XMLHttpRequest.prototype.getAllResponseHeaders;
 		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
 			var headers = oldGet.call(this);
-			if (headers.match(/^X-Tracy-Ajax: 1/m)) {
+			if (headers.match(/^X-Tracy-Ajax: 1/mi)) {
 				Debug.loadScript('?_tracy_bar=content-ajax.' + layer.dataset.id + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 			}
 			return headers;
