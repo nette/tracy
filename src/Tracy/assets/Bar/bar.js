@@ -357,11 +357,13 @@
 		if (!layer.dataset.id) {
 			return;
 		}
-		var oldSend = XMLHttpRequest.prototype.send;
-		XMLHttpRequest.prototype.send = function() {
-			this.setRequestHeader('X-Tracy-Ajax', layer.dataset.id);
-			oldSend.apply(this, arguments);
-		}
+		var oldOpen = XMLHttpRequest.prototype.open;
+		XMLHttpRequest.prototype.open = function(){
+			oldOpen.apply(this,arguments);
+			if (!(arguments[1].indexOf('//') >= 0 && arguments[1].indexOf(location.origin + '/') !== 0)) {
+				this.setRequestHeader('X-Tracy-Ajax', layer.dataset.id);
+			}
+		};
 		var oldGet = XMLHttpRequest.prototype.getAllResponseHeaders;
 		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
 			var headers = oldGet.call(this);
