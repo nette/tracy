@@ -215,6 +215,7 @@
 		});
 
 		this.initTabs();
+		this.autoHideLabels();
 		this.restorePosition();
 	};
 
@@ -271,6 +272,13 @@
 				}
 			});
 		});
+	};
+
+	Bar.prototype.autoHideLabels = function() {
+		var labels = this.elem.querySelectorAll('.tracy-label');
+		for (var i = labels.length - 1; i >= 0 && this.elem.clientHeight >= 40; i--) {
+			labels.item(i).hidden = true;
+		}
 	};
 
 	Bar.prototype.close = function() {
