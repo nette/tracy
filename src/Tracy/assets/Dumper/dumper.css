@@ -17,7 +17,8 @@ pre.tracy-dump div div {
 	margin-left: .5ex;
 }
 
-.tracy-dump-array, .tracy-dump-object {
+.tracy-dump-array,
+.tracy-dump-object {
 	color: #C22;
 }
 
@@ -29,11 +30,13 @@ pre.tracy-dump div div {
 	color: #090;
 }
 
-.tracy-dump-null, .tracy-dump-bool {
+.tracy-dump-null,
+.tracy-dump-bool {
 	color: #850;
 }
 
-.tracy-dump-visibility, .tracy-dump-hash {
+.tracy-dump-visibility,
+.tracy-dump-hash {
 	font-size: 85%; color: #999;
 }
 
