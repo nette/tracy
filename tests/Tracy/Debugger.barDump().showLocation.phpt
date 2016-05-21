@@ -5,8 +5,9 @@
  * @outputMatch OK!
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tester\DomQuery;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -27,7 +28,8 @@ Debugger::enable();
 
 register_shutdown_function(function () {
 	ob_end_clean();
-	$content = reset($_SESSION['_tracy']['bar'])['content'];
+	$rawContent = reset($_SESSION['_tracy']['bar'])['content'];
+	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-dumps')[0]['data-tracy-content'];
 	Assert::match(<<<EOD
 %A%<h1>Dumps</h1>
 
@@ -39,7 +41,7 @@ in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-st
 </div>
 %A%
 EOD
-, $content);
+, $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 
