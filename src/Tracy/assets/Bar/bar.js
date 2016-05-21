@@ -208,18 +208,19 @@
 	Bar.prototype.id = 'tracy-debug-bar';
 
 	Bar.prototype.init = function() {
-		var elem = document.getElementById(this.id);
+		this.elem = document.getElementById(this.id);
 
-		draggable(elem, {
+		draggable(this.elem, {
 			draggedClass: 'tracy-dragged'
 		});
 
-		this.initTabs(elem);
+		this.initTabs();
+		this.autoHideLabels();
 		this.restorePosition();
 	};
 
-	Bar.prototype.initTabs = function(elem) {
-		var _this = this;
+	Bar.prototype.initTabs = function() {
+		var _this = this, elem = this.elem;
 
 		forEach(elem.getElementsByTagName('a'), function(a) {
 			a.addEventListener('click', function(e) {
@@ -271,6 +272,13 @@
 				}
 			});
 		});
+	};
+
+	Bar.prototype.autoHideLabels = function() {
+		var labels = this.elem.querySelectorAll('.tracy-label');
+		for (var i = labels.length - 1; i >= 0 && this.elem.clientHeight >= 40; i--) {
+			labels.item(i).hidden = true;
+		}
 	};
 
 	Bar.prototype.close = function() {
