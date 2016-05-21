@@ -76,6 +76,11 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
+		$logger = $builder->getDefinition($this->prefix('logger'));
+		if ($logger->getFactory()->getEntity() !== 'Tracy\Debugger::getLogger') {
+			$initialize->addBody($builder->formatPhp('Tracy\Debugger::setLogger(?);', [$logger]));
+		}
+
 		if ($this->debugMode) {
 			foreach ((array) $this->config['bar'] as $item) {
 				$initialize->addBody($builder->formatPhp(
