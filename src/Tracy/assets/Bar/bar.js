@@ -208,18 +208,18 @@
 	Bar.prototype.id = 'tracy-debug-bar';
 
 	Bar.prototype.init = function() {
-		var elem = document.getElementById(this.id);
+		this.elem = document.getElementById(this.id);
 
-		draggable(elem, {
+		draggable(this.elem, {
 			draggedClass: 'tracy-dragged'
 		});
 
-		this.initTabs(elem);
+		this.initTabs();
 		this.restorePosition();
 	};
 
-	Bar.prototype.initTabs = function(elem) {
-		var _this = this;
+	Bar.prototype.initTabs = function() {
+		var _this = this, elem = this.elem;
 
 		forEach(elem.getElementsByTagName('a'), function(a) {
 			a.addEventListener('click', function(e) {
