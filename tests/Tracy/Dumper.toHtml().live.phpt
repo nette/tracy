@@ -33,8 +33,8 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span>
 </pre>', Dumper::toHtml(0, $options));
 
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'[[0,null],[1,true],[2,false],[3,0],[4,{"number":"0.0"}],[5,"string"],[6,"\\\\x00"],[7,{"type":"INF"}],[8,{"type":"-INF"}],[9,{"type":"NAN"}]]\'></pre>',
-	Dumper::toHtml([NULL, TRUE, FALSE, 0, 0.0, 'string', "\x00", INF, -INF, NAN], $options)
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,null],[1,true],[2,false],[3,0],[4,{"number":"0.0"}],[5,"string"],[6,"\u0027\u0026\""],[7,"\\\\x00"],[8,{"type":"INF"}],[9,{"type":"-INF"}],[10,{"type":"NAN"}]]\'></pre>',
+	Dumper::toHtml([NULL, TRUE, FALSE, 0, 0.0, 'string', "'&\"", "\x00", INF, -INF, NAN], $options)
 );
 
 Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()
