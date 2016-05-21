@@ -550,7 +550,7 @@ class Debugger
 		if (!self::$productionMode) {
 			static $panel;
 			if (!$panel) {
-				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'));
+				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'), 'Tracy:dumps');
 			}
 			$panel->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, (array) $options + [
 				Dumper::DEPTH => self::$maxDepth,

@@ -22,6 +22,10 @@
 	Panel.prototype.init = function() {
 		var _this = this, elem = this.elem;
 
+		elem.innerHTML = elem.dataset.tracyContent;
+		delete elem.dataset.tracyContent;
+		evalScripts(elem);
+
 		draggable(elem, {
 			handle: elem.querySelector('h1'),
 			stop: function() {
@@ -70,7 +74,6 @@
 		if (!this.is('tracy-ajax')) {
 			Tracy.Toggle.persist(elem);
 		}
-		this.restorePosition();
 	};
 
 	Panel.prototype.is = function(mode) {
@@ -189,8 +192,10 @@
 		if (!pos) {
 			this.elem.classList.add(Panel.PEEK);
 		} else if (pos.window) {
+			this.init();
 			this.toWindow();
-		} else if (this.elem.querySelector('*')) {
+		} else if (this.elem.dataset.tracyContent) {
+			this.init();
 			this.toFloat();
 			setPosition(this.elem, pos);
 		}
@@ -246,6 +251,10 @@
 					var panel = Debug.panels[this.rel], link = this;
 					panel.focus(function() {
 						if (panel.is(Panel.PEEK)) {
+							if (panel.elem.dataset.tracyContent) {
+								panel.init();
+							}
+
 							var pos = getPosition(panel.elem);
 							setPosition(panel.elem, {
 								right: pos.right - getOffset(link).left + pos.width - getPosition(link).width - 4 + getOffset(panel.elem).left,
@@ -301,7 +310,7 @@
 
 		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
 			Debug.panels[panel.id] = new Panel(panel.id);
-			Debug.panels[panel.id].init();
+			Debug.panels[panel.id].restorePosition();
 		});
 
 		Debug.captureWindow();
@@ -328,7 +337,7 @@
 		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
 			if (!Debug.panels[panel.id]) {
 				Debug.panels[panel.id] = new Panel(panel.id);
-				Debug.panels[panel.id].init();
+				Debug.panels[panel.id].restorePosition();
 			}
 		});
 

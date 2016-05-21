@@ -5,8 +5,9 @@
  * @outputMatch OK!
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tester\DomQuery;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -26,8 +27,9 @@ Debugger::enable();
 
 register_shutdown_function(function () {
 	ob_end_clean();
-	$content = reset($_SESSION['_tracy']['bar'])['content'];
-	Assert::matchFile(__DIR__ . '/Debugger.barDump().expect', $content);
+	$rawContent = reset($_SESSION['_tracy']['bar'])['content'];
+	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-dumps')[0]['data-tracy-content'];
+	Assert::matchFile(__DIR__ . '/Debugger.barDump().expect', $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

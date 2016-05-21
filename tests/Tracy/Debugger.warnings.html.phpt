@@ -5,8 +5,9 @@
  * @outputMatch OK!
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tester\DomQuery;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -29,7 +30,8 @@ register_shutdown_function(function () {
 	Assert::match('
 Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 
-	$content = reset($_SESSION['_tracy']['bar'])['content'];
+	$rawContent = reset($_SESSION['_tracy']['bar'])['content'];
+	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-errors')[0]['data-tracy-content'];
 	Assert::match('%A%<table>
 <tr>
 	<td class="tracy-right">1%a%</td>
@@ -48,7 +50,7 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 	<td><pre>PHP Warning: %a% in %a%:%d%</a></pre></td>
 </tr>
 </table>
-</div>%A%', $content);
+</div>%A%', $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 
