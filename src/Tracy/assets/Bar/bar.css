@@ -199,7 +199,7 @@ body #tracy-debug {
 	font: normal normal 23px/1.4 Tahoma, sans-serif;
 	color: #575753;
 	margin: -5px -5px 5px;
-	padding: 0 25px 5px 5px;
+	padding: 0 25px 0 5px;
 	max-width: 700px;
 	word-wrap: break-word;
 }
@@ -209,6 +209,13 @@ body #tracy-debug {
 	max-width: 700px;
 	max-height: 500px;
 	overflow: auto;
+}
+
+@media (max-height: 555px) {
+	#tracy-debug .tracy-mode-peek .tracy-inner,
+	#tracy-debug .tracy-mode-float .tracy-inner {
+		max-height: calc(100vh - 55px);
+	}
 }
 
 #tracy-debug .tracy-panel .tracy-icons {
