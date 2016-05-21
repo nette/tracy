@@ -111,7 +111,7 @@ class Dumper
 
 		return '<pre class="tracy-dump' . ($live && $options[self::COLLAPSE] === TRUE ? ' tracy-collapsed' : '') . '"'
 			. $locAttrs
-			. ($live ? " data-tracy-dump='" . str_replace("'", '&#039;', json_encode(self::toJson($var, $options))) . "'>" : '>')
+			. ($live ? " data-tracy-dump='" . json_encode(self::toJson($var, $options), JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
 			. ($live ? '' : self::dumpVar($var, $options))
 			. ($file && $loc & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
