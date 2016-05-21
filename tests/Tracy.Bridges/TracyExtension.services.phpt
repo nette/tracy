@@ -5,20 +5,33 @@
  */
 
 use Nette\DI;
-use Tracy\Bridges\Nette\TracyExtension;
 use Tester\Assert;
+use Tracy\Bridges\Nette\TracyExtension;
+use Tracy\ILogger;
 
 
 require __DIR__ . '/../bootstrap.php';
 
+class CustomLogger implements ILogger
+{
+	public function log($value, $priority = self::INFO) {}
+}
+
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('tracy', new TracyExtension);
+$compiler->addConfig([
+	'services' => [
+		'tracy.logger' => 'CustomLogger',
+	],
+]);
 
 eval(@$compiler->compile([], 'Container')); // @ compatiblity with DI 2.3 & 2.4
 
 $container = new Container;
-Assert::type('Tracy\Logger', $container->getService('tracy.logger'));
+$container->initialize();
+
+Assert::type('CustomLogger', $container->getService('tracy.logger'));
 Assert::type('Tracy\BlueScreen', $container->getService('tracy.blueScreen'));
 Assert::type('Tracy\Bar', $container->getService('tracy.bar'));
 
