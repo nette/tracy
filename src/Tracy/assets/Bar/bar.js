@@ -275,7 +275,7 @@
 	};
 
 	Bar.prototype.autoHideLabels = function() {
-		var labels = this.elem.querySelectorAll('.tracy-label');¨
+		var labels = this.elem.querySelectorAll('.tracy-label');
 		var maxHeight = this.elem.children.length * 40;
 		for (var i = labels.length - 1; i >= 0 && this.elem.clientHeight >= maxHeight; i--) {
 			labels.item(i).hidden = true;
