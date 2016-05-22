@@ -131,11 +131,8 @@ body #tracy-debug {
 
 #tracy-debug-bar ul {
 	list-style: none none;
-	clear: left;
-}
-
-#tracy-debug-bar li {
-	float: left;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 #tracy-debug-bar ul:not(:first-child) li {
