@@ -132,6 +132,7 @@ body #tracy-debug {
 #tracy-debug-bar ul {
 	list-style: none none;
 	clear: left;
+	overflow: hidden;
 }
 
 #tracy-debug-bar li {
