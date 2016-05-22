@@ -23,7 +23,9 @@
 		var _this = this, elem = this.elem;
 
 		elem.innerHTML = elem.dataset.tracyContent;
+		Tracy.Dumper.init(this.dumps, elem);
 		delete elem.dataset.tracyContent;
+		delete this.dumps;
 		evalScripts(elem);
 
 		draggable(elem, {
@@ -314,12 +316,12 @@
 
 		layer.innerHTML = content;
 		evalScripts(layer);
-		Tracy.Dumper.init(dumps);
 		layer.style.display = 'block';
 		Debug.bar.init();
 
 		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
 			Debug.panels[panel.id] = new Panel(panel.id);
+			Debug.panels[panel.id].dumps = dumps;
 			Debug.panels[panel.id].restorePosition();
 		});
 
@@ -347,11 +349,11 @@
 		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
 			if (!Debug.panels[panel.id]) {
 				Debug.panels[panel.id] = new Panel(panel.id);
+				Debug.panels[panel.id].dumps = dumps;
 				Debug.panels[panel.id].restorePosition();
 			}
 		});
 
-		Tracy.Dumper.init(dumps, layer);
 		Debug.bar.initTabs(ajaxBar);
 	};
 
