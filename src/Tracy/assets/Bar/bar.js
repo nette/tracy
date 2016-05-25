@@ -516,7 +516,7 @@
 	function setPosition(elem, coords) {
 		var dE = document.documentElement;
 		elem.style.right = Math.min(Math.max(coords.right, 0), dE.clientWidth - elem.offsetWidth) + 'px';
-		elem.style.bottom = Math.min(Math.max(coords.bottom, 0), dE.clientHeight - elem.offsetHeight) + 'px';
+		elem.style.bottom = Math.min(Math.max(coords.bottom, 0), Math.max(dE.clientHeight, document.body.clientHeight) - elem.offsetHeight) + 'px';
 	}
 
 	// returns current position
