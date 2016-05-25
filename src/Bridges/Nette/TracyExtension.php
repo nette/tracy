@@ -66,6 +66,13 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 		$options = $this->config;
 		unset($options['bar'], $options['blueScreen']);
+		if (isset($options['logSeverity'])) {
+			$res = 0;
+			foreach ((array) $options['logSeverity'] as $level) {
+				$res |= is_int($level) ? $level : constant($level);
+			}
+			$options['logSeverity'] = $res;
+		}
 		foreach ($options as $key => $value) {
 			if ($value !== NULL) {
 				$key = ($key === 'fromEmail' ? 'getLogger()->' : '$') . $key;

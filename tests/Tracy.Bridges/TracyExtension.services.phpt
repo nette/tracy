@@ -21,6 +21,9 @@ class CustomLogger implements ILogger
 $compiler = new DI\Compiler;
 $compiler->addExtension('tracy', new TracyExtension);
 $compiler->addConfig([
+	'tracy' => [
+		'logSeverity' => 'E_USER_WARNING',
+	],
 	'services' => [
 		'tracy.logger' => 'CustomLogger',
 	],
@@ -38,3 +41,5 @@ Assert::type('Tracy\Bar', $container->getService('tracy.bar'));
 Assert::same(Tracy\Debugger::getLogger(), $container->getService('tracy.logger'));
 Assert::same(Tracy\Debugger::getBlueScreen(), $container->getService('tracy.blueScreen'));
 Assert::same(Tracy\Debugger::getBar(), $container->getService('tracy.bar'));
+
+Assert::same(E_USER_WARNING, Tracy\Debugger::$logSeverity);
