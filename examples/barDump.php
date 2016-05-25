@@ -16,8 +16,8 @@ Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/log');
 <?php
 $arr = [10, 20.2, TRUE, NULL, 'hello', (object) NULL, []];
 
-Debugger::barDump(get_defined_vars());
+bdump(get_defined_vars());
 
-Debugger::barDump($arr, 'The Array');
+bdump($arr, 'The Array');
 
-Debugger::barDump('<a href="#">test</a>', 'String');
+bdump('<a href="#">test</a>', 'String');

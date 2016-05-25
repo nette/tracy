@@ -16,3 +16,15 @@ if (!function_exists('dump')) {
 		return $var;
 	}
 }
+
+if (!function_exists('bdump')) {
+	/**
+	 * Tracy\Debugger::barDump() shortcut.
+	 * @tracySkipLocation
+	 */
+	function bdump($var)
+	{
+		call_user_func_array('Tracy\Debugger::barDump', func_get_args());
+		return $var;
+	}
+}
