@@ -316,6 +316,7 @@
 
 		layer.innerHTML = content;
 		evalScripts(layer);
+		Tracy.Dumper.init();
 		layer.style.display = 'block';
 		Debug.bar.init();
 
