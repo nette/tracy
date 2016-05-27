@@ -56,29 +56,65 @@ class Bar
 	 */
 	public function render()
 	{
+		$redirectQueue = & $_SESSION['_tracy']['redirect'];
+
 		if (!Helpers::isHtmlMode() && !Helpers::isAjax()) {
 			return;
-		}
 
-		$previousBars = & $_SESSION['_tracy']['redirect'];
-		$isRedirect = preg_match('#^Location:#im', implode("\n", headers_list()));
-		$suffix = '';
-		if ($isRedirect) {
-			Dumper::fetchLiveData();
-			Dumper::$livePrefix = count($previousBars) . 'p';
-			$suffix = '-r' . count($previousBars);
 		} elseif (Helpers::isAjax()) {
-			$suffix = '-ajax';
+			$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax')];
+			$dumps = Dumper::fetchLiveData();
+			$contentId = $this->dispatched ? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax' : NULL;
+
+		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
+			Dumper::fetchLiveData();
+			Dumper::$livePrefix = count($redirectQueue) . 'p';
+			$redirectQueue[] = [
+				'panels' => $this->renderPanels('-r' . count($redirectQueue)),
+				'dumps' => Dumper::fetchLiveData(),
+			];
+			return;
+
+		} else {
+			$rows[] = (object) ['type' => 'main', 'panels' => $this->renderPanels()];
+			$dumps = Dumper::fetchLiveData();
+			foreach (array_reverse((array) $redirectQueue) as $info) {
+				$rows[] = (object) ['type' => 'redirect', 'panels' => $info['panels']];
+				$dumps += $info['dumps'];
+			}
+			$redirectQueue = NULL;
+			$contentId = $this->dispatched ? substr(md5(uniqid('', TRUE)), 0, 10) : NULL;
 		}
 
-		$obLevel = ob_get_level();
-		$panels = [];
+		ob_start(function () {});
+		require __DIR__ . '/assets/Bar/panels.phtml';
+		require __DIR__ . '/assets/Bar/bar.phtml';
+		$content = Helpers::fixEncoding(ob_get_clean());
 
+		if ($contentId) {
+			$_SESSION['_tracy']['bar'][$contentId] = ['content' => $content, 'dumps' => $dumps];
+		}
+
+		if (Helpers::isHtmlMode()) {
+			$stopXdebug = extension_loaded('xdebug') ? ['XDEBUG_SESSION_STOP' => 1] : [];
+			require __DIR__ . '/assets/Bar/loader.phtml';
+		}
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function renderPanels($suffix = NULL)
+	{
 		set_error_handler(function ($severity, $message, $file, $line) {
 			if (error_reporting() & $severity) {
 				throw new \ErrorException($message, 0, $severity, $file, $line);
 			}
 		});
+
+		$obLevel = ob_get_level();
+		$panels = [];
 
 		foreach ($this->panels as $id => $panel) {
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
@@ -106,39 +142,7 @@ class Bar
 		}
 
 		restore_error_handler();
-
-		$dumps = Dumper::fetchLiveData();
-
-		if ($isRedirect) {
-			$previousBars[] = ['panels' => $panels, 'dumps' => $dumps];
-			return;
-		}
-
-		$rows[] = (object) ['type' => Helpers::isAjax() ? 'ajax' : 'main', 'panels' => $panels];
-		foreach (array_reverse((array) $previousBars) as $info) {
-			$rows[] = (object) ['type' => 'redirect', 'panels' => $info['panels']];
-			$dumps += $info['dumps'];
-		}
-		$previousBars = NULL;
-
-		ob_start(function () {});
-		require __DIR__ . '/assets/Bar/panels.phtml';
-		require __DIR__ . '/assets/Bar/bar.phtml';
-		$content = Helpers::fixEncoding(ob_get_clean());
-		$contentId = NULL;
-
-		if ($this->dispatched) {
-			$contentId = Helpers::isAjax()
-				? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax'
-				: substr(md5(uniqid('', TRUE)), 0, 10);
-
-			$_SESSION['_tracy']['bar'][$contentId] = ['content' => $content, 'dumps' => $dumps];
-		}
-
-		if (Helpers::isHtmlMode()) {
-			$stopXdebug = extension_loaded('xdebug') ? ['XDEBUG_SESSION_STOP' => 1] : [];
-			require __DIR__ . '/assets/Bar/loader.phtml';
-		}
+		return $panels;
 	}
 
 
