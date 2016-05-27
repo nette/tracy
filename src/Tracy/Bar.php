@@ -67,6 +67,7 @@ class Bar
 			$contentId = $this->dispatched ? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax' : NULL;
 
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
+			$redirectQueue = array_slice((array) $redirectQueue, -10);
 			Dumper::fetchLiveData();
 			Dumper::$livePrefix = count($redirectQueue) . 'p';
 			$redirectQueue[] = [
@@ -92,7 +93,9 @@ class Bar
 		$content = Helpers::fixEncoding(ob_get_clean());
 
 		if ($contentId) {
-			$_SESSION['_tracy']['bar'][$contentId] = ['content' => $content, 'dumps' => $dumps];
+			$queue = & $_SESSION['_tracy']['bar'];
+			$queue = array_slice(array_filter((array) $queue), -5, NULL, TRUE);
+			$queue[$contentId] = ['content' => $content, 'dumps' => $dumps];
 		}
 
 		if (Helpers::isHtmlMode()) {

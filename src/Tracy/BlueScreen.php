@@ -56,7 +56,9 @@ class BlueScreen
 			ob_start(function () {});
 			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/content.phtml');
 			$contentId = $_SERVER['HTTP_X_TRACY_AJAX'];
-			$_SESSION['_tracy']['bluescreen'][$contentId] = ['content' => ob_get_clean(), 'dumps' => Dumper::fetchLiveData()];
+			$queue = & $_SESSION['_tracy']['bluescreen'];
+			$queue = array_slice(array_filter((array) $queue), -5, NULL, TRUE);
+			$queue[$contentId] = ['content' => ob_get_clean(), 'dumps' => Dumper::fetchLiveData()];
 
 		} else {
 			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/page.phtml');
