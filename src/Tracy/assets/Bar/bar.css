@@ -185,6 +185,7 @@ body #tracy-debug {
 
 /* panels */
 #tracy-debug .tracy-panel {
+	display: none;
 	font: normal normal 12px/1.5 sans-serif;
 	background: white;
 	color: #333;
