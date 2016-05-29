@@ -133,7 +133,7 @@
 		var win = window.open('', this.id.replace(/-/g, '_'), 'left=' + offset.left + ',top=' + offset.top
 			+ ',width=' + this.elem.offsetWidth + ',height=' + this.elem.offsetHeight + ',resizable=yes,scrollbars=yes');
 		if (!win) {
-			return;
+			return false;
 		}
 
 		function escape(s) {
@@ -169,6 +169,7 @@
 		this.elem.classList.remove(Panel.PEEK);
 		this.elem.classList.add(Panel.WINDOW);
 		this.elem.Tracy.window = win;
+		return true;
 	};
 
 	Panel.prototype.reposition = function() {
@@ -195,7 +196,7 @@
 			this.elem.classList.add(Panel.PEEK);
 		} else if (pos.window) {
 			this.init();
-			this.toWindow();
+			this.toWindow() || this.toFloat();
 		} else if (this.elem.dataset.tracyContent) {
 			this.init();
 			this.toFloat();
