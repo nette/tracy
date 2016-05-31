@@ -41,5 +41,5 @@ function third($arg1)
 	$x++;
 }
 
-
+echo @$undefined;
 first(10, 'any string');

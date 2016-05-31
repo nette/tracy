@@ -60,4 +60,5 @@ function third($arg1)
 }
 
 
+echo @$undefined;
 first(10, 'any string');

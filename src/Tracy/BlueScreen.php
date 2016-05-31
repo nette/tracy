@@ -97,6 +97,8 @@ class BlueScreen
 		$skipError = $sourceIsUrl && $exception instanceof \ErrorException && !empty($exception->skippable)
 			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
 			: NULL;
+		$lastError = (!$exception instanceof \ErrorException) ? error_get_last() : NULL;
+
 		require $template;
 	}
 

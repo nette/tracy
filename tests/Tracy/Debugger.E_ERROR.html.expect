@@ -50,7 +50,7 @@
 </span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
-<span class='line'>%d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #080">'any string'</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>%d%:</span>    echo @</span><span style="color: #000">$undefined</span><span style="color: #D24; font-weight: bold">;
 </span></span></code></div></pre>			</div></div>
 
 
@@ -119,8 +119,7 @@
 					first(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
-											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>        </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">([</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">]);
-<span class='line'>%d%:</span>    }
+											<div class="tracy-collapsed file"><pre data-tracy-href="%a%" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
@@ -129,6 +128,7 @@
 <span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    echo @</span><span style="color: #000">$undefined</span><span style="color: #D24; font-weight: bold">;
 <span class='highlight'>%d%:    first(10, 'any string');
 </span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    </span>
 </span></code></div></pre></div>
@@ -152,6 +152,30 @@
 
 
 
+
+
+				<div class="panel">
+		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last error</a></h2>
+		<div class="tracy-collapsed inner">
+
+		<h3>Notice: Undefined variable: undefined</h3>
+					<p><a href="editor%a%" title="%a%Debugger.E_ERROR.html.phpt:%d%">%a%<b>Debugger.E_ERROR.html.phpt</b>:%d%</a> <a data-tracy-ref="^+" class="tracy-toggle">source</a>&nbsp;</p>
+			<div><pre data-tracy-href="editor%a%" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>53:</span>        </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">([</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">]);
+<span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>%d%:</span>    {
+<span class='line'>%d%:</span>        </span><span style="color: #000">missing_function</span><span style="color: #D24; font-weight: bold">();
+<span class='line'>%d%:</span>    }
+<span class='line'>%d%:</span>
+<span class='line'>%d%:</span>
+<span class='highlight'>%d%:    echo @$undefined;
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>%d%:</span>    </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">10</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #080">'any string'</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>%d%:</span>    </span>
+</span></code></div></pre></div>
+
+		</div></div>
 
 
 
