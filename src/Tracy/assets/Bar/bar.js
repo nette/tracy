@@ -391,7 +391,7 @@
 		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
 			var headers = oldGet.call(this);
 			if (headers.match(/^X-Tracy-Ajax: 1/mi)) {
-				Debug.loadScript('?_tracy_bar=content-ajax.' + layer.dataset.id + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+				Debug.loadScript('?_tracy_bar=content-ajax.' + layer.dataset.id + '&XDEBUG_SESSION_STOP=1&XDEBUG_PROFILE=0&XDEBUG_TRACE=0&v=' + Math.random());
 			}
 			return headers;
 		};
