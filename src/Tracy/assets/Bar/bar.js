@@ -7,6 +7,10 @@
 
 	var layer = document.getElementById('tracy-debug');
 
+	Tracy.getAjaxHeader = function() {
+		return layer.dataset.id;
+	};
+
 	var Panel = Tracy.DebugPanel = function(id) {
 		this.id = id;
 		this.elem = document.getElementById(this.id);
@@ -377,21 +381,22 @@
 	};
 
 	Debug.captureAjax = function() {
-		if (!layer.dataset.id) {
+		var header = Tracy.getAjaxHeader();
+		if (!header) {
 			return;
 		}
 		var oldOpen = XMLHttpRequest.prototype.open;
 		XMLHttpRequest.prototype.open = function() {
 			oldOpen.apply(this, arguments);
-			if (arguments[1].indexOf('//') < 0 || arguments[1].indexOf(location.origin + '/') === 0) {
-				this.setRequestHeader('X-Tracy-Ajax', layer.dataset.id);
+			if (window.TracyAutoRefresh !== false && arguments[1].indexOf('//') < 0 || arguments[1].indexOf(location.origin + '/') === 0) {
+				this.setRequestHeader('X-Tracy-Ajax', header);
 			}
 		};
 		var oldGet = XMLHttpRequest.prototype.getAllResponseHeaders;
 		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
 			var headers = oldGet.call(this);
 			if (headers.match(/^X-Tracy-Ajax: 1/mi)) {
-				Debug.loadScript('?_tracy_bar=content-ajax.' + layer.dataset.id + '&XDEBUG_SESSION_STOP=1&XDEBUG_PROFILE=0&XDEBUG_TRACE=0&v=' + Math.random());
+				Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&XDEBUG_PROFILE=0&XDEBUG_TRACE=0&v=' + Math.random());
 			}
 			return headers;
 		};

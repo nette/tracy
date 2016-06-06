@@ -48,7 +48,11 @@ $('button').click(function() {
 		jqxhr.abort();
 	}
 
-	jqxhr = $.getJSON('?', {error: $(this).hasClass('error') * 1}, function(data) {
+	jqxhr = $.ajax({
+		data: {error: $(this).hasClass('error') * 1},
+		dataType: 'json',
+		// headers: {'X-Tracy-Ajax': Tracy.getAjaxHeader()}, // use when auto-refresh is disabled via window.TracyAutoRefresh = false;
+	}).success(function(data) {
 		$('#result').text('loaded: ' + data);
 
 	}).fail(function() {
