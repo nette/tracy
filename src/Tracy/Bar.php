@@ -56,6 +56,7 @@ class Bar
 	 */
 	public function render()
 	{
+		$useSession = $this->dispatched && session_status() === PHP_SESSION_ACTIVE;
 		$redirectQueue = & $_SESSION['_tracy']['redirect'];
 
 		if (!Helpers::isHtmlMode() && !Helpers::isAjax()) {
@@ -64,7 +65,7 @@ class Bar
 		} elseif (Helpers::isAjax()) {
 			$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax')];
 			$dumps = Dumper::fetchLiveData();
-			$contentId = $this->dispatched ? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax' : NULL;
+			$contentId = $useSession ? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax' : NULL;
 
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
 			$redirectQueue = array_slice((array) $redirectQueue, -10);
@@ -84,7 +85,7 @@ class Bar
 				$dumps += $info['dumps'];
 			}
 			$redirectQueue = NULL;
-			$contentId = $this->dispatched ? substr(md5(uniqid('', TRUE)), 0, 10) : NULL;
+			$contentId = $useSession ? substr(md5(uniqid('', TRUE)), 0, 10) : NULL;
 		}
 
 		ob_start(function () {});
