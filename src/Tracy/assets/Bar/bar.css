@@ -266,6 +266,7 @@ body #tracy-debug {
 
 #tracy-debug .tracy-mode-window {
 	padding: 10px;
+	display: block;
 }
 
 #tracy-debug .tracy-icons a {
