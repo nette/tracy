@@ -520,9 +520,10 @@
 
 	// move to new position
 	function setPosition(elem, coords) {
-		var dE = document.documentElement;
+		var dE = document.documentElement,
+			height = document.compatMode === 'BackCompat' ? window.innerHeight : dE.clientHeight;
 		elem.style.right = Math.min(Math.max(coords.right, 0), dE.clientWidth - elem.offsetWidth) + 'px';
-		elem.style.bottom = Math.min(Math.max(coords.bottom, 0), Math.max(dE.clientHeight, document.body.clientHeight) - elem.offsetHeight) + 'px';
+		elem.style.bottom = Math.min(Math.max(coords.bottom, 0), height - elem.offsetHeight) + 'px';
 	}
 
 	// returns current position
