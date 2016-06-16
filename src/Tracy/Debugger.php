@@ -18,7 +18,7 @@ class Debugger
 {
 	const VERSION = '2.4-dev';
 
-	/** server modes {@link Debugger::enable()} */
+	/** server modes for Debugger::enable() */
 	const
 		DEVELOPMENT = FALSE,
 		PRODUCTION = TRUE,
@@ -32,7 +32,7 @@ class Debugger
 	/** @var bool whether to display debug bar in development mode */
 	public static $showBar = TRUE;
 
-	/** @var bool {@link Debugger::enable()} */
+	/** @var bool */
 	private static $enabled = FALSE;
 
 	/** @var string reserved memory; also prevents double rendering */
@@ -54,13 +54,13 @@ class Debugger
 
 	/********************* Debugger::dump() ****************d*g**/
 
-	/** @var int  how many nested levels of array/object properties display {@link Debugger::dump()} */
+	/** @var int  how many nested levels of array/object properties display by dump() */
 	public static $maxDepth = 3;
 
-	/** @var int  how long strings display {@link Debugger::dump()} */
+	/** @var int  how long strings display by dump() */
 	public static $maxLength = 150;
 
-	/** @var bool display location? {@link Debugger::dump()} */
+	/** @var bool display location by dump()? */
 	public static $showLocation = FALSE;
 
 	/** @deprecated */
@@ -77,7 +77,7 @@ class Debugger
 	/** @var string|array email(s) to which send error notifications */
 	public static $email;
 
-	/** {@link Debugger::log()} and {@link Debugger::fireLog()} */
+	/** for Debugger::log() and Debugger::fireLog() */
 	const
 		DEBUG = ILogger::DEBUG,
 		INFO = ILogger::INFO,
