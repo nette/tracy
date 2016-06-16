@@ -22,6 +22,12 @@ class BlueScreen
 	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
 	public $collapsePaths = [];
 
+	/** @var int  */
+	public $maxDepth = 3;
+
+	/** @var int  */
+	public $maxLength = 150;
+
 
 	public function __construct()
 	{
@@ -98,6 +104,14 @@ class BlueScreen
 			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
 			: NULL;
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error ? NULL : error_get_last();
+		$dump = function($v) {
+			return Dumper::toHtml($v, [
+				Dumper::DEPTH => $this->maxDepth,
+				Dumper::TRUNCATE => $this->maxLength,
+				Dumper::LIVE => TRUE,
+				Dumper::LOCATION => Dumper::LOCATION_CLASS,
+			]);
+		};
 
 		require $template;
 	}
