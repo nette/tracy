@@ -171,11 +171,11 @@ generates the output:
 
 ![dump](https://nette.github.io/tracy/images/tracy-dump.png)
 
-You can also change the nesting depth by `Debugger::$maxDepth` and displayed strings length by `Debugger::$maxLen`. Naturally, lower values accelerate Tracy rendering.
+You can also change the nesting depth by `Debugger::$maxDepth` and displayed strings length by `Debugger::$maxLength`. Naturally, lower values accelerate Tracy rendering.
 
 ```php
 Debugger::$maxDepth = 2; // default: 3
-Debugger::$maxLen = 50; // default: 150
+Debugger::$maxLength = 50; // default: 150
 ```
 
 The `dump()` function can display other useful information. `Tracy\Dumper::LOCATION_SOURCE` adds tooltip with path to the file, where the function was called. `Tracy\Dumper::LOCATION_LINK` adds a link to the file. `Tracy\Dumper::LOCATION_CLASS` adds a tooltip to every dumped object containing path to the file, in which the object's class is defined. All these constants can be set in `Debugger::$showLocation` variable before calling the `dump()`. You can set multiple values at once using the `|` operator.

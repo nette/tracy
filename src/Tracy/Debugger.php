@@ -58,10 +58,13 @@ class Debugger
 	public static $maxDepth = 3;
 
 	/** @var int  how long strings display {@link Debugger::dump()} */
-	public static $maxLen = 150;
+	public static $maxLength = 150;
 
 	/** @var bool display location? {@link Debugger::dump()} */
 	public static $showLocation = FALSE;
+
+	/** @deprecated */
+	public static $maxLen = 150;
 
 	/********************* logging ****************d*g**/
 
@@ -140,6 +143,7 @@ class Debugger
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
 		}
 
+		self::$maxLen = & self::$maxLength;
 		self::$reserved = str_repeat('t', 3e5);
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		self::$obLevel = ob_get_level();
@@ -506,14 +510,14 @@ class Debugger
 			ob_start(function () {});
 			Dumper::dump($var, [
 				Dumper::DEPTH => self::$maxDepth,
-				Dumper::TRUNCATE => self::$maxLen,
+				Dumper::TRUNCATE => self::$maxLength,
 			]);
 			return ob_get_clean();
 
 		} elseif (!self::$productionMode) {
 			Dumper::dump($var, [
 				Dumper::DEPTH => self::$maxDepth,
-				Dumper::TRUNCATE => self::$maxLen,
+				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation,
 			]);
 		}
@@ -554,7 +558,7 @@ class Debugger
 			}
 			$panel->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, (array) $options + [
 				Dumper::DEPTH => self::$maxDepth,
-				Dumper::TRUNCATE => self::$maxLen,
+				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation ?: Dumper::LOCATION_CLASS | Dumper::LOCATION_SOURCE,
 			])];
 		}
