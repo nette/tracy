@@ -222,7 +222,6 @@
 		});
 
 		this.initTabs();
-		this.autoHideLabels();
 		this.restorePosition();
 	};
 
@@ -279,6 +278,7 @@
 				}
 			});
 		});
+		this.autoHideLabels();
 	};
 
 	Bar.prototype.autoHideLabels = function() {
