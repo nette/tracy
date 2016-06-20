@@ -35,10 +35,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	/** @var bool */
 	private $debugMode;
 
+	/** @var bool */
+	private $cliMode;
 
-	public function __construct($debugMode = FALSE)
+
+	public function __construct($debugMode = FALSE, $cliMode = FALSE)
 	{
 		$this->debugMode = $debugMode;
+		$this->cliMode = $cliMode;
 	}
 
 
@@ -98,7 +102,10 @@ class TracyExtension extends Nette\DI\CompilerExtension
 					])
 				));
 			}
-			$initialize->addBody('if ($tmp = $this->getByType("Nette\Http\Session", FALSE)) { $tmp->start(); Tracy\Debugger::dispatch(); };');
+
+			if (!$this->cliMode) {
+				$initialize->addBody('if ($tmp = $this->getByType("Nette\Http\Session", FALSE)) { $tmp->start(); Tracy\Debugger::dispatch(); };');
+			}
 		}
 
 		foreach ((array) $this->config['blueScreen'] as $item) {
