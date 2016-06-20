@@ -56,7 +56,7 @@ class Bar
 	 */
 	public function render()
 	{
-		$useSession = $this->dispatched && session_status() === PHP_SESSION_ACTIVE;
+		$useSession = $this->dispatched && Debugger::getSession()->isActive();
 		$redirectQueue = & $_SESSION['_tracy']['redirect'];
 
 		if (!Helpers::isHtmlMode() && !Helpers::isAjax()) {

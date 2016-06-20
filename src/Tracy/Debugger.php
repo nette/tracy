@@ -120,6 +120,9 @@ class Debugger
 	/** @var ILogger */
 	private static $fireLogger;
 
+	/** @var ISession */
+	private static $session;
+
 
 	/**
 	 * Static class - cannot be instantiated.
@@ -190,7 +193,7 @@ class Debugger
 
 		if (!self::$productionMode && self::getBar()->dispatchAssets()) {
 			exit;
-		} elseif (session_status() === PHP_SESSION_ACTIVE) {
+		} elseif (self::getSession()->isActive()) {
 			self::dispatch();
 		}
 	}
@@ -204,13 +207,8 @@ class Debugger
 		if (self::$productionMode) {
 			return;
 
-		} elseif (session_status() !== PHP_SESSION_ACTIVE) {
-			ini_set('session.use_cookies', '1');
-			ini_set('session.use_only_cookies', '1');
-			ini_set('session.use_trans_sid', '0');
-			ini_set('session.cookie_path', '/');
-			ini_set('session.cookie_httponly', '1');
-			session_start();
+		} elseif (!self::getSession()->isActive()) {
+			self::getSession()->start();
 		}
 		if (self::getBar()->dispatchContent()) {
 			exit;
@@ -491,6 +489,27 @@ class Debugger
 			self::$fireLogger = new FireLogger;
 		}
 		return self::$fireLogger;
+	}
+
+
+	/**
+	 * @return void
+	 */
+	public static function setSession(ISession $session)
+	{
+		self::$session = $session;
+	}
+
+
+	/**
+	 * @return ISession
+	 */
+	public static function getSession()
+	{
+		if (!self::$session) {
+			self::$session = new DefaultSession();
+		}
+		return self::$session;
 	}
 
 
