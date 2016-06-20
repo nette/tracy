@@ -165,7 +165,7 @@ class Bar
 	{
 		$asset = isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : NULL;
 		if ($asset === 'css') {
-			header('Content-Type: text/css');
+			header('Content-Type: text/css; charset=utf-8');
 			header('Cache-Control: max-age=864000');
 			header_remove('Pragma');
 			header_remove('Set-Cookie');
