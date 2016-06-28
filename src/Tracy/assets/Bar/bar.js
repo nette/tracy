@@ -153,7 +153,7 @@
 		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.innerHTML + '<\/div>';
 		evalScripts(doc.body, win);
 		if (this.elem.querySelector('h1')) {
-			doc.title = this.elem.querySelector('h1').innerHTML;
+			doc.title = this.elem.querySelector('h1').textContent;
 		}
 
 		var _this = this;
