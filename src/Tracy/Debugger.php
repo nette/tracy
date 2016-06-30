@@ -16,7 +16,7 @@ use ErrorException;
  */
 class Debugger
 {
-	const VERSION = '2.4.0';
+	const VERSION = '2.4.1';
 
 	/** server modes for Debugger::enable() */
 	const
@@ -43,7 +43,7 @@ class Debugger
 
 	/********************* errors and exceptions reporting ****************d*g**/
 
-	/** @var bool|int determines whether any error will cause immediate death; if integer that it's matched against error severity */
+	/** @var bool|int determines whether any error will cause immediate death in development mode; if integer that it's matched against error severity */
 	public static $strictMode = FALSE;
 
 	/** @var bool disables the @ (shut-up) operator so that notices and warnings are no longer hidden */
