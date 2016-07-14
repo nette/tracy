@@ -33,7 +33,7 @@
 		evalScripts(elem);
 
 		draggable(elem, {
-			handle: elem.querySelector('h1'),
+			handles: Array.prototype.slice.call(elem.querySelectorAll('h1')),
 			stop: function() {
 				_this.toFloat();
 			}
@@ -218,6 +218,7 @@
 		this.elem = document.getElementById(this.id);
 
 		draggable(this.elem, {
+			handles: [this.elem],
 			draggedClass: 'tracy-dragged'
 		});
 
@@ -495,30 +496,32 @@
 			return false;
 		};
 
-		(options.handle || elem).addEventListener('mousedown', function(e) {
-			e.preventDefault();
-			e.stopPropagation();
+		forEach(options.handles, function (handle) {
+			handle.addEventListener('mousedown', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
 
-			if (dragging) { // missed mouseup out of window?
-				return onmouseup(e);
-			}
+				if (dragging) { // missed mouseup out of window?
+					return onmouseup(e);
+				}
 
-			var pos = getPosition(elem);
-			clientX = e.clientX;
-			clientY = e.clientY;
-			deltaX = pos.right + clientX;
-			deltaY = pos.bottom + clientY;
-			dragging = true;
-			started = false;
-			dE.addEventListener('mousemove', onmousemove);
-			dE.addEventListener('mouseup', onmouseup);
-			requestAnimationFrame(redraw);
-		});
+				var pos = getPosition(elem);
+				clientX = e.clientX;
+				clientY = e.clientY;
+				deltaX = pos.right + clientX;
+				deltaY = pos.bottom + clientY;
+				dragging = true;
+				started = false;
+				dE.addEventListener('mousemove', onmousemove);
+				dE.addEventListener('mouseup', onmouseup);
+				requestAnimationFrame(redraw);
+			});
 
-		(options.handle || elem).addEventListener('click', function(e) {
-			if (started) {
-				e.stopImmediatePropagation();
-			}
+			handle.addEventListener('click', function(e) {
+				if (started) {
+					e.stopImmediatePropagation();
+				}
+			});
 		});
 	}
 
