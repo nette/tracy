@@ -188,8 +188,17 @@ class Debugger
 		array_map('class_exists', ['Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
 			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger']);
 
-		if (!self::$productionMode && self::getBar()->dispatchAssets()) {
+		if (self::$productionMode) {
+
+		} elseif (headers_sent($file, $line) || ob_get_length()) {
+			throw new \RuntimeException(
+				'Tracy was enabled after some output has been sent. '
+				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.')
+			);
+
+		} elseif (self::getBar()->dispatchAssets()) {
 			exit;
+
 		} elseif (session_status() === PHP_SESSION_ACTIVE) {
 			self::dispatch();
 		}
