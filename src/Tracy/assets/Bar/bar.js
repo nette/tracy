@@ -315,8 +315,7 @@
 
 	Debug.init = function(content, dumps) {
 		if (!document.documentElement.dataset) {
-			console.log('Warning: Tracy requires IE 11+');
-			return;
+			throw new Error('Tracy requires IE 11+');
 		}
 
 		layer.innerHTML = content;
