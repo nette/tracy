@@ -188,8 +188,17 @@ class Debugger
 		array_map('class_exists', ['Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
 			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger']);
 
-		if (!self::$productionMode && self::getBar()->dispatchAssets()) {
+		if (self::$productionMode) {
+
+		} elseif (headers_sent($file, $line) || ob_get_length()) {
+			throw new \LogicException(
+				__METHOD__ . '() called after some output has been sent. '
+				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.')
+			);
+
+		} elseif (self::getBar()->dispatchAssets()) {
 			exit;
+
 		} elseif (session_status() === PHP_SESSION_ACTIVE) {
 			self::dispatch();
 		}
@@ -203,6 +212,12 @@ class Debugger
 	{
 		if (self::$productionMode) {
 			return;
+
+		} elseif (headers_sent($file, $line) || ob_get_length()) {
+			throw new \LogicException(
+				__METHOD__ . '() called after some output has been sent. '
+				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.')
+			);
 
 		} elseif (session_status() !== PHP_SESSION_ACTIVE) {
 			ini_set('session.use_cookies', '1');
