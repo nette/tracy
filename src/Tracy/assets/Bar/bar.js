@@ -390,7 +390,7 @@
 
 		XMLHttpRequest.prototype.open = function() {
 			oldOpen.apply(this, arguments);
-			if (window.TracyAutoRefresh !== false && arguments[1].indexOf('//') < 0 || arguments[1].indexOf(location.origin + '/') === 0) {
+			if (window.TracyAutoRefresh !== false && arguments[1].indexOf('//') <= 0 || arguments[1].indexOf(location.origin + '/') === 0) {
 				this.setRequestHeader('X-Tracy-Ajax', header);
 			}
 		};
