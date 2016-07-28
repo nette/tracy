@@ -108,6 +108,10 @@ class Bar
 				$max = min(strlen($lpath), strlen($script));
 				for ($i = 0; $i < $max && $lpath[$i] === $script[$i]; $i++);
 				$path = $i ? substr($path, 0, strrpos($path, '/', $i - strlen($path) - 1) + 1) : '/';
+				$cookiePath = session_get_cookie_params()['path'];
+				if (substr($cookiePath, 0, strlen($path)) === $path) {
+					$path = rtrim($cookiePath, '/') . '/';
+				}
 			}
 			require __DIR__ . '/assets/Bar/loader.phtml';
 		}
