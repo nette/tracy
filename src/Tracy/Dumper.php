@@ -421,14 +421,16 @@ class Dumper
 			}
 			$s = strtr($s, $table);
 
-		} elseif ($shortened = ($maxLength && strlen(utf8_decode($s)) > $maxLength)) {
+		} elseif ($maxLength && $s !== '') {
 			if (function_exists('iconv_substr')) {
-				$s = iconv_substr($s, 0, $maxLength, 'UTF-8');
+				$s = iconv_substr($tmp = $s, 0, $maxLength, 'UTF-8');
+				$shortened = $s !== $tmp;
 			} else {
 				$i = $len = 0;
 				do {
 					if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength)) {
 						$s = substr($s, 0, $i);
+						$shortened = TRUE;
 						break;
 					}
 				} while (isset($s[++$i]));
