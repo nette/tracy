@@ -15,7 +15,9 @@
 		}
 	],
 	"require": {
-		"php": ">=5.4.4"
+		"php": ">=5.4.4",
+		"ext-session": "*",
+		"ext-json": "*"
 	},
 	"require-dev": {
 		"nette/di": "~2.3",
