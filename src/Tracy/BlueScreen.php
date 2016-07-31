@@ -93,7 +93,6 @@ class BlueScreen
 
 	private function renderTemplate($exception, $template)
 	{
-		$panels = $this->panels;
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
 		$sourceIsUrl = preg_match('#^https?://#', $source);
@@ -114,6 +113,37 @@ class BlueScreen
 		};
 
 		require $template;
+	}
+
+
+	/**
+	 * @return \stdClass[]
+	 */
+	private function renderPanels($ex)
+	{
+		$obLevel = ob_get_level();
+		$res = [];
+		foreach ($this->panels as $callback) {
+			try {
+				$panel = call_user_func($callback, $ex);
+				if (empty($panel['tab']) || empty($panel['panel'])) {
+					continue;
+				}
+				$res[] = (object) $panel;
+				continue;
+			} catch (\Throwable $e) {
+			} catch (\Exception $e) {
+			}
+			while (ob_get_level() > $obLevel) { // restore ob-level if broken
+				ob_end_clean();
+			}
+			is_callable($callback, TRUE, $name);
+			$res[] = (object) [
+				'tab' => "Error in panel $name",
+				'panel' => nl2br(Helpers::escapeHtml($e)),
+			];
+		}
+		return $res;
 	}
 
 

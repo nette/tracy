@@ -7,7 +7,6 @@
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  *
  * @param  array $exception
- * @param  array $panels
  * @param  array $info
  * @param  string $title
  * @param  string $source
@@ -58,14 +57,12 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php endif ?>
 
 
-			<?php foreach ($panels as $panel): ?>
-			<?php $panel = call_user_func($panel, $ex); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
-			<?php if (!empty($panel['bottom'])) { continue; } ?>
+			<?php foreach ($this->renderPanels($ex) as $panel): ?>
 			<div class="panel">
-				<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel['tab']) ?></a></h2>
+				<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
 
 				<div class="inner">
-				<?= $panel['panel'] ?>
+				<?= $panel->panel ?>
 			</div></div>
 			<?php endforeach ?>
 
@@ -194,14 +191,13 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 
 		<?php $bottomPanels = [] ?>
-		<?php foreach ($panels as $panel): ?>
-		<?php $panel = call_user_func($panel, NULL); if (empty($panel['tab']) || empty($panel['panel'])) continue; ?>
-		<?php if (!empty($panel['bottom'])) { $bottomPanels[] = $panel; continue; } ?>
+		<?php foreach ($this->renderPanels(NULL) as $panel): ?>
+		<?php if (!empty($panel->bottom)) { $bottomPanels[] = $panel; continue; } ?>
 		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed"><?= Helpers::escapeHtml($panel['tab']) ?></a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
 
 			<div class="tracy-collapsed inner">
-			<?= $panel['panel'] ?>
+			<?= $panel->panel ?>
 		</div></div>
 		<?php endforeach ?>
 
@@ -320,10 +316,10 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 		<?php foreach ($bottomPanels as $panel): ?>
 		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel['tab']) ?></a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
 
 			<div class="inner">
-			<?= $panel['panel'] ?>
+			<?= $panel->panel ?>
 		</div></div>
 		<?php endforeach ?>
 
