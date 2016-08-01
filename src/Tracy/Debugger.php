@@ -387,6 +387,7 @@ class Debugger
 		} elseif (self::$productionMode && ($severity & self::$logSeverity) === $severity) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			$e->context = $context;
+			Helpers::improveException($e);
 			try {
 				self::log($e, self::ERROR);
 			} catch (\Throwable $e) {
