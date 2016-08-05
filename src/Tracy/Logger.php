@@ -91,7 +91,7 @@ class Logger implements ILogger
 				) . ' in ' . $message->getFile() . ':' . $message->getLine();
 				$message = $message->getPrevious();
 			}
-			$message = implode($tmp, "\ncaused by ");
+			$message = implode("\ncaused by ", $tmp);
 
 		} elseif (!is_string($message)) {
 			$message = Dumper::toText($message);
