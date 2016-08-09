@@ -406,10 +406,7 @@
 			xhr.getResponseHeader = oldGet;
 			xhr.getAllResponseHeaders = oldGetAll;
 			if (xhr.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
-				Debug.loadScript(
-					document.getElementById('tracy-debug-script').src.split('?')[0]
-					+ '?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&XDEBUG_PROFILE=0&XDEBUG_TRACE=0&v=' + Math.random()
-				);
+				Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&XDEBUG_PROFILE=0&XDEBUG_TRACE=0&v=' + Math.random());
 			}
 		}
 	};
