@@ -1,0 +1,9 @@
+(function() {
+	var origUri = document.getElementById('tracy-debug-script').getAttribute('src');
+	var actualUri = <?= json_encode($_SERVER['REQUEST_URI']); ?>;
+	if (origUri !== actualUri) {
+		console.warn('Tracy assets were loaded via redirect. This will break XDebug.');
+		console.warn('Please fix your code so that Tracy\Debugger::enable() is ALWAYS called before any redirects may occur.');
+		console.warn(origUri, 'was redirected to', actualUri);
+	}
+})();
