@@ -87,7 +87,7 @@ class Logger implements ILogger
 			while ($message) {
 				$tmp[] = ($message instanceof \ErrorException
 					? Helpers::errorTypeToString($message->getSeverity()) . ': ' . $message->getMessage()
-					: Helpers::getClass($message) . ': ' . $message->getMessage()
+					: Helpers::getClass($message) . ': ' . $message->getMessage() . ($message->getCode() ? ' #' . $message->getCode() : '')
 				) . ' in ' . $message->getFile() . ':' . $message->getLine();
 				$message = $message->getPrevious();
 			}
