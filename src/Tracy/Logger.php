@@ -122,8 +122,15 @@ class Logger implements ILogger
 	 */
 	public function getExceptionFile($exception)
 	{
+		while ($exception) {
+			$data[] = [
+				$exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(),
+				array_map(function ($item) { unset($item['args']); return $item; }, $exception->getTrace()),
+			];
+			$exception = $exception->getPrevious();
+		}
+		$hash = substr(md5(serialize($data)), 0, 10);
 		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
-		$hash = substr(md5(preg_replace('~(Resource id #)\d+~', '$1', $exception)), 0, 10);
 		foreach (new \DirectoryIterator($this->directory) as $file) {
 			if (strpos($file, $hash)) {
 				return $dir . $file;
