@@ -422,8 +422,8 @@ class Dumper
 			$s = strtr($s, $table);
 
 		} elseif ($maxLength && $s !== '') {
-			if (function_exists('iconv_substr')) {
-				$s = iconv_substr($tmp = $s, 0, $maxLength, 'UTF-8');
+			if (function_exists('mb_substr')) {
+				$s = mb_substr($tmp = $s, 0, $maxLength, 'UTF-8');
 				$shortened = $s !== $tmp;
 			} else {
 				$i = $len = 0;
