@@ -415,23 +415,20 @@ class Dumper
 			$table["\t"] = '\t';
 		}
 
-		if (function_exists('mb_substr')) {
+		$shortened = FALSE;
+		if ($maxLength && function_exists('mb_substr') && strlen($s) > $maxLength) {
+			$s = mb_substr($tmp = $s, 0, $maxLength, 'UTF-8');
+			$shortened = $s !== $tmp;
+		}
+
+		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) {
 			if ($maxLength && strlen($s) > $maxLength) {
-				$s = mb_substr($tmp = $s, 0, $maxLength, 'UTF-8');
-				$shortened = $s !== $tmp;
-			} else {
-				$shortened = false;
-			}
-			if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) {
-				$s = strtr($s, $table);
-			}
-		} elseif (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) {
-			if ($shortened = ($maxLength && strlen($s) > $maxLength)) {
 				$s = substr($s, 0, $maxLength);
+				$shortened = TRUE;
 			}
 			$s = strtr($s, $table);
 
-		} elseif ($maxLength && $s !== '') {
+		} elseif ($maxLength && $s !== '' && !function_exists('mb_substr')) {
 			$i = $len = 0;
 			do {
 				if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength)) {
