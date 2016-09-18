@@ -421,7 +421,7 @@ class Dumper
 			$shortened = $s !== $tmp;
 		}
 
-		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) {
+		if (!preg_match('#^[\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]*+\z#u', $s) || preg_last_error()) {
 			if ($maxLength && strlen($s) > $maxLength) {
 				$s = substr($s, 0, $maxLength);
 				$shortened = TRUE;
