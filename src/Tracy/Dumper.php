@@ -428,7 +428,7 @@ class Dumper
 			}
 			$s = strtr($s, $table);
 
-		} elseif ($maxLength && $s !== '' && !function_exists('mb_substr')) {
+		} elseif ($maxLength && strlen($s) > $maxLength && !function_exists('mb_substr')) {
 			$i = $len = 0;
 			do {
 				if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength)) {
