@@ -100,7 +100,7 @@ class Bar
 		}
 
 		if (Helpers::isHtmlMode()) {
-			$stopXdebug = extension_loaded('xdebug') ? ['XDEBUG_SESSION_STOP' => 1, 'XDEBUG_PROFILE' => 0, 'XDEBUG_TRACE' => 0] : [];
+			$stopXdebug = extension_loaded('xdebug') ? ['XDEBUG_SESSION_STOP' => 1] : [];
 			require __DIR__ . '/assets/Bar/loader.phtml';
 		}
 	}
