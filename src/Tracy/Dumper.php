@@ -415,13 +415,7 @@ class Dumper
 			$table["\t"] = '\t';
 		}
 
-		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) {
-			if ($shortened = ($maxLength && strlen($s) > $maxLength)) {
-				$s = substr($s, 0, $maxLength);
-			}
-			$s = strtr($s, $table);
-
-		} elseif ($maxLength && $s !== '') {
+		if ($maxLength && strlen($s) > $maxLength) { // shortens to $maxLength in UTF-8 or longer
 			if (function_exists('mb_substr')) {
 				$s = mb_substr($tmp = $s, 0, $maxLength, 'UTF-8');
 				$shortened = $s !== $tmp;
@@ -435,6 +429,14 @@ class Dumper
 					}
 				} while (isset($s[++$i]));
 			}
+		}
+
+		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) { // is binary?
+			if ($maxLength && strlen($s) > $maxLength) {
+				$s = substr($s, 0, $maxLength);
+				$shortened = TRUE;
+			}
+			$s = strtr($s, $table);
 		}
 
 		return $s . (empty($shortened) ? '' : ' ... ');
