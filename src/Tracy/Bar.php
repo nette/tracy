@@ -100,7 +100,7 @@ class Bar
 		}
 
 		if (Helpers::isHtmlMode()) {
-			$stopXdebug = extension_loaded('xdebug') ? ['XDEBUG_SESSION_STOP' => 1] : [];
+			$baseUrl = extension_loaded('xdebug') ? '?XDEBUG_SESSION_STOP=1&' : '?';
 			require __DIR__ . '/assets/Bar/loader.phtml';
 		}
 	}
@@ -155,27 +155,22 @@ class Bar
 	 */
 	public function dispatchAssets()
 	{
-		$asset = isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : NULL;
-		if ($asset === 'css') {
-			header('Content-Type: text/css; charset=utf-8');
-			header('Cache-Control: max-age=864000');
-			header_remove('Pragma');
-			header_remove('Set-Cookie');
-			readfile(__DIR__ . '/assets/Bar/bar.css');
-			readfile(__DIR__ . '/assets/Toggle/toggle.css');
-			readfile(__DIR__ . '/assets/Dumper/dumper.css');
-			readfile(__DIR__ . '/assets/BlueScreen/bluescreen.css');
-			return TRUE;
-
-		} elseif ($asset === 'js') {
+		if (isset($_GET['_tracy_bar']) && $_GET['_tracy_bar'] === 'assets') {
 			header('Content-Type: text/javascript');
 			header('Cache-Control: max-age=864000');
 			header_remove('Pragma');
 			header_remove('Set-Cookie');
-			readfile(__DIR__ . '/assets/Bar/bar.js');
-			readfile(__DIR__ . '/assets/Toggle/toggle.js');
-			readfile(__DIR__ . '/assets/Dumper/dumper.js');
-			readfile(__DIR__ . '/assets/BlueScreen/bluescreen.js');
+			$css = file_get_contents(__DIR__ . '/assets/Bar/bar.css')
+				. file_get_contents(__DIR__ . '/assets/Toggle/toggle.css')
+				. file_get_contents(__DIR__ . '/assets/Dumper/dumper.css')
+				. file_get_contents(__DIR__ . '/assets/BlueScreen/bluescreen.css');
+			$js = file_get_contents(__DIR__ . '/assets/Bar/bar.js')
+				. file_get_contents(__DIR__ . '/assets/Toggle/toggle.js')
+				. file_get_contents(__DIR__ . '/assets/Dumper/dumper.js')
+				. file_get_contents(__DIR__ . '/assets/BlueScreen/bluescreen.js');
+			echo 'localStorage.setItem("tracy-style", ' . json_encode($css) . ');';
+			echo 'localStorage.setItem("tracy-script", ' . json_encode($js) . ');';
+			echo 'localStorage.setItem("tracy-version", ' . json_encode(Debugger::VERSION) . ');';
 			return TRUE;
 		}
 	}
