@@ -141,16 +141,17 @@
 		}
 
 		function escape(s) {
-			return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+			return s.replace(/<\//g, '<\\\/');
 		}
 
 		var doc = win.document;
 		doc.write('<!DOCTYPE html><meta charset="utf-8">'
-			+ '<link rel="stylesheet" href="' + escape(document.getElementById('tracy-debug-style').href) + '">'
-			+ '<script src="' + escape(document.getElementById('tracy-debug-script').src) + '" onload="Tracy.Dumper.init()" async><\/script>'
+			+ '<style>' + escape(localStorage.getItem('tracy-style')) + '</style>'
+			+ '<script>' + escape(localStorage.getItem('tracy-script')) + '</script>'
 			+ '<body id="tracy-debug">'
+			+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.innerHTML + '</div>'
+			+ '<script>Tracy.Dumper.init()</script>'
 		);
-		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.innerHTML + '<\/div>';
 		evalScripts(doc.body, win);
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').textContent;
@@ -314,10 +315,6 @@
 	Debug.panels = {};
 
 	Debug.init = function(content, dumps) {
-		if (!document.documentElement.dataset) {
-			throw new Error('Tracy requires IE 11+');
-		}
-
 		layer.innerHTML = content;
 		evalScripts(layer);
 		Tracy.Dumper.init();
