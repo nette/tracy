@@ -172,6 +172,7 @@ class Bar
 			header('Cache-Control: max-age=864000');
 			header_remove('Pragma');
 			header_remove('Set-Cookie');
+			require __DIR__ . '/assets/Bar/bar.check-redirect.phpjs';
 			readfile(__DIR__ . '/assets/Bar/bar.js');
 			readfile(__DIR__ . '/assets/Toggle/toggle.js');
 			readfile(__DIR__ . '/assets/Dumper/dumper.js');
