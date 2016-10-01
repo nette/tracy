@@ -102,7 +102,7 @@ Debugger::$strictMode = TRUE;
 
 [![Notice rendered by Tracy](https://nette.github.io/tracy/images/tracy-notice.png)](https://nette.github.io/tracy/tracy-notice.html)
 
-If your site uses Content Security Policy, you'll need to add `'unsafe-inline'` to `style-src`, and `'unsafe-inline'` & `'unsafe-eval'` to `script-src` for Tracy to work properly. Avoid adding these in production mode, if you can.
+If your site uses Content Security Policy, you'll need to add `'unsafe-inline'` to `style-src`, and `'unsafe-inline'` & `'unsafe-eval'` to `script-src` for Tracy to work properly. Avoid adding these in production mode, if you can. Since version 2.4.0 Tracy also requires `'self'` (or the origin itself) in `script-src`.
 
 
 Production mode and error logging
