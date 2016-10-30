@@ -13,20 +13,32 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 <?php
 
-function first($arg1, $arg2)
+class DemoClass
 {
-	second(TRUE, FALSE);
+
+	function first($arg1, $arg2)
+	{
+		$this->second(TRUE, FALSE);
+	}
+
+	function second($arg1, $arg2)
+	{
+		self::third([1, 2, 3]);
+	}
+
+	static function third($arg1)
+	{
+		throw new Exception('The my exception', 123);
+	}
+
 }
 
-function second($arg1, $arg2)
-{
-	third([1, 2, 3]);
-}
 
-function third($arg1)
+function demo($a, $b)
 {
-	throw new Exception('The my exception', 123);
+	$demo = new DemoClass;
+	$demo->first($a, $b);
 }
 
 
-first(10, 'any string');
+demo(10, 'any string');
