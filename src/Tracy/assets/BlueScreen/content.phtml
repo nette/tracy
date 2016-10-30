@@ -193,10 +193,11 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 		<?php $bottomPanels = [] ?>
 		<?php foreach ($this->renderPanels(NULL) as $panel): ?>
 		<?php if (!empty($panel->bottom)) { $bottomPanels[] = $panel; continue; } ?>
+		<?php $collapsedClass = !isset($panel->collapsed) || $panel->collapsed ? ' tracy-collapsed' : ''; ?>
 		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= $collapsedClass ?>"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
 
-			<div class="tracy-collapsed inner">
+			<div class="inner<?= $collapsedClass ?>">
 			<?= $panel->panel ?>
 		</div></div>
 		<?php endforeach ?>
