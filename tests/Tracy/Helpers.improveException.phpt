@@ -54,7 +54,7 @@ test(function () {
 		abc\trimx();
 	} catch (\Error $e) {}
 	Helpers::improveException($e);
-	Assert::same('Call to undefined function abc\trimx(), did you mean trim()?', $e->getMessage());
+	Assert::same('Call to undefined function trimx(), did you mean trim()?', $e->getMessage());
 });
 
 test(function () {
