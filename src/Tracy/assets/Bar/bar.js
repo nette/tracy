@@ -149,9 +149,9 @@
 			+ '<style>' + escape(localStorage.getItem('tracy-style')) + '</style>'
 			+ '<script>' + escape(localStorage.getItem('tracy-script')) + '</script>'
 			+ '<body id="tracy-debug">'
-			+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.innerHTML + '</div>'
-			+ '<script>Tracy.Dumper.init()</script>'
 		);
+		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.innerHTML + '<\/div>'
+			+ '<script>Tracy.Dumper.init()</script>';
 		evalScripts(doc.body, win);
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').textContent;
