@@ -6,10 +6,6 @@ php:
     - 7.0
     - 7.1
 
-matrix:
-    allow_failures:
-        - php: 7.1
-
 env:
     - PHP_BIN=php
     - PHP_BIN=php-cgi
