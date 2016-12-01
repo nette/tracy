@@ -96,7 +96,7 @@ class Bar
 		if ($contentId) {
 			$queue = & $_SESSION['_tracy']['bar'];
 			$queue = array_slice(array_filter((array) $queue), -5, NULL, TRUE);
-			$queue[$contentId] = ['content' => $content, 'dumps' => $dumps];
+			$queue[$contentId] = ['content' => $content, 'dumps' => $dumps, 'createdAt' => time()];
 		}
 
 		if (Helpers::isHtmlMode()) {
@@ -186,6 +186,7 @@ class Bar
 		if (Helpers::isAjax()) {
 			header('X-Tracy-Ajax: 1'); // session must be already locked
 		}
+		$dispatched = FALSE;
 		if (preg_match('#^content(-ajax)?.(\w+)$#', isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : '', $m)) {
 			$session = & $_SESSION['_tracy']['bar'][$m[2] . $m[1]];
 			header('Content-Type: text/javascript');
@@ -201,8 +202,19 @@ class Bar
 				echo "Tracy.BlueScreen.loadAjax(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
 				$session = NULL;
 			}
-			return TRUE;
+			$dispatched = TRUE;
 		}
+
+		//remove old undispatched bars
+		if (isset($_SESSION['_tracy']['bar'])) {
+			foreach ($_SESSION['_tracy']['bar'] as $id => $bar) {
+				if (isset($bar['createdAt']) && ($bar['createdAt'] + 60) < time()) {
+					unset($_SESSION['_tracy']['bar'][$id]);
+				}
+			}
+		}
+
+		return $dispatched;
 	}
 
 }
