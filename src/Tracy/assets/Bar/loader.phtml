@@ -20,11 +20,10 @@ use Tracy;
 
 <!-- Tracy Debug Bar -->
 <div id="tracy-debug" data-id="<?= htmlspecialchars($contentId) ?>"></div>
-<link rel="stylesheet" href="?<?=http_build_query(['_tracy_bar' => 'css', 'v' => Debugger::VERSION] + $stopXdebug, NULL, '&amp;')?>" id="tracy-debug-style" class="tracy-debug" />
-<script src="?<?=http_build_query(['_tracy_bar' => 'js', 'v' => Debugger::VERSION] + $stopXdebug, NULL, '&amp;')?>" id="tracy-debug-script"></script>
 <?php if ($contentId): ?>
-<script src="?<?=http_build_query(['_tracy_bar' => "content.$contentId"] + $stopXdebug, NULL, '&amp;')?>"></script>
+<script src="?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1"></script>
 <?php else: ?>
+<script src="?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1"></script>
 <script>
 Tracy.Debug.init(<?= json_encode($content) ?>, <?= json_encode($dumps) ?>);
 </script>
