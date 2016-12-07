@@ -59,6 +59,14 @@ class Bar
 		$useSession = $this->useSession && session_status() === PHP_SESSION_ACTIVE;
 		$redirectQueue = & $_SESSION['_tracy']['redirect'];
 
+		foreach (['bar', 'redirect', 'bluescreen'] as $key) {
+			$queue = & $_SESSION['_tracy'][$key];
+			$queue = array_slice((array) $queue, -10, NULL, TRUE);
+			$queue = array_filter($queue, function ($item) {
+				return isset($item['time']) && $item['time'] > time() - 60;
+			});
+		}
+
 		if (!Helpers::isHtmlMode() && !Helpers::isAjax()) {
 			return;
 
@@ -68,12 +76,12 @@ class Bar
 			$contentId = $useSession ? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax' : NULL;
 
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
-			$redirectQueue = array_slice((array) $redirectQueue, -10);
 			Dumper::fetchLiveData();
 			Dumper::$livePrefix = count($redirectQueue) . 'p';
 			$redirectQueue[] = [
 				'panels' => $this->renderPanels('-r' . count($redirectQueue)),
 				'dumps' => Dumper::fetchLiveData(),
+				'time' => time(),
 			];
 			return;
 
@@ -94,9 +102,7 @@ class Bar
 		$content = Helpers::fixEncoding(ob_get_clean());
 
 		if ($contentId) {
-			$queue = & $_SESSION['_tracy']['bar'];
-			$queue = array_slice(array_filter((array) $queue), -5, NULL, TRUE);
-			$queue[$contentId] = ['content' => $content, 'dumps' => $dumps];
+			$_SESSION['_tracy']['bar'][$contentId] = ['content' => $content, 'dumps' => $dumps, 'time' => time()];
 		}
 
 		if (Helpers::isHtmlMode()) {
