@@ -36,7 +36,7 @@ Debugger::barDump('classic request');
 </p>
 
 
-<script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
 
 var jqxhr;
@@ -52,7 +52,7 @@ $('button').click(function() {
 		data: {error: $(this).hasClass('error') * 1},
 		dataType: 'json',
 		// headers: {'X-Tracy-Ajax': Tracy.getAjaxHeader()}, // use when auto-refresh is disabled via window.TracyAutoRefresh = false;
-	}).success(function(data) {
+	}).done(function(data) {
 		$('#result').text('loaded: ' + data);
 
 	}).fail(function() {
