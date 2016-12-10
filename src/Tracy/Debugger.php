@@ -179,7 +179,6 @@ class Debugger
 		if (self::$enabled) {
 			return;
 		}
-		self::$enabled = TRUE;
 
 		register_shutdown_function([__CLASS__, 'shutdownHandler']);
 		set_exception_handler([__CLASS__, 'exceptionHandler']);
@@ -188,20 +187,8 @@ class Debugger
 		array_map('class_exists', ['Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
 			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger']);
 
-		if (self::$productionMode) {
-
-		} elseif (headers_sent($file, $line) || ob_get_length()) {
-			throw new \LogicException(
-				__METHOD__ . '() called after some output has been sent. '
-				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.')
-			);
-
-		} elseif (self::getBar()->dispatchAssets()) {
-			exit;
-
-		} elseif (session_status() === PHP_SESSION_ACTIVE) {
-			self::dispatch();
-		}
+		self::dispatch();
+		self::$enabled = TRUE;
 	}
 
 
@@ -219,7 +206,7 @@ class Debugger
 				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.')
 			);
 
-		} elseif (session_status() !== PHP_SESSION_ACTIVE) {
+		} elseif (self::$enabled && session_status() !== PHP_SESSION_ACTIVE) {
 			ini_set('session.use_cookies', '1');
 			ini_set('session.use_only_cookies', '1');
 			ini_set('session.use_trans_sid', '0');
@@ -227,7 +214,8 @@ class Debugger
 			ini_set('session.cookie_httponly', '1');
 			session_start();
 		}
-		if (self::getBar()->dispatchContent()) {
+
+		if (self::getBar()->dispatchAssets()) {
 			exit;
 		}
 	}

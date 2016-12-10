@@ -17,7 +17,7 @@ class Bar
 	private $panels = [];
 
 	/** @var bool */
-	private $dispatched;
+	private $useSession;
 
 
 	/**
@@ -56,7 +56,7 @@ class Bar
 	 */
 	public function render()
 	{
-		$useSession = $this->dispatched && session_status() === PHP_SESSION_ACTIVE;
+		$useSession = $this->useSession && session_status() === PHP_SESSION_ACTIVE;
 		$redirectQueue = & $_SESSION['_tracy']['redirect'];
 
 		if (!Helpers::isHtmlMode() && !Helpers::isAjax()) {
@@ -163,20 +163,14 @@ class Bar
 			$this->renderAssets();
 			return TRUE;
 		}
-	}
 
+		$this->useSession = session_status() === PHP_SESSION_ACTIVE;
 
-	/**
-	 * Renders debug bar content.
-	 * @return bool
-	 */
-	public function dispatchContent()
-	{
-		$this->dispatched = TRUE;
-		if (Helpers::isAjax()) {
+		if ($this->useSession && Helpers::isAjax()) {
 			header('X-Tracy-Ajax: 1'); // session must be already locked
 		}
-		if (preg_match('#^content(-ajax)?.(\w+)$#', isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : '', $m)) {
+
+		if ($this->useSession && preg_match('#^content(-ajax)?.(\w+)$#', $asset, $m)) {
 			$session = & $_SESSION['_tracy']['bar'][$m[2] . $m[1]];
 			header('Content-Type: text/javascript');
 			header('Cache-Control: max-age=60');
