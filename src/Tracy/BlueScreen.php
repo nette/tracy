@@ -40,7 +40,7 @@ class BlueScreen
 	/**
 	 * Add custom panel.
 	 * @param  callable
-	 * @return self
+	 * @return static
 	 */
 	public function addPanel($panel)
 	{

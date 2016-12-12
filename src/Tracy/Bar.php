@@ -24,7 +24,7 @@ class Bar
 	 * Add custom panel.
 	 * @param  IBarPanel
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addPanel(IBarPanel $panel, $id = NULL)
 	{
