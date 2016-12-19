@@ -237,9 +237,13 @@ class Debugger
 		self::$reserved = NULL;
 
 		if (!headers_sent()) {
-			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
 			$code = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== FALSE ? 503 : 500;
-			header("$protocol $code", TRUE, $code);
+			if (PHP_VERSION_ID >= 50400) {
+				http_response_code($code);
+			} else {
+				$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+				header("$protocol $code", TRUE, $code);
+			}
 			if (self::isHtmlMode()) {
 				header('Content-Type: text/html; charset=UTF-8');
 			}
