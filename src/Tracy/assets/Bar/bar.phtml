@@ -72,7 +72,7 @@ use Tracy;
 		return;
 	}
 
-	window.addEventListener('load', function() {
+	window.addEventListener('DOMContentLoaded', function() {
 		var debug = document.body.appendChild(document.createElement('div'));
 		debug.id = 'tracy-debug';
 		debug.innerHTML = <?php echo json_encode(Helpers::fixEncoding($output)) ?>;
