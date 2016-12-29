@@ -379,31 +379,19 @@
 		if (!header) {
 			return;
 		}
-		var oldOpen = XMLHttpRequest.prototype.open,
-			oldGet = XMLHttpRequest.prototype.getResponseHeader,
-			oldGetAll = XMLHttpRequest.prototype.getAllResponseHeaders;
+		var oldOpen = XMLHttpRequest.prototype.open;
 
 		XMLHttpRequest.prototype.open = function() {
 			oldOpen.apply(this, arguments);
 			if (window.TracyAutoRefresh !== false && arguments[1].indexOf('//') <= 0 || arguments[1].indexOf(location.origin + '/') === 0) {
 				this.setRequestHeader('X-Tracy-Ajax', header);
+				this.addEventListener('load', function() {
+					if (this.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
+						Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+					}
+				});
 			}
 		};
-		XMLHttpRequest.prototype.getResponseHeader = function() {
-			process(this);
-			return oldGet.apply(this, arguments);
-		};
-		XMLHttpRequest.prototype.getAllResponseHeaders = function() {
-			process(this);
-			return oldGetAll.call(this);
-		};
-		function process(xhr) {
-			xhr.getResponseHeader = oldGet;
-			xhr.getAllResponseHeaders = oldGetAll;
-			if (xhr.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
-				Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
-			}
-		}
 	};
 
 	Debug.loadScript = function(url) {
