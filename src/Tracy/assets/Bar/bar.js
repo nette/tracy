@@ -146,7 +146,7 @@
 			+ '<body id="tracy-debug">'
 		);
 		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.innerHTML + '<\/div>';
-		evalScripts(doc.body, win);
+		evalScripts(doc.body);
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').textContent;
 		}
@@ -403,13 +403,12 @@
 		document.documentElement.appendChild(Debug.scriptElem);
 	};
 
-	function evalScripts(elem, scope) {
-		scope = scope || window;
+	function evalScripts(elem) {
 		forEach(elem.getElementsByTagName('script'), function(script) {
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
-				(scope.execScript || function (data) {
-					scope['eval'].call(scope, data);
-				})(script.innerHTML);
+				var dolly = script.ownerDocument.createElement('script');
+				dolly.textContent = script.textContent;
+				script.ownerDocument.body.appendChild(dolly);
 				script.tracyEvaluated = true;
 			}
 		});
