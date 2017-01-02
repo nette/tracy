@@ -400,6 +400,7 @@
 		}
 		Debug.scriptElem = document.createElement('script');
 		Debug.scriptElem.src = url;
+		Debug.scriptElem.setAttribute('nonce', layer.dataset.nonce);
 		document.documentElement.appendChild(Debug.scriptElem);
 	};
 
@@ -408,6 +409,7 @@
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 				var dolly = script.ownerDocument.createElement('script');
 				dolly.textContent = script.textContent;
+				dolly.setAttribute('nonce', layer.dataset.nonce);
 				script.ownerDocument.body.appendChild(dolly);
 				script.tracyEvaluated = true;
 			}
