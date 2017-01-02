@@ -238,4 +238,13 @@ class Helpers
 		return isset($_SERVER['HTTP_X_TRACY_AJAX']) && preg_match('#^\w{10}\z#', $_SERVER['HTTP_X_TRACY_AJAX']);
 	}
 
+
+	/** @internal */
+	public static function getNonce()
+	{
+		return preg_match('#^Content-Security-Policy:.*\sscript-src\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
+			? $m[1]
+			: NULL;
+	}
+
 }

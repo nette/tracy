@@ -8,12 +8,14 @@
  *
  * @param  array $exception
  * @param  string $title
+ * @param  string $nonce
  * @return void
  */
 
 namespace Tracy;
 
 $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
+$nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 
 ?><!DOCTYPE html><!-- "' --></script></style></pre></xmp></table></a></abbr></address></article></aside></audio></b></bdi></bdo></blockquote></button></canvas></caption></cite></code></datalist></del></details></dfn></div></dl></em></fieldset></figcaption></figure></footer></form></h1></h2></h3></h4></h5></h6></header></hgroup></i></iframe></ins></kbd></label></legend></map></mark></menu></meter></nav></noscript></object></ol></optgroup></output></progress></q></rp></rt></ruby></s></samp></section></select></small></span></strong></sub></summary></sup></textarea></time></title></tr></u></ul></var></video>
 <html>
@@ -30,14 +32,14 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 	<style type="text/css" class="tracy-debug">
 	<?= preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . '/bluescreen.css')) ?>
 	</style>
-	<script>document.documentElement.className+=' tracy-js'</script>
+	<script<?= $nonceAttr ?>>document.documentElement.className+=' tracy-js'</script>
 </head>
 
 
 <body>
 <?php require __DIR__ . '/content.phtml' ?>
 
-<script>
+<script<?= $nonceAttr ?>>
 (function() {
 	if (!document.documentElement.dataset) {
 		document.getElementById('tracy-bs-error').innerHTML += '<div id=tracy-bs-ie-warning>Warning: Tracy requires IE 11+<\/div>';
@@ -48,10 +50,10 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 	<?php readfile(__DIR__ . '/bluescreen.js') ?>
 })();
 </script>
-<script>
+<script<?= $nonceAttr ?>>
 Tracy && Tracy.Dumper.init(<?= json_encode(Dumper::fetchLiveData()) ?>);
 </script>
-<script>
+<script<?= $nonceAttr ?>>
 Tracy && Tracy.BlueScreen.init();
 </script>
 </body>
