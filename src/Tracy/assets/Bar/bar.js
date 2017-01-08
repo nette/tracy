@@ -222,6 +222,9 @@
 
 	Bar.prototype.initTabs = function() {
 		var _this = this, elem = this.elem;
+		
+		if (a.hasAttribute('data-initialized')) return true;
+		a.setAttribute('data-initialized', '');
 
 		forEach(elem.getElementsByTagName('a'), function(a) {
 			a.addEventListener('click', function(e) {
