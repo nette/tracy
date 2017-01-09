@@ -57,10 +57,10 @@ class Bar
 	public function render()
 	{
 		$useSession = $this->useSession && session_status() === PHP_SESSION_ACTIVE;
-		$redirectQueue = & $_SESSION['_tracy']['redirect'];
+		$redirectQueue = &$_SESSION['_tracy']['redirect'];
 
 		foreach (['bar', 'redirect', 'bluescreen'] as $key) {
-			$queue = & $_SESSION['_tracy'][$key];
+			$queue = &$_SESSION['_tracy'][$key];
 			$queue = array_slice((array) $queue, -10, NULL, TRUE);
 			$queue = array_filter($queue, function ($item) {
 				return isset($item['time']) && $item['time'] > time() - 60;
@@ -178,7 +178,7 @@ class Bar
 		}
 
 		if ($this->useSession && preg_match('#^content(-ajax)?.(\w+)$#', $asset, $m)) {
-			$session = & $_SESSION['_tracy']['bar'][$m[2] . $m[1]];
+			$session = &$_SESSION['_tracy']['bar'][$m[2] . $m[1]];
 			header('Content-Type: text/javascript');
 			header('Cache-Control: max-age=60');
 			header_remove('Set-Cookie');
@@ -190,7 +190,7 @@ class Bar
 				echo "Tracy.Debug.$method(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
 				$session = NULL;
 			}
-			$session = & $_SESSION['_tracy']['bluescreen'][$m[2]];
+			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];
 			if ($session) {
 				echo "Tracy.BlueScreen.loadAjax(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
 				$session = NULL;
