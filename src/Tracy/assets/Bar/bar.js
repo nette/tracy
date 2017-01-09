@@ -216,12 +216,12 @@
 			draggedClass: 'tracy-dragged'
 		});
 
-		this.initTabs();
+		this.initTabs(this.elem);
 		this.restorePosition();
 	};
 
-	Bar.prototype.initTabs = function() {
-		var _this = this, elem = this.elem;
+	Bar.prototype.initTabs = function(elem) {
+		var _this = this;
 
 		forEach(elem.getElementsByTagName('a'), function(a) {
 			a.addEventListener('click', function(e) {
