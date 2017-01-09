@@ -56,7 +56,7 @@ class Helpers
 	public static function formatHtml($mask)
 	{
 		$args = func_get_args();
-		return preg_replace_callback('#%#', function () use (& $args, & $count) {
+		return preg_replace_callback('#%#', function () use (&$args, &$count) {
 			return Helpers::escapeHtml($args[++$count]);
 		}, $mask);
 	}
@@ -68,7 +68,7 @@ class Helpers
 	}
 
 
-	public static function findTrace(array $trace, $method, & $index = NULL)
+	public static function findTrace(array $trace, $method, &$index = NULL)
 	{
 		$m = explode('::', $method);
 		foreach ($trace as $i => $item) {

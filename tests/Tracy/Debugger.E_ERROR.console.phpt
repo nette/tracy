@@ -22,7 +22,7 @@ Debugger::enable();
 
 $onFatalErrorCalled = FALSE;
 
-register_shutdown_function(function () use (& $onFatalErrorCalled) {
+register_shutdown_function(function () use (&$onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
 	Assert::match(PHP_MAJOR_VERSION > 5 ?
 "Error: Call to undefined function missing_function() in %a%
@@ -53,7 +53,7 @@ Unable to log error: Directory is not specified.
 });
 
 
-Debugger::$onFatalError[] = function () use (& $onFatalErrorCalled) {
+Debugger::$onFatalError[] = function () use (&$onFatalErrorCalled) {
 	$onFatalErrorCalled = TRUE;
 };
 

@@ -12,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $arr = [1, 2, 3];
-$arr[] = & $arr;
+$arr[] = &$arr;
 Assert::match('array (4)
    0 => 1
    1 => 2
@@ -26,7 +26,7 @@ Assert::match('array (4)
 
 
 $arr = (object) ['x' => 1, 'y' => 2];
-$arr->z = & $arr;
+$arr->z = &$arr;
 Assert::match('stdClass #%a%
    x => 1
    y => 2

@@ -95,7 +95,7 @@ class Dumper
 			self::COLLAPSE_COUNT => 7,
 			self::OBJECT_EXPORTERS => NULL,
 		];
-		$loc = & $options[self::LOCATION];
+		$loc = &$options[self::LOCATION];
 		$loc = $loc === TRUE ? ~0 : (int) $loc;
 
 		$options[self::OBJECT_EXPORTERS] = (array) $options[self::OBJECT_EXPORTERS] + self::$objectExporters;
@@ -147,7 +147,7 @@ class Dumper
 	 * @param  int    current recursion level
 	 * @return string
 	 */
-	private static function dumpVar(& $var, array $options, $level = 0)
+	private static function dumpVar(&$var, array $options, $level = 0)
 	{
 		if (method_exists(__CLASS__, $m = 'dump' . gettype($var))) {
 			return self::$m($var, $options, $level);
@@ -163,19 +163,19 @@ class Dumper
 	}
 
 
-	private static function dumpBoolean(& $var)
+	private static function dumpBoolean(&$var)
 	{
 		return '<span class="tracy-dump-bool">' . ($var ? 'TRUE' : 'FALSE') . "</span>\n";
 	}
 
 
-	private static function dumpInteger(& $var)
+	private static function dumpInteger(&$var)
 	{
 		return "<span class=\"tracy-dump-number\">$var</span>\n";
 	}
 
 
-	private static function dumpDouble(& $var)
+	private static function dumpDouble(&$var)
 	{
 		$var = is_finite($var)
 			? ($tmp = json_encode($var)) . (strpos($tmp, '.') === FALSE ? '.0' : '')
@@ -184,7 +184,7 @@ class Dumper
 	}
 
 
-	private static function dumpString(& $var, $options)
+	private static function dumpString(&$var, $options)
 	{
 		return '<span class="tracy-dump-string">"'
 			. Helpers::escapeHtml(self::encodeString($var, $options[self::TRUNCATE]))
@@ -192,7 +192,7 @@ class Dumper
 	}
 
 
-	private static function dumpArray(& $var, $options, $level)
+	private static function dumpArray(&$var, $options, $level)
 	{
 		static $marker;
 		if ($marker === NULL) {
@@ -213,7 +213,7 @@ class Dumper
 			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
 				. $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$var[$marker] = TRUE;
-			foreach ($var as $k => & $v) {
+			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
 					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
@@ -230,7 +230,7 @@ class Dumper
 	}
 
 
-	private static function dumpObject(& $var, $options, $level)
+	private static function dumpObject(&$var, $options, $level)
 	{
 		$fields = self::exportObject($var, $options[self::OBJECT_EXPORTERS]);
 		$editor = NULL;
@@ -258,7 +258,7 @@ class Dumper
 			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
 				. $out . "</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$list[] = $var;
-			foreach ($fields as $k => & $v) {
+			foreach ($fields as $k => &$v) {
 				$vis = '';
 				if (isset($k[0]) && $k[0] === "\x00") {
 					$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
@@ -278,7 +278,7 @@ class Dumper
 	}
 
 
-	private static function dumpResource(& $var, $options, $level)
+	private static function dumpResource(&$var, $options, $level)
 	{
 		$type = get_resource_type($var);
 		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($type) . ' resource</span> '
@@ -298,7 +298,7 @@ class Dumper
 	/**
 	 * @return mixed
 	 */
-	private static function toJson(& $var, $options, $level = 0)
+	private static function toJson(&$var, $options, $level = 0)
 	{
 		if (is_bool($var) || is_null($var) || is_int($var)) {
 			return $var;
@@ -321,7 +321,7 @@ class Dumper
 			}
 			$res = [];
 			$var[$marker] = TRUE;
-			foreach ($var as $k => & $v) {
+			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
 					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
 					$res[] = [$k, self::toJson($v, $options, $level + 1)];

@@ -114,7 +114,7 @@ class FireLogger implements ILogger
 	 * @param  int    current recursion level
 	 * @return string
 	 */
-	private function jsonDump(& $var, $level = 0)
+	private function jsonDump(&$var, $level = 0)
 	{
 		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
 			return $var;
@@ -133,7 +133,7 @@ class FireLogger implements ILogger
 			} elseif ($level < $this->maxDepth || !$this->maxDepth) {
 				$var[$marker] = TRUE;
 				$res = [];
-				foreach ($var as $k => & $v) {
+				foreach ($var as $k => &$v) {
 					if ($k !== $marker) {
 						$res[$this->jsonDump($k)] = $this->jsonDump($v, $level + 1);
 					}
@@ -154,7 +154,7 @@ class FireLogger implements ILogger
 			} elseif ($level < $this->maxDepth || !$this->maxDepth) {
 				$list[] = $var;
 				$res = ["\x00" => '(object) ' . Helpers::getClass($var)];
-				foreach ($arr as $k => & $v) {
+				foreach ($arr as $k => &$v) {
 					if (isset($k[0]) && $k[0] === "\x00") {
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
