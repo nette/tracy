@@ -405,7 +405,7 @@
 	// returns total offset for element
 	function getOffset(elem) {
 		var res = {left: elem.offsetLeft, top: elem.offsetTop};
-		while (elem = elem.offsetParent) {
+		while (elem = elem.offsetParent) { // eslint-disable-line
 			res.left += elem.offsetLeft; res.top += elem.offsetTop;
 		}
 		return res;

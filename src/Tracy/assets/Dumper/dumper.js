@@ -44,7 +44,7 @@
 			}
 
 			// enables <a class="tracy-toggle" href="#"> or <span data-tracy-ref="#"> toggling
-			if (link = closest(e.target, '.tracy-toggle')) {
+			if (link = closest(e.target, '.tracy-toggle')) { // eslint-disable-line
 				var collapsed = link.classList.contains('tracy-collapsed'),
 					ref = link.getAttribute('data-tracy-ref') || link.getAttribute('href', 2),
 					dest = link;
