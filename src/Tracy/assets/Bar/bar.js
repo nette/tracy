@@ -396,7 +396,7 @@
 
 	Debug.loadScript = function(url) {
 		if (Debug.scriptElem) {
-			Debug.scriptElem.parentNode.removeChild(Debug.scriptElem)
+			Debug.scriptElem.parentNode.removeChild(Debug.scriptElem);
 		}
 		Debug.scriptElem = document.createElement('script');
 		Debug.scriptElem.src = url;
@@ -414,7 +414,7 @@
 				script.tracyEvaluated = true;
 			}
 		});
-	};
+	}
 
 	// emulate mouseenter & mouseleave
 	function isTargetChanged(target, dest) {
