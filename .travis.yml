@@ -13,6 +13,7 @@ env:
 script:
     - vendor/bin/tester -p $PHP_BIN tests -s
     - php temp/code-checker/src/code-checker.php --short-arrays
+    - if [ $TRAVIS_PHP_VERSION == "7.0" ]; then ./node_modules/.bin/eslint "src/**/*.js"; fi
 
 after_failure:
     # Print *.actual content
@@ -22,6 +23,15 @@ before_script:
     # Install Nette Tester & Code Checker
     - travis_retry composer install --no-interaction --prefer-dist
     - travis_retry composer create-project nette/code-checker temp/code-checker ~2.5 --no-interaction
+    # Install new Node.js and Eslint
+    - >
+      if [ $TRAVIS_PHP_VERSION == "7.0" ]; then
+      . $HOME/.nvm/nvm.sh;
+      nvm install stable;
+      nvm use stable;
+      npm install;
+      npm install eslint;
+      fi
 
 sudo: false
 
