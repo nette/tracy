@@ -8,12 +8,12 @@
 	direction: ltr;
 }
 
-body#tracy-debug {
+body#tracy-debug { /* for popup window */
 	margin: 0;
 	display: block;
 }
 
-body #tracy-debug {
+#tracy-debug {
 	position: absolute;
 	bottom: 0;
 	right: 0;
