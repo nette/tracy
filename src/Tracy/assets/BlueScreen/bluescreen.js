@@ -20,7 +20,7 @@
 			}
 		}
 
-		document.getElementById('tracy-bs-toggle').addEventListener('tracy-toggle', function(e) {
+		document.getElementById('tracy-bs-toggle').addEventListener('tracy-toggle', function() {
 			var collapsed = this.classList.contains('tracy-collapsed');
 			for (i = 0; i < styles.length; i++) {
 				styles[i].disabled = collapsed ? styles[i].oldDisabled : true;
@@ -45,7 +45,7 @@
 				Tracy.Toggle.toggle(document.getElementById('tracy-bs-toggle'));
 			}
 		});
-	}
+	};
 
 	BlueScreen.loadAjax = function(content, dumps) {
 		var ajaxBs = document.getElementById('tracy-bs');

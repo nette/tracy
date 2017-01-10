@@ -58,7 +58,8 @@
 			]);
 
 		} else if (Array.isArray(data)) {
-			return buildStruct([
+			return buildStruct(
+				[
 					createEl('span', {'class': 'tracy-dump-array'}, ['array']),
 					' (' + (data[0] && data.length || '') + ')'
 				],
@@ -87,10 +88,11 @@
 				throw new UnknownEntityException;
 			}
 			parentIds = parentIds || [];
-			recursive = parentIds.indexOf(id) > -1;
+			var recursive = parentIds.indexOf(id) > -1;
 			parentIds.push(id);
 
-			return buildStruct([
+			return buildStruct(
+				[
 					createEl('span', {
 						'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
 						title: object.editor ? 'Declared in file ' + object.editor.file + ' on line ' + object.editor.line : null,
