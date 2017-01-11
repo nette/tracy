@@ -224,6 +224,10 @@
 		var _this = this;
 
 		forEach(elem.getElementsByTagName('a'), function(a) {
+			
+			if (a.hasAttribute('data-initialized')) return true;
+			a.setAttribute('data-initialized', '');
+			
 			a.addEventListener('click', function(e) {
 				if (this.rel === 'close') {
 					_this.close();
