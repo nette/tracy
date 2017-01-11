@@ -34,6 +34,13 @@ body#tracy-debug { /* for popup window */
 	text-shadow: none;
 }
 
+#tracy-debug:before,
+#tracy-debug:after,
+#tracy-debug *:before,
+#tracy-debug *:after {
+	display: none;
+}
+
 #tracy-debug b,
 #tracy-debug strong {
 	font-weight: bold;
@@ -64,6 +71,8 @@ body#tracy-debug { /* for popup window */
 #tracy-debug .tracy-panel h2,
 #tracy-debug .tracy-panel h3,
 #tracy-debug .tracy-panel p {
+	color: #333 !important;
+	background: transparent !important;
 	margin: .4em 0;
 }
 
@@ -195,7 +204,8 @@ body#tracy-debug { /* for popup window */
 
 #tracy-debug h1 {
 	font: normal normal 23px/1.4 Tahoma, sans-serif;
-	color: #575753;
+	color: #575753 !important;
+	background: transparent !important;
 	margin: -5px -5px 5px;
 	padding: 0 25px 0 5px;
 	max-width: 700px;

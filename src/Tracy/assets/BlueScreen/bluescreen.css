@@ -25,6 +25,13 @@
 	text-indent: 0;
 }
 
+#tracy-bs:before,
+#tracy-bs:after,
+#tracy-bs *:before,
+#tracy-bs *:after {
+	display: none;
+}
+
 #tracy-bs b {
 	font-weight: bold;
 }
@@ -257,11 +264,13 @@ html.tracy-js #tracy-bs .tracy-toggle.tracy-collapsed {
 
 #tracy-bs .tracy-toggle:after {
 	content: " ▼";
+	display: inline;
 	opacity: .4;
 }
 
 #tracy-bs .tracy-toggle.tracy-collapsed:after {
 	content: " ►";
+	display: inline;
 	opacity: .4;
 }
 
