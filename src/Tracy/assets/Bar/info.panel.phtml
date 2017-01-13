@@ -56,7 +56,7 @@ $info = array_filter([
 <table>
 <?php foreach ($info as $key => $val): ?>
 <tr>
-<?php if (iconv_strlen($val, 'UTF-8') > 25): ?>
+<?php if (iconv_strlen((string) $val, 'UTF-8') > 25): ?>
 	<td colspan=2><?= Helpers::escapeHtml($key) ?> <b><?= Helpers::escapeHtml($val) ?></b></td>
 <?php else: ?>
 	<td><?= Helpers::escapeHtml($key) ?></td><td><?= Helpers::escapeHtml($val) ?></td>

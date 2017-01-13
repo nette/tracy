@@ -43,7 +43,7 @@ __HALT_COMPILER();
 $phar->startBuffering();
 foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../src', RecursiveDirectoryIterator::SKIP_DOTS)) as $file) {
 	echo "adding: {$iterator->getSubPathname()}\n";
-	$s = php_strip_whitespace($file);
+	$s = php_strip_whitespace($file->getPathname());
 
 	if ($file->getExtension() === 'js') {
 		$s = compressJs($s);

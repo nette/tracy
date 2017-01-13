@@ -177,7 +177,7 @@ class Bar
 			header('X-Tracy-Ajax: 1'); // session must be already locked
 		}
 
-		if ($this->useSession && preg_match('#^content(-ajax)?.(\w+)$#', $asset, $m)) {
+		if ($this->useSession && $asset && preg_match('#^content(-ajax)?.(\w+)$#', $asset, $m)) {
 			$session = &$_SESSION['_tracy']['bar'][$m[2] . $m[1]];
 			header('Content-Type: text/javascript');
 			header('Cache-Control: max-age=60');

@@ -64,7 +64,7 @@ class Helpers
 
 	public static function escapeHtml($s)
 	{
-		return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+		return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	}
 
 

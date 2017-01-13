@@ -144,7 +144,7 @@ class Debugger
 		}
 
 		self::$maxLen = & self::$maxLength;
-		self::$reserved = str_repeat('t', 3e5);
+		self::$reserved = str_repeat('t', 30000);
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(TRUE);
 		self::$obLevel = ob_get_level();
 		self::$cpuUsage = !self::$productionMode && function_exists('getrusage') ? getrusage() : NULL;
@@ -165,9 +165,9 @@ class Debugger
 
 		// php configuration
 		if (function_exists('ini_set')) {
-			ini_set('display_errors', !self::$productionMode); // or 'stderr'
-			ini_set('html_errors', FALSE);
-			ini_set('log_errors', FALSE);
+			ini_set('display_errors', self::$productionMode ? '0' : '1'); // or 'stderr'
+			ini_set('html_errors', '0');
+			ini_set('log_errors', '0');
 
 		} elseif (ini_get('display_errors') != !self::$productionMode // intentionally ==
 			&& ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')

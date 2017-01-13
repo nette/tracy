@@ -215,7 +215,7 @@ class Dumper
 			$var[$marker] = TRUE;
 			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
-					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
+					$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . $k . '</span> => '
 						. self::dumpVar($v, $options, $level + 1);
@@ -264,7 +264,7 @@ class Dumper
 					$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 					$k = substr($k, strrpos($k, "\x00") + 1);
 				}
-				$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
+				$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 					. '<span class="tracy-dump-key">' . $k . "</span>$vis => "
 					. self::dumpVar($v, $options, $level + 1);
@@ -323,7 +323,7 @@ class Dumper
 			$var[$marker] = TRUE;
 			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
-					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
+					$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
 					$res[] = [$k, self::toJson($v, $options, $level + 1)];
 				}
 			}
@@ -359,7 +359,7 @@ class Dumper
 						$vis = $k[1] === '*' ? 1 : 2;
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$k = preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
+					$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
 					$obj['items'][] = [$k, self::toJson($v, $options, $level + 1), $vis];
 				}
 			}
@@ -535,7 +535,7 @@ class Dumper
 					$reflection = isset($item['class'])
 						? new \ReflectionMethod($item['class'], $item['function'])
 						: new \ReflectionFunction($item['function']);
-					if ($reflection->isInternal() || preg_match('#\s@tracySkipLocation\s#', $reflection->getDocComment())) {
+					if ($reflection->isInternal() || preg_match('#\s@tracySkipLocation\s#', (string) $reflection->getDocComment())) {
 						$location = $item;
 						continue;
 					}
