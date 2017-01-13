@@ -54,50 +54,44 @@ body #tracy-debug {
 	text-decoration: none;
 }
 
-#tracy-debug .tracy-panel a {
-	color: #125EAE;
-	text-decoration: none;
-}
-
 #tracy-debug a:hover,
-#tracy-debug a:active,
 #tracy-debug a:focus {
 	background-color: #125EAE;
 	color: white;
 }
 
-#tracy-debug .tracy-panel h2,
-#tracy-debug .tracy-panel h3,
-#tracy-debug .tracy-panel p {
+#tracy-debug h2,
+#tracy-debug h3,
+#tracy-debug p {
 	margin: .4em 0;
 }
 
-#tracy-debug .tracy-panel table {
+#tracy-debug table {
 	border-collapse: collapse;
 	background: #FDF5CE;
 }
 
-#tracy-debug .tracy-panel tr:nth-child(2n) td {
+#tracy-debug tr:nth-child(2n) td {
 	background: #F7F0CB;
 }
 
-#tracy-debug .tracy-panel td,
-#tracy-debug .tracy-panel th {
+#tracy-debug td,
+#tracy-debug th {
 	border: 1px solid #E6DFBF;
 	padding: 2px 5px;
 	vertical-align: top;
 	text-align: left;
 }
 
-#tracy-debug .tracy-panel th {
+#tracy-debug th {
 	background: #F4F3F1;
 	color: #655E5E;
 	font-size: 90%;
 	font-weight: bold;
 }
 
-#tracy-debug .tracy-panel pre,
-#tracy-debug .tracy-panel code {
+#tracy-debug pre,
+#tracy-debug code {
 	font: 9pt/1.5 Consolas, monospace;
 }
 
