@@ -180,11 +180,11 @@ class BlueScreen
 	public static function highlightPhp($source, $line, $lines = 15, array $vars = null)
 	{
 		if (function_exists('ini_set')) {
-			ini_set('highlight.comment', '#998; font-style: italic');
-			ini_set('highlight.default', '#000');
-			ini_set('highlight.html', '#06B');
-			ini_set('highlight.keyword', '#D24; font-weight: bold');
-			ini_set('highlight.string', '#080');
+			ini_set('highlight.comment', '#998!important; font-style: italic!important');
+			ini_set('highlight.default', '#000!important');
+			ini_set('highlight.html', '#06B!important');
+			ini_set('highlight.keyword', '#D24!important; font-weight: bold!important');
+			ini_set('highlight.string', '#080!important');
 		}
 
 		$source = str_replace(["\r\n", "\r"], "\n", $source);

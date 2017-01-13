@@ -50,24 +50,24 @@
 	color: #085AA3;
 }
 
-#tracy-bs-toggle {
+#tracy-bs #tracy-bs-toggle {
 	position: absolute;
 	right: .5em;
 	top: .5em;
 	text-decoration: none;
 	background: #CD1818;
-	color: white !important;
+	color: white;
 	padding: 3px;
 }
 
 #tracy-bs-error {
 	background: #CD1818;
 	color: white;
-	font: 13pt/1.5 Verdana, sans-serif !important;
+	font: 13pt/1.5 Verdana, sans-serif;
 }
 
 #tracy-bs-error a {
-	color: white !important;
+	color: white;
 	opacity: 0;
 	font-size: .7em;
 }
@@ -77,6 +77,7 @@
 }
 
 #tracy-bs-error a:hover {
+	color: white;
 	opacity: 1;
 }
 
@@ -99,25 +100,25 @@
 }
 
 #tracy-bs h2 {
-	font: 14pt/1.5 sans-serif !important;
+	font: 14pt/1.5 sans-serif;
 	margin: .6em 0;
 }
 
 #tracy-bs h3 {
-	font: bold 10pt/1.5 Verdana, sans-serif !important;
+	font: bold 10pt/1.5 Verdana, sans-serif;
 	margin: 1em 0;
 	padding: 0;
 }
 
 #tracy-bs p,
 #tracy-bs pre {
-	margin: .8em 0
+	margin: .8em 0;
 }
 
 #tracy-bs pre,
 #tracy-bs code,
 #tracy-bs table {
-	font: 9pt/1.5 Consolas, monospace !important;
+	font: 9pt/1.5 Consolas, monospace;
 }
 
 #tracy-bs pre,
@@ -166,7 +167,7 @@
 }
 
 #tracy-bs ul {
-	font: 7pt/1.5 Verdana, sans-serif !important;
+	font: 7pt/1.5 Verdana, sans-serif;
 	padding: 2em 4em;
 	margin: 1em 0 0;
 	color: #777;

@@ -48,7 +48,8 @@ pre.tracy-dump a:focus {
 
 .tracy-dump-visibility,
 .tracy-dump-hash {
-	font-size: 85%; color: #999;
+	font-size: 85%;
+	color: #999;
 }
 
 .tracy-dump-indent {

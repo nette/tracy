@@ -155,9 +155,12 @@ class Bar
 		foreach ($this->panels as $id => $panel) {
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
 			try {
-				$tab = (string) $panel->getTab();
-				$panelHtml = $tab ? (string) $panel->getPanel() : null;
-				if ($tab && $panel instanceof \Nette\Diagnostics\IBarPanel) {
+				$tabHtml = (string) $panel->getTab();
+				$panelHtml = $tabHtml ? (string) $panel->getPanel() : '';
+				list($tabHtml, $panelHtml) = preg_replace_callback('#<style\b(.+?)</style>#is', function ($m) {
+					return preg_replace('#(?<!!important);#', '!important;', $m[0]);
+				}, [$tabHtml, $panelHtml]);
+				if ($panel instanceof \Nette\Diagnostics\IBarPanel) {
 					$e = new \Exception('Support for Nette\Diagnostics\IBarPanel is deprecated');
 				}
 
@@ -169,11 +172,11 @@ class Bar
 					ob_end_clean();
 				}
 				$idHtml = "error-$idHtml";
-				$tab = "Error in $id";
+				$tabHtml = "Error in $id";
 				$panelHtml = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(Helpers::escapeHtml($e)) . '</div>';
 				unset($e);
 			}
-			$panels[] = (object) ['id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml];
+			$panels[] = (object) ['id' => $idHtml, 'tab' => $tabHtml, 'panel' => $panelHtml];
 		}
 
 		restore_error_handler();
@@ -235,6 +238,7 @@ class Bar
 			__DIR__ . '/assets/BlueScreen/bluescreen.css',
 		], Debugger::$customCssFiles));
 		$css = json_encode(preg_replace('#\s+#u', ' ', implode($css)));
+		$css = str_replace(';', '!important;', $css);
 		echo "(function(){var el = document.createElement('style'); el.className='tracy-debug'; el.textContent=$css; document.head.appendChild(el);})();\n";
 
 		array_map('readfile', array_merge([

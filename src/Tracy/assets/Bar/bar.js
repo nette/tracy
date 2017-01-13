@@ -107,7 +107,7 @@
 			clearTimeout(elem.Tracy.displayTimeout);
 			elem.Tracy.displayTimeout = setTimeout(function() {
 				elem.classList.add(Panel.FOCUSED);
-				elem.style.zIndex = Tracy.panelZIndex + Panel.zIndexCounter++;
+				elem.style.setProperty('z-index', zIndex = Tracy.panelZIndex + Panel.zIndexCounter++, 'important');
 				if (callback) {
 					callback();
 				}
@@ -307,7 +307,7 @@
 	};
 
 	Bar.prototype.close = function() {
-		document.getElementById('tracy-debug').style.display = 'none';
+		document.getElementById('tracy-debug').style.setProperty('display', 'none', 'important');
 	};
 
 	Bar.prototype.savePosition = function() {
@@ -340,7 +340,7 @@
 		document.documentElement.appendChild(Debug.layer);
 		evalScripts(Debug.layer);
 		Tracy.Dumper.init();
-		Debug.layer.style.display = 'block';
+		Debug.layer.style.setProperty('display', 'block', 'important');
 		Debug.bar.init();
 
 		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
@@ -579,8 +579,8 @@
 	function setPosition(elem, coords) {
 		var dE = document.documentElement,
 			height = document.compatMode === 'BackCompat' ? window.innerHeight : dE.clientHeight;
-		elem.style.right = Math.min(Math.max(coords.right, 0), dE.clientWidth - elem.offsetWidth) + 'px';
-		elem.style.bottom = Math.min(Math.max(coords.bottom, 0), height - elem.offsetHeight) + 'px';
+		elem.style.setProperty('right', Math.min(Math.max(coords.right, 0), dE.clientWidth - elem.offsetWidth) + 'px', 'important');
+		elem.style.setProperty('bottom', Math.min(Math.max(coords.bottom, 0), height - elem.offsetHeight) + 'px', 'important');
 	}
 
 	// returns current position
