@@ -6,6 +6,7 @@
 #tracy-debug {
 	display: none;
 	direction: ltr;
+	line-height: 1.5;
 }
 
 body#tracy-debug { /* in popup window */
@@ -21,6 +22,7 @@ body #tracy-debug {
 
 #tracy-debug * {
 	font: inherit;
+	line-height: inherit;
 	color: inherit;
 	background: transparent;
 	margin: 0;
@@ -32,6 +34,12 @@ body #tracy-debug {
 	border-radius: 0;
 	box-shadow: none;
 	text-shadow: none;
+	box-sizing: border-box;
+	text-decoration: none;
+	text-transform: inherit;
+	white-space: inherit;
+	float: none;
+	clear: none;
 }
 
 #tracy-debug *:before
@@ -93,6 +101,7 @@ body #tracy-debug {
 #tracy-debug pre,
 #tracy-debug code {
 	font: 9pt/1.5 Consolas, monospace;
+	white-space: pre;
 }
 
 #tracy-debug table .tracy-right {
