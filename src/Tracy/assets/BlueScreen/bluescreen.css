@@ -25,6 +25,11 @@
 	text-indent: 0;
 }
 
+#tracy-bs *:before,
+#tracy-bs *:after {
+	all: unset;
+}
+
 #tracy-bs b {
 	font-weight: bold;
 }
