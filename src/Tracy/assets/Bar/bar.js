@@ -34,7 +34,7 @@
 
 		draggable(elem, {
 			handle: elem.querySelector('h1'),
-			stop: function() {
+			start: function() {
 				_this.toFloat();
 			}
 		});
@@ -94,7 +94,6 @@
 			clearTimeout(elem.Tracy.displayTimeout);
 			elem.Tracy.displayTimeout = setTimeout(function() {
 				elem.classList.add(Panel.FOCUSED);
-				elem.style.display = 'block';
 				elem.style.zIndex = Panel.zIndex++;
 				if (callback) {
 					callback();
@@ -105,11 +104,10 @@
 
 	Panel.prototype.blur = function() {
 		var elem = this.elem;
-		elem.classList.remove(Panel.FOCUSED);
 		if (this.is(Panel.PEEK)) {
 			clearTimeout(elem.Tracy.displayTimeout);
 			elem.Tracy.displayTimeout = setTimeout(function() {
-				elem.style.display = 'none';
+				elem.classList.remove(Panel.FOCUSED);
 			}, 50);
 		}
 	};
@@ -118,15 +116,14 @@
 		this.elem.classList.remove(Panel.WINDOW);
 		this.elem.classList.remove(Panel.PEEK);
 		this.elem.classList.add(Panel.FLOAT);
-		this.elem.style.display = 'block';
 		this.reposition();
 	};
 
 	Panel.prototype.toPeek = function() {
 		this.elem.classList.remove(Panel.WINDOW);
 		this.elem.classList.remove(Panel.FLOAT);
+		this.elem.classList.remove(Panel.FOCUSED);
 		this.elem.classList.add(Panel.PEEK);
-		this.elem.style.display = 'none';
 	};
 
 	Panel.prototype.toWindow = function() {
@@ -163,9 +160,9 @@
 			}
 		});
 
-		this.elem.style.display = 'none';
 		this.elem.classList.remove(Panel.FLOAT);
 		this.elem.classList.remove(Panel.PEEK);
+		this.elem.classList.remove(Panel.FOCUSED);
 		this.elem.classList.add(Panel.WINDOW);
 		this.elem.Tracy.window = win;
 		return true;
@@ -493,6 +490,9 @@
 			dE.addEventListener('mousemove', onmousemove);
 			dE.addEventListener('mouseup', onmouseup);
 			requestAnimationFrame(redraw);
+			if (options.start) {
+				options.start(e, elem);
+			}
 		});
 
 		(options.handle || elem).addEventListener('click', function(e) {

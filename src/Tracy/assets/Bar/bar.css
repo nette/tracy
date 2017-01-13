@@ -8,7 +8,7 @@
 	direction: ltr;
 }
 
-body#tracy-debug {
+body#tracy-debug { /* in popup window */
 	margin: 0;
 	display: block;
 }
@@ -193,6 +193,10 @@ body #tracy-debug {
 	z-index: 20001;
 }
 
+body#tracy-debug .tracy-panel { /* in popup window */
+	display: block;
+}
+
 #tracy-debug h1 {
 	font: normal normal 23px/1.4 Tahoma, sans-serif;
 	color: #575753;
@@ -233,21 +237,19 @@ body #tracy-debug {
 	border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-#tracy-debug .tracy-mode-peek {
-	display: none;
-}
-
 #tracy-debug .tracy-mode-peek h1 {
 	cursor: move;
 }
 
 #tracy-debug .tracy-mode-float {
+	display: block;
 	opacity: .95;
 	transition: opacity 0.2s;
 	will-change: opacity, right, bottom;
 }
 
-#tracy-debug .tracy-mode-float.tracy-focused {
+#tracy-debug .tracy-focused {
+	display: block;
 	opacity: 1;
 	transition: opacity 0.1s;
 }
@@ -266,7 +268,6 @@ body #tracy-debug {
 
 #tracy-debug .tracy-mode-window {
 	padding: 10px;
-	display: block;
 }
 
 #tracy-debug .tracy-icons a {
