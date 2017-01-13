@@ -153,7 +153,7 @@
 		var doc = win.document;
 		doc.write('<!DOCTYPE html><meta charset="utf-8">'
 			+ '<script src="?_tracy_bar=js&amp;XDEBUG_SESSION_STOP=1" onload="Tracy.Dumper.init()" async></script>'
-			+ '<body id="tracy-debug">'
+			+ '<body id="tracy-debug" class="tracy-debug">'
 		);
 		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.innerHTML + '</div>';
 		evalScripts(doc.body);

@@ -15,6 +15,24 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 <p>You can dump variables to bar in rightmost bottom egde.</p>
 
+<style>
+h1 { background: orange !important; }
+h1:after {
+content: "Look at this orange box.";
+  background-color: #FFBA10;
+  border-color: black;
+  border-style: dotted;
+}
+
+#tracy-debug h1 {
+	all: initial;
+}
+
+#tracy-debug *:after {
+	all: unset;
+}
+</style>
+
 <?php
 $arr = [10, 20.2, true, null, 'hello', (object) null, []];
 
