@@ -67,6 +67,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	{
 		$initialize = $class->getMethod('initialize');
 		$builder = $this->getContainerBuilder();
+		$class = method_exists('Nette\DI\Helpers', 'filterArguments') ? 'Nette\DI\Helpers' : 'Nette\DI\Compiler';
 
 		$options = $this->config;
 		unset($options['bar'], $options['blueScreen']);
@@ -82,7 +83,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 				$key = ($key === 'fromEmail' ? 'getLogger()->' : '$') . $key;
 				$initialize->addBody($builder->formatPhp(
 					'Tracy\Debugger::' . $key . ' = ?;',
-					Nette\DI\Compiler::filterArguments([$value])
+					$class::filterArguments([$value])
 				));
 			}
 		}
@@ -96,7 +97,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			foreach ((array) $this->config['bar'] as $item) {
 				$initialize->addBody($builder->formatPhp(
 					'$this->getService(?)->addPanel(?);',
-					Nette\DI\Compiler::filterArguments([
+					$class::filterArguments([
 						$this->prefix('bar'),
 						is_string($item) ? new Nette\DI\Statement($item) : $item,
 					])
@@ -111,7 +112,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		foreach ((array) $this->config['blueScreen'] as $item) {
 			$initialize->addBody($builder->formatPhp(
 				'$this->getService(?)->addPanel(?);',
-				Nette\DI\Compiler::filterArguments([$this->prefix('blueScreen'), $item])
+				$class::filterArguments([$this->prefix('blueScreen'), $item])
 			));
 		}
 	}
