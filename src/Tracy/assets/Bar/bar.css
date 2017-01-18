@@ -108,6 +108,10 @@ body #tracy-debug {
 	text-align: right;
 }
 
+#tracy-debug svg {
+	display: inline;
+}
+
 
 /* bar */
 #tracy-debug-bar {
