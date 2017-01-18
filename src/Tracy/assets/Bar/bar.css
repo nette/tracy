@@ -101,6 +101,9 @@ body #tracy-debug {
 #tracy-debug pre,
 #tracy-debug code {
 	font: 9pt/1.5 Consolas, monospace;
+}
+
+#tracy-debug pre {
 	white-space: pre;
 }
 
