@@ -310,6 +310,7 @@
 			throw new Error('Tracy requires IE 11+');
 		}
 
+		document.body.appendChild(layer);
 		layer.innerHTML = content;
 		evalScripts(layer);
 		Tracy.Dumper.init();
