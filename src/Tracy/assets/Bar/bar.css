@@ -42,7 +42,7 @@ body #tracy-debug {
 	clear: none;
 }
 
-#tracy-debug *:before
+#tracy-debug *:before,
 #tracy-debug *:after {
 	all: unset;
 }
@@ -342,6 +342,17 @@ body#tracy-debug .tracy-panel { /* in popup window */
 
 #tracy-debug .tracy-dump-indent {
 	display: none;
+}
+
+
+/* toggle */
+#tracy-debug .tracy-toggle:after {
+	content: " ▼";
+	opacity: .4;
+}
+
+#tracy-debug .tracy-toggle.tracy-collapsed:after {
+	content: " ►";
 }
 
 
