@@ -15,10 +15,10 @@
 }
 
 .tracy-toggle:after {
-	content: " ▼";
+	content: "\A0\25BC";
 	opacity: .4;
 }
 
 .tracy-toggle.tracy-collapsed:after {
-	content: " ►";
+	content: "\A0\25BA";
 }
