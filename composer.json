@@ -23,6 +23,9 @@
 		"nette/di": "~2.3",
 		"nette/tester": "~2.0"
 	},
+	"suggest": {
+		"https://nette.org/donate": "\u001b[1;37;42m Please consider supporting Tracy via a donation \u001b[0m"
+	},
 	"autoload": {
 		"classmap": ["src"],
 		"files": ["src/shortcuts.php"]
