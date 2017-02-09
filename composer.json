@@ -1,7 +1,7 @@
 {
 	"name": "tracy/tracy",
-	"description": "Tracy: useful PHP debugger",
-	"keywords": ["debug", "debugger", "nette"],
+	"description": "😎 Tracy: the addictive tool to ease debugging PHP code for cool developers. Friendly design, logging, profiler, advanced features like debugging AJAX calls or CLI support. You will love it.",
+	"keywords": ["debug", "debugger", "nette", "profiler", "xdebug"],
 	"homepage": "https://tracy.nette.org",
 	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"authors": [
