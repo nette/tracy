@@ -5,10 +5,13 @@
 (function(){
 	Tracy = window.Tracy || {};
 
-	var layer = document.getElementById('tracy-debug');
+	if (document.currentScript) {
+		var nonce = document.currentScript.getAttribute('nonce');
+		var contentId = document.currentScript.dataset.id;
+	}
 
 	Tracy.getAjaxHeader = function() {
-		return layer.dataset.id;
+		return contentId;
 	};
 
 	var Panel = Tracy.DebugPanel = function(id) {
@@ -310,11 +313,13 @@
 			throw new Error('Tracy requires IE 11+');
 		}
 
-		document.body.appendChild(layer);
-		layer.innerHTML = content;
-		evalScripts(layer);
+		Debug.layer = document.createElement('div');
+		Debug.layer.setAttribute('id', 'tracy-debug');
+		Debug.layer.innerHTML = content;
+		document.documentElement.appendChild(Debug.layer);
+		evalScripts(Debug.layer);
 		Tracy.Dumper.init();
-		layer.style.display = 'block';
+		Debug.layer.style.display = 'block';
 		Debug.bar.init();
 
 		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
@@ -328,7 +333,7 @@
 	};
 
 	Debug.loadAjax = function(content, dumps) {
-		forEach(layer.querySelectorAll('.tracy-panel.tracy-ajax'), function(panel) {
+		forEach(Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax'), function(panel) {
 			Debug.panels[panel.id].savePosition();
 			delete Debug.panels[panel.id];
 			panel.parentNode.removeChild(panel);
@@ -339,8 +344,8 @@
 			ajaxBar.parentNode.removeChild(ajaxBar);
 		}
 
-		layer.insertAdjacentHTML('beforeend', content);
-		evalScripts(layer);
+		Debug.layer.insertAdjacentHTML('beforeend', content);
+		evalScripts(Debug.layer);
 		ajaxBar = document.getElementById('tracy-ajax-bar');
 		document.getElementById(Bar.prototype.id).appendChild(ajaxBar);
 
@@ -398,7 +403,7 @@
 		}
 		Debug.scriptElem = document.createElement('script');
 		Debug.scriptElem.src = url;
-		Debug.scriptElem.setAttribute('nonce', layer.dataset.nonce);
+		Debug.scriptElem.setAttribute('nonce', nonce);
 		document.documentElement.appendChild(Debug.scriptElem);
 	};
 
@@ -407,8 +412,8 @@
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 				var dolly = script.ownerDocument.createElement('script');
 				dolly.textContent = script.textContent;
-				dolly.setAttribute('nonce', layer.dataset.nonce);
-				script.ownerDocument.body.appendChild(dolly);
+				dolly.setAttribute('nonce', nonce);
+				script.ownerDocument.documentElement.appendChild(dolly);
 				script.tracyEvaluated = true;
 			}
 		});
