@@ -9,7 +9,7 @@
 
 	// enables <a class="tracy-toggle" href="#"> or <span data-tracy-ref="#"> toggling
 	Tracy.Toggle.init = function() {
-		document.body.addEventListener('click', function(e) {
+		document.documentElement.addEventListener('click', function(e) {
 			var el = Tracy.closest(e.target, '.tracy-toggle');
 			if (el && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
 				Tracy.Toggle.toggle(el);
