@@ -111,6 +111,25 @@ Debugger::$strictMode = true;
 If your site uses Content Security Policy, you'll need to add `'unsafe-inline'` to `style-src`, and `'self'` or `'nonce-<value>` to `script-src` for Tracy to work properly. Avoid adding `'unsafe-inline'` in production mode, if you can. Some 3rd plugins may require additional directives.
 
 
+Faster loading
+--------------
+
+The basic integration is straightforward, however if you have slow blocking scripts in web page, they can slow the Tracy loading.
+The solution is to place `<?php Tracy\Debugger::renderLoader() ?>` into your template before
+any scripts:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+	<title>...<title>
+	<?php Tracy\Debugger::renderLoader() ?>
+	<link rel="stylesheet" href="assets/style.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+```
+
+
 AJAX and redirected requests
 ----------------------------
 
