@@ -15,14 +15,14 @@ use Tracy;
 
 $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 ?>
+<?php if ($contentId): ?>
+<script src="?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>" async<?= $nonceAttr ?>></script>
+<?php else: ?>
 
 
 
 
 <!-- Tracy Debug Bar -->
-<?php if ($contentId): ?>
-<script src="?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $nonceAttr ?>></script>
-<?php else: ?>
 <script src="?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1"<?= $nonceAttr ?>></script>
 <script<?= $nonceAttr ?>>
 Tracy.Debug.init(<?= json_encode($content) ?>, <?= json_encode($dumps) ?>);
