@@ -175,8 +175,10 @@ class Helpers
 			$message = "Call to undefined function $m[2](), did you mean $hint()?";
 
 		} elseif (preg_match('#^Call to undefined method (\S+)::(\w+)#', $message, $m)) {
-			$hint = self::getSuggestion(get_class_methods($m[1]), $m[2]);
-			$message .= ", did you mean $hint()?";
+			if ($m[1] !== 'class@anonymous') {
+				$hint = self::getSuggestion(get_class_methods($m[1]), $m[2]);
+				$message .= ", did you mean $hint()?";
+			}
 
 		} elseif (preg_match('#^Undefined variable: (\w+)#', $message, $m) && !empty($e->context)) {
 			$hint = self::getSuggestion(array_keys($e->context), $m[1]);
