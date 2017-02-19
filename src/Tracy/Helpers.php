@@ -174,7 +174,7 @@ class Helpers
 			$hint = self::getSuggestion($funcs, $m[1] . $m[2]) ?: self::getSuggestion($funcs, $m[2]);
 			$message = "Call to undefined function $m[2](), did you mean $hint()?";
 
-		} elseif (preg_match('#^Call to undefined method (\S+)::(\w+)#', $message, $m)) {
+		} elseif (preg_match('#^Call to undefined method ([\w\\\\]+)::(\w+)#', $message, $m)) {
 			$hint = self::getSuggestion(get_class_methods($m[1]), $m[2]);
 			$message .= ", did you mean $hint()?";
 
@@ -182,13 +182,13 @@ class Helpers
 			$hint = self::getSuggestion(array_keys($e->context), $m[1]);
 			$message = "Undefined variable $$m[1], did you mean $$hint?";
 
-		} elseif (preg_match('#^Undefined property: (\S+)::\$(\w+)#', $message, $m)) {
+		} elseif (preg_match('#^Undefined property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_diff($rc->getProperties(\ReflectionProperty::IS_PUBLIC), $rc->getProperties(\ReflectionProperty::IS_STATIC));
 			$hint = self::getSuggestion($items, $m[2]);
 			$message .= ", did you mean $$hint?";
 
-		} elseif (preg_match('#^Access to undeclared static property: (\S+)::\$(\w+)#', $message, $m)) {
+		} elseif (preg_match('#^Access to undeclared static property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_intersect($rc->getProperties(\ReflectionProperty::IS_PUBLIC), $rc->getProperties(\ReflectionProperty::IS_STATIC));
 			$hint = self::getSuggestion($items, $m[2]);
