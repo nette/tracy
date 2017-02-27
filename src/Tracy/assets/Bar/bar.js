@@ -390,6 +390,30 @@
 				});
 			}
 		};
+
+		if (window.fetch) {
+			var oldFetch = window.fetch;
+			window.fetch = function(request, options) {
+				options = options || {};
+				options.headers = new Headers(options.headers || {});
+				var url = request instanceof Request ? request.url : request;
+
+				if (window.TracyAutoRefresh !== false && url.indexOf('//') <= 0 || url.indexOf(location.origin + '/') === 0) {
+					options.headers.set('X-Tracy-Ajax', header);
+					options.credentials = (request instanceof Request && request.credentials) || options.credentials || 'same-origin';
+
+					return oldFetch(request, options).then(function (response) {
+						if (response.headers.has('X-Tracy-Ajax') && response.headers.get('X-Tracy-Ajax')[0] === '1') {
+							Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+						}
+
+						return response;
+					});
+				}
+
+				return oldFetch(request, options);
+			};
+		}
 	};
 
 	Debug.loadScript = function(url) {
