@@ -64,6 +64,7 @@ class Bar
 		}
 		$contentId = $this->contentId = $this->contentId ?: substr(md5(uniqid('', TRUE)), 0, 10);
 		$nonce = Helpers::getNonce();
+		$async = TRUE;
 		require __DIR__ . '/assets/Bar/loader.phtml';
 	}
 
@@ -125,6 +126,7 @@ class Bar
 
 		if (Helpers::isHtmlMode() && !$this->contentId) {
 			$nonce = Helpers::getNonce();
+			$async = FALSE;
 			require __DIR__ . '/assets/Bar/loader.phtml';
 		}
 	}

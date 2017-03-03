@@ -14,9 +14,10 @@ namespace Tracy;
 use Tracy;
 
 $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
+$asyncAttr = $async ? ' async' : '';
 ?>
 <?php if ($contentId): ?>
-<script src="?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>" async<?= $nonceAttr ?>></script>
+<script src="?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $asyncAttr, $nonceAttr ?>></script>
 <?php else: ?>
 
 
