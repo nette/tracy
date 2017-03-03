@@ -37,7 +37,7 @@ Tracy requires PHP version 5.3.0 or newer (master requires PHP 5.4.4).
 Usage
 -----
 
-Activating Tracy is easy. Simply add these two lines of code, preferably just after library loading (using `require 'src/tracy.php'` or via Composer):
+Activating Tracy is easy. Simply add these two lines of code, preferably just after library loading (like `require 'vendor/autoload.php'`):
 
 ```php
 use Tracy\Debugger;
@@ -56,6 +56,9 @@ The Debugger Bar is a floating panel. It is displayed in the bottom right corner
 [![Debugger-Bar](https://nette.github.io/tracy/images/tracy-bar.png)](https://nette.github.io/tracy/tracy-debug-bar.html)
 
 You can add other useful panels into the Debugger Bar. You can find interesing ones in [Addons](https://addons.nette.org) or you can create your own.
+
+Implementation of custom bar is easy, just implement interface `Tracy\IBarPanel` with two methods `getTab` and `getContent`, both returning content to be displayed.
+Afterward, registering via `Debugger::getBar()->addPanel(new CustomPanel());` is everything you will need to do.
 
 
 Visualization of errors and exceptions
@@ -103,6 +106,48 @@ Debugger::$strictMode = TRUE;
 [![Notice rendered by Tracy](https://nette.github.io/tracy/images/tracy-notice.png)](https://nette.github.io/tracy/tracy-notice.html)
 
 If your site uses Content Security Policy, you'll need to add `'unsafe-inline'` to `style-src`, and `'self'` or `'nonce-<value>` to `script-src` for Tracy to work properly. Avoid adding `'unsafe-inline'` in production mode, if you can. Some 3rd plugins may require additional directives.
+
+
+Faster loading
+--------------
+
+The basic integration is straightforward, however if you have slow blocking scripts in web page, they can slow the Tracy loading.
+The solution is to place `<?php Tracy\Debugger::renderLoader() ?>` into your template before
+any scripts:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+	<title>...<title>
+	<?php Tracy\Debugger::renderLoader() ?>
+	<link rel="stylesheet" href="assets/style.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+```
+
+
+AJAX and redirected requests
+----------------------------
+
+Tracy is able to show Debug bar and Bluescreens for AJAX and redirected requests. You just have to start session before Tracy:
+
+```php
+session_start();
+Debugger::enable();
+```
+
+In case you use non-standard session handler, you can start Tracy immediately (in order to handle any errors), then initialize your session handler
+and then inform Tracy that session is ready to use via `dispatch()`:
+
+```php
+Debugger::enable();
+
+// initialize session handler
+session_start();
+
+Debugger::dispatch();
+```
 
 
 Production mode and error logging
