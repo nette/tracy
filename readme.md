@@ -28,10 +28,10 @@ Installation and requirements
 The best way how to install Tracy is to [download a latest package](https://github.com/nette/tracy/releases) or use a Composer:
 
 ```
-php composer.phar require tracy/tracy
+composer require tracy/tracy
 ```
 
-Tracy requires PHP version 5.3.0 or newer (master requires PHP 5.4.4).
+Tracy requires PHP version 5.4.4 or newer (is compatible with PHP 7.0 and 7.1). Older Tracy 2.3 works with PHP 5.3.
 
 
 Usage
