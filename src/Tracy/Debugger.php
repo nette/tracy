@@ -25,6 +25,7 @@ class Debugger
 		DETECT = NULL;
 
 	const COOKIE_SECRET = 'tracy-debug';
+	const COOKIE_SECRET_SHA = 'tracy-debug-sha';
 
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
@@ -614,9 +615,12 @@ class Debugger
 		$addr = isset($_SERVER['REMOTE_ADDR'])
 			? $_SERVER['REMOTE_ADDR']
 			: php_uname('n');
+		$secretSha = isset($_COOKIE[self::COOKIE_SECRET_SHA]) && is_string($_COOKIE[self::COOKIE_SECRET_SHA])
+			? sha1($_COOKIE[self::COOKIE_SECRET_SHA])
+			: NULL;
 		$secret = isset($_COOKIE[self::COOKIE_SECRET]) && is_string($_COOKIE[self::COOKIE_SECRET])
 			? $_COOKIE[self::COOKIE_SECRET]
-			: NULL;
+			: $secretSha;
 		$list = is_string($list)
 			? preg_split('#[,\s]+#', $list)
 			: (array) $list;
@@ -624,7 +628,9 @@ class Debugger
 			$list[] = '127.0.0.1';
 			$list[] = '::1';
 		}
-		return in_array($addr, $list, TRUE) || in_array("$secret@$addr", $list, TRUE);
+		return in_array($addr, $list, TRUE)
+			|| in_array("$secret@$addr", $list, TRUE)
+			|| in_array("$secretSha@$addr@sha", $list, TRUE);
 	}
 
 }
