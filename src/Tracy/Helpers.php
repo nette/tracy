@@ -27,15 +27,15 @@ class Helpers
 				$file = '...' . $m[0];
 			}
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
-			return self::formatHtml('<a href="%" title="%">%<b>%</b>%</a>',
+			return self::formatHtml('<a href="%" title="%">%<b>%</b>%</a>', array(
 				$editor,
 				$file . ($line ? ":$line" : ''),
 				rtrim(dirname($file), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,
 				basename($file),
 				$line ? ":$line" : ''
-			);
+			));
 		} else {
-			return self::formatHtml('<span>%</span>', $file . ($line ? ":$line" : ''));
+			return self::formatHtml('<span>%</span>', array($file . ($line ? ":$line" : '')));
 		}
 	}
 
