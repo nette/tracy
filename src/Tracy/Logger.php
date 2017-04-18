@@ -28,6 +28,9 @@ class Logger implements ILogger
 	/** @var callable handler for sending emails */
 	public $mailer;
 
+	/** @var array list of additional channels for reporting errors */
+	private $reportChannels = [];
+
 	/** @var BlueScreen */
 	private $blueScreen;
 
@@ -70,7 +73,7 @@ class Logger implements ILogger
 		}
 
 		if (in_array($priority, [self::ERROR, self::EXCEPTION, self::CRITICAL], TRUE)) {
-			$this->sendEmail($message);
+			$this->reportError($message);
 		}
 
 		return $exceptionFile;
@@ -158,17 +161,23 @@ class Logger implements ILogger
 	 * @param  string|\Exception|\Throwable
 	 * @return void
 	 */
-	protected function sendEmail($message)
+	protected function reportError($message)
 	{
 		$snooze = is_numeric($this->emailSnooze)
 			? $this->emailSnooze
 			: @strtotime($this->emailSnooze) - time(); // @ timezone may not be set
 
-		if ($this->email && $this->mailer
+		if (($this->email && $this->mailer || $this->reportChannels)
 			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ file may not be writable
 		) {
-			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
+			if ($this->email && $this->mailer) {
+				call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
+			}
+			foreach ($this->reportChannels as $channel)
+			{
+				call_user_func($channel, $message);
+			}
 		}
 	}
 
@@ -199,6 +208,19 @@ class Logger implements ILogger
 		);
 
 		mail($email, $parts['subject'], $parts['body'], $parts['headers']);
+	}
+
+
+	/**
+	 * Add new additional report channel.
+	 * @param  callback
+	 */
+	public function addReportChannel($channel)
+	{
+		if (!is_callable($channel)) {
+			throw new \RuntimeException('Report channel is not callable.');
+		}
+		$this->reportChannels[] = $channel;
 	}
 
 }
