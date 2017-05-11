@@ -43,7 +43,11 @@ __HALT_COMPILER();
 $phar->startBuffering();
 foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../src', RecursiveDirectoryIterator::SKIP_DOTS)) as $file) {
 	echo "adding: {$iterator->getSubPathname()}\n";
-	$s = php_strip_whitespace($file->getPathname());
+
+	$s = file_get_contents($file->getPathname());
+	if (strpos($s, '@tracySkipLocation') === FALSE) {
+		$s = php_strip_whitespace($file->getPathname());
+	}
 
 	if ($file->getExtension() === 'js') {
 		$s = compressJs($s);
