@@ -31,6 +31,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		'bar' => [], // of class name
 		'blueScreen' => [], // of callback
 		'editorMapping' => [],
+		'loggerHandler' => [], // of class name
 	];
 
 	/** @var bool */
@@ -114,6 +115,13 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			$initialize->addBody($builder->formatPhp(
 				'$this->getService(?)->addPanel(?);',
 				$class::filterArguments([$this->prefix('blueScreen'), $item])
+			));
+		}
+
+		foreach ((array) $this->config['loggerHandler'] as $item) {
+			$initialize->addBody($builder->formatPhp(
+				'$this->getService(?)->addHandler(?);',
+				$class::filterArguments([$this->prefix('logger'), $item])
 			));
 		}
 	}

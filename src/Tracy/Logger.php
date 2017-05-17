@@ -31,6 +31,9 @@ class Logger implements ILogger
 	/** @var BlueScreen */
 	private $blueScreen;
 
+	/** @var ILoggerHandler[] custom handlers called after log() */
+	private $handlers = [];
+
 
 	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL)
 	{
@@ -38,6 +41,14 @@ class Logger implements ILogger
 		$this->email = $email;
 		$this->blueScreen = $blueScreen;
 		$this->mailer = [$this, 'defaultMailer'];
+	}
+
+
+	public function addHandler(ILoggerHandler $loggerHandler)
+	{
+		if (array_search($loggerHandler, $this->handlers) == FALSE) {
+			$this->handlers[] = $loggerHandler;
+		}
 	}
 
 
@@ -71,6 +82,10 @@ class Logger implements ILogger
 
 		if (in_array($priority, [self::ERROR, self::EXCEPTION, self::CRITICAL], TRUE)) {
 			$this->sendEmail($message);
+		}
+
+		foreach ($this->handlers as $handler) {
+			$handler($message, $priority);
 		}
 
 		return $exceptionFile;
