@@ -332,10 +332,7 @@ class LoggerHandler implements ILoggerHandler
 
 Add handlers in config file:
 
-```neon
-service:
-    myCustomHandler: MyCustomHandler
-    
+```neon  
 tracy:
     loggerHandler:
         - MyCustomHandler
