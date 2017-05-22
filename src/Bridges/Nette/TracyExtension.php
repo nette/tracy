@@ -78,7 +78,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$class = method_exists('Nette\DI\Helpers', 'filterArguments') ? 'Nette\DI\Helpers' : 'Nette\DI\Compiler';
 
 		$options = $this->config;
-		unset($options['bar'], $options['blueScreen'], $options['loggerHandler']);: 
+		unset($options['bar'], $options['blueScreen'], $options['loggerHandler']);
 		if (isset($options['logSeverity'])) {
 			$res = 0;
 			foreach ((array) $options['logSeverity'] as $level) {
