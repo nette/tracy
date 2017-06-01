@@ -311,3 +311,29 @@ Debugger::fireLog(new Exception('Test Exception')); // or exceptions
 The result looks like this:
 
 ![FireLogger](https://nette.github.io/tracy/images/tracy-firelogger.png)
+
+
+Custom logger handlers
+----------------------
+
+You can add logger handlers which will be called when you log something.
+
+Logger handler have to implement Tracy\ILoggerHandler interface and look like this:
+
+```php
+class LoggerHandler implements ILoggerHandler
+{
+	public function __invoke($message, $priority)
+	{
+		$this->myCustomLoggerService->log($message, $priority);
+	}
+}
+```
+
+Add handlers in config file:
+
+```neon
+tracy:
+    loggerHandler:
+        - MyCustomHandler
+```

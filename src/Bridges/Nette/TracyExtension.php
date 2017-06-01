@@ -31,6 +31,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		'bar' => [], // of class name
 		'blueScreen' => [], // of callback
 		'editorMapping' => [],
+		'loggerHandler' => [], // of class name
 	];
 
 	/** @var bool */
@@ -61,6 +62,12 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('bar'))
 			->setFactory('Tracy\Debugger::getBar');
+
+		//register error handlers if provided in config file
+		foreach ((array) $this->config['loggerHandler'] as $i => $handler) {
+			$builder->addDefinition($this->prefix('loggerHandler.' . $i))
+				->setClass($handler);
+		}
 	}
 
 
@@ -71,7 +78,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$class = method_exists('Nette\DI\Helpers', 'filterArguments') ? 'Nette\DI\Helpers' : 'Nette\DI\Compiler';
 
 		$options = $this->config;
-		unset($options['bar'], $options['blueScreen']);
+		unset($options['bar'], $options['blueScreen'], $options['loggerHandler']);
 		if (isset($options['logSeverity'])) {
 			$res = 0;
 			foreach ((array) $options['logSeverity'] as $level) {
@@ -114,6 +121,17 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			$initialize->addBody($builder->formatPhp(
 				'$this->getService(?)->addPanel(?);',
 				$class::filterArguments([$this->prefix('blueScreen'), $item])
+			));
+		}
+
+		//add registered handlers to logger
+		foreach ((array) $this->config['loggerHandler'] as $i => $handler) {
+			$initialize->addBody($builder->formatPhp(
+				'$this->getService(?)->addHandler(?);',
+				$class::filterArguments([
+					$this->prefix('logger'),
+					$builder->getDefinition($this->prefix('loggerHandler.' . $i))
+				])
 			));
 		}
 	}
