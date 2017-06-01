@@ -24,7 +24,7 @@
 		"nette/tester": "~2.0"
 	},
 	"suggest": {
-		"https://nette.org/donate": "\u001b[1;37;42m Please consider supporting Tracy via a donation \u001b[0m"
+		"https://nette.org/donate": "Please support Tracy via a donation"
 	},
 	"autoload": {
 		"classmap": ["src"],
