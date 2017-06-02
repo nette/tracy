@@ -33,6 +33,8 @@ composer require tracy/tracy
 
 Tracy requires PHP version 5.4.4 or newer (is compatible with PHP 7.0 and 7.1). Older Tracy 2.3 works with PHP 5.3.
 
+If your site uses Content Security Policy, you'll need to add `'unsafe-inline'` to `style-src`, and `'unsafe-inline'` & `'unsafe-eval'` to `script-src` for Tracy to work properly. Avoid adding these in production mode, if you can.
+
 
 Usage
 -----
