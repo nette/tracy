@@ -20,7 +20,8 @@ body#tracy-debug { /* in popup window */
 	right: 0;
 }
 
-#tracy-debug * {
+/* #tracy-debug * { */ 
+#tracy-debug[class~='tracy'] *, .tracy-inner *, .tracy-panel *, .tracy-dump * {
 	font: inherit;
 	line-height: inherit;
 	color: inherit;
