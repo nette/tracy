@@ -321,5 +321,4 @@ This is list of unofficial ports to another frameworks and CMS than Nette:
 - [Symfony framework](https://github.com/kutny/tracy-bundle)
 - Laravel framework: [recca0120/laravel-tracy](https://github.com/recca0120/laravel-tracy), [whipsterCZ/laravel-tracy](https://github.com/whipsterCZ/laravel-tracy), [VasekPurchart/Tracy-Blue-Screen-Bundle](https://github.com/VasekPurchart/Tracy-Blue-Screen-Bundle)
 - [Slim Framework](https://github.com/runcmf/runtracy)
-- 
 ... feel free to be famous, create port to your favourite platform!
