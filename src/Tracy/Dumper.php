@@ -29,6 +29,21 @@ class Dumper
 		LOCATION_LINK = 0b0010, // appends clickable anchor
 		LOCATION_CLASS = 0b0100; // shows where class is defined
 
+	/** @var int  how many nested levels of array/object properties display {@link Dumper::toHtml()} */
+	public static $depth = 4;
+
+	/** @var int  how truncate long strings? {@link Dumper::toHtml()} */
+	public static $truncate = 150;
+
+	/** @var int  top array/object or how big are collapsed? {@link Dumper::toHtml()} */
+	public static $collapse = 14;
+
+	/** @var int  how big array/object are collapsed? {@link Dumper::toHtml()} */
+	public static $collapseCount = 7;
+
+	/** @var null|array  custom exporters for object {@link Dumper::toHtml()} */
+	public static $exporters = null;
+
 	/** @var array */
 	public static $terminalColors = [
 		'bool' => '1;33',
@@ -89,11 +104,11 @@ class Dumper
 	public static function toHtml($var, array $options = NULL)
 	{
 		$options = (array) $options + [
-			self::DEPTH => 4,
-			self::TRUNCATE => 150,
-			self::COLLAPSE => 14,
-			self::COLLAPSE_COUNT => 7,
-			self::OBJECT_EXPORTERS => NULL,
+			self::DEPTH => self::$depth,
+			self::TRUNCATE => self::$truncate,
+			self::COLLAPSE => self::$collapse,
+			self::COLLAPSE_COUNT => self::$collapseCount,
+			self::OBJECT_EXPORTERS => self::$exporters,
 		];
 		$loc = &$options[self::LOCATION];
 		$loc = $loc === TRUE ? ~0 : (int) $loc;
