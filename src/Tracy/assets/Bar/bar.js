@@ -136,11 +136,11 @@
 		var doc = win.document;
 		doc.write('<!DOCTYPE html><meta charset="utf-8"><style>'
 			+ document.getElementById('tracy-debug-style').innerHTML
-			+ '<\/style><script>'
+			+ '<\/style><script>' // eslint-disable-line no-useless-escape
 			+ document.getElementById('tracy-debug-script').innerHTML
-			+ '<\/script><body id="tracy-debug">'
+			+ '<\/script><body id="tracy-debug">' // eslint-disable-line no-useless-escape
 		);
-		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.id + '">' + this.elem.innerHTML + '<\/div>';
+		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.id + '">' + this.elem.innerHTML + '<\/div>'; // eslint-disable-line no-useless-escape
 		win.Tracy.Dumper.init();
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').innerHTML;
@@ -405,7 +405,7 @@
 	// returns total offset for element
 	function getOffset(elem) {
 		var res = {left: elem.offsetLeft, top: elem.offsetTop};
-		while (elem = elem.offsetParent) { // eslint-disable-line
+		while (elem = elem.offsetParent) { // eslint-disable-line no-cond-assign
 			res.left += elem.offsetLeft; res.top += elem.offsetTop;
 		}
 		return res;
