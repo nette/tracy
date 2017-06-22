@@ -37,7 +37,7 @@ Tracy requires PHP version 5.4.4 or newer (is compatible with PHP 7.0 and 7.1). 
 Usage
 -----
 
-Activating Tracy is easy. Simply add these two lines of code, preferably just after library loading (like `require 'vendor/autoload.php'`):
+Activating Tracy is easy. Simply add these two lines of code, preferably just after library loading (like `require 'vendor/autoload.php'`) and before any output is sent to browser:
 
 ```php
 use Tracy\Debugger;
@@ -46,6 +46,9 @@ Debugger::enable();
 ```
 
 The first thing you will notice on the website is a Debugger Bar.
+
+(If you do not see anything, it means that Tracy is running in production mode. For security reasons, Tracy is visible only on localhost.
+You may force Tracy to run in development mode by passing the `Debugger::DEVELOPMENT` as the first parameter of `enable()` method.)
 
 
 Debugger Bar
