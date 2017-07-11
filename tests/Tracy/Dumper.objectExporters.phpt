@@ -37,14 +37,14 @@ $obj = unserialize('O:1:"Y":7:{s:1:"a";N;s:1:"b";i:2;s:4:"' . "\0" . '*' . "\0" 
 Assert::match('__PHP_Incomplete_Class #%a%
    className => "Y"
    private => array (3)
-   |  "Y::$e" => NULL
+   |  "Y::$e" => null
    |  "Y::$i" => "bar" (3)
    |  "X::$i" => "foo" (3)
    protected => array (2)
-   |  c => NULL
+   |  c => null
    |  d => "d"
    public => array (2)
-   |  a => NULL
+   |  a => null
    |  b => 2', Dumper::toText($obj));
 
 

@@ -165,7 +165,7 @@ class Dumper
 
 	private static function dumpBoolean(&$var)
 	{
-		return '<span class="tracy-dump-bool">' . ($var ? 'TRUE' : 'FALSE') . "</span>\n";
+		return '<span class="tracy-dump-bool">' . ($var ? 'true' : 'false') . "</span>\n";
 	}
 
 

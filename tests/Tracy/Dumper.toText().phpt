@@ -21,11 +21,11 @@ class Test
 }
 
 
-Assert::match('NULL', Dumper::toText(null));
+Assert::match('null', Dumper::toText(null));
 
-Assert::match('TRUE', Dumper::toText(true));
+Assert::match('true', Dumper::toText(true));
 
-Assert::match('FALSE', Dumper::toText(false));
+Assert::match('false', Dumper::toText(false));
 
 Assert::match('0', Dumper::toText(0));
 
@@ -69,7 +69,7 @@ Assert::match('stdClass #%a%
 Assert::match('Test #%a%
    x => array (2)
    |  0 => 10
-   |  1 => NULL
+   |  1 => null
    y private => "hello" (5)
    z protected => 30.0
 ', Dumper::toText(new Test));

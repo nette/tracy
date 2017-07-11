@@ -48,7 +48,7 @@
 			collapseCount = typeof collapsed === 'undefined' ? COLLAPSE_COUNT_TOP : COLLAPSE_COUNT;
 
 		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
-			data = type === 'string' ? '"' + data + '"' : (data + '').toUpperCase();
+			data = type === 'string' ? '"' + data + '"' : (data + '');
 			return createEl(null, null, [
 				createEl(
 					'span',

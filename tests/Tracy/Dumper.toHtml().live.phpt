@@ -23,10 +23,10 @@ class Test
 
 $options = [Dumper::LIVE => true];
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">NULL</span>
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span>
 </pre>', Dumper::toHtml(null, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">TRUE</span>
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span>
 </pre>', Dumper::toHtml(true, $options));
 
 Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span>

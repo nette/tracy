@@ -73,10 +73,10 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">TRUE</span>
+						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">true</span>
 </pre>
 </td></tr>
-<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">FALSE</span>
+<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">false</span>
 </pre>
 </td></tr>
 						</table>
