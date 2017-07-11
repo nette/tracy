@@ -67,7 +67,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php endforeach ?>
 
 
-			<?php $stack = $ex->getTrace(); $expanded = NULL ?>
+			<?php $stack = $ex->getTrace(); $expanded = null ?>
 			<?php if ((!$exception instanceof \ErrorException || in_array($exception->getSeverity(), [E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED])) && $this->isCollapsed($ex->getFile())) {
 				foreach ($stack as $key => $row) {
 					if (isset($row['file']) && !$this->isCollapsed($row['file'])) { $expanded = $key; break; }
@@ -75,11 +75,11 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			} ?>
 
 			<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = $expanded !== NULL) ? ' tracy-collapsed' : '' ?>">Source file</a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = $expanded !== null) ? ' tracy-collapsed' : '' ?>">Source file</a></h2>
 
 			<div class="<?= $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?= Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
-				<?php if (is_file($ex->getFile())): ?><?= self::highlightFile($ex->getFile(), $ex->getLine(), 15, $ex instanceof \ErrorException && isset($ex->context) ? $ex->context : NULL) ?><?php endif ?>
+				<?php if (is_file($ex->getFile())): ?><?= self::highlightFile($ex->getFile(), $ex->getLine(), 15, $ex instanceof \ErrorException && isset($ex->context) ? $ex->context : null) ?><?php endif ?>
 			</div></div>
 
 
@@ -191,7 +191,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 
 		<?php $bottomPanels = [] ?>
-		<?php foreach ($this->renderPanels(NULL) as $panel): ?>
+		<?php foreach ($this->renderPanels(null) as $panel): ?>
 		<?php if (!empty($panel->bottom)) { $bottomPanels[] = $panel; continue; } ?>
 		<?php $collapsedClass = !isset($panel->collapsed) || $panel->collapsed ? ' tracy-collapsed' : ''; ?>
 		<div class="panel">
@@ -244,7 +244,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 
 			<?php
-			$list = get_defined_constants(TRUE);
+			$list = get_defined_constants(true);
 			if (!empty($list['user'])):?>
 			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
 			<div class="outer tracy-collapsed">

@@ -19,7 +19,7 @@ class DemoClass
 {
 	function first($arg1, $arg2)
 	{
-		$this->second(TRUE, FALSE);
+		$this->second(true, false);
 	}
 
 

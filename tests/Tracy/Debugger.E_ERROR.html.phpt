@@ -18,14 +18,14 @@ if (PHP_SAPI === 'cli') {
 }
 
 
-Debugger::$productionMode = FALSE;
+Debugger::$productionMode = false;
 header('Content-Type: text/html');
 
 ob_start();
 Debugger::enable();
 
 
-$onFatalErrorCalled = FALSE;
+$onFatalErrorCalled = false;
 
 register_shutdown_function(function () use (&$onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
@@ -37,14 +37,14 @@ register_shutdown_function(function () use (&$onFatalErrorCalled) {
 
 
 Debugger::$onFatalError[] = function () use (&$onFatalErrorCalled) {
-	$onFatalErrorCalled = TRUE;
+	$onFatalErrorCalled = true;
 };
 
 
 
 function first($arg1, $arg2)
 {
-	second(TRUE, FALSE);
+	second(true, false);
 }
 
 

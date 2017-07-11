@@ -45,7 +45,7 @@ foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterato
 	echo "adding: {$iterator->getSubPathname()}\n";
 
 	$s = file_get_contents($file->getPathname());
-	if (strpos($s, '@tracySkipLocation') === FALSE) {
+	if (strpos($s, '@tracySkipLocation') === false) {
 		$s = php_strip_whitespace($file->getPathname());
 	}
 
@@ -59,7 +59,7 @@ foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterato
 		$s = preg_replace_callback('#(<(script|style).*(?<![?=])>)(.*)(</)#Uis', function ($m) {
 			list(, $begin, $type, $s, $end) = $m;
 
-			if ($s === '' || strpos($s, '<?') !== FALSE) {
+			if ($s === '' || strpos($s, '<?') !== false) {
 				return $m[0];
 
 			} elseif ($type === 'script') {

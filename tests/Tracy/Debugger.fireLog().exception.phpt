@@ -16,14 +16,14 @@ if (PHP_SAPI === 'cli') {
 
 
 // Setup environment
-$_SERVER['HTTP_X_FIRELOGGER'] = TRUE;
+$_SERVER['HTTP_X_FIRELOGGER'] = true;
 
-Debugger::$productionMode = FALSE;
+Debugger::$productionMode = false;
 
 
 function first($arg1, $arg2)
 {
-	second(TRUE, FALSE);
+	second(true, false);
 }
 
 

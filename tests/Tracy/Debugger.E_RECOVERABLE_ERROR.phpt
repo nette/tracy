@@ -11,7 +11,7 @@ use Tracy\Debugger;
 require __DIR__ . '/../bootstrap.php';
 
 
-Debugger::$productionMode = FALSE;
+Debugger::$productionMode = false;
 
 Debugger::enable();
 
@@ -30,7 +30,7 @@ class TestClass
 
 	function __toString()
 	{
-		return FALSE;
+		return false;
 	}
 }
 

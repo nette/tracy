@@ -18,7 +18,7 @@ class Helpers
 	 * Returns HTML link to editor.
 	 * @return string
 	 */
-	public static function editorLink($file, $line = NULL)
+	public static function editorLink($file, $line = null)
 	{
 		$file = strtr($origFile = $file, Debugger::$editorMapping);
 		if ($editor = self::editorUri($origFile, $line)) {
@@ -44,7 +44,7 @@ class Helpers
 	 * Returns link to editor.
 	 * @return string
 	 */
-	public static function editorUri($file, $line = NULL)
+	public static function editorUri($file, $line = null)
 	{
 		if (Debugger::$editor && $file && is_file($file)) {
 			$file = strtr($file, Debugger::$editorMapping);
@@ -68,13 +68,13 @@ class Helpers
 	}
 
 
-	public static function findTrace(array $trace, $method, &$index = NULL)
+	public static function findTrace(array $trace, $method, &$index = null)
 	{
 		$m = explode('::', $method);
 		foreach ($trace as $i => $item) {
 			if (isset($item['function']) && $item['function'] === end($m)
 				&& isset($item['class']) === isset($m[1])
-				&& (!isset($item['class']) || $m[0] === '*' || is_a($item['class'], $m[0], TRUE))
+				&& (!isset($item['class']) || $m[0] === '*' || is_a($item['class'], $m[0], true))
 			) {
 				$index = $i;
 				return $item;
@@ -111,7 +111,7 @@ class Helpers
 				$stack[] = $frame;
 			}
 			$ref = new \ReflectionProperty('Exception', 'trace');
-			$ref->setAccessible(TRUE);
+			$ref->setAccessible(true);
 			$ref->setValue($exception, $stack);
 		}
 		return $exception;
@@ -197,7 +197,7 @@ class Helpers
 
 		if (isset($hint)) {
 			$ref = new \ReflectionProperty($e, 'message');
-			$ref->setAccessible(TRUE);
+			$ref->setAccessible(true);
 			$ref->setValue($e, $message);
 		}
 	}
@@ -205,12 +205,12 @@ class Helpers
 
 	/**
 	 * Finds the best suggestion.
-	 * @return string|NULL
+	 * @return string|null
 	 * @internal
 	 */
 	public static function getSuggestion(array $items, $value)
 	{
-		$best = NULL;
+		$best = null;
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
 		foreach (array_unique($items, SORT_REGULAR) as $item) {
 			$item = is_object($item) ? $item->getName() : $item;
@@ -244,6 +244,6 @@ class Helpers
 	{
 		return preg_match('#^Content-Security-Policy:.*\sscript-src\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
 			? $m[1]
-			: NULL;
+			: null;
 	}
 }

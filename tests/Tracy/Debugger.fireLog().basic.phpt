@@ -16,12 +16,12 @@ if (PHP_SAPI === 'cli') {
 
 
 // Setup environment
-$_SERVER['HTTP_X_FIRELOGGER'] = TRUE;
+$_SERVER['HTTP_X_FIRELOGGER'] = true;
 
-Debugger::$productionMode = FALSE;
+Debugger::$productionMode = false;
 
 
-$arr = [10, 20.2, TRUE, FALSE, NULL, 'hello', ['key1' => 'val1', 'key2' => TRUE], (object) ['key1' => 'val1', 'key2' => TRUE]];
+$arr = [10, 20.2, true, false, null, 'hello', ['key1' => 'val1', 'key2' => true], (object) ['key1' => 'val1', 'key2' => true]];
 
 // will show in FireLogger
 Debugger::fireLog('Hello World'); // Tracy\Debugger::DEBUG

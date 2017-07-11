@@ -11,8 +11,8 @@ use Tracy\Debugger;
 require __DIR__ . '/../bootstrap.php';
 
 
-Debugger::$productionMode = FALSE;
-Debugger::$scream = TRUE;
+Debugger::$productionMode = false;
+Debugger::$scream = true;
 header('Content-Type: text/plain; charset=utf-8');
 
 Debugger::enable();

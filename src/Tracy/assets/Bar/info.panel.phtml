@@ -21,19 +21,19 @@ if (isset($this->cpuUsage) && $this->time) {
 
 $info = array_filter([
 	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
-	'CPU usage user + system' => isset($userUsage) ? (int) $userUsage . ' % + ' . (int) $systemUsage . ' %' : NULL,
+	'CPU usage user + system' => isset($userUsage) ? (int) $userUsage . ' % + ' . (int) $systemUsage . ' %' : null,
 	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ') . ' MB',
 	'Included files' => count(get_included_files()),
 	'Classes + interfaces + traits' => count(get_declared_classes()) . ' + '
 		. count(get_declared_interfaces()) . ' + ' . count(get_declared_traits()),
-	'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL,
-	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : NULL,
-	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : NULL,
-	'HHVM' => defined('HHVM_VERSION') ? HHVM_VERSION : NULL,
+	'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
+	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null,
+	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,
+	'HHVM' => defined('HHVM_VERSION') ? HHVM_VERSION : null,
 	'PHP' => PHP_VERSION,
-	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : NULL,
+	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : null,
 	'Tracy' => Debugger::VERSION,
-	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
+	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
 ] + (array) $this->data);
 
 ?>

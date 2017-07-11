@@ -82,10 +82,10 @@ test(function () {
 	Debugger::enable();
 	Assert::true(Debugger::$productionMode);
 
-	Debugger::enable(TRUE);
+	Debugger::enable(true);
 	Assert::true(Debugger::$productionMode);
 
-	Debugger::enable(FALSE);
+	Debugger::enable(false);
 	Assert::false(Debugger::$productionMode);
 
 	Debugger::enable($_SERVER['REMOTE_ADDR']);

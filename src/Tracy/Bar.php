@@ -26,9 +26,9 @@ class Bar
 	 * @param  string
 	 * @return static
 	 */
-	public function addPanel(IBarPanel $panel, $id = NULL)
+	public function addPanel(IBarPanel $panel, $id = null)
 	{
-		if ($id === NULL) {
+		if ($id === null) {
 			$c = 0;
 			do {
 				$id = get_class($panel) . ($c++ ? "-$c" : '');
@@ -42,11 +42,11 @@ class Bar
 	/**
 	 * Returns panel with given id
 	 * @param  string
-	 * @return IBarPanel|NULL
+	 * @return IBarPanel|null
 	 */
 	public function getPanel($id)
 	{
-		return isset($this->panels[$id]) ? $this->panels[$id] : NULL;
+		return isset($this->panels[$id]) ? $this->panels[$id] : null;
 	}
 
 
@@ -61,7 +61,7 @@ class Bar
 
 		foreach (['bar', 'redirect', 'bluescreen'] as $key) {
 			$queue = &$_SESSION['_tracy'][$key];
-			$queue = array_slice((array) $queue, -10, NULL, TRUE);
+			$queue = array_slice((array) $queue, -10, null, true);
 			$queue = array_filter($queue, function ($item) {
 				return isset($item['time']) && $item['time'] > time() - 60;
 			});
@@ -73,7 +73,7 @@ class Bar
 		} elseif (Helpers::isAjax()) {
 			$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax')];
 			$dumps = Dumper::fetchLiveData();
-			$contentId = $useSession ? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax' : NULL;
+			$contentId = $useSession ? $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax' : null;
 
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
 			Dumper::fetchLiveData();
@@ -92,8 +92,8 @@ class Bar
 				$rows[] = (object) ['type' => 'redirect', 'panels' => $info['panels']];
 				$dumps += $info['dumps'];
 			}
-			$redirectQueue = NULL;
-			$contentId = $useSession ? substr(md5(uniqid('', TRUE)), 0, 10) : NULL;
+			$redirectQueue = null;
+			$contentId = $useSession ? substr(md5(uniqid('', true)), 0, 10) : null;
 		}
 
 		ob_start(function () {});
@@ -115,7 +115,7 @@ class Bar
 	/**
 	 * @return array
 	 */
-	private function renderPanels($suffix = NULL)
+	private function renderPanels($suffix = null)
 	{
 		set_error_handler(function ($severity, $message, $file, $line) {
 			if (error_reporting() & $severity) {
@@ -130,7 +130,7 @@ class Bar
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
 			try {
 				$tab = (string) $panel->getTab();
-				$panelHtml = $tab ? (string) $panel->getPanel() : NULL;
+				$panelHtml = $tab ? (string) $panel->getPanel() : null;
 				if ($tab && $panel instanceof \Nette\Diagnostics\IBarPanel) {
 					$e = new \Exception('Support for Nette\Diagnostics\IBarPanel is deprecated');
 				}
@@ -161,14 +161,14 @@ class Bar
 	 */
 	public function dispatchAssets()
 	{
-		$asset = isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : NULL;
+		$asset = isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : null;
 		if ($asset === 'js') {
 			header('Content-Type: text/javascript');
 			header('Cache-Control: max-age=864000');
 			header_remove('Pragma');
 			header_remove('Set-Cookie');
 			$this->renderAssets();
-			return TRUE;
+			return true;
 		}
 
 		$this->useSession = session_status() === PHP_SESSION_ACTIVE;
@@ -188,14 +188,14 @@ class Bar
 			if ($session) {
 				$method = $m[1] ? 'loadAjax' : 'init';
 				echo "Tracy.Debug.$method(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
-				$session = NULL;
+				$session = null;
 			}
 			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];
 			if ($session) {
 				echo "Tracy.BlueScreen.loadAjax(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
-				$session = NULL;
+				$session = null;
 			}
-			return TRUE;
+			return true;
 		}
 	}
 

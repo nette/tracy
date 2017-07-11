@@ -32,7 +32,7 @@ class Logger implements ILogger
 	private $blueScreen;
 
 
-	public function __construct($directory, $email = NULL, BlueScreen $blueScreen = NULL)
+	public function __construct($directory, $email = null, BlueScreen $blueScreen = null)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
@@ -57,7 +57,7 @@ class Logger implements ILogger
 
 		$exceptionFile = $message instanceof \Exception || $message instanceof \Throwable
 			? $this->getExceptionFile($message)
-			: NULL;
+			: null;
 		$line = $this->formatLogLine($message, $exceptionFile);
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
 
@@ -69,7 +69,7 @@ class Logger implements ILogger
 			$this->logException($message, $exceptionFile);
 		}
 
-		if (in_array($priority, [self::ERROR, self::EXCEPTION, self::CRITICAL], TRUE)) {
+		if (in_array($priority, [self::ERROR, self::EXCEPTION, self::CRITICAL], true)) {
 			$this->sendEmail($message);
 		}
 
@@ -105,13 +105,13 @@ class Logger implements ILogger
 	 * @param  string|\Exception|\Throwable
 	 * @return string
 	 */
-	protected function formatLogLine($message, $exceptionFile = NULL)
+	protected function formatLogLine($message, $exceptionFile = null)
 	{
 		return implode(' ', [
 			@date('[Y-m-d H-i-s]'), // @ timezone may not be set
 			preg_replace('#\s*\r?\n\s*#', ' ', $this->formatMessage($message)),
 			' @  ' . Helpers::getSource(),
-			$exceptionFile ? ' @@  ' . basename($exceptionFile) : NULL,
+			$exceptionFile ? ' @@  ' . basename($exceptionFile) : null,
 		]);
 	}
 
@@ -145,7 +145,7 @@ class Logger implements ILogger
 	 * @param  \Exception|\Throwable
 	 * @return string logged error filename
 	 */
-	protected function logException($exception, $file = NULL)
+	protected function logException($exception, $file = null)
 	{
 		$file = $file ?: $this->getExceptionFile($exception);
 		$bs = $this->blueScreen ?: new BlueScreen;

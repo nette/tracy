@@ -17,7 +17,7 @@ if (PHP_SAPI === 'cli') {
 }
 
 
-Debugger::$productionMode = FALSE;
+Debugger::$productionMode = false;
 header('Content-Type: text/html');
 ini_set('session.save_path', TEMP_DIR);
 session_start();
@@ -57,7 +57,7 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 
 function first($arg1, $arg2)
 {
-	second(TRUE, FALSE);
+	second(true, false);
 }
 
 

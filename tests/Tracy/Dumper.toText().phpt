@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 class Test
 {
-	public $x = [10, NULL];
+	public $x = [10, null];
 
 	private $y = 'hello';
 
@@ -21,11 +21,11 @@ class Test
 }
 
 
-Assert::match('NULL', Dumper::toText(NULL));
+Assert::match('NULL', Dumper::toText(null));
 
-Assert::match('TRUE', Dumper::toText(TRUE));
+Assert::match('TRUE', Dumper::toText(true));
 
-Assert::match('FALSE', Dumper::toText(FALSE));
+Assert::match('FALSE', Dumper::toText(false));
 
 Assert::match('0', Dumper::toText(0));
 

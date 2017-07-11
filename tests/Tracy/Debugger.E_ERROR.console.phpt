@@ -14,13 +14,13 @@ use Tracy\Debugger;
 require __DIR__ . '/../bootstrap.php';
 
 
-Debugger::$productionMode = FALSE;
+Debugger::$productionMode = false;
 header('Content-Type: text/plain');
 
 ob_start();
 Debugger::enable();
 
-$onFatalErrorCalled = FALSE;
+$onFatalErrorCalled = false;
 
 register_shutdown_function(function () use (&$onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
@@ -54,13 +54,13 @@ Unable to log error: Directory is not specified.
 
 
 Debugger::$onFatalError[] = function () use (&$onFatalErrorCalled) {
-	$onFatalErrorCalled = TRUE;
+	$onFatalErrorCalled = true;
 };
 
 
 function first($arg1, $arg2)
 {
-	second(TRUE, FALSE);
+	second(true, false);
 }
 
 

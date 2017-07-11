@@ -4,7 +4,7 @@ require __DIR__ . '/../src/tracy.php';
 
 use Tracy\Debugger;
 
-$arr = [10, 20, ['key1' => 'val1', 'key2' => TRUE]];
+$arr = [10, 20, ['key1' => 'val1', 'key2' => true]];
 
 // will show in FireLogger
 Debugger::fireLog('Hello World');
@@ -13,7 +13,7 @@ Debugger::fireLog($arr);
 
 function first($arg1, $arg2)
 {
-	second(TRUE, FALSE);
+	second(true, false);
 }
 
 

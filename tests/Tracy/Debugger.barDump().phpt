@@ -17,7 +17,7 @@ if (PHP_SAPI === 'cli') {
 }
 
 
-Debugger::$productionMode = FALSE;
+Debugger::$productionMode = false;
 header('Content-Type: text/html');
 ini_set('session.save_path', TEMP_DIR);
 session_start();
@@ -34,7 +34,7 @@ register_shutdown_function(function () {
 });
 
 
-$arr = [10, 20.2, TRUE, FALSE, NULL, 'hello', ['key1' => 'val1', 'key2' => TRUE], (object) ['key1' => 'val1', 'key2' => TRUE]];
+$arr = [10, 20.2, true, false, null, 'hello', ['key1' => 'val1', 'key2' => true], (object) ['key1' => 'val1', 'key2' => true]];
 
 Debugger::barDump($arr);
 

@@ -17,14 +17,14 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 class Test
 {
-	public $x = [10, NULL];
+	public $x = [10, null];
 
 	private $y = 'hello';
 
 	protected $z = 30;
 }
 
-$arr = [10, 20.2, TRUE, NULL, 'hello', (object) NULL, [], fopen(__FILE__, 'r')];
+$arr = [10, 20.2, true, null, 'hello', (object) null, [], fopen(__FILE__, 'r')];
 
 $obj = new Test;
 
@@ -38,7 +38,7 @@ dump($obj);
 
 echo "<h2>With location</h2>\n";
 
-Debugger::$showLocation = TRUE;
+Debugger::$showLocation = true;
 
 dump($arr);
 

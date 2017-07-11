@@ -19,7 +19,7 @@ class CustomLogger extends Logger
 
 	public function log($value, $priority = self::INFO)
 	{
-		$exceptionFile = $value instanceof \Exception ? $this->logException($value) : NULL;
+		$exceptionFile = $value instanceof \Exception ? $this->logException($value) : null;
 
 		$this->collector[] = [
 			$priority,

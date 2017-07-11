@@ -16,7 +16,7 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 <p>You can dump variables to bar in rightmost bottom egde.</p>
 
 <?php
-$arr = [10, 20.2, TRUE, NULL, 'hello', (object) NULL, []];
+$arr = [10, 20.2, true, null, 'hello', (object) null, []];
 
 bdump(get_defined_vars());
 

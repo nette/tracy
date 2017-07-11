@@ -12,29 +12,29 @@ require __DIR__ . '/../bootstrap.php';
 
 
 header('Content-Type: text/plain');
-Tracy\Dumper::$terminalColors = NULL;
+Tracy\Dumper::$terminalColors = null;
 
 
 test(function () { // production mode
-	Debugger::$productionMode = TRUE;
+	Debugger::$productionMode = true;
 
 	ob_start();
 	Debugger::dump('sensitive data');
 	Assert::same('', ob_get_clean());
 
-	Assert::match('"forced" (6)', Debugger::dump('forced', TRUE));
+	Assert::match('"forced" (6)', Debugger::dump('forced', true));
 });
 
 
 test(function () { // development mode
-	Debugger::$productionMode = FALSE;
+	Debugger::$productionMode = false;
 
 	ob_start();
 	Debugger::dump('sensitive data');
 	Assert::match('"sensitive data" (14)
 	', ob_get_clean());
 
-	Assert::match('"forced" (6)', Debugger::dump('forced', TRUE));
+	Assert::match('"forced" (6)', Debugger::dump('forced', true));
 });
 
 

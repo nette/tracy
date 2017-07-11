@@ -16,18 +16,18 @@ use Nette;
 class TracyExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = [
-		'email' => NULL,
-		'fromEmail' => NULL,
-		'logSeverity' => NULL,
-		'editor' => NULL,
-		'browser' => NULL,
-		'errorTemplate' => NULL,
-		'strictMode' => NULL,
-		'showBar' => NULL,
-		'maxLen' => NULL,
-		'maxDepth' => NULL,
-		'showLocation' => NULL,
-		'scream' => NULL,
+		'email' => null,
+		'fromEmail' => null,
+		'logSeverity' => null,
+		'editor' => null,
+		'browser' => null,
+		'errorTemplate' => null,
+		'strictMode' => null,
+		'showBar' => null,
+		'maxLen' => null,
+		'maxDepth' => null,
+		'showLocation' => null,
+		'scream' => null,
 		'bar' => [], // of class name
 		'blueScreen' => [], // of callback
 		'editorMapping' => [],
@@ -40,7 +40,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	private $cliMode;
 
 
-	public function __construct($debugMode = FALSE, $cliMode = FALSE)
+	public function __construct($debugMode = false, $cliMode = false)
 	{
 		$this->debugMode = $debugMode;
 		$this->cliMode = $cliMode;
@@ -80,7 +80,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			$options['logSeverity'] = $res;
 		}
 		foreach ($options as $key => $value) {
-			if ($value !== NULL) {
+			if ($value !== null) {
 				$key = ($key === 'fromEmail' ? 'getLogger()->' : '$') . $key;
 				$initialize->addBody($builder->formatPhp(
 					'Tracy\Debugger::' . $key . ' = ?;',
@@ -106,7 +106,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			}
 
 			if (!$this->cliMode) {
-				$initialize->addBody('if ($tmp = $this->getByType("Nette\Http\Session", FALSE)) { $tmp->start(); Tracy\Debugger::dispatch(); };');
+				$initialize->addBody('if ($tmp = $this->getByType("Nette\Http\Session", false)) { $tmp->start(); Tracy\Debugger::dispatch(); };');
 			}
 		}
 

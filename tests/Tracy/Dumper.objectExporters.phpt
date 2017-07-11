@@ -51,7 +51,7 @@ Assert::match('__PHP_Incomplete_Class #%a%
 
 
 Dumper::$objectExporters = [
-	NULL => function ($var) { return ['type' => 'NULL']; },
+	null => function ($var) { return ['type' => 'NULL']; },
 	'Iterator' => function ($var) { return ['type' => 'Default Iterator']; },
 ];
 $exporters = [

@@ -72,7 +72,7 @@ Fatal error: Call to undefined function missing_function() in %a% on line %d%
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>    function </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='line'>%d%:</span>    {
-<span class='line'>%d%:</span>        </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">TRUE</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">FALSE</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>%d%:</span>        </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">true</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">false</span><span style="color: #D24; font-weight: bold">);
 <span class='line'>%d%:</span>    }
 <span class='line'>%d%:</span>
 <span class='line'>%d%:</span>

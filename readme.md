@@ -103,7 +103,7 @@ Errors like a typo in a variable name or an attempt to open a nonexistent file g
 Or they may be displayed like errors:
 
 ```php
-Debugger::$strictMode = TRUE;
+Debugger::$strictMode = true;
 ```
 
 [![Notice rendered by Tracy](https://nette.github.io/tracy/images/tracy-notice.png)](https://nette.github.io/tracy/tracy-notice.html)
@@ -190,7 +190,7 @@ Variable dumping
 Every debugging developer is a good friend with the function `var_dump`, which lists all contents of any variable in detail. Unfortunately, its output is without HTML formatting and outputs the dump into a single line of HTML code, not to mention context escaping. It is necessary to replace the `var_dump` by a handier function. That is just what `Debugger::dump()` is.
 
 ```php
-$arr = array(10, 20.2, TRUE, NULL, 'hello');
+$arr = array(10, 20.2, true, null, 'hello');
 
 dump($arr);
 // or Tracy\Debugger::dump($arr);
@@ -212,8 +212,8 @@ The `dump()` function can display other useful information. `Tracy\Dumper::LOCAT
 ```php
 Debugger::$showLocation = Tracy\Dumper::LOCATION_SOURCE; // Shows path to where the dump() was called
 Debugger::$showLocation = Tracy\Dumper::LOCATION_CLASS | Tracy\Dumper::LOCATION_LINK; // Shows both paths to the classes and link to where the dump() was called
-Debugger::$showLocation = FALSE; // Hides additional location information
-Debugger::$showLocation = TRUE; // Shows all additional location information
+Debugger::$showLocation = false; // Hides additional location information
+Debugger::$showLocation = true; // Shows all additional location information
 ```
 
 Very handy alternative to `Debugger::dump()` is `Debugger::barDump()`. This allows us to dump variables in Debugger Bar. This is useful, because dumps don't mess up the output and we can also add a title to the dump.

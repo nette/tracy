@@ -11,7 +11,7 @@ use Tracy\Debugger;
 require __DIR__ . '/../bootstrap.php';
 
 
-Debugger::$productionMode = FALSE;
+Debugger::$productionMode = false;
 header('Content-Type: text/plain');
 
 ob_start();
@@ -20,7 +20,7 @@ Debugger::enable();
 
 function first($arg1, $arg2)
 {
-	second(TRUE, FALSE);
+	second(true, false);
 }
 
 

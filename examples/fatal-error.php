@@ -18,7 +18,7 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 function first($arg1, $arg2)
 {
-	second(TRUE, FALSE);
+	second(true, false);
 }
 
 

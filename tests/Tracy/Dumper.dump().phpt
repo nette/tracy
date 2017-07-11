@@ -33,7 +33,7 @@ test(function () { // terminal mode
 
 test(function () { // text mode
 	header('Content-Type: text/plain');
-	Tracy\Dumper::$terminalColors = NULL;
+	Tracy\Dumper::$terminalColors = null;
 	ob_start();
 	Assert::same(123, Dumper::dump(123));
 	Assert::match('123', ob_get_clean());

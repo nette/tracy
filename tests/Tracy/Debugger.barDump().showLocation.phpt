@@ -17,8 +17,8 @@ if (PHP_SAPI === 'cli') {
 }
 
 
-Debugger::$productionMode = FALSE;
-Debugger::$showLocation = TRUE;
+Debugger::$productionMode = false;
+Debugger::$showLocation = true;
 header('Content-Type: text/html');
 ini_set('session.save_path', TEMP_DIR);
 session_start();
