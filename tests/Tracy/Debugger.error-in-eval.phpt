@@ -8,7 +8,6 @@
  */
 
 use Tracy\Debugger;
-use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -22,6 +21,7 @@ Debugger::$productionMode = FALSE;
 header('Content-Type: text/html');
 
 Debugger::enable();
+
 
 function first($user, $pass)
 {

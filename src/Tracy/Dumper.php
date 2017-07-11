@@ -568,5 +568,4 @@ class Dumper
 			|| getenv('term') === 'xterm-256color'
 			|| (defined('STDOUT') && function_exists('posix_isatty') && posix_isatty(STDOUT)));
 	}
-
 }

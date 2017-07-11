@@ -75,5 +75,4 @@ class OutputDebugger
 		}
 		return $res . '</code>';
 	}
-
 }

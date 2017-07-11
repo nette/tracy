@@ -4,8 +4,8 @@
  * Test: Tracy\Helpers::getSuggestion()
  */
 
-use Tracy\Helpers;
 use Tester\Assert;
+use Tracy\Helpers;
 
 
 require __DIR__ . '/../bootstrap.php';

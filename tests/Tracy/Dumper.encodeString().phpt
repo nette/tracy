@@ -4,8 +4,8 @@
  * Test: Tracy\Dumper::encodeString()
  */
 
-use Tracy\Dumper;
 use Tester\Assert;
+use Tracy\Dumper;
 
 
 require __DIR__ . '/../bootstrap.php';

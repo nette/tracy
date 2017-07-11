@@ -4,8 +4,8 @@
  * Test: Tracy\Debugger E_RECOVERABLE_ERROR error.
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -18,7 +18,6 @@ Debugger::enable();
 
 class TestClass
 {
-
 	function test1(array $val)
 	{
 	}
@@ -33,8 +32,6 @@ class TestClass
 	{
 		return FALSE;
 	}
-
-
 }
 
 

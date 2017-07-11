@@ -25,5 +25,4 @@ interface IBarPanel
 	 * @return string
 	 */
 	function getPanel();
-
 }

@@ -174,5 +174,4 @@ class FireLogger implements ILogger
 			return 'unknown type';
 		}
 	}
-
 }

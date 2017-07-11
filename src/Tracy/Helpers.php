@@ -246,5 +246,4 @@ class Helpers
 			? $m[1]
 			: NULL;
 	}
-
 }

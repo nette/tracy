@@ -4,8 +4,8 @@
  * Test: Tracy\Logger it can be extended.
  */
 
-use Tracy\Logger;
 use Tester\Assert;
+use Tracy\Logger;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -14,8 +14,8 @@ require __DIR__ . '/../bootstrap.php';
 
 class CustomLogger extends Logger
 {
-
 	public $collector = [];
+
 
 	public function log($value, $priority = self::INFO)
 	{
@@ -30,7 +30,6 @@ class CustomLogger extends Logger
 
 		return $exceptionFile;
 	}
-
 }
 
 

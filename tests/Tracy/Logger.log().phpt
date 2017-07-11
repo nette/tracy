@@ -4,8 +4,8 @@
  * Test: Tracy\Logger logging exceptions in log message.
  */
 
-use Tracy\Logger;
 use Tester\Assert;
+use Tracy\Logger;
 
 
 require __DIR__ . '/../bootstrap.php';

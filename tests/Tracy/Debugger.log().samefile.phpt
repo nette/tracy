@@ -4,8 +4,8 @@
  * Test: Tracy\Debugger logging exceptions in log message.
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -15,7 +15,8 @@ require __DIR__ . '/../bootstrap.php';
 Debugger::$logDirectory = TEMP_DIR;
 
 
-function foo($fp) {
+function foo($fp)
+{
 	throw new Exception;
 }
 

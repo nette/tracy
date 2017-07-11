@@ -7,8 +7,8 @@
  * @outputMatch %A?%OK!
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';

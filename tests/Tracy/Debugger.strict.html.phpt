@@ -8,7 +8,6 @@
  */
 
 use Tracy\Debugger;
-use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -23,6 +22,7 @@ header('Content-Type: text/html');
 
 Debugger::$strictMode = TRUE;
 Debugger::enable();
+
 
 function first($arg1, $arg2)
 {

@@ -4,8 +4,8 @@
  * Test: Tracy\Debugger::fireLog() and exception.
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -37,6 +37,7 @@ function third($arg1)
 {
 	throw new Exception('The my exception', 123);
 }
+
 
 try {
 	first(10, 'any string');

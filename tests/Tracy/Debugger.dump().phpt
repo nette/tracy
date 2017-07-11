@@ -4,8 +4,8 @@
  * Test: Tracy\Debugger::dump() production vs development
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';

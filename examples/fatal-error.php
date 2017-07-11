@@ -15,11 +15,11 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 <?php
 
+
 function first($arg1, $arg2)
 {
 	second(TRUE, FALSE);
 }
-
 
 
 function second($arg1, $arg2)

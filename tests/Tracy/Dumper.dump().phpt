@@ -4,8 +4,8 @@
  * Test: Tracy\Dumper::dump() modes
  */
 
-use Tracy\Dumper;
 use Tester\Assert;
+use Tracy\Dumper;
 
 
 require __DIR__ . '/../bootstrap.php';

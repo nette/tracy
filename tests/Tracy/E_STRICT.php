@@ -2,11 +2,15 @@
 
 class A
 {
-	function test() {}
+	function test()
+	{
+	}
 }
 
 
 class B extends A
 {
-	function test(array $a) {}
+	function test(array $a)
+	{
+	}
 }

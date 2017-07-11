@@ -4,8 +4,8 @@
  * Test: Tracy\Debugger notices and warnings in console.
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -38,6 +38,7 @@ function third($arg1)
 	min(1); // E_WARNING
 	require 'E_COMPILE_WARNING.php'; // E_COMPILE_WARNING
 }
+
 
 first(10, 'any string');
 Assert::match("

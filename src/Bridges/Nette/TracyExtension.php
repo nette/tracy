@@ -117,5 +117,4 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			));
 		}
 	}
-
 }

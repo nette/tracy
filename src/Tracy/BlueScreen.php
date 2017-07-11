@@ -204,7 +204,6 @@ class BlueScreen
 	}
 
 
-
 	/**
 	 * Returns highlighted line in HTML code.
 	 * @return string
@@ -265,5 +264,4 @@ class BlueScreen
 		}
 		return FALSE;
 	}
-
 }

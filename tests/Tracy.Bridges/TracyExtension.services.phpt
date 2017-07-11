@@ -14,7 +14,9 @@ require __DIR__ . '/../bootstrap.php';
 
 class CustomLogger implements ILogger
 {
-	public function log($value, $priority = self::INFO) {}
+	public function log($value, $priority = self::INFO)
+	{
+	}
 }
 
 

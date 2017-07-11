@@ -22,5 +22,4 @@ interface ILogger
 		CRITICAL = 'critical';
 
 	function log($value, $priority = self::INFO);
-
 }

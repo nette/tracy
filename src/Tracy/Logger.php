@@ -200,5 +200,4 @@ class Logger implements ILogger
 
 		mail($email, $parts['subject'], $parts['body'], $parts['headers']);
 	}
-
 }

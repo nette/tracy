@@ -51,5 +51,4 @@ class DefaultBarPanel implements IBarPanel
 		}
 		return ob_get_clean();
 	}
-
 }

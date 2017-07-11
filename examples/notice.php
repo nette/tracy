@@ -16,10 +16,12 @@ Debugger::$strictMode = TRUE;
 
 <?php
 
+
 function foo($from)
 {
 	echo $form;
 }
+
 
 foo(123);
 

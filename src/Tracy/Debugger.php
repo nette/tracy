@@ -7,8 +7,8 @@
 
 namespace Tracy;
 
-use Tracy;
 use ErrorException;
+use Tracy;
 
 
 /**
@@ -614,5 +614,4 @@ class Debugger
 		}
 		return in_array($addr, $list, TRUE) || in_array("$secret@$addr", $list, TRUE);
 	}
-
 }

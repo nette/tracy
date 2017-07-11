@@ -218,5 +218,4 @@ class Bar
 			__DIR__ . '/assets/BlueScreen/bluescreen.js',
 		]);
 	}
-
 }

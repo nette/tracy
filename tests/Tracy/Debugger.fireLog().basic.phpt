@@ -4,8 +4,8 @@
  * Test: Tracy\Debugger::fireLog()
  */
 
-use Tracy\Debugger;
 use Tester\Assert;
+use Tracy\Debugger;
 
 
 require __DIR__ . '/../bootstrap.php';
