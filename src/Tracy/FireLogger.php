@@ -116,7 +116,7 @@ class FireLogger implements ILogger
 	 */
 	private function jsonDump(&$var, $level = 0)
 	{
-		if (is_bool($var) || is_null($var) || is_int($var) || is_float($var)) {
+		if (is_bool($var) || $var === null || is_int($var) || is_float($var)) {
 			return $var;
 
 		} elseif (is_string($var)) {

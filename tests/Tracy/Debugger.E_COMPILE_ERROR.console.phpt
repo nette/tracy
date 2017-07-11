@@ -24,23 +24,23 @@ $onFatalErrorCalled = false;
 
 register_shutdown_function(function () use (&$onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
-	Assert::match(extension_loaded('xdebug') ? "
-Fatal error: Cannot re-assign \$this in %a%
-ErrorException: Cannot re-assign \$this in %a%
+	Assert::match(extension_loaded('xdebug') ? '
+Fatal error: Cannot re-assign $this in %a%
+ErrorException: Cannot re-assign $this in %a%
 Stack trace:
 #0 %a%: third()
 #1 %a%: second()
 #2 %a%: first()
 #3 {main}
 Unable to log error: Directory is not specified.
-" : "
-Fatal error: Cannot re-assign \$this in %a%
-ErrorException: Cannot re-assign \$this in %a%
+' : '
+Fatal error: Cannot re-assign $this in %a%
+ErrorException: Cannot re-assign $this in %a%
 Stack trace:
 #0 [internal function]: Tracy\\Debugger::shutdownHandler()
 #1 {main}
 Unable to log error: Directory is not specified.
-", ob_get_clean());
+', ob_get_clean());
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

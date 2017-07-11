@@ -24,7 +24,7 @@ Debugger::enable();
 
 class Test
 {
-	function __toString()
+	public function __toString()
 	{
 		trigger_error(__METHOD__, E_USER_ERROR);
 	}

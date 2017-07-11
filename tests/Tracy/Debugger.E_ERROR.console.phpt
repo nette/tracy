@@ -32,7 +32,7 @@ Stack trace:
 #2 %a%: first(10, 'any string')
 #3 {main}
 Unable to log error: Directory is not specified.
-" : (extension_loaded('xdebug') ? "
+" : (extension_loaded('xdebug') ? '
 Fatal error: Call to undefined function missing_function() in %a%
 ErrorException: Call to undefined function missing_function() in %a%
 Stack trace:
@@ -41,14 +41,14 @@ Stack trace:
 #2 %a%: first()
 #3 {main}
 Unable to log error: Directory is not specified.
-" : "
+' : '
 Fatal error: Call to undefined function missing_function() in %a%
 ErrorException: Call to undefined function missing_function() in %a%
 Stack trace:
 #0 [internal function]: Tracy\\Debugger::shutdownHandler()
 #1 {main}
 Unable to log error: Directory is not specified.
-"), ob_get_clean());
+'), ob_get_clean());
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

@@ -11,7 +11,7 @@ use Tracy\Dumper;
 require __DIR__ . '/../bootstrap.php';
 
 
-setLocale(LC_ALL, 'czech');
+setlocale(LC_ALL, 'czech');
 
 Assert::match('array (2)
    0 => -10.0

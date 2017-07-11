@@ -282,7 +282,7 @@ class Dumper
 	{
 		$type = get_resource_type($var);
 		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($type) . ' resource</span> '
-			. '<span class="tracy-dump-hash">#' . intval($var) . '</span>';
+			. '<span class="tracy-dump-hash">#' . (int) $var . '</span>';
 		if (isset(self::$resources[$type])) {
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
@@ -300,7 +300,7 @@ class Dumper
 	 */
 	private static function toJson(&$var, $options, $level = 0)
 	{
-		if (is_bool($var) || is_null($var) || is_int($var)) {
+		if (is_bool($var) || $var === null || is_int($var)) {
 			return $var;
 
 		} elseif (is_float($var)) {
@@ -331,7 +331,7 @@ class Dumper
 			return $res;
 
 		} elseif (is_object($var)) {
-			$obj = & self::$liveStorage[spl_object_hash($var)];
+			$obj = &self::$liveStorage[spl_object_hash($var)];
 			if ($obj && $obj['level'] <= $level) {
 				return ['object' => $obj['id']];
 			}
@@ -366,7 +366,7 @@ class Dumper
 			return ['object' => $obj['id']];
 
 		} elseif (is_resource($var)) {
-			$obj = & self::$liveStorage[(string) $var];
+			$obj = &self::$liveStorage[(string) $var];
 			if (!$obj) {
 				$type = get_resource_type($var);
 				$obj = ['id' => self::$livePrefix . (int) $var, 'name' => $type . ' resource'];

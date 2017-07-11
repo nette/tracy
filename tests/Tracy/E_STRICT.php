@@ -2,7 +2,7 @@
 
 class A
 {
-	function test()
+	public function test()
 	{
 	}
 }
@@ -10,7 +10,7 @@ class A
 
 class B extends A
 {
-	function test(array $a)
+	public function test(array $a)
 	{
 	}
 }

@@ -16,9 +16,9 @@ class TestClass
 {
 	public $public;
 
-	protected $protected;
-
 	public static $publicStatic;
+
+	protected $protected;
 
 
 	public function publicMethod()

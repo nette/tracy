@@ -68,7 +68,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 
 			<?php $stack = $ex->getTrace(); $expanded = null ?>
-			<?php if ((!$exception instanceof \ErrorException || in_array($exception->getSeverity(), [E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED])) && $this->isCollapsed($ex->getFile())) {
+			<?php if ((!$exception instanceof \ErrorException || in_array($exception->getSeverity(), [E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED], true)) && $this->isCollapsed($ex->getFile())) {
 				foreach ($stack as $key => $row) {
 					if (isset($row['file']) && !$this->isCollapsed($row['file'])) { $expanded = $key; break; }
 				}

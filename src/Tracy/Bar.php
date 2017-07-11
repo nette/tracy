@@ -135,8 +135,8 @@ class Bar
 					$e = new \Exception('Support for Nette\Diagnostics\IBarPanel is deprecated');
 				}
 
-			} catch (\Throwable $e) {
 			} catch (\Exception $e) {
+			} catch (\Throwable $e) {
 			}
 			if (isset($e)) {
 				while (ob_get_level() > $obLevel) { // restore ob-level if broken
@@ -192,7 +192,7 @@ class Bar
 			}
 			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];
 			if ($session) {
-				echo "Tracy.BlueScreen.loadAjax(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
+				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
 				$session = null;
 			}
 			return true;

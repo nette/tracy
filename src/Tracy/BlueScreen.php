@@ -16,9 +16,6 @@ class BlueScreen
 	/** @var string[] */
 	public $info = [];
 
-	/** @var callable[] */
-	private $panels = [];
-
 	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
 	public $collapsePaths = [];
 
@@ -27,6 +24,9 @@ class BlueScreen
 
 	/** @var int  */
 	public $maxLength = 150;
+
+	/** @var callable[] */
+	private $panels = [];
 
 
 	public function __construct()
@@ -101,7 +101,7 @@ class BlueScreen
 			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
 			: null;
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error ? null : error_get_last();
-		$dump = function($v) {
+		$dump = function ($v) {
 			return Dumper::toHtml($v, [
 				Dumper::DEPTH => $this->maxDepth,
 				Dumper::TRUNCATE => $this->maxLength,
@@ -130,8 +130,8 @@ class BlueScreen
 				}
 				$res[] = (object) $panel;
 				continue;
-			} catch (\Throwable $e) {
 			} catch (\Exception $e) {
+			} catch (\Throwable $e) {
 			}
 			while (ob_get_level() > $obLevel) { // restore ob-level if broken
 				ob_end_clean();

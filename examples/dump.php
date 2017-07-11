@@ -19,9 +19,9 @@ class Test
 {
 	public $x = [10, null];
 
-	private $y = 'hello';
-
 	protected $z = 30;
+
+	private $y = 'hello';
 }
 
 $arr = [10, 20.2, true, null, 'hello', (object) null, [], fopen(__FILE__, 'r')];

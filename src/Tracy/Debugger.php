@@ -143,7 +143,7 @@ class Debugger
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
 		}
 
-		self::$maxLen = & self::$maxLength;
+		self::$maxLen = &self::$maxLength;
 		self::$reserved = str_repeat('t', 30000);
 		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(true);
 		self::$obLevel = ob_get_level();
@@ -185,7 +185,7 @@ class Debugger
 		set_error_handler([__CLASS__, 'errorHandler']);
 
 		array_map('class_exists', ['Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
-			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger']);
+			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ]);
 
 		self::dispatch();
 		self::$enabled = true;
@@ -282,8 +282,8 @@ class Debugger
 		if (self::$productionMode) {
 			try {
 				self::log($exception, self::EXCEPTION);
-			} catch (\Throwable $e) {
 			} catch (\Exception $e) {
+			} catch (\Throwable $e) {
 			}
 
 			if (Helpers::isHtmlMode()) {
@@ -314,9 +314,9 @@ class Debugger
 				if ($file && self::$browser) {
 					exec(self::$browser . ' ' . escapeshellarg($file));
 				}
-			} catch (\Throwable $e) {
-				echo "$s\nUnable to log error: {$e->getMessage()}\n";
 			} catch (\Exception $e) {
+				echo "$s\nUnable to log error: {$e->getMessage()}\n";
+			} catch (\Throwable $e) {
 				echo "$s\nUnable to log error: {$e->getMessage()}\n";
 			}
 		}
@@ -326,14 +326,14 @@ class Debugger
 			foreach (self::$onFatalError as $handler) {
 				call_user_func($handler, $exception);
 			}
-		} catch (\Throwable $e) {
 		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 		}
 		if ($e) {
 			try {
 				self::log($e, self::EXCEPTION);
-			} catch (\Throwable $e) {
 			} catch (\Exception $e) {
+			} catch (\Throwable $e) {
 			}
 		}
 
@@ -376,8 +376,8 @@ class Debugger
 			Helpers::improveException($e);
 			try {
 				self::log($e, self::ERROR);
-			} catch (\Throwable $e) {
 			} catch (\Exception $foo) {
+			} catch (\Throwable $foo) {
 			}
 			return null;
 
@@ -391,7 +391,7 @@ class Debugger
 		}
 
 		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ": $message";
-		$count = & self::getBar()->getPanel('Tracy:errors')->data["$file|$line|$message"];
+		$count = &self::getBar()->getPanel('Tracy:errors')->data["$file|$line|$message"];
 
 		if ($count++) { // repeated error
 			return null;
@@ -399,8 +399,8 @@ class Debugger
 		} elseif (self::$productionMode) {
 			try {
 				self::log("$message in $file:$line", self::ERROR);
-			} catch (\Throwable $e) {
 			} catch (\Exception $foo) {
+			} catch (\Throwable $foo) {
 			}
 			return null;
 
@@ -415,7 +415,7 @@ class Debugger
 	{
 		while (ob_get_level() > self::$obLevel) {
 			$status = ob_get_status();
-			if (in_array($status['name'], ['ob_gzhandler', 'zlib output compression'])) {
+			if (in_array($status['name'], ['ob_gzhandler', 'zlib output compression'], true)) {
 				break;
 			}
 			$fnc = $status['chunk_size'] || !$errorOccurred ? 'ob_end_flush' : 'ob_end_clean';
@@ -477,8 +477,8 @@ class Debugger
 	{
 		if (!self::$logger) {
 			self::$logger = new Logger(self::$logDirectory, self::$email, self::getBlueScreen());
-			self::$logger->directory = & self::$logDirectory; // back compatiblity
-			self::$logger->email = & self::$email;
+			self::$logger->directory = &self::$logDirectory; // back compatiblity
+			self::$logger->email = &self::$email;
 		}
 		return self::$logger;
 	}

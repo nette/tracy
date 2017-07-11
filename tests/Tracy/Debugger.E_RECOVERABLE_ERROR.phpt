@@ -18,17 +18,17 @@ Debugger::enable();
 
 class TestClass
 {
-	function test1(array $val)
+	public function test1(array $val)
 	{
 	}
 
 
-	function test2(TestClass $val)
+	public function test2(TestClass $val)
 	{
 	}
 
 
-	function __toString()
+	public function __toString()
 	{
 		return false;
 	}
