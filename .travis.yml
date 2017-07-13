@@ -10,22 +10,33 @@ env:
     - PHP_BIN=php
     - PHP_BIN=php-cgi
 
+matrix:
+    include:
+        - php: 7.1
+          env: codingStandard=on
+
 script:
-    - vendor/bin/tester -p $PHP_BIN tests -s
-    - php temp/code-checker/src/code-checker.php --short-arrays
-    - if [ $TRAVIS_PHP_VERSION == "7.0" ]; then ./node_modules/.bin/eslint "src/**/*.js"; fi
+    - if [ "$PHP_BIN" ]; then vendor/bin/tester -p $PHP_BIN tests -s; fi
+    - >
+      if [ "$codingStandard" ]; then
+      php temp/code-checker/src/code-checker.php --short-arrays
+      && php temp/coding-standard/ecs check src tests examples tools --config tests/coding-standard.neon
+      && ./node_modules/.bin/eslint "src/**/*.js";
+      fi
 
 after_failure:
     # Print *.actual content
     - for i in $(find tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
 
 before_script:
-    # Install Nette Tester & Code Checker
+    # Install Nette Tester
     - travis_retry composer install --no-interaction --prefer-dist
-    - travis_retry composer create-project nette/code-checker temp/code-checker ~2.5 --no-interaction
-    # Install new Node.js and Eslint
+    # Install Code Checkers, new Node.js and Eslint
     - >
-      if [ $TRAVIS_PHP_VERSION == "7.0" ]; then
+      if [ "$codingStandard" ]; then
+      travis_retry composer create-project nette/code-checker temp/code-checker ~2 --no-interaction;
+      travis_retry composer create-project nette/coding-standard temp/coding-standard --no-interaction;
+
       . $HOME/.nvm/nvm.sh;
       nvm install stable;
       nvm use stable;
