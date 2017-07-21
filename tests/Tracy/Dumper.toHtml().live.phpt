@@ -9,16 +9,7 @@ use Tracy\Dumper;
 
 
 require __DIR__ . '/../bootstrap.php';
-
-
-class Test
-{
-	public $x = [10, null];
-
-	private $y = 'hello';
-
-	protected $z = 30.0;
-}
+require __DIR__ . '/fixtures/DumpClass.php';
 
 
 $options = [Dumper::LIVE => true];
@@ -96,7 +87,7 @@ Assert::same([
 	'04' => [
 		'name' => 'Test',
 		'editor' => [
-			'file' => __FILE__,
+			'file' => __DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'DumpClass.php',
 		],
 		'items' => [
 			['x', [[0, 10], [1, null]], 0],

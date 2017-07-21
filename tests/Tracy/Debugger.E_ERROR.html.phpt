@@ -37,9 +37,9 @@ register_shutdown_function(function () use (&$onFatalErrorCalled) {
 
 
 Debugger::$onFatalError[] = function () use (&$onFatalErrorCalled) {
+	// empty line
 	$onFatalErrorCalled = true;
 };
-
 
 
 function first($arg1, $arg2)

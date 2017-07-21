@@ -9,16 +9,7 @@ use Tracy\Dumper;
 
 
 require __DIR__ . '/../bootstrap.php';
-
-
-class Test
-{
-	public $x = [10, null];
-
-	private $y = 'hello';
-
-	protected $z = 30.0;
-}
+require __DIR__ . '/fixtures/DumpClass.php';
 
 
 Assert::match('null', Dumper::toText(null));
