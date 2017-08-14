@@ -21,7 +21,7 @@
 	},
 	"require-dev": {
 		"nette/di": "~2.3",
-		"nette/tester": "~2.0"
+		"nette/tester": "~1.7"
 	},
 	"suggest": {
 		"https://nette.org/donate": "Please support Tracy via a donation"
