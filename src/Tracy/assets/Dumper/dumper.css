@@ -17,6 +17,17 @@ pre.tracy-dump div div {
 	margin-left: .5ex;
 }
 
+pre.tracy-dump a {
+	color: #125EAE;
+	text-decoration: none;
+}
+
+pre.tracy-dump a:hover,
+pre.tracy-dump a:focus {
+	background-color: #125EAE;
+	color: white;
+}
+
 .tracy-dump-array,
 .tracy-dump-object {
 	color: #C22;
