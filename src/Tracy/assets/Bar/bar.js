@@ -213,8 +213,12 @@
 		this.elem = document.getElementById(this.id);
 
 		draggable(this.elem, {
-			handles: [this.elem],
+			handles: this.elem.querySelectorAll('li:first-child'),
 			draggedClass: 'tracy-dragged'
+		});
+
+		this.elem.addEventListener('mousedown', function(e) {
+			e.preventDefault();
 		});
 
 		this.initTabs(this.elem);
