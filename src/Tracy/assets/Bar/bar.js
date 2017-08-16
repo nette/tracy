@@ -71,6 +71,7 @@
 
 		forEach(elem.querySelectorAll('.tracy-icons a'), function(a) {
 			a.addEventListener('click', function(e) {
+				clearTimeout(elem.Tracy.displayTimeout);
 				if (this.rel === 'close') {
 					_this.toPeek();
 				} else {
@@ -235,6 +236,10 @@
 
 				} else if (this.rel) {
 					var panel = Debug.panels[this.rel];
+					if (panel.elem.dataset.tracyContent) {
+						panel.init();
+					}
+
 					if (e.shiftKey) {
 						panel.toFloat();
 						panel.toWindow();
@@ -487,8 +492,8 @@
 				started = true;
 			}
 
-			clientX = e.clientX;
-			clientY = e.clientY;
+			clientX = e.touches ? e.touches[0].clientX : e.clientX;
+			clientY = e.touches ? e.touches[0].clientY : e.clientY;
 			return false;
 		};
 
@@ -504,6 +509,8 @@
 			dragging = null;
 			dE.removeEventListener('mousemove', onMove);
 			dE.removeEventListener('mouseup', onEnd);
+			dE.removeEventListener('touchmove', onMove);
+			dE.removeEventListener('touchend', onEnd);
 			return false;
 		};
 
@@ -516,14 +523,16 @@
 			}
 
 			var pos = getPosition(elem);
-			clientX = e.clientX;
-			clientY = e.clientY;
+			clientX = e.touches ? e.touches[0].clientX : e.clientX;
+			clientY = e.touches ? e.touches[0].clientY : e.clientY;
 			deltaX = pos.right + clientX;
 			deltaY = pos.bottom + clientY;
 			dragging = true;
 			started = false;
 			dE.addEventListener('mousemove', onMove);
 			dE.addEventListener('mouseup', onEnd);
+			dE.addEventListener('touchmove', onMove);
+			dE.addEventListener('touchend', onEnd);
 			requestAnimationFrame(redraw);
 			if (options.start) {
 				options.start(e, elem);
@@ -532,6 +541,7 @@
 
 		forEach(options.handles, function (handle) {
 			handle.addEventListener('mousedown', onStart);
+			handle.addEventListener('touchstart', onStart);
 
 			handle.addEventListener('click', function(e) {
 				if (started) {
