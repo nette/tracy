@@ -16,7 +16,7 @@ use Tracy;
  */
 class Debugger
 {
-	const VERSION = '2.4.8';
+	const VERSION = '2.4.9';
 
 	/** server modes for Debugger::enable() */
 	const
