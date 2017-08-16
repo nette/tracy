@@ -468,9 +468,9 @@
 			}
 		};
 
-		var onmousemove = function(e) {
+		var onMove = function(e) {
 			if (e.buttons === 0) {
-				return onmouseup(e);
+				return onEnd(e);
 			}
 			if (!started) {
 				if (options.draggedClass) {
@@ -487,7 +487,7 @@
 			return false;
 		};
 
-		var onmouseup = function(e) {
+		var onEnd = function(e) {
 			if (started) {
 				if (options.draggedClass) {
 					elem.classList.remove(options.draggedClass);
@@ -497,17 +497,17 @@
 				}
 			}
 			dragging = null;
-			dE.removeEventListener('mousemove', onmousemove);
-			dE.removeEventListener('mouseup', onmouseup);
+			dE.removeEventListener('mousemove', onMove);
+			dE.removeEventListener('mouseup', onEnd);
 			return false;
 		};
 
-		(options.handle || elem).addEventListener('mousedown', function(e) {
+		var onStart = function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 
 			if (dragging) { // missed mouseup out of window?
-				return onmouseup(e);
+				return onEnd(e);
 			}
 
 			var pos = getPosition(elem);
@@ -517,13 +517,15 @@
 			deltaY = pos.bottom + clientY;
 			dragging = true;
 			started = false;
-			dE.addEventListener('mousemove', onmousemove);
-			dE.addEventListener('mouseup', onmouseup);
+			dE.addEventListener('mousemove', onMove);
+			dE.addEventListener('mouseup', onEnd);
 			requestAnimationFrame(redraw);
 			if (options.start) {
 				options.start(e, elem);
 			}
-		});
+		};
+
+		(options.handle || elem).addEventListener('mousedown', onStart);
 
 		(options.handle || elem).addEventListener('click', function(e) {
 			if (started) {
