@@ -36,7 +36,7 @@
 		evalScripts(elem);
 
 		draggable(elem, {
-			handle: elem.querySelector('h1'),
+			handles: elem.querySelectorAll('h1'),
 			start: function() {
 				_this.toFloat();
 			}
@@ -213,6 +213,7 @@
 		this.elem = document.getElementById(this.id);
 
 		draggable(this.elem, {
+			handles: [this.elem],
 			draggedClass: 'tracy-dragged'
 		});
 
@@ -525,12 +526,14 @@
 			}
 		};
 
-		(options.handle || elem).addEventListener('mousedown', onStart);
+		forEach(options.handles, function (handle) {
+			handle.addEventListener('mousedown', onStart);
 
-		(options.handle || elem).addEventListener('click', function(e) {
-			if (started) {
-				e.stopImmediatePropagation();
-			}
+			handle.addEventListener('click', function(e) {
+				if (started) {
+					e.stopImmediatePropagation();
+				}
+			});
 		});
 	}
 
