@@ -118,18 +118,8 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			));
 		}
 
-		if ($dir = Tracy\Debugger::$logDirectory) {
-			$this->checkLogDirectory($dir);
+		if (($dir = Tracy\Debugger::$logDirectory) && !is_writable($dir)) {
+			throw new Nette\InvalidStateException("Make directory '$dir' writable.");
 		}
-	}
-
-
-	private function checkLogDirectory($dir)
-	{
-		$uniq = uniqid('_', true);
-		if (!@mkdir("$dir/$uniq")) { // @ - is escalated to exception
-			throw new Nette\InvalidStateException("Unable to write to directory '$dir'. Make this directory writable.");
-		}
-		rmdir("$dir/$uniq");
 	}
 }
