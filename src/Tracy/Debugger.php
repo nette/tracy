@@ -620,7 +620,7 @@ class Debugger
 		$list = is_string($list)
 			? preg_split('#[,\s]+#', $list)
 			: (array) $list;
-		if (!isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		if (!isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !isset($_SERVER['HTTP_FORWARDED'])) {
 			$list[] = '127.0.0.1';
 			$list[] = '::1';
 		}
