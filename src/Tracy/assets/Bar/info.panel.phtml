@@ -36,6 +36,8 @@ $info = array_filter([
 	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
 ] + (array) $this->data);
 
+$info = array_map('strval', $info);
+
 ?>
 <style class="tracy-debug">
 	#tracy-debug .tracy-InfoPanel td {
@@ -56,7 +58,7 @@ $info = array_filter([
 <table>
 <?php foreach ($info as $key => $val): ?>
 <tr>
-<?php if (iconv_strlen((string) $val, 'UTF-8') > 25): ?>
+<?php if (strlen($val) > 25): ?>
 	<td colspan=2><?= Helpers::escapeHtml($key) ?> <b><?= Helpers::escapeHtml($val) ?></b></td>
 <?php else: ?>
 	<td><?= Helpers::escapeHtml($key) ?></td><td><?= Helpers::escapeHtml($val) ?></td>
