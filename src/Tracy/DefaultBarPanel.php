@@ -15,6 +15,7 @@ namespace Tracy;
 class DefaultBarPanel implements IBarPanel
 {
 	public $data;
+
 	private $id;
 
 
