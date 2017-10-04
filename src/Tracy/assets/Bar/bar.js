@@ -437,7 +437,9 @@
 		}
 		Debug.scriptElem = document.createElement('script');
 		Debug.scriptElem.src = url;
-		Debug.scriptElem.setAttribute('nonce', nonce);
+		if (nonce) {
+			Debug.scriptElem.setAttribute('nonce', nonce);
+		}
 		document.documentElement.appendChild(Debug.scriptElem);
 	};
 
@@ -446,7 +448,9 @@
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 				var dolly = script.ownerDocument.createElement('script');
 				dolly.textContent = script.textContent;
-				dolly.setAttribute('nonce', nonce);
+				if (nonce) {
+					dolly.setAttribute('nonce', nonce);
+				}
 				script.ownerDocument.documentElement.appendChild(dolly);
 				script.tracyEvaluated = true;
 			}
