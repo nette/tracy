@@ -114,12 +114,10 @@ class Bar
 			$redirectQueue = null;
 			$content = self::renderHtmlRows($rows);
 
-			if ($useSession) {
-				$contentId = $this->contentId ?: substr(md5(uniqid('', true)), 0, 10);
-				$_SESSION['_tracy']['bar'][$contentId] = ['content' => $content, 'dumps' => $dumps, 'time' => time()];
-			}
-
-			if (!$this->contentId) {
+			if ($this->contentId) {
+				$_SESSION['_tracy']['bar'][$this->contentId] = ['content' => $content, 'dumps' => $dumps, 'time' => time()];
+			} else {
+				$contentId = substr(md5(uniqid('', true)), 0, 10);
 				$nonce = Helpers::getNonce();
 				$async = false;
 				require __DIR__ . '/assets/Bar/loader.phtml';

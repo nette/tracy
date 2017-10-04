@@ -16,7 +16,7 @@ use Tracy;
 $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 $asyncAttr = $async ? ' async' : '';
 ?>
-<?php if ($contentId): ?>
+<?php if (empty($content)): ?>
 <script src="?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $asyncAttr, $nonceAttr ?>></script>
 <?php else: ?>
 
@@ -24,7 +24,7 @@ $asyncAttr = $async ? ' async' : '';
 
 
 <!-- Tracy Debug Bar -->
-<script src="?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1"<?= $nonceAttr ?>></script>
+<script src="?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $nonceAttr ?>></script>
 <script<?= $nonceAttr ?>>
 Tracy.Debug.init(<?= json_encode($content) ?>, <?= json_encode($dumps) ?>);
 </script>

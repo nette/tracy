@@ -20,15 +20,14 @@ if (PHP_SAPI === 'cli') {
 Debugger::$productionMode = false;
 Debugger::$showLocation = true;
 header('Content-Type: text/html');
-ini_set('session.save_path', TEMP_DIR);
-session_start();
 
 ob_start();
 Debugger::enable();
 
 register_shutdown_function(function () {
-	ob_end_clean();
-	$rawContent = reset($_SESSION['_tracy']['bar'])['content'];
+	$output = ob_get_clean();
+	preg_match('#Tracy\.Debug\.init\((".*[^\\\\]"),#', $output, $m);
+	$rawContent = json_decode($m[1]);
 	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-dumps')[0]['data-tracy-content'];
 	Assert::match(<<<'EOD'
 %A%<h1>Dumps</h1>

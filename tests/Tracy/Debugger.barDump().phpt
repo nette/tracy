@@ -19,15 +19,14 @@ if (PHP_SAPI === 'cli') {
 
 Debugger::$productionMode = false;
 header('Content-Type: text/html');
-ini_set('session.save_path', TEMP_DIR);
-session_start();
 
 ob_start();
 Debugger::enable();
 
 register_shutdown_function(function () {
-	ob_end_clean();
-	$rawContent = reset($_SESSION['_tracy']['bar'])['content'];
+	$output = ob_get_clean();
+	preg_match('#Tracy\.Debug\.init\((".*[^\\\\]"),#', $output, $m);
+	$rawContent = json_decode($m[1]);
 	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-dumps')[0]['data-tracy-content'];
 	Assert::matchFile(__DIR__ . '/Debugger.barDump().expect', $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725
