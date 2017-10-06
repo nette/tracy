@@ -361,7 +361,7 @@ class Debugger
 	 * @throws ErrorException
 	 * @internal
 	 */
-	public static function errorHandler($severity, $message, $file, $line, $context)
+	public static function errorHandler($severity, $message, $file, $line, $context = array())
 	{
 		if (self::$scream) {
 			error_reporting(E_ALL);
