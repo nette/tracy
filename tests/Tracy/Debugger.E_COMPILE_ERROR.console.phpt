@@ -64,7 +64,7 @@ function second($arg1, $arg2)
 
 function third($arg1)
 {
-	require 'E_COMPILE_ERROR.php';
+	require __DIR__ . '/fixtures/E_COMPILE_ERROR.php';
 }
 
 

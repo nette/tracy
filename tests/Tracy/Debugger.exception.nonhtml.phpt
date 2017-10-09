@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger exception in non-HTML.
  * @exitCode   255
  * @httpCode   500
- * @outputMatchFile Debugger.exception.nonhtml.expect
+ * @outputMatchFile expected/Debugger.exception.nonhtml.expect
  */
 
 use Tracy\Debugger;

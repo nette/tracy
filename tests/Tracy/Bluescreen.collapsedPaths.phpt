@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Test: Tracy\Debugger E_ERROR in console.
- */
-
 use Tester\Assert;
 
 

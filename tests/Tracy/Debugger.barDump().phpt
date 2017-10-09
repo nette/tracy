@@ -28,7 +28,7 @@ register_shutdown_function(function () {
 	preg_match('#Tracy\.Debug\.init\((".*[^\\\\]"),#', $output, $m);
 	$rawContent = json_decode($m[1]);
 	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-dumps')[0]['data-tracy-content'];
-	Assert::matchFile(__DIR__ . '/Debugger.barDump().expect', $panelContent);
+	Assert::matchFile(__DIR__ . '/expected/Debugger.barDump().expect', $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

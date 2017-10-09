@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger eval error in HTML.
  * @httpCode   500
  * @exitCode   255
- * @outputMatchFile Debugger.error-in-eval.expect
+ * @outputMatchFile expected/Debugger.error-in-eval.expect
  */
 
 use Tracy\Debugger;

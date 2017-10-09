@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger notices and warnings with $strictMode in HTML.
  * @httpCode   500
  * @exitCode   255
- * @outputMatchFile Debugger.strict.html.expect
+ * @outputMatchFile expected/Debugger.strict.html.expect
  */
 
 use Tracy\Debugger;

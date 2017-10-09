@@ -2,7 +2,7 @@
 
 /**
  * Test: Tracy\Debugger notices and warnings in scream mode.
- * @outputMatchFile Debugger.scream.expect
+ * @outputMatchFile expected/Debugger.scream.expect
  */
 
 use Tracy\Debugger;
@@ -21,4 +21,4 @@ Debugger::enable();
 PHP_MAJOR_VERSION < 7 ? @mktime(0, 0, 0, 1, 23, 1978, 1) : @mktime(); // E_DEPRECATED
 @$x++; // E_NOTICE
 @min(1); // E_WARNING
-@require 'E_COMPILE_WARNING.php'; // E_COMPILE_WARNING (not working)
+@require __DIR__ . '/fixtures/E_COMPILE_WARNING.php'; // E_COMPILE_WARNING (not working)
