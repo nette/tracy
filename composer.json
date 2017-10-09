@@ -15,13 +15,13 @@
 		}
 	],
 	"require": {
-		"php": ">=5.4.4",
+		"php": ">=7.1",
 		"ext-session": "*",
 		"ext-json": "*"
 	},
 	"require-dev": {
-		"nette/di": "~2.3",
-		"nette/tester": "~1.7"
+		"nette/di": "^2.3",
+		"nette/tester": "^2.0"
 	},
 	"suggest": {
 		"https://nette.org/donate": "Please support Tracy via a donation"
