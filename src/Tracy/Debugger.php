@@ -106,6 +106,9 @@ class Debugger
 	/** @var string[] */
 	public static $customCssFiles = [];
 
+	/** @var string[] */
+	public static $customJsFiles = [];
+
 	/** @var array */
 	private static $cpuUsage;
 

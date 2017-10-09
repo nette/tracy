@@ -237,11 +237,11 @@ class Bar
 		$css = json_encode(preg_replace('#\s+#u', ' ', implode($css)));
 		echo "(function(){var el = document.createElement('style'); el.className='tracy-debug'; el.textContent=$css; document.head.appendChild(el);})();\n";
 
-		array_map('readfile', [
+		array_map('readfile', array_merge([
 			__DIR__ . '/assets/Bar/bar.js',
 			__DIR__ . '/assets/Toggle/toggle.js',
 			__DIR__ . '/assets/Dumper/dumper.js',
 			__DIR__ . '/assets/BlueScreen/bluescreen.js',
-		]);
+		], Debugger::$customJsFiles));
 	}
 }
