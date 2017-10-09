@@ -228,12 +228,12 @@ class Bar
 
 	private function renderAssets()
 	{
-		$css = array_map('file_get_contents', [
+		$css = array_map('file_get_contents', array_merge([
 			__DIR__ . '/assets/Bar/bar.css',
 			__DIR__ . '/assets/Toggle/toggle.css',
 			__DIR__ . '/assets/Dumper/dumper.css',
 			__DIR__ . '/assets/BlueScreen/bluescreen.css',
-		]);
+		], Debugger::$customCssFiles));
 		$css = json_encode(preg_replace('#\s+#u', ' ', implode($css)));
 		echo "(function(){var el = document.createElement('style'); el.className='tracy-debug'; el.textContent=$css; document.head.appendChild(el);})();\n";
 

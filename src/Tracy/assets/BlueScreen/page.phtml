@@ -29,7 +29,7 @@ $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 	<?php endif ?>
 
 	<style type="text/css" class="tracy-debug">
-	<?= preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . '/bluescreen.css')) ?>
+	<?= str_replace('</', '<\/', $css) ?>
 	</style>
 	<script<?= $nonceAttr ?>>document.documentElement.className+=' tracy-js'</script>
 </head>
