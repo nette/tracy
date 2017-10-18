@@ -18,7 +18,7 @@ $logger->log('Hello'); // no error
 Assert::exception(function () {
 	$logger = new Logger(TEMP_DIR . '/unknown');
 	$logger->log('Hello');
-}, 'RuntimeException', "Directory '%a%' is not found or is not directory.");
+}, 'RuntimeException', "Logging directory '%a%' is not found or is not directory.");
 
 
 Assert::exception(function () {

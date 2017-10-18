@@ -4,7 +4,7 @@
  * Test: Tracy\Debugger::enable() error.
  * @exitCode   255
  * @httpCode   500
- * @outputMatch %A%<title>RuntimeException: Logging directory not found or is not absolute path.</title>%A%
+ * @outputMatch %A%<title>RuntimeException: Logging directory must be absolute path.</title>%A%
  */
 
 use Tracy\Debugger;

@@ -163,9 +163,12 @@ class Debugger
 			self::$logDirectory = $logDirectory;
 		}
 		if (self::$logDirectory) {
-			if (!is_dir(self::$logDirectory) || !preg_match('#([a-z]+:)?[/\\\\]#Ai', self::$logDirectory)) {
+			if (!preg_match('#([a-z]+:)?[/\\\\]#Ai', self::$logDirectory)) {
+				self::exceptionHandler(new \RuntimeException('Logging directory must be absolute path.'));
 				self::$logDirectory = null;
-				self::exceptionHandler(new \RuntimeException('Logging directory not found or is not absolute path.'));
+			} elseif (!is_dir(self::$logDirectory)) {
+				self::exceptionHandler(new \RuntimeException("Logging directory '" . self::$logDirectory . "' is not found."));
+				self::$logDirectory = null;
 			}
 		}
 
