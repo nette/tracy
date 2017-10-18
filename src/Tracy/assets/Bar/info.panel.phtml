@@ -35,7 +35,6 @@ $info = [
 	'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
 	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null,
 	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,
-	'HHVM' => defined('HHVM_VERSION') ? HHVM_VERSION : null,
 	'PHP' => PHP_VERSION,
 	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : null,
 	'Tracy' => Debugger::VERSION,
