@@ -19,7 +19,7 @@ if (isset($this->cpuUsage) && $this->time) {
 	$systemUsage = -round(($this->cpuUsage['ru_stime.tv_sec'] * 1e6 + $this->cpuUsage['ru_stime.tv_usec']) / $this->time / 10000);
 }
 
-$info = array_filter([
+$info = [
 	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
 	'CPU usage user + system' => isset($userUsage) ? (int) $userUsage . ' % + ' . (int) $systemUsage . ' %' : null,
 	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ') . ' MB',
@@ -34,9 +34,9 @@ $info = array_filter([
 	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : null,
 	'Tracy' => Debugger::VERSION,
 	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
-] + (array) $this->data);
+];
 
-$info = array_map('strval', $info);
+$info = array_map('strval', array_filter($info + (array) $this->data));
 
 ?>
 <style class="tracy-debug">
