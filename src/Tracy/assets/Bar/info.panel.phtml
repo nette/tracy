@@ -19,13 +19,19 @@ if (isset($this->cpuUsage) && $this->time) {
 	$systemUsage = -round(($this->cpuUsage['ru_stime.tv_sec'] * 1e6 + $this->cpuUsage['ru_stime.tv_usec']) / $this->time / 10000);
 }
 
+$countClasses = function ($list) {
+	return count(array_filter($list, function($name) {
+		return (new \ReflectionClass($name))->isUserDefined();
+	}));
+};
+
 $info = [
 	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
 	'CPU usage user + system' => isset($userUsage) ? (int) $userUsage . ' % + ' . (int) $systemUsage . ' %' : null,
 	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ') . ' MB',
 	'Included files' => count(get_included_files()),
-	'Classes + interfaces + traits' => count(get_declared_classes()) . ' + '
-		. count(get_declared_interfaces()) . ' + ' . count(get_declared_traits()),
+	'Classes + interfaces + traits' => $countClasses(get_declared_classes()) . ' + '
+		. $countClasses(get_declared_interfaces()) . ' + ' . $countClasses(get_declared_traits()),
 	'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
 	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null,
 	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,
