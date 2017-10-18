@@ -203,7 +203,7 @@ class Debugger
 	 */
 	public static function dispatch()
 	{
-		if (self::$productionMode) {
+		if (self::$productionMode || PHP_SAPI === 'cli') {
 			return;
 
 		} elseif (headers_sent($file, $line) || ob_get_length()) {
