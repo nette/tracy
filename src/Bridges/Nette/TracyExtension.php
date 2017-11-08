@@ -26,6 +26,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		'strictMode' => null,
 		'showBar' => null,
 		'maxLen' => null,
+		'maxLength' => null,
 		'maxDepth' => null,
 		'showLocation' => null,
 		'scream' => null,
