@@ -23,7 +23,7 @@ class TestClass
 	}
 
 
-	public function test2(TestClass $val)
+	public function test2(self $val)
 	{
 	}
 
