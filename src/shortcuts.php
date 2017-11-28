@@ -17,6 +17,18 @@ if (!function_exists('dump')) {
 	}
 }
 
+if (!function_exists('dumpe')) {
+	/**
+	 * Tracy\Debugger::dump() & exit shortcut.
+	 * @tracySkipLocation
+	 */
+	function dumpe($var)
+	{
+		array_map('Tracy\Debugger::dump', func_get_args());
+		exit;
+	}
+}
+
 if (!function_exists('bdump')) {
 	/**
 	 * Tracy\Debugger::barDump() shortcut.
