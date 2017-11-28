@@ -26,7 +26,7 @@ $countClasses = function ($list) {
 };
 
 $opcache = function_exists('opcache_get_status') ? @opcache_get_status() : null; // @ can be restricted
-$cachedFiles = array_intersect(array_keys((array) $opcache['scripts']), get_included_files());
+$cachedFiles = isset($opcache['scripts']) ? array_intersect(array_keys($opcache['scripts']), get_included_files()) : [];
 
 $info = [
 	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
