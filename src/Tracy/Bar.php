@@ -244,7 +244,7 @@ class Bar
 			__DIR__ . '/assets/BlueScreen/bluescreen.js',
 		], Debugger::$customJsFiles));
 
-		echo "(function(){var el = document.createElement('div'); el.className='tracy-debug'; el.innerHTML='".preg_replace('#\s+#u', ' ', Debugger::$customHeadStr)."'; document.head.appendChild(el);})();\n";
-		echo "(function(){var el = document.createElement('div'); el.className='tracy-debug'; el.innerHTML='".preg_replace('#\s+#u', ' ',Debugger::$customBodyStr)."'; document.body.appendChild(el);})();\n";
+		if(Debugger::$customHeadStr) echo "(function(){var el = document.createElement('div'); el.className='tracy-debug'; el.innerHTML='".preg_replace('#\s+#u', ' ', Debugger::$customHeadStr)."'; document.head.appendChild(el);})();\n";
+		if(Debugger::$customBodyStr) echo "(function(){var el = document.createElement('div'); el.className='tracy-debug'; el.innerHTML='".preg_replace('#\s+#u', ' ',Debugger::$customBodyStr)."'; document.body.appendChild(el);})();\n";
 	}
 }
