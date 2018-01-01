@@ -110,7 +110,10 @@ class Debugger
 	public static $customJsFiles = [];
 
 	/** @var string */
-	public static $customHeadStr = null;
+	public static $customCssStr = null;
+
+	/** @var string */
+	public static $customJsStr = null;
 
 	/** @var string */
 	public static $customBodyStr = null;
