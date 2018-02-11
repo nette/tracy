@@ -7,7 +7,6 @@
 
 namespace Tracy;
 
-use Tracy;
 
 
 /**

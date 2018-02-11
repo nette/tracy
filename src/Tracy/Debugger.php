@@ -8,7 +8,6 @@
 namespace Tracy;
 
 use ErrorException;
-use Tracy;
 
 
 /**
