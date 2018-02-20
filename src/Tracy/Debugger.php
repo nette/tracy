@@ -138,12 +138,12 @@ class Debugger
 
 	/**
 	 * Enables displaying or logging errors and exceptions.
-	 * @param  mixed   production, development mode, autodetection or IP address(es) whitelist.
-	 * @param  string  error log directory
-	 * @param  string  administrator email; enables email sending in production mode
+	 * @param  mixed           production, development mode, autodetection or IP address(es) whitelist.
+	 * @param  string|ILogger  error log directory or logger instance
+	 * @param  string          administrator email; enables email sending in production mode
 	 * @return void
 	 */
-	public static function enable($mode = null, $logDirectory = null, $email = null)
+	public static function enable($mode = null, $logDirectoryOrLogger = null, $email = null)
 	{
 		if ($mode !== null || self::$productionMode === null) {
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
@@ -159,8 +159,10 @@ class Debugger
 		if ($email !== null) {
 			self::$email = $email;
 		}
-		if ($logDirectory !== null) {
-			self::$logDirectory = $logDirectory;
+		if (is_string($logDirectoryOrLogger)) {
+			self::$logDirectory = $logDirectoryOrLogger;
+		} elseif ($logDirectoryOrLogger instanceof ILogger) {
+			self::$logger = $logDirectoryOrLogger;
 		}
 		if (self::$logDirectory) {
 			if (!preg_match('#([a-z]+:)?[/\\\\]#Ai', self::$logDirectory)) {
