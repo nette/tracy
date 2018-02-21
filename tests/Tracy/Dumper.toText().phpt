@@ -65,7 +65,6 @@ Assert::match('Test #%a%
    z protected => 30.0
 ', Dumper::toText(new Test));
 
-
 $objStorage = new SplObjectStorage();
 $objStorage->attach($o1 = new stdClass);
 $objStorage[$o1] = 'o1';
