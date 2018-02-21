@@ -7,8 +7,6 @@
 
 namespace Tracy;
 
-use Tracy;
-
 
 /**
  * Dumps a variable.
@@ -454,7 +452,21 @@ class Dumper
 				return call_user_func($dumper, $obj);
 			}
 		}
-		return (array) $obj;
+		if (version_compare(PHP_VERSION, '5.6.0') < 0) {
+			return (array) $obj;
+		}
+		if (!is_callable([$obj, '__debugInfo'])) {
+			return (array) $obj;
+		}
+		$fields = $obj->__debugInfo();
+		foreach ((array) $obj as $k => $v) {
+			$sk = substr($k, strrpos($k, "\x00") + 1);
+			if (isset($fields[$sk])) {
+				$fields[$k] = $v;
+				unset($fields[$sk]);
+			}
+		}
+		return $fields;
 	}
 
 
