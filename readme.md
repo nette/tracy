@@ -68,7 +68,7 @@ The Debugger Bar is a floating panel. It is displayed in the bottom right corner
 
 You can add other useful panels into the Debugger Bar. You can find interesing ones in [Addons](https://addons.nette.org) or you can create your own.
 
-Implementation of custom bar is easy, just implement interface `Tracy\IBarPanel` with two methods `getTab` and `getContent`, both returning content to be displayed.
+Implementation of custom panel is easy, just implement interface `Tracy\IBarPanel` with two methods `getTab` and `getPanel`, both returning HTML content to be displayed.
 Afterward, registering via `Debugger::getBar()->addPanel(new CustomPanel());` is everything you will need to do.
 
 
