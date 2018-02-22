@@ -41,12 +41,19 @@
 			handles: elem.querySelectorAll('h1'),
 			start: function() {
 				_this.toFloat();
+				_this.focus();
+			}
+		});
+
+		elem.addEventListener('mousedown', function(e) {
+			if (isTargetChanged(e.relatedTarget, this)) {
+				_this.focus();
 			}
 		});
 
 		elem.addEventListener('mouseover', function(e) {
 			if (isTargetChanged(e.relatedTarget, this)) {
-				_this.focus();
+				clearTimeout(elem.Tracy.displayTimeout);
 			}
 		});
 
