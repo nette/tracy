@@ -205,7 +205,6 @@ body#tracy-debug { /* in popup window */
 	background: white;
 	color: #333;
 	text-align: left;
-	z-index: 20001;
 }
 
 body#tracy-debug .tracy-panel { /* in popup window */

@@ -24,7 +24,7 @@
 	Panel.FLOAT = 'tracy-mode-float';
 	Panel.WINDOW = 'tracy-mode-window';
 	Panel.FOCUSED = 'tracy-focused';
-	Panel.zIndex = 20000;
+	Panel.zIndex = 20001;
 
 	Panel.prototype.init = function() {
 		var _this = this, elem = this.elem;
