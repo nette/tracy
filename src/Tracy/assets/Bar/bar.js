@@ -14,6 +14,8 @@
 		return contentId;
 	};
 
+	Tracy.panelZIndex = Tracy.panelZIndex || 20000;
+
 	var Panel = Tracy.DebugPanel = function(id) {
 		this.id = id;
 		this.elem = document.getElementById(this.id);
@@ -24,7 +26,7 @@
 	Panel.FLOAT = 'tracy-mode-float';
 	Panel.WINDOW = 'tracy-mode-window';
 	Panel.FOCUSED = 'tracy-focused';
-	Panel.zIndex = 20001;
+	Panel.zIndexCounter = 1;
 
 	Panel.prototype.init = function() {
 		var _this = this, elem = this.elem;
@@ -98,7 +100,7 @@
 			clearTimeout(elem.Tracy.displayTimeout);
 			elem.Tracy.displayTimeout = setTimeout(function() {
 				elem.classList.add(Panel.FOCUSED);
-				elem.style.zIndex = Panel.zIndex++;
+				elem.style.zIndex = Tracy.panelZIndex + Panel.zIndexCounter++;
 				if (callback) {
 					callback();
 				}
