@@ -186,7 +186,7 @@
 		if (this.is(Panel.WINDOW)) {
 			localStorage.setItem(this.id, JSON.stringify({window: true}));
 		} else if (pos.width) {
-			localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom}));
+			localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom, zIndex: this.elem.style.zIndex - Tracy.panelZIndex}));
 		} else {
 			localStorage.removeItem(this.id);
 		}
@@ -203,6 +203,8 @@
 			this.init();
 			this.toFloat();
 			setPosition(this.elem, pos);
+			this.elem.style.zIndex = Tracy.panelZIndex + (pos.zIndex || 1);
+			Panel.zIndexCounter = Math.max(Panel.zIndexCounter, (pos.zIndex || 1)) + 1;
 		}
 	};
 
