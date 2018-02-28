@@ -52,6 +52,10 @@ body#tracy-debug { /* in popup window */
 	font-weight: bold;
 }
 
+#tracy-debug small {
+	font-size: smaller;
+}
+
 #tracy-debug i,
 #tracy-debug em {
 	font-style: italic;
