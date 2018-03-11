@@ -6,7 +6,7 @@
 	Tracy = window.Tracy || {};
 
 	if (document.currentScript) {
-		var nonce = document.currentScript.getAttribute('nonce');
+		var nonce = document.currentScript.getAttribute('nonce') || document.currentScript.nonce;
 		var contentId = document.currentScript.dataset.id;
 	}
 
