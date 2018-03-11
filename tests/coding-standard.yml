@@ -1,5 +1,5 @@
 imports:
-    - { resource: '../temp/coding-standard/coding-standard-php56.yml' }
+    - { resource: '../temp/coding-standard/coding-standard-php71.yml' }
 
 parameters:
     skip:

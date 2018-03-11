@@ -28,7 +28,7 @@ jobs:
             php: 7.1
             install:
                 # Install Nette Code Checker
-                - travis_retry composer create-project nette/code-checker temp/code-checker ~2 --no-progress
+                - travis_retry composer create-project nette/code-checker temp/code-checker ^3.0 --no-progress
                 # Install Nette Coding Standard
                 - travis_retry composer create-project nette/coding-standard temp/coding-standard ^2 --no-progress
                 # Install new Node.js and Eslint
@@ -37,7 +37,7 @@ jobs:
                 - nvm use stable
                 - npm install eslint
             script:
-                - php temp/code-checker/code-checker -i tests/Tracy/fixtures -i examples/assets
+                - php temp/code-checker/code-checker --strict-types -i tests/Tracy/fixtures -i examples/assets
                 - php temp/coding-standard/ecs check src tests examples tools --config tests/coding-standard.yml
                 - ./node_modules/.bin/eslint "src/**/*.js"
 
