@@ -7,6 +7,8 @@
  * @outputMatch %A%<h1>Server Error</h1>%A%
  */
 
+declare(strict_types=1);
+
 use Tracy\Debugger;
 
 

@@ -4,6 +4,8 @@
  * Test: Tracy\Dumper::toTerminal()
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 use Tracy\Dumper;
 
