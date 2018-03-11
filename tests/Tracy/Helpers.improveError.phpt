@@ -4,6 +4,8 @@
  * Test: Tracy\Debugger suggestions
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 use Tracy\Helpers;
 

@@ -5,6 +5,8 @@
  * @outputMatch OK!
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 use Tester\DomQuery;
 use Tracy\Debugger;
