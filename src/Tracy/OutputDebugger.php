@@ -13,7 +13,7 @@ namespace Tracy;
  */
 class OutputDebugger
 {
-	const BOM = "\xEF\xBB\xBF";
+	private const BOM = "\xEF\xBB\xBF";
 
 	/** @var array of [file, line, output, stack] */
 	private $list = [];

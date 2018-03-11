@@ -49,7 +49,7 @@ class Bar
 	 */
 	public function getPanel($id)
 	{
-		return isset($this->panels[$id]) ? $this->panels[$id] : null;
+		return $this->panels[$id] ?? null;
 	}
 
 
@@ -186,7 +186,7 @@ class Bar
 	 */
 	public function dispatchAssets()
 	{
-		$asset = isset($_GET['_tracy_bar']) ? $_GET['_tracy_bar'] : null;
+		$asset = $_GET['_tracy_bar'] ?? null;
 		if ($asset === 'js') {
 			header('Content-Type: application/javascript');
 			header('Cache-Control: max-age=864000');

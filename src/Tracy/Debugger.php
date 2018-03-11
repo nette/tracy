@@ -15,15 +15,15 @@ use ErrorException;
  */
 class Debugger
 {
-	const VERSION = '3.0-dev';
+	public const VERSION = '3.0-dev';
 
 	/** server modes for Debugger::enable() */
-	const
+	public const
 		DEVELOPMENT = false,
 		PRODUCTION = true,
 		DETECT = null;
 
-	const COOKIE_SECRET = 'tracy-debug';
+	public const COOKIE_SECRET = 'tracy-debug';
 
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
@@ -80,7 +80,7 @@ class Debugger
 	public static $email;
 
 	/** for Debugger::log() and Debugger::fireLog() */
-	const
+	public const
 		DEBUG = ILogger::DEBUG,
 		INFO = ILogger::INFO,
 		WARNING = ILogger::WARNING,
@@ -153,7 +153,7 @@ class Debugger
 
 		self::$maxLen = &self::$maxLength;
 		self::$reserved = str_repeat('t', 30000);
-		self::$time = isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(true);
+		self::$time = $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(true);
 		self::$obLevel = ob_get_level();
 		self::$cpuUsage = !self::$productionMode && function_exists('getrusage') ? getrusage() : null;
 
@@ -345,7 +345,7 @@ class Debugger
 		try {
 			$e = null;
 			foreach (self::$onFatalError as $handler) {
-				call_user_func($handler, $exception);
+				$handler($exception);
 			}
 		} catch (\Throwable $e) {
 			try {
@@ -455,7 +455,7 @@ class Debugger
 			self::$blueScreen = new BlueScreen;
 			self::$blueScreen->info = [
 				'PHP ' . PHP_VERSION,
-				isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
+				$_SERVER['SERVER_SOFTWARE'] ?? null,
 				'Tracy ' . self::VERSION,
 			];
 		}
@@ -616,9 +616,7 @@ class Debugger
 	 */
 	public static function detectDebugMode($list = null)
 	{
-		$addr = isset($_SERVER['REMOTE_ADDR'])
-			? $_SERVER['REMOTE_ADDR']
-			: php_uname('n');
+		$addr = $_SERVER['REMOTE_ADDR'] ?? php_uname('n');
 		$secret = isset($_COOKIE[self::COOKIE_SECRET]) && is_string($_COOKIE[self::COOKIE_SECRET])
 			? $_COOKIE[self::COOKIE_SECRET]
 			: null;
