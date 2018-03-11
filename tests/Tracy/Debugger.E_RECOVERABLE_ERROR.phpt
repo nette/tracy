@@ -4,6 +4,8 @@
  * Test: Tracy\Debugger E_RECOVERABLE_ERROR error.
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 use Tracy\Debugger;
 

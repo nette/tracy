@@ -7,6 +7,8 @@
  * @outputMatch Error%a?%: Call to undefined function missing_function() in %A%
  */
 
+declare(strict_types=1);
+
 use Tracy\Debugger;
 
 
