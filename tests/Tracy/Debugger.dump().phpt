@@ -4,6 +4,8 @@
  * Test: Tracy\Debugger::dump() production vs development
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 use Tracy\Debugger;
 

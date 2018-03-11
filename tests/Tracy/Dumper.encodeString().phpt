@@ -4,6 +4,8 @@
  * Test: Tracy\Dumper::encodeString()
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 use Tracy\Dumper;
 

@@ -7,6 +7,8 @@
  * @outputMatchFile expected/Debugger.exception.nonhtml.expect
  */
 
+declare(strict_types=1);
+
 use Tracy\Debugger;
 
 
