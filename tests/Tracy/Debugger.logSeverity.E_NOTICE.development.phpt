@@ -4,6 +4,8 @@
  * Test: Tracy\Debugger logging E_NOTICE (bluescreen) in development mode.
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 use Tracy\Debugger;
 
