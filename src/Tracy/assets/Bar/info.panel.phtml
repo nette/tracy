@@ -34,13 +34,13 @@ $info = [
 	'OPcache' => $opcache ? round(count($cachedFiles) * 100 / count(get_included_files())) . '% cached' : null,
 	'Classes + interfaces + traits' => $countClasses(get_declared_classes()) . ' + '
 		. $countClasses(get_declared_interfaces()) . ' + ' . $countClasses(get_declared_traits()),
-	'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
-	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null,
+	'Your IP' => $_SERVER['REMOTE_ADDR'] ?? null,
+	'Server IP' => $_SERVER['SERVER_ADDR'] ?? null,
 	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,
 	'PHP' => PHP_VERSION,
 	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : null,
 	'Tracy' => Debugger::VERSION,
-	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
+	'Server' => $_SERVER['SERVER_SOFTWARE'] ?? null,
 ];
 
 $info = array_map('strval', array_filter($info + (array) $this->data));
@@ -51,10 +51,10 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 	$composer = @json_decode(file_get_contents($lockFile)); // @ may not exist or be valid
 	list($packages, $devPackages) = [(array) @$composer->packages, (array) @$composer->{'packages-dev'}]; // @ keys may not exist
 	foreach ([&$packages, &$devPackages] as &$items) {
-		@array_walk($items, function($package) { // @ keys may not exist
-			$package->hash = $package->source->reference ?: $package->dist->reference;
+		array_walk($items, function($package) {
+			$package->hash = $package->source->reference ?? $package->dist->reference ?? null;
 		}, $items);
-		usort($items, function ($a, $b) { return strcmp($a->name, $b->name); });
+		usort($items, function ($a, $b) { return $a->name <=> $b->name; });
 	}
 }
 

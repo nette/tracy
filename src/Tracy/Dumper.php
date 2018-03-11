@@ -13,7 +13,7 @@ namespace Tracy;
  */
 class Dumper
 {
-	const
+	public const
 		DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 4)
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
 		COLLAPSE = 'collapse', // collapse top array/object or how big are collapsed? (defaults to 14)
@@ -23,7 +23,7 @@ class Dumper
 		LIVE = 'live', // will be rendered using JavaScript
 		DEBUGINFO = 'debuginfo'; // use magic method __debugInfo if exists (defaults to false)
 
-	const
+	public const
 		LOCATION_SOURCE = 0b0001, // shows where dump was called
 		LOCATION_LINK = 0b0010, // appends clickable anchor
 		LOCATION_CLASS = 0b0100; // shows where class is defined
@@ -104,7 +104,7 @@ class Dumper
 		});
 
 		$live = !empty($options[self::LIVE]) && $var && (is_array($var) || is_object($var) || is_resource($var));
-		list($file, $line, $code) = $loc ? self::findLocation() : null;
+		[$file, $line, $code] = $loc ? self::findLocation() : null;
 		$locAttrs = $file && $loc & self::LOCATION_SOURCE ? Helpers::formatHtml(
 			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
 		) : null;
@@ -292,7 +292,7 @@ class Dumper
 			. '<span class="tracy-dump-hash">#' . (int) $var . '</span>';
 		if (isset(self::$resources[$type])) {
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
-			foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
+			foreach ((self::$resources[$type])($var) as $k => $v) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 					. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => ' . self::dumpVar($v, $options, $level + 1);
 			}
@@ -380,7 +380,7 @@ class Dumper
 				$type = get_resource_type($var);
 				$obj = ['id' => self::$livePrefix . (int) $var, 'name' => $type . ' resource'];
 				if (isset(self::$resources[$type])) {
-					foreach (call_user_func(self::$resources[$type], $var) as $k => $v) {
+					foreach ((self::$resources[$type])($var) as $k => $v) {
 						$obj['items'][] = [$k, self::toJson($v, $options, $level + 1)];
 					}
 				}
@@ -460,7 +460,7 @@ class Dumper
 	{
 		foreach ($exporters as $type => $dumper) {
 			if (!$type || $obj instanceof $type) {
-				return call_user_func($dumper, $obj);
+				return $dumper($obj);
 			}
 		}
 
