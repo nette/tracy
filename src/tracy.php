@@ -6,6 +6,8 @@
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
+declare(strict_types=1);
+
 require __DIR__ . '/Tracy/IBarPanel.php';
 require __DIR__ . '/Tracy/Bar.php';
 require __DIR__ . '/Tracy/BlueScreen.php';

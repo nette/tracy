@@ -5,6 +5,8 @@
  * @outputMatch %A%: Declaration of B::test(%a?%) should be compatible %a% A::test() in %A%
  */
 
+declare(strict_types=1);
+
 use Tracy\Debugger;
 
 
