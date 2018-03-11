@@ -34,13 +34,13 @@ $info = [
 	'OPcache' => $opcache ? round(count($cachedFiles) * 100 / count(get_included_files())) . '% cached' : null,
 	'Classes + interfaces + traits' => $countClasses(get_declared_classes()) . ' + '
 		. $countClasses(get_declared_interfaces()) . ' + ' . $countClasses(get_declared_traits()),
-	'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
-	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null,
+	'Your IP' => $_SERVER['REMOTE_ADDR'] ?? null,
+	'Server IP' => $_SERVER['SERVER_ADDR'] ?? null,
 	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,
 	'PHP' => PHP_VERSION,
 	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : null,
 	'Tracy' => Debugger::VERSION,
-	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
+	'Server' => $_SERVER['SERVER_SOFTWARE'] ?? null,
 ];
 
 $info = array_map('strval', array_filter($info + (array) $this->data));
@@ -93,7 +93,7 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 	<?php if ($packages): ?>
 	<table>
 	<?php foreach ($packages as $package): ?>
-		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') === false ? '' : ' #' . substr(isset($package->source) ? $package->source->reference : $package->dist->reference, 0, 4))) ?></td></tr>
+		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') === false ? '' : ' #' . substr($package->source->reference ?? $package->dist->reference, 0, 4))) ?></td></tr>
 	<?php endforeach ?>
 	</table>
 	<?php endif ?>
@@ -102,7 +102,7 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 	<h2>Dev Packages</h2>
 	<table>
 	<?php foreach ($devPackages as $package): ?>
-		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') === false ? '' : ' #' . substr(isset($package->source) ? $package->source->reference : $package->dist->reference, 0, 4))) ?></td></tr>
+		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') === false ? '' : ' #' . substr($package->source->reference ?? $package->dist->reference, 0, 4))) ?></td></tr>
 	<?php endforeach ?>
 	</table>
 	<?php endif ?>
