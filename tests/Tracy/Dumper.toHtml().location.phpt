@@ -4,6 +4,8 @@
  * Test: Tracy\Dumper::toHtml() with location
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 use Tracy\Dumper;
 

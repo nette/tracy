@@ -4,6 +4,8 @@
  * Test: Tracy\Debugger notices and warnings in console.
  */
 
+declare(strict_types=1);
+
 use Tester\Assert;
 use Tracy\Debugger;
 
