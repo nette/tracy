@@ -146,7 +146,7 @@ class BlueScreen
 		$res = [];
 		foreach ($this->panels as $callback) {
 			try {
-				$panel = call_user_func($callback, $ex);
+				$panel = $callback($ex);
 				if (empty($panel['tab']) || empty($panel['panel'])) {
 					continue;
 				}
