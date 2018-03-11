@@ -7,6 +7,8 @@
  * @outputMatchFile expected/Debugger.error-in-eval.expect
  */
 
+declare(strict_types=1);
+
 use Tracy\Debugger;
 
 
