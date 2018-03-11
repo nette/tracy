@@ -174,7 +174,7 @@ class Logger implements ILogger
 			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ file may not be writable
 		) {
-			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
+			($this->mailer)($message, implode(', ', (array) $this->email));
 		}
 	}
 
@@ -188,7 +188,7 @@ class Logger implements ILogger
 	 */
 	public function defaultMailer($message, $email)
 	{
-		$host = preg_replace('#[^\w.-]+#', '', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : php_uname('n'));
+		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['HTTP_HOST'] ?? php_uname('n'));
 		$parts = str_replace(
 			["\r\n", "\n"],
 			["\n", PHP_EOL],

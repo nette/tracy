@@ -38,7 +38,7 @@ if (!function_exists('bdump')) {
 	 */
 	function bdump($var)
 	{
-		call_user_func_array('Tracy\Debugger::barDump', func_get_args());
+		Tracy\Debugger::barDump(...func_get_args());
 		return $var;
 	}
 }
