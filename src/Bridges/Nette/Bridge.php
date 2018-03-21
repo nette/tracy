@@ -19,7 +19,7 @@ use Tracy\Helpers;
  */
 class Bridge
 {
-	public static function initialize()
+	public static function initialize(): void
 	{
 		$blueScreen = Tracy\Debugger::getBlueScreen();
 		$blueScreen->addPanel([self::class, 'renderLatteError']);
@@ -29,7 +29,7 @@ class Bridge
 	}
 
 
-	public static function renderLatteError($e)
+	public static function renderLatteError(?\Throwable $e): ?array
 	{
 		if (!$e instanceof Latte\CompileException) {
 			return null;
@@ -50,7 +50,7 @@ class Bridge
 	}
 
 
-	public static function renderLatteUnknownMacro($e)
+	public static function renderLatteUnknownMacro(?\Throwable $e): ?array
 	{
 		if (
 			$e instanceof Latte\CompileException
@@ -67,7 +67,7 @@ class Bridge
 	}
 
 
-	public static function renderMemberAccessException($e)
+	public static function renderMemberAccessException(?\Throwable $e): ?array
 	{
 		if (!$e instanceof Nette\MemberAccessException && !$e instanceof \LogicException) {
 			return null;
@@ -89,7 +89,7 @@ class Bridge
 	}
 
 
-	public static function renderNeonError($e)
+	public static function renderNeonError(?\Throwable $e): ?array
 	{
 		if (
 			$e instanceof Nette\Neon\Exception
@@ -99,8 +99,8 @@ class Bridge
 			return [
 				'tab' => 'NEON',
 				'panel' => ($trace2 = Helpers::findTrace($e->getTrace(), 'Nette\DI\Config\Adapters\NeonAdapter::load'))
-					? '<p><b>File:</b> ' . Helpers::editorLink($trace2['args'][0], $m[1]) . '</p>'
-						. self::highlightNeon(file_get_contents($trace2['args'][0]), $m[1])
+					? '<p><b>File:</b> ' . Helpers::editorLink($trace2['args'][0], (int) $m[1]) . '</p>'
+						. self::highlightNeon(file_get_contents($trace2['args'][0]), (int) $m[1])
 					: self::highlightNeon($trace['args'][0], (int) $m[1]),
 			];
 		}
@@ -108,7 +108,7 @@ class Bridge
 	}
 
 
-	private static function highlightNeon($code, $line)
+	private static function highlightNeon(string $code, int $line): string
 	{
 		$code = htmlspecialchars($code, ENT_IGNORE, 'UTF-8');
 		$code = str_replace(' ', "<span class='tracy-dump-whitespace'>·</span>", $code);
