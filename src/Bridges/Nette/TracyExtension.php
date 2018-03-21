@@ -43,7 +43,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	private $cliMode;
 
 
-	public function __construct($debugMode = false, $cliMode = false)
+	public function __construct(bool $debugMode = false, bool $cliMode = false)
 	{
 		$this->debugMode = $debugMode;
 		$this->cliMode = $cliMode;
