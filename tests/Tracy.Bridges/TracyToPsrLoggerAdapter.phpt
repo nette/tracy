@@ -19,7 +19,7 @@ class DummyTracyLogger implements ILogger
 	public $entries = [];
 
 
-	public function log($value, $priority = self::INFO)
+	public function log($value, string $priority = self::INFO)
 	{
 		$this->entries[] = [$priority, $value];
 	}
