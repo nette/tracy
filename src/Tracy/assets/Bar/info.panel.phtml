@@ -17,8 +17,8 @@ if (isset($this->cpuUsage) && $this->time) {
 	$systemUsage = -round(($this->cpuUsage['ru_stime.tv_sec'] * 1e6 + $this->cpuUsage['ru_stime.tv_usec']) / $this->time / 10000);
 }
 
-$countClasses = function ($list) {
-	return count(array_filter($list, function ($name) {
+$countClasses = function (array $list): int {
+	return count(array_filter($list, function (string $name): bool {
 		return (new \ReflectionClass($name))->isUserDefined();
 	}));
 };
@@ -54,7 +54,7 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 		array_walk($items, function($package) {
 			$package->hash = $package->source->reference ?? $package->dist->reference ?? null;
 		}, $items);
-		usort($items, function ($a, $b) { return $a->name <=> $b->name; });
+		usort($items, function ($a, $b): int { return $a->name <=> $b->name; });
 	}
 }
 

@@ -16,9 +16,8 @@ class Helpers
 
 	/**
 	 * Returns HTML link to editor.
-	 * @return string
 	 */
-	public static function editorLink($file, $line = null)
+	public static function editorLink(string $file, int $line = null): string
 	{
 		$file = strtr($origFile = $file, Debugger::$editorMapping);
 		if ($editor = self::editorUri($origFile, $line)) {
@@ -42,9 +41,8 @@ class Helpers
 
 	/**
 	 * Returns link to editor.
-	 * @return string|null
 	 */
-	public static function editorUri($file, $line = null, $action = 'open', $search = null, $replace = null)
+	public static function editorUri(string $file, int $line = null, string $action = 'open', string $search = '', string $replace = ''): ?string
 	{
 		if (Debugger::$editor && $file && ($action === 'create' || is_file($file))) {
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
@@ -57,25 +55,26 @@ class Helpers
 				'%replace' => rawurlencode($replace),
 			]);
 		}
+		return null;
 	}
 
 
-	public static function formatHtml($mask)
+	public static function formatHtml(string $mask): string
 	{
 		$args = func_get_args();
-		return preg_replace_callback('#%#', function () use (&$args, &$count) {
+		return preg_replace_callback('#%#', function () use (&$args, &$count): string {
 			return Helpers::escapeHtml($args[++$count]);
 		}, $mask);
 	}
 
 
-	public static function escapeHtml($s)
+	public static function escapeHtml($s): string
 	{
 		return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	}
 
 
-	public static function findTrace(array $trace, $method, &$index = null)
+	public static function findTrace(array $trace, string $method, int &$index = null): ?array
 	{
 		$m = explode('::', $method);
 		foreach ($trace as $i => $item) {
@@ -89,20 +88,18 @@ class Helpers
 				return $item;
 			}
 		}
+		return null;
 	}
 
 
-	/**
-	 * @return string
-	 */
-	public static function getClass($obj)
+	public static function getClass($obj): string
 	{
 		return explode("\x00", get_class($obj))[0];
 	}
 
 
 	/** @internal */
-	public static function fixStack($exception)
+	public static function fixStack(\Throwable $exception): \Throwable
 	{
 		if (function_exists('xdebug_get_function_stack')) {
 			$stack = [];
@@ -128,14 +125,14 @@ class Helpers
 
 
 	/** @internal */
-	public static function fixEncoding($s)
+	public static function fixEncoding(string $s): string
 	{
 		return htmlspecialchars_decode(htmlspecialchars($s, ENT_NOQUOTES | ENT_IGNORE, 'UTF-8'), ENT_NOQUOTES);
 	}
 
 
 	/** @internal */
-	public static function errorTypeToString($type)
+	public static function errorTypeToString(int $type): string
 	{
 		$types = [
 			E_ERROR => 'Fatal Error',
@@ -159,7 +156,7 @@ class Helpers
 
 
 	/** @internal */
-	public static function getSource()
+	public static function getSource(): string
 	{
 		if (isset($_SERVER['REQUEST_URI'])) {
 			return (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
@@ -173,7 +170,7 @@ class Helpers
 
 
 	/** @internal */
-	public static function improveException($e)
+	public static function improveException(\Throwable $e): void
 	{
 		$message = $e->getMessage();
 		if (!$e instanceof \Error && !$e instanceof \ErrorException) {
@@ -223,10 +220,9 @@ class Helpers
 
 	/**
 	 * Finds the best suggestion.
-	 * @return string|null
 	 * @internal
 	 */
-	public static function getSuggestion(array $items, $value)
+	public static function getSuggestion(array $items, string $value): ?string
 	{
 		$best = null;
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
@@ -242,7 +238,7 @@ class Helpers
 
 
 	/** @internal */
-	public static function isHtmlMode()
+	public static function isHtmlMode(): bool
 	{
 		return empty($_SERVER['HTTP_X_REQUESTED_WITH']) && empty($_SERVER['HTTP_X_TRACY_AJAX'])
 			&& PHP_SAPI !== 'cli'
@@ -251,14 +247,14 @@ class Helpers
 
 
 	/** @internal */
-	public static function isAjax()
+	public static function isAjax(): bool
 	{
 		return isset($_SERVER['HTTP_X_TRACY_AJAX']) && preg_match('#^\w{10}\z#', $_SERVER['HTTP_X_TRACY_AJAX']);
 	}
 
 
 	/** @internal */
-	public static function getNonce()
+	public static function getNonce(): ?string
 	{
 		return preg_match('#^Content-Security-Policy(?:-Report-Only)?:.*\sscript-src\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
 			? $m[1]

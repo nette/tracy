@@ -25,11 +25,9 @@ class Bar
 
 	/**
 	 * Add custom panel.
-	 * @param  IBarPanel  $panel
-	 * @param  string  $id
 	 * @return static
 	 */
-	public function addPanel(IBarPanel $panel, $id = null)
+	public function addPanel(IBarPanel $panel, string $id = null): self
 	{
 		if ($id === null) {
 			$c = 0;
@@ -44,10 +42,8 @@ class Bar
 
 	/**
 	 * Returns panel with given id
-	 * @param  string  $id
-	 * @return IBarPanel|null
 	 */
-	public function getPanel($id)
+	public function getPanel(string $id): ?IBarPanel
 	{
 		return $this->panels[$id] ?? null;
 	}
@@ -55,9 +51,8 @@ class Bar
 
 	/**
 	 * Renders loading <script>
-	 * @return void
 	 */
-	public function renderLoader()
+	public function renderLoader(): void
 	{
 		if (!$this->useSession) {
 			throw new \LogicException('Start session before Tracy is enabled.');
@@ -71,9 +66,8 @@ class Bar
 
 	/**
 	 * Renders debug bar.
-	 * @return void
 	 */
-	public function render()
+	public function render(): void
 	{
 		$useSession = $this->useSession && session_status() === PHP_SESSION_ACTIVE;
 		$redirectQueue = &$_SESSION['_tracy']['redirect'];
@@ -128,10 +122,7 @@ class Bar
 	}
 
 
-	/**
-	 * @return string
-	 */
-	private static function renderHtmlRows(array $rows)
+	private static function renderHtmlRows(array $rows): string
 	{
 		ob_start(function () {});
 		require __DIR__ . '/assets/Bar/panels.phtml';
@@ -140,12 +131,9 @@ class Bar
 	}
 
 
-	/**
-	 * @return array
-	 */
-	private function renderPanels($suffix = null)
+	private function renderPanels(string $suffix = null): array
 	{
-		set_error_handler(function ($severity, $message, $file, $line) {
+		set_error_handler(function (int $severity, string $message, string $file, int $line) {
 			if (error_reporting() & $severity) {
 				throw new \ErrorException($message, 0, $severity, $file, $line);
 			}
@@ -182,9 +170,8 @@ class Bar
 
 	/**
 	 * Renders debug bar assets.
-	 * @return bool
 	 */
-	public function dispatchAssets()
+	public function dispatchAssets(): bool
 	{
 		$asset = $_GET['_tracy_bar'] ?? null;
 		if ($asset === 'js') {
@@ -227,7 +214,7 @@ class Bar
 	}
 
 
-	private function renderAssets()
+	private function renderAssets(): void
 	{
 		$css = array_map('file_get_contents', array_merge([
 			__DIR__ . '/assets/Bar/bar.css',

@@ -33,10 +33,9 @@ class Logger implements ILogger
 
 
 	/**
-	 * @param  string|null  $directory
 	 * @param  string|array|null  $email
 	 */
-	public function __construct($directory, $email = null, BlueScreen $blueScreen = null)
+	public function __construct(?string $directory, $email = null, BlueScreen $blueScreen = null)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
@@ -51,7 +50,7 @@ class Logger implements ILogger
 	 * @param  string  $priority  one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
 	 * @return string|null logged error filename
 	 */
-	public function log($message, $priority = self::INFO)
+	public function log($message, string $priority = self::INFO): ?string
 	{
 		if (!$this->directory) {
 			throw new \LogicException('Logging directory is not specified.');
@@ -83,9 +82,8 @@ class Logger implements ILogger
 
 	/**
 	 * @param  mixed  $message
-	 * @return string
 	 */
-	public static function formatMessage($message)
+	public static function formatMessage($message): string
 	{
 		if ($message instanceof \Throwable) {
 			while ($message) {
@@ -107,9 +105,8 @@ class Logger implements ILogger
 
 	/**
 	 * @param  mixed  $message
-	 * @return string
 	 */
-	public static function formatLogLine($message, $exceptionFile = null)
+	public static function formatLogLine($message, string $exceptionFile = null): string
 	{
 		return implode(' ', [
 			@date('[Y-m-d H-i-s]'), // @ timezone may not be set
@@ -120,11 +117,7 @@ class Logger implements ILogger
 	}
 
 
-	/**
-	 * @param  \Throwable  $exception
-	 * @return string
-	 */
-	public function getExceptionFile($exception)
+	public function getExceptionFile(\Throwable $exception): string
 	{
 		while ($exception) {
 			$data[] = [
@@ -146,10 +139,9 @@ class Logger implements ILogger
 
 	/**
 	 * Logs exception to the file if file doesn't exist.
-	 * @param  \Throwable  $exception
 	 * @return string logged error filename
 	 */
-	protected function logException($exception, $file = null)
+	protected function logException(\Throwable $exception, string $file = null): string
 	{
 		$file = $file ?: $this->getExceptionFile($exception);
 		$bs = $this->blueScreen ?: new BlueScreen;
@@ -160,9 +152,8 @@ class Logger implements ILogger
 
 	/**
 	 * @param  mixed  $message
-	 * @return void
 	 */
-	protected function sendEmail($message)
+	protected function sendEmail($message): void
 	{
 		$snooze = is_numeric($this->emailSnooze)
 			? $this->emailSnooze
@@ -182,11 +173,9 @@ class Logger implements ILogger
 	/**
 	 * Default mailer.
 	 * @param  mixed  $message
-	 * @param  string  $email
-	 * @return void
 	 * @internal
 	 */
-	public function defaultMailer($message, $email)
+	public function defaultMailer($message, string $email): void
 	{
 		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['HTTP_HOST'] ?? php_uname('n'));
 		$parts = str_replace(
