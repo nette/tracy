@@ -52,7 +52,7 @@ class Logger implements ILogger
 	 * @param  string  $priority  one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
 	 * @return string|null logged error filename
 	 */
-	public function log($message, $priority = self::INFO)
+	public function log($message, string $priority = self::INFO): ?string
 	{
 		if (!$this->directory) {
 			throw new \LogicException('Logging directory is not specified.');
