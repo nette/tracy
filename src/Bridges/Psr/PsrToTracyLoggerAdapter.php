@@ -38,7 +38,7 @@ class PsrToTracyLoggerAdapter implements Tracy\ILogger
 	}
 
 
-	public function log($value, $priority = self::INFO)
+	public function log($value, string $priority = self::INFO)
 	{
 		if ($value instanceof \Throwable) {
 			$message = $value->getMessage();
