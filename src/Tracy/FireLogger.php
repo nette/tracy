@@ -32,7 +32,7 @@ class FireLogger implements ILogger
 	 * Sends message to FireLogger console.
 	 * @param  mixed  $message
 	 */
-	public function log($message, $priority = self::DEBUG): bool
+	public function log($message, string $priority = self::DEBUG): bool
 	{
 		if (!isset($_SERVER['HTTP_X_FIRELOGGER']) || headers_sent()) {
 			return false;
