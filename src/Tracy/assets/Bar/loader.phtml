@@ -11,7 +11,7 @@
 
 namespace Tracy;
 
-$baseUrl = isset($_SERVER['REQUEST_URI']) ? explode('?', $_SERVER['REQUEST_URI'])[0] : '';
+$baseUrl = explode('?', $_SERVER['REQUEST_URI'] ?? '')[0];
 $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 $asyncAttr = $async ? ' async' : '';
 ?>

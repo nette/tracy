@@ -44,11 +44,10 @@ class BlueScreen
 
 
 	/**
-	 * Add custom panel.
-	 * @param  callable  $panel
+	 * Add custom panel as function (?\Throwable $e): ?array
 	 * @return static
 	 */
-	public function addPanel($panel)
+	public function addPanel(callable $panel): self
 	{
 		if (!in_array($panel, $this->panels, true)) {
 			$this->panels[] = $panel;
@@ -59,10 +58,9 @@ class BlueScreen
 
 	/**
 	 * Add action.
-	 * @param  callable  $action
 	 * @return static
 	 */
-	public function addAction($action)
+	public function addAction(callable $action): self
 	{
 		$this->actions[] = $action;
 		return $this;
@@ -71,10 +69,8 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen.
-	 * @param  \Throwable  $exception
-	 * @return void
 	 */
-	public function render($exception)
+	public function render(\Throwable $exception): void
 	{
 		if (Helpers::isAjax() && session_status() === PHP_SESSION_ACTIVE) {
 			ob_start(function () {});
@@ -90,15 +86,12 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen to file (if file exists, it will not be overwritten).
-	 * @param  \Throwable  $exception
-	 * @param  string  $file file path
-	 * @return void
 	 */
-	public function renderToFile($exception, $file)
+	public function renderToFile(\Throwable $exception, string $file): void
 	{
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
-			ob_start(function ($buffer) use ($handle) { fwrite($handle, $buffer); }, 4096);
+			ob_start(function ($buffer) use ($handle): void { fwrite($handle, $buffer); }, 4096);
 			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/page.phtml', false);
 			ob_end_flush();
 			ob_end_clean();
@@ -107,7 +100,7 @@ class BlueScreen
 	}
 
 
-	private function renderTemplate($exception, $template, $toScreen = true)
+	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
 	{
 		$messageHtml = preg_replace(
 			'#\'\S[^\']*\S\'|"\S[^"]*\S"#U',
@@ -123,7 +116,7 @@ class BlueScreen
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error ? null : error_get_last();
 
 		$keysToHide = array_flip(array_map('strtolower', $this->keysToHide));
-		$dump = function ($v, $k = null) use ($keysToHide) {
+		$dump = function ($v, $k = null) use ($keysToHide): string {
 			if (is_string($k) && isset($keysToHide[strtolower($k)])) {
 				$v = Dumper::HIDDEN_VALUE;
 			}
@@ -150,7 +143,7 @@ class BlueScreen
 	/**
 	 * @return \stdClass[]
 	 */
-	private function renderPanels($ex)
+	private function renderPanels(?\Throwable $ex): array
 	{
 		$obLevel = ob_get_level();
 		$res = [];
@@ -180,7 +173,7 @@ class BlueScreen
 	/**
 	 * @return array[]
 	 */
-	private function renderActions($ex)
+	private function renderActions(\Throwable $ex): array
 	{
 		$actions = [];
 		foreach ($this->actions as $callback) {
@@ -239,12 +232,8 @@ class BlueScreen
 
 	/**
 	 * Returns syntax highlighted source code.
-	 * @param  string  $file
-	 * @param  int  $line
-	 * @param  int  $lines
-	 * @return string|null
 	 */
-	public static function highlightFile($file, $line, $lines = 15, array $vars = null)
+	public static function highlightFile(string $file, int $line, int $lines = 15, array $vars = null): ?string
 	{
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source) {
@@ -259,12 +248,8 @@ class BlueScreen
 
 	/**
 	 * Returns syntax highlighted source code.
-	 * @param  string  $source
-	 * @param  int  $line
-	 * @param  int  $lines
-	 * @return string
 	 */
-	public static function highlightPhp($source, $line, $lines = 15, array $vars = null)
+	public static function highlightPhp(string $source, int $line, int $lines = 15, array $vars = null): string
 	{
 		if (function_exists('ini_set')) {
 			ini_set('highlight.comment', '#998; font-style: italic');
@@ -281,7 +266,7 @@ class BlueScreen
 		$out .= static::highlightLine($source, $line, $lines);
 
 		if ($vars) {
-			$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function ($m) use ($vars) {
+			$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function (array $m) use ($vars): string {
 				return array_key_exists($m[1], $vars)
 					? '" title="'
 						. str_replace('"', '&quot;', trim(strip_tags(Dumper::toHtml($vars[$m[1]], [Dumper::DEPTH => 1]))))
@@ -297,9 +282,8 @@ class BlueScreen
 
 	/**
 	 * Returns highlighted line in HTML code.
-	 * @return string
 	 */
-	public static function highlightLine($html, $line, $lines = 15)
+	public static function highlightLine(string $html, int $line, int $lines = 15): string
 	{
 		$source = explode("\n", "\n" . str_replace("\r\n", "\n", $html));
 		$out = '';
@@ -341,10 +325,8 @@ class BlueScreen
 
 	/**
 	 * Should a file be collapsed in stack trace?
-	 * @param  string  $file
-	 * @return bool
 	 */
-	public function isCollapsed($file)
+	public function isCollapsed(string $file): bool
 	{
 		$file = strtr($file, '\\', '/') . '/';
 		foreach ($this->collapsePaths as $path) {
