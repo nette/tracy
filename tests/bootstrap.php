@@ -26,7 +26,7 @@ if (extension_loaded('xdebug')) {
 }
 
 
-function test(\Closure $function)
+function test(\Closure $function): void
 {
 	$function();
 }

@@ -19,14 +19,14 @@ class OutputDebugger
 	private $list = [];
 
 
-	public static function enable()
+	public static function enable(): void
 	{
 		$me = new static;
 		$me->start();
 	}
 
 
-	public function start()
+	public function start(): void
 	{
 		foreach (get_included_files() as $file) {
 			if (fread(fopen($file, 'r'), 3) === self::BOM) {
@@ -38,7 +38,7 @@ class OutputDebugger
 
 
 	/** @internal */
-	public function handler($s, $phase)
+	public function handler(string $s, int $phase): ?string
 	{
 		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 		if (isset($trace[0]['file'], $trace[0]['line'])) {
@@ -51,13 +51,13 @@ class OutputDebugger
 				$this->list[] = [$trace[0]['file'], $trace[0]['line'], $s, $stack];
 			}
 		}
-		if ($phase === PHP_OUTPUT_HANDLER_FINAL) {
-			return $this->renderHtml();
-		}
+		return $phase === PHP_OUTPUT_HANDLER_FINAL
+			? $this->renderHtml()
+			: null;
 	}
 
 
-	private function renderHtml()
+	private function renderHtml(): string
 	{
 		$res = '<style>code, pre {white-space:nowrap} a {text-decoration:none} pre {color:gray;display:inline} big {color:red}</style><code>';
 		foreach ($this->list as $item) {
