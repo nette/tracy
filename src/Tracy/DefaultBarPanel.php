@@ -19,7 +19,7 @@ class DefaultBarPanel implements IBarPanel
 	private $id;
 
 
-	public function __construct($id)
+	public function __construct(string $id)
 	{
 		$this->id = $id;
 	}
@@ -27,9 +27,8 @@ class DefaultBarPanel implements IBarPanel
 
 	/**
 	 * Renders HTML code for custom tab.
-	 * @return string
 	 */
-	public function getTab()
+	public function getTab(): string
 	{
 		ob_start(function () {});
 		$data = $this->data;
@@ -40,9 +39,8 @@ class DefaultBarPanel implements IBarPanel
 
 	/**
 	 * Renders HTML code for custom panel.
-	 * @return string
 	 */
-	public function getPanel()
+	public function getPanel(): string
 	{
 		ob_start(function () {});
 		if (is_file(__DIR__ . "/assets/Bar/{$this->id}.panel.phtml")) {
