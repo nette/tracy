@@ -42,10 +42,9 @@ class BlueScreen
 
 	/**
 	 * Add custom panel.
-	 * @param  callable  $panel
 	 * @return static
 	 */
-	public function addPanel($panel)
+	public function addPanel(callable $panel): self
 	{
 		if (!in_array($panel, $this->panels, true)) {
 			$this->panels[] = $panel;
@@ -56,10 +55,9 @@ class BlueScreen
 
 	/**
 	 * Add action.
-	 * @param  callable  $action
 	 * @return static
 	 */
-	public function addAction($action)
+	public function addAction(callable $action): self
 	{
 		$this->actions[] = $action;
 		return $this;
@@ -68,10 +66,8 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen.
-	 * @param  \Throwable  $exception
-	 * @return void
 	 */
-	public function render($exception)
+	public function render(\Throwable $exception): void
 	{
 		if (Helpers::isAjax() && session_status() === PHP_SESSION_ACTIVE) {
 			ob_start(function () {});
@@ -87,11 +83,8 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen to file (if file exists, it will not be overwritten).
-	 * @param  \Throwable  $exception
-	 * @param  string  $file file path
-	 * @return void
 	 */
-	public function renderToFile($exception, $file)
+	public function renderToFile(\Throwable $exception, string $file): void
 	{
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
@@ -104,7 +97,7 @@ class BlueScreen
 	}
 
 
-	private function renderTemplate($exception, $template)
+	private function renderTemplate(\Throwable $exception, string $template): void
 	{
 		$messageHtml = preg_replace(
 			'#\'\S[^\']*\S\'|"\S[^"]*\S"#U',
@@ -118,7 +111,7 @@ class BlueScreen
 			? Helpers::errorTypeToString($exception->getSeverity())
 			: Helpers::getClass($exception);
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error ? null : error_get_last();
-		$dump = function ($v) {
+		$dump = function ($v): string {
 			return Dumper::toHtml($v, [
 				Dumper::DEPTH => $this->maxDepth,
 				Dumper::TRUNCATE => $this->maxLength,
@@ -140,7 +133,7 @@ class BlueScreen
 	/**
 	 * @return \stdClass[]
 	 */
-	private function renderPanels($ex)
+	private function renderPanels(?\Throwable $ex): array
 	{
 		$obLevel = ob_get_level();
 		$res = [];
@@ -170,7 +163,7 @@ class BlueScreen
 	/**
 	 * @return array[]
 	 */
-	private function renderActions($ex)
+	private function renderActions(\Throwable $ex): array
 	{
 		$actions = [];
 		foreach ($this->actions as $callback) {
@@ -215,12 +208,8 @@ class BlueScreen
 
 	/**
 	 * Returns syntax highlighted source code.
-	 * @param  string  $file
-	 * @param  int  $line
-	 * @param  int  $lines
-	 * @return string|null
 	 */
-	public static function highlightFile($file, $line, $lines = 15, array $vars = null)
+	public static function highlightFile(string $file, int $line, int $lines = 15, array $vars = null): ?string
 	{
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source) {
@@ -235,12 +224,8 @@ class BlueScreen
 
 	/**
 	 * Returns syntax highlighted source code.
-	 * @param  string  $source
-	 * @param  int  $line
-	 * @param  int  $lines
-	 * @return string
 	 */
-	public static function highlightPhp($source, $line, $lines = 15, array $vars = null)
+	public static function highlightPhp(string $source, int $line, int $lines = 15, array $vars = null): string
 	{
 		if (function_exists('ini_set')) {
 			ini_set('highlight.comment', '#998; font-style: italic');
@@ -257,7 +242,7 @@ class BlueScreen
 		$out .= static::highlightLine($source, $line, $lines);
 
 		if ($vars) {
-			$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function ($m) use ($vars) {
+			$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function ($m) use ($vars): string {
 				return array_key_exists($m[1], $vars)
 					? '" title="'
 						. str_replace('"', '&quot;', trim(strip_tags(Dumper::toHtml($vars[$m[1]], [Dumper::DEPTH => 1]))))
@@ -273,9 +258,8 @@ class BlueScreen
 
 	/**
 	 * Returns highlighted line in HTML code.
-	 * @return string
 	 */
-	public static function highlightLine($html, $line, $lines = 15)
+	public static function highlightLine(string $html, int $line, int $lines = 15): string
 	{
 		$source = explode("\n", "\n" . str_replace("\r\n", "\n", $html));
 		$out = '';
@@ -317,10 +301,8 @@ class BlueScreen
 
 	/**
 	 * Should a file be collapsed in stack trace?
-	 * @param  string  $file
-	 * @return bool
 	 */
-	public function isCollapsed($file)
+	public function isCollapsed(string $file): bool
 	{
 		$file = strtr($file, '\\', '/') . '/';
 		foreach ($this->collapsePaths as $path) {

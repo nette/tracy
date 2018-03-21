@@ -19,11 +19,11 @@ use Tracy\Helpers;
  */
 class Bridge
 {
-	public static function initialize()
+	public static function initialize(): void
 	{
 		$blueScreen = Tracy\Debugger::getBlueScreen();
 
-		$blueScreen->addPanel(function ($e) {
+		$blueScreen->addPanel(function ($e): ?array {
 			if ($e instanceof Latte\CompileException) {
 				return [
 					'tab' => 'Template',
@@ -41,7 +41,7 @@ class Bridge
 			}
 		});
 
-		$blueScreen->addAction(function ($e) {
+		$blueScreen->addAction(function ($e): ?array {
 			if (
 				$e instanceof Latte\CompileException
 				&& @is_file($e->sourceName) // @ - may trigger error
@@ -55,7 +55,7 @@ class Bridge
 			}
 		});
 
-		$blueScreen->addAction(function ($e) {
+		$blueScreen->addAction(function ($e): ?array {
 			if ($e instanceof Nette\MemberAccessException || $e instanceof \LogicException) {
 				$loc = $e instanceof Nette\MemberAccessException ? $e->getTrace()[1] : $e->getTrace()[0];
 				if (preg_match('#Cannot (?:read|write to) an undeclared property .+::\$(\w+), did you mean \$(\w+)\?#A', $e->getMessage(), $m)) { // @ - may trigger error
@@ -73,7 +73,7 @@ class Bridge
 			}
 		});
 
-		$blueScreen->addPanel(function ($e) {
+		$blueScreen->addPanel(function ($e): ?array {
 			if (
 				$e instanceof Nette\Neon\Exception
 				&& preg_match('#line (\d+)#', $e->getMessage(), $m)

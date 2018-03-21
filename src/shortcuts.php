@@ -22,7 +22,7 @@ if (!function_exists('dumpe')) {
 	 * Tracy\Debugger::dump() & exit shortcut.
 	 * @tracySkipLocation
 	 */
-	function dumpe($var)
+	function dumpe($var): void
 	{
 		array_map('Tracy\Debugger::dump', func_get_args());
 		exit;

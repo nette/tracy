@@ -17,8 +17,8 @@ if (isset($this->cpuUsage) && $this->time) {
 	$systemUsage = -round(($this->cpuUsage['ru_stime.tv_sec'] * 1e6 + $this->cpuUsage['ru_stime.tv_usec']) / $this->time / 10000);
 }
 
-$countClasses = function ($list) {
-	return count(array_filter($list, function ($name) {
+$countClasses = function (array $list): int {
+	return count(array_filter($list, function (string $name): bool {
 		return (new \ReflectionClass($name))->isUserDefined();
 	}));
 };
@@ -51,8 +51,8 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 	$composer = @json_decode(file_get_contents($lockFile)); // @ may not exist or be valid
 	$packages = (array) @$composer->packages;
 	$devPackages = (array) @$composer->{'packages-dev'};
-	usort($packages, function ($a, $b) { return strcmp($a->name, $b->name); });
-	usort($devPackages, function ($a, $b) { return strcmp($a->name, $b->name); });
+	usort($packages, function ($a, $b): int { return strcmp($a->name, $b->name); });
+	usort($devPackages, function ($a, $b): int { return strcmp($a->name, $b->name); });
 }
 
 ?>
