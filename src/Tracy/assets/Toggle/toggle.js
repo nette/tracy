@@ -39,10 +39,12 @@
 		ref = ref.match(/(\^\s*([^+\s]*)\s*)?(\+\s*(\S*)\s*)?(.*)/);
 		dest = ref[1] ? Tracy.closest(dest.parentNode, ref[2]) : dest;
 		dest = ref[3] ? Tracy.closest(dest.nextElementSibling, ref[4], 'nextElementSibling') : dest;
-		dest = ref[5] ? dest.querySelector(ref[5]) : dest;
+		dest = ref[5] ? dest.querySelectorAll(ref[5]) : [dest];
 
 		el.classList.toggle('tracy-collapsed', !show);
-		dest.classList.toggle('tracy-collapsed', !show);
+		Array.prototype.forEach.call(dest, function(dest) {
+			dest.classList.toggle('tracy-collapsed', !show);
+		});
 
 		if (typeof window.Event === 'function') {
 			var toggleEvent = new Event('tracy-toggle', {bubbles: true});
