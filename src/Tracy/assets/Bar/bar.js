@@ -262,7 +262,7 @@
 						panel.toFloat();
 						setPosition(panel.elem, {
 							right: getPosition(panel.elem).right + Math.round(Math.random() * 100) + 20,
-							bottom: getPosition(panel.elem).bottom + Math.round(Math.random() * 100) + 20
+							bottom: getPosition(panel.elem).bottom + (Math.round(Math.random() * 100) + 20) * (_this.isAtTop() ? -1 : 1)
 						});
 					}
 				}
@@ -281,7 +281,9 @@
 							var pos = getPosition(panel.elem);
 							setPosition(panel.elem, {
 								right: pos.right - getOffset(link).left + pos.width - getPosition(link).width - 4 + getOffset(panel.elem).left,
-								bottom: pos.bottom - getOffset(elem).top + pos.height + 4 + getOffset(panel.elem).top
+								bottom: _this.isAtTop()
+									? getPosition(elem).bottom - pos.height - 4
+									: pos.bottom - getOffset(elem).top + pos.height + 4 + getOffset(panel.elem).top
 							});
 						}
 					});
@@ -320,6 +322,11 @@
 		if (pos) {
 			setPosition(document.getElementById(this.id), pos);
 		}
+	};
+
+	Bar.prototype.isAtTop = function() {
+		var pos = getPosition(this.elem);
+		return pos.top < 100 && pos.bottom > pos.top;
 	};
 
 
