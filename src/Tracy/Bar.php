@@ -237,11 +237,17 @@ class Bar
 		$css = json_encode(preg_replace('#\s+#u', ' ', implode($css)));
 		echo "(function(){var el = document.createElement('style'); el.className='tracy-debug'; el.textContent=$css; document.head.appendChild(el);})();\n";
 
+		if(Debugger::$customCssStr) echo "(function(){var el = document.createElement('div'); el.className='tracy-debug'; el.innerHTML='".preg_replace('#\s+#u', ' ', Debugger::$customCssStr)."'; document.head.appendChild(el);})();\n";
+
 		array_map('readfile', array_merge([
 			__DIR__ . '/assets/Bar/bar.js',
 			__DIR__ . '/assets/Toggle/toggle.js',
 			__DIR__ . '/assets/Dumper/dumper.js',
 			__DIR__ . '/assets/BlueScreen/bluescreen.js',
 		], Debugger::$customJsFiles));
+
+		if(Debugger::$customJsStr) echo Debugger::$customJsStr;
+
+		if(Debugger::$customBodyStr) echo "(function(){var el = document.createElement('div'); el.className='tracy-debug'; el.innerHTML='".preg_replace('#\s+#u', ' ', Debugger::$customBodyStr)."'; document.body.appendChild(el);})();\n";
 	}
 }

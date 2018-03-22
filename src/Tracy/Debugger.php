@@ -105,11 +105,20 @@ class Debugger
 	/** @var string custom static error template */
 	public static $errorTemplate;
 
-	/** @var string[] */
+	/** @var array[] */
 	public static $customCssFiles = [];
 
-	/** @var string[] */
+	/** @var array[] */
 	public static $customJsFiles = [];
+
+	/** @var string */
+	public static $customCssStr = null;
+
+	/** @var string */
+	public static $customJsStr = null;
+
+	/** @var string */
+	public static $customBodyStr = null;
 
 	/** @var array */
 	private static $cpuUsage;
