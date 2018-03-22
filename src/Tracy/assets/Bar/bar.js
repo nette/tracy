@@ -83,7 +83,7 @@
 				clearTimeout(elem.Tracy.displayTimeout);
 				if (this.rel === 'close') {
 					_this.toPeek();
-				} else {
+				} else if (this.rel === 'window') {
 					_this.toWindow();
 				}
 				e.preventDefault();
