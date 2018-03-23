@@ -10,7 +10,7 @@ if (!class_exists('Phar') || ini_get('phar.readonly')) {
 function compressJs($s)
 {
 	if (function_exists('curl_init')) {
-		$curl = curl_init('http://closure-compiler.appspot.com/compile');
+		$curl = curl_init('https://closure-compiler.appspot.com/compile');
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_POST, 1);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, 'output_info=compiled_code&js_code=' . urlencode($s));
