@@ -27,3 +27,7 @@ install:
 
 test_script:
     - vendor\bin\tester tests -s
+
+on_failure:
+    # Print *.actual content
+    - for /r %%x in (*.actual) do ( type "%%x" )
