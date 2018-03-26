@@ -282,8 +282,8 @@
 							setPosition(panel.elem, {
 								right: pos.right - getOffset(link).left + pos.width - getPosition(link).width - 4 + getOffset(panel.elem).left,
 								bottom: _this.isAtTop()
-									? getPosition(elem).bottom - pos.height - 4
-									: pos.bottom - getOffset(elem).top + pos.height + 4 + getOffset(panel.elem).top
+									? getPosition(_this.elem).bottom - pos.height - 4
+									: pos.bottom - getOffset(_this.elem).top + pos.height + 4 + getOffset(panel.elem).top
 							});
 						}
 					});
@@ -313,14 +313,15 @@
 	};
 
 	Bar.prototype.savePosition = function() {
-		var pos = getPosition(document.getElementById(this.id));
-		localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom}));
+		var pos = getPosition(this.elem),
+			atTop = this.isAtTop();
+		localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom + (atTop ? pos.height : 0), atTop: atTop}));
 	};
 
 	Bar.prototype.restorePosition = function() {
 		var pos = JSON.parse(localStorage.getItem(this.id));
 		if (pos) {
-			setPosition(document.getElementById(this.id), pos);
+			setPosition(this.elem, {right: pos.right, bottom: pos.bottom - (pos.atTop ? getPosition(this.elem).height : 0)});
 		}
 	};
 
@@ -375,7 +376,9 @@
 		Debug.layer.insertAdjacentHTML('beforeend', content);
 		evalScripts(Debug.layer);
 		ajaxBar = document.getElementById('tracy-ajax-bar');
-		document.getElementById(Bar.prototype.id).appendChild(ajaxBar);
+		Debug.bar.savePosition();
+		Debug.bar.elem.appendChild(ajaxBar);
+		Debug.bar.restorePosition();
 
 		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
 			if (!Debug.panels[panel.id]) {
