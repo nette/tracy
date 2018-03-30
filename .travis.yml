@@ -41,7 +41,7 @@ jobs:
                 - npm install
                 - npm install eslint
             script:
-                - php temp/code-checker/src/code-checker.php --short-arrays
+                - php temp/code-checker/src/code-checker.php --short-arrays -i tests/Tracy/fixtures -i examples/assets
                 - php temp/coding-standard/ecs check src tests examples tools --config tests/coding-standard.neon
                 - ./node_modules/.bin/eslint "src/**/*.js"
 
