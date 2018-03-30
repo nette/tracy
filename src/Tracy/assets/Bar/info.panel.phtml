@@ -9,8 +9,6 @@
 
 namespace Tracy;
 
-use Tracy;
-
 if (isset($this->cpuUsage) && $this->time) {
 	foreach (getrusage() as $key => $val) {
 		$this->cpuUsage[$key] -= $val;
@@ -20,7 +18,7 @@ if (isset($this->cpuUsage) && $this->time) {
 }
 
 $countClasses = function ($list) {
-	return count(array_filter($list, function($name) {
+	return count(array_filter($list, function ($name) {
 		return (new \ReflectionClass($name))->isUserDefined();
 	}));
 };
