@@ -151,7 +151,6 @@ body#tracy-debug { /* in popup window */
 #tracy-debug-bar ul {
 	list-style: none none;
 	display: flex;
-	flex-wrap: wrap;
 }
 
 #tracy-debug-bar ul:not(:first-child) li {
