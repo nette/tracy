@@ -45,22 +45,16 @@
 			}
 		});
 
-		elem.addEventListener('mousedown', function(e) {
-			if (isTargetChanged(e.relatedTarget, this)) {
-				_this.focus();
-			}
+		elem.addEventListener('mousedown', function() {
+			_this.focus();
 		});
 
-		elem.addEventListener('mouseover', function(e) {
-			if (isTargetChanged(e.relatedTarget, this)) {
-				clearTimeout(elem.Tracy.displayTimeout);
-			}
+		elem.addEventListener('mouseenter', function() {
+			clearTimeout(elem.Tracy.displayTimeout);
 		});
 
-		elem.addEventListener('mouseout', function(e) {
-			if (isTargetChanged(e.relatedTarget, this)) {
-				_this.blur();
-			}
+		elem.addEventListener('mouseleave', function() {
+			_this.blur();
 		});
 
 		elem.addEventListener('click', function() {
@@ -269,8 +263,8 @@
 				e.preventDefault();
 			});
 
-			a.addEventListener('mouseover', function(e) {
-				if (isTargetChanged(e.relatedTarget, this) && this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
+			a.addEventListener('mouseenter', function() {
+				if (this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
 					var panel = Debug.panels[this.rel], link = this;
 					panel.focus(function() {
 						if (panel.is(Panel.PEEK)) {
@@ -290,8 +284,8 @@
 				}
 			});
 
-			a.addEventListener('mouseout', function(e) {
-				if (isTargetChanged(e.relatedTarget, this) && this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
+			a.addEventListener('mouseleave', function() {
+				if (this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
 					Debug.panels[this.rel].blur();
 				}
 			});
@@ -476,17 +470,6 @@
 				script.tracyEvaluated = true;
 			}
 		});
-	}
-
-	// emulate mouseenter & mouseleave
-	function isTargetChanged(target, dest) {
-		while (target) {
-			if (target === dest) {
-				return;
-			}
-			target = target.parentNode;
-		}
-		return true;
 	}
 
 
