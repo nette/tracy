@@ -15,9 +15,12 @@ body#tracy-debug { /* in popup window */
 }
 
 #tracy-debug:not(body) {
-	position: absolute;
-	bottom: 0;
-	right: 0;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: calc(100vw + 100px); /* bigger to not affect inner content when windows gets smaller */
+	height: calc(100vh + 100px);
+	pointer-events: none;
 }
 
 #tracy-debug * {
@@ -40,6 +43,7 @@ body#tracy-debug { /* in popup window */
 	white-space: inherit;
 	float: none;
 	clear: none;
+	pointer-events: auto;
 }
 
 #tracy-debug *:before,
@@ -127,9 +131,7 @@ body#tracy-debug { /* in popup window */
 	border: 1px solid #c9c9c9;
 	background: #EDEAE0 url('data:image/png;base64,R0lGODlhAQAUALMAAOzq4e/t5e7s4/Dt5vDu5e3r4vDu5uvp4O/t5AAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAABABQAAAQM0EgySEAYi1LA+UcEADs=') top;
 	background-size: 1em;
-	position: fixed;
-	right: 0;
-	bottom: 0;
+	position: absolute;
 
 	min-width: 50px;
 	white-space: nowrap;
@@ -137,7 +139,7 @@ body#tracy-debug { /* in popup window */
 	z-index: 30000;
 	opacity: .9;
 	transition: opacity 0.2s;
-	will-change: opacity, right, bottom;
+	will-change: opacity, top, left;
 
 	border-radius: 3px;
 	box-shadow: 1px 1px 10px rgba(0, 0, 0, .15);
@@ -243,9 +245,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 
 #tracy-debug .tracy-mode-peek,
 #tracy-debug .tracy-mode-float {
-	position: fixed;
-	right: 0;
-	bottom: 0;
+	position: absolute;
 	padding: 10px;
 	min-width: 150px;
 	min-height: 50px;
@@ -262,7 +262,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	display: block;
 	opacity: .95;
 	transition: opacity 0.2s;
-	will-change: opacity, right, bottom;
+	will-change: opacity, top, left;
 }
 
 #tracy-debug .tracy-focused {
