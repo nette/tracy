@@ -26,6 +26,7 @@
 	Panel.FLOAT = 'tracy-mode-float';
 	Panel.WINDOW = 'tracy-mode-window';
 	Panel.FOCUSED = 'tracy-focused';
+	Panel.RESIZED = 'tracy-panel-resized';
 	Panel.zIndexCounter = 1;
 
 	Panel.prototype.init = function() {
@@ -41,7 +42,9 @@
 		draggable(elem, {
 			handles: elem.querySelectorAll('h1'),
 			start: function() {
-				_this.toFloat();
+				if (!_this.is(Panel.FLOAT)) {
+					_this.toFloat();
+				}
 				_this.focus();
 			}
 		});
@@ -56,6 +59,12 @@
 
 		elem.addEventListener('mouseleave', function() {
 			_this.blur();
+		});
+
+		elem.addEventListener('mousemove', function(e) {
+			if (e.buttons && !_this.is(Panel.RESIZED) && (elem.style.width || elem.style.height)) {
+				elem.classList.add(Panel.RESIZED);
+			}
 		});
 
 		elem.addEventListener('tracy-toggle', function() {
@@ -113,6 +122,7 @@
 		this.elem.classList.remove(Panel.WINDOW);
 		this.elem.classList.remove(Panel.PEEK);
 		this.elem.classList.add(Panel.FLOAT);
+		this.elem.classList.remove(Panel.RESIZED);
 		this.reposition();
 	};
 
@@ -121,6 +131,9 @@
 		this.elem.classList.remove(Panel.FLOAT);
 		this.elem.classList.remove(Panel.FOCUSED);
 		this.elem.classList.add(Panel.PEEK);
+		this.elem.style.width = '';
+		this.elem.style.height = '';
+		this.elem.classList.remove(Panel.RESIZED);
 	};
 
 	Panel.prototype.toWindow = function() {
@@ -160,6 +173,7 @@
 		this.elem.classList.remove(Panel.FLOAT);
 		this.elem.classList.remove(Panel.PEEK);
 		this.elem.classList.remove(Panel.FOCUSED);
+		this.elem.classList.remove(Panel.RESIZED);
 		this.elem.classList.add(Panel.WINDOW);
 		this.elem.Tracy.window = win;
 		return true;
@@ -169,6 +183,11 @@
 		var pos = getPosition(this.elem);
 		if (pos.width) { // is visible?
 			setPosition(this.elem, {left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0)});
+			if (this.is(Panel.RESIZED)) {
+				var size = getWindowSize();
+				this.elem.style.width = Math.min(size.width, pos.width) + 'px';
+				this.elem.style.height = Math.min(size.height, pos.height) + 'px';
+			}
 		}
 	};
 
@@ -177,7 +196,7 @@
 		if (this.is(Panel.WINDOW)) {
 			localStorage.setItem(this.id, JSON.stringify({window: true}));
 		} else if (pos.width) { // is visible?
-			localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom, zIndex: this.elem.style.zIndex - Tracy.panelZIndex}));
+			localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom, width: pos.width, height: pos.height, zIndex: this.elem.style.zIndex - Tracy.panelZIndex, resized: this.is(Panel.RESIZED)}));
 		} else {
 			localStorage.removeItem(this.id);
 		}
@@ -193,6 +212,11 @@
 		} else if (this.elem.dataset.tracyContent) {
 			this.init();
 			this.toFloat();
+			if (pos.resized) {
+				this.elem.classList.add(Panel.RESIZED);
+				this.elem.style.width = pos.width + 'px';
+				this.elem.style.height = pos.height + 'px';
+			}
 			setPosition(this.elem, pos);
 			this.elem.style.zIndex = Tracy.panelZIndex + (pos.zIndex || 1);
 			Panel.zIndexCounter = Math.max(Panel.zIndexCounter, (pos.zIndex || 1)) + 1;
