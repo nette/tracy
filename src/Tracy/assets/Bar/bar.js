@@ -58,19 +58,8 @@
 			_this.blur();
 		});
 
-		elem.addEventListener('click', function() {
-			_this.oldPosition = getPosition(elem);
-		});
-
 		elem.addEventListener('tracy-toggle', function() {
-			if (_this.oldPosition) {
-				var pos = getPosition(elem);
-				setPosition(elem, {
-					right: pos.right - pos.width + _this.oldPosition.width,
-					bottom: pos.bottom - pos.height + _this.oldPosition.height
-				});
-				_this.oldPosition = null;
-			}
+			_this.reposition();
 		});
 
 		forEach(elem.querySelectorAll('.tracy-icons a'), function(a) {
@@ -176,10 +165,10 @@
 		return true;
 	};
 
-	Panel.prototype.reposition = function() {
+	Panel.prototype.reposition = function(deltaX, deltaY) {
 		var pos = getPosition(this.elem);
 		if (pos.width) { // is visible?
-			setPosition(this.elem, {right: pos.right, bottom: pos.bottom});
+			setPosition(this.elem, {left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0)});
 		}
 	};
 
@@ -187,7 +176,7 @@
 		var pos = getPosition(this.elem);
 		if (this.is(Panel.WINDOW)) {
 			localStorage.setItem(this.id, JSON.stringify({window: true}));
-		} else if (pos.width) {
+		} else if (pos.width) { // is visible?
 			localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom, zIndex: this.elem.style.zIndex - Tracy.panelZIndex}));
 		} else {
 			localStorage.removeItem(this.id);
@@ -253,10 +242,7 @@
 
 					} else {
 						panel.toFloat();
-						setPosition(panel.elem, {
-							right: getPosition(panel.elem).right + Math.round(Math.random() * 100) + 20,
-							bottom: getPosition(panel.elem).bottom + (Math.round(Math.random() * 100) + 20) * (_this.isAtTop() ? -1 : 1)
-						});
+						panel.reposition(-Math.round(Math.random() * 100) - 20, (Math.round(Math.random() * 100) + 20) * (_this.isAtTop() ? 1 : -1));
 					}
 				}
 				e.preventDefault();
@@ -271,10 +257,10 @@
 
 							var pos = getPosition(panel.elem);
 							setPosition(panel.elem, {
-								right: pos.right - getOffset(link).left + pos.width - getPosition(link).width - 4 + getOffset(panel.elem).left,
-								bottom: _this.isAtTop()
-									? getPosition(_this.elem).bottom - pos.height - 4
-									: pos.bottom - getOffset(_this.elem).top + pos.height + 4 + getOffset(panel.elem).top
+								left: getOffset(link).left + getPosition(link).width + 4 - pos.width,
+								top: _this.isAtTop()
+									? getOffset(_this.elem).top + getPosition(_this.elem).height + 4
+									: getOffset(_this.elem).top - pos.height - 4
 							});
 						}
 					});
@@ -303,17 +289,19 @@
 		document.getElementById('tracy-debug').style.display = 'none';
 	};
 
+	Bar.prototype.reposition = function(deltaX, deltaY) {
+		var pos = getPosition(this.elem);
+		setPosition(this.elem, {left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0)});
+	};
+
 	Bar.prototype.savePosition = function() {
-		var pos = getPosition(this.elem),
-			atTop = this.isAtTop();
-		localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom + (atTop ? pos.height : 0), atTop: atTop}));
+		var pos = getPosition(this.elem);
+		localStorage.setItem(this.id, JSON.stringify(this.isAtTop() ? {right: pos.right, top: pos.top} : {right: pos.right, bottom: pos.bottom}));
 	};
 
 	Bar.prototype.restorePosition = function() {
 		var pos = JSON.parse(localStorage.getItem(this.id));
-		if (pos) {
-			setPosition(this.elem, {right: pos.right, bottom: pos.bottom - (pos.atTop ? getPosition(this.elem).height : 0)});
-		}
+		setPosition(this.elem, pos || {right: 0, bottom: 0});
 	};
 
 	Bar.prototype.isAtTop = function() {
@@ -359,6 +347,7 @@
 			panel.parentNode.removeChild(panel);
 		});
 
+		Debug.bar.savePosition();
 		var ajaxBar = document.getElementById('tracy-ajax-bar');
 		if (ajaxBar) {
 			ajaxBar.parentNode.removeChild(ajaxBar);
@@ -367,7 +356,6 @@
 		Debug.layer.insertAdjacentHTML('beforeend', content);
 		evalScripts(Debug.layer);
 		ajaxBar = document.getElementById('tracy-ajax-bar');
-		Debug.bar.savePosition();
 		Debug.bar.elem.appendChild(ajaxBar);
 		Debug.bar.restorePosition();
 
@@ -383,12 +371,18 @@
 	};
 
 	Debug.captureWindow = function() {
+		var size = getWindowSize();
+
 		window.addEventListener('resize', function() {
-			var bar = document.getElementById(Bar.prototype.id);
-			setPosition(bar, {right: getPosition(bar).right, bottom: getPosition(bar).bottom});
+			var newSize = getWindowSize();
+
+			Debug.bar.reposition(newSize.width - size.width, newSize.height - size.height);
+
 			for (var id in Debug.panels) {
-				Debug.panels[id].reposition();
+				Debug.panels[id].reposition(newSize.width - size.width, newSize.height - size.height);
 			}
+
+			size = newSize;
 		});
 
 		window.addEventListener('unload', function() {
@@ -478,7 +472,7 @@
 
 		var redraw = function () {
 			if (dragging) {
-				setPosition(elem, {right: deltaX - clientX, bottom: deltaY - clientY});
+				setPosition(elem, {left: clientX + deltaX, top: clientY + deltaY});
 				requestAnimationFrame(redraw);
 			}
 		};
@@ -530,8 +524,8 @@
 			var pos = getPosition(elem);
 			clientX = e.touches ? e.touches[0].clientX : e.clientX;
 			clientY = e.touches ? e.touches[0].clientY : e.clientY;
-			deltaX = pos.right + clientX;
-			deltaY = pos.bottom + clientY;
+			deltaX = pos.left - clientX;
+			deltaY = pos.top - clientY;
 			dragging = true;
 			started = false;
 			dE.addEventListener('mousemove', onMove);
@@ -565,21 +559,34 @@
 		return res;
 	}
 
+	function getWindowSize() {
+		return {
+			width: document.documentElement.clientWidth,
+			height: document.compatMode === 'BackCompat' ? window.innerHeight : document.documentElement.clientHeight
+		};
+	}
+
 	// move to new position
 	function setPosition(elem, coords) {
-		var dE = document.documentElement,
-			height = document.compatMode === 'BackCompat' ? window.innerHeight : dE.clientHeight;
-		elem.style.right = Math.min(Math.max(coords.right, 0), dE.clientWidth - elem.offsetWidth) + 'px';
-		elem.style.bottom = Math.min(Math.max(coords.bottom, 0), height - elem.offsetHeight) + 'px';
+		var win = getWindowSize();
+		if (typeof coords.right !== 'undefined') {
+			coords.left = win.width - elem.offsetWidth - coords.right;
+		}
+		if (typeof coords.bottom !== 'undefined') {
+			coords.top = win.height - elem.offsetHeight - coords.bottom;
+		}
+		elem.style.left = Math.max(0, Math.min(coords.left, win.width - elem.offsetWidth)) + 'px';
+		elem.style.top = Math.max(0, Math.min(coords.top, win.height - elem.offsetHeight)) + 'px';
 	}
 
 	// returns current position
 	function getPosition(elem) {
+		var win = getWindowSize();
 		return {
 			left: elem.offsetLeft,
 			top: elem.offsetTop,
-			right: elem.style.right ? parseInt(elem.style.right, 10) : 0,
-			bottom: elem.style.bottom ? parseInt(elem.style.bottom, 10) : 0,
+			right: win.width - elem.offsetWidth - elem.offsetLeft,
+			bottom: win.height - elem.offsetHeight - elem.offsetTop,
 			width: elem.offsetWidth,
 			height: elem.offsetHeight
 		};
