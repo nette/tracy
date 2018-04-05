@@ -225,18 +225,9 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	word-wrap: break-word;
 }
 
-#tracy-debug .tracy-mode-peek .tracy-inner,
-#tracy-debug .tracy-mode-float .tracy-inner {
-	max-width: 700px;
-	max-height: 500px;
+#tracy-debug .tracy-inner {
 	overflow: auto;
-}
-
-@media (max-height: 555px) {
-	#tracy-debug .tracy-mode-peek .tracy-inner,
-	#tracy-debug .tracy-mode-float .tracy-inner {
-		max-height: calc(100vh - 55px);
-	}
+	flex: 1;
 }
 
 #tracy-debug .tracy-panel .tracy-icons {
@@ -246,6 +237,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 #tracy-debug .tracy-mode-peek,
 #tracy-debug .tracy-mode-float {
 	position: absolute;
+	flex-direction: column;
 	padding: 10px;
 	min-width: 150px;
 	min-height: 50px;
@@ -254,19 +246,32 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+#tracy-debug .tracy-mode-peek,
+#tracy-debug .tracy-mode-float {
+	max-width: 700px;
+	max-height: 500px;
+}
+
+@media (max-height: 555px) {
+	#tracy-debug .tracy-mode-peek,
+	#tracy-debug .tracy-mode-float {
+		max-height: 100vh;
+	}
+}
+
 #tracy-debug .tracy-mode-peek h1 {
 	cursor: move;
 }
 
 #tracy-debug .tracy-mode-float {
-	display: block;
+	display: flex;
 	opacity: .95;
 	transition: opacity 0.2s;
 	will-change: opacity, top, left;
 }
 
 #tracy-debug .tracy-focused {
-	display: block;
+	display: flex;
 	opacity: 1;
 	transition: opacity 0.1s;
 }
