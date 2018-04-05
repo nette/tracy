@@ -263,8 +263,8 @@
 				e.preventDefault();
 			});
 
-			a.addEventListener('mouseenter', function() {
-				if (this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
+			a.addEventListener('mouseenter', function(e) {
+				if (!e.buttons && this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
 					var panel = Debug.panels[this.rel], link = this;
 					panel.focus(function() {
 						if (panel.is(Panel.PEEK)) {
