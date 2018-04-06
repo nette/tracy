@@ -33,7 +33,7 @@
 		// enables <span data-tracy-href=""> & ctrl key
 		document.documentElement.addEventListener('click', function(e) {
 			var el;
-			if (e.ctrlKey && (el = Tracy.closest(e.target, '[data-tracy-href]'))) {
+			if (e.ctrlKey && (el = e.target.closest('[data-tracy-href]'))) {
 				location.href = el.getAttribute('data-tracy-href');
 				return false;
 			}
