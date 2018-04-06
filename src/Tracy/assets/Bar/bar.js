@@ -10,9 +10,7 @@
 		var contentId = document.currentScript.dataset.id;
 	}
 
-	Tracy.getAjaxHeader = function() {
-		return contentId;
-	};
+	Tracy.getAjaxHeader = () => contentId;
 
 	Tracy.panelZIndex = Tracy.panelZIndex || 20000;
 
@@ -30,7 +28,7 @@
 	Panel.zIndexCounter = 1;
 
 	Panel.prototype.init = function() {
-		var _this = this, elem = this.elem;
+		var elem = this.elem;
 
 		this.init = function() {};
 		elem.innerHTML = elem.dataset.tracyContent;
@@ -41,43 +39,43 @@
 
 		draggable(elem, {
 			handles: elem.querySelectorAll('h1'),
-			start: function() {
-				if (!_this.is(Panel.FLOAT)) {
-					_this.toFloat();
+			start: () => {
+				if (!this.is(Panel.FLOAT)) {
+					this.toFloat();
 				}
-				_this.focus();
+				this.focus();
 			}
 		});
 
-		elem.addEventListener('mousedown', function() {
-			_this.focus();
+		elem.addEventListener('mousedown', () => {
+			this.focus();
 		});
 
-		elem.addEventListener('mouseenter', function() {
+		elem.addEventListener('mouseenter', () => {
 			clearTimeout(elem.Tracy.displayTimeout);
 		});
 
-		elem.addEventListener('mouseleave', function() {
-			_this.blur();
+		elem.addEventListener('mouseleave', () => {
+			this.blur();
 		});
 
-		elem.addEventListener('mousemove', function(e) {
-			if (e.buttons && !_this.is(Panel.RESIZED) && (elem.style.width || elem.style.height)) {
+		elem.addEventListener('mousemove', e => {
+			if (e.buttons && !this.is(Panel.RESIZED) && (elem.style.width || elem.style.height)) {
 				elem.classList.add(Panel.RESIZED);
 			}
 		});
 
-		elem.addEventListener('tracy-toggle', function() {
-			_this.reposition();
+		elem.addEventListener('tracy-toggle', () => {
+			this.reposition();
 		});
 
-		forEach(elem.querySelectorAll('.tracy-icons a'), function(a) {
-			a.addEventListener('click', function(e) {
+		forEach(elem.querySelectorAll('.tracy-icons a'), link => {
+			link.addEventListener('click', e => {
 				clearTimeout(elem.Tracy.displayTimeout);
-				if (this.rel === 'close') {
-					_this.toPeek();
-				} else if (this.rel === 'window') {
-					_this.toWindow();
+				if (link.rel === 'close') {
+					this.toPeek();
+				} else if (link.rel === 'window') {
+					this.toWindow();
 				}
 				e.preventDefault();
 			});
@@ -98,7 +96,7 @@
 			elem.Tracy.window.focus();
 		} else {
 			clearTimeout(elem.Tracy.displayTimeout);
-			elem.Tracy.displayTimeout = setTimeout(function() {
+			elem.Tracy.displayTimeout = setTimeout(() => {
 				elem.classList.add(Panel.FOCUSED);
 				elem.style.zIndex = Tracy.panelZIndex + Panel.zIndexCounter++;
 				if (callback) {
@@ -112,7 +110,7 @@
 		var elem = this.elem;
 		if (this.is(Panel.PEEK)) {
 			clearTimeout(elem.Tracy.displayTimeout);
-			elem.Tracy.displayTimeout = setTimeout(function() {
+			elem.Tracy.displayTimeout = setTimeout(() => {
 				elem.classList.remove(Panel.FOCUSED);
 			}, 50);
 		}
@@ -158,13 +156,12 @@
 			doc.title = this.elem.querySelector('h1').textContent;
 		}
 
-		var _this = this;
-		win.addEventListener('beforeunload', function() {
-			_this.toPeek();
+		win.addEventListener('beforeunload', () => {
+			this.toPeek();
 			win.close(); // forces closing, can be invoked by F5
 		});
 
-		doc.addEventListener('keyup', function(e) {
+		doc.addEventListener('keyup', e => {
 			if (e.keyCode === 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
 				win.close();
 			}
@@ -237,7 +234,7 @@
 			draggedClass: 'tracy-dragged'
 		});
 
-		this.elem.addEventListener('mousedown', function(e) {
+		this.elem.addEventListener('mousedown', e => {
 			e.preventDefault();
 		});
 
@@ -246,15 +243,13 @@
 	};
 
 	Bar.prototype.initTabs = function(elem) {
-		var _this = this;
+		forEach(elem.getElementsByTagName('a'), link => {
+			link.addEventListener('click', e => {
+				if (link.rel === 'close') {
+					this.close();
 
-		forEach(elem.getElementsByTagName('a'), function(a) {
-			a.addEventListener('click', function(e) {
-				if (this.rel === 'close') {
-					_this.close();
-
-				} else if (this.rel) {
-					var panel = Debug.panels[this.rel];
+				} else if (link.rel) {
+					var panel = Debug.panels[link.rel];
 					panel.init();
 
 					if (e.shiftKey) {
@@ -266,34 +261,34 @@
 
 					} else {
 						panel.toFloat();
-						panel.reposition(-Math.round(Math.random() * 100) - 20, (Math.round(Math.random() * 100) + 20) * (_this.isAtTop() ? 1 : -1));
+						panel.reposition(-Math.round(Math.random() * 100) - 20, (Math.round(Math.random() * 100) + 20) * (this.isAtTop() ? 1 : -1));
 					}
 				}
 				e.preventDefault();
 			});
 
-			a.addEventListener('mouseenter', function(e) {
-				if (!e.buttons && this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
-					var panel = Debug.panels[this.rel], link = this;
-					panel.focus(function() {
+			link.addEventListener('mouseenter', e => {
+				if (!e.buttons && link.rel && link.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
+					var panel = Debug.panels[link.rel];
+					panel.focus(() => {
 						if (panel.is(Panel.PEEK)) {
 							panel.init();
 
 							var pos = getPosition(panel.elem);
 							setPosition(panel.elem, {
 								left: getOffset(link).left + getPosition(link).width + 4 - pos.width,
-								top: _this.isAtTop()
-									? getOffset(_this.elem).top + getPosition(_this.elem).height + 4
-									: getOffset(_this.elem).top - pos.height - 4
+								top: this.isAtTop()
+									? getOffset(this.elem).top + getPosition(this.elem).height + 4
+									: getOffset(this.elem).top - pos.height - 4
 							});
 						}
 					});
 				}
 			});
 
-			a.addEventListener('mouseleave', function() {
-				if (this.rel && this.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
-					Debug.panels[this.rel].blur();
+			link.addEventListener('mouseleave', () => {
+				if (link.rel && link.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
+					Debug.panels[link.rel].blur();
 				}
 			});
 		});
@@ -354,7 +349,7 @@
 		Debug.layer.style.display = 'block';
 		Debug.bar.init();
 
-		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
+		forEach(document.querySelectorAll('.tracy-panel'), panel => {
 			Debug.panels[panel.id] = new Panel(panel.id);
 			Debug.panels[panel.id].dumps = dumps;
 			Debug.panels[panel.id].restorePosition();
@@ -365,7 +360,7 @@
 	};
 
 	Debug.loadAjax = function(content, dumps) {
-		forEach(Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax'), function(panel) {
+		forEach(Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax'), panel => {
 			Debug.panels[panel.id].savePosition();
 			delete Debug.panels[panel.id];
 			panel.parentNode.removeChild(panel);
@@ -383,7 +378,7 @@
 		Debug.bar.elem.appendChild(ajaxBar);
 		Debug.bar.restorePosition();
 
-		forEach(document.querySelectorAll('.tracy-panel'), function(panel) {
+		forEach(document.querySelectorAll('.tracy-panel'), panel => {
 			if (!Debug.panels[panel.id]) {
 				Debug.panels[panel.id] = new Panel(panel.id);
 				Debug.panels[panel.id].dumps = dumps;
@@ -397,7 +392,7 @@
 	Debug.captureWindow = function() {
 		var size = getWindowSize();
 
-		window.addEventListener('resize', function() {
+		window.addEventListener('resize', () => {
 			var newSize = getWindowSize();
 
 			Debug.bar.reposition(newSize.width - size.width, newSize.height - size.height);
@@ -409,7 +404,7 @@
 			size = newSize;
 		});
 
-		window.addEventListener('unload', function() {
+		window.addEventListener('unload', () => {
 			Debug.bar.savePosition();
 			for (var id in Debug.panels) {
 				Debug.panels[id].savePosition();
@@ -474,7 +469,7 @@
 	};
 
 	function evalScripts(elem) {
-		forEach(elem.getElementsByTagName('script'), function(script) {
+		forEach(elem.getElementsByTagName('script'), script => {
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 				var dolly = script.ownerDocument.createElement('script');
 				dolly.textContent = script.textContent;
