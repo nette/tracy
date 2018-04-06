@@ -43,7 +43,7 @@
 	};
 
 
-	var build = function(data, repository, collapsed, parentIds) {
+	function build(data, repository, collapsed, parentIds) {
 		var type = data === null ? 'null' : typeof data,
 			collapseCount = typeof collapsed === 'undefined' ? COLLAPSE_COUNT_TOP : COLLAPSE_COUNT;
 
@@ -108,10 +108,10 @@
 				parentIds
 			);
 		}
-	};
+	}
 
 
-	var buildStruct = function(span, ellipsis, items, collapsed, repository, parentIds) {
+	function buildStruct(span, ellipsis, items, collapsed, repository, parentIds) {
 		var res, toggle, div, handler;
 
 		if (!items || !items.length) {
@@ -134,10 +134,10 @@
 			createItems(div, items, repository, parentIds);
 		}
 		return res;
-	};
+	}
 
 
-	var createEl = function(el, attrs, content) {
+	function createEl(el, attrs, content) {
 		if (!(el instanceof Node)) {
 			el = el ? document.createElement(el) : document.createDocumentFragment();
 		}
@@ -154,10 +154,10 @@
 			}
 		}
 		return el;
-	};
+	}
 
 
-	var createItems = function(el, items, repository, parentIds) {
+	function createItems(el, items, repository, parentIds) {
 		for (var i = 0; i < items.length; i++) {
 			var vis = items[i][2];
 			createEl(el, null, [
@@ -168,8 +168,8 @@
 				build(items[i][1], repository, null, parentIds)
 			]);
 		}
-	};
+	}
 
-	var UnknownEntityException = function() {};
+	function UnknownEntityException() {}
 
 })();
