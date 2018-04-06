@@ -81,6 +81,7 @@ body#tracy-debug { /* in popup window */
 #tracy-debug table {
 	border-collapse: collapse;
 	background: #FDF5CE;
+	width: 100%;
 }
 
 #tracy-debug tr:nth-child(2n) td {
