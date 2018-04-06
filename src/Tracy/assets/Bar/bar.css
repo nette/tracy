@@ -303,6 +303,12 @@ body#tracy-debug .tracy-panel { /* in popup window */
 }
 
 
+#tracy-debug .tracy-content {
+	min-width: 100%;
+	float: left;
+}
+
+
 /* dump */
 #tracy-debug pre.tracy-dump div {
 	padding-left: 3ex;
