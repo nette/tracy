@@ -3,44 +3,44 @@
  */
 
 (function() {
-	var COLLAPSE_COUNT = 7,
+	const
+		COLLAPSE_COUNT = 7,
 		COLLAPSE_COUNT_TOP = 14;
 
-	Tracy = window.Tracy || {};
-
-	Tracy.Dumper = Tracy.Dumper || {};
-
-	Tracy.Dumper.init = function(repository, context) {
-		if (repository) {
-			[].forEach.call((context || document).querySelectorAll('.tracy-dump[data-tracy-dump]'), function(el) {
-				try {
-					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
-					el.classList.remove('tracy-collapsed');
-					el.removeAttribute('data-tracy-dump');
-				} catch (e) {
-					if (!(e instanceof UnknownEntityException)) {
-						throw e;
+	class Dumper
+	{
+		static init(repository, context) {
+			if (repository) {
+				[].forEach.call((context || document).querySelectorAll('.tracy-dump[data-tracy-dump]'), function(el) {
+					try {
+						el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
+						el.classList.remove('tracy-collapsed');
+						el.removeAttribute('data-tracy-dump');
+					} catch (e) {
+						if (!(e instanceof UnknownEntityException)) {
+							throw e;
+						}
 					}
+				});
+			}
+
+			if (Dumper.inited) {
+				return;
+			}
+			Dumper.inited = true;
+
+			// enables <span data-tracy-href=""> & ctrl key
+			document.documentElement.addEventListener('click', function(e) {
+				var el;
+				if (e.ctrlKey && (el = e.target.closest('[data-tracy-href]'))) {
+					location.href = el.getAttribute('data-tracy-href');
+					return false;
 				}
 			});
+
+			Tracy.Toggle.init();
 		}
-
-		if (this.inited) {
-			return;
-		}
-		this.inited = true;
-
-		// enables <span data-tracy-href=""> & ctrl key
-		document.documentElement.addEventListener('click', function(e) {
-			var el;
-			if (e.ctrlKey && (el = e.target.closest('[data-tracy-href]'))) {
-				location.href = el.getAttribute('data-tracy-href');
-				return false;
-			}
-		});
-
-		Tracy.Toggle.init();
-	};
+	}
 
 
 	function build(data, repository, collapsed, parentIds) {
@@ -170,6 +170,10 @@
 		}
 	}
 
+
 	function UnknownEntityException() {}
 
+
+	Tracy = window.Tracy || {};
+	Tracy.Dumper = Dumper;
 })();
