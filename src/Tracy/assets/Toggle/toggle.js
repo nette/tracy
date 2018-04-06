@@ -10,7 +10,7 @@
 	// enables <a class="tracy-toggle" href="#"> or <span data-tracy-ref="#"> toggling
 	Tracy.Toggle.init = function() {
 		document.documentElement.addEventListener('click', function(e) {
-			var el = Tracy.closest(e.target, '.tracy-toggle');
+			var el = e.target.closest('.tracy-toggle');
 			if (el && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
 				Tracy.Toggle.toggle(el);
 			}
@@ -37,8 +37,9 @@
 			dest = document;
 		}
 		ref = ref.match(/(\^\s*([^+\s]*)\s*)?(\+\s*(\S*)\s*)?(.*)/);
-		dest = ref[1] ? Tracy.closest(dest.parentNode, ref[2]) : dest;
-		dest = ref[3] ? Tracy.closest(dest.nextElementSibling, ref[4], 'nextElementSibling') : dest;
+		dest = ref[1] ? dest.parentNode : dest;
+		dest = ref[2] ? dest.closest(ref[2]) : dest;
+		dest = ref[3] ? nextElement(dest.nextElementSibling, ref[4]) : dest;
 		dest = ref[5] ? dest.querySelector(ref[5]) : dest;
 
 		el.classList.toggle('tracy-collapsed', !show);
@@ -92,13 +93,12 @@
 	};
 
 
-	// finds closing maching element
-	Tracy.closest = function(el, selector, func) {
-		var matches = el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector;
-		while (el && selector && !(el.nodeType === 1 && matches.call(el, selector))) {
-			el = el[func || 'parentNode'];
+	// finds next matching element
+	function nextElement(el, selector) {
+		while (el && selector && !el.matches(selector)) {
+			el = el.nextElementSibling;
 		}
 		return el;
-	};
+	}
 
 })();
