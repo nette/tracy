@@ -31,6 +31,7 @@
 	Panel.prototype.init = function() {
 		var _this = this, elem = this.elem;
 
+		this.init = function() {};
 		elem.innerHTML = elem.dataset.tracyContent;
 		Tracy.Dumper.init(this.dumps, elem);
 		delete elem.dataset.tracyContent;
@@ -241,9 +242,7 @@
 
 				} else if (this.rel) {
 					var panel = Debug.panels[this.rel];
-					if (panel.elem.dataset.tracyContent) {
-						panel.init();
-					}
+					panel.init();
 
 					if (e.shiftKey) {
 						panel.toFloat();
@@ -268,9 +267,7 @@
 					var panel = Debug.panels[this.rel], link = this;
 					panel.focus(function() {
 						if (panel.is(Panel.PEEK)) {
-							if (panel.elem.dataset.tracyContent) {
-								panel.init();
-							}
+							panel.init();
 
 							var pos = getPosition(panel.elem);
 							setPosition(panel.elem, {
