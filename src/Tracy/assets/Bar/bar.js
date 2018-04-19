@@ -320,6 +320,7 @@
 
 
 		savePosition() {
+			if(document.getElementById('tracy-debug').style.display == 'none') return;
 			var pos = getPosition(this.elem);
 			localStorage.setItem(this.id, JSON.stringify(this.isAtTop() ? {right: pos.right, top: pos.top} : {right: pos.right, bottom: pos.bottom}));
 		}
