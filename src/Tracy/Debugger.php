@@ -180,7 +180,8 @@ class Debugger
 			ini_set('html_errors', '0');
 			ini_set('log_errors', '0');
 
-		} elseif (ini_get('display_errors') != !self::$productionMode // intentionally ==
+		} elseif (
+			ini_get('display_errors') != !self::$productionMode // intentionally ==
 			&& ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')
 		) {
 			self::exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
@@ -404,7 +405,9 @@ class Debugger
 			}
 			return null;
 
-		} elseif (!self::$productionMode && !isset($_GET['_tracy_skip_error'])
+		} elseif (
+			!self::$productionMode
+			&& !isset($_GET['_tracy_skip_error'])
 			&& (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))
 		) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
