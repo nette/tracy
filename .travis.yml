@@ -56,6 +56,8 @@ jobs:
 
         -   stage: Static Analysis
             php: 7.1
+            install:
+                - travis_retry composer require --dev vimeo/psalm:dev-master
             script:
                 - vendor/bin/psalm --show-info=false
 
