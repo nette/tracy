@@ -29,7 +29,7 @@ class FireLogger implements ILogger
 
 	/**
 	 * Sends message to FireLogger console.
-	 * @param  mixed
+	 * @param  mixed  $message
 	 * @return bool    was successful?
 	 */
 	public function log($message, $priority = self::DEBUG)
@@ -114,8 +114,8 @@ class FireLogger implements ILogger
 
 	/**
 	 * Dump implementation for JSON.
-	 * @param  mixed  variable to dump
-	 * @param  int    current recursion level
+	 * @param  mixed  $var
+	 * @param  int  $level  recursion level
 	 * @return array|null|int|float|bool|string
 	 */
 	private function jsonDump(&$var, $level = 0)

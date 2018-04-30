@@ -43,8 +43,8 @@ class Logger implements ILogger
 
 	/**
 	 * Logs message or exception to file and sends email notification.
-	 * @param  string|\Exception|\Throwable
-	 * @param  int   one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
+	 * @param  string|\Exception|\Throwable  $message
+	 * @param  int  $priority  one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
 	 * @return string|null logged error filename
 	 */
 	public function log($message, $priority = self::INFO)
@@ -78,7 +78,7 @@ class Logger implements ILogger
 
 
 	/**
-	 * @param  mixed
+	 * @param  mixed  $message
 	 * @return string
 	 */
 	protected function formatMessage($message)
@@ -102,7 +102,7 @@ class Logger implements ILogger
 
 
 	/**
-	 * @param  string|\Exception|\Throwable
+	 * @param  string|\Exception|\Throwable  $message
 	 * @return string
 	 */
 	protected function formatLogLine($message, $exceptionFile = null)
@@ -117,7 +117,7 @@ class Logger implements ILogger
 
 
 	/**
-	 * @param  \Exception|\Throwable
+	 * @param  \Exception|\Throwable  $exception
 	 * @return string
 	 */
 	public function getExceptionFile($exception)
@@ -142,7 +142,7 @@ class Logger implements ILogger
 
 	/**
 	 * Logs exception to the file if file doesn't exist.
-	 * @param  \Exception|\Throwable
+	 * @param  \Exception|\Throwable  $exception
 	 * @return string logged error filename
 	 */
 	protected function logException($exception, $file = null)
@@ -155,7 +155,7 @@ class Logger implements ILogger
 
 
 	/**
-	 * @param  string|\Exception|\Throwable
+	 * @param  string|\Exception|\Throwable  $message
 	 * @return void
 	 */
 	protected function sendEmail($message)
@@ -177,8 +177,8 @@ class Logger implements ILogger
 
 	/**
 	 * Default mailer.
-	 * @param  string|\Exception|\Throwable
-	 * @param  string
+	 * @param  string|\Exception|\Throwable  $message
+	 * @param  string  $email
 	 * @return void
 	 * @internal
 	 */

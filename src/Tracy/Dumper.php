@@ -143,9 +143,9 @@ class Dumper
 
 	/**
 	 * Internal toHtml() dump implementation.
-	 * @param  mixed  variable to dump
-	 * @param  array  options
-	 * @param  int    current recursion level
+	 * @param  mixed  $var
+	 * @param  array  $options
+	 * @param  int  $level  recursion level
 	 * @return string
 	 */
 	private static function dumpVar(&$var, array $options, $level = 0)

@@ -39,7 +39,7 @@ class BlueScreen
 
 	/**
 	 * Add custom panel.
-	 * @param  callable
+	 * @param  callable  $panel
 	 * @return static
 	 */
 	public function addPanel($panel)
@@ -53,7 +53,7 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen.
-	 * @param  \Exception|\Throwable
+	 * @param  \Exception|\Throwable  $exception
 	 * @return void
 	 */
 	public function render($exception)
@@ -72,8 +72,8 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen to file (if file exists, it will not be overwritten).
-	 * @param  \Exception|\Throwable
-	 * @param  string file path
+	 * @param  \Exception|\Throwable  $exception
+	 * @param  string  $file file path
 	 * @return void
 	 */
 	public function renderToFile($exception, $file)
@@ -152,9 +152,9 @@ class BlueScreen
 
 	/**
 	 * Returns syntax highlighted source code.
-	 * @param  string
-	 * @param  int
-	 * @param  int
+	 * @param  string  $file
+	 * @param  int  $line
+	 * @param  int  $lines
 	 * @return string|null
 	 */
 	public static function highlightFile($file, $line, $lines = 15, array $vars = null)
@@ -172,9 +172,9 @@ class BlueScreen
 
 	/**
 	 * Returns syntax highlighted source code.
-	 * @param  string
-	 * @param  int
-	 * @param  int
+	 * @param  string  $source
+	 * @param  int  $line
+	 * @param  int  $lines
 	 * @return string
 	 */
 	public static function highlightPhp($source, $line, $lines = 15, array $vars = null)
@@ -254,7 +254,7 @@ class BlueScreen
 
 	/**
 	 * Should a file be collapsed in stack trace?
-	 * @param  string
+	 * @param  string  $file
 	 * @return bool
 	 */
 	public function isCollapsed($file)
