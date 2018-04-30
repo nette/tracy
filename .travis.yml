@@ -54,6 +54,10 @@ jobs:
                 - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
                 - php coveralls.phar --verbose --config tests/.coveralls.yml
 
+        -   stage: Static Analysis
+            php: 7.1
+            script:
+                - vendor/bin/psalm --show-info=false
 
     allow_failures:
         -   stage: Code Coverage
