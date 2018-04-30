@@ -37,7 +37,7 @@ class Debugger
 	/** @var bool */
 	private static $enabled = false;
 
-	/** @var string reserved memory; also prevents double rendering */
+	/** @var string|null reserved memory; also prevents double rendering */
 	private static $reserved;
 
 	/** @var int initial output buffer level */
@@ -70,7 +70,7 @@ class Debugger
 
 	/********************* logging ****************d*g**/
 
-	/** @var string name of the directory where errors should be logged */
+	/** @var string|null name of the directory where errors should be logged */
 	public static $logDirectory;
 
 	/** @var int  log bluescreen in production mode for this error severity */
@@ -111,7 +111,7 @@ class Debugger
 	/** @var string[] */
 	public static $customJsFiles = [];
 
-	/** @var array */
+	/** @var array|null */
 	private static $cpuUsage;
 
 	/********************* services ****************d*g**/
@@ -369,7 +369,7 @@ class Debugger
 
 	/**
 	 * Handler to catch warnings and notices.
-	 * @return bool   false to call normal error handler, null otherwise
+	 * @return bool|null   false to call normal error handler, null otherwise
 	 * @throws ErrorException
 	 * @internal
 	 */

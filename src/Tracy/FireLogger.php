@@ -116,7 +116,7 @@ class FireLogger implements ILogger
 	 * Dump implementation for JSON.
 	 * @param  mixed  variable to dump
 	 * @param  int    current recursion level
-	 * @return string
+	 * @return array|null|int|float|bool|string
 	 */
 	private function jsonDump(&$var, $level = 0)
 	{

@@ -86,6 +86,8 @@ class Bar
 			});
 		}
 
+		$rows = [];
+
 		if (Helpers::isAjax()) {
 			if ($useSession) {
 				$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax')];
@@ -129,7 +131,7 @@ class Bar
 	/**
 	 * @return string
 	 */
-	private function renderHtmlRows(array $rows)
+	private static function renderHtmlRows(array $rows)
 	{
 		ob_start(function () {});
 		require __DIR__ . '/assets/Bar/panels.phtml';
@@ -223,6 +225,8 @@ class Bar
 			}
 			return true;
 		}
+
+		return false;
 	}
 
 

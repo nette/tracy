@@ -234,16 +234,23 @@ class Dumper
 	private static function dumpObject(&$var, $options, $level)
 	{
 		$fields = self::exportObject($var, $options[self::OBJECT_EXPORTERS], $options[self::DEBUGINFO]);
-		$editor = null;
+
+		$editorAttributes = '';
 		if ($options[self::LOCATION] & self::LOCATION_CLASS) {
 			$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
 			$editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine());
+			if ($editor) {
+				$editorAttributes = Helpers::formatHtml(
+					' title="Declared in file % on line %" data-tracy-href="%"',
+					$rc->getFileName(),
+					$rc->getStartLine(),
+					$editor
+				);
+			}
 		}
-		$out = '<span class="tracy-dump-object"'
-			. ($editor ? Helpers::formatHtml(
-				' title="Declared in file % on line %" data-tracy-href="%"', $rc->getFileName(), $rc->getStartLine(), $editor
-			) : '')
-			. '>' . Helpers::escapeHtml(Helpers::getClass($var)) . '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
+		$out = '<span class="tracy-dump-object"' . $editorAttributes . '>'
+			. Helpers::escapeHtml(Helpers::getClass($var))
+			. '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
 
 		static $list = [];
 
@@ -337,15 +344,17 @@ class Dumper
 				return ['object' => $obj['id']];
 			}
 
+			$editorInfo = null;
 			if ($options[self::LOCATION] & self::LOCATION_CLASS) {
 				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
 				$editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine());
+				$editorInfo = $editor ? ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor] : null;
 			}
 			static $counter = 1;
 			$obj = $obj ?: [
 				'id' => self::$livePrefix . '0' . $counter++, // differentiate from resources
 				'name' => Helpers::getClass($var),
-				'editor' => empty($editor) ? null : ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor],
+				'editor' => $editorInfo,
 				'level' => $level,
 				'object' => $var,
 			];
@@ -528,7 +537,7 @@ class Dumper
 
 	/**
 	 * Finds the location where dump was called.
-	 * @return array [file, line, code]
+	 * @return array|null [file, line, code]
 	 */
 	private static function findLocation()
 	{

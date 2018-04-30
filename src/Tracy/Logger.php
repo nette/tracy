@@ -19,7 +19,7 @@ class Logger implements ILogger
 	/** @var string|array email or emails to which send error notifications */
 	public $email;
 
-	/** @var string sender of email notifications */
+	/** @var string|null sender of email notifications */
 	public $fromEmail;
 
 	/** @var mixed interval for sending email is 2 days */
@@ -28,7 +28,7 @@ class Logger implements ILogger
 	/** @var callable handler for sending emails */
 	public $mailer;
 
-	/** @var BlueScreen */
+	/** @var BlueScreen|null */
 	private $blueScreen;
 
 
@@ -45,7 +45,7 @@ class Logger implements ILogger
 	 * Logs message or exception to file and sends email notification.
 	 * @param  string|\Exception|\Throwable
 	 * @param  int   one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
-	 * @return string logged error filename
+	 * @return string|null logged error filename
 	 */
 	public function log($message, $priority = self::INFO)
 	{
@@ -78,7 +78,7 @@ class Logger implements ILogger
 
 
 	/**
-	 * @param  string|\Exception|\Throwable
+	 * @param  mixed
 	 * @return string
 	 */
 	protected function formatMessage($message)

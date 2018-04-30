@@ -42,7 +42,7 @@ class Helpers
 
 	/**
 	 * Returns link to editor.
-	 * @return string
+	 * @return string|null
 	 */
 	public static function editorUri($file, $line = null)
 	{
