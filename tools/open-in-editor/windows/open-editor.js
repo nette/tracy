@@ -2,6 +2,7 @@ var settings = {
 
 	// PhpStorm
 	// editor: '"C:\\Program Files\\JetBrains\\PhpStorm 2018.1.2\\bin\\phpstorm64.exe" --line %line% "%file%"',
+	// title: 'PhpStorm',
 
 	// NetBeans
 	// editor: '"C:\\Program Files\\NetBeans 8.1\\bin\\netbeans.exe" "%file%:%line%" --console suppress',
@@ -56,3 +57,7 @@ for (var id in settings.mappings) {
 var shell = new ActiveXObject('WScript.Shell');
 var command = settings.editor.replace(/%line%/, line).replace(/%file%/, file);
 shell.Exec(command);
+
+if (settings.title) {
+	shell.AppActivate(settings.title)
+}
