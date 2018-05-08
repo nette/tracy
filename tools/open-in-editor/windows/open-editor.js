@@ -1,47 +1,58 @@
-// NetBeans
-// var editor = '"C:\\Program Files\\NetBeans 8.1\\bin\\netbeans.exe" "%file%:%line%" --console suppress';
+var settings = {
 
-// PhpStorm
-// var editor = '"C:\\Program Files (x86)\\JetBrains\\PhpStorm 10.0\\bin\\PhpStorm.exe" --line %line% "%file%"';
+	// PhpStorm
+	// editor: '"C:\\Program Files\\JetBrains\\PhpStorm 2018.1.2\\bin\\phpstorm64.exe" --line %line% "%file%"',
 
-// Nusphere PHPEd
-// var editor = '"C:\\Program Files\\NuSphere\\PhpED\\phped.exe" "%file%" --line=%line%';
+	// NetBeans
+	// editor: '"C:\\Program Files\\NetBeans 8.1\\bin\\netbeans.exe" "%file%:%line%" --console suppress',
 
-// SciTE
-// var editor = '"C:\\Program Files\\SciTE\\scite.exe" "-open:%file%" -goto:%line%';
+	// Nusphere PHPEd
+	// editor: '"C:\\Program Files\\NuSphere\\PhpED\\phped.exe" "%file%" --line=%line%',
 
-// EmEditor
-// var editor = '"C:\\Program Files\\EmEditor\\EmEditor.exe" "%file%" /l %line%';
+	// SciTE
+	// editor: '"C:\\Program Files\\SciTE\\scite.exe" "-open:%file%" -goto:%line%',
 
-// PSPad Editor
-// var editor = '"C:\\Program Files\\PSPad editor\\PSPad.exe" -%line% "%file%"';
+	// EmEditor
+	// editor: '"C:\\Program Files\\EmEditor\\EmEditor.exe" "%file%" /l %line%',
 
-// gVim
-// var editor = '"C:\\Program Files\\Vim\\vim73\\gvim.exe" "%file%" +%line%';
+	// PSPad Editor
+	// editor: '"C:\\Program Files\\PSPad editor\\PSPad.exe" -%line% "%file%"',
 
-// Sublime Text 2
-// var editor = '"C:\\Program Files\\Sublime Text 2\\sublime_text.exe" "%file%:%line%"';
+	// gVim
+	// editor: '"C:\\Program Files\\Vim\\vim73\\gvim.exe" "%file%" +%line%',
 
-var mappings = {
-	// '/remotepath': '/localpath'
-};
+	// Sublime Text 2
+	// editor: '"C:\\Program Files\\Sublime Text 2\\sublime_text.exe" "%file%:%line%"',
 
-if (typeof editor === 'undefined') {
-	WScript.Echo('Create variable "editor" in ' + WScript.ScriptFullName);
+	mappings: {
+		// '/remotepath': '/localpath'
+	}
+}
+
+
+
+if (!settings.editor) {
+	WScript.Echo('Create variable "settings.editor" in ' + WScript.ScriptFullName);
 	WScript.Quit();
 }
 
 var url = WScript.Arguments(0);
 var match = /^editor:\/\/open\/\?file=(.+)&line=(\d+)/.exec(url);
-if (match) {
-	var file = decodeURIComponent(match[1]).replace(/\+/g, ' ');
-	for (var id in mappings) {
-		if (file.indexOf(id) === 0) {
-			file = mappings[id] + file.substr(id.length);
-			break;
-		}
-	}
-	var command = editor.replace(/%line%/g, match[2]).replace(/%file%/g, file);
-	var shell = new ActiveXObject("WScript.Shell");
-	shell.Exec(command.replace(/\\/g, '\\\\'));
+if (!match) {
+	WScript.Echo('Unexpected URI ' + url);
+	WScript.Quit();
 }
+
+var file = decodeURIComponent(match[1]).replace(/\+/g, ' ');
+var line = match[2];
+
+for (var id in settings.mappings) {
+	if (file.indexOf(id) === 0) {
+		file = settings.mappings[id] + file.substr(id.length);
+		break;
+	}
+}
+
+var shell = new ActiveXObject('WScript.Shell');
+var command = settings.editor.replace(/%line%/g, line).replace(/%file%/g, file);
+shell.Exec(command.replace(/\\/g, '\\\\'));
