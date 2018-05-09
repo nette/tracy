@@ -93,9 +93,29 @@ Assert::with($blueScreen, function () {
 		$this->renderActions(new Exception(' "' . __FILE__ . '"'))[0]
 	);
 
+	$ds = urlencode(DIRECTORY_SEPARATOR);
 	Assert::same(
-		['link' => null, 'label' => 'open file'],
+		[
+			'link' => 'editor://create/?file=' . $ds . 'notexists.txt&line=1',
+			'label' => 'create file',
+		],
 		$this->renderActions(new Exception(' "/notexists.txt"'))[0]
+	);
+
+	Assert::same(
+		[
+			'link' => 'editor://create/?file=c%3A%5Cnotexists.txt&line=1',
+			'label' => 'create file',
+		],
+		$this->renderActions(new Exception(' "c:\notexists.txt"'))[0]
+	);
+
+	Assert::same(
+		[
+			'link' => 'editor://create/?file=c%3A' . $ds . 'notexists.txt&line=1',
+			'label' => 'create file',
+		],
+		$this->renderActions(new Exception(' "c:/notexists.txt"'))[0]
 	);
 
 	Assert::count(1, $this->renderActions(new Exception(' "/notfile"')));

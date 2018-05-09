@@ -162,8 +162,8 @@ class BlueScreen
 
 		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\\1#i', $ex->getMessage(), $m)) {
 			$actions[] = [
-				'link' => Helpers::editorUri($m[2]),
-				'label' => 'open file',
+				'link' => Helpers::editorUri($m[2], 1, $tmp = is_file($m[2]) ? 'open' : 'create'),
+				'label' => $tmp . ' file',
 			];
 		}
 

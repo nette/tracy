@@ -44,11 +44,12 @@ class Helpers
 	 * Returns link to editor.
 	 * @return string|null
 	 */
-	public static function editorUri($file, $line = null)
+	public static function editorUri($file, $line = null, $action = 'open')
 	{
-		if (Debugger::$editor && $file && is_file($file)) {
+		if (Debugger::$editor && $file && ($action === 'create' || is_file($file))) {
+			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 			$file = strtr($file, Debugger::$editorMapping);
-			return strtr(Debugger::$editor, ['%file' => rawurlencode($file), '%line' => $line ? (int) $line : 1]);
+			return strtr(Debugger::$editor, ['%action' => $action, '%file' => rawurlencode($file), '%line' => $line ? (int) $line : 1]);
 		}
 	}
 
