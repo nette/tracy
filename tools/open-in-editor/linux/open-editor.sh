@@ -21,9 +21,10 @@ declare -A mappings
 url=$1
 if [ "${url:0:20}" == "editor://open/?file=" ]; then
 
-	regex='editor\:\/\/open\/\?file\=(.+)\&line\=([0-9]+)'
-	file=`echo $url | sed -r "s/$regex/\1/i"`
-	line=`echo $url | sed -r "s/$regex/\2/i"`
+	regex='editor\:\/\/(open|create)\/\?file\=(.+)\&line\=([0-9]+)'
+	action=`echo $url | sed -r "s/$regex/\1/i"`
+	file=`echo $url | sed -r "s/$regex/\2/i"`
+	line=`echo $url | sed -r "s/$regex/\3/i"`
 	printf -v file "${file//%/\\x}" # decode url
 	file=${file//\"/\\\"} # escape quotes
 
