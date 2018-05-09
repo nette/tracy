@@ -91,6 +91,11 @@ class BlueScreen
 
 	private function renderTemplate($exception, $template)
 	{
+		$messageHtml = preg_replace(
+			'#\'\S[^\']*\S\'|"\S[^"]*\S"#U',
+			'<i>$0</i>',
+			htmlspecialchars((string) $exception->getMessage(), ENT_SUBSTITUTE, 'UTF-8')
+		);
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
 		$sourceIsUrl = preg_match('#^https?://#', $source);
