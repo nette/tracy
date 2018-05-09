@@ -7,6 +7,7 @@
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  *
  * @param  array $exception
+ * @param  string $messageHtml
  * @param  array[] $actions
  * @param  array $info
  * @param  string $title
@@ -29,7 +30,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php if ($exception->getMessage()): ?><p><?= Helpers::escapeHtml($title . $code) ?></p><?php endif ?>
 
 
-			<h1><span><?= Helpers::escapeHtml(trim($exception->getMessage() ?: $title . $code)) ?></span>
+			<h1><span><?= $messageHtml ?: Helpers::escapeHtml($title . $code) ?></span>
 			<?php foreach ($actions as $item): ?>
 			<a href="<?= Helpers::escapeHtml($item['link']) ?>"<?= empty($item['external']) ? '' : ' target="_blank" rel="noreferrer noopener"'?>><?= Helpers::escapeHtml($item['label']) ?>&#x25ba;</a>
 			<?php endforeach ?></h1>

@@ -80,6 +80,11 @@
 	opacity: 1;
 }
 
+#tracy-bs-error i {
+	color: #ffefa1;
+	font-style: normal;
+}
+
 #tracy-bs-ie-warning {
 	background: black;
 	margin: 1em;
