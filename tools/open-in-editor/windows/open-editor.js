@@ -38,14 +38,18 @@ if (!settings.editor) {
 }
 
 var url = WScript.Arguments(0);
-var match = /^editor:\/\/open\/\?file=([^&]+)&line=(\d+)/.exec(url);
+var match = /^editor:\/\/(open|create)\/\?file=([^&]+)&line=(\d+)/.exec(url);
 if (!match) {
 	WScript.Echo('Unexpected URI ' + url);
 	WScript.Quit();
 }
 
-var file = decodeURIComponent(match[1]).replace(/\+/g, ' ');
-var line = match[2];
+var action = match[1];
+var file = decodeURIComponent(match[2]).replace(/\+/g, ' ');
+var line = match[3];
+
+var shell = new ActiveXObject('WScript.Shell');
+var fileSystem = new ActiveXObject('Scripting.FileSystemObject');
 
 for (var id in settings.mappings) {
 	if (file.indexOf(id) === 0) {
@@ -54,7 +58,11 @@ for (var id in settings.mappings) {
 	}
 }
 
-var shell = new ActiveXObject('WScript.Shell');
+if (action === 'create' && !fileSystem.FileExists(file)) {
+	shell.Run('cmd /c mkdir "' + fileSystem.GetParentFolderName(file) + '"', 0, 1);
+	fileSystem.CreateTextFile(file);
+}
+
 var command = settings.editor.replace(/%line%/, line).replace(/%file%/, file);
 shell.Exec(command);
 
