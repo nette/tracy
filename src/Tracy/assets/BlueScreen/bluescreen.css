@@ -63,7 +63,7 @@
 #tracy-bs-error {
 	background: #CD1818;
 	color: white;
-	font: 13pt/1.5 Verdana, sans-serif !important;
+	font-size: 13pt;
 }
 
 #tracy-bs-error a {
@@ -99,12 +99,13 @@
 }
 
 #tracy-bs h2 {
-	font: 14pt/1.5 sans-serif !important;
+	font-size: 14pt;
 	margin: .6em 0;
 }
 
 #tracy-bs h3 {
-	font: bold 10pt/1.5 Verdana, sans-serif !important;
+	font-size: 10pt;
+	font-weight: bold;
 	margin: 1em 0;
 	padding: 0;
 }
@@ -166,7 +167,7 @@
 }
 
 #tracy-bs ul {
-	font: 7pt/1.5 Verdana, sans-serif !important;
+	font-size: 7pt;
 	padding: 2em 4em;
 	margin: 1em 0 0;
 	color: #777;
