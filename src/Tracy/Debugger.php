@@ -94,7 +94,7 @@ class Debugger
 	public static $time;
 
 	/** @var string URI pattern mask to open editor */
-	public static $editor = 'editor://%action/?file=%file&line=%line';
+	public static $editor = 'editor://%action/?file=%file&line=%line&search=%search&replace=%replace';
 
 	/** @var array replacements in path */
 	public static $editorMapping = [];
