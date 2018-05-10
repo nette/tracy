@@ -159,6 +159,9 @@ class BlueScreen
 	private function renderActions($ex)
 	{
 		$actions = [];
+		if (!empty($ex->tracyAction['link']) && !empty($ex->tracyAction['label'])) {
+			$actions[] = $ex->tracyAction;
+		}
 
 		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\\1#i', $ex->getMessage(), $m)) {
 			$actions[] = [
