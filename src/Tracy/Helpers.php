@@ -44,12 +44,18 @@ class Helpers
 	 * Returns link to editor.
 	 * @return string|null
 	 */
-	public static function editorUri($file, $line = null, $action = 'open')
+	public static function editorUri($file, $line = null, $action = 'open', $search = null, $replace = null)
 	{
 		if (Debugger::$editor && $file && ($action === 'create' || is_file($file))) {
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 			$file = strtr($file, Debugger::$editorMapping);
-			return strtr(Debugger::$editor, ['%action' => $action, '%file' => rawurlencode($file), '%line' => $line ? (int) $line : 1]);
+			return strtr(Debugger::$editor, [
+				'%action' => $action,
+				'%file' => rawurlencode($file),
+				'%line' => $line ? (int) $line : 1,
+				'%search' => $search,
+				'%replace' => $replace,
+			]);
 		}
 	}
 
@@ -176,32 +182,41 @@ class Helpers
 			$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
 			$hint = self::getSuggestion($funcs, $m[1] . $m[2]) ?: self::getSuggestion($funcs, $m[2]);
 			$message = "Call to undefined function $m[2](), did you mean $hint()?";
+			$replace = ["$m[2](", "$hint("];
 
 		} elseif (preg_match('#^Call to undefined method ([\w\\\\]+)::(\w+)#', $message, $m)) {
 			$hint = self::getSuggestion(get_class_methods($m[1]), $m[2]);
 			$message .= ", did you mean $hint()?";
+			$replace = ["$m[2](", "$hint("];
 
 		} elseif (preg_match('#^Undefined variable: (\w+)#', $message, $m) && !empty($e->context)) {
 			$hint = self::getSuggestion(array_keys($e->context), $m[1]);
 			$message = "Undefined variable $$m[1], did you mean $$hint?";
+			$replace = ["$$m[1]", "$$hint"];
 
 		} elseif (preg_match('#^Undefined property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_diff($rc->getProperties(\ReflectionProperty::IS_PUBLIC), $rc->getProperties(\ReflectionProperty::IS_STATIC));
 			$hint = self::getSuggestion($items, $m[2]);
 			$message .= ", did you mean $$hint?";
+			$replace = [">$m[2]", ">$hint"];
 
 		} elseif (preg_match('#^Access to undeclared static property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_intersect($rc->getProperties(\ReflectionProperty::IS_PUBLIC), $rc->getProperties(\ReflectionProperty::IS_STATIC));
 			$hint = self::getSuggestion($items, $m[2]);
 			$message .= ", did you mean $$hint?";
+			$replace = [":$$m[2]", ":$$hint"];
 		}
 
 		if (isset($hint)) {
 			$ref = new \ReflectionProperty($e, 'message');
 			$ref->setAccessible(true);
 			$ref->setValue($e, $message);
+			$e->tracyAction = [
+				'link' => self::editorUri($e->getFile(), $e->getLine(), 'fix', $replace[0], $replace[1]),
+				'label' => 'fix it',
+			];
 		}
 	}
 
