@@ -21,7 +21,7 @@ declare -A mappings
 url=$1
 if [ "${url:0:20}" == "editor://open/?file=" ]; then
 
-	regex='editor\:\/\/(open|create)\/\?file\=(.+)\&line\=([0-9]+)'
+	regex='editor\:\/\/(open|create|fix)\/\?file\=(.+)\&line\=([0-9]+)\&search=(.+)\&replace=(.+)'
 	action=`echo $url | sed -r "s/$regex/\1/i"`
 	file=`echo $url | sed -r "s/$regex/\2/i"`
 	line=`echo $url | sed -r "s/$regex/\3/i"`
