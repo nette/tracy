@@ -28,6 +28,9 @@ class BlueScreen
 	/** @var callable[] */
 	private $panels = [];
 
+	/** @var callable[] functions that returns action for exceptions */
+	private $actions = [];
+
 
 	public function __construct()
 	{
@@ -47,6 +50,18 @@ class BlueScreen
 		if (!in_array($panel, $this->panels, true)) {
 			$this->panels[] = $panel;
 		}
+		return $this;
+	}
+
+
+	/**
+	 * Add action.
+	 * @param  callable  $action
+	 * @return static
+	 */
+	public function addAction($action)
+	{
+		$this->actions[] = $action;
 		return $this;
 	}
 
@@ -159,6 +174,13 @@ class BlueScreen
 	private function renderActions($ex)
 	{
 		$actions = [];
+		foreach ($this->actions as $callback) {
+			$action = call_user_func($callback, $ex);
+			if (!empty($action['link']) && !empty($action['label'])) {
+				$actions[] = $action;
+			}
+		}
+
 		if (!empty($ex->tracyAction['link']) && !empty($ex->tracyAction['label'])) {
 			$actions[] = $ex->tracyAction;
 		}

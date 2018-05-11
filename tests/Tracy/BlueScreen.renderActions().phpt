@@ -136,3 +136,28 @@ Assert::with($blueScreen, function () {
 		$this->renderActions($e)[0]
 	);
 });
+
+
+// addAction
+$blueScreen->addAction(function (Exception $e) {
+	return [];
+});
+
+$blueScreen->addAction(function (Exception $e) {
+	return ['link' => 'a', 'label' => 'b'];
+});
+
+Assert::with($blueScreen, function () {
+	$e = new Exception;
+	Assert::same(
+		[
+			['link' => 'a', 'label' => 'b'],
+			[
+				'link' => 'https://www.google.com/search?sourceid=tracy&q=Exception+',
+				'label' => 'search',
+				'external' => true,
+			],
+		],
+		$this->renderActions($e)
+	);
+});
