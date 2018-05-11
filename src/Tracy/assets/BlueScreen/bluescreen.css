@@ -70,6 +70,7 @@
 	color: white !important;
 	opacity: 0;
 	font-size: .7em;
+	border-bottom: none !important;
 }
 
 #tracy-bs-error:hover a {

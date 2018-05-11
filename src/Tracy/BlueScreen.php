@@ -160,6 +160,13 @@ class BlueScreen
 	{
 		$actions = [];
 
+		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\\1#i', $ex->getMessage(), $m)) {
+			$actions[] = [
+				'link' => Helpers::editorUri($m[2]),
+				'label' => 'open file',
+			];
+		}
+
 		$query = ($ex instanceof \ErrorException ? '' : Helpers::getClass($ex) . ' ')
 			. preg_replace('#\'.*\'|".*"#Us', '', $ex->getMessage());
 		$actions[] = [

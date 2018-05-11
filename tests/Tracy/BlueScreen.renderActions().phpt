@@ -73,3 +73,31 @@ Assert::with($blueScreen, function () {
 		$this->renderActions($e)
 	);
 });
+
+
+// action 'open file'
+Assert::with($blueScreen, function () {
+	Assert::same(
+		[
+			'link' => 'editor://open/?file=' . urlencode(__FILE__) . '&line=1',
+			'label' => 'open file',
+		],
+		$this->renderActions(new Exception(" '" . __FILE__ . "'"))[0]
+	);
+
+	Assert::same(
+		[
+			'link' => 'editor://open/?file=' . urlencode(__FILE__) . '&line=1',
+			'label' => 'open file',
+		],
+		$this->renderActions(new Exception(' "' . __FILE__ . '"'))[0]
+	);
+
+	Assert::same(
+		['link' => null, 'label' => 'open file'],
+		$this->renderActions(new Exception(' "/notexists.txt"'))[0]
+	);
+
+	Assert::count(1, $this->renderActions(new Exception(' "/notfile"')));
+	Assert::count(1, $this->renderActions(new Exception(' "notfile"')));
+});
