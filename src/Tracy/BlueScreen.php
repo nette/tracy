@@ -97,9 +97,6 @@ class BlueScreen
 		$title = $exception instanceof \ErrorException
 			? Helpers::errorTypeToString($exception->getSeverity())
 			: Helpers::getClass($exception);
-		$skipError = $sourceIsUrl && $exception instanceof \ErrorException && !empty($exception->skippable)
-			? $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
-			: null;
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error ? null : error_get_last();
 		$dump = function ($v) {
 			return Dumper::toHtml($v, [
@@ -114,6 +111,7 @@ class BlueScreen
 			__DIR__ . '/assets/BlueScreen/bluescreen.css',
 		], Debugger::$customCssFiles));
 		$css = preg_replace('#\s+#u', ' ', implode($css));
+		$actions = $this->renderActions($exception);
 
 		require $template;
 	}
@@ -147,6 +145,35 @@ class BlueScreen
 			];
 		}
 		return $res;
+	}
+
+
+	/**
+	 * @return array[]
+	 */
+	private function renderActions($ex)
+	{
+		$actions = [];
+
+		$query = ($ex instanceof \ErrorException ? '' : Helpers::getClass($ex) . ' ')
+			. preg_replace('#\'.*\'|".*"#Us', '', $ex->getMessage());
+		$actions[] = [
+			'link' => 'https://www.google.com/search?sourceid=tracy&q=' . urlencode($query),
+			'label' => 'search',
+			'external' => true,
+		];
+
+		if (
+			$ex instanceof \ErrorException
+			&& !empty($ex->skippable)
+			&& preg_match('#^https?://#', $source = Helpers::getSource())
+		) {
+			$actions[] = [
+				'link' => $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error',
+				'label' => 'skip error',
+			];
+		}
+		return $actions;
 	}
 
 

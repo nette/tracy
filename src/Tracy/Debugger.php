@@ -51,7 +51,7 @@ class Debugger
 	/** @var bool disables the @ (shut-up) operator so that notices and warnings are no longer hidden */
 	public static $scream = false;
 
-	/** @var array of callables specifies the functions that are automatically called after fatal error */
+	/** @var callable[] functions that are automatically called after fatal error */
 	public static $onFatalError = [];
 
 	/********************* Debugger::dump() ****************d*g**/
