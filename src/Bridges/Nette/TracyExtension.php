@@ -33,6 +33,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		'bar' => [], // of class name
 		'blueScreen' => [], // of callback
 		'editorMapping' => [],
+		'netteMailer' => false,
 	];
 
 	/** @var bool */
@@ -73,7 +74,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$class = method_exists('Nette\DI\Helpers', 'filterArguments') ? 'Nette\DI\Helpers' : 'Nette\DI\Compiler';
 
 		$options = $this->config;
-		unset($options['bar'], $options['blueScreen']);
+		unset($options['bar'], $options['blueScreen'], $options['netteMailer']);
 		if (isset($options['logSeverity'])) {
 			$res = 0;
 			foreach ((array) $options['logSeverity'] as $level) {
@@ -92,8 +93,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		}
 
 		$logger = $builder->getDefinition($this->prefix('logger'));
-		if ($logger->getFactory()->getEntity() !== 'Tracy\Debugger::getLogger') {
+		if ($logger->getFactory()->getEntity() !== ['Tracy\Debugger', 'getLogger']) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::setLogger(?);', [$logger]));
+		}
+		if ($this->config['netteMailer']) {
+			$initialize->addBody($builder->formatPhp('Tracy\Debugger::getLogger(?)->mailer = ?;', [
+				$logger,
+				[new Nette\DI\Statement('Tracy\Bridges\Nette\MailSender', ['fromEmail' => $this->config['fromEmail']]), 'send'],
+			]));
 		}
 
 		if ($this->debugMode) {
