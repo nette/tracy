@@ -31,6 +31,9 @@ class Logger implements ILogger
 	/** @var BlueScreen|null */
 	private $blueScreen;
 
+    /** @var \Nette\Mail\IMailer */
+    public $netteMailer;
+
 
 	public function __construct($directory, $email = null, BlueScreen $blueScreen = null)
 	{
@@ -173,6 +176,52 @@ class Logger implements ILogger
 			call_user_func($this->mailer, $message, implode(', ', (array) $this->email));
 		}
 	}
+
+
+    /**
+     * Set mailer.
+     * @param \Nette\Mail\IMailer $mailer
+     */
+    public function setMailer(\Nette\Mail\IMailer $mailer)
+    {
+        $this->netteMailer = $mailer;
+
+        $this->mailer = [$this, 'netteMailer'];
+    }
+
+
+    /**
+     * Nette mailer.
+     *
+     * @param  string|\Exception|\Throwable $message
+     * @param  string                       $email
+     * @return void
+     * @internal
+     */
+    public function netteMailer($message, $email)
+    {
+        $host = preg_replace('#[^\w.-]+#', '', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : php_uname('n'));
+
+        $msg = new \Nette\Mail\Message();
+        $msg->setHeader('X-Mailer', 'Tracy');
+        $msg->setFrom($this->fromEmail ?: "noreply@$host");
+
+        if (!\Nette\Utils\Validators::isEmail($email)) {
+            $emails = explode(', ', $email);
+            foreach ($emails as $email) {
+                if (\Nette\Utils\Validators::isEmail($email)) {
+                    $msg->addTo($email);
+                }
+            }
+        } else {
+            $msg->addTo($email);
+        }
+
+        $msg->setSubject('PHP: An error occurred on the server ' . $host);
+        $msg->setBody($this->formatMessage($message) . "\n\nsource: " . Helpers::getSource());
+
+        $this->netteMailer->send($msg);
+    }
 
 
 	/**
