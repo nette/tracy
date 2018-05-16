@@ -1,3 +1,5 @@
+.idea/
 /vendor
 /composer.lock
+composer.phar
 /tools/create-phar/tracy.phar
