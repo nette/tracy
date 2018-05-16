@@ -58,7 +58,7 @@ class Logger implements ILogger
 		$exceptionFile = $message instanceof \Exception || $message instanceof \Throwable
 			? $this->getExceptionFile($message)
 			: null;
-		$line = $this->formatLogLine($message, $exceptionFile);
+		$line = static::formatLogLine($message, $exceptionFile);
 		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
 
 		if (!@file_put_contents($file, $line . PHP_EOL, FILE_APPEND | LOCK_EX)) { // @ is escalated to exception
@@ -81,7 +81,7 @@ class Logger implements ILogger
 	 * @param  mixed  $message
 	 * @return string
 	 */
-	protected function formatMessage($message)
+	public static function formatMessage($message)
 	{
 		if ($message instanceof \Exception || $message instanceof \Throwable) {
 			while ($message) {
@@ -105,11 +105,11 @@ class Logger implements ILogger
 	 * @param  string|\Exception|\Throwable  $message
 	 * @return string
 	 */
-	protected function formatLogLine($message, $exceptionFile = null)
+	public static function formatLogLine($message, $exceptionFile = null)
 	{
 		return implode(' ', [
 			@date('[Y-m-d H-i-s]'), // @ timezone may not be set
-			preg_replace('#\s*\r?\n\s*#', ' ', $this->formatMessage($message)),
+			preg_replace('#\s*\r?\n\s*#', ' ', static::formatMessage($message)),
 			' @  ' . Helpers::getSource(),
 			$exceptionFile ? ' @@  ' . basename($exceptionFile) : null,
 		]);
@@ -196,7 +196,7 @@ class Logger implements ILogger
 					'Content-Transfer-Encoding: 8bit',
 				]) . "\n",
 				'subject' => "PHP: An error occurred on the server $host",
-				'body' => $this->formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
+				'body' => static::formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
 			]
 		);
 

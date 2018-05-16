@@ -8,8 +8,7 @@
 namespace Tracy\Bridges\Nette;
 
 use Nette;
-use Tracy\Dumper;
-use Tracy\Helpers;
+use Tracy;
 
 
 /**
@@ -47,32 +46,8 @@ class MailSender
 		$mail->setFrom($this->fromEmail ?: "noreply@$host");
 		$mail->addTo($email);
 		$mail->setSubject('PHP: An error occurred on the server ' . $host);
-		$mail->setBody(static::formatMessage($message) . "\n\nsource: " . Helpers::getSource());
+		$mail->setBody(Tracy\Logger::formatMessage($message) . "\n\nsource: " . Tracy\Helpers::getSource());
 
 		$this->mailer->send($mail);
-	}
-
-
-	/**
-	 * @param  mixed  $message
-	 * @return string
-	 */
-	private static function formatMessage($message)
-	{
-		if ($message instanceof \Exception || $message instanceof \Throwable) {
-			while ($message) {
-				$tmp[] = ($message instanceof \ErrorException
-					? Helpers::errorTypeToString($message->getSeverity()) . ': ' . $message->getMessage()
-					: Helpers::getClass($message) . ': ' . $message->getMessage() . ($message->getCode() ? ' #' . $message->getCode() : '')
-				) . ' in ' . $message->getFile() . ':' . $message->getLine();
-				$message = $message->getPrevious();
-			}
-			$message = implode("\ncaused by ", $tmp);
-
-		} elseif (!is_string($message)) {
-			$message = Dumper::toText($message);
-		}
-
-		return trim($message);
 	}
 }
