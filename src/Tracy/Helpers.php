@@ -50,7 +50,7 @@ class Helpers
 			return strtr(Debugger::$editor, [
 				'%action' => $action,
 				'%file' => rawurlencode($file),
-				'%line' => $line ? (int) $line : 1,
+				'%line' => $line ?: 1,
 				'%search' => rawurlencode($search),
 				'%replace' => rawurlencode($replace),
 			]);

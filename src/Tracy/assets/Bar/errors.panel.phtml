@@ -17,7 +17,7 @@ namespace Tracy;
 <?php foreach ($data as $item => $count): list($file, $line, $message) = explode('|', $item, 3) ?>
 <tr>
 	<td class="tracy-right"><?= $count ? "$count\xC3\x97" : '' ?></td>
-	<td><pre><?= Helpers::escapeHtml($message), ' in ', Helpers::editorLink($file, $line) ?></pre></td>
+	<td><pre><?= Helpers::escapeHtml($message), ' in ', Helpers::editorLink($file, (int) $line) ?></pre></td>
 </tr>
 <?php endforeach ?>
 </table>
