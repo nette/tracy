@@ -596,7 +596,7 @@ class Debugger
 
 	/**
 	 * Logs message or exception.
-	 * @param  string|\Exception|\Throwable  $message
+	 * @param  mixed  $message
 	 * @return mixed
 	 */
 	public static function log($message, $priority = ILogger::INFO)
