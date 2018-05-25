@@ -8,7 +8,6 @@
 namespace Tracy;
 
 
-
 /**
  * FireLogger console logger.
  *

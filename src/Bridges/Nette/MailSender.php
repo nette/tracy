@@ -33,7 +33,7 @@ class MailSender
 
 
 	/**
-	 * @param  string|\Exception|\Throwable  $message
+	 * @param  mixed  $message
 	 * @param  string  $email
 	 * @return void
 	 */
