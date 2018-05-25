@@ -145,8 +145,8 @@ class Bar
 		foreach ($this->panels as $id => $panel) {
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
 			try {
-				$tab = (string) $panel->getTab();
-				$panelHtml = $tab ? (string) $panel->getPanel() : null;
+				$tab = $panel->getTab();
+				$panelHtml = $tab ? $panel->getPanel() : null;
 				if ($tab && $panel instanceof \Nette\Diagnostics\IBarPanel) {
 					$e = new \Exception('Support for Nette\Diagnostics\IBarPanel is deprecated');
 				}
