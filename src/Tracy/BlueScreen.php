@@ -181,7 +181,7 @@ class BlueScreen
 			}
 		}
 
-		if (!empty($ex->tracyAction['link']) && !empty($ex->tracyAction['label'])) {
+		if (property_exists($ex, 'tracyAction') && !empty($ex->tracyAction['link']) && !empty($ex->tracyAction['label'])) {
 			$actions[] = $ex->tracyAction;
 		}
 

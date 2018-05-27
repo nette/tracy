@@ -161,3 +161,18 @@ Assert::with($blueScreen, function () {
 		$this->renderActions($e)
 	);
 });
+
+
+
+// isset() error
+class FooException extends Exception
+{
+	public function __isset($name)
+	{
+		throw new Exception('Isset is disabled');
+	}
+}
+
+Assert::with($blueScreen, function () {
+	Assert::count(2, $this->renderActions(new FooException));
+});
