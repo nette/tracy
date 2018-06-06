@@ -322,14 +322,16 @@
 
 		reposition(deltaX, deltaY) {
 			var pos = getPosition(this.elem);
-			setPosition(this.elem, {left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0)});
-			this.savePosition();
+			if (pos.width) { // is visible?
+				setPosition(this.elem, {left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0)});
+				this.savePosition();
+			}
 		}
 
 
 		savePosition() {
-			if (document.getElementById('tracy-debug').style.display !== 'none') {
-				var pos = getPosition(this.elem);
+			var pos = getPosition(this.elem);
+			if (pos.width) { // is visible?
 				localStorage.setItem(this.id, JSON.stringify(this.isAtTop() ? {right: pos.right, top: pos.top} : {right: pos.right, bottom: pos.bottom}));
 			}
 		}
