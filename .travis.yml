@@ -38,7 +38,6 @@ jobs:
                 - . $HOME/.nvm/nvm.sh
                 - nvm install stable
                 - nvm use stable
-                - npm install
                 - npm install eslint
             script:
                 - php temp/code-checker/src/code-checker.php --short-arrays -i tests/Tracy/fixtures -i examples/assets
