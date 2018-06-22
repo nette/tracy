@@ -27,6 +27,8 @@ Welcome to the good part!
 
 Documentation can be found on the [website](https://tracy.nette.org).
 
+If you like Tracy, **[please make a donation now](https://nette.org/make-donation?to=tracy)**. Thank you!
+
 
 Installation
 ------------
