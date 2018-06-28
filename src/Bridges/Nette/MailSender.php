@@ -45,7 +45,9 @@ class MailSender
 		$mail = new Nette\Mail\Message;
 		$mail->setHeader('X-Mailer', 'Tracy');
 		$mail->setFrom($this->fromEmail ?: "noreply@$host");
-		$mail->addTo($email);
+		foreach (explode(',', $email) as $item) {
+			$mail->addTo(trim($item));
+		}
 		$mail->setSubject('PHP: An error occurred on the server ' . $host);
 		$mail->setBody(static::formatMessage($message) . "\n\nsource: " . Helpers::getSource());
 
