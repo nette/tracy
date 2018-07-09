@@ -162,7 +162,7 @@ class Helpers
 	{
 		if (isset($_SERVER['REQUEST_URI'])) {
 			return (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
-				. ($_SERVER['HTTP_HOST'] ?? '')
+				. (isset($_SERVER[$tmp = 'SERVER_NAME']) || isset($_SERVER[$tmp = 'HTTP_HOST']) ? $_SERVER[$tmp] : '')
 				. $_SERVER['REQUEST_URI'];
 		} else {
 			return 'CLI (PID: ' . getmypid() . ')'
