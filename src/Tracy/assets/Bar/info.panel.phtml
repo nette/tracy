@@ -49,10 +49,13 @@ $packages = $devPackages = [];
 if (class_exists('Composer\Autoload\ClassLoader', false)) {
 	$lockFile = dirname((new \ReflectionClass('Composer\Autoload\ClassLoader'))->getFileName()) . '/../../composer.lock';
 	$composer = @json_decode(file_get_contents($lockFile)); // @ may not exist or be valid
-	$packages = (array) @$composer->packages;
-	$devPackages = (array) @$composer->{'packages-dev'};
-	usort($packages, function ($a, $b) { return strcmp($a->name, $b->name); });
-	usort($devPackages, function ($a, $b) { return strcmp($a->name, $b->name); });
+	list($packages, $devPackages) = [(array) @$composer->packages, (array) @$composer->{'packages-dev'}]; // @ keys may not exist
+	foreach ([&$packages, &$devPackages] as &$items) {
+		@array_walk($items, function($package) { // @ keys may not exist
+			$package->hash = $package->source->reference ?: $package->dist->reference;
+		}, $items);
+		usort($items, function ($a, $b) { return strcmp($a->name, $b->name); });
+	}
 }
 
 ?>
@@ -93,7 +96,7 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 	<?php if ($packages): ?>
 	<table>
 	<?php foreach ($packages as $package): ?>
-		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') === false ? '' : ' #' . substr(isset($package->source) ? $package->source->reference : $package->dist->reference, 0, 4))) ?></td></tr>
+		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '')) ?></td></tr>
 	<?php endforeach ?>
 	</table>
 	<?php endif ?>
@@ -102,7 +105,7 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 	<h2>Dev Packages</h2>
 	<table>
 	<?php foreach ($devPackages as $package): ?>
-		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') === false ? '' : ' #' . substr(isset($package->source) ? $package->source->reference : $package->dist->reference, 0, 4))) ?></td></tr>
+		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '')) ?></td></tr>
 	<?php endforeach ?>
 	</table>
 	<?php endif ?>
