@@ -20,9 +20,9 @@
 		"ext-json": "*"
 	},
 	"require-dev": {
-		"nette/utils": "~2.3",
-		"nette/di": "~2.3 || ~3.0.0",
-		"nette/tester": "~2.0"
+		"nette/utils": "^2.4 || ^3.0",
+		"nette/di": "^2.4 || ~3.0.0",
+		"nette/tester": "^2.0"
 	},
 	"suggest": {
 		"https://nette.org/donate": "Please support Tracy via a donation"
