@@ -149,9 +149,6 @@ class Bar
 			try {
 				$tab = $panel->getTab();
 				$panelHtml = $tab ? $panel->getPanel() : null;
-				if ($tab && $panel instanceof \Nette\Diagnostics\IBarPanel) {
-					$e = new \Exception('Support for Nette\Diagnostics\IBarPanel is deprecated');
-				}
 
 			} catch (\Throwable $e) {
 				while (ob_get_level() > $obLevel) { // restore ob-level if broken
