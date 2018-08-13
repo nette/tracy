@@ -23,6 +23,7 @@ class CustomLogger implements ILogger
 
 
 $compiler = new DI\Compiler;
+$compiler->setClassName('Container');
 $compiler->addExtension('tracy', new TracyExtension);
 $compiler->addConfig([
 	'tracy' => [
@@ -33,7 +34,7 @@ $compiler->addConfig([
 	],
 ]);
 
-eval(@$compiler->compile([], 'Container')); // @ compatiblity with DI 2.3 & 2.4
+eval($compiler->compile());
 
 $container = new Container;
 $container->initialize();
