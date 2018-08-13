@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Tracy\Bridges\Nette;
 
 use Nette;
+use Nette\DI\Definitions;
 use Tracy;
 
 
@@ -58,7 +59,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('logger'))
-			->setClass(Tracy\ILogger::class)
+			->setType(Tracy\ILogger::class)
 			->setFactory([Tracy\Debugger::class, 'getLogger']);
 
 		$builder->addDefinition($this->prefix('blueScreen'))
@@ -88,31 +89,29 @@ class TracyExtension extends Nette\DI\CompilerExtension
 				$key = ($key === 'fromEmail' ? 'getLogger()->' : '$') . $key;
 				$initialize->addBody($builder->formatPhp(
 					'Tracy\Debugger::' . $key . ' = ?;',
-					Nette\DI\Helpers::filterArguments([$value])
+					Nette\DI\Config\Processor::processArguments([$value])
 				));
 			}
 		}
 
 		$logger = $builder->getDefinition($this->prefix('logger'));
-		if ($logger->getFactory()->getEntity() !== [Tracy\Debugger::class, 'getLogger']) {
+		if ($logger instanceof Definitions\ServiceDefinition && $logger->getFactory()->getEntity() !== [Tracy\Debugger::class, 'getLogger']) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::setLogger(?);', [$logger]));
 		}
 		if ($this->config['netteMailer'] && $builder->getByType(Nette\Mail\IMailer::class)) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::getLogger()->mailer = ?;', [
-				[new Nette\DI\Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config['fromEmail']]), 'send'],
+				[new Definitions\Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config['fromEmail']]), 'send'],
 			]));
 		}
 
 		if ($this->debugMode) {
 			foreach ((array) $this->config['bar'] as $item) {
-				if (is_string($item) && substr($item, 0, 1) === '@') {
-					$item = new Nette\DI\Statement(['@' . $builder::THIS_CONTAINER, 'getService'], [substr($item, 1)]);
-				} elseif (is_string($item)) {
-					$item = new Nette\DI\Statement($item);
+				if (is_string($item) && substr($item, 0, 1) !== '@') {
+					$item = new Definitions\Statement($item);
 				}
 				$initialize->addBody($builder->formatPhp(
 					'$this->getService(?)->addPanel(?);',
-					Nette\DI\Helpers::filterArguments([$this->prefix('bar'), $item])
+					Nette\DI\Config\Processor::processArguments([$this->prefix('bar'), $item])
 				));
 			}
 
@@ -125,7 +124,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		foreach ((array) $this->config['blueScreen'] as $item) {
 			$initialize->addBody($builder->formatPhp(
 				'$this->getService(?)->addPanel(?);',
-				Nette\DI\Helpers::filterArguments([$this->prefix('blueScreen'), $item])
+				Nette\DI\Config\Processor::processArguments([$this->prefix('blueScreen'), $item])
 			));
 		}
 
