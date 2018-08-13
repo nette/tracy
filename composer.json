@@ -20,7 +20,7 @@
 		"ext-json": "*"
 	},
 	"require-dev": {
-		"nette/di": "^2.3",
+		"nette/di": "^2.4 || ^3.0",
 		"nette/tester": "^2.0"
 	},
 	"suggest": {
