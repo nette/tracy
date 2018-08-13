@@ -67,9 +67,6 @@ class Debugger
 	/** @var bool display location by dump()? */
 	public static $showLocation = false;
 
-	/** @deprecated */
-	public static $maxLen = 150;
-
 	/********************* logging ****************d*g**/
 
 	/** @var string|null name of the directory where errors should be logged */
@@ -152,7 +149,6 @@ class Debugger
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
 		}
 
-		self::$maxLen = &self::$maxLength;
 		self::$reserved = str_repeat('t', 30000);
 		self::$time = $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(true);
 		self::$obLevel = ob_get_level();
