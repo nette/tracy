@@ -50,7 +50,10 @@ $info = array_map('strval', array_filter($info + (array) $this->data));
 $packages = $devPackages = [];
 if (class_exists('Composer\Autoload\ClassLoader', false)) {
 	$lockFile = dirname((new \ReflectionClass('Composer\Autoload\ClassLoader'))->getFileName()) . '/../../composer.lock';
-	$composer = @json_decode(file_get_contents($lockFile)); // @ may not exist or be valid
+	if (!is_file($lockFile) && isset($_SERVER['DOCUMENT_ROOT'])) {
+		$lockFile = $_SERVER['DOCUMENT_ROOT'] . '/composer.lock';
+	}
+	$composer = @json_decode(@file_get_contents($lockFile)); // @ may not exist or be valid
 	list($packages, $devPackages) = [(array) @$composer->packages, (array) @$composer->{'packages-dev'}]; // @ keys may not exist
 	foreach ([&$packages, &$devPackages] as &$items) {
 		array_walk($items, function($package) {
