@@ -33,6 +33,15 @@ class Logger implements ILogger
 	/** @var BlueScreen|null */
 	private $blueScreen;
 
+	/** @var StreamLogger[] */
+	private $streamLoggers;
+
+	/** @var BlueScreenLogger */
+	private $blueScreenLogger;
+
+	/** @var MailLogger */
+	private $mailLogger;
+
 
 	/**
 	 * @param  string|array|null  $email
@@ -43,6 +52,9 @@ class Logger implements ILogger
 		$this->email = $email;
 		$this->blueScreen = $blueScreen;
 		$this->mailer = [$this, 'defaultMailer'];
+
+		$this->blueScreenLogger = $this->createBlueScreenLogger();
+		$this->mailLogger = $this->createMailLogger();
 	}
 
 
@@ -54,31 +66,48 @@ class Logger implements ILogger
 	 */
 	public function log($message, string $priority = self::INFO): ?string
 	{
+		$exceptionFile = $this->getStreamLogger($priority)->log($message, $priority);
+		$this->mailLogger->log($message, $priority);
+		return $exceptionFile;
+	}
+
+
+	protected function getStreamLogger($priority)
+	{
 		if (!$this->directory) {
 			throw new \LogicException('Logging directory is not specified.');
 		} elseif (!is_dir($this->directory)) {
 			throw new \RuntimeException("Logging directory '$this->directory' is not found or is not directory.");
 		}
 
-		$exceptionFile = $message instanceof \Throwable
-			? $this->getExceptionFile($message)
-			: null;
-		$line = static::formatLogLine($message, $exceptionFile);
-		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
-
-		if (!@file_put_contents($file, $line . PHP_EOL, FILE_APPEND | LOCK_EX)) { // @ is escalated to exception
-			throw new \RuntimeException("Unable to write to log file '$file'. Is directory writable?");
+		$path = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
+		if (!isset($this->streamLoggers[$path])) {
+			$this->streamLoggers[$path] = new StreamLogger($path, $this->blueScreenLogger);
 		}
 
-		if ($exceptionFile) {
-			$this->logException($message, $exceptionFile);
-		}
+		return $this->streamLoggers[$path];
+	}
 
-		if (in_array($priority, [self::ERROR, self::EXCEPTION, self::CRITICAL], true)) {
-			$this->sendEmail($message);
-		}
 
-		return $exceptionFile;
+	protected function createBlueScreenLogger()
+	{
+		$blueScreenLogger = new BlueScreenLogger($this->directory, $this->blueScreen);
+		$blueScreenLogger->directory = &$this->directory;
+
+		return $blueScreenLogger;
+	}
+
+
+	protected function createMailLogger()
+	{
+		$mailLogger = new MailLogger($this->directory, $this->email);
+		$mailLogger->directory = &$this->directory;
+		$mailLogger->email = &$this->email;
+		$mailLogger->fromEmail = &$this->fromEmail;
+		$mailLogger->emailSnooze = &$this->emailSnooze;
+		$mailLogger->mailer = &$this->mailer;
+
+		return $mailLogger;
 	}
 
 
@@ -119,82 +148,43 @@ class Logger implements ILogger
 	}
 
 
+	/**
+	 * @deprecated
+	 */
 	public function getExceptionFile(\Throwable $exception): string
 	{
-		while ($exception) {
-			$data[] = [
-				get_class($exception), $exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(),
-				array_map(function ($item) { unset($item['args']); return $item; }, $exception->getTrace()),
-			];
-			$exception = $exception->getPrevious();
-		}
-		$hash = substr(md5(serialize($data)), 0, 10);
-		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
-		foreach (new \DirectoryIterator($this->directory) as $file) {
-			if (strpos($file->getBasename(), $hash)) {
-				return $dir . $file;
-			}
-		}
-		return $dir . 'exception--' . @date('Y-m-d--H-i') . "--$hash.html"; // @ timezone may not be set
+		return $this->blueScreenLogger->getExceptionFile($exception);
 	}
 
 
 	/**
-	 * Logs exception to the file if file doesn't exist.
-	 * @return string logged error filename
+	 * @deprecated
 	 */
-	protected function logException(\Throwable $exception, string $file = null): string
+	protected function logException(\Throwable $exception, ?string $file = null): string
 	{
-		$file = $file ?: $this->getExceptionFile($exception);
-		$bs = $this->blueScreen ?: new BlueScreen;
-		$bs->renderToFile($exception, $file);
-		return $file;
+		$reflection = new \ReflectionMethod($this->blueScreenLogger, 'logException');
+		$reflection->setAccessible(true);
+		return $reflection->invoke($this->blueScreenLogger, $exception, $file);
 	}
 
 
 	/**
-	 * @param  mixed  $message
+	 * @deprecated
 	 */
 	protected function sendEmail($message): void
 	{
-		$snooze = is_numeric($this->emailSnooze)
-			? $this->emailSnooze
-			: @strtotime($this->emailSnooze) - time(); // @ timezone may not be set
-
-		if (
-			$this->email
-			&& $this->mailer
-			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ file may not exist
-			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ file may not be writable
-		) {
-			($this->mailer)($message, implode(', ', (array) $this->email));
-		}
+		$reflection = new \ReflectionMethod($this->mailLogger, 'sendEmail');
+		$reflection->setAccessible(true);
+		$reflection->invoke($this->mailLogger, $message);
 	}
 
 
 	/**
-	 * Default mailer.
-	 * @param  mixed  $message
+	 * @deprecated
 	 * @internal
 	 */
 	public function defaultMailer($message, string $email): void
 	{
-		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['HTTP_HOST'] ?? php_uname('n'));
-		$parts = str_replace(
-			["\r\n", "\n"],
-			["\n", PHP_EOL],
-			[
-				'headers' => implode("\n", [
-					'From: ' . ($this->fromEmail ?: "noreply@$host"),
-					'X-Mailer: Tracy',
-					'Content-Type: text/plain; charset=UTF-8',
-					'Content-Transfer-Encoding: 8bit',
-				]) . "\n",
-				'subject' => "PHP: An error occurred on the server $host",
-				'body' => static::formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
-			]
-		);
-
-		mail($email, $parts['subject'], $parts['body'], $parts['headers']);
+		$this->mailLogger->defaultMailer($message, $email);
 	}
 }
