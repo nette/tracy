@@ -440,7 +440,7 @@
 
 			XMLHttpRequest.prototype.open = function() {
 				oldOpen.apply(this, arguments);
-				if (window.TracyAutoRefresh !== false && arguments[1].indexOf('//') <= 0 || arguments[1].indexOf(location.origin + '/') === 0) {
+				if (window.TracyAutoRefresh !== false && new URL(arguments[1], location.origin).host === location.host) {
 					this.setRequestHeader('X-Tracy-Ajax', header);
 					this.addEventListener('load', function() {
 						if (this.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
@@ -457,7 +457,7 @@
 					options.headers = new Headers(options.headers || {});
 					var url = request instanceof Request ? request.url : request;
 
-					if (window.TracyAutoRefresh !== false && url.indexOf('//') <= 0 || url.indexOf(location.origin + '/') === 0) {
+					if (window.TracyAutoRefresh !== false && new URL(url, location.origin).host === location.host) {
 						options.headers.set('X-Tracy-Ajax', header);
 						options.credentials = (request instanceof Request && request.credentials) || options.credentials || 'same-origin';
 
