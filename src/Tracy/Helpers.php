@@ -262,4 +262,29 @@ class Helpers
 			? $m[1]
 			: null;
 	}
+
+
+	/**
+	 * @param  string|\Exception|\Throwable
+	 * @return string
+	 * @internal
+	 */
+	public static function formatMessage($message)
+	{
+		if ($message instanceof \Exception || $message instanceof \Throwable) {
+			while ($message) {
+				$tmp[] = ($message instanceof \ErrorException
+						? Helpers::errorTypeToString($message->getSeverity()) . ': ' . $message->getMessage()
+						: Helpers::getClass($message) . ': ' . $message->getMessage() . ($message->getCode() ? ' #' . $message->getCode() : '')
+					) . ' in ' . $message->getFile() . ':' . $message->getLine();
+				$message = $message->getPrevious();
+			}
+			$message = implode("\ncaused by ", $tmp);
+
+		} elseif (!is_string($message)) {
+			$message = Dumper::toText($message);
+		}
+
+		return trim($message);
+	}
 }

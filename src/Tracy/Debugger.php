@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Tracy;
 
 use ErrorException;
+use Tracy;
 
 
 /**
@@ -139,11 +140,11 @@ class Debugger
 
 	/**
 	 * Enables displaying or logging errors and exceptions.
-	 * @param  mixed   $mode  production, development mode, autodetection or IP address(es) whitelist.
-	 * @param  string  $logDirectory  error log directory
-	 * @param  string  $email  administrator email; enables email sending in production mode
+	 * @param  mixed           $mode  production, development mode, autodetection or IP address(es) whitelist.
+	 * @param  string|ILogger  $logDirectoryOrLogger  error log directory or logger instance
+	 * @param  string          $email  administrator email; enables email sending in production mode
 	 */
-	public static function enable($mode = null, string $logDirectory = null, string $email = null): void
+	public static function enable($mode = null, $logDirectoryOrLogger = null, string $email = null)
 	{
 		if ($mode !== null || self::$productionMode === null) {
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
@@ -158,8 +159,10 @@ class Debugger
 		if ($email !== null) {
 			self::$email = $email;
 		}
-		if ($logDirectory !== null) {
-			self::$logDirectory = $logDirectory;
+		if (is_string($logDirectoryOrLogger)) {
+			self::$logDirectory = $logDirectoryOrLogger;
+		} elseif ($logDirectoryOrLogger instanceof ILogger) {
+			self::$logger = $logDirectoryOrLogger;
 		}
 		if (self::$logDirectory) {
 			if (!preg_match('#([a-z]+:)?[/\\\\]#Ai', self::$logDirectory)) {
@@ -466,8 +469,8 @@ class Debugger
 	{
 		if (!self::$logger) {
 			self::$logger = new Logger(self::$logDirectory, self::$email, self::getBlueScreen());
-			self::$logger->directory = &self::$logDirectory; // back compatiblity
-			self::$logger->email = &self::$email;
+			self::$logDirectory = &self::$logger->directory; // back compatibility
+			self::$email = &self::$logger->email;
 		}
 		return self::$logger;
 	}
