@@ -56,7 +56,7 @@
 				this.reposition();
 			});
 
-			forEach(elem.querySelectorAll('.tracy-icons a'), link => {
+			elem.querySelectorAll('.tracy-icons a').forEach(link => {
 				link.addEventListener('click', e => {
 					if (link.rel === 'close') {
 						this.toPeek();
@@ -250,7 +250,7 @@
 
 
 		initTabs(elem) {
-			forEach(elem.getElementsByTagName('a'), link => {
+			elem.querySelectorAll('a').forEach(link => {
 				link.addEventListener('click', e => {
 					if (link.rel === 'close') {
 						this.close();
@@ -316,7 +316,7 @@
 
 		autoHideLabels() {
 			var width = getWindowSize().width;
-			forEach(this.elem.children, function (ul) {
+			Array.from(this.elem.children).forEach(ul => {
 				var i, labels = ul.querySelectorAll('.tracy-label');
 				for (i = 0; i < labels.length && ul.clientWidth < width; i++) {
 					labels.item(i).hidden = false;
@@ -380,7 +380,7 @@
 			Debug.layer.style.display = 'block';
 			Debug.bar.init();
 
-			forEach(document.querySelectorAll('.tracy-panel'), panel => {
+			document.querySelectorAll('.tracy-panel').forEach(panel => {
 				Debug.panels[panel.id] = new Panel(panel.id);
 				Debug.panels[panel.id].dumps = dumps;
 				Debug.panels[panel.id].restorePosition();
@@ -392,7 +392,7 @@
 
 
 		static loadAjax(content, dumps) {
-			forEach(Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax'), panel => {
+			Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax').forEach(panel => {
 				Debug.panels[panel.id].savePosition();
 				delete Debug.panels[panel.id];
 				panel.parentNode.removeChild(panel);
@@ -408,7 +408,7 @@
 			ajaxBar = document.getElementById('tracy-ajax-bar');
 			Debug.bar.elem.appendChild(ajaxBar);
 
-			forEach(document.querySelectorAll('.tracy-panel'), panel => {
+			document.querySelectorAll('.tracy-panel').forEach(panel => {
 				if (!Debug.panels[panel.id]) {
 					Debug.panels[panel.id] = new Panel(panel.id);
 					Debug.panels[panel.id].dumps = dumps;
@@ -502,7 +502,7 @@
 
 
 	function evalScripts(elem) {
-		forEach(elem.getElementsByTagName('script'), script => {
+		elem.querySelectorAll('script').forEach(script => {
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 				var document = script.ownerDocument;
 				var dolly = document.createElement('script');
@@ -589,7 +589,7 @@
 			}
 		};
 
-		forEach(options.handles, function (handle) {
+		options.handles.forEach(handle => {
 			handle.addEventListener('mousedown', onStart);
 			handle.addEventListener('touchstart', onStart);
 
@@ -651,15 +651,10 @@
 	function addNonces(html) {
 		var el = document.createElement('div');
 		el.innerHTML = html;
-		forEach(el.getElementsByTagName('style'), style => {
+		el.querySelectorAll('style').forEach(style => {
 			style.setAttribute('nonce', nonce);
 		});
 		return el.innerHTML;
-	}
-
-
-	function forEach(arr, cb) {
-		Array.prototype.forEach.call(arr, cb);
 	}
 
 
