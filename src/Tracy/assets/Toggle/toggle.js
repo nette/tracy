@@ -80,10 +80,10 @@
 			}
 
 			window.addEventListener('unload', () => {
-				toggles = [].map.call(saved, (el) => {
+				toggles = saved.map((el) => {
 					let item = {path: [], text: el.textContent, show: !el.classList.contains('tracy-collapsed')};
 					do {
-						item.path.unshift([].indexOf.call(el.parentNode.children, el));
+						item.path.unshift(Array.from(el.parentNode.children).indexOf(el));
 						el = el.parentNode;
 					} while (el && el !== baseEl);
 					return item;

@@ -11,7 +11,7 @@
 	{
 		static init(repository, context) {
 			if (repository) {
-				[].forEach.call((context || document).querySelectorAll('.tracy-dump[data-tracy-dump]'), (el) => {
+				(context || document).querySelectorAll('.tracy-dump[data-tracy-dump]').forEach((el) => {
 					try {
 						el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
 						el.classList.remove('tracy-collapsed');
