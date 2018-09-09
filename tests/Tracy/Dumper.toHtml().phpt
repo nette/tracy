@@ -126,3 +126,7 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="t
 Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">SplFileInfo</span> <span class="tracy-dump-hash">#%a%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">path</span> => <span class="tracy-dump-string">"%a%"</span> (%d%)
 </div></pre>', Dumper::toHtml(new SplFileInfo(__FILE__)));
+
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-object">class@anonymous</span> <span class="tracy-dump-hash">#%a%</span>
+</pre>', Dumper::toHtml(new class {
+}));
