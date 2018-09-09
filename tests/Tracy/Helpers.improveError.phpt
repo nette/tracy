@@ -65,6 +65,14 @@ test(function () use ($obj) { // suggest only public property
 	Assert::same('Undefined property: TestClass::$protectedX', $message);
 });
 
+test(function () { // do not suggest anything when accessing anonymous class
+	$obj = new class {
+	};
+	@$val = $obj->property;
+	$message = Helpers::improveError(error_get_last()['message']);
+	Assert::same('Undefined property: class@anonymous::$property', $message);
+});
+
 
 // variables
 test(function () use ($obj) {
