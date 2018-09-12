@@ -65,7 +65,7 @@ class Helpers
 	{
 		$args = func_get_args();
 		return preg_replace_callback('#%#', function () use (&$args, &$count): string {
-			return Helpers::escapeHtml($args[++$count]);
+			return self::escapeHtml($args[++$count]);
 		}, $mask);
 	}
 

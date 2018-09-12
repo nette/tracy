@@ -59,7 +59,7 @@ foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterato
 
 	} elseif ($file->getExtension() === 'phtml') {
 		$s = preg_replace_callback('#(<(script|style).*(?<![?=])>)(.*)(</)#Uis', function ($m): string {
-			list(, $begin, $type, $s, $end) = $m;
+			[, $begin, $type, $s, $end] = $m;
 
 			if ($s === '' || strpos($s, '<?') !== false) {
 				return $m[0];
