@@ -1,7 +1,0 @@
-includes:
-	- ../temp/coding-standard/coding-standard-php56.neon
-
-parameters:
-	skip:
-		PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer:
-			- src/Tracy/Debugger.php
