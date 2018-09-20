@@ -82,9 +82,13 @@
 			var elem = this.elem;
 			if (this.is(Panel.WINDOW)) {
 				elem.Tracy.window.focus();
-			} else {
+
+			} else if (!this.is(Panel.FOCUSED)) {
 				clearTimeout(elem.Tracy.displayTimeout);
 				elem.Tracy.displayTimeout = setTimeout(() => {
+					for (var id in Debug.panels) {
+						Debug.panels[id].elem.classList.remove(Panel.FOCUSED);
+					}
 					elem.classList.add(Panel.FOCUSED);
 					elem.style.zIndex = Tracy.panelZIndex + Panel.zIndexCounter++;
 					if (callback) {
