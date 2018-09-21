@@ -43,6 +43,7 @@
 			start: function() {
 				_this.toFloat();
 				_this.focus();
+				_this.peekPosition = false;
 			}
 		});
 
@@ -257,10 +258,13 @@
 
 					} else {
 						panel.toFloat();
-						setPosition(panel.elem, {
-							right: getPosition(panel.elem).right + Math.round(Math.random() * 100) + 20,
-							bottom: getPosition(panel.elem).bottom + (Math.round(Math.random() * 100) + 20) * (_this.isAtTop() ? -1 : 1)
-						});
+						if (panel.peekPosition) {
+							setPosition(panel.elem, {
+								right: getPosition(panel.elem).right + Math.round(Math.random() * 100) + 20,
+								bottom: getPosition(panel.elem).bottom + (Math.round(Math.random() * 100) + 20) * (_this.isAtTop() ? -1 : 1)
+							});
+							panel.peekPosition = false;
+						}
 					}
 				}
 				e.preventDefault();
@@ -280,6 +284,7 @@
 									? getPosition(_this.elem).bottom - pos.height - 4
 									: pos.bottom - getOffset(_this.elem).top + pos.height + 4 + getOffset(panel.elem).top
 							});
+							panel.peekPosition = true;
 						}
 					});
 				}
