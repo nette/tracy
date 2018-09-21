@@ -30,6 +30,7 @@
 						this.toFloat();
 					}
 					this.focus();
+					this.peekPosition = false;
 				}
 			});
 
@@ -274,7 +275,10 @@
 
 						} else {
 							panel.toFloat();
-							panel.reposition(-Math.round(Math.random() * 100) - 20, (Math.round(Math.random() * 100) + 20) * (this.isAtTop() ? 1 : -1));
+							if (panel.peekPosition) {
+								panel.reposition(-Math.round(Math.random() * 100) - 20, (Math.round(Math.random() * 100) + 20) * (this.isAtTop() ? 1 : -1));
+								panel.peekPosition = false;
+							}
 						}
 					}
 					e.preventDefault();
@@ -294,6 +298,7 @@
 										? getOffset(this.elem).top + getPosition(this.elem).height + 4
 										: getOffset(this.elem).top - pos.height - 4
 								});
+								panel.peekPosition = true;
 							}
 						});
 					}
