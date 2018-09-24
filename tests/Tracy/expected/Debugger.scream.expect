@@ -1,7 +1,5 @@
 
-%a%: mktime(): You should be using the time() function instead in %a% on line %d%
-
-Deprecated: mktime(): %a%
+Deprecated: mktime(): You should be using the time() function instead in %a% on line %d%
 
 Notice: Undefined variable: x in %a% on line %d%
 
