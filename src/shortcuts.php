@@ -25,7 +25,9 @@ if (!function_exists('dumpe')) {
 	function dumpe($var)
 	{
 		array_map('Tracy\Debugger::dump', func_get_args());
-		exit;
+		if (!Tracy\Debugger::$productionMode) {
+			exit;
+		}
 	}
 }
 
