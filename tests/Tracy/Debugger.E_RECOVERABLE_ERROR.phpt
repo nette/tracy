@@ -42,14 +42,14 @@ $obj = new TestClass;
 Assert::exception(function () use ($obj) {
 	// Invalid argument #1
 	$obj->test1('hello');
-}, PHP_MAJOR_VERSION < 7 ? 'ErrorException' : 'TypeError', 'Argument 1 passed to TestClass::test1() must be %a% array, string given, called in %a%');
+}, TypeError::class, 'Argument 1 passed to TestClass::test1() must be %a% array, string given, called in %a%');
 
 Assert::exception(function () use ($obj) {
 	// Invalid argument #2
 	$obj->test2('hello');
-}, PHP_MAJOR_VERSION < 7 ? 'ErrorException' : 'TypeError', 'Argument 1 passed to TestClass::test2() must be an instance of TestClass, string given, called in %a%');
+}, TypeError::class, 'Argument 1 passed to TestClass::test2() must be an instance of TestClass, string given, called in %a%');
 
 Assert::exception(function () use ($obj) {
 	// Invalid toString
 	echo $obj;
-}, 'ErrorException', 'Method TestClass::__toString() must return a string value');
+}, ErrorException::class, 'Method TestClass::__toString() must return a string value');
