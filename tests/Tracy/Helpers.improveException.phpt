@@ -2,7 +2,6 @@
 
 /**
  * Test: Tracy\Debugger suggestions
- * @phpversion 7
  */
 
 declare(strict_types=1);
