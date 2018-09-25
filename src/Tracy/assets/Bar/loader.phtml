@@ -24,7 +24,7 @@ $asyncAttr = $async ? ' async' : '';
 
 
 <!-- Tracy Debug Bar -->
-<script src="?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $nonceAttr ?>></script>
+<script src="<?= Helpers::escapeHtml($_SERVER['DOCUMENT_URI']) ?>?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $nonceAttr ?>></script>
 <script<?= $nonceAttr ?>>
 Tracy.Debug.init(<?= json_encode($content) ?>, <?= json_encode($dumps) ?>);
 </script>
