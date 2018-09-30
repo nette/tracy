@@ -49,8 +49,11 @@ $info = array_map('strval', array_filter($info + (array) $this->data));
 
 $packages = $devPackages = [];
 if (class_exists('Composer\Autoload\ClassLoader', false)) {
-	$lockFile = dirname((new \ReflectionClass('Composer\Autoload\ClassLoader'))->getFileName()) . '/../../composer.lock';
-	$composer = @json_decode((string) file_get_contents($lockFile)); // @ may not exist or be valid
+	$baseDir = (function () {
+		@include dirname((new \ReflectionClass('Composer\Autoload\ClassLoader'))->getFileName()) . '/autoload_psr4.php'; // @ may not exist
+		return $baseDir;
+	})();
+	$composer = @json_decode((string) file_get_contents($baseDir . '/composer.lock')); // @ may not exist or be valid
 	list($packages, $devPackages) = [(array) @$composer->packages, (array) @$composer->{'packages-dev'}]; // @ keys may not exist
 	foreach ([&$packages, &$devPackages] as &$items) {
 		array_walk($items, function($package) {
