@@ -11,18 +11,19 @@
 
 namespace Tracy;
 
+$baseUrl = isset($_SERVER['REQUEST_URI']) ? explode('?', $_SERVER['REQUEST_URI'])[0] : '';
 $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 $asyncAttr = $async ? ' async' : '';
 ?>
 <?php if (empty($content)): ?>
-<script src="?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $asyncAttr, $nonceAttr ?>></script>
+<script src="<?= Helpers::escapeHtml($baseUrl) ?>?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $asyncAttr, $nonceAttr ?>></script>
 <?php else: ?>
 
 
 
 
 <!-- Tracy Debug Bar -->
-<script src="?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $nonceAttr ?>></script>
+<script src="<?= Helpers::escapeHtml($baseUrl) ?>?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $nonceAttr ?>></script>
 <script<?= $nonceAttr ?>>
 Tracy.Debug.init(<?= json_encode($content) ?>, <?= json_encode($dumps) ?>);
 </script>
