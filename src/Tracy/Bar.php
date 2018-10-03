@@ -174,7 +174,7 @@ class Bar
 	{
 		$asset = $_GET['_tracy_bar'] ?? null;
 		if ($asset === 'js') {
-			header('Content-Type: text/javascript');
+			header('Content-Type: application/javascript');
 			header('Cache-Control: max-age=864000');
 			header_remove('Pragma');
 			header_remove('Set-Cookie');
@@ -190,7 +190,7 @@ class Bar
 
 		if ($this->useSession && $asset && preg_match('#^content(-ajax)?\.(\w+)$#', $asset, $m)) {
 			$session = &$_SESSION['_tracy']['bar'][$m[2] . $m[1]];
-			header('Content-Type: text/javascript');
+			header('Content-Type: application/javascript');
 			header('Cache-Control: max-age=60');
 			header_remove('Set-Cookie');
 			if (!$m[1]) {
