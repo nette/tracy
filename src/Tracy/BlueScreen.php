@@ -43,7 +43,7 @@ class BlueScreen
 
 
 	/**
-	 * Add custom panel.
+	 * Add custom panel as function (?\Throwable $e): ?array
 	 * @return static
 	 */
 	public function addPanel(callable $panel): self
