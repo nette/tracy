@@ -86,7 +86,7 @@ class BlueScreen
 	/**
 	 * Renders blue screen to file (if file exists, it will not be overwritten).
 	 */
-	public function renderToFile(\Throwable $exception, string $file): void
+	public function renderToFile(\Throwable $exception, string $file): bool
 	{
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
@@ -95,7 +95,9 @@ class BlueScreen
 			ob_end_flush();
 			ob_end_clean();
 			fclose($handle);
+			return true;
 		}
+		return false;
 	}
 
 
