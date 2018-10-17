@@ -17,7 +17,7 @@
 			var elem = this.elem;
 
 			this.init = function() {};
-			elem.innerHTML = elem.dataset.tracyContent;
+			elem.innerHTML = addNonces(elem.dataset.tracyContent);
 			Tracy.Dumper.init(this.dumps, elem);
 			delete elem.dataset.tracyContent;
 			delete this.dumps;
@@ -370,7 +370,7 @@
 
 			Debug.layer = document.createElement('div');
 			Debug.layer.setAttribute('id', 'tracy-debug');
-			Debug.layer.innerHTML = content;
+			Debug.layer.innerHTML = addNonces(content);
 			document.documentElement.appendChild(Debug.layer);
 			evalScripts(Debug.layer);
 			Tracy.Dumper.init();
@@ -491,9 +491,7 @@
 			}
 			Debug.scriptElem = document.createElement('script');
 			Debug.scriptElem.src = url;
-			if (nonce) {
-				Debug.scriptElem.setAttribute('nonce', nonce);
-			}
+			Debug.scriptElem.setAttribute('nonce', nonce);
 			document.documentElement.appendChild(Debug.scriptElem);
 		}
 	}
@@ -504,9 +502,7 @@
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 				var dolly = script.ownerDocument.createElement('script');
 				dolly.textContent = script.textContent;
-				if (nonce) {
-					dolly.setAttribute('nonce', nonce);
-				}
+				dolly.setAttribute('nonce', nonce);
 				script.ownerDocument.documentElement.appendChild(dolly);
 				script.tracyEvaluated = true;
 			}
@@ -644,6 +640,16 @@
 			width: elem.offsetWidth,
 			height: elem.offsetHeight
 		};
+	}
+
+
+	function addNonces(html) {
+		var el = document.createElement('div');
+		el.innerHTML = html;
+		forEach(el.getElementsByTagName('style'), style => {
+			style.setAttribute('nonce', nonce);
+		});
+		return el.innerHTML;
 	}
 
 

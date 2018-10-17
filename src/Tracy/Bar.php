@@ -238,8 +238,15 @@ class Bar
 			__DIR__ . '/assets/Dumper/dumper.css',
 			__DIR__ . '/assets/BlueScreen/bluescreen.css',
 		], Debugger::$customCssFiles));
-		$css = json_encode(preg_replace('#\s+#u', ' ', implode($css)));
-		echo "(function(){var el = document.createElement('style'); el.className='tracy-debug'; el.textContent=$css; document.head.appendChild(el);})();\n";
+
+		echo
+"(function(){
+	var el = document.createElement('style');
+	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
+	el.className='tracy-debug';
+	el.textContent=" . json_encode(preg_replace('#\s+#u', ' ', implode($css))) . ";
+	document.head.appendChild(el);})
+();\n";
 
 		array_map('readfile', array_merge([
 			__DIR__ . '/assets/Bar/bar.js',

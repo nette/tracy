@@ -120,7 +120,20 @@ Debugger::$strictMode = true;
 
 [![Notice rendered by Tracy](https://nette.github.io/tracy/images/tracy-notice.png)](https://nette.github.io/tracy/tracy-notice.html)
 
-If your site uses Content Security Policy, you'll need to add `'unsafe-inline'` to `style-src`, and `'self'` or `'nonce-<value>` to `script-src` for Tracy to work properly. Avoid adding `'unsafe-inline'` in production mode, if you can. Some 3rd plugins may require additional directives.
+
+Content Security Policy
+-----------------------
+
+If your site uses Content Security Policy, you'll need to add `'nonce-<value>'` to `script-src` and eventually the same nonce to `style-src` for Tracy to work properly. Some 3rd plugins may require additional directives.
+
+Configuration example for [Nette Framework](https://nette.org):
+
+```neon
+http:
+	csp:
+		script-src: nonce
+		style-src: nonce
+```
 
 
 Faster loading
