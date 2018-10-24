@@ -252,6 +252,29 @@ class Helpers
 	}
 
 
+	/** @internal */
+	public static function guessClassFile($class)
+	{
+		$segments = explode(DIRECTORY_SEPARATOR, $class);
+		$res = null;
+		$max = 0;
+		foreach (get_declared_classes() as $class) {
+			$parts = explode(DIRECTORY_SEPARATOR, $class);
+			foreach ($parts as $i => $part) {
+				if (!isset($segments[$i]) || $part !== $segments[$i]) {
+					break;
+				}
+			}
+			if ($i > $max && ($file = (new \ReflectionClass($class))->getFileName())) {
+				$max = $i;
+				$res = array_merge(array_slice(explode(DIRECTORY_SEPARATOR, $file), 0, $i - count($parts)), array_slice($segments, $i));
+				$res = implode(DIRECTORY_SEPARATOR, $res) . '.php';
+			}
+		}
+		return $res;
+	}
+
+
 	/**
 	 * Finds the best suggestion.
 	 * @return string|null
