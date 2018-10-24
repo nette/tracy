@@ -96,7 +96,7 @@ class BlueScreen
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
 			ob_start(function ($buffer) use ($handle) { fwrite($handle, $buffer); }, 4096);
-			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/page.phtml');
+			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/page.phtml', false);
 			ob_end_flush();
 			ob_end_clean();
 			fclose($handle);
@@ -104,7 +104,7 @@ class BlueScreen
 	}
 
 
-	private function renderTemplate($exception, $template)
+	private function renderTemplate($exception, $template, $toScreen = true)
 	{
 		$messageHtml = preg_replace(
 			'#\'\S[^\']*\S\'|"\S[^"]*\S"#U',
@@ -126,12 +126,13 @@ class BlueScreen
 				Dumper::LOCATION => Dumper::LOCATION_CLASS,
 			]);
 		};
-		$nonce = Helpers::getNonce();
 		$css = array_map('file_get_contents', array_merge([
 			__DIR__ . '/assets/BlueScreen/bluescreen.css',
 		], Debugger::$customCssFiles));
 		$css = preg_replace('#\s+#u', ' ', implode($css));
-		$actions = $this->renderActions($exception);
+
+		$nonce = $toScreen ? Helpers::getNonce() : null;
+		$actions = $toScreen ? $this->renderActions($exception) : [];
 
 		require $template;
 	}
