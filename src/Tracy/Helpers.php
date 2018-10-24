@@ -235,6 +235,23 @@ class Helpers
 	}
 
 
+	/** @internal */
+	public static function improveError($message, array $context = [])
+	{
+		if (preg_match('#^Undefined variable: (\w+)#', $message, $m) && $context) {
+			$hint = self::getSuggestion(array_keys($context), $m[1]);
+			return $hint ? "Undefined variable $$m[1], did you mean $$hint?" : $message;
+
+		} elseif (preg_match('#^Undefined property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
+			$rc = new \ReflectionClass($m[1]);
+			$items = array_diff($rc->getProperties(\ReflectionProperty::IS_PUBLIC), $rc->getProperties(\ReflectionProperty::IS_STATIC));
+			$hint = self::getSuggestion($items, $m[2]);
+			return $hint ? $message . ", did you mean $$hint?" : $message;
+		}
+		return $message;
+	}
+
+
 	/**
 	 * Finds the best suggestion.
 	 * @return string|null
