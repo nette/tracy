@@ -58,7 +58,6 @@
 
 			forEach(elem.querySelectorAll('.tracy-icons a'), link => {
 				link.addEventListener('click', e => {
-					clearTimeout(elem.Tracy.displayTimeout);
 					if (link.rel === 'close') {
 						this.toPeek();
 					} else if (link.rel === 'window') {
@@ -79,23 +78,17 @@
 		}
 
 
-		focus(callback) {
+		focus() {
 			var elem = this.elem;
 			if (this.is(Panel.WINDOW)) {
 				elem.Tracy.window.focus();
 
 			} else if (!this.is(Panel.FOCUSED)) {
-				clearTimeout(elem.Tracy.displayTimeout);
-				elem.Tracy.displayTimeout = setTimeout(() => {
-					for (var id in Debug.panels) {
-						Debug.panels[id].elem.classList.remove(Panel.FOCUSED);
-					}
-					elem.classList.add(Panel.FOCUSED);
-					elem.style.zIndex = Tracy.panelZIndex + Panel.zIndexCounter++;
-					if (callback) {
-						callback();
-					}
-				}, 50);
+				for (var id in Debug.panels) {
+					Debug.panels[id].elem.classList.remove(Panel.FOCUSED);
+				}
+				elem.classList.add(Panel.FOCUSED);
+				elem.style.zIndex = Tracy.panelZIndex + Panel.zIndexCounter++;
 			}
 		}
 
@@ -287,20 +280,20 @@
 				link.addEventListener('mouseenter', e => {
 					if (!e.buttons && link.rel && link.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
 						var panel = Debug.panels[link.rel];
-						panel.focus(() => {
-							if (panel.is(Panel.PEEK)) {
-								panel.init();
+						panel.focus();
 
-								var pos = getPosition(panel.elem);
-								setPosition(panel.elem, {
-									left: getOffset(link).left + getPosition(link).width + 4 - pos.width,
-									top: this.isAtTop()
-										? getOffset(this.elem).top + getPosition(this.elem).height + 4
-										: getOffset(this.elem).top - pos.height - 4
-								});
-								panel.peekPosition = true;
-							}
-						});
+						if (panel.is(Panel.PEEK)) {
+							panel.init();
+
+							var pos = getPosition(panel.elem);
+							setPosition(panel.elem, {
+								left: getOffset(link).left + getPosition(link).width + 4 - pos.width,
+								top: this.isAtTop()
+									? getOffset(this.elem).top + getPosition(this.elem).height + 4
+									: getOffset(this.elem).top - pos.height - 4
+							});
+							panel.peekPosition = true;
+						}
 					}
 				});
 
