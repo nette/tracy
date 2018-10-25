@@ -278,7 +278,12 @@
 				});
 
 				link.addEventListener('mouseenter', e => {
-					if (!e.buttons && link.rel && link.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
+					if (e.buttons || !link.rel || link.rel === 'close' || elem.classList.contains('tracy-dragged')) {
+						return;
+					}
+
+					clearTimeout(this.displayTimeout);
+					this.displayTimeout = setTimeout(() => {
 						var panel = Debug.panels[link.rel];
 						panel.focus();
 
@@ -294,10 +299,12 @@
 							});
 							panel.peekPosition = true;
 						}
-					}
+					}, 50);
 				});
 
 				link.addEventListener('mouseleave', () => {
+					clearTimeout(this.displayTimeout);
+
 					if (link.rel && link.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
 						Debug.panels[link.rel].blur();
 					}
