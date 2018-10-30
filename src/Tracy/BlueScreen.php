@@ -25,6 +25,9 @@ class BlueScreen
 	/** @var int  */
 	public $maxLength = 150;
 
+	/** @var string[] */
+	public $keysToHide = ['password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin'];
+
 	/** @var callable[] */
 	private $panels = [];
 
@@ -118,12 +121,18 @@ class BlueScreen
 			? Helpers::errorTypeToString($exception->getSeverity())
 			: Helpers::getClass($exception);
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error ? null : error_get_last();
-		$dump = function ($v) {
+
+		$keysToHide = array_flip(array_map('strtolower', $this->keysToHide));
+		$dump = function ($v, $k = null) use ($keysToHide) {
+			if (is_string($k) && isset($keysToHide[strtolower($k)])) {
+				$v = Dumper::HIDDEN_VALUE;
+			}
 			return Dumper::toHtml($v, [
 				Dumper::DEPTH => $this->maxDepth,
 				Dumper::TRUNCATE => $this->maxLength,
 				Dumper::LIVE => true,
 				Dumper::LOCATION => Dumper::LOCATION_CLASS,
+				Dumper::KEYS_TO_HIDE => $this->keysToHide,
 			]);
 		};
 		$css = array_map('file_get_contents', array_merge([
