@@ -102,10 +102,21 @@ class Bridge
 				'tab' => 'NEON',
 				'panel' => ($trace2 = Helpers::findTrace($e->getTrace(), 'Nette\DI\Config\Adapters\NeonAdapter::load'))
 					? '<p><b>File:</b> ' . Helpers::editorLink($trace2['args'][0], $m[1]) . '</p>'
-						. BlueScreen::highlightFile($trace2['args'][0], $m[1])
-					: BlueScreen::highlightPhp($trace['args'][0], $m[1]),
+						. self::highlightNeon(file_get_contents($trace2['args'][0]), $m[1])
+					: self::highlightNeon($trace['args'][0], (int) $m[1]),
 			];
 		}
 		return null;
+	}
+
+
+	private static function highlightNeon($code, $line)
+	{
+		$code = htmlspecialchars($code, ENT_IGNORE, 'UTF-8');
+		$code = str_replace(' ', "<span class='tracy-dump-whitespace'>·</span>", $code);
+		$code = str_replace("\t", "<span class='tracy-dump-whitespace'>→   </span>", $code);
+		return '<pre class=code><div>'
+			. BlueScreen::highlightLine($code, $line)
+			. '</div></pre>';
 	}
 }

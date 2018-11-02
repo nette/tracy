@@ -290,6 +290,10 @@ html.tracy-js #tracy-bs .tracy-toggle.tracy-collapsed {
 	color: #090;
 }
 
+#tracy-bs .tracy-dump-whitespace {
+	color: #0003;
+}
+
 #tracy-bs .tracy-dump-null,
 #tracy-bs .tracy-dump-bool {
 	color: #850;
