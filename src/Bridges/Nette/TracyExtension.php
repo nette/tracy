@@ -105,12 +105,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 		if ($this->debugMode) {
 			foreach ((array) $this->config['bar'] as $item) {
+				if (is_string($item) && substr($item, 0, 1) === '@') {
+					$item = new Nette\DI\Statement(['@' . $builder::THIS_CONTAINER, 'getService'], [substr($item, 1)]);
+				} elseif (is_string($item)) {
+					$item = new Nette\DI\Statement($item);
+				}
 				$initialize->addBody($builder->formatPhp(
 					'$this->getService(?)->addPanel(?);',
-					$class::filterArguments([
-						$this->prefix('bar'),
-						is_string($item) ? new Nette\DI\Statement($item) : $item,
-					])
+					$class::filterArguments([$this->prefix('bar'), $item])
 				));
 			}
 
