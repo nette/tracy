@@ -28,7 +28,7 @@ Debugger::barDump('classic request');
 
 ?>
 <!DOCTYPE html><html class=arrow><link rel="stylesheet" href="assets/style.css">
-<base href="/test">
+
 <h1>Tracy: AJAX demo</h1>
 
 <p>

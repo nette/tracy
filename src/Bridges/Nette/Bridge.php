@@ -5,8 +5,6 @@
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Tracy\Bridges\Nette;
 
 use Latte;
@@ -21,7 +19,7 @@ use Tracy\Helpers;
  */
 class Bridge
 {
-	public static function initialize(): void
+	public static function initialize()
 	{
 		$blueScreen = Tracy\Debugger::getBlueScreen();
 		$blueScreen->addPanel([self::class, 'renderLatteError']);
