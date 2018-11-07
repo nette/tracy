@@ -36,6 +36,11 @@ class Debugger
 	/** @var bool whether to send data to FireLogger in development mode */
 	public static $showFireLogger = true;
 
+    /**
+     * @var bool whether to disable registering handlers
+     */
+	public static $disableHandlers = false;
+
 	/** @var bool */
 	private static $enabled = false;
 
@@ -189,9 +194,11 @@ class Debugger
 			return;
 		}
 
-		register_shutdown_function([__CLASS__, 'shutdownHandler']);
-		set_exception_handler([__CLASS__, 'exceptionHandler']);
-		set_error_handler([__CLASS__, 'errorHandler']);
+        if (!self::$disableHandlers) {
+            register_shutdown_function([__CLASS__, 'shutdownHandler']);
+            set_exception_handler([__CLASS__, 'exceptionHandler']);
+            set_error_handler([__CLASS__, 'errorHandler']);
+        }
 
 		array_map('class_exists', ['Tracy\Bar', 'Tracy\BlueScreen', 'Tracy\DefaultBarPanel', 'Tracy\Dumper',
 			'Tracy\FireLogger', 'Tracy\Helpers', 'Tracy\Logger', ]);
