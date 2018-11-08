@@ -371,7 +371,7 @@
 			Debug.layer = document.createElement('div');
 			Debug.layer.setAttribute('id', 'tracy-debug');
 			Debug.layer.innerHTML = addNonces(content);
-			document.documentElement.appendChild(Debug.layer);
+			(document.body || document.documentElement).appendChild(Debug.layer);
 			evalScripts(Debug.layer);
 			Tracy.Dumper.init();
 			Debug.layer.style.display = 'block';
@@ -492,7 +492,7 @@
 			Debug.scriptElem = document.createElement('script');
 			Debug.scriptElem.src = url;
 			Debug.scriptElem.setAttribute('nonce', nonce);
-			document.documentElement.appendChild(Debug.scriptElem);
+			(document.body || document.documentElement).appendChild(Debug.scriptElem);
 		}
 	}
 
@@ -500,10 +500,11 @@
 	function evalScripts(elem) {
 		forEach(elem.getElementsByTagName('script'), script => {
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
-				var dolly = script.ownerDocument.createElement('script');
+				var document = script.ownerDocument;
+				var dolly = document.createElement('script');
 				dolly.textContent = script.textContent;
 				dolly.setAttribute('nonce', nonce);
-				script.ownerDocument.documentElement.appendChild(dolly);
+				(document.body || document.documentElement).appendChild(dolly);
 				script.tracyEvaluated = true;
 			}
 		});
