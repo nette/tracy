@@ -393,15 +393,9 @@
 
 
 		static loadAjax(content) {
-			Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax').forEach((panel) => {
-				Debug.panels[panel.id].savePosition();
-				delete Debug.panels[panel.id];
-				panel.parentNode.removeChild(panel);
-			});
-
 			let ajaxBar = document.getElementById('tracy-ajax-bar');
 			if (ajaxBar) {
-				ajaxBar.parentNode.removeChild(ajaxBar);
+				Debug.removeRow(ajaxBar);
 			}
 
 			Debug.layer.insertAdjacentHTML('beforeend', content);
@@ -491,6 +485,17 @@
 			Debug.scriptElem.src = url;
 			Debug.scriptElem.setAttribute('nonce', nonce);
 			(document.body || document.documentElement).appendChild(Debug.scriptElem);
+		}
+
+
+		static removeRow(row) {
+			row.querySelectorAll('a[rel]').forEach((tab) => {
+				let panel = document.getElementById(tab.rel);
+				Debug.panels[panel.id].savePosition();
+				delete Debug.panels[panel.id];
+				panel.parentNode.removeChild(panel);
+			});
+			row.parentNode.removeChild(row);
 		}
 	}
 
