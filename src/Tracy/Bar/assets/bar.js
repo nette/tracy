@@ -400,8 +400,10 @@
 
 			Debug.layer.insertAdjacentHTML('beforeend', content);
 			evalScripts(Debug.layer);
-			ajaxBar = Debug.layer.querySelector('.tracy-row[data-tracy-group=ajax]');
+			let container = document.getElementById('tracy-container');
+			let ajaxBar = container.querySelector('.tracy-row[data-tracy-group=ajax]');
 			Debug.bar.elem.appendChild(ajaxBar);
+			container.parentNode.removeChild(container);
 
 			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
 				if (!Debug.panels[panel.id]) {

@@ -22,7 +22,7 @@ $tabs = function ($panels): void {
 };
 ?>
 
-<?php if ($rows[0]->type === 'main'): ?><div id="tracy-debug-bar"><?php endif ?>
+<div id="<?= $rows[0]->type === 'main' ? 'tracy-debug-bar' : 'tracy-container' ?>">
 
 <?php foreach ($rows as $row): ?>
 	<ul class="tracy-row" data-tracy-group="<?= Helpers::escapeHtml($row->type) ?>">
@@ -42,4 +42,4 @@ $tabs = function ($panels): void {
 	</ul>
 <?php endforeach ?>
 
-<?php if ($rows[0]->type === 'main'): ?></div><?php endif ?>
+</div>
