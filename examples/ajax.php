@@ -45,6 +45,10 @@ Debugger::barDump('classic request');
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
 
+// default settings:
+// window.TracyAutoRefresh = true; 
+// window.TracyMaxAjaxRows = 3; 
+
 var jqxhr;
 
 $('button').click(function() {
