@@ -86,9 +86,9 @@ class Bar
 
 		if (Helpers::isAjax()) {
 			if ($useSession) {
-				$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax')];
 				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax';
-				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows($rows), 'time' => time()];
+				$row = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-' . $contentId)];
+				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows([$row]), 'time' => time()];
 			}
 
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
