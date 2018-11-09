@@ -23,7 +23,8 @@ $icons = '
 foreach ($rows as $row) {
 	foreach ($row->panels as $panel) {
 		$content = $panel->panel ? ($panel->panel . "\n" . $icons) : '';
-		$class = 'tracy-panel ' . ($row->type === 'ajax' ? 'tracy-ajax' : ''); ?>
+		// disable tracy-ajax class due bar.js L70, this can be removed completely, but I dunno what is it for :)
+		$class = 'tracy-panel ' . ($row->type === 'ajax' ? 'tracy-ajax2' : ''); ?>
 		<div class="<?= $class ?>" id="tracy-debug-panel-<?= $panel->id ?>" data-tracy-content="<?= Helpers::escapeHtml($content) ?>"></div><?php
 	}
 }

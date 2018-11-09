@@ -90,9 +90,10 @@ class Bar
 
 		if (Helpers::isAjax()) {
 			if ($useSession) {
-				$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax')];
-				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax';
-				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows($rows), 'dumps' => Dumper::fetchLiveData(), 'time' => time()];
+				$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax-' . $sequence)];
+				$sequence = $_SERVER['HTTP_X_TRACY_SEQ'];
+				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'] . '_' . $sequence . '-ajax';
+				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows($rows, $sequence), 'dumps' => Dumper::fetchLiveData(), 'time' => time()];
 			}
 
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
@@ -131,7 +132,7 @@ class Bar
 	/**
 	 * @return string
 	 */
-	private static function renderHtmlRows(array $rows)
+	private static function renderHtmlRows(array $rows, $sequence = 0)
 	{
 		ob_start(function () {});
 		require __DIR__ . '/assets/Bar/panels.phtml';
@@ -203,10 +204,15 @@ class Bar
 
 		if ($this->useSession && Helpers::isAjax()) {
 			header('X-Tracy-Ajax: 1'); // session must be already locked
+			$seq = mt_rand(1000, 10000000);
+			$_SERVER['HTTP_X_TRACY_SEQ'] = $seq;
+			header('X-Tracy-Seq: ' . $seq);
 		}
 
 		if ($this->useSession && $asset && preg_match('#^content(-ajax)?\.(\w+)$#', $asset, $m)) {
 			$session = &$_SESSION['_tracy']['bar'][$m[2] . $m[1]];
+			$tmp = explode('_', $m[2]);
+			$sequence = $tmp[1];
 			header('Content-Type: application/javascript');
 			header('Cache-Control: max-age=60');
 			header_remove('Set-Cookie');
@@ -215,7 +221,7 @@ class Bar
 			}
 			if ($session) {
 				$method = $m[1] ? 'loadAjax' : 'init';
-				echo "Tracy.Debug.$method(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
+				echo "Tracy.Debug.$method(", json_encode($session['content']), ', ', json_encode($session['dumps']), ', ', $sequence, ');';
 				$session = null;
 			}
 			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];

@@ -37,7 +37,7 @@ $tabs = function ($panels) {
 		<?php $tabs($row->panels) ?>
 	</ul>
 <?php  endif; if ($row->type === 'ajax'): ?>
-	<ul id="tracy-ajax-bar">
+	<ul id="tracy-ajax-bar-<?= $sequence ?>">
 		<li>AJAX</li>
 		<?php $tabs($row->panels) ?>
 	</ul>

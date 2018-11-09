@@ -388,21 +388,10 @@
 		}
 
 
-		static loadAjax(content, dumps) {
-			forEach(Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax'), panel => {
-				Debug.panels[panel.id].savePosition();
-				delete Debug.panels[panel.id];
-				panel.parentNode.removeChild(panel);
-			});
-
-			var ajaxBar = document.getElementById('tracy-ajax-bar');
-			if (ajaxBar) {
-				ajaxBar.parentNode.removeChild(ajaxBar);
-			}
-
+		static loadAjax(content, dumps, sequence) {
 			Debug.layer.insertAdjacentHTML('beforeend', content);
 			evalScripts(Debug.layer);
-			ajaxBar = document.getElementById('tracy-ajax-bar');
+			var ajaxBar = document.getElementById('tracy-ajax-bar-' + sequence);
 			Debug.bar.elem.appendChild(ajaxBar);
 
 			forEach(document.querySelectorAll('.tracy-panel'), panel => {
@@ -453,7 +442,7 @@
 					this.setRequestHeader('X-Tracy-Ajax', header);
 					this.addEventListener('load', function() {
 						if (this.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
-							Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+							Debug.loadScript('?_tracy_bar=content-ajax.' + header + '_' + this.getResponseHeader('X-Tracy-Seq') + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 						}
 					});
 				}
