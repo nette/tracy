@@ -86,9 +86,9 @@ class Bar
 
 		if (Helpers::isAjax()) {
 			if ($useSession) {
-				$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax')];
-				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax';
-				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows($rows), 'time' => time()];
+				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'];
+				$row = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax:' . $contentId)];
+				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows([$row]), 'time' => time()];
 			}
 
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
@@ -184,7 +184,7 @@ class Bar
 		}
 
 		if ($this->useSession && $asset && preg_match('#^content(-ajax)?\.(\w+)$#', $asset, $m)) {
-			$session = &$_SESSION['_tracy']['bar'][$m[2] . $m[1]];
+			$session = &$_SESSION['_tracy']['bar'][$m[2]];
 			header('Content-Type: application/javascript');
 			header('Cache-Control: max-age=60');
 			header_remove('Set-Cookie');

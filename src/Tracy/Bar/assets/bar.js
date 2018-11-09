@@ -5,7 +5,7 @@
 'use strict';
 
 (function(){
-	let nonce, contentId;
+	let nonce, contentId, ajaxCounter = 1;
 
 	class Panel
 	{
@@ -183,19 +183,21 @@
 
 
 		savePosition() {
+			let key = this.id.split(':')[0]; // remove :contentId part
 			let pos = getPosition(this.elem);
 			if (this.is(Panel.WINDOW)) {
-				localStorage.setItem(this.id, JSON.stringify({window: true}));
+				localStorage.setItem(key, JSON.stringify({window: true}));
 			} else if (pos.width) { // is visible?
-				localStorage.setItem(this.id, JSON.stringify({right: pos.right, bottom: pos.bottom, width: pos.width, height: pos.height, zIndex: this.elem.style.zIndex - Tracy.panelZIndex, resized: this.is(Panel.RESIZED)}));
+				localStorage.setItem(key, JSON.stringify({right: pos.right, bottom: pos.bottom, width: pos.width, height: pos.height, zIndex: this.elem.style.zIndex - Tracy.panelZIndex, resized: this.is(Panel.RESIZED)}));
 			} else {
-				localStorage.removeItem(this.id);
+				localStorage.removeItem(key);
 			}
 		}
 
 
 		restorePosition() {
-			let pos = JSON.parse(localStorage.getItem(this.id));
+			let key = this.id.split(':')[0];
+			let pos = JSON.parse(localStorage.getItem(key));
 			if (!pos) {
 				this.elem.classList.add(Panel.PEEK);
 			} else if (pos.window) {
@@ -395,22 +397,34 @@
 
 
 		static loadAjax(content) {
-			let ajaxBar = Debug.layer.querySelector('.tracy-row[data-tracy-group=ajax]');
-			if (ajaxBar) {
-				ajaxBar.querySelectorAll('a[rel]').forEach((tab) => {
+			let rows = Debug.bar.elem.querySelectorAll('.tracy-row[data-tracy-group=ajax]');
+			let max = window.TracyMaxAjaxRows || 3;
+			rows.forEach((row) => {
+				if (--max > 0) {
+					return;
+				}
+				row.querySelectorAll('a[rel]').forEach((tab) => {
 					let panel = Debug.panels[tab.rel];
-					delete Debug.panels[tab.rel];
-					panel.savePosition();
-					panel.elem.parentNode.removeChild(panel.elem);
+					if (panel.is(Panel.PEEK)) {
+						delete Debug.panels[tab.rel];
+						panel.elem.parentNode.removeChild(panel.elem);
+					}
 				});
-				ajaxBar.parentNode.removeChild(ajaxBar);
+				row.parentNode.removeChild(row);
+			});
+
+			if (rows[0]) { // update content in first-row panels
+				rows[0].querySelectorAll('a[rel]').forEach((tab) => {
+					Debug.panels[tab.rel].savePosition();
+					Debug.panels[tab.rel].toPeek();
+				});
 			}
 
 			Debug.layer.insertAdjacentHTML('beforeend', content);
 			evalScripts(Debug.layer);
 			let container = document.getElementById('tracy-container');
-			ajaxBar = container.querySelector('.tracy-row[data-tracy-group=ajax]');
-			Debug.bar.elem.appendChild(ajaxBar);
+			let ajaxBar = container.querySelector('.tracy-row[data-tracy-group=ajax]');
+			Debug.bar.elem.insertBefore(ajaxBar, rows[0]);
 			container.parentNode.removeChild(container);
 
 			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
@@ -458,10 +472,11 @@
 			XMLHttpRequest.prototype.open = function() {
 				oldOpen.apply(this, arguments);
 				if (window.TracyAutoRefresh !== false && new URL(arguments[1], location.origin).host === location.host) {
-					this.setRequestHeader('X-Tracy-Ajax', header);
+					let reqId = header + '_' + ajaxCounter++;
+					this.setRequestHeader('X-Tracy-Ajax', reqId);
 					this.addEventListener('load', function() {
 						if (this.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
-							Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+							Debug.loadScript('?_tracy_bar=content-ajax.' + reqId + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 						}
 					});
 				}
@@ -472,10 +487,11 @@
 				request = request instanceof Request ? request : new Request(request, options || {});
 
 				if (window.TracyAutoRefresh !== false && new URL(request.url, location.origin).host === location.host) {
-					request.headers.set('X-Tracy-Ajax', header);
+					let reqId = header + '_' + ajaxCounter++;
+					request.headers.set('X-Tracy-Ajax', reqId);
 					return oldFetch(request).then((response) => {
 						if (response.headers.has('X-Tracy-Ajax') && response.headers.get('X-Tracy-Ajax')[0] === '1') {
-							Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+							Debug.loadScript('?_tracy_bar=content-ajax.' + reqId + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 						}
 
 						return response;
