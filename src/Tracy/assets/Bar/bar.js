@@ -317,8 +317,11 @@
 		autoHideLabels() {
 			var width = getWindowSize().width;
 			forEach(this.elem.children, function (ul) {
-				var labels = ul.querySelectorAll('.tracy-label');
-				for (var i = labels.length - 1; i >= 0 && ul.clientWidth >= width; i--) {
+				var i, labels = ul.querySelectorAll('.tracy-label');
+				for (i = 0; i < labels.length && ul.clientWidth < width; i++) {
+					labels.item(i).hidden = false;
+				}
+				for (i = labels.length - 1; i >= 0 && ul.clientWidth >= width; i--) {
 					labels.item(i).hidden = true;
 				}
 			});
@@ -424,6 +427,7 @@
 				var newSize = getWindowSize();
 
 				Debug.bar.reposition(newSize.width - size.width, newSize.height - size.height);
+				Debug.bar.autoHideLabels();
 
 				for (var id in Debug.panels) {
 					Debug.panels[id].reposition(newSize.width - size.width, newSize.height - size.height);
