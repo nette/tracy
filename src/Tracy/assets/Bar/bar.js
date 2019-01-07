@@ -392,6 +392,19 @@
 			Debug.layer.insertAdjacentHTML('beforeend', content);
 			evalScripts(Debug.layer);
 			var ajaxBar = document.getElementById('tracy-ajax-bar-' + sequence);
+			var delButton = document.createElement('A');
+			delButton.appendChild(document.createTextNode(' '));
+			delButton.setAttribute('href', '#');
+			delButton.setAttribute('class', 'tracy-bar-del');
+			delButton.setAttribute('data-sequence', sequence);
+			delButton.onclick = function() {
+				[].some.call(document.querySelectorAll('a.tracy-bar-del'), function(del) {
+					del.parentNode.parentNode.removeChild(del.parentNode);
+					return del.getAttribute('data-sequence') === event.currentTarget.getAttribute('data-sequence');
+				});
+			};
+
+			ajaxBar.appendChild(delButton);
 			Debug.bar.elem.appendChild(ajaxBar);
 
 			forEach(document.querySelectorAll('.tracy-panel'), panel => {

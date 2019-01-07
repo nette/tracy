@@ -90,8 +90,8 @@ class Bar
 
 		if (Helpers::isAjax()) {
 			if ($useSession) {
-				$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax-' . $sequence)];
 				$sequence = $_SERVER['HTTP_X_TRACY_SEQ'];
+				$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax-' . $sequence)];
 				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'] . '_' . $sequence . '-ajax';
 				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows($rows, $sequence), 'dumps' => Dumper::fetchLiveData(), 'time' => time()];
 			}
