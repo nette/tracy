@@ -242,7 +242,7 @@
 
 			this.initTabs(this.elem);
 			this.restorePosition();
-			
+
 			window.addEventListener('resize', () => this.autoHideLabels);
 
 			(new MutationObserver(() => {
