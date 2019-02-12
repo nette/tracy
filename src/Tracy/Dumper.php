@@ -130,7 +130,8 @@ class Dumper
 	 */
 	public static function toText($var, array $options = []): string
 	{
-		return htmlspecialchars_decode(strip_tags(self::toHtml($var, $options)), ENT_QUOTES);
+		$s = self::toHtml($var, $options);
+		return htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
 	}
 
 
@@ -139,9 +140,12 @@ class Dumper
 	 */
 	public static function toTerminal($var, array $options = []): string
 	{
-		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m): string {
+		$s = self::toHtml($var, $options);
+		$s = preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m): string {
 			return "\033[" . (isset($m[1], self::$terminalColors[$m[1]]) ? self::$terminalColors[$m[1]] : '0') . 'm';
-		}, self::toHtml($var, $options))), ENT_QUOTES);
+		}, $s);
+		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
+		return $s;
 	}
 
 
@@ -210,22 +214,25 @@ class Dumper
 			return $out . (count($var) - 1) . ") [ <i>RECURSION</i> ]\n";
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH]) {
-			$collapsed = $level ? count($var) >= $options[self::COLLAPSE_COUNT]
+			$collapsed = $level
+				? count($var) >= $options[self::COLLAPSE_COUNT]
 				: (is_int($options[self::COLLAPSE]) ? count($var) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
-			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
-				. $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+			$inner = '';
 			$var[$marker] = true;
+
 			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
 					$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]) ? self::HIDDEN_VALUE : null;
 					$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
-					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+					$inner .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . $k . '</span> => '
 						. ($hide ? self::dumpString($hide, $options) : self::dumpVar($v, $options, $level + 1));
 				}
 			}
 			unset($var[$marker]);
-			return $out . '</div>';
+
+			return '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">' . $out . count($var) . ")</span>\n"
+				. '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>' . $inner . '</div>';
 
 		} else {
 			return $out . count($var) . ") [ ... ]\n";
@@ -263,11 +270,12 @@ class Dumper
 			return $out . " { <i>RECURSION</i> }\n";
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH] || $var instanceof \Closure) {
-			$collapsed = $level ? count($fields) >= $options[self::COLLAPSE_COUNT]
+			$collapsed = $level
+				? count($fields) >= $options[self::COLLAPSE_COUNT]
 				: (is_int($options[self::COLLAPSE]) ? count($fields) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
-			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
-				. $out . "</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+			$inner = '';
 			$list[] = $var;
+
 			foreach ($fields as $k => &$v) {
 				$vis = '';
 				if (isset($k[0]) && $k[0] === "\x00") {
@@ -276,12 +284,14 @@ class Dumper
 				}
 				$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]) ? self::HIDDEN_VALUE : null;
 				$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
-				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+				$inner .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 					. '<span class="tracy-dump-key">' . $k . "</span>$vis => "
 					. ($hide ? self::dumpString($hide, $options) : self::dumpVar($v, $options, $level + 1));
 			}
 			array_pop($list);
-			return $out . '</div>';
+
+			return '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">' . $out . "</span>\n"
+				. '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>' . $inner . '</div>';
 
 		} else {
 			return $out . " { ... }\n";
