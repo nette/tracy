@@ -34,6 +34,9 @@ class Dumper
 	public const
 		HIDDEN_VALUE = '*****';
 
+	private const
+		LAZY_LOADING = 'lazy';
+
 	/** @var array */
 	public static $terminalColors = [
 		'bool' => '1;33',
@@ -100,6 +103,7 @@ class Dumper
 			self::OBJECT_EXPORTERS => null,
 			self::DEBUGINFO => false,
 			self::KEYS_TO_HIDE => [],
+			self::LAZY_LOADING => true,
 		];
 		$loc = &$options[self::LOCATION];
 		$loc = $loc === true ? ~0 : (int) $loc;
@@ -130,7 +134,7 @@ class Dumper
 	 */
 	public static function toText($var, array $options = []): string
 	{
-		$s = self::toHtml($var, $options);
+		$s = self::toHtml($var, [self::LAZY_LOADING => false] + $options);
 		return htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
 	}
 
@@ -140,7 +144,7 @@ class Dumper
 	 */
 	public static function toTerminal($var, array $options = []): string
 	{
-		$s = self::toHtml($var, $options);
+		$s = self::toHtml($var, [self::LAZY_LOADING => false] + $options);
 		$s = preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m): string {
 			return "\033[" . (isset($m[1], self::$terminalColors[$m[1]]) ? self::$terminalColors[$m[1]] : '0') . 'm';
 		}, $s);
@@ -217,6 +221,8 @@ class Dumper
 			$collapsed = $level
 				? count($var) >= $options[self::COLLAPSE_COUNT]
 				: (is_int($options[self::COLLAPSE]) ? count($var) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
+			$lazy = $collapsed && $options[self::LAZY_LOADING];
+			$options[self::LAZY_LOADING] = $lazy ? false : $options[self::LAZY_LOADING];
 			$inner = '';
 			$var[$marker] = true;
 
@@ -232,7 +238,10 @@ class Dumper
 			unset($var[$marker]);
 
 			return '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">' . $out . count($var) . ")</span>\n"
-				. '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>' . $inner . '</div>';
+				. '<div'
+				. ($collapsed ? ' class="tracy-collapsed"' : '')
+				. ($lazy ? ' data-tracy-content="' . Helpers::escapeHtml($inner) . '"' : '')
+				. '>' . ($lazy ? '' : $inner) . '</div>';
 
 		} else {
 			return $out . count($var) . ") [ ... ]\n";
@@ -273,6 +282,8 @@ class Dumper
 			$collapsed = $level
 				? count($fields) >= $options[self::COLLAPSE_COUNT]
 				: (is_int($options[self::COLLAPSE]) ? count($fields) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
+			$lazy = $collapsed && $options[self::LAZY_LOADING];
+			$options[self::LAZY_LOADING] = $lazy ? false : $options[self::LAZY_LOADING];
 			$inner = '';
 			$list[] = $var;
 
@@ -291,7 +302,10 @@ class Dumper
 			array_pop($list);
 
 			return '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">' . $out . "</span>\n"
-				. '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>' . $inner . '</div>';
+				. '<div'
+				. ($collapsed ? ' class="tracy-collapsed"' : '')
+				. ($lazy ? ' data-tracy-content="' . Helpers::escapeHtml($inner) . '"' : '')
+				. '>' . ($lazy ? '' : $inner) . '</div>';
 
 		} else {
 			return $out . " { ... }\n";

@@ -41,6 +41,11 @@
 			dest = ref[3] ? Toggle.nextElement(dest.nextElementSibling, ref[4]) : dest;
 			dest = ref[5] ? dest.querySelector(ref[5]) : dest;
 
+			if (dest.dataset.tracyContent) {
+				dest.innerHTML = dest.dataset.tracyContent;
+				delete dest.dataset.tracyContent;
+			}
+
 			el.classList.toggle('tracy-collapsed', !show);
 			dest.classList.toggle('tracy-collapsed', !show);
 
