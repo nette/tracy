@@ -14,6 +14,13 @@
 					Toggle.toggle(el);
 				}
 			});
+
+			document.documentElement.addEventListener('animationend', function(e) {
+				if (e.animationName === 'tracy-flash') {
+					e.target.classList.toggle('tracy-flash', false);
+				}
+			});
+
 			Toggle.init = function() {};
 		}
 
@@ -48,6 +55,7 @@
 
 			el.classList.toggle('tracy-collapsed', !show);
 			dest.classList.toggle('tracy-collapsed', !show);
+			dest.classList.toggle('tracy-flash', show);
 
 			if (typeof window.Event === 'function') {
 				var toggleEvent = new Event('tracy-toggle', {bubbles: true});

@@ -26,3 +26,13 @@
 .tracy-toggle.tracy-collapsed:after {
 	content: "\A0\25BA";
 }
+
+.tracy-flash {
+	animation: tracy-flash .2s ease;
+}
+
+@keyframes tracy-flash {
+	0% {
+		background: #c0c0c033;
+	}
+}
