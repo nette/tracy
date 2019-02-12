@@ -341,4 +341,5 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 		<div id="tracy-bs-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
+	<meta itemprop=tracy <?= Dumper::formatSnapshotAttribute($snapshot) ?>>
 </div>

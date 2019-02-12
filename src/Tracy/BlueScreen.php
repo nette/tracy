@@ -36,6 +36,9 @@ class BlueScreen
 	/** @var callable[] functions that returns action for exceptions */
 	private $actions = [];
 
+	/** @var array */
+	private $snapshot;
+
 
 	public function __construct()
 	{
@@ -78,7 +81,7 @@ class BlueScreen
 			ob_start(function () {});
 			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/content.phtml');
 			$contentId = $_SERVER['HTTP_X_TRACY_AJAX'];
-			$_SESSION['_tracy']['bluescreen'][$contentId] = ['content' => ob_get_clean(), 'dumps' => Dumper::fetchLiveData(), 'time' => time()];
+			$_SESSION['_tracy']['bluescreen'][$contentId] = ['content' => ob_get_clean(), 'time' => time()];
 
 		} else {
 			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/page.phtml');
@@ -119,7 +122,10 @@ class BlueScreen
 			: Helpers::getClass($exception);
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error ? null : error_get_last();
 
+		$snapshot = &$this->snapshot;
+		$snapshot = [];
 		$keysToHide = array_flip(array_map('strtolower', $this->keysToHide));
+
 		$dump = function ($v, $k = null) use ($keysToHide): string {
 			if (is_string($k) && isset($keysToHide[strtolower($k)])) {
 				$v = Dumper::HIDDEN_VALUE;
@@ -127,11 +133,12 @@ class BlueScreen
 			return Dumper::toHtml($v, [
 				Dumper::DEPTH => $this->maxDepth,
 				Dumper::TRUNCATE => $this->maxLength,
-				Dumper::LIVE => true,
+				Dumper::SNAPSHOT => &$this->snapshot,
 				Dumper::LOCATION => Dumper::LOCATION_CLASS,
 				Dumper::KEYS_TO_HIDE => $this->keysToHide,
 			]);
 		};
+
 		$css = array_map('file_get_contents', array_merge([
 			__DIR__ . '/assets/BlueScreen/bluescreen.css',
 		], Debugger::$customCssFiles));

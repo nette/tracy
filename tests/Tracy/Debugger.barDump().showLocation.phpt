@@ -28,7 +28,7 @@ Debugger::enable();
 
 register_shutdown_function(function () {
 	$output = ob_get_clean();
-	preg_match('#Tracy\.Debug\.init\((".*[^\\\\]"),#', $output, $m);
+	preg_match('#Tracy\.Debug\.init\((".*[^\\\\]")\)#', $output, $m);
 	$rawContent = json_decode($m[1]);
 	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-dumps')[0]['data-tracy-content'];
 	Assert::match(<<<'EOD'

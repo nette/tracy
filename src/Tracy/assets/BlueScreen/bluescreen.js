@@ -50,14 +50,14 @@
 		}
 
 
-		static loadAjax(content, dumps) {
+		static loadAjax(content) {
 			let ajaxBs = document.getElementById('tracy-bs');
 			if (ajaxBs) {
 				ajaxBs.parentNode.removeChild(ajaxBs);
 			}
 			document.body.insertAdjacentHTML('beforeend', content);
 			ajaxBs = document.getElementById('tracy-bs');
-			Tracy.Dumper.init(dumps, ajaxBs);
+			Tracy.Dumper.init(ajaxBs);
 			BlueScreen.init(true);
 			window.scrollTo(0, 0);
 		}

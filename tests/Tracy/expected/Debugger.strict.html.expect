@@ -192,6 +192,7 @@
 
 		<div id="tracy-bs-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
+	<meta itemprop=tracy data-tracy-snapshot=%a%>
 </div>
 
 <script>%A%</script>

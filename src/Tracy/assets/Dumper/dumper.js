@@ -11,14 +11,24 @@
 
 	class Dumper
 	{
-		static init(repository, context) {
-			if (repository) {
-				(context || document).querySelectorAll('.tracy-dump[data-tracy-dump]').forEach((el) => {
-					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
+		static init(context) {
+			(context || document).querySelectorAll('[data-tracy-snapshot]').forEach((el) => {
+				let preList, snapshot = JSON.parse(el.getAttribute('data-tracy-snapshot'));
+
+				if (el.tagName === 'META') { // <meta data-tracy-snapshot>
+					preList = el.parentElement.querySelectorAll('[data-tracy-dump]');
+					el.parentNode.removeChild(el);
+				} else { // <pre data-tracy-snapshot data-tracy-dump>
+					preList = [el];
+					el.removeAttribute('data-tracy-snapshot');
+				}
+
+				preList.forEach((el) => {
+					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), snapshot, el.classList.contains('tracy-collapsed')));
 					el.classList.remove('tracy-collapsed');
 					el.removeAttribute('data-tracy-dump');
 				});
-			}
+			});
 
 			if (Dumper.inited) {
 				return;
@@ -130,7 +140,7 @@
 		res = createEl(null, null, [
 			toggle = createEl('span', {'class': collapsed ? 'tracy-toggle tracy-collapsed' : 'tracy-toggle'}, span),
 			'\n',
-			div = createEl('div', {'class': collapsed ? 'tracy-collapsed' : ''})
+			div = createEl('div', {'class': collapsed ? 'tracy-collapsed' : null})
 		]);
 
 		if (collapsed) {

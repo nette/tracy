@@ -23,6 +23,7 @@ class Dumper
 		LOCATION = 'location', // show location string? (defaults to 0)
 		OBJECT_EXPORTERS = 'exporters', // custom exporters for objects (defaults to Dumper::$objectexporters)
 		LIVE = 'live', // will be rendered using JavaScript
+		SNAPSHOT = 'snapshot', // array for shared snapshot, enables LIVE
 		DEBUGINFO = 'debuginfo', // use magic method __debugInfo if exists (defaults to false)
 		KEYS_TO_HIDE = 'keystohide'; // sensitive keys not displayed (defaults to [])
 
@@ -63,12 +64,6 @@ class Dumper
 		'__PHP_Incomplete_Class' => 'Tracy\Dumper::exportPhpIncompleteClass',
 	];
 
-	/** @var string @internal */
-	public static $livePrefix;
-
-	/** @var array  */
-	private static $liveStorage = [];
-
 
 	/**
 	 * Dumps variable to the output.
@@ -100,6 +95,7 @@ class Dumper
 			self::OBJECT_EXPORTERS => null,
 			self::DEBUGINFO => false,
 			self::KEYS_TO_HIDE => [],
+			self::LIVE => null,
 		];
 
 		$options[self::KEYS_TO_HIDE] = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE]));
@@ -108,7 +104,6 @@ class Dumper
 			return $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1;
 		});
 
-		$live = !empty($options[self::LIVE]) && $var && (is_array($var) || is_object($var) || is_resource($var));
 		$loc = &$options[self::LOCATION];
 		$loc = $loc === true ? ~0 : (int) $loc;
 		[$file, $line, $code] = $loc ? self::findLocation() : null;
@@ -116,9 +111,20 @@ class Dumper
 			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
 		) : null;
 
+		$snapshot = &$options[self::SNAPSHOT]; // must be reference
+		if ($sharedSnapshot = is_array($snapshot)) {
+			$options[self::LIVE] = true;
+		}
+		$live = null;
+		if ($options[self::LIVE] && (is_array($var) || is_object($var) || is_resource($var)) && $var) {
+			$live = self::toJson($var, $options);
+			$snapshot = (array) $snapshot;
+		}
+
 		return '<pre class="tracy-dump' . ($live && $options[self::COLLAPSE] === true ? ' tracy-collapsed' : '') . '"'
 			. $locAttrs
-			. ($live ? " data-tracy-dump='" . json_encode(self::toJson($var, $options), JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
+			. (is_array($snapshot) && !$sharedSnapshot ? ' ' . self::formatSnapshotAttribute($snapshot) : '')
+			. ($live ? " data-tracy-dump='" . json_encode($live, JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
 			. ($live ? '' : self::dumpVar($var, $options))
 			. ($file && $loc & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
@@ -348,7 +354,7 @@ class Dumper
 			return $res;
 
 		} elseif (is_object($var)) {
-			$obj = &self::$liveStorage[spl_object_hash($var)];
+			$obj = &$options[self::SNAPSHOT][spl_object_hash($var)];
 			if ($obj && $obj['level'] <= $level) {
 				return ['object' => $obj['id']];
 			}
@@ -361,7 +367,7 @@ class Dumper
 			}
 			static $counter = 1;
 			$obj = $obj ?: [
-				'id' => self::$livePrefix . '0' . $counter++, // differentiate from resources
+				'id' => '0' . $counter++, // differentiate from resources
 				'name' => Helpers::getClass($var),
 				'editor' => $editorInfo,
 				'level' => $level,
@@ -385,10 +391,10 @@ class Dumper
 			return ['object' => $obj['id']];
 
 		} elseif (is_resource($var)) {
-			$obj = &self::$liveStorage[(string) $var];
+			$obj = &$options[self::SNAPSHOT][(string) $var];
 			if (!$obj) {
 				$type = get_resource_type($var);
-				$obj = ['id' => self::$livePrefix . (int) $var, 'name' => $type . ' resource'];
+				$obj = ['id' => (int) $var, 'name' => $type . ' resource'];
 				if (isset(self::$resources[$type])) {
 					foreach ((self::$resources[$type])($var) as $k => $v) {
 						$obj['items'][] = [$k, self::toJson($v, $options, $level + 1)];
@@ -403,16 +409,15 @@ class Dumper
 	}
 
 
-	public static function fetchLiveData(): array
+	public static function formatSnapshotAttribute(array $snapshot): string
 	{
 		$res = [];
-		foreach (self::$liveStorage as $obj) {
+		foreach ($snapshot as $obj) {
 			$id = $obj['id'];
 			unset($obj['level'], $obj['object'], $obj['id']);
 			$res[$id] = $obj;
 		}
-		self::$liveStorage = [];
-		return $res;
+		return "data-tracy-snapshot='" . json_encode($res, JSON_HEX_APOS | JSON_HEX_AMP) . "'";
 	}
 
 
