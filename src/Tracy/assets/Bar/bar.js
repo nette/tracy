@@ -21,9 +21,8 @@
 
 			this.init = function() {};
 			elem.innerHTML = addNonces(elem.dataset.tracyContent);
-			Tracy.Dumper.init(this.dumps, elem);
+			Tracy.Dumper.init(elem);
 			delete elem.dataset.tracyContent;
-			delete this.dumps;
 			evalScripts(elem);
 
 			draggable(elem, {
@@ -369,7 +368,7 @@
 
 	class Debug
 	{
-		static init(content, dumps) {
+		static init(content) {
 			if (!document.documentElement.dataset) {
 				throw new Error('Tracy requires IE 11+');
 			}
@@ -385,7 +384,6 @@
 
 			document.querySelectorAll('.tracy-panel').forEach((panel) => {
 				Debug.panels[panel.id] = new Panel(panel.id);
-				Debug.panels[panel.id].dumps = dumps;
 				Debug.panels[panel.id].restorePosition();
 			});
 
@@ -394,7 +392,7 @@
 		}
 
 
-		static loadAjax(content, dumps) {
+		static loadAjax(content) {
 			Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax').forEach((panel) => {
 				Debug.panels[panel.id].savePosition();
 				delete Debug.panels[panel.id];
@@ -414,7 +412,6 @@
 			document.querySelectorAll('.tracy-panel').forEach((panel) => {
 				if (!Debug.panels[panel.id]) {
 					Debug.panels[panel.id] = new Panel(panel.id);
-					Debug.panels[panel.id].dumps = dumps;
 					Debug.panels[panel.id].restorePosition();
 				}
 			});

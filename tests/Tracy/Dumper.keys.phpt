@@ -42,9 +42,11 @@ Assert::match('stdClass #%a%
    01 => 0
 ', Dumper::toText((object) $keys));
 
+
+$snapshot = [];
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-dump=\'{"object":"01"}\'></pre>',
-	Dumper::toHtml((object) $keys, [Dumper::LIVE => true])
+	Dumper::toHtml((object) $keys, [Dumper::SNAPSHOT => &$snapshot])
 );
 
 Assert::same([
@@ -62,4 +64,4 @@ Assert::same([
 			['01', 0, 0],
 		],
 	],
-], Dumper::fetchLiveData());
+], json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true));

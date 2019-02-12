@@ -88,32 +88,27 @@ class Bar
 			if ($useSession) {
 				$rows[] = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax')];
 				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'] . '-ajax';
-				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows($rows), 'dumps' => Dumper::fetchLiveData(), 'time' => time()];
+				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows($rows), 'time' => time()];
 			}
 
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
 			if ($useSession) {
-				Dumper::fetchLiveData();
-				Dumper::$livePrefix = count($redirectQueue) . 'p';
 				$redirectQueue[] = [
 					'panels' => $this->renderPanels('-r' . count($redirectQueue)),
-					'dumps' => Dumper::fetchLiveData(),
 					'time' => time(),
 				];
 			}
 
 		} elseif (Helpers::isHtmlMode()) {
 			$rows[] = (object) ['type' => 'main', 'panels' => $this->renderPanels()];
-			$dumps = Dumper::fetchLiveData();
 			foreach (array_reverse((array) $redirectQueue) as $info) {
 				$rows[] = (object) ['type' => 'redirect', 'panels' => $info['panels']];
-				$dumps += $info['dumps'];
 			}
 			$redirectQueue = null;
 			$content = self::renderHtmlRows($rows);
 
 			if ($this->contentId) {
-				$_SESSION['_tracy']['bar'][$this->contentId] = ['content' => $content, 'dumps' => $dumps, 'time' => time()];
+				$_SESSION['_tracy']['bar'][$this->contentId] = ['content' => $content, 'time' => time()];
 			} else {
 				$contentId = substr(md5(uniqid('', true)), 0, 10);
 				$nonce = Helpers::getNonce();
@@ -198,12 +193,12 @@ class Bar
 			}
 			if ($session) {
 				$method = $m[1] ? 'loadAjax' : 'init';
-				echo "Tracy.Debug.$method(", json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
+				echo "Tracy.Debug.$method(", json_encode($session['content']), ');';
 				$session = null;
 			}
 			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];
 			if ($session) {
-				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content']), ', ', json_encode($session['dumps']), ');';
+				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content']), ');';
 				$session = null;
 			}
 			return true;
