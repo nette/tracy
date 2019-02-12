@@ -133,7 +133,7 @@ class Bar
 	}
 
 
-	private function renderPanels(string $suffix = null): array
+	private function renderPanels(string $suffix = ''): array
 	{
 		set_error_handler(function (int $severity, string $message, string $file, int $line) {
 			if (error_reporting() & $severity) {

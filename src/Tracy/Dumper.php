@@ -74,7 +74,7 @@ class Dumper
 	 * Dumps variable to the output.
 	 * @return mixed  variable
 	 */
-	public static function dump($var, array $options = null)
+	public static function dump($var, array $options = [])
 	{
 		if (PHP_SAPI !== 'cli' && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) {
 			echo self::toHtml($var, $options);
@@ -90,9 +90,9 @@ class Dumper
 	/**
 	 * Dumps variable to HTML.
 	 */
-	public static function toHtml($var, array $options = null): string
+	public static function toHtml($var, array $options = []): string
 	{
-		$options = (array) $options + [
+		$options += [
 			self::DEPTH => 4,
 			self::TRUNCATE => 150,
 			self::COLLAPSE => 14,
@@ -128,7 +128,7 @@ class Dumper
 	/**
 	 * Dumps variable to plain text.
 	 */
-	public static function toText($var, array $options = null): string
+	public static function toText($var, array $options = []): string
 	{
 		return htmlspecialchars_decode(strip_tags(self::toHtml($var, $options)), ENT_QUOTES);
 	}
@@ -137,7 +137,7 @@ class Dumper
 	/**
 	 * Dumps variable to x-terminal.
 	 */
-	public static function toTerminal($var, array $options = null): string
+	public static function toTerminal($var, array $options = []): string
 	{
 		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m): string {
 			return "\033[" . (isset($m[1], self::$terminalColors[$m[1]]) ? self::$terminalColors[$m[1]] : '0') . 'm';
