@@ -534,14 +534,14 @@ class Debugger
 	 * @param  mixed  $var
 	 * @return mixed  variable itself
 	 */
-	public static function barDump($var, string $title = null, array $options = null)
+	public static function barDump($var, string $title = null, array $options = [])
 	{
 		if (!self::$productionMode) {
 			static $panel;
 			if (!$panel) {
 				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'), 'Tracy:dumps');
 			}
-			$panel->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, (array) $options + [
+			$panel->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, $options + [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation ?: Dumper::LOCATION_CLASS | Dumper::LOCATION_SOURCE,

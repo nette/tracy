@@ -237,7 +237,7 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code.
 	 */
-	public static function highlightFile(string $file, int $line, int $lines = 15, array $vars = null): ?string
+	public static function highlightFile(string $file, int $line, int $lines = 15, array $vars = []): ?string
 	{
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source) {
@@ -253,7 +253,7 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code.
 	 */
-	public static function highlightPhp(string $source, int $line, int $lines = 15, array $vars = null): string
+	public static function highlightPhp(string $source, int $line, int $lines = 15, array $vars = []): string
 	{
 		if (function_exists('ini_set')) {
 			ini_set('highlight.comment', '#998; font-style: italic');
