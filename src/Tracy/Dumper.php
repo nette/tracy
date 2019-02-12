@@ -101,8 +101,6 @@ class Dumper
 			self::DEBUGINFO => false,
 			self::KEYS_TO_HIDE => [],
 		];
-		$loc = &$options[self::LOCATION];
-		$loc = $loc === true ? ~0 : (int) $loc;
 
 		$options[self::KEYS_TO_HIDE] = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE]));
 		$options[self::OBJECT_EXPORTERS] = (array) $options[self::OBJECT_EXPORTERS] + self::$objectExporters;
@@ -111,6 +109,8 @@ class Dumper
 		});
 
 		$live = !empty($options[self::LIVE]) && $var && (is_array($var) || is_object($var) || is_resource($var));
+		$loc = &$options[self::LOCATION];
+		$loc = $loc === true ? ~0 : (int) $loc;
 		[$file, $line, $code] = $loc ? self::findLocation() : null;
 		$locAttrs = $file && $loc & self::LOCATION_SOURCE ? Helpers::formatHtml(
 			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
@@ -130,7 +130,8 @@ class Dumper
 	 */
 	public static function toText($var, array $options = []): string
 	{
-		return htmlspecialchars_decode(strip_tags(self::toHtml($var, $options)), ENT_QUOTES);
+		$s = self::toHtml($var, $options);
+		return htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
 	}
 
 
@@ -139,9 +140,12 @@ class Dumper
 	 */
 	public static function toTerminal($var, array $options = []): string
 	{
-		return htmlspecialchars_decode(strip_tags(preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m): string {
+		$s = self::toHtml($var, $options);
+		$s = preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m): string {
 			return "\033[" . (isset($m[1], self::$terminalColors[$m[1]]) ? self::$terminalColors[$m[1]] : '0') . 'm';
-		}, self::toHtml($var, $options))), ENT_QUOTES);
+		}, $s);
+		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
+		return $s;
 	}
 
 
@@ -210,8 +214,10 @@ class Dumper
 			return $out . (count($var) - 1) . ") [ <i>RECURSION</i> ]\n";
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH]) {
-			$collapsed = $level ? count($var) >= $options[self::COLLAPSE_COUNT]
+			$collapsed = $level
+				? count($var) >= $options[self::COLLAPSE_COUNT]
 				: (is_int($options[self::COLLAPSE]) ? count($var) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
+
 			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
 				. $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$var[$marker] = true;
@@ -262,8 +268,10 @@ class Dumper
 			return $out . " { <i>RECURSION</i> }\n";
 
 		} elseif (!$options[self::DEPTH] || $level < $options[self::DEPTH] || $var instanceof \Closure) {
-			$collapsed = $level ? count($fields) >= $options[self::COLLAPSE_COUNT]
+			$collapsed = $level
+				? count($fields) >= $options[self::COLLAPSE_COUNT]
 				: (is_int($options[self::COLLAPSE]) ? count($fields) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
+
 			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
 				. $out . "</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 			$list[] = $var;
