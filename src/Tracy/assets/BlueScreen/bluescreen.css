@@ -335,6 +335,17 @@ html.tracy-js #tracy-bs .tracy-toggle.tracy-collapsed {
 	margin-left: .5ex;
 }
 
+#tracy-bs .tracy-dump-flash {
+	animation: tracy-dump-flash .2s ease;
+}
+
+@keyframes tracy-dump-flash {
+	0% {
+		background: #c0c0c033;
+	}
+}
+
+
 #tracy-bs .caused {
 	float: right;
 	padding: .3em .6em;

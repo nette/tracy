@@ -40,6 +40,18 @@
 				}
 			});
 
+			document.documentElement.addEventListener('tracy-toggle', (e) => {
+				if (e.target.matches('.tracy-dump *')) {
+					e.detail.relatedTarget.classList.toggle('tracy-dump-flash', !e.detail.collapsed);
+				}
+			});
+
+			document.documentElement.addEventListener('animationend', (e) => {
+				if (e.animationName === 'tracy-dump-flash') {
+					e.target.classList.toggle('tracy-dump-flash', false);
+				}
+			});
+
 			Tracy.Toggle.init();
 		}
 	}

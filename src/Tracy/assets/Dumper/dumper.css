@@ -58,3 +58,13 @@ pre.tracy-dump a:focus {
 span[data-tracy-href] {
 	border-bottom: 1px dotted rgba(0, 0, 0, .2);
 }
+
+.tracy-dump-flash {
+	animation: tracy-dump-flash .2s ease;
+}
+
+@keyframes tracy-dump-flash {
+	0% {
+		background: #c0c0c033;
+	}
+}
