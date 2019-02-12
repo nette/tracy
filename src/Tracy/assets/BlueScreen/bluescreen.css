@@ -263,6 +263,11 @@ html.tracy-js #tracy-bs .tracy-toggle.tracy-collapsed {
 
 #tracy-bs .tracy-toggle {
 	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 #tracy-bs .tracy-toggle:after {
@@ -272,7 +277,6 @@ html.tracy-js #tracy-bs .tracy-toggle.tracy-collapsed {
 
 #tracy-bs .tracy-toggle.tracy-collapsed:after {
 	content: "\A0\25BA";
-	opacity: .4;
 }
 
 
