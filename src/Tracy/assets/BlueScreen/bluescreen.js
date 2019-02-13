@@ -45,6 +45,28 @@
 					Tracy.Toggle.toggle(document.getElementById('tracy-bs-toggle'));
 				}
 			});
+
+
+			// table sorting
+			blueScreen.addEventListener('click', (e) => {
+				if (!e.target.matches('tr:first-child *')) {
+					return;
+				}
+				let tcell = e.target.closest('td,th');
+				let tbody = tcell.closest('table').tBodies[0];
+				let preserveFirst = !tcell.closest('thead') && !tcell.parentNode.querySelectorAll('td').length;
+				let asc = !(tbody.tracyAsc === tcell.cellIndex);
+				tbody.tracyAsc = asc ? tcell.cellIndex : null;
+
+				Array.from(tbody.querySelectorAll('tr'))
+					.slice(preserveFirst ? 1 : 0)
+					.sort((a, b) => {
+						return function(v1, v2) {
+							return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2);
+						}((asc ? a : b).children[tcell.cellIndex].innerText, (asc ? b : a).children[tcell.cellIndex].innerText);
+					})
+					.forEach((tr) => { tbody.appendChild(tr); });
+			});
 		}
 
 
