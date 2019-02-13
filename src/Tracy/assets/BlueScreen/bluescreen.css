@@ -347,3 +347,10 @@ html.tracy-js #tracy-bs .tracy-toggle.tracy-collapsed {
 #tracy-bs .caused a {
 	color: white;
 }
+
+#tracy-bs .args tr:first-child td:before {
+	position: absolute;
+	right: .3em;
+	content: 'may not be true';
+	opacity: .4;
+}
