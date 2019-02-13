@@ -45,6 +45,8 @@
 					Tracy.Toggle.toggle(document.getElementById('tracy-bs-toggle'));
 				}
 			});
+
+			Tracy.TableSort.init(blueScreen);
 		}
 
 

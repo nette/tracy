@@ -168,6 +168,19 @@
 	background-color: #F7F0CB;
 }
 
+/* TableSort */
+#tracy-bs tr:first-child > * {
+	position: relative;
+}
+
+#tracy-bs tr:first-child > *:hover:before {
+	position: absolute;
+	right: .3em;
+	content: "\21C5";
+	opacity: .4;
+	font-weight: normal;
+}
+
 #tracy-bs ol {
 	margin: 1em 0;
 	padding-left: 2.5em;

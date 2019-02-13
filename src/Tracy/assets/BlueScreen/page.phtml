@@ -47,14 +47,13 @@ $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 		return;
 	}
 	<?php readfile(__DIR__ . '/../Toggle/toggle.js') ?>
+	<?php readfile(__DIR__ . '/../TableSort/table-sort.js') ?>
 	<?php readfile(__DIR__ . '/../Dumper/dumper.js') ?>
 	<?php readfile(__DIR__ . '/bluescreen.js') ?>
 })();
 </script>
 <script<?= $nonceAttr ?>>
 Tracy && Tracy.Dumper.init(<?= json_encode(Dumper::fetchLiveData()) ?>);
-</script>
-<script<?= $nonceAttr ?>>
 Tracy && Tracy.BlueScreen.init();
 </script>
 </body>

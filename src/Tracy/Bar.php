@@ -234,6 +234,7 @@ class Bar
 		array_map('readfile', array_merge([
 			__DIR__ . '/assets/Bar/bar.js',
 			__DIR__ . '/assets/Toggle/toggle.js',
+			__DIR__ . '/assets/TableSort/table-sort.js',
 			__DIR__ . '/assets/Dumper/dumper.js',
 			__DIR__ . '/assets/BlueScreen/bluescreen.js',
 		], Debugger::$customJsFiles));

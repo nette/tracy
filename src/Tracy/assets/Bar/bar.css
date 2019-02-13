@@ -103,6 +103,19 @@ body#tracy-debug { /* in popup window */
 	font-weight: bold;
 }
 
+/* TableSort */
+#tracy-debug tr:first-child > * {
+	position: relative;
+}
+
+#tracy-debug tr:first-child > *:hover:before {
+	position: absolute;
+	right: .3em;
+	content: "\21C5";
+	opacity: .4;
+	font-weight: normal;
+}
+
 #tracy-debug pre,
 #tracy-debug code {
 	font: 9pt/1.5 Consolas, monospace;
