@@ -333,8 +333,8 @@ class Dumper
 		if (is_int($k) || preg_match('#^\w{1,50}\z#', $k)) {
 			return $k;
 
-		} elseif ($k === '') {
-			return '""';
+		} elseif ($k === '' || preg_match('#(?:^\W|\W\z)#', $k)) {
+			return '"' . $k . '"';
 		}
 
 		return self::encodeString($k, $options[self::TRUNCATE]);
