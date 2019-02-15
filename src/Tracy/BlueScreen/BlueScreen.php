@@ -79,12 +79,12 @@ class BlueScreen
 	{
 		if (Helpers::isAjax() && session_status() === PHP_SESSION_ACTIVE) {
 			ob_start(function () {});
-			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/content.phtml');
+			$this->renderTemplate($exception, __DIR__ . '/assets/content.phtml');
 			$contentId = $_SERVER['HTTP_X_TRACY_AJAX'];
 			$_SESSION['_tracy']['bluescreen'][$contentId] = ['content' => ob_get_clean(), 'time' => time()];
 
 		} else {
-			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/page.phtml');
+			$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml');
 		}
 	}
 
@@ -97,7 +97,7 @@ class BlueScreen
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
 			ob_start(function ($buffer) use ($handle): void { fwrite($handle, $buffer); }, 4096);
-			$this->renderTemplate($exception, __DIR__ . '/assets/BlueScreen/page.phtml', false);
+			$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml', false);
 			ob_end_flush();
 			ob_end_clean();
 			fclose($handle);
@@ -140,7 +140,7 @@ class BlueScreen
 		};
 
 		$css = array_map('file_get_contents', array_merge([
-			__DIR__ . '/assets/BlueScreen/bluescreen.css',
+			__DIR__ . '/assets/bluescreen.css',
 		], Debugger::$customCssFiles));
 		$css = preg_replace('#\s+#u', ' ', implode($css));
 

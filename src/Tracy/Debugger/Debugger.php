@@ -298,7 +298,7 @@ class Debugger
 
 			if (Helpers::isHtmlMode()) {
 				$logged = empty($e);
-				require self::$errorTemplate ?: __DIR__ . '/assets/Debugger/error.500.phtml';
+				require self::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml';
 			} elseif (PHP_SAPI === 'cli') {
 				fwrite(STDERR, 'ERROR: application encountered an error and can not continue. '
 					. (isset($e) ? "Unable to log error.\n" : "Error was logged.\n"));

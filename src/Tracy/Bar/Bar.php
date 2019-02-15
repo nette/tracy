@@ -62,7 +62,7 @@ class Bar
 		$contentId = $this->contentId = $this->contentId ?: substr(md5(uniqid('', true)), 0, 10);
 		$nonce = Helpers::getNonce();
 		$async = true;
-		require __DIR__ . '/assets/Bar/loader.phtml';
+		require __DIR__ . '/assets/loader.phtml';
 	}
 
 
@@ -113,7 +113,7 @@ class Bar
 				$contentId = substr(md5(uniqid('', true)), 0, 10);
 				$nonce = Helpers::getNonce();
 				$async = false;
-				require __DIR__ . '/assets/Bar/loader.phtml';
+				require __DIR__ . '/assets/loader.phtml';
 			}
 		}
 	}
@@ -122,8 +122,8 @@ class Bar
 	private static function renderHtmlRows(array $rows): string
 	{
 		ob_start(function () {});
-		require __DIR__ . '/assets/Bar/panels.phtml';
-		require __DIR__ . '/assets/Bar/bar.phtml';
+		require __DIR__ . '/assets/panels.phtml';
+		require __DIR__ . '/assets/bar.phtml';
 		return Helpers::fixEncoding(ob_get_clean());
 	}
 
@@ -211,10 +211,10 @@ class Bar
 	private function renderAssets(): void
 	{
 		$css = array_map('file_get_contents', array_merge([
-			__DIR__ . '/assets/Bar/bar.css',
-			__DIR__ . '/assets/Toggle/toggle.css',
-			__DIR__ . '/assets/Dumper/dumper.css',
-			__DIR__ . '/assets/BlueScreen/bluescreen.css',
+			__DIR__ . '/assets/bar.css',
+			__DIR__ . '/../Toggle/toggle.css',
+			__DIR__ . '/../Dumper/assets/dumper.css',
+			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
 		], Debugger::$customCssFiles));
 
 		echo
@@ -227,11 +227,11 @@ class Bar
 ();\n";
 
 		array_map('readfile', array_merge([
-			__DIR__ . '/assets/Bar/bar.js',
-			__DIR__ . '/assets/Toggle/toggle.js',
-			__DIR__ . '/assets/TableSort/table-sort.js',
-			__DIR__ . '/assets/Dumper/dumper.js',
-			__DIR__ . '/assets/BlueScreen/bluescreen.js',
+			__DIR__ . '/assets/bar.js',
+			__DIR__ . '/../Toggle/toggle.js',
+			__DIR__ . '/../TableSort/table-sort.js',
+			__DIR__ . '/../Dumper/assets/dumper.js',
+			__DIR__ . '/../BlueScreen/assets/bluescreen.js',
 		], Debugger::$customJsFiles));
 	}
 }
