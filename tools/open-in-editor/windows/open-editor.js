@@ -28,7 +28,7 @@ var settings = {
 	mappings: {
 		// '/remotepath': '/localpath'
 	}
-}
+};
 
 
 
@@ -77,5 +77,5 @@ var command = settings.editor.replace(/%line%/, line).replace(/%file%/, file);
 shell.Exec(command);
 
 if (settings.title) {
-	shell.AppActivate(settings.title)
+	shell.AppActivate(settings.title);
 }
