@@ -466,15 +466,11 @@
 			if (window.fetch) {
 				var oldFetch = window.fetch;
 				window.fetch = function(request, options) {
-					options = options || {};
-					options.headers = new Headers(options.headers || {});
-					var url = request instanceof Request ? request.url : request;
+					request = request instanceof Request ? request : new Request(url, options || {});
 
-					if (window.TracyAutoRefresh !== false && new URL(url, location.origin).host === location.host) {
-						options.headers.set('X-Tracy-Ajax', header);
-						options.credentials = (request instanceof Request && request.credentials) || options.credentials || 'same-origin';
-
-						return oldFetch(request, options).then(function (response) {
+					if (window.TracyAutoRefresh !== false && new URL(request.url, location.origin).host === location.host) {
+						request.headers.set('X-Tracy-Ajax', header);
+						return oldFetch(request).then(function (response) {
 							if (response.headers.has('X-Tracy-Ajax') && response.headers.get('X-Tracy-Ajax')[0] === '1') {
 								Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 							}
@@ -483,7 +479,7 @@
 						});
 					}
 
-					return oldFetch(request, options);
+					return oldFetch(request);
 				};
 			}
 		}
