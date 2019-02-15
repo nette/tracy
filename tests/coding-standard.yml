@@ -4,4 +4,4 @@ imports:
 parameters:
     skip:
         PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer:
-            - src/Tracy/Debugger.php
+            - src/Tracy/Debugger/Debugger.php

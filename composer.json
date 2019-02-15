@@ -30,7 +30,7 @@
 	},
 	"autoload": {
 		"classmap": ["src"],
-		"files": ["src/shortcuts.php"]
+		"files": ["src/Tracy/shortcuts.php"]
 	},
 	"minimum-stability": "dev",
 	"extra": {
