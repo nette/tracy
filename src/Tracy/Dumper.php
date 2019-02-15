@@ -218,9 +218,8 @@ class Dumper
 			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
 					$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]) ? self::HIDDEN_VALUE : null;
-					$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-						. '<span class="tracy-dump-key">' . $k . '</span> => '
+						. '<span class="tracy-dump-key">' . Helpers::escapeHtml(self::encodeKey($k, $options)) . '</span> => '
 						. ($hide ? self::dumpString($hide, $options) : self::dumpVar($v, $options, $level + 1));
 				}
 			}
@@ -275,9 +274,8 @@ class Dumper
 					$k = substr($k, strrpos($k, "\x00") + 1);
 				}
 				$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]) ? self::HIDDEN_VALUE : null;
-				$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . Helpers::escapeHtml(self::encodeString($k, $options[self::TRUNCATE])) . '"';
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-					. '<span class="tracy-dump-key">' . $k . "</span>$vis => "
+					. '<span class="tracy-dump-key">' . Helpers::escapeHtml(self::encodeKey($k, $options)) . "</span>$vis => "
 					. ($hide ? self::dumpString($hide, $options) : self::dumpVar($v, $options, $level + 1));
 			}
 			array_pop($list);
@@ -335,8 +333,7 @@ class Dumper
 			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
 					$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]);
-					$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
-					$res[] = [$k, $hide ? self::HIDDEN_VALUE : self::toJson($v, $options, $level + 1)];
+					$res[] = [self::encodeKey($k, $options), $hide ? self::HIDDEN_VALUE : self::toJson($v, $options, $level + 1)];
 				}
 			}
 			unset($var[$marker]);
@@ -374,8 +371,7 @@ class Dumper
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]);
-					$k = is_int($k) || preg_match('#^\w{1,50}\z#', $k) ? $k : '"' . self::encodeString($k, $options[self::TRUNCATE]) . '"';
-					$obj['items'][] = [$k, $hide ? self::HIDDEN_VALUE : self::toJson($v, $options, $level + 1), $vis];
+					$obj['items'][] = [self::encodeKey($k, $options), $hide ? self::HIDDEN_VALUE : self::toJson($v, $options, $level + 1), $vis];
 				}
 			}
 			return ['object' => $obj['id']];
@@ -454,6 +450,18 @@ class Dumper
 		}
 
 		return $s . (empty($shortened) ? '' : ' ... ');
+	}
+
+
+	/**
+	 * @param  int|string  $k
+	 * @return int|string
+	 */
+	private static function encodeKey($key, array $options)
+	{
+		return is_int($key) || preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}\z#', $key)
+			? $key
+			: '"' . self::encodeString($key, $options[self::TRUNCATE]) . '"';
 	}
 
 
