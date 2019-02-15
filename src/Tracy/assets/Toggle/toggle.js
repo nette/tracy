@@ -46,14 +46,10 @@
 			el.classList.toggle('tracy-collapsed', !show);
 			dest.classList.toggle('tracy-collapsed', !show);
 
-			let toggleEvent;
-			if (typeof window.Event === 'function') {
-				toggleEvent = new Event('tracy-toggle', {bubbles: true});
-			} else {
-				toggleEvent = document.createEvent('Event');
-				toggleEvent.initEvent('tracy-toggle', true, false);
-			}
-			el.dispatchEvent(toggleEvent);
+			el.dispatchEvent(new CustomEvent('tracy-toggle', {
+				bubbles: true,
+				detail: {relatedTarget: dest, collapsed: !show}
+			}));
 		}
 
 
