@@ -176,7 +176,7 @@
 
 		<div class="tracy-collapsed inner">
 			<h3>Headers</h3>
-						<pre>%A%</pre>
+						<div class="outer">%A%</div>
 					</div></div>
 
 
