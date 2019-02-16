@@ -12,6 +12,7 @@ if (@!include __DIR__ . '/../vendor/autoload.php') {
 // configure environment
 Tester\Environment::setup();
 date_default_timezone_set('Europe/Prague');
+ini_set('serialize_precision', '14');
 $_GET = $_POST = $_COOKIE = [];
 
 
