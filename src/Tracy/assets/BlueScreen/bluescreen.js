@@ -6,10 +6,11 @@
 	class BlueScreen
 	{
 		static init(ajax) {
-			var blueScreen = document.getElementById('tracy-bs');
+			let blueScreen = document.getElementById('tracy-bs');
+			let styles = [];
 
-			for (var i = 0, styles = []; i < document.styleSheets.length; i++) {
-				var style = document.styleSheets[i];
+			for (let i = 0; i < document.styleSheets.length; i++) {
+				let style = document.styleSheets[i];
 				if (!style.ownerNode.classList.contains('tracy-debug')) {
 					style.oldDisabled = style.disabled;
 					style.disabled = true;
@@ -18,15 +19,15 @@
 			}
 
 			document.getElementById('tracy-bs-toggle').addEventListener('tracy-toggle', function() {
-				var collapsed = this.classList.contains('tracy-collapsed');
-				for (i = 0; i < styles.length; i++) {
+				let collapsed = this.classList.contains('tracy-collapsed');
+				for (let i = 0; i < styles.length; i++) {
 					styles[i].disabled = collapsed ? styles[i].oldDisabled : true;
 				}
 			});
 
 			if (!ajax) {
 				document.body.appendChild(blueScreen);
-				var id = location.href + document.getElementById('tracy-bs-error').textContent;
+				let id = location.href + document.getElementById('tracy-bs-error').textContent;
 				Tracy.Toggle.persist(blueScreen, sessionStorage.getItem('tracy-toggles-bskey') === id);
 				sessionStorage.setItem('tracy-toggles-bskey', id);
 			}
@@ -46,7 +47,7 @@
 
 
 		static loadAjax(content, dumps) {
-			var ajaxBs = document.getElementById('tracy-bs');
+			let ajaxBs = document.getElementById('tracy-bs');
 			if (ajaxBs) {
 				ajaxBs.parentNode.removeChild(ajaxBs);
 			}
@@ -58,7 +59,7 @@
 		}
 	}
 
-	var inited;
+	let inited;
 
 
 	Tracy = window.Tracy || {};

@@ -15,6 +15,7 @@ module.exports = {
 		'semi': ['error', 'always'],
 		'prefer-arrow-callback': ['error'],
 		'arrow-parens': ['error'],
-		'arrow-spacing': ['error']
+		'arrow-spacing': ['error'],
+		'no-var': ['error']
 	}
 };

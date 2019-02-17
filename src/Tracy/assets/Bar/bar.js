@@ -3,6 +3,7 @@
  */
 
 (function(){
+	let nonce, contentId;
 
 	class Panel
 	{
@@ -14,7 +15,7 @@
 
 
 		init() {
-			var elem = this.elem;
+			let elem = this.elem;
 
 			this.init = function() {};
 			elem.innerHTML = addNonces(elem.dataset.tracyContent);
@@ -79,12 +80,12 @@
 
 
 		focus() {
-			var elem = this.elem;
+			let elem = this.elem;
 			if (this.is(Panel.WINDOW)) {
 				elem.Tracy.window.focus();
 
 			} else if (!this.is(Panel.FOCUSED)) {
-				for (var id in Debug.panels) {
+				for (let id in Debug.panels) {
 					Debug.panels[id].elem.classList.remove(Panel.FOCUSED);
 				}
 				elem.classList.add(Panel.FOCUSED);
@@ -94,7 +95,7 @@
 
 
 		blur() {
-			var elem = this.elem;
+			let elem = this.elem;
 			if (this.is(Panel.PEEK)) {
 				clearTimeout(elem.Tracy.displayTimeout);
 				elem.Tracy.displayTimeout = setTimeout(() => {
@@ -125,17 +126,17 @@
 
 
 		toWindow() {
-			var offset = getOffset(this.elem);
+			let offset = getOffset(this.elem);
 			offset.left += typeof window.screenLeft === 'number' ? window.screenLeft : (window.screenX + 10);
 			offset.top += typeof window.screenTop === 'number' ? window.screenTop : (window.screenY + 50);
 
-			var win = window.open('', this.id.replace(/-/g, '_'), 'left=' + offset.left + ',top=' + offset.top
+			let win = window.open('', this.id.replace(/-/g, '_'), 'left=' + offset.left + ',top=' + offset.top
 			+ ',width=' + this.elem.offsetWidth + ',height=' + this.elem.offsetHeight + ',resizable=yes,scrollbars=yes');
 			if (!win) {
 				return false;
 			}
 
-			var doc = win.document;
+			let doc = win.document;
 			doc.write('<!DOCTYPE html><meta charset="utf-8">'
 			+ '<script src="?_tracy_bar=js&amp;XDEBUG_SESSION_STOP=1" onload="Tracy.Dumper.init()" async></script>'
 			+ '<body id="tracy-debug">'
@@ -168,11 +169,11 @@
 
 
 		reposition(deltaX, deltaY) {
-			var pos = getPosition(this.elem);
+			let pos = getPosition(this.elem);
 			if (pos.width) { // is visible?
 				setPosition(this.elem, {left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0)});
 				if (this.is(Panel.RESIZED)) {
-					var size = getWindowSize();
+					let size = getWindowSize();
 					this.elem.style.width = Math.min(size.width, pos.width) + 'px';
 					this.elem.style.height = Math.min(size.height, pos.height) + 'px';
 				}
@@ -181,7 +182,7 @@
 
 
 		savePosition() {
-			var pos = getPosition(this.elem);
+			let pos = getPosition(this.elem);
 			if (this.is(Panel.WINDOW)) {
 				localStorage.setItem(this.id, JSON.stringify({window: true}));
 			} else if (pos.width) { // is visible?
@@ -193,7 +194,7 @@
 
 
 		restorePosition() {
-			var pos = JSON.parse(localStorage.getItem(this.id));
+			let pos = JSON.parse(localStorage.getItem(this.id));
 			if (!pos) {
 				this.elem.classList.add(Panel.PEEK);
 			} else if (pos.window) {
@@ -256,7 +257,7 @@
 						this.close();
 
 					} else if (link.rel) {
-						var panel = Debug.panels[link.rel];
+						let panel = Debug.panels[link.rel];
 						panel.init();
 
 						if (e.shiftKey) {
@@ -284,13 +285,13 @@
 
 					clearTimeout(this.displayTimeout);
 					this.displayTimeout = setTimeout(() => {
-						var panel = Debug.panels[link.rel];
+						let panel = Debug.panels[link.rel];
 						panel.focus();
 
 						if (panel.is(Panel.PEEK)) {
 							panel.init();
 
-							var pos = getPosition(panel.elem);
+							let pos = getPosition(panel.elem);
 							setPosition(panel.elem, {
 								left: getOffset(link).left + getPosition(link).width + 4 - pos.width,
 								top: this.isAtTop()
@@ -315,9 +316,9 @@
 
 
 		autoHideLabels() {
-			var width = getWindowSize().width;
+			let width = getWindowSize().width;
 			forEach(this.elem.children, (ul) => {
-				var i, labels = ul.querySelectorAll('.tracy-label');
+				let i, labels = ul.querySelectorAll('.tracy-label');
 				for (i = 0; i < labels.length && ul.clientWidth < width; i++) {
 					labels.item(i).hidden = false;
 				}
@@ -334,7 +335,7 @@
 
 
 		reposition(deltaX, deltaY) {
-			var pos = getPosition(this.elem);
+			let pos = getPosition(this.elem);
 			if (pos.width) { // is visible?
 				setPosition(this.elem, {left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0)});
 				this.savePosition();
@@ -343,7 +344,7 @@
 
 
 		savePosition() {
-			var pos = getPosition(this.elem);
+			let pos = getPosition(this.elem);
 			if (pos.width) { // is visible?
 				localStorage.setItem(this.id, JSON.stringify(this.isAtTop() ? {right: pos.right, top: pos.top} : {right: pos.right, bottom: pos.bottom}));
 			}
@@ -351,14 +352,14 @@
 
 
 		restorePosition() {
-			var pos = JSON.parse(localStorage.getItem(this.id));
+			let pos = JSON.parse(localStorage.getItem(this.id));
 			setPosition(this.elem, pos || {right: 0, bottom: 0});
 			this.savePosition();
 		}
 
 
 		isAtTop() {
-			var pos = getPosition(this.elem);
+			let pos = getPosition(this.elem);
 			return pos.top < 100 && pos.bottom > pos.top;
 		}
 	}
@@ -398,7 +399,7 @@
 				panel.parentNode.removeChild(panel);
 			});
 
-			var ajaxBar = document.getElementById('tracy-ajax-bar');
+			let ajaxBar = document.getElementById('tracy-ajax-bar');
 			if (ajaxBar) {
 				ajaxBar.parentNode.removeChild(ajaxBar);
 			}
@@ -421,15 +422,15 @@
 
 
 		static captureWindow() {
-			var size = getWindowSize();
+			let size = getWindowSize();
 
 			window.addEventListener('resize', () => {
-				var newSize = getWindowSize();
+				let newSize = getWindowSize();
 
 				Debug.bar.reposition(newSize.width - size.width, newSize.height - size.height);
 				Debug.bar.autoHideLabels();
 
-				for (var id in Debug.panels) {
+				for (let id in Debug.panels) {
 					Debug.panels[id].reposition(newSize.width - size.width, newSize.height - size.height);
 				}
 
@@ -437,7 +438,7 @@
 			});
 
 			window.addEventListener('unload', () => {
-				for (var id in Debug.panels) {
+				for (let id in Debug.panels) {
 					Debug.panels[id].savePosition();
 				}
 			});
@@ -445,11 +446,11 @@
 
 
 		static captureAjax() {
-			var header = Tracy.getAjaxHeader();
+			let header = Tracy.getAjaxHeader();
 			if (!header) {
 				return;
 			}
-			var oldOpen = XMLHttpRequest.prototype.open;
+			let oldOpen = XMLHttpRequest.prototype.open;
 
 			XMLHttpRequest.prototype.open = function() {
 				oldOpen.apply(this, arguments);
@@ -464,7 +465,7 @@
 			};
 
 			if (window.fetch) {
-				var oldFetch = window.fetch;
+				let oldFetch = window.fetch;
 				window.fetch = function(request, options) {
 					request = request instanceof Request ? request : new Request(request, options || {});
 
@@ -500,8 +501,8 @@
 	function evalScripts(elem) {
 		forEach(elem.getElementsByTagName('script'), (script) => {
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
-				var document = script.ownerDocument;
-				var dolly = document.createElement('script');
+				let document = script.ownerDocument;
+				let dolly = document.createElement('script');
 				dolly.textContent = script.textContent;
 				dolly.setAttribute('nonce', nonce);
 				(document.body || document.documentElement).appendChild(dolly);
@@ -511,20 +512,20 @@
 	}
 
 
-	var dragging;
+	let dragging;
 
 	function draggable(elem, options) {
-		var dE = document.documentElement, started, deltaX, deltaY, clientX, clientY;
+		let dE = document.documentElement, started, deltaX, deltaY, clientX, clientY;
 		options = options || {};
 
-		var redraw = function () {
+		let redraw = function () {
 			if (dragging) {
 				setPosition(elem, {left: clientX + deltaX, top: clientY + deltaY});
 				requestAnimationFrame(redraw);
 			}
 		};
 
-		var onMove = function(e) {
+		let onMove = function(e) {
 			if (e.buttons === 0) {
 				return onEnd(e);
 			}
@@ -543,7 +544,7 @@
 			return false;
 		};
 
-		var onEnd = function(e) {
+		let onEnd = function(e) {
 			if (started) {
 				if (options.draggedClass) {
 					elem.classList.remove(options.draggedClass);
@@ -560,7 +561,7 @@
 			return false;
 		};
 
-		var onStart = function(e) {
+		let onStart = function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 
@@ -568,7 +569,7 @@
 				return onEnd(e);
 			}
 
-			var pos = getPosition(elem);
+			let pos = getPosition(elem);
 			clientX = e.touches ? e.touches[0].clientX : e.clientX;
 			clientY = e.touches ? e.touches[0].clientY : e.clientY;
 			deltaX = pos.left - clientX;
@@ -600,7 +601,7 @@
 
 	// returns total offset for element
 	function getOffset(elem) {
-		var res = {left: elem.offsetLeft, top: elem.offsetTop};
+		let res = {left: elem.offsetLeft, top: elem.offsetTop};
 		while (elem = elem.offsetParent) { // eslint-disable-line no-cond-assign
 			res.left += elem.offsetLeft; res.top += elem.offsetTop;
 		}
@@ -618,7 +619,7 @@
 
 	// move to new position
 	function setPosition(elem, coords) {
-		var win = getWindowSize();
+		let win = getWindowSize();
 		if (typeof coords.right !== 'undefined') {
 			coords.left = win.width - elem.offsetWidth - coords.right;
 		}
@@ -632,7 +633,7 @@
 
 	// returns current position
 	function getPosition(elem) {
-		var win = getWindowSize();
+		let win = getWindowSize();
 		return {
 			left: elem.offsetLeft,
 			top: elem.offsetTop,
@@ -645,7 +646,7 @@
 
 
 	function addNonces(html) {
-		var el = document.createElement('div');
+		let el = document.createElement('div');
 		el.innerHTML = html;
 		forEach(el.getElementsByTagName('style'), (style) => {
 			style.setAttribute('nonce', nonce);
@@ -660,8 +661,8 @@
 
 
 	if (document.currentScript) {
-		var nonce = document.currentScript.getAttribute('nonce') || document.currentScript.nonce;
-		var contentId = document.currentScript.dataset.id;
+		nonce = document.currentScript.getAttribute('nonce') || document.currentScript.nonce;
+		contentId = document.currentScript.dataset.id;
 	}
 
 	Tracy = window.Tracy || {};
