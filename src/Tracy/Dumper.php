@@ -22,7 +22,7 @@ class Dumper
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
 		LOCATION = 'location', // show location string? (defaults to 0)
 		OBJECT_EXPORTERS = 'exporters', // custom exporters for objects (defaults to Dumper::$objectexporters)
-		LIVE = 'live', // will be rendered using JavaScript
+		LIVE = 'live', // lazy-loading via JavaScript? true, false or null (only collapsed parts) (defaults to null/false)
 		SNAPSHOT = 'snapshot', // array for shared snapshot, enables LIVE
 		DEBUGINFO = 'debuginfo', // use magic method __debugInfo if exists (defaults to false)
 		KEYS_TO_HIDE = 'keystohide'; // sensitive keys not displayed (defaults to [])
@@ -115,16 +115,18 @@ class Dumper
 		if ($sharedSnapshot = is_array($snapshot)) {
 			$options[self::LIVE] = true;
 		}
-		$live = null;
+		$html = $live = null;
 		if ($options[self::LIVE] && (is_array($var) || is_object($var) || is_resource($var)) && $var) {
 			$live = self::toJson($var, $options);
+		} else {
+			$html = self::dumpVar($var, $options);
 		}
 
 		return '<pre class="tracy-dump' . ($live && $options[self::COLLAPSE] === true ? ' tracy-collapsed' : '') . '"'
 			. $locAttrs
-			. ($snapshot && !$sharedSnapshot ? ' ' . self::formatSnapshotAttribute($snapshot) : '')
+			. (is_array($snapshot) && !$sharedSnapshot ? ' ' . self::formatSnapshotAttribute($snapshot) : '')
 			. ($live ? " data-tracy-dump='" . json_encode($live, JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
-			. ($live ? '' : self::dumpVar($var, $options))
+			. $html
 			. ($file && $loc & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
 	}
@@ -135,7 +137,7 @@ class Dumper
 	 */
 	public static function toText($var, array $options = []): string
 	{
-		$s = self::toHtml($var, $options);
+		$s = self::toHtml($var, [self::LIVE => false] + $options);
 		return htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
 	}
 
@@ -145,7 +147,7 @@ class Dumper
 	 */
 	public static function toTerminal($var, array $options = []): string
 	{
-		$s = self::toHtml($var, $options);
+		$s = self::toHtml($var, [self::LIVE => false] + $options);
 		$s = preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m): string {
 			return "\033[" . (isset($m[1], self::$terminalColors[$m[1]]) ? self::$terminalColors[$m[1]] : '0') . 'm';
 		}, $s);
@@ -223,19 +225,27 @@ class Dumper
 				? count($var) >= $options[self::COLLAPSE_COUNT]
 				: (is_int($options[self::COLLAPSE]) ? count($var) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
 
-			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
-				. $out . count($var) . ")</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
-			$var[$marker] = true;
-			foreach ($var as $k => &$v) {
-				if ($k !== $marker) {
-					$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]) ? self::HIDDEN_VALUE : null;
-					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-						. '<span class="tracy-dump-key">' . Helpers::escapeHtml(self::encodeKey($k, $options)) . '</span> => '
-						. ($hide ? self::dumpString($hide, $options) : self::dumpVar($v, $options, $level + 1));
+			$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
+
+			if ($collapsed && $options[self::LIVE] !== false) {
+				$options[self::SNAPSHOT] = (array) $options[self::SNAPSHOT];
+				return $span . " data-tracy-dump='" . json_encode(self::toJson($var, $options), JSON_HEX_APOS | JSON_HEX_AMP) . "'>" . $out . count($var) . ")</span>\n";
+
+			} else {
+				$out = $span . '>' . $out . count($var) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+				$var[$marker] = true;
+				foreach ($var as $k => &$v) {
+					if ($k !== $marker) {
+						$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]) ? self::HIDDEN_VALUE : null;
+						$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+							. '<span class="tracy-dump-key">' . Helpers::escapeHtml(self::encodeKey($k, $options)) . '</span> => '
+							. ($hide ? self::dumpString($hide, $options) : self::dumpVar($v, $options, $level + 1));
+					}
 				}
+				unset($var[$marker]);
+
+				return $out . '</div>';
 			}
-			unset($var[$marker]);
-			return $out . '</div>';
 
 		} else {
 			return $out . count($var) . ") [ ... ]\n";
@@ -277,22 +287,30 @@ class Dumper
 				? count($fields) >= $options[self::COLLAPSE_COUNT]
 				: (is_int($options[self::COLLAPSE]) ? count($fields) >= $options[self::COLLAPSE] : $options[self::COLLAPSE]);
 
-			$out = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">'
-				. $out . "</span>\n<div" . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
-			$list[] = $var;
-			foreach ($fields as $k => &$v) {
-				$vis = '';
-				if (isset($k[0]) && $k[0] === "\x00") {
-					$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
-					$k = substr($k, strrpos($k, "\x00") + 1);
+			$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
+
+			if ($collapsed && $options[self::LIVE] !== false) {
+				return $span . " data-tracy-dump='" . json_encode(self::toJson($var, $options), JSON_HEX_APOS | JSON_HEX_AMP) . "'>" . $out . "</span>\n";
+
+			} else {
+				$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+				$list[] = $var;
+				foreach ($fields as $k => &$v) {
+					$vis = '';
+					if (isset($k[0]) && $k[0] === "\x00") {
+						$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
+						$k = substr($k, strrpos($k, "\x00") + 1);
+					}
+					$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]) ? self::HIDDEN_VALUE : null;
+					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+						. '<span class="tracy-dump-key">' . Helpers::escapeHtml(self::encodeKey($k, $options)) . "</span>$vis => "
+						. ($hide ? self::dumpString($hide, $options) : self::dumpVar($v, $options, $level + 1));
 				}
-				$hide = is_string($k) && isset($options[self::KEYS_TO_HIDE][strtolower($k)]) ? self::HIDDEN_VALUE : null;
-				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-					. '<span class="tracy-dump-key">' . Helpers::escapeHtml(self::encodeKey($k, $options)) . "</span>$vis => "
-					. ($hide ? self::dumpString($hide, $options) : self::dumpVar($v, $options, $level + 1));
+				array_pop($list);
+
+				return $out . '</div>';
 			}
-			array_pop($list);
-			return $out . '</div>';
+
 
 		} else {
 			return $out . " { ... }\n";

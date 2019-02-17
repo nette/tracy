@@ -18,9 +18,18 @@
 				if (el.tagName === 'META') { // <meta data-tracy-snapshot>
 					preList = el.parentElement.querySelectorAll('[data-tracy-dump]');
 					el.parentNode.removeChild(el);
-				} else { // <pre data-tracy-snapshot data-tracy-dump>
+				} else if (el.matches('[data-tracy-dump]')) { // <pre data-tracy-snapshot data-tracy-dump>
 					preList = [el];
 					el.removeAttribute('data-tracy-snapshot');
+				} else { // <span data-tracy-dump>
+					el.querySelectorAll('[data-tracy-dump]').forEach((el) => {
+						el.parentNode.removeChild(el.nextSibling); // remove \n after toggler
+						el.parentNode.replaceChild( // replace toggler
+							build(JSON.parse(el.getAttribute('data-tracy-dump')), snapshot, el.classList.contains('tracy-collapsed')),
+							el
+						);
+					});
+					return;
 				}
 
 				preList.forEach((el) => {
