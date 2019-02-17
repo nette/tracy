@@ -466,25 +466,23 @@
 				}
 			};
 
-			if (window.fetch) {
-				let oldFetch = window.fetch;
-				window.fetch = function(request, options) {
-					request = request instanceof Request ? request : new Request(request, options || {});
+			let oldFetch = window.fetch;
+			window.fetch = function(request, options) {
+				request = request instanceof Request ? request : new Request(request, options || {});
 
-					if (window.TracyAutoRefresh !== false && new URL(request.url, location.origin).host === location.host) {
-						request.headers.set('X-Tracy-Ajax', header);
-						return oldFetch(request).then((response) => {
-							if (response.headers.has('X-Tracy-Ajax') && response.headers.get('X-Tracy-Ajax')[0] === '1') {
-								Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
-							}
+				if (window.TracyAutoRefresh !== false && new URL(request.url, location.origin).host === location.host) {
+					request.headers.set('X-Tracy-Ajax', header);
+					return oldFetch(request).then((response) => {
+						if (response.headers.has('X-Tracy-Ajax') && response.headers.get('X-Tracy-Ajax')[0] === '1') {
+							Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+						}
 
-							return response;
-						});
-					}
+						return response;
+					});
+				}
 
-					return oldFetch(request);
-				};
-			}
+				return oldFetch(request);
+			};
 		}
 
 
