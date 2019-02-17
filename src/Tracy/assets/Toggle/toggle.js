@@ -8,7 +8,7 @@
 	class Toggle
 	{
 		static init() {
-			document.documentElement.addEventListener('click', function(e) {
+			document.documentElement.addEventListener('click', (e) => {
 				var el = e.target.closest('.tracy-toggle');
 				if (el && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
 					Toggle.toggle(el);
@@ -57,7 +57,7 @@
 		// save & restore toggles
 		static persist(baseEl, restore) {
 			var saved = [];
-			baseEl.addEventListener('tracy-toggle', function(e) {
+			baseEl.addEventListener('tracy-toggle', (e) => {
 				if (saved.indexOf(e.target) < 0) {
 					saved.push(e.target);
 				}
@@ -65,7 +65,7 @@
 
 			var toggles = JSON.parse(sessionStorage.getItem('tracy-toggles-' + baseEl.id));
 			if (toggles && restore !== false) {
-				toggles.forEach(function(item) {
+				toggles.forEach((item) => {
 					var el = baseEl;
 					for (var i in item.path) {
 						if (!(el = el.children[item.path[i]])) {
@@ -78,8 +78,8 @@
 				});
 			}
 
-			window.addEventListener('unload', function() {
-				toggles = [].map.call(saved, function(el) {
+			window.addEventListener('unload', () => {
+				toggles = [].map.call(saved, (el) => {
 					var item = {path: [], text: el.textContent, show: !el.classList.contains('tracy-collapsed')};
 					do {
 						item.path.unshift([].indexOf.call(el.parentNode.children, el));

@@ -37,7 +37,7 @@
 			inited = true;
 
 			// enables toggling via ESC
-			document.addEventListener('keyup', function(e) {
+			document.addEventListener('keyup', (e) => {
 				if (e.keyCode === 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) { // ESC
 					Tracy.Toggle.toggle(document.getElementById('tracy-bs-toggle'));
 				}

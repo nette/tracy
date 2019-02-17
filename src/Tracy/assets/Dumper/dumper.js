@@ -11,7 +11,7 @@
 	{
 		static init(repository, context) {
 			if (repository) {
-				[].forEach.call((context || document).querySelectorAll('.tracy-dump[data-tracy-dump]'), function(el) {
+				[].forEach.call((context || document).querySelectorAll('.tracy-dump[data-tracy-dump]'), (el) => {
 					try {
 						el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
 						el.classList.remove('tracy-collapsed');
@@ -30,7 +30,7 @@
 			Dumper.inited = true;
 
 			// enables <span data-tracy-href=""> & ctrl key
-			document.documentElement.addEventListener('click', function(e) {
+			document.documentElement.addEventListener('click', (e) => {
 				var el;
 				if (e.ctrlKey && (el = e.target.closest('[data-tracy-href]'))) {
 					location.href = el.getAttribute('data-tracy-href');

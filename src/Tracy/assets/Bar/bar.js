@@ -46,7 +46,7 @@
 				this.blur();
 			});
 
-			elem.addEventListener('mousemove', e => {
+			elem.addEventListener('mousemove', (e) => {
 				if (e.buttons && !this.is(Panel.RESIZED) && (elem.style.width || elem.style.height)) {
 					elem.classList.add(Panel.RESIZED);
 				}
@@ -56,8 +56,8 @@
 				this.reposition();
 			});
 
-			forEach(elem.querySelectorAll('.tracy-icons a'), link => {
-				link.addEventListener('click', e => {
+			forEach(elem.querySelectorAll('.tracy-icons a'), (link) => {
+				link.addEventListener('click', (e) => {
 					if (link.rel === 'close') {
 						this.toPeek();
 					} else if (link.rel === 'window') {
@@ -151,7 +151,7 @@
 				win.close(); // forces closing, can be invoked by F5
 			});
 
-			doc.addEventListener('keyup', e => {
+			doc.addEventListener('keyup', (e) => {
 				if (e.keyCode === 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
 					win.close();
 				}
@@ -236,7 +236,7 @@
 				}
 			});
 
-			this.elem.addEventListener('mousedown', e => {
+			this.elem.addEventListener('mousedown', (e) => {
 				e.preventDefault();
 			});
 
@@ -250,8 +250,8 @@
 
 
 		initTabs(elem) {
-			forEach(elem.getElementsByTagName('a'), link => {
-				link.addEventListener('click', e => {
+			forEach(elem.getElementsByTagName('a'), (link) => {
+				link.addEventListener('click', (e) => {
 					if (link.rel === 'close') {
 						this.close();
 
@@ -277,7 +277,7 @@
 					e.preventDefault();
 				});
 
-				link.addEventListener('mouseenter', e => {
+				link.addEventListener('mouseenter', (e) => {
 					if (e.buttons || !link.rel || link.rel === 'close' || elem.classList.contains('tracy-dragged')) {
 						return;
 					}
@@ -316,7 +316,7 @@
 
 		autoHideLabels() {
 			var width = getWindowSize().width;
-			forEach(this.elem.children, function (ul) {
+			forEach(this.elem.children, (ul) => {
 				var i, labels = ul.querySelectorAll('.tracy-label');
 				for (i = 0; i < labels.length && ul.clientWidth < width; i++) {
 					labels.item(i).hidden = false;
@@ -380,7 +380,7 @@
 			Debug.layer.style.display = 'block';
 			Debug.bar.init();
 
-			forEach(document.querySelectorAll('.tracy-panel'), panel => {
+			forEach(document.querySelectorAll('.tracy-panel'), (panel) => {
 				Debug.panels[panel.id] = new Panel(panel.id);
 				Debug.panels[panel.id].dumps = dumps;
 				Debug.panels[panel.id].restorePosition();
@@ -392,7 +392,7 @@
 
 
 		static loadAjax(content, dumps) {
-			forEach(Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax'), panel => {
+			forEach(Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax'), (panel) => {
 				Debug.panels[panel.id].savePosition();
 				delete Debug.panels[panel.id];
 				panel.parentNode.removeChild(panel);
@@ -408,7 +408,7 @@
 			ajaxBar = document.getElementById('tracy-ajax-bar');
 			Debug.bar.elem.appendChild(ajaxBar);
 
-			forEach(document.querySelectorAll('.tracy-panel'), panel => {
+			forEach(document.querySelectorAll('.tracy-panel'), (panel) => {
 				if (!Debug.panels[panel.id]) {
 					Debug.panels[panel.id] = new Panel(panel.id);
 					Debug.panels[panel.id].dumps = dumps;
@@ -470,7 +470,7 @@
 
 					if (window.TracyAutoRefresh !== false && new URL(request.url, location.origin).host === location.host) {
 						request.headers.set('X-Tracy-Ajax', header);
-						return oldFetch(request).then(function (response) {
+						return oldFetch(request).then((response) => {
 							if (response.headers.has('X-Tracy-Ajax') && response.headers.get('X-Tracy-Ajax')[0] === '1') {
 								Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 							}
@@ -498,7 +498,7 @@
 
 
 	function evalScripts(elem) {
-		forEach(elem.getElementsByTagName('script'), script => {
+		forEach(elem.getElementsByTagName('script'), (script) => {
 			if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 				var document = script.ownerDocument;
 				var dolly = document.createElement('script');
@@ -585,11 +585,11 @@
 			}
 		};
 
-		forEach(options.handles, function (handle) {
+		forEach(options.handles, (handle) => {
 			handle.addEventListener('mousedown', onStart);
 			handle.addEventListener('touchstart', onStart);
 
-			handle.addEventListener('click', function(e) {
+			handle.addEventListener('click', (e) => {
 				if (started) {
 					e.stopImmediatePropagation();
 				}
@@ -647,7 +647,7 @@
 	function addNonces(html) {
 		var el = document.createElement('div');
 		el.innerHTML = html;
-		forEach(el.getElementsByTagName('style'), style => {
+		forEach(el.getElementsByTagName('style'), (style) => {
 			style.setAttribute('nonce', nonce);
 		});
 		return el.innerHTML;
