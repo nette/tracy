@@ -14,15 +14,9 @@
 		static init(repository, context) {
 			if (repository) {
 				(context || document).querySelectorAll('.tracy-dump[data-tracy-dump]').forEach((el) => {
-					try {
-						el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
-						el.classList.remove('tracy-collapsed');
-						el.removeAttribute('data-tracy-dump');
-					} catch (e) {
-						if (!(e instanceof UnknownEntityException)) {
-							throw e;
-						}
-					}
+					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
+					el.classList.remove('tracy-collapsed');
+					el.removeAttribute('data-tracy-dump');
 				});
 			}
 
