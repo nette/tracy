@@ -2,6 +2,8 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+'use strict';
+
 (function(){
 	class BlueScreen
 	{
