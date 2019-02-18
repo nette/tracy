@@ -204,7 +204,7 @@ class Bar
 
 		if ($this->useSession && Helpers::isAjax()) {
 			header('X-Tracy-Ajax: 1'); // session must be already locked
-			$seq = mt_rand(1000, 10000000);
+			$seq = random_int(1000, 10000000);
 			$_SERVER['HTTP_X_TRACY_SEQ'] = $seq;
 			header('X-Tracy-Seq: ' . $seq);
 		}
