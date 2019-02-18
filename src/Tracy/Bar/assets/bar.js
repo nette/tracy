@@ -5,7 +5,7 @@
 'use strict';
 
 (function(){
-	let nonce, contentId, ajaxCounter = 1;
+	let nonce, contentId;
 
 	class Panel
 	{
@@ -393,19 +393,16 @@
 
 
 		static loadAjax(content) {
-			let rows = Debug.bar.elem.querySelectorAll('.tracy-row[data-tracy-group=ajax]');
-			let max = window.TracyMaxAjaxRows || 3;
-			rows.forEach((row) => {
-				if (--max <= 0) {
-					Debug.removeRow(row);
-				}
-			});
+			let ajaxBar = Debug.layer.querySelector('.tracy-row[data-tracy-group=ajax]');
+			if (ajaxBar) {
+				Debug.removeRow(ajaxBar);
+			}
 
 			Debug.layer.insertAdjacentHTML('beforeend', content);
 			evalScripts(Debug.layer);
 			let container = document.getElementById('tracy-container');
 			let ajaxBar = container.querySelector('.tracy-row[data-tracy-group=ajax]');
-			Debug.bar.elem.insertBefore(ajaxBar, rows[0]);
+			Debug.bar.elem.appendChild(ajaxBar);
 			container.parentNode.removeChild(container);
 
 			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
@@ -453,11 +450,10 @@
 			XMLHttpRequest.prototype.open = function() {
 				oldOpen.apply(this, arguments);
 				if (window.TracyAutoRefresh !== false && new URL(arguments[1], location.origin).host === location.host) {
-					let reqId = header + '_' + ajaxCounter++;
-					this.setRequestHeader('X-Tracy-Ajax', reqId);
+					this.setRequestHeader('X-Tracy-Ajax', header);
 					this.addEventListener('load', function() {
 						if (this.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
-							Debug.loadScript('?_tracy_bar=content-ajax.' + reqId + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+							Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 						}
 					});
 				}
@@ -468,11 +464,10 @@
 				request = request instanceof Request ? request : new Request(request, options || {});
 
 				if (window.TracyAutoRefresh !== false && new URL(request.url, location.origin).host === location.host) {
-					let reqId = header + '_' + ajaxCounter++;
-					request.headers.set('X-Tracy-Ajax', reqId);
+					request.headers.set('X-Tracy-Ajax', header);
 					return oldFetch(request).then((response) => {
 						if (response.headers.has('X-Tracy-Ajax') && response.headers.get('X-Tracy-Ajax')[0] === '1') {
-							Debug.loadScript('?_tracy_bar=content-ajax.' + reqId + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+							Debug.loadScript('?_tracy_bar=content-ajax.' + header + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 						}
 
 						return response;

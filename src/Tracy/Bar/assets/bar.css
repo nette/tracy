@@ -154,16 +154,7 @@ body#tracy-debug { /* in popup window */
 
 #tracy-debug-bar .tracy-row:not(:first-child) {
 	opacity: .6;
-}
-
-#tracy-debug-bar .tracy-row[data-tracy-group="ajax"] {
-	animation: tracy-row-flash .2s ease;
-}
-
-@keyframes tracy-row-flash {
-	0% {
-		background: #c9c0a0;
-	}
+	background: #F5F3EE;
 }
 
 #tracy-debug-bar .tracy-row:not(:first-child) li:first-child {
