@@ -160,17 +160,17 @@ body#tracy-debug { /* in popup window */
 	transition: opacity 0.1s;
 }
 
-#tracy-debug-bar ul {
+#tracy-debug-bar .tracy-row {
 	list-style: none none;
 	display: flex;
 }
 
-#tracy-debug-bar ul:not(:first-child) li {
+#tracy-debug-bar .tracy-row:not(:first-child) {
 	opacity: .6;
 	background: #F5F3EE;
 }
 
-#tracy-debug-bar ul:not(:first-child) li:first-child {
+#tracy-debug-bar .tracy-row:not(:first-child) li:first-child {
 	width: 4.1em;
 	text-align: center;
 }

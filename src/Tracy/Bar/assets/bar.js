@@ -318,12 +318,12 @@
 
 		autoHideLabels() {
 			let width = getWindowSize().width;
-			Array.from(this.elem.children).forEach((ul) => {
-				let i, labels = ul.querySelectorAll('.tracy-label');
-				for (i = 0; i < labels.length && ul.clientWidth < width; i++) {
+			this.elem.querySelectorAll('.tracy-row').forEach((row) => {
+				let i, labels = row.querySelectorAll('.tracy-label');
+				for (i = 0; i < labels.length && row.clientWidth < width; i++) {
 					labels.item(i).hidden = false;
 				}
-				for (i = labels.length - 1; i >= 0 && ul.clientWidth >= width; i--) {
+				for (i = labels.length - 1; i >= 0 && row.clientWidth >= width; i--) {
 					labels.item(i).hidden = true;
 				}
 			});
@@ -382,7 +382,7 @@
 			Debug.layer.style.display = 'block';
 			Debug.bar.init();
 
-			document.querySelectorAll('.tracy-panel').forEach((panel) => {
+			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
 				Debug.panels[panel.id] = new Panel(panel.id);
 				Debug.panels[panel.id].restorePosition();
 			});
@@ -395,23 +395,23 @@
 
 
 		static loadAjax(content) {
-			Debug.layer.querySelectorAll('.tracy-panel.tracy-ajax').forEach((panel) => {
-				Debug.panels[panel.id].savePosition();
-				delete Debug.panels[panel.id];
-				panel.parentNode.removeChild(panel);
-			});
-
-			let ajaxBar = document.getElementById('tracy-ajax-bar');
+			let ajaxBar = Debug.layer.querySelector('.tracy-row[data-tracy-group=ajax]');
 			if (ajaxBar) {
+				ajaxBar.querySelectorAll('a[rel]').forEach((tab) => {
+					let panel = Debug.panels[tab.rel];
+					delete Debug.panels[tab.rel];
+					panel.savePosition();
+					panel.elem.parentNode.removeChild(panel.elem);
+				});
 				ajaxBar.parentNode.removeChild(ajaxBar);
 			}
 
 			Debug.layer.insertAdjacentHTML('beforeend', content);
 			evalScripts(Debug.layer);
-			ajaxBar = document.getElementById('tracy-ajax-bar');
+			ajaxBar = Debug.layer.querySelector('.tracy-row[data-tracy-group=ajax]');
 			Debug.bar.elem.appendChild(ajaxBar);
 
-			document.querySelectorAll('.tracy-panel').forEach((panel) => {
+			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
 				if (!Debug.panels[panel.id]) {
 					Debug.panels[panel.id] = new Panel(panel.id);
 					Debug.panels[panel.id].restorePosition();
