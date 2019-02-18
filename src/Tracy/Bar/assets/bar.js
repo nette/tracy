@@ -318,12 +318,12 @@
 
 		autoHideLabels() {
 			let width = getWindowSize().width;
-			Array.from(this.elem.children).forEach((ul) => {
-				let i, labels = ul.querySelectorAll('.tracy-label');
-				for (i = 0; i < labels.length && ul.clientWidth < width; i++) {
+			this.elem.querySelectorAll('.tracy-row').forEach((row) => {
+				let i, labels = row.querySelectorAll('.tracy-label');
+				for (i = 0; i < labels.length && row.clientWidth < width; i++) {
 					labels.item(i).hidden = false;
 				}
-				for (i = labels.length - 1; i >= 0 && ul.clientWidth >= width; i--) {
+				for (i = labels.length - 1; i >= 0 && row.clientWidth >= width; i--) {
 					labels.item(i).hidden = true;
 				}
 			});
@@ -382,7 +382,7 @@
 			Debug.layer.style.display = 'block';
 			Debug.bar.init();
 
-			document.querySelectorAll('.tracy-panel').forEach((panel) => {
+			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
 				Debug.panels[panel.id] = new Panel(panel.id);
 				Debug.panels[panel.id].restorePosition();
 			});
@@ -393,17 +393,17 @@
 
 
 		static loadAjax(content) {
-			let ajaxBar = document.getElementById('tracy-ajax-bar');
+			let ajaxBar = Debug.layer.querySelector('.tracy-row[data-tracy-group=ajax]');
 			if (ajaxBar) {
 				Debug.removeRow(ajaxBar);
 			}
 
 			Debug.layer.insertAdjacentHTML('beforeend', content);
 			evalScripts(Debug.layer);
-			ajaxBar = document.getElementById('tracy-ajax-bar');
+			ajaxBar = Debug.layer.querySelector('.tracy-row[data-tracy-group=ajax]');
 			Debug.bar.elem.appendChild(ajaxBar);
 
-			document.querySelectorAll('.tracy-panel').forEach((panel) => {
+			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
 				if (!Debug.panels[panel.id]) {
 					Debug.panels[panel.id] = new Panel(panel.id);
 					Debug.panels[panel.id].restorePosition();
