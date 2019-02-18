@@ -17,6 +17,6 @@ in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-st
 
 
 	<div class="tracy-icons">
-		<a href="#" rel="window" title="open in window">&curren;</a>
-		<a href="#" rel="close" title="close window">&times;</a>
+		<a href="#" data-tracy-action="window" title="open in window">&curren;</a>
+		<a href="#" data-tracy-action="close" title="close window">&times;</a>
 	</div>
