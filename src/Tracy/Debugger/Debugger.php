@@ -141,9 +141,9 @@ class Debugger
 	 * Enables displaying or logging errors and exceptions.
 	 * @param  mixed   $mode  production, development mode, autodetection or IP address(es) whitelist.
 	 * @param  string  $logDirectory  error log directory
-	 * @param  string  $email  administrator email; enables email sending in production mode
+	 * @param  string|array  $email  administrator email; enables email sending in production mode
 	 */
-	public static function enable($mode = null, string $logDirectory = null, string $email = null): void
+	public static function enable($mode = null, string $logDirectory = null, $email = null): void
 	{
 		if ($mode !== null || self::$productionMode === null) {
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
