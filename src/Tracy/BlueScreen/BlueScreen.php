@@ -124,20 +124,7 @@ class BlueScreen
 
 		$snapshot = &$this->snapshot;
 		$snapshot = [];
-		$keysToHide = array_flip(array_map('strtolower', $this->keysToHide));
-
-		$dump = function ($v, $k = null) use ($keysToHide): string {
-			if (is_string($k) && isset($keysToHide[strtolower($k)])) {
-				$v = Dumper::HIDDEN_VALUE;
-			}
-			return Dumper::toHtml($v, [
-				Dumper::DEPTH => $this->maxDepth,
-				Dumper::TRUNCATE => $this->maxLength,
-				Dumper::SNAPSHOT => &$this->snapshot,
-				Dumper::LOCATION => Dumper::LOCATION_CLASS,
-				Dumper::KEYS_TO_HIDE => $this->keysToHide,
-			]);
-		};
+		$dump = $this->getDumper();
 
 		$css = array_map('file_get_contents', array_merge([
 			__DIR__ . '/assets/bluescreen.css',
@@ -347,5 +334,24 @@ class BlueScreen
 			}
 		}
 		return false;
+	}
+
+
+	public function getDumper(): \Closure
+	{
+		$keysToHide = array_flip(array_map('strtolower', $this->keysToHide));
+
+		return function ($v, $k = null) use ($keysToHide): string {
+			if (is_string($k) && isset($keysToHide[strtolower($k)])) {
+				$v = Dumper::HIDDEN_VALUE;
+			}
+			return Dumper::toHtml($v, [
+				Dumper::DEPTH => $this->maxDepth,
+				Dumper::TRUNCATE => $this->maxLength,
+				Dumper::SNAPSHOT => &$this->snapshot,
+				Dumper::LOCATION => Dumper::LOCATION_CLASS,
+				Dumper::KEYS_TO_HIDE => $this->keysToHide,
+			]);
+		};
 	}
 }
