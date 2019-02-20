@@ -33,22 +33,36 @@ class Bridge
 
 	public static function renderLatteError(?\Throwable $e): ?array
 	{
-		if (!$e instanceof Latte\CompileException) {
-			return null;
+		if ($e instanceof Latte\CompileException) {
+			return [
+				'tab' => 'Template',
+				'panel' => (preg_match('#\n|\?#', $e->sourceName)
+						? ''
+						: '<p>'
+							. (@is_file($e->sourceName) // @ - may trigger error
+								? '<b>File:</b> ' . Helpers::editorLink($e->sourceName, $e->sourceLine)
+								: '<b>' . htmlspecialchars($e->sourceName . ($e->sourceLine ? ':' . $e->sourceLine : '')) . '</b>')
+							. '</p>')
+					. '<pre class=code><div>'
+					. BlueScreen::highlightLine(htmlspecialchars($e->sourceCode, ENT_IGNORE, 'UTF-8'), $e->sourceLine)
+					. '</div></pre>',
+			];
+
+		} elseif ($e && strpos($file = $e->getFile(), '.latte--')) {
+			$lines = file($file);
+			if (preg_match('#// source: (\S+\.latte)#', $lines[1], $m) && @is_file($m[1])) { // @ - may trigger error
+				$templateFile = $m[1];
+				$templateLine = preg_match('#/\* line (\d+) \*/#', $lines[$e->getLine() - 1], $m) ? (int) $m[1] : null;
+				return [
+					'tab' => 'Template',
+					'panel' => '<p><b>File:</b> ' . Helpers::editorLink($templateFile, $templateLine) . '</p>'
+						. ($templateLine === null
+							? ''
+							: '<pre class="code"><div>' . BlueScreen::highlightFile($templateFile, $templateLine) . '</div></pre>'),
+				];
+			}
 		}
-		return [
-			'tab' => 'Template',
-			'panel' => (preg_match('#\n|\?#', $e->sourceName)
-					? ''
-					: '<p>'
-						. (@is_file($e->sourceName) // @ - may trigger error
-							? '<b>File:</b> ' . Helpers::editorLink($e->sourceName, $e->sourceLine)
-							: '<b>' . htmlspecialchars($e->sourceName . ($e->sourceLine ? ':' . $e->sourceLine : '')) . '</b>')
-						. '</p>')
-				. '<pre class=code><div>'
-				. BlueScreen::highlightLine(htmlspecialchars($e->sourceCode, ENT_IGNORE, 'UTF-8'), $e->sourceLine)
-				. '</div></pre>',
-		];
+		return null;
 	}
 
 
