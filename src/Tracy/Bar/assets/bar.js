@@ -394,6 +394,7 @@
 
 		static loadAjax(content) {
 			let rows = Debug.bar.elem.querySelectorAll('.tracy-row[data-tracy-group=ajax]');
+			rows = Array.from(rows).reverse();
 			let max = window.TracyMaxAjaxRows || 3;
 			rows.forEach((row) => {
 				if (--max > 0) {
@@ -420,7 +421,7 @@
 			evalScripts(Debug.layer);
 			let container = document.getElementById('tracy-container');
 			let ajaxBar = container.querySelector('.tracy-row[data-tracy-group=ajax]');
-			Debug.bar.elem.insertBefore(ajaxBar, rows[0]);
+			Debug.bar.elem.appendChild(ajaxBar);
 			container.parentNode.removeChild(container);
 
 			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
