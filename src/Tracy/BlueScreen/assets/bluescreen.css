@@ -188,11 +188,12 @@
 
 #tracy-bs ul {
 	font-size: 7pt;
-	padding: 2em 4em;
+	padding: 2em 3em;
 	margin: 1em 0 0;
 	color: #777;
 	background: #F6F5F3;
 	border-top: 1px solid #DDD;
+	list-style: none;
 }
 
 #tracy-bs-logo a {
