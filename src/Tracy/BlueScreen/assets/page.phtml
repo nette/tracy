@@ -26,6 +26,7 @@ $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 	<meta name="generator" content="Tracy by Nette Framework">
 
 	<title><?= Helpers::escapeHtml($title . ': ' . $exception->getMessage() . $code) ?></title>
+	<!-- in <?= str_replace('--', '- ', Helpers::escapeHtml($exception->getFile() . ':' . $exception->getLine())) ?> -->
 	<?php if ($ex = $exception->getPrevious()): ?>
 <!--<?php do { echo str_replace('--', '- ', Helpers::escapeHtml("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''))); } while ($ex = $ex->getPrevious()); ?> -->
 	<?php endif ?>

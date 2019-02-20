@@ -6,6 +6,7 @@
 	<meta name="generator" content="Tracy by Nette Framework">
 
 	<title>Error: Call to undefined function missing_function()</title>
+	<!-- in %a%:%d% -->
 
 	%A%
 </head>

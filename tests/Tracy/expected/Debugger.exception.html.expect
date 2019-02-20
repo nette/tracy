@@ -6,6 +6,7 @@
 	<meta name="generator" content="Tracy by Nette Framework">
 
 	<title>Exception: The my exception #123</title>
+	<!-- in %a%:%d% -->
 
 	%A%
 </head>
