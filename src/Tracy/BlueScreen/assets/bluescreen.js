@@ -46,7 +46,7 @@
 				}
 			});
 
-			Tracy.TableSort.init(blueScreen);
+			Tracy.TableSort.init();
 		}
 
 

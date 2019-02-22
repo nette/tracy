@@ -9,12 +9,14 @@
 	// enables <table class="tracy-sortable">
 	class TableSort
 	{
-		static init(context) {
-			context.addEventListener('click', (e) => {
-				if (e.target.matches('tr:first-child *')) {
+		static init() {
+			document.documentElement.addEventListener('click', (e) => {
+				if (e.target.matches('.tracy-sortable tr:first-child *')) {
 					TableSort.sort(e.target.closest('td,th'));
 				}
 			});
+
+			TableSort.init = function() {};
 		}
 
 		static sort(tcell) {

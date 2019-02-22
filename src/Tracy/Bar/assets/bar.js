@@ -388,7 +388,7 @@
 			Debug.captureWindow();
 			Debug.captureAjax();
 
-			Tracy.TableSort.init(Debug.layer);
+			Tracy.TableSort.init();
 		}
 
 

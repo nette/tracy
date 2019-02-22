@@ -82,7 +82,7 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 
 <div class="tracy-inner tracy-InfoPanel">
 <div class="tracy-inner-container">
-<table>
+<table class="tracy-sortable">
 <?php foreach ($info as $key => $val): ?>
 <tr>
 <?php if (strlen($val) > 25): ?>
@@ -99,7 +99,7 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 
 	<div class="tracy-InfoPanel-packages tracy-collapsed">
 	<?php if ($packages): ?>
-	<table>
+	<table class="tracy-sortable">
 	<?php foreach ($packages as $package): ?>
 		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '')) ?></td></tr>
 	<?php endforeach ?>
@@ -108,7 +108,7 @@ if (class_exists('Composer\Autoload\ClassLoader', false)) {
 
 	<?php if ($devPackages): ?>
 	<h2>Dev Packages</h2>
-	<table>
+	<table class="tracy-sortable">
 	<?php foreach ($devPackages as $package): ?>
 		<tr><td><?= Helpers::escapeHtml($package->name) ?></td><td><?= Helpers::escapeHtml($package->version . (strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '')) ?></td></tr>
 	<?php endforeach ?>

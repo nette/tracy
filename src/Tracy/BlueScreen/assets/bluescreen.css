@@ -169,11 +169,11 @@
 }
 
 /* TableSort */
-#tracy-bs tr:first-child > * {
+#tracy-bs .tracy-sortable tr:first-child > * {
 	position: relative;
 }
 
-#tracy-bs tr:first-child > *:hover:before {
+#tracy-bs .tracy-sortable tr:first-child > *:hover:before {
 	position: absolute;
 	right: .3em;
 	content: "\21C5";
@@ -358,6 +358,10 @@ html.tracy-js #tracy-bs .tracy-toggle.tracy-collapsed {
 
 #tracy-bs .caused a {
 	color: white;
+}
+
+#tracy-bs .args tr:first-child > * {
+	position: relative;
 }
 
 #tracy-bs .args tr:first-child td:before {

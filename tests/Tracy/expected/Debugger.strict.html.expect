@@ -113,7 +113,7 @@
 
 			<div class="tracy-collapsed inner">
 			<div class="outer">
-			<table>
+			<table class="tracy-sortable">
 			<tr><th>$arg1</th><td><pre class="tracy-dump" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>%A?%
 			</table>
@@ -139,7 +139,7 @@
 		<div class="tracy-collapsed inner">
 			<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
 			<div class="outer">
-			<table>%A%</table>
+			<table class="tracy-sortable">%A%</table>
 			</div>
 
 
@@ -151,7 +151,7 @@
 
 						<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
 			<div class="outer tracy-collapsed">
-			<table>%A%</table>
+			<table class="tracy-sortable">%A%</table>
 			</div>
 
 

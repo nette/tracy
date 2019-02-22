@@ -106,7 +106,7 @@
 
 			<div class="tracy-collapsed inner">
 			<div class="outer">
-			<table>
+			<table class="tracy-sortable">
 			<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"root"</span> (4)
 </pre>
 </td></tr>
@@ -136,7 +136,7 @@
 		<div class="tracy-collapsed inner">
 			<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
 			<div class="outer">
-			<table>%A%</table>
+			<table class="tracy-sortable">%A%</table>
 			</div>
 
 
@@ -148,7 +148,7 @@
 
 						<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
 			<div class="outer tracy-collapsed">
-			<table>%A%</table>
+			<table class="tracy-sortable">%A%</table>
 			</div>
 
 

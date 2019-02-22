@@ -153,7 +153,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 			<div class="tracy-collapsed inner">
 			<div class="outer">
-			<table>
+			<table class="tracy-sortable">
 			<?php
 			foreach ($ex->context as $k => $v) {
 				echo '<tr><th>$', Helpers::escapeHtml($k), '</th><td>', $dump($v, $k), "</td></tr>\n";
@@ -213,7 +213,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 		<div class="tracy-collapsed inner">
 			<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
 			<div class="outer">
-			<table>
+			<table class="tracy-sortable">
 			<?php
 			foreach ($_SERVER as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', $dump($v, $k), "</td></tr>\n";
 			?>
@@ -226,7 +226,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php if (empty($_SESSION)):?>
 			<p><i>empty</i></p>
 			<?php else: ?>
-			<table>
+			<table class="tracy-sortable">
 			<?php
 			foreach ($_SESSION as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', $k === '__NF' ? '<i>Nette Session</i>' : $dump($v, $k), "</td></tr>\n";
 			?>
@@ -238,7 +238,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php if (!empty($_SESSION['__NF']['DATA'])):?>
 			<h3><a data-tracy-ref="^+" class="tracy-toggle">Nette Session</a></h3>
 			<div class="outer">
-			<table>
+			<table class="tracy-sortable">
 			<?php
 			foreach ($_SESSION['__NF']['DATA'] as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', $dump($v, $k), "</td></tr>\n";
 			?>
@@ -252,7 +252,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			if (!empty($list['user'])):?>
 			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
 			<div class="outer tracy-collapsed">
-			<table>
+			<table class="tracy-sortable">
 			<?php
 			foreach ($list['user'] as $k => $v) {
 				echo '<tr><th>', Helpers::escapeHtml($k), '</th>';
@@ -266,7 +266,9 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
 			<div class="outer tracy-collapsed">
-			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); echo preg_replace('#^.+<body>|</body>.+\z#s', '', ob_get_clean()) // @ phpinfo can be disabled ?>
+			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); $phpinfo = ob_get_clean(); // @ phpinfo can be disabled
+			$phpinfo = str_replace('<table', '<table class="tracy-sortable"', $phpinfo);
+			echo preg_replace('#^.+<body>|</body>.+\z#s', '', $phpinfo)  ?>
 			</div>
 		</div></div>
 
@@ -278,7 +280,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php if (function_exists('apache_request_headers')): ?>
 			<h3>Headers</h3>
 			<div class="outer">
-			<table>
+			<table class="tracy-sortable">
 			<?php
 			foreach (apache_request_headers() as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Helpers::escapeHtml($v), "</td></tr>\n";
 			?>
@@ -293,7 +295,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<p><i>empty</i></p>
 			<?php else: ?>
 			<div class="outer">
-			<table>
+			<table class="tracy-sortable">
 			<?php
 			foreach ($GLOBALS[$name] as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', $dump($v, $k), "</td></tr>\n";
 			?>
@@ -311,7 +313,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<h3>Headers</h3>
 			<?php if (headers_list()): ?>
 			<div class="outer">
-			<table>
+			<table class="tracy-sortable">
 			<?php
 			foreach (headers_list() as $s) { $s = explode(': ', $s, 2); echo '<tr><th>', Helpers::escapeHtml($s[0]), '</th><td>', Helpers::escapeHtml($s[1]), "</td></tr>\n"; }
 			?>

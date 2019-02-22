@@ -132,7 +132,7 @@
 		<div class="tracy-collapsed inner">
 			<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
 			<div class="outer">
-			<table>%A%</table>
+			<table class="tracy-sortable">%A%</table>
 			</div>
 
 
@@ -144,7 +144,7 @@
 
 						<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
 			<div class="outer tracy-collapsed">
-			<table>%A%</table>
+			<table class="tracy-sortable">%A%</table>
 			</div>
 
 
