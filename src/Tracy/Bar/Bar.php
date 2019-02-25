@@ -215,6 +215,7 @@ class Bar
 		$css = array_map('file_get_contents', array_merge([
 			__DIR__ . '/assets/bar.css',
 			__DIR__ . '/../Toggle/toggle.css',
+			__DIR__ . '/../TableSort/table-sort.css',
 			__DIR__ . '/../Dumper/assets/dumper.css',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
 		], Debugger::$customCssFiles));

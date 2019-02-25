@@ -135,6 +135,9 @@ class BlueScreen
 
 		$css = array_map('file_get_contents', array_merge([
 			__DIR__ . '/assets/bluescreen.css',
+			__DIR__ . '/../Toggle/toggle.css',
+			__DIR__ . '/../TableSort/table-sort.css',
+			__DIR__ . '/../Dumper/assets/dumper.css',
 		], Debugger::$customCssFiles));
 		$css = preg_replace('#\s+#u', ' ', implode($css));
 

@@ -14,30 +14,6 @@
 	text-align: left;
 }
 
-#tracy-bs * {
-	font: inherit;
-	color: inherit;
-	background: transparent;
-	border: none;
-	margin: 0;
-	padding: 0;
-	text-align: inherit;
-	text-indent: 0;
-}
-
-#tracy-bs *:before,
-#tracy-bs *:after {
-	all: unset;
-}
-
-#tracy-bs b {
-	font-weight: bold;
-}
-
-#tracy-bs i {
-	font-style: italic;
-}
-
 #tracy-bs a {
 	text-decoration: none;
 	color: #328ADC;
@@ -86,13 +62,6 @@
 	font-style: normal;
 }
 
-#tracy-bs-ie-warning {
-	background: black;
-	margin: 1em;
-	padding: .5em;
-	text-align: center;
-}
-
 #tracy-bs h1 {
 	font-size: 15pt;
 	font-weight: normal;
@@ -106,6 +75,7 @@
 
 #tracy-bs h2 {
 	font-size: 14pt;
+	font-weight: normal;
 	margin: .6em 0;
 }
 
@@ -166,19 +136,6 @@
 #tracy-bs tr:nth-child(2n),
 #tracy-bs tr:nth-child(2n) pre {
 	background-color: #F7F0CB;
-}
-
-/* TableSort */
-#tracy-bs .tracy-sortable tr:first-child > * {
-	position: relative;
-}
-
-#tracy-bs .tracy-sortable tr:first-child > *:hover:before {
-	position: absolute;
-	right: .3em;
-	content: "\21C5";
-	opacity: .4;
-	font-weight: normal;
 }
 
 #tracy-bs ol {
@@ -266,87 +223,9 @@
 	border-bottom: 1px dotted rgba(0, 0, 0, .3);
 }
 
-
-/* toggle */
-html.tracy-js #tracy-bs .tracy-collapsed {
-	display: none;
-}
-
-html.tracy-js #tracy-bs .tracy-toggle.tracy-collapsed {
-	display: inline;
-}
-
-#tracy-bs .tracy-toggle {
-	cursor: pointer;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-khtml-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-
-#tracy-bs .tracy-toggle:after {
-	content: "\A0\25BC";
-	opacity: .4;
-}
-
-#tracy-bs .tracy-toggle.tracy-collapsed:after {
-	content: "\A0\25BA";
-}
-
-
-/* dump */
-#tracy-bs .tracy-dump-array,
-#tracy-bs .tracy-dump-object {
-	color: #C22;
-}
-
-#tracy-bs .tracy-dump-string {
-	color: #35D;
-}
-
-#tracy-bs .tracy-dump-number {
-	color: #090;
-}
-
 #tracy-bs .tracy-dump-whitespace {
 	color: #0003;
 }
-
-#tracy-bs .tracy-dump-null,
-#tracy-bs .tracy-dump-bool {
-	color: #850;
-}
-
-#tracy-bs .tracy-dump-visibility,
-#tracy-bs .tracy-dump-hash {
-	font-size: 85%;
-	color: #998;
-}
-
-#tracy-bs .tracy-dump-indent {
-	display: none;
-}
-
-#tracy-bs pre.tracy-dump div {
-	padding-left: 3ex;
-}
-
-#tracy-bs pre.tracy-dump div div {
-	border-left: 1px solid rgba(0, 0, 0, .1);
-	margin-left: .5ex;
-}
-
-#tracy-bs .tracy-dump-flash {
-	animation: tracy-dump-flash .2s ease;
-}
-
-@keyframes tracy-dump-flash {
-	0% {
-		background: #c0c0c033;
-	}
-}
-
 
 #tracy-bs .caused {
 	float: right;
