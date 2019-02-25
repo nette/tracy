@@ -42,7 +42,7 @@ class BlueScreen
 
 	public function __construct()
 	{
-		$this->collapsePaths[] = preg_match('#(.+/vendor)/tracy/tracy/src/Tracy$#', strtr(__DIR__, '\\', '/'), $m)
+		$this->collapsePaths[] = preg_match('#(.+/vendor)/tracy/tracy/src/Tracy/BlueScreen$#', strtr(__DIR__, '\\', '/'), $m)
 			? $m[1]
 			: __DIR__;
 	}
