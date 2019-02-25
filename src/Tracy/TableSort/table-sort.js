@@ -24,7 +24,7 @@
 			tbody.tracyAsc = asc ? tcell.cellIndex : null;
 			let getText = (cell) => { return cell ? cell.innerText : ''; };
 
-			Array.from(tbody.querySelectorAll('tr'))
+			Array.from(tbody.children)
 				.slice(preserveFirst ? 1 : 0)
 				.sort((a, b) => {
 					return function(v1, v2) {
