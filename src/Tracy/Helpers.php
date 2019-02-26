@@ -24,13 +24,13 @@ class Helpers
 		$file = strtr($origFile = $file, Debugger::$editorMapping);
 		if ($editor = self::editorUri($origFile, $line)) {
 			$file = strtr($file, '\\', '/');
-			if (preg_match('#(^[a-z]:)?/.{1,50}$#i', $file, $m) && strlen($file) > strlen($m[0])) {
+			if (preg_match('#(^[a-z]:)?/.{1,40}$#i', $file, $m) && strlen($file) > strlen($m[0])) {
 				$file = '...' . $m[0];
 			}
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 			return self::formatHtml('<a href="%" title="%">%<b>%</b>%</a>',
 				$editor,
-				$file . ($line ? ":$line" : ''),
+				$origFile . ($line ? ":$line" : ''),
 				rtrim(dirname($file), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,
 				basename($file),
 				$line ? ":$line" : ''
