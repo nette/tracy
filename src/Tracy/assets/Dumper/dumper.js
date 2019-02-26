@@ -13,7 +13,8 @@
 			if (repository) {
 				[].forEach.call((context || document).querySelectorAll('.tracy-dump[data-tracy-dump]'), (el) => {
 					try {
-						el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
+						let built = build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed'));
+						el.insertChild(built, el.lastChild);
 						el.classList.remove('tracy-collapsed');
 						el.removeAttribute('data-tracy-dump');
 					} catch (e) {
