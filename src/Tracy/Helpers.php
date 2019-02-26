@@ -175,21 +175,7 @@ class Helpers
 	public static function improveException(\Throwable $e): void
 	{
 		$message = $e->getMessage();
-
-		if ($e instanceof \Nette\MemberAccessException && ($trace = $e->getTrace()) && isset($trace[1]['file'], $trace[1]['line'])) {
-			if (preg_match('# property ([\w\\\\]+)::\$(\w+), did you mean \$(\w+)#', $message, $m)) {
-				$replace = ["->$m[2]", "->$m[3]"];
-			} elseif (preg_match('# method ([\w\\\\]+)::(\w+)\(\), did you mean (\w+)\(#', $message, $m)) {
-				$replace = ["$m[2](", "$m[3]("];
-			} else {
-				return;
-			}
-			$e->tracyAction = [
-				'link' => self::editorUri($trace[1]['file'], $trace[1]['line'], 'fix', $replace[0], $replace[1]),
-				'label' => 'fix it',
-			];
-
-		} elseif (!$e instanceof \Error && !$e instanceof \ErrorException) {
+		if (!$e instanceof \Error && !$e instanceof \ErrorException) {
 			// do nothing
 		} elseif (preg_match('#^Call to undefined function (\S+\\\\)?(\w+)\(#', $message, $m)) {
 			$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
