@@ -6,7 +6,7 @@
  */
 
 use Tester\Assert;
-use Tracy\Helpers;
+use Tracy\Bridges\Nette\Bridge;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -52,9 +52,9 @@ test(function () {
 		TestClass::publicMethodX();
 	} catch (Nette\MemberAccessException $e) {
 	}
-	Helpers::improveException($e);
+	$action = Bridge::renderMemberAccessException($e);
 	Assert::same('Call to undefined static method TestClass::publicMethodX().', $e->getMessage());
-	Assert::false(isset($e->tracyAction));
+	Assert::null($action);
 });
 
 test(function () use ($obj) {
@@ -62,10 +62,10 @@ test(function () use ($obj) {
 		$obj->publicMethodX();
 	} catch (Nette\MemberAccessException $e) {
 	}
-	Helpers::improveException($e);
+	$action = Bridge::renderMemberAccessException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodX(), did you mean publicMethod()?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.smartobject.phpt&line=%d%&search=publicMethodX%28&replace=publicMethod%28', $e->tracyAction['link']);
-	Assert::same('fix it', $e->tracyAction['label']);
+	Assert::match('editor://fix/?file=%a%Helpers.improveException.smartobject.phpt&line=%d%&search=-%3EpublicMethodX%28&replace=-%3EpublicMethod%28', $action['link']);
+	Assert::same('fix it', $action['label']);
 });
 
 test(function () use ($obj) { // suggest static method
@@ -73,10 +73,10 @@ test(function () use ($obj) { // suggest static method
 		$obj->publicMethodStaticX();
 	} catch (Nette\MemberAccessException $e) {
 	}
-	Helpers::improveException($e);
+	$action = Bridge::renderMemberAccessException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodStaticX(), did you mean publicMethodStatic()?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.smartobject.phpt&line=%d%&search=publicMethodStaticX%28&replace=publicMethodStatic%28', $e->tracyAction['link']);
-	Assert::same('fix it', $e->tracyAction['label']);
+	Assert::match('editor://fix/?file=%a%Helpers.improveException.smartobject.phpt&line=%d%&search=-%3EpublicMethodStaticX%28&replace=-%3EpublicMethodStatic%28', $action['link']);
+	Assert::same('fix it', $action['label']);
 });
 
 test(function () use ($obj) {
@@ -84,8 +84,8 @@ test(function () use ($obj) {
 		$val = $obj->publicX;
 	} catch (Nette\MemberAccessException $e) {
 	}
-	Helpers::improveException($e);
+	$action = Bridge::renderMemberAccessException($e);
 	Assert::same('Cannot read an undeclared property TestClass::$publicX, did you mean $public?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.smartobject.phpt&line=%d%&search=-%3EpublicX&replace=-%3Epublic', $e->tracyAction['link']);
-	Assert::same('fix it', $e->tracyAction['label']);
+	Assert::match('editor://fix/?file=%a%Helpers.improveException.smartobject.phpt&line=%d%&search=-%3EpublicX&replace=-%3Epublic', $action['link']);
+	Assert::same('fix it', $action['label']);
 });
