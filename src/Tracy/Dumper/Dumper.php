@@ -337,12 +337,10 @@ class Dumper
 			. Helpers::escapeHtml(Helpers::getClass($var))
 			. '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
 
-		static $list = [];
-
 		if (empty($fields)) {
 			return $out . "\n";
 
-		} elseif (in_array($var, $list, true)) {
+		} elseif (in_array($var, $options['parents'] ?? [], true)) {
 			return $out . " { <i>RECURSION</i> }\n";
 
 		} elseif (!$this->maxDepth || $level < $this->maxDepth || $var instanceof \Closure) {
@@ -359,7 +357,7 @@ class Dumper
 
 			} else {
 				$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
-				$list[] = $var;
+				$options['parents'][] = $var;
 				foreach ($fields as $k => &$v) {
 					$vis = '';
 					if (isset($k[0]) && $k[0] === "\x00") {
@@ -371,7 +369,7 @@ class Dumper
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . "</span>$vis => "
 						. ($hide ? $this->dumpString($hide) : $this->dumpVar($v, $options, $level + 1));
 				}
-				array_pop($list);
+				array_pop($options['parents']);
 
 				return $out . '</div>';
 			}
