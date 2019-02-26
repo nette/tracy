@@ -14,6 +14,7 @@
 				let el = e.target.closest('.tracy-toggle');
 				if (el && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
 					Toggle.toggle(el);
+					e.stopImmediatePropagation();
 				}
 			});
 			Toggle.init = function() {};
