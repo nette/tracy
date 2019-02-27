@@ -110,11 +110,11 @@ class Bridge
 		if (
 			$e instanceof Nette\Neon\Exception
 			&& preg_match('#line (\d+)#', $e->getMessage(), $m)
-			&& ($trace = Helpers::findTrace($e->getTrace(), 'Nette\Neon\Decoder::decode'))
+			&& ($trace = Helpers::findTrace($e->getTrace(), [Nette\Neon\Decoder::class, 'decode']))
 		) {
 			return [
 				'tab' => 'NEON',
-				'panel' => ($trace2 = Helpers::findTrace($e->getTrace(), 'Nette\DI\Config\Adapters\NeonAdapter::load'))
+				'panel' => ($trace2 = Helpers::findTrace($e->getTrace(), [Nette\DI\Config\Adapters\NeonAdapter::class, 'load']))
 					? '<p><b>File:</b> ' . Helpers::editorLink($trace2['args'][0], (int) $m[1]) . '</p>'
 						. self::highlightNeon(file_get_contents($trace2['args'][0]), (int) $m[1])
 					: self::highlightNeon($trace['args'][0], (int) $m[1]),

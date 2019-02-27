@@ -58,14 +58,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('logger'))
-			->setClass('Tracy\ILogger')
-			->setFactory('Tracy\Debugger::getLogger');
+			->setClass(Tracy\ILogger::class)
+			->setFactory([Tracy\Debugger::class, 'getLogger']);
 
 		$builder->addDefinition($this->prefix('blueScreen'))
-			->setFactory('Tracy\Debugger::getBlueScreen');
+			->setFactory([Tracy\Debugger::class, 'getBlueScreen']);
 
 		$builder->addDefinition($this->prefix('bar'))
-			->setFactory('Tracy\Debugger::getBar');
+			->setFactory([Tracy\Debugger::class, 'getBar']);
 	}
 
 

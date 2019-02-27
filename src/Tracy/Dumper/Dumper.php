@@ -58,10 +58,10 @@ class Dumper
 
 	/** @var array */
 	public static $objectExporters = [
-		'Closure' => 'Tracy\Dumper::exportClosure',
-		'SplFileInfo' => 'Tracy\Dumper::exportSplFileInfo',
-		'SplObjectStorage' => 'Tracy\Dumper::exportSplObjectStorage',
-		'__PHP_Incomplete_Class' => 'Tracy\Dumper::exportPhpIncompleteClass',
+		'Closure' => [self::class, 'exportClosure'],
+		'SplFileInfo' => [self::class, 'exportSplFileInfo'],
+		'SplObjectStorage' => [self::class, 'exportSplObjectStorage'],
+		'__PHP_Incomplete_Class' => [self::class, 'exportPhpIncompleteClass'],
 	];
 
 	/** @var int|null */
