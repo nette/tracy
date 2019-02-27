@@ -412,8 +412,8 @@ class Dumper
 			return $this->encodeString($var, $this->maxLength);
 
 		} elseif (is_array($var)) {
-			if (in_array($var, $options['parents'] ?? [], true) || $level >= $this->maxDepth) {
-				return [null];
+			if (($rec = in_array($var, $options['parents'] ?? [], true)) || $level >= $this->maxDepth) {
+				return ['stop' => [count($var), $rec]];
 			}
 			$res = [];
 			$options['parents'][] = $var;

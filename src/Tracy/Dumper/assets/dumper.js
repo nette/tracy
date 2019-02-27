@@ -98,17 +98,24 @@
 				parentIds
 			);
 
-		} else if (type === 'object' && data.number) {
+		} else if (data.stop) {
+			return createEl(null, null, [
+				createEl('span', {'class': 'tracy-dump-array'}, ['array']),
+				' (' + data.stop[0] + ')',
+				data.stop[1] ? ' [ RECURSION ]\n' : ' [ ... ]\n',
+			]);
+
+		} else if (data.number) {
 			return createEl(null, null, [
 				createEl('span', {'class': 'tracy-dump-number'}, [data.number + '\n'])
 			]);
 
-		} else if (type === 'object' && data.type) {
+		} else if (data.type) {
 			return createEl(null, null, [
 				createEl('span', null, [data.type + '\n'])
 			]);
 
-		} else if (type === 'object') {
+		} else {
 			let id = data.object || data.resource,
 				object = repository[id];
 
@@ -129,9 +136,9 @@
 					' ',
 					createEl('span', {'class': 'tracy-dump-hash'}, ['#' + object.hash])
 				],
-				' { ... }',
-				object.items,
-				collapsed === true || recursive || (object.items && object.items.length >= collapseCount),
+				recursive ? ' { RECURSION }' : ' { ... }',
+				recursive ? null : object.items,
+				collapsed === true || (object.items && object.items.length >= collapseCount),
 				repository,
 				parentIds
 			);
