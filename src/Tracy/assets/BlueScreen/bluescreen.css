@@ -86,13 +86,6 @@
 	font-style: normal;
 }
 
-#tracy-bs-ie-warning {
-	background: black;
-	margin: 1em;
-	padding: .5em;
-	text-align: center;
-}
-
 #tracy-bs h1 {
 	font-size: 15pt;
 	font-weight: normal;
