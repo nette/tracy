@@ -15,18 +15,20 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 
 if (empty($_GET['redirect'])) {
-	Debugger::barDump('before redirect');
-	header('Location: ' . $_SERVER['REQUEST_URI'] . '?&redirect=1');
+	Debugger::barDump('before redirect ' . date('H:i:s'));
+
+	header('Location: ' . (isset($_GET['ajax']) ? 'ajax.php' : 'redirect.php?&redirect=1'));
 	exit;
 }
 
-Debugger::barDump('after redirect');
+Debugger::barDump('after redirect ' . date('H:i:s'));
 
 ?>
 <!DOCTYPE html><html class=arrow><link rel="stylesheet" href="assets/style.css">
 
 <h1>Tracy: redirect demo</h1>
 
+<p><a href="?">redirect again</a> or <a href="?ajax">redirect to AJAX demo</a></p>
 
 <?php
 if (Debugger::$productionMode) {
