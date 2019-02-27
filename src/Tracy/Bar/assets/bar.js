@@ -69,7 +69,7 @@
 				});
 			});
 
-			if (!this.is('tracy-ajax')) {
+			if (this.is('tracy-panel-persist')) {
 				Tracy.Toggle.persist(elem);
 			}
 		}

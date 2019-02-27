@@ -25,7 +25,7 @@ $icons = '
 foreach ($rows as $row) {
 	foreach ($row->panels as $panel) {
 		$content = $panel->panel ? ($panel->panel . "\n" . $icons) : '';
-		$class = 'tracy-panel ' . ($row->type === 'ajax' ? 'tracy-ajax' : ''); ?>
+		$class = 'tracy-panel ' . ($row->type === 'ajax' ? '' : 'tracy-panel-persist'); ?>
 		<div class="<?= $class ?>" id="tracy-debug-panel-<?= $panel->id ?>" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>'></div><?php
 	}
 }
