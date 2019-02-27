@@ -82,30 +82,27 @@ class Bar
 			});
 		}
 
-		$rows = [];
-
 		if (Helpers::isAjax()) {
 			if ($useSession) {
 				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'];
-				$row = (object) ['type' => 'ajax', 'panels' => $this->renderPanels('-ajax:' . $contentId)];
-				$_SESSION['_tracy']['bar'][$contentId] = ['content' => self::renderHtmlRows([$row]), 'time' => time()];
+				$_SESSION['_tracy']['bar'][$contentId] = ['content' => $this->renderHtml('ajax', '-ajax:' . $contentId), 'time' => time()];
 			}
 
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
 			if ($useSession) {
-				$redirectQueue[] = [
-					'panels' => $this->renderPanels('-r' . count($redirectQueue)),
-					'time' => time(),
-				];
+				$redirectQueue[] = ['content' => $this->renderHtml('redirect', '-r' . count($redirectQueue)), 'time' => time()];
 			}
 
 		} elseif (Helpers::isHtmlMode()) {
-			$rows[] = (object) ['type' => 'main', 'panels' => $this->renderPanels()];
-			foreach (array_reverse((array) $redirectQueue) as $info) {
-				$rows[] = (object) ['type' => 'redirect', 'panels' => $info['panels']];
+			$content = $this->renderHtml('main');
+
+			foreach (array_reverse((array) $redirectQueue) as $item) {
+				$content['bar'] .= $item['content']['bar'];
+				$content['panels'] .= $item['content']['panels'];
 			}
 			$redirectQueue = null;
-			$content = self::renderHtmlRows($rows);
+
+			$content = '<div id=tracy-debug-bar>' . $content['bar'] . '</div>' . $content['panels'];
 
 			if ($this->contentId) {
 				$_SESSION['_tracy']['bar'][$this->contentId] = ['content' => $content, 'time' => time()];
@@ -119,12 +116,17 @@ class Bar
 	}
 
 
-	private static function renderHtmlRows(array $rows): string
+	private function renderHtml(string $type, string $suffix = ''): array
 	{
+		$panels = $this->renderPanels($suffix);
+
+		ob_start(function () {});
+		require __DIR__ . '/assets/bar.phtml';
+		$bar = Helpers::fixEncoding(ob_get_clean());
+
 		ob_start(function () {});
 		require __DIR__ . '/assets/panels.phtml';
-		require __DIR__ . '/assets/bar.phtml';
-		return Helpers::fixEncoding(ob_get_clean());
+		return ['bar' => $bar, 'panels' => Helpers::fixEncoding(ob_get_clean())];
 	}
 
 

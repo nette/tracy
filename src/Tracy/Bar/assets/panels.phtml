@@ -6,7 +6,8 @@
  * This file is part of the Tracy (http://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
- * @param  array $rows
+ * @param  string  $type
+ * @param  array  $panels
  */
 
 declare(strict_types=1);
@@ -22,10 +23,8 @@ $icons = '
 	</div>
 ';
 
-foreach ($rows as $row) {
-	foreach ($row->panels as $panel) {
-		$content = $panel->panel ? ($panel->panel . "\n" . $icons) : '';
-		$class = 'tracy-panel ' . ($row->type === 'ajax' ? '' : 'tracy-panel-persist'); ?>
-		<div class="<?= $class ?>" id="tracy-debug-panel-<?= $panel->id ?>" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>'></div><?php
-	}
+foreach ($panels as $panel) {
+	$content = $panel->panel ? ($panel->panel . "\n" . $icons) : '';
+	$class = 'tracy-panel ' . ($type === 'ajax' ? '' : 'tracy-panel-persist'); ?>
+	<div class="<?= $class ?>" id="tracy-debug-panel-<?= $panel->id ?>" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>'></div><?php
 }
