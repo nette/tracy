@@ -23,8 +23,13 @@ $icons = '
 	</div>
 ';
 
+echo '<div itemscope>';
+
 foreach ($panels as $panel) {
 	$content = $panel->panel ? ($panel->panel . "\n" . $icons) : '';
 	$class = 'tracy-panel ' . ($type === 'ajax' ? '' : 'tracy-panel-persist'); ?>
 	<div class="<?= $class ?>" id="tracy-debug-panel-<?= $panel->id ?>" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>'></div><?php
 }
+
+echo '<meta itemprop=tracy-snapshot content=', Dumper::formatSnapshotAttribute(Dumper::$liveSnapshot), '>';
+echo '</div>';

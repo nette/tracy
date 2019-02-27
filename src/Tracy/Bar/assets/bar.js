@@ -21,7 +21,7 @@
 
 			this.init = function() {};
 			elem.innerHTML = addNonces(elem.dataset.tracyContent);
-			Tracy.Dumper.init(elem);
+			Tracy.Dumper.init(Debug.layer);
 			delete elem.dataset.tracyContent;
 			evalScripts(elem);
 
@@ -376,7 +376,7 @@
 			Debug.layer.innerHTML = addNonces(content);
 			(document.body || document.documentElement).appendChild(Debug.layer);
 			evalScripts(Debug.layer);
-			Tracy.Dumper.init();
+			Tracy.Dumper.init(); // for common dump()
 			Debug.layer.style.display = 'block';
 			Debug.bar.init();
 

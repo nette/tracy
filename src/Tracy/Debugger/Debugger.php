@@ -548,7 +548,7 @@ class Debugger
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation ?: Dumper::LOCATION_CLASS | Dumper::LOCATION_SOURCE,
-				Dumper::LIVE => true,
+				Dumper::LAZY => true,
 			])];
 		}
 		return $var;

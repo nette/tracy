@@ -22,8 +22,9 @@ class Dumper
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
 		LOCATION = 'location', // show location string? (defaults to 0)
 		OBJECT_EXPORTERS = 'exporters', // custom exporters for objects (defaults to Dumper::$objectexporters)
-		LIVE = 'live', // lazy-loading via JavaScript? true, false or null (only collapsed parts) (defaults to null/false)
-		SNAPSHOT = 'snapshot', // array for shared snapshot, enables LIVE
+		LAZY = 'lazy', // lazy-loading via JavaScript? true=full, false=none, null=collapsed parts (defaults to null/false)
+		LIVE = 'live', // use static $liveSnapshot (used by Bar)
+		SNAPSHOT = 'snapshot', // array used for shared snapshot for lazy-loading via JavaScript
 		DEBUGINFO = 'debuginfo', // use magic method __debugInfo if exists (defaults to false)
 		KEYS_TO_HIDE = 'keystohide'; // sensitive keys not displayed (defaults to [])
 
@@ -34,6 +35,9 @@ class Dumper
 
 	public const
 		HIDDEN_VALUE = '*****';
+
+	/** @var array */
+	public static $liveSnapshot = [];
 
 	/** @var array */
 	public static $terminalColors = [
@@ -79,8 +83,8 @@ class Dumper
 	/** @var int */
 	private $location = 0;
 
-	/** @var bool|null */
-	private $live;
+	/** @var bool|null  lazy-loading via JavaScript? true=full, false=none, null=collapsed parts */
+	private $lazy;
 
 	/** @var array|null */
 	private $snapshot;
@@ -150,11 +154,11 @@ class Dumper
 		$this->collapseSub = $options[self::COLLAPSE_COUNT] ?? $this->collapseSub;
 		$this->location = $options[self::LOCATION] ?? $this->location;
 		$this->location = $this->location === true ? ~0 : (int) $this->location;
-		$this->live = $options[self::LIVE] ?? $this->live;
 		$this->snapshot = &$options[self::SNAPSHOT];
-		if (is_array($this->snapshot)) {
-			$this->live = true;
+		if ($options[self::LIVE] ?? false) {
+			$this->snapshot = &self::$liveSnapshot;
 		}
+		$this->lazy = is_array($this->snapshot) ? true : ($options[self::LAZY] ?? $this->lazy);
 		$this->debugInfo = $options[self::DEBUGINFO] ?? $this->debugInfo;
 		$this->keysToHide = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE] ?? []));
 		$this->resourceDumpers = ($options['resourceExporters'] ?? []) + self::$resources;
@@ -181,11 +185,11 @@ class Dumper
 		$snapshot = &$options[self::SNAPSHOT]; // reference must exist
 
 		$html = $json = null;
-		if ($this->live && (is_array($var) || is_object($var) || is_resource($var)) && $var) {
+		if ($this->lazy && (is_array($var) || is_object($var) || is_resource($var)) && $var) {
 			$json = $this->toJson($var, $options);
 			$snapshot = (array) $snapshot;
 		} else {
-			$html = $this->dumpVar($var, $options + ['lazyLoad' => $this->live]);
+			$html = $this->dumpVar($var, $options + [self::LAZY => $this->lazy]);
 		}
 
 		return '<pre class="tracy-dump' . ($json && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
@@ -203,7 +207,7 @@ class Dumper
 	 */
 	private function asTerminal($var, array $colors = []): string
 	{
-		$s = $this->dumpVar($var, ['lazyLoad' => false]);
+		$s = $this->dumpVar($var, [self::LAZY => false]);
 		if ($colors) {
 			$s = preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m) use ($colors): string {
 				return "\033[" . (isset($m[1], $colors[$m[1]]) ? $colors[$m[1]] : '0') . 'm';
@@ -283,7 +287,7 @@ class Dumper
 
 			$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
-			if ($collapsed && $options['lazyLoad'] !== false) {
+			if ($collapsed && $options[self::LAZY] !== false) {
 				$options[self::SNAPSHOT] = (array) $options[self::SNAPSHOT];
 				return $span . " data-tracy-dump='"
 					. json_encode($this->toJson($var, $options, $level), JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
@@ -343,7 +347,7 @@ class Dumper
 
 			$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
-			if ($collapsed && $options['lazyLoad'] !== false) {
+			if ($collapsed && $options[self::LAZY] !== false) {
 				return $span . " data-tracy-dump='"
 					. json_encode($this->toJson($var, $options, $level), JSON_HEX_APOS | JSON_HEX_AMP)
 					. "'>" . $out . "</span>\n";

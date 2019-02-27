@@ -18,7 +18,6 @@
 				if (el.tagName === 'META') { // <meta itemprop=tracy-snapshot>
 					snapshot = JSON.parse(el.getAttribute('content'));
 					preList = el.parentElement.querySelectorAll('[data-tracy-dump]');
-					el.parentNode.removeChild(el);
 				} else if (el.matches('[data-tracy-dump]')) { // <pre data-tracy-snapshot data-tracy-dump>
 					preList = [el];
 					el.removeAttribute('data-tracy-snapshot');
