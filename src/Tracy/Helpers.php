@@ -76,9 +76,9 @@ class Helpers
 	}
 
 
-	public static function findTrace(array $trace, string $method, int &$index = null): ?array
+	public static function findTrace(array $trace, $method, int &$index = null): ?array
 	{
-		$m = explode('::', $method);
+		$m = is_array($method) ? $method : explode('::', $method);
 		foreach ($trace as $i => $item) {
 			if (
 				isset($item['function'])
