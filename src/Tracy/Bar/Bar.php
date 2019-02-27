@@ -193,12 +193,12 @@ class Bar
 			}
 			if ($session) {
 				$method = $m[1] ? 'loadAjax' : 'init';
-				echo "Tracy.Debug.$method(", json_encode($session['content']), ');';
+				echo "Tracy.Debug.$method(", json_encode($session['content'], JSON_UNESCAPED_SLASHES), ');';
 				$session = null;
 			}
 			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];
 			if ($session) {
-				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content']), ');';
+				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content'], JSON_UNESCAPED_SLASHES), ');';
 				$session = null;
 			}
 			return true;

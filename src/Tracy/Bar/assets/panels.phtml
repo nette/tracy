@@ -26,6 +26,6 @@ foreach ($rows as $row) {
 	foreach ($row->panels as $panel) {
 		$content = $panel->panel ? ($panel->panel . "\n" . $icons) : '';
 		$class = 'tracy-panel ' . ($row->type === 'ajax' ? 'tracy-ajax' : ''); ?>
-		<div class="<?= $class ?>" id="tracy-debug-panel-<?= $panel->id ?>" data-tracy-content="<?= Helpers::escapeHtml($content) ?>"></div><?php
+		<div class="<?= $class ?>" id="tracy-debug-panel-<?= $panel->id ?>" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>'></div><?php
 	}
 }
