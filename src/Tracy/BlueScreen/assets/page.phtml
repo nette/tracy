@@ -42,19 +42,13 @@ $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 
 <script<?= $nonceAttr ?>>
 (function() {
-	if (!document.documentElement.dataset) {
-		document.getElementById('tracy-bs-error').innerHTML += '<div id=tracy-bs-ie-warning>Warning: Tracy requires IE 11+<\/div>';
-		return;
-	}
 	<?php readfile(__DIR__ . '/../../Toggle/toggle.js') ?>
 	<?php readfile(__DIR__ . '/../../TableSort/table-sort.js') ?>
 	<?php readfile(__DIR__ . '/../../Dumper/assets/dumper.js') ?>
 	<?php readfile(__DIR__ . '/bluescreen.js') ?>
 })();
-</script>
-<script<?= $nonceAttr ?>>
-Tracy && Tracy.Dumper.init();
-Tracy && Tracy.BlueScreen.init();
+Tracy.Dumper.init();
+Tracy.BlueScreen.init();
 </script>
 </body>
 </html>

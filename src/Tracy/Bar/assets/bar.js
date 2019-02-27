@@ -371,10 +371,6 @@
 	class Debug
 	{
 		static init(content) {
-			if (!document.documentElement.dataset) {
-				throw new Error('Tracy requires IE 11+');
-			}
-
 			Debug.layer = document.createElement('div');
 			Debug.layer.setAttribute('id', 'tracy-debug');
 			Debug.layer.innerHTML = addNonces(content);
