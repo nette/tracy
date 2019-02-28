@@ -13,7 +13,7 @@
 
 
 <body>
-<div id="tracy-bs">
+<div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
 		<div id="tracy-bs-error" class="panel">
@@ -191,7 +191,7 @@
 
 		<div id="tracy-bs-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
-	<meta itemprop=tracy data-tracy-snapshot=%a%>
+	<meta itemprop=tracy-snapshot content=%a%>
 </div>
 
 <script>%A%</script>

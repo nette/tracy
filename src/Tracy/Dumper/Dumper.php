@@ -192,7 +192,7 @@ class Dumper
 
 		return '<pre class="tracy-dump' . ($live && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
 			. $locAttrs
-			. (is_array($this->snapshot) && !$this->sharedSnapshot ? ' ' . $this->formatSnapshotAttribute($this->snapshot) : '')
+			. (is_array($this->snapshot) && !$this->sharedSnapshot ? ' data-tracy-snapshot=' . $this->formatSnapshotAttribute($this->snapshot) : '')
 			. ($live ? " data-tracy-dump='" . json_encode($live, JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
 			. $html
 			. ($file && $this->location & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
@@ -498,7 +498,7 @@ class Dumper
 			unset($obj['level'], $obj['object'], $obj['id']);
 			$res[$id] = $obj;
 		}
-		return "data-tracy-snapshot='" . json_encode($res, JSON_HEX_APOS | JSON_HEX_AMP) . "'";
+		return "'" . json_encode($res, JSON_HEX_APOS | JSON_HEX_AMP) . "'";
 	}
 
 

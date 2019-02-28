@@ -12,10 +12,11 @@
 	class Dumper
 	{
 		static init(context) {
-			(context || document).querySelectorAll('[data-tracy-snapshot]').forEach((el) => {
+			(context || document).querySelectorAll('[itemprop=tracy-snapshot], [data-tracy-snapshot]').forEach((el) => {
 				let preList, snapshot = JSON.parse(el.getAttribute('data-tracy-snapshot'));
 
-				if (el.tagName === 'META') { // <meta data-tracy-snapshot>
+				if (el.tagName === 'META') { // <meta itemprop=tracy-snapshot>
+					snapshot = JSON.parse(el.getAttribute('content'));
 					preList = el.parentElement.querySelectorAll('[data-tracy-dump]');
 					el.parentNode.removeChild(el);
 				} else if (el.matches('[data-tracy-dump]')) { // <pre data-tracy-snapshot data-tracy-dump>

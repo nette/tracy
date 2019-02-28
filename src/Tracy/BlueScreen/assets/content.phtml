@@ -25,7 +25,7 @@ namespace Tracy;
 $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 ?>
-<div id="tracy-bs">
+<div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div>
 		<div id="tracy-bs-error" class="panel">
@@ -344,5 +344,5 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 		<div id="tracy-bs-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
 	</div>
-	<meta itemprop=tracy <?= Dumper::formatSnapshotAttribute($snapshot) ?>>
+	<meta itemprop=tracy-snapshot content=<?= Dumper::formatSnapshotAttribute($snapshot) ?>>
 </div>
