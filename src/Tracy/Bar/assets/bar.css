@@ -166,7 +166,8 @@ body#tracy-debug { /* in popup window */
 }
 
 #tracy-debug-bar .tracy-row:not(:first-child) {
-	opacity: .6;
+	background: #d5d2c6;
+	opacity: .8;
 }
 
 #tracy-debug-bar .tracy-row[data-tracy-group="ajax"] {
