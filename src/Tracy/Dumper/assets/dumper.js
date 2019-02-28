@@ -201,6 +201,6 @@
 	function UnknownEntityException() {}
 
 
-	Tracy = window.Tracy || {};
+	let Tracy = window.Tracy = window.Tracy || {};
 	Tracy.Dumper = Dumper;
 })();

@@ -101,6 +101,6 @@
 	}
 
 
-	Tracy = window.Tracy || {};
+	let Tracy = window.Tracy = window.Tracy || {};
 	Tracy.Toggle = Tracy.Toggle || Toggle;
 })();

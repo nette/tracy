@@ -218,7 +218,8 @@ class Bar
 		], Debugger::$customCssFiles));
 
 		echo
-"(function(){
+"'use strict';
+(function(){
 	var el = document.createElement('style');
 	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
 	el.className='tracy-debug';

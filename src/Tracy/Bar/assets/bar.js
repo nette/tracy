@@ -673,7 +673,7 @@
 		contentId = document.currentScript.dataset.id;
 	}
 
-	Tracy = window.Tracy || {};
+	let Tracy = window.Tracy = window.Tracy || {};
 	Tracy.panelZIndex = Tracy.panelZIndex || 20000;
 	Tracy.DebugPanel = Panel;
 	Tracy.DebugBar = Bar;
