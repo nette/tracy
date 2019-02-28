@@ -490,7 +490,7 @@ class Dumper
 	}
 
 
-	public static function formatSnapshotAttribute(array $snapshot): string
+	public static function formatSnapshotAttribute(array &$snapshot): string
 	{
 		$res = [];
 		foreach ($snapshot as $obj) {
@@ -498,6 +498,7 @@ class Dumper
 			unset($obj['level'], $obj['object'], $obj['id']);
 			$res[$id] = $obj;
 		}
+		$snapshot = [];
 		return "'" . json_encode($res, JSON_HEX_APOS | JSON_HEX_AMP) . "'";
 	}
 
