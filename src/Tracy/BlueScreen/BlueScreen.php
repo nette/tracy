@@ -175,7 +175,7 @@ class BlueScreen
 	{
 		$actions = [];
 		foreach ($this->actions as $callback) {
-			$action = call_user_func($callback, $ex);
+			$action = $callback($ex);
 			if (!empty($action['link']) && !empty($action['label'])) {
 				$actions[] = $action;
 			}

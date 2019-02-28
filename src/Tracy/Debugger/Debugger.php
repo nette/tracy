@@ -67,6 +67,9 @@ class Debugger
 	/** @var bool display location by dump()? */
 	public static $showLocation = false;
 
+	/** @deprecated */
+	public static $maxLen;
+
 	/********************* logging ****************d*g**/
 
 	/** @var string|null name of the directory where errors should be logged */
