@@ -86,9 +86,6 @@ class Dumper
 	private $snapshot;
 
 	/** @var bool */
-	private $sharedSnapshot;
-
-	/** @var bool */
 	private $debugInfo = false;
 
 	/** @var array */
@@ -155,7 +152,7 @@ class Dumper
 		$this->location = $this->location === true ? ~0 : (int) $this->location;
 		$this->live = $options[self::LIVE] ?? $this->live;
 		$this->snapshot = &$options[self::SNAPSHOT];
-		if ($this->sharedSnapshot = is_array($this->snapshot)) {
+		if (is_array($this->snapshot)) {
 			$this->live = true;
 		}
 		$this->debugInfo = $options[self::DEBUGINFO] ?? $this->debugInfo;
@@ -178,22 +175,23 @@ class Dumper
 			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
 		) : null;
 
-		if (!$this->sharedSnapshot) {
-			$this->snapshot = null;
+		if (is_array($this->snapshot)) {
+			$options[self::SNAPSHOT] = &$this->snapshot;
 		}
+		$snapshot = &$options[self::SNAPSHOT]; // reference must exist
 
-		$html = $live = null;
+		$html = $json = null;
 		if ($this->live && (is_array($var) || is_object($var) || is_resource($var)) && $var) {
-			$live = $this->toJson($var);
-			$this->snapshot = (array) $this->snapshot;
+			$json = $this->toJson($var, $options);
+			$snapshot = (array) $snapshot;
 		} else {
-			$html = $this->dumpVar($var, ['lazyLoad' => $this->live]);
+			$html = $this->dumpVar($var, $options + ['lazyLoad' => $this->live]);
 		}
 
-		return '<pre class="tracy-dump' . ($live && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
+		return '<pre class="tracy-dump' . ($json && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
 			. $locAttrs
-			. (is_array($this->snapshot) && !$this->sharedSnapshot ? ' data-tracy-snapshot=' . $this->formatSnapshotAttribute($this->snapshot) : '')
-			. ($live ? " data-tracy-dump='" . json_encode($live, JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
+			. (is_array($snapshot) && !is_array($this->snapshot) ? ' data-tracy-snapshot=' . $this->formatSnapshotAttribute($snapshot) : '')
+			. ($json ? " data-tracy-dump='" . json_encode($json, JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
 			. $html
 			. ($file && $this->location & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
@@ -291,8 +289,10 @@ class Dumper
 			$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
 			if ($collapsed && $options['lazyLoad'] !== false) {
-				$this->snapshot = (array) $this->snapshot;
-				return $span . " data-tracy-dump='" . json_encode($this->toJson($var), JSON_HEX_APOS | JSON_HEX_AMP) . "'>" . $out . count($var) . ")</span>\n";
+				$options[self::SNAPSHOT] = (array) $options[self::SNAPSHOT];
+				return $span . " data-tracy-dump='"
+					. json_encode($this->toJson($var, $options, $level), JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
+					. $out . count($var) . ")</span>\n";
 
 			} else {
 				$out = $span . '>' . $out . count($var) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
@@ -353,7 +353,9 @@ class Dumper
 			$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
 			if ($collapsed && $options['lazyLoad'] !== false) {
-				return $span . " data-tracy-dump='" . json_encode($this->toJson($var), JSON_HEX_APOS | JSON_HEX_AMP) . "'>" . $out . "</span>\n";
+				return $span . " data-tracy-dump='"
+					. json_encode($this->toJson($var, $options, $level), JSON_HEX_APOS | JSON_HEX_AMP)
+					. "'>" . $out . "</span>\n";
 
 			} else {
 				$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
@@ -401,7 +403,7 @@ class Dumper
 	/**
 	 * @return mixed
 	 */
-	private function toJson(&$var, int $level = 0)
+	private function toJson(&$var, array $options = [], int $level = 0)
 	{
 		if (is_bool($var) || $var === null || is_int($var)) {
 			return $var;
@@ -427,7 +429,7 @@ class Dumper
 			foreach ($var as $k => &$v) {
 				if ($k !== $marker) {
 					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$res[] = [$this->encodeKey($k), $hide ? self::HIDDEN_VALUE : $this->toJson($v, $level + 1)];
+					$res[] = [$this->encodeKey($k), $hide ? self::HIDDEN_VALUE : $this->toJson($v, $options, $level + 1)];
 				}
 			}
 			unset($var[$marker]);
@@ -435,7 +437,7 @@ class Dumper
 
 		} elseif (is_object($var)) {
 			$hash = spl_object_hash($var);
-			$obj = &$this->snapshot[$hash];
+			$obj = &$options[self::SNAPSHOT][$hash];
 			if ($obj && $obj['level'] <= $level) {
 				return ['object' => $obj['id']];
 			}
@@ -447,7 +449,7 @@ class Dumper
 				$editorInfo = $editor ? ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor] : null;
 			}
 			$obj = $obj ?: [
-				'id' => count($this->snapshot),
+				'id' => count($options[self::SNAPSHOT]),
 				'name' => Helpers::getClass($var),
 				'hash' => substr(md5($hash), 0, 4),
 				'editor' => $editorInfo,
@@ -466,19 +468,19 @@ class Dumper
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$obj['items'][] = [$this->encodeKey($k), $hide ? self::HIDDEN_VALUE : $this->toJson($v, $level + 1), $vis];
+					$obj['items'][] = [$this->encodeKey($k), $hide ? self::HIDDEN_VALUE : $this->toJson($v, $options, $level + 1), $vis];
 				}
 			}
 			return ['object' => $obj['id']];
 
 		} elseif (is_resource($var)) {
-			$obj = &$this->snapshot[(string) $var];
+			$obj = &$options[self::SNAPSHOT][(string) $var];
 			if (!$obj) {
 				$type = get_resource_type($var);
-				$obj = ['id' => count($this->snapshot), 'name' => $type . ' resource', 'hash' => (int) $var];
+				$obj = ['id' => count($options[self::SNAPSHOT]), 'name' => $type . ' resource', 'hash' => (int) $var];
 				if (isset($this->resourceDumpers[$type])) {
 					foreach (($this->resourceDumpers[$type])($var) as $k => $v) {
-						$obj['items'][] = [$k, $this->toJson($v, $level + 1)];
+						$obj['items'][] = [$k, $this->toJson($v, $options, $level + 1)];
 					}
 				}
 			}
