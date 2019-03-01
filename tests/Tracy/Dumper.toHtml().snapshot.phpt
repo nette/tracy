@@ -57,8 +57,8 @@ Assert::match(
 	Dumper::toHtml(new stdClass, $options) // different object
 );
 Assert::equal([
-	1 => ['name' => 'stdClass', 'hash' => Expect::match('%h%'), 'editor' => null, 'items' => []],
-	2 => ['name' => 'stdClass', 'hash' => Expect::match('%h%'), 'editor' => null, 'items' => []],
+	1 => ['name' => 'stdClass', 'hash' => Expect::match('%h%'), 'items' => []],
+	2 => ['name' => 'stdClass', 'hash' => Expect::match('%h%'), 'items' => []],
 ], formatSnapshot($snapshot));
 
 
@@ -95,7 +95,6 @@ Assert::equal([
 	1 => [
 		'name' => 'Test',
 		'hash' => Expect::match('%h%'),
-		'editor' => null,
 		'items' => [
 			['x', [[0, 10], [1, null]], 0],
 			['y', 'hello', 2],

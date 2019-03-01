@@ -39,12 +39,12 @@ Assert::match(
 
 // twice live dump
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","editor":null,"items":[]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","items":[]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new stdClass, $options)
 );
 
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","editor":null,"items":[]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","items":[]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
 );
 
@@ -58,7 +58,7 @@ Assert::match(
 
 // live dump and collapse
 Assert::match(
-	'<pre class="tracy-dump tracy-collapsed" data-tracy-snapshot=\'{"1":{"name":"Test","hash":"%h%","editor":null,"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump tracy-collapsed" data-tracy-snapshot=\'{"1":{"name":"Test","hash":"%h%","items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new Test, $options + [Dumper::COLLAPSE => true])
 );
 

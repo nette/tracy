@@ -47,7 +47,6 @@ Assert::equal([
 	1 => [
 		'name' => 'stdClass',
 		'hash' => Expect::match('%h%'),
-		'editor' => null,
 		'items' => [
 			['a', 456, 0],
 			['password', '*****', 0],

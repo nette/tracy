@@ -442,20 +442,19 @@ class Dumper
 				return ['object' => $obj['id']];
 			}
 
-			$editorInfo = null;
-			if ($this->location & self::LOCATION_CLASS) {
-				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
-				$editor = $rc->getFileName() ? Helpers::editorUri($rc->getFileName(), $rc->getStartLine()) : null;
-				$editorInfo = $editor ? ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor] : null;
-			}
 			$obj = $obj ?: [
 				'id' => count($options[self::SNAPSHOT]),
 				'name' => Helpers::getClass($var),
 				'hash' => substr(md5($hash), 0, 4),
-				'editor' => $editorInfo,
 				'level' => $level,
 				'object' => $var,
 			];
+			if (empty($obj['editor']) && ($this->location & self::LOCATION_CLASS)) {
+				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
+				if ($editor = $rc->getFileName() ? Helpers::editorUri($rc->getFileName(), $rc->getStartLine()) : null) {
+					$obj['editor'] = ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
+				}
+			}
 
 			if ($level < $this->maxDepth || !$this->maxDepth) {
 				$obj['level'] = $level;
