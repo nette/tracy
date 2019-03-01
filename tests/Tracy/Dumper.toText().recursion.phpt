@@ -19,11 +19,7 @@ Assert::match('array (4)
    0 => 1
    1 => 2
    2 => 3
-   3 => array (4)
-   |  0 => 1
-   |  1 => 2
-   |  2 => 3
-   |  3 => array (4) [ RECURSION ]
+   3 => array (3) [ RECURSION ]
 ', Dumper::toText($arr));
 
 

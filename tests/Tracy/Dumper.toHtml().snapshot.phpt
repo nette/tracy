@@ -136,7 +136,7 @@ $snapshot = [];
 $arr = [1, 2, 3];
 $arr[] = &$arr;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,[[0,1],[1,2],[2,3],[3,[null]]]]]\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,[null]]]\'></pre>',
 	Dumper::toHtml($arr, $options)
 );
 Assert::same([], $snapshot);

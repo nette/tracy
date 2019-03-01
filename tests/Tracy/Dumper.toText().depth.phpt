@@ -40,20 +40,11 @@ Assert::match('array (5)
    |  |  0 => array (1)
    |  |  |  hello => "world" (5)
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-   1 => stdClass #%a%
-   |  0 => stdClass #%a%
-   |  |  0 => stdClass #%a%
+   1 => stdClass #%h%
+   |  0 => stdClass #%h%
+   |  |  0 => stdClass #%h%
    |  |  |  hello => "world" (5)
-   2 => array (5)
-   |  long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-   |  0 => array (1)
-   |  |  0 => array (1)
-   |  |  |  0 => array (1) [ ... ]
-   |  long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
-   |  1 => stdClass #%a%
-   |  |  0 => stdClass #%a%
-   |  |  |  0 => stdClass #%a% { ... }
-   |  2 => array (5) [ RECURSION ]
+   2 => array (4) [ RECURSION ]
 ', Dumper::toText($arr));
 
 
@@ -62,12 +53,7 @@ Assert::match('array (5)
    0 => array (1)
    |  0 => array (1) [ ... ]
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-   1 => stdClass #%a%
-   |  0 => stdClass #%a% { ... }
-   2 => array (5)
-   |  long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-   |  0 => array (1) [ ... ]
-   |  long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
-   |  1 => stdClass #%a% { ... }
-   |  2 => array (5) [ RECURSION ]
+   1 => stdClass #%h%
+   |  0 => stdClass #%h% { ... }
+   2 => array (4) [ RECURSION ]
 ', Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
