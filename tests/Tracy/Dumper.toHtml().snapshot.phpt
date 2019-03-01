@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Tracy\Dumper::toHtml() live multi-snapshop
+ * Test: Tracy\Dumper::toHtml() snapshop
  */
 
 declare(strict_types=1);
@@ -46,12 +46,13 @@ Assert::match(
 );
 
 
-// snapshot created twice
+// snapshot dump of object
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new stdClass, $options)
 );
 
+// twice with different identity
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-dump=\'{"object":2}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
@@ -128,3 +129,42 @@ Assert::equal([
 		],
 	],
 ], formatSnapshot($snapshot));
+
+
+// snapshot & recursion
+$snapshot = [];
+$arr = [1, 2, 3];
+$arr[] = &$arr;
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,[[0,1],[1,2],[2,3],[3,[null]]]]]\'></pre>',
+	Dumper::toHtml($arr, $options)
+);
+Assert::same([], $snapshot);
+
+$obj = new stdClass;
+$obj->x = $obj;
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	Dumper::toHtml($obj, $options)
+);
+
+
+// snapshot & max depth
+$snapshot = [];
+$arr = [1, [2, [3, [4, [5, [6]]]]], 3];
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,[null]]]]]]]],[2,3]]\'></pre>',
+	Dumper::toHtml($arr, $options)
+);
+Assert::same([], $snapshot);
+
+$obj = new stdClass;
+$obj->a = new stdClass;
+$obj->a->b = new stdClass;
+$obj->a->b->c = new stdClass;
+$obj->a->b->c->d = new stdClass;
+$obj->a->b->c->d->e = new stdClass;
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	Dumper::toHtml($obj, $options)
+);

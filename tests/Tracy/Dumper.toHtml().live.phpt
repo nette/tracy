@@ -37,12 +37,13 @@ Assert::match(
 );
 
 
-// twice live dump
+// live dump of object
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","items":[]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new stdClass, $options)
 );
 
+// twice with different identity
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","items":[]}}\' data-tracy-dump=\'{"object":1}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
