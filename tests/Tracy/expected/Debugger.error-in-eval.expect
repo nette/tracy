@@ -15,7 +15,7 @@
 <body>
 <div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
-	<div>
+	<div class="tracy-bs-main">
 		<div id="tracy-bs-error" class="panel">
 			<p>User Error</p>
 
@@ -182,14 +182,14 @@
 
 
 
-
-		<ul>
-			<li><b><a href="https://nette.org/make-donation?to=tracy" target="_blank" rel="noreferrer noopener">%a%️</a></b></li>
-			<li>Report generated at %a%</li>
-			<li>CLI%a?%</li>
-			<li>PHP %a%</li>		</ul>
-
-		<div id="tracy-bs-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
+		<footer>
+			<ul>
+				<li><b><a href="https://nette.org/make-donation?to=tracy" target="_blank" rel="noreferrer noopener">%a%️</a></b></li>
+				<li>Report generated at %a%</li>
+				<li>CLI%a?%</li>
+				<li>PHP %a%</li>			</ul>
+			<div class="footer-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
+		</footer>
 	</div>
 	<meta itemprop=tracy-snapshot content=%a%>
 </div>
