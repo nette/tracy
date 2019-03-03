@@ -14,6 +14,7 @@
  * @param  string $source
  * @param  bool $sourceIsUrl
  * @param  array $lastError
+ * @param  array $httpHeaders
  * @param  callable $dump
  * @return void
  */
@@ -277,16 +278,14 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
 
 		<div class="tracy-collapsed inner">
-			<?php if (function_exists('apache_request_headers')): ?>
 			<h3>Headers</h3>
 			<div class="outer">
 			<table class="tracy-sortable">
 			<?php
-			foreach (apache_request_headers() as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Helpers::escapeHtml($v), "</td></tr>\n";
+			foreach ($httpHeaders as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Helpers::escapeHtml($v), "</td></tr>\n";
 			?>
 			</table>
 			</div>
-			<?php endif ?>
 
 
 			<?php foreach (['_GET', '_POST', '_COOKIE'] as $name): ?>

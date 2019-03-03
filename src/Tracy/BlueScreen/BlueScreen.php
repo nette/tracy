@@ -122,6 +122,13 @@ class BlueScreen
 			: Helpers::getClass($exception);
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error ? null : error_get_last();
 
+		if (function_exists('apache_request_headers')) {
+			$httpHeaders = apache_request_headers();
+		} else {
+			$httpHeaders = array_filter($_SERVER, function ($k) { return strncmp($k, 'HTTP_', 5) === 0; }, ARRAY_FILTER_USE_KEY);
+			$httpHeaders = array_combine(array_map(function ($k) { return strtolower(strtr(substr($k, 5), '_', '-')); }, array_keys($httpHeaders)), $httpHeaders);
+		}
+
 		$snapshot = &$this->snapshot;
 		$snapshot = [];
 		$dump = $this->getDumper();
