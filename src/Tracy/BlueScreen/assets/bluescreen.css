@@ -36,6 +36,20 @@
 	padding: 3px;
 }
 
+.tracy-bs-main {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.tracy-bs-main.tracy-collapsed {
+	display: none;
+}
+
+#tracy-bs div.panel:last-of-type {
+	flex: 1;
+}
+
 #tracy-bs-error {
 	background: #CD1818;
 	color: white;
@@ -153,7 +167,7 @@
 	list-style: none;
 }
 
-#tracy-bs-logo a {
+#tracy-bs .footer-logo a {
 	position: absolute;
 	bottom: 0;
 	right: 0;
@@ -165,8 +179,8 @@
 	margin: 0;
 }
 
-#tracy-bs-logo a:hover,
-#tracy-bs-logo a:focus {
+#tracy-bs .footer-logo a:hover,
+#tracy-bs .footer-logo a:focus {
 	opacity: 1;
 	transition: opacity 0.1s;
 }

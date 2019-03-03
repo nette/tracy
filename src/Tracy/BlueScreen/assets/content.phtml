@@ -28,7 +28,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 ?>
 <div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
-	<div>
+	<div class="tracy-bs-main">
 		<div id="tracy-bs-error" class="panel">
 			<?php if ($exception->getMessage()): ?><p><?= Helpers::escapeHtml($title . $code) ?></p><?php endif ?>
 
@@ -357,15 +357,15 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 		</div></div>
 		<?php endforeach ?>
 
-
-		<ul>
-			<li><b><a href="https://nette.org/make-donation?to=tracy" target="_blank" rel="noreferrer noopener">Please support Tracy via a donation 💙️</a></b></li>
-			<li>Report generated at <?= @date('Y/m/d H:i:s') // @ timezone may not be set ?></li>
-			<li><?php if ($sourceIsUrl): ?><a href="<?= Helpers::escapeHtml($source) ?>"><?php endif ?><?= Helpers::escapeHtml($source) ?><?php if ($sourceIsUrl): ?></a><?php endif ?></li>
-			<?php foreach ($info as $item): ?><li><?= Helpers::escapeHtml($item) ?></li><?php endforeach ?>
-		</ul>
-
-		<div id="tracy-bs-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
+		<footer>
+			<ul>
+				<li><b><a href="https://nette.org/make-donation?to=tracy" target="_blank" rel="noreferrer noopener">Please support Tracy via a donation 💙️</a></b></li>
+				<li>Report generated at <?= @date('Y/m/d H:i:s') // @ timezone may not be set ?></li>
+				<li><?php if ($sourceIsUrl): ?><a href="<?= Helpers::escapeHtml($source) ?>"><?php endif ?><?= Helpers::escapeHtml($source) ?><?php if ($sourceIsUrl): ?></a><?php endif ?></li>
+				<?php foreach ($info as $item): ?><li><?= Helpers::escapeHtml($item) ?></li><?php endforeach ?>
+			</ul>
+			<div class="footer-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
+		</footer>
 	</div>
 	<meta itemprop=tracy-snapshot content=<?= Dumper::formatSnapshotAttribute($snapshot) ?>>
 </div>
