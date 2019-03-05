@@ -98,8 +98,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::setLogger(?);', [$logger]));
 		}
 		if ($this->config['netteMailer'] && $builder->getByType(Nette\Mail\IMailer::class)) {
-			$initialize->addBody($builder->formatPhp('Tracy\Debugger::getLogger(?)->mailer = ?;', [
-				$logger,
+			$initialize->addBody($builder->formatPhp('Tracy\Debugger::getLogger()->mailer = ?;', [
 				[new Nette\DI\Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config['fromEmail']]), 'send'],
 			]));
 		}
@@ -117,8 +116,9 @@ class TracyExtension extends Nette\DI\CompilerExtension
 				));
 			}
 
-			if (!$this->cliMode) {
-				$initialize->addBody('if ($tmp = $this->getByType("Nette\Http\Session", false)) { $tmp->start(); Tracy\Debugger::dispatch(); };');
+			if (!$this->cliMode && ($name = $builder->getByType(Nette\Http\Session::class))) {
+				$initialize->addBody('$this->getService(?)->start();', [$name]);
+				$initialize->addBody('Tracy\Debugger::dispatch();');
 			}
 		}
 
