@@ -166,7 +166,7 @@ class Helpers
 				. $_SERVER['REQUEST_URI'];
 		} else {
 			return 'CLI (PID: ' . getmypid() . ')'
-				. (empty($_SERVER['argv']) ? '' : ': ' . implode(' ', $_SERVER['argv']));
+				. ': ' . implode(' ', array_map([self::class, 'escapeArg'], $_SERVER['argv']));
 		}
 	}
 
@@ -301,5 +301,20 @@ class Helpers
 		return preg_match('#^Content-Security-Policy(?:-Report-Only)?:.*\sscript-src\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
 			? $m[1]
 			: null;
+	}
+
+
+	/**
+	 * Escape a string to be used as a shell argument.
+	 */
+	private static function escapeArg(string $s): string
+	{
+		if (preg_match('#^[a-z0-9._=/:-]+\z#i', $s)) {
+			return $s;
+		}
+
+		return defined('PHP_WINDOWS_VERSION_BUILD')
+			? '"' . str_replace('"', '""', $s) . '"'
+			: escapeshellarg($s);
 	}
 }
