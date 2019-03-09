@@ -185,7 +185,7 @@ class Helpers
 			$replace = ["$m[2](", "$hint("];
 
 		} elseif (preg_match('#^Call to undefined method ([\w\\\\]+)::(\w+)#', $message, $m)) {
-			$hint = self::getSuggestion(get_class_methods($m[1]), $m[2]);
+			$hint = self::getSuggestion(get_class_methods($m[1]) ?: [], $m[2]);
 			$message .= ", did you mean $hint()?";
 			$replace = ["$m[2](", "$hint("];
 
