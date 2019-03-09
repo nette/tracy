@@ -189,7 +189,6 @@
 			<ul>
 				<li><b><a href="https://nette.org/make-donation?to=tracy" target="_blank" rel="noreferrer noopener">%a%️</a></b></li>
 				<li>Report generated at %a%</li>
-				<li>CLI%a?%</li>
 				<li>PHP %a%</li>			</ul>
 			<div class="footer-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
 		</footer>
