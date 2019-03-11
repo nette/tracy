@@ -22,7 +22,7 @@
 	"require-dev": {
 		"nette/utils": "^2.4 || ^3.0",
 		"nette/di": "^2.4 || ~3.0.0",
-		"nette/tester": "^2.1",
+		"nette/tester": "^2.2",
 		"psr/log": "^1.0"
 	},
 	"suggest": {
