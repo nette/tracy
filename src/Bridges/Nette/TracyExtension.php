@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Tracy\Bridges\Nette;
 
 use Nette;
+use Nette\Schema\Expect;
 use Tracy;
 
 
@@ -18,26 +19,6 @@ use Tracy;
  */
 class TracyExtension extends Nette\DI\CompilerExtension
 {
-	public $defaults = [
-		'email' => null,
-		'fromEmail' => null,
-		'logSeverity' => null,
-		'editor' => null,
-		'browser' => null,
-		'errorTemplate' => null,
-		'strictMode' => null,
-		'showBar' => null,
-		'maxLen' => null,
-		'maxLength' => null,
-		'maxDepth' => null,
-		'showLocation' => null,
-		'scream' => null,
-		'bar' => [], // of class name
-		'blueScreen' => [], // of callback
-		'editorMapping' => [],
-		'netteMailer' => true,
-	];
-
 	/** @var bool */
 	private $debugMode;
 
@@ -52,9 +33,31 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	}
 
 
+	public function getConfigSchema(): Nette\Schema\Schema
+	{
+		return Expect::structure([
+			'email' => Expect::email()->dynamic(),
+			'fromEmail' => Expect::email()->dynamic(),
+			'logSeverity' => Expect::scalar(),
+			'editor' => Expect::string()->dynamic(),
+			'browser' => Expect::string()->dynamic(),
+			'errorTemplate' => Expect::string()->dynamic(),
+			'strictMode' => Expect::bool()->dynamic(),
+			'showBar' => Expect::bool()->dynamic(),
+			'maxLength' => Expect::int()->dynamic(),
+			'maxDepth' => Expect::int()->dynamic(),
+			'showLocation' => Expect::bool()->dynamic(),
+			'scream' => Expect::bool()->dynamic(),
+			'bar' => Expect::listOf('class|Nette\DI\Definitions\Statement'),
+			'blueScreen' => Expect::listOf('callable'),
+			'editorMapping' => Expect::arrayOf('string')->dynamic(),
+			'netteMailer' => Expect::bool(true),
+		]);
+	}
+
+
 	public function loadConfiguration()
 	{
-		$this->validateConfig($this->defaults);
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('logger'))
@@ -74,7 +77,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$initialize = $class->getMethod('initialize');
 		$builder = $this->getContainerBuilder();
 
-		$options = $this->config;
+		$options = (array) $this->config;
 		unset($options['bar'], $options['blueScreen'], $options['netteMailer']);
 		if (isset($options['logSeverity'])) {
 			$res = 0;
@@ -94,17 +97,17 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		}
 
 		$logger = $builder->getDefinition($this->prefix('logger'));
-		if ($logger->getFactory()->getEntity() !== [Tracy\Debugger::class, 'getLogger']) {
+		if (!$logger instanceof Nette\DI\ServiceDefinition || $logger->getFactory()->getEntity() !== [Tracy\Debugger::class, 'getLogger']) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::setLogger(?);', [$logger]));
 		}
-		if ($this->config['netteMailer'] && $builder->getByType(Nette\Mail\IMailer::class)) {
+		if ($this->config->netteMailer && $builder->getByType(Nette\Mail\IMailer::class)) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::getLogger()->mailer = ?;', [
-				[new Nette\DI\Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config['fromEmail']]), 'send'],
+				[new Nette\DI\Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config->fromEmail]), 'send'],
 			]));
 		}
 
 		if ($this->debugMode) {
-			foreach ((array) $this->config['bar'] as $item) {
+			foreach ($this->config->bar as $item) {
 				if (is_string($item) && substr($item, 0, 1) === '@') {
 					$item = new Nette\DI\Statement(['@' . $builder::THIS_CONTAINER, 'getService'], [substr($item, 1)]);
 				} elseif (is_string($item)) {
@@ -122,7 +125,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		foreach ((array) $this->config['blueScreen'] as $item) {
+		foreach ($this->config->blueScreen as $item) {
 			$initialize->addBody($builder->formatPhp(
 				'$this->getService(?)->addPanel(?);',
 				Nette\DI\Helpers::filterArguments([$this->prefix('blueScreen'), $item])
