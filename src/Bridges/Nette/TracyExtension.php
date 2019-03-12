@@ -117,7 +117,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			}
 
 			if (!$this->cliMode && ($name = $builder->getByType(Nette\Http\Session::class))) {
-				$initialize->addBody('$this->getService(?)->start();', [$name, $name]);
+				$initialize->addBody('$this->getService(?)->start();', [$name]);
 				$initialize->addBody('Tracy\Debugger::dispatch();');
 			}
 		}
