@@ -64,7 +64,7 @@ class FireLogger implements ILogger
 				unset($trace[0]);
 			}
 
-			$file = str_replace(dirname(dirname(dirname($e->getFile()))), "\xE2\x80\xA6", $e->getFile());
+			$file = str_replace(dirname($e->getFile(), 3), "\xE2\x80\xA6", $e->getFile());
 			$item['template'] = ($e instanceof \ErrorException ? '' : Helpers::getClass($e) . ': ')
 				. $e->getMessage() . ($e->getCode() ? ' #' . $e->getCode() : '') . ' in ' . $file . ':' . $e->getLine();
 			$item['pathname'] = $e->getFile();
