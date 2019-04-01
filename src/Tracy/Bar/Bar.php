@@ -144,7 +144,7 @@ class Bar
 		foreach ($this->panels as $id => $panel) {
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
 			try {
-				$tab = $panel->getTab();
+				$tab = (string) $panel->getTab();
 				$panelHtml = $tab ? $panel->getPanel() : null;
 
 			} catch (\Throwable $e) {
