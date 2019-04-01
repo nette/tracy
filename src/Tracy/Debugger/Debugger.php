@@ -267,7 +267,12 @@ class Debugger
 
 		} elseif (self::$showBar && !self::$productionMode) {
 			self::removeOutputBuffers(false);
-			self::getBar()->render();
+			try {
+				self::getBar()->render();
+			} catch (\Throwable $e) {
+				self::removeOutputBuffers(true);
+				self::getBlueScreen()->render($e);
+			}
 		}
 	}
 
