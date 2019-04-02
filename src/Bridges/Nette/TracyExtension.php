@@ -21,6 +21,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		'fromEmail' => null,
 		'logSeverity' => null,
 		'editor' => null,
+		'fileStorage' => null,
 		'browser' => null,
 		'errorTemplate' => null,
 		'strictMode' => null,
@@ -74,7 +75,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$class = method_exists('Nette\DI\Helpers', 'filterArguments') ? 'Nette\DI\Helpers' : 'Nette\DI\Compiler';
 
 		$options = $this->config;
-		unset($options['bar'], $options['blueScreen'], $options['netteMailer']);
+		unset($options['bar'], $options['blueScreen'], $options['netteMailer'], $options['fileStorage']);
 		if (isset($options['logSeverity'])) {
 			$res = 0;
 			foreach ((array) $options['logSeverity'] as $level) {
@@ -115,9 +116,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 				));
 			}
 
-			if (!$this->cliMode && ($name = $builder->getByType('Nette\Http\Session'))) {
-				$initialize->addBody('$this->getService(?)->start();', [$name]);
-				$initialize->addBody('Tracy\Debugger::dispatch();');
+			if (!$this->cliMode) {
+				if ($this->config['fileStorage'] !== null) {
+					$initialize->addBody('Tracy\Debugger::setStorage(new Tracy\FileStorage(?));', [$this->config['fileStorage']]);
+					$initialize->addBody('Tracy\Debugger::dispatch();');
+				} else if ($name = $builder->getByType('Nette\Http\Session')) {
+					$initialize->addBody('$this->getService(?)->start();', [$name]);
+					$initialize->addBody('Tracy\Debugger::dispatch();');
+				}
 			}
 		}
 
