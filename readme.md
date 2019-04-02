@@ -177,10 +177,10 @@ any scripts:
 AJAX and redirected requests
 ----------------------------
 
-Tracy is able to show Debug bar and Bluescreens for AJAX and redirected requests. You just have to start session before Tracy:
+Tracy is able to show Debug bar and Bluescreens for AJAX and redirected requests. Tracy keeps the data in a temporary files and uses the `tracy-session` cookie. Tracy can be configured to use a standard PHP session:
 
 ```php
-session_start();
+Debugger::setSessionStorage(new Tracy\NativeSession);
 Debugger::enable();
 ```
 
@@ -188,6 +188,7 @@ In case you use non-standard session handler, you can start Tracy immediately (i
 and then inform Tracy that session is ready to use via `dispatch()`:
 
 ```php
+Debugger::setSessionStorage(new Tracy\NativeSession);
 Debugger::enable();
 
 // initialize session handler

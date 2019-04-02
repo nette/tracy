@@ -6,9 +6,6 @@ require __DIR__ . '/../src/tracy.php';
 
 use Tracy\Debugger;
 
-// session is required for this functionality
-session_start();
-
 // For security reasons, Tracy is visible only on localhost.
 // You may force Tracy to run in development mode by passing the Debugger::DEVELOPMENT instead of Debugger::DETECT.
 Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
