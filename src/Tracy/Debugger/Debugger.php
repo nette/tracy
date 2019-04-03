@@ -17,7 +17,7 @@ use ErrorException;
  */
 class Debugger
 {
-	public const VERSION = '2.6.1';
+	public const VERSION = '2.6.2';
 
 	/** server modes for Debugger::enable() */
 	public const
