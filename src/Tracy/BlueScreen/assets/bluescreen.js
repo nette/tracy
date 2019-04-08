@@ -20,6 +20,10 @@
 				}
 			}
 
+			if (navigator.platform.indexOf('Mac') > -1) {
+				blueScreen.classList.add('mac');
+			}
+
 			document.getElementById('tracy-bs-toggle').addEventListener('tracy-toggle', function() {
 				let collapsed = this.classList.contains('tracy-collapsed');
 				for (let i = 0; i < styles.length; i++) {

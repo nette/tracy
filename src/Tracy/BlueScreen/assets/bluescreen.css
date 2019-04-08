@@ -186,6 +186,10 @@
 	overflow: auto;
 }
 
+#tracy-bs.mac .outer {
+	padding-bottom: 12px;
+}
+
 
 /* source code */
 #tracy-bs pre.code > div {
