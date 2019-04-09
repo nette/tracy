@@ -379,7 +379,7 @@
 			(document.body || document.documentElement).appendChild(Debug.layer);
 			evalScripts(Debug.layer);
 			Tracy.Dumper.init(); // for common dump()
-			Debug.layer.style.display = 'block';
+			Debug.layer.style.all = 'initial';
 			Debug.bar.init();
 
 			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
