@@ -110,7 +110,7 @@ class BlueScreen
 	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
 	{
 		$messageHtml = preg_replace(
-			'#\'\S[^\']*\S\'|"\S[^"]*\S"#U',
+			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
 			'<i>$0</i>',
 			htmlspecialchars((string) $exception->getMessage(), ENT_SUBSTITUTE, 'UTF-8')
 		);
