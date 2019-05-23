@@ -28,7 +28,7 @@ class DummyPsrLogger extends Psr\Log\AbstractLogger
 
 $psrLogger = new DummyPsrLogger;
 $tracyLogger = new PsrToTracyLoggerAdapter($psrLogger);
-$exception = new \Exception('Something went wrong');
+$exception = new \Exception('Something went wrong', 123);
 
 $tracyLogger->log('info');
 $tracyLogger->log('warning', ILogger::WARNING);
@@ -41,5 +41,5 @@ Assert::same([
 	[Psr\Log\LogLevel::WARNING, 'warning', []],
 	[Psr\Log\LogLevel::INFO, '123', []],
 	[Psr\Log\LogLevel::INFO, "array (1)\n   x => \"y\"", []],
-	[Psr\Log\LogLevel::INFO, 'Something went wrong', ['exception' => $exception]],
+	[Psr\Log\LogLevel::INFO, 'Exception: Something went wrong #123 in ' . __DIR__ . DIRECTORY_SEPARATOR . 'PsrToTracyLoggerAdapter.phpt:31', ['exception' => $exception]],
 ], $psrLogger->entries);
