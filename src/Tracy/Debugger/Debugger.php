@@ -152,7 +152,7 @@ class Debugger
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
 		}
 
-		self::$reserved = str_repeat('t', 30000);
+		self::$reserved = str_repeat('t', 500000);
 		self::$time = $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(true);
 		self::$obLevel = ob_get_level();
 		self::$cpuUsage = !self::$productionMode && function_exists('getrusage') ? getrusage() : null;
