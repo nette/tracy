@@ -40,6 +40,12 @@ body#tracy-debug { /* in popup window */
 	white-space: inherit;
 	float: none;
 	clear: none;
+	max-width: initial;
+	min-width: initial;
+	width: initial;
+	max-height: initial;
+	min-height: initial;
+	height: initial;
 }
 
 #tracy-debug *:before,
