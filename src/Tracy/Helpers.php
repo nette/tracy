@@ -175,7 +175,7 @@ class Helpers
 	public static function improveException(\Throwable $e): void
 	{
 		$message = $e->getMessage();
-		if (!$e instanceof \Error && !$e instanceof \ErrorException) {
+		if ((!$e instanceof \Error && !$e instanceof \ErrorException) || strpos($e->getMessage(), 'did you mean')) {
 			// do nothing
 		} elseif (preg_match('#^Call to undefined function (\S+\\\\)?(\w+)\(#', $message, $m)) {
 			$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
