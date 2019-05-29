@@ -4,6 +4,7 @@
 
 /* common styles */
 #tracy-debug {
+	all: unset;
 	display: none;
 	direction: ltr;
 	line-height: 1.5;
