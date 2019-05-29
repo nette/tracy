@@ -158,6 +158,15 @@ Assert::match(
 );
 Assert::same([], $snapshot);
 
+
+$arr = [1, [2, [3, [4, []]]], 3];
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,[]]]]]]]],[2,3]]\'></pre>',
+	Dumper::toHtml($arr, $options)
+);
+Assert::same([], $snapshot);
+
+
 $obj = new stdClass;
 $obj->a = new stdClass;
 $obj->a->b = new stdClass;
