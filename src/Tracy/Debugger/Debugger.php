@@ -36,6 +36,9 @@ class Debugger
 	/** @var bool whether to send data to FireLogger in development mode */
 	public static $showFireLogger = true;
 
+	/** @var int size of reserved memory */
+	public static $reservedMemorySize = 500000;
+
 	/** @var bool */
 	private static $enabled = false;
 
@@ -152,7 +155,7 @@ class Debugger
 			self::$productionMode = is_bool($mode) ? $mode : !self::detectDebugMode($mode);
 		}
 
-		self::$reserved = str_repeat('t', 500000);
+		self::$reserved = str_repeat('t', self::$reservedMemorySize);
 		self::$time = $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(true);
 		self::$obLevel = ob_get_level();
 		self::$cpuUsage = !self::$productionMode && function_exists('getrusage') ? getrusage() : null;
@@ -253,7 +256,7 @@ class Debugger
 	 */
 	public static function shutdownHandler(): void
 	{
-		if (!self::$reserved) {
+		if (self::$reserved === null) {
 			return;
 		}
 		self::$reserved = null;
@@ -283,7 +286,7 @@ class Debugger
 	 */
 	public static function exceptionHandler(\Throwable $exception, bool $exit = true): void
 	{
-		if (!self::$reserved && $exit) {
+		if (self::$reserved === null && $exit) {
 			return;
 		}
 		self::$reserved = null;
