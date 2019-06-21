@@ -65,6 +65,11 @@ printf -v file "${file//%/\\x}"
 # And escape double-quotes.
 file=${file//\"/\\\"}
 
+# Apply custom mapping conversion.
+for path in "${!mapping[@]}"; do
+	file="${file//$path/${mapping[$path]}}"
+done
+
 # Action: Create a file (only if it does not already exist).
 if [ "$action" == "create" ] && [[ ! -f "$file" ]]; then
 	mkdir -p $(dirname "$file")
@@ -85,11 +90,6 @@ if [ "$action" == "fix" ]; then
 	sed -i "${line}s/${search}/${replace}/" $file
 
 fi
-
-# Apply custom mapping conversion.
-for path in "${!mapping[@]}"; do
-	file="${file//$path/${mapping[$path]}}"
-done
 
 # Format the command according to the selected editor.
 command="${editor//\$FILE/$file}"
