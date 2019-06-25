@@ -43,9 +43,12 @@ body#tracy-debug { /* in popup window */
 	clear: none;
 	max-width: initial;
 	min-width: initial;
-	width: initial;
 	max-height: initial;
 	min-height: initial;
+}
+
+#tracy-debug *:not(svg):not(img) {
+	width: initial;
 	height: initial;
 }
 
