@@ -3,24 +3,7 @@
  */
 
 /* common styles */
-#tracy-debug {
-	all: unset;
-	display: none;
-	direction: ltr;
-	line-height: 1.5;
-}
-
-body#tracy-debug { /* in popup window */
-	margin: 0;
-	display: block;
-}
-
-#tracy-debug:not(body) {
-	position: absolute;
-	left: 0;
-	top: 0;
-}
-
+#tracy-debug,
 #tracy-debug * {
 	font: inherit;
 	line-height: inherit;
@@ -52,9 +35,26 @@ body#tracy-debug { /* in popup window */
 	height: initial;
 }
 
+#tracy-debug:before,
+#tracy-debug:after,
 #tracy-debug *:before,
 #tracy-debug *:after {
 	all: unset;
+}
+
+#tracy-debug {
+	display: none;
+	direction: ltr;
+}
+
+body#tracy-debug { /* in popup window */
+	display: block;
+}
+
+#tracy-debug:not(body) {
+	position: absolute;
+	left: 0;
+	top: 0;
 }
 
 #tracy-debug b,
