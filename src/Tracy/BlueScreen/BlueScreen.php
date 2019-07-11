@@ -195,7 +195,7 @@ class BlueScreen
 			$actions[] = $ex->tracyAction;
 		}
 
-		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{3,})+)\\1#i', $ex->getMessage(), $m)) {
+		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{3,})+)\1#i', $ex->getMessage(), $m)) {
 			$class = $m[2];
 			if (
 				!class_exists($class) && !interface_exists($class) && !trait_exists($class)
@@ -208,7 +208,7 @@ class BlueScreen
 			}
 		}
 
-		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\\1#i', $ex->getMessage(), $m)) {
+		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\1#i', $ex->getMessage(), $m)) {
 			$file = $m[2];
 			$actions[] = [
 				'link' => Helpers::editorUri($file, 1, $label = is_file($file) ? 'open' : 'create'),

@@ -544,7 +544,7 @@ class Dumper
 	 */
 	private function encodeKey($key)
 	{
-		return is_int($key) || preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}\z#', $key)
+		return is_int($key) || preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}$#D', $key)
 			? $key
 			: '"' . $this->encodeString($key, $this->maxLength) . '"';
 	}
@@ -607,9 +607,9 @@ class Dumper
 		foreach ((array) $obj as $name => $value) {
 			if ($name === '__PHP_Incomplete_Class_Name') {
 				$info['className'] = $value;
-			} elseif (preg_match('#^\x0\*\x0(.+)\z#', $name, $m)) {
+			} elseif (preg_match('#^\x0\*\x0(.+)$#D', $name, $m)) {
 				$info['protected'][$m[1]] = $value;
-			} elseif (preg_match('#^\x0(.+)\x0(.+)\z#', $name, $m)) {
+			} elseif (preg_match('#^\x0(.+)\x0(.+)$#D', $name, $m)) {
 				$info['private'][$m[1] . '::$' . $m[2]] = $value;
 			} else {
 				$info['public'][$name] = $value;

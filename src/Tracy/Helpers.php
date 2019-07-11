@@ -291,7 +291,7 @@ class Helpers
 	/** @internal */
 	public static function isAjax(): bool
 	{
-		return isset($_SERVER['HTTP_X_TRACY_AJAX']) && preg_match('#^\w{10,15}\z#', $_SERVER['HTTP_X_TRACY_AJAX']);
+		return isset($_SERVER['HTTP_X_TRACY_AJAX']) && preg_match('#^\w{10,15}$#D', $_SERVER['HTTP_X_TRACY_AJAX']);
 	}
 
 
@@ -309,7 +309,7 @@ class Helpers
 	 */
 	private static function escapeArg(string $s): string
 	{
-		if (preg_match('#^[a-z0-9._=/:-]+\z#i', $s)) {
+		if (preg_match('#^[a-z0-9._=/:-]+$#Di', $s)) {
 			return $s;
 		}
 
