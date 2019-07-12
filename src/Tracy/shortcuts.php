@@ -44,3 +44,15 @@ if (!function_exists('bdump')) {
 		return $var;
 	}
 }
+
+if (!function_exists('cdump')) {
+	/**
+	 * Tracy\Debugger::fireLog() shortcut.
+	 * @tracySkipLocation
+	 */
+	function cdump($var)
+	{
+		Tracy\Debugger::fireLog(...func_get_args());
+		return $var;
+	}
+}
