@@ -18,8 +18,8 @@ use Tracy;
  */
 class PsrToTracyLoggerAdapter implements Tracy\ILogger
 {
-	/** Tracy logger priority to PSR-3 log level mapping */
-	private const PRIORITY_MAP = [
+	/** Tracy logger level to PSR-3 log level mapping */
+	private const LEVEL_MAP = [
 		Tracy\ILogger::DEBUG => Psr\Log\LogLevel::DEBUG,
 		Tracy\ILogger::INFO => Psr\Log\LogLevel::INFO,
 		Tracy\ILogger::WARNING => Psr\Log\LogLevel::WARNING,
@@ -38,7 +38,7 @@ class PsrToTracyLoggerAdapter implements Tracy\ILogger
 	}
 
 
-	public function log($value, $priority = self::INFO)
+	public function log($value, $level = self::INFO)
 	{
 		if ($value instanceof \Throwable) {
 			$message = Tracy\Helpers::getClass($value) . ': ' . $value->getMessage() . ($value->getCode() ? ' #' . $value->getCode() : '') . ' in ' . $value->getFile() . ':' . $value->getLine();
@@ -54,7 +54,7 @@ class PsrToTracyLoggerAdapter implements Tracy\ILogger
 		}
 
 		$this->psrLogger->log(
-			self::PRIORITY_MAP[$priority] ?? Psr\Log\LogLevel::ERROR,
+			self::LEVEL_MAP[$level] ?? Psr\Log\LogLevel::ERROR,
 			$message,
 			$context
 		);

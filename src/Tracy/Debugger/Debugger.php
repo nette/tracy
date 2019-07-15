@@ -568,9 +568,9 @@ class Debugger
 	 * @param  mixed  $message
 	 * @return mixed
 	 */
-	public static function log($message, string $priority = ILogger::INFO)
+	public static function log($message, string $level = ILogger::INFO)
 	{
-		return self::getLogger()->log($message, $priority);
+		return self::getLogger()->log($message, $level);
 	}
 
 
