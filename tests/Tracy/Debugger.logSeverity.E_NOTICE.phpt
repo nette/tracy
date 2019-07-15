@@ -19,5 +19,5 @@ Debugger::$logSeverity = E_NOTICE;
 
 $variable = $missingVariable;
 
-Assert::count(1, glob(TEMP_DIR . '/exception*.html'));
+Assert::count(1, glob(TEMP_DIR . '/error*.html'));
 Assert::count(1, glob(TEMP_DIR . '/error.log'));

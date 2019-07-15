@@ -61,7 +61,7 @@ class Logger implements ILogger
 		}
 
 		$exceptionFile = $message instanceof \Throwable
-			? $this->getExceptionFile($message)
+			? $this->getExceptionFile($message, $level)
 			: null;
 		$line = static::formatLogLine($message, $exceptionFile);
 		$file = $this->directory . '/' . strtolower($level ?: self::INFO) . '.log';
@@ -119,7 +119,7 @@ class Logger implements ILogger
 	}
 
 
-	public function getExceptionFile(\Throwable $exception): string
+	public function getExceptionFile(\Throwable $exception, string $level = self::EXCEPTION): string
 	{
 		while ($exception) {
 			$data[] = [
@@ -135,7 +135,7 @@ class Logger implements ILogger
 				return $dir . $file;
 			}
 		}
-		return $dir . 'exception--' . @date('Y-m-d--H-i') . "--$hash.html"; // @ timezone may not be set
+		return $dir . $level . '--' . @date('Y-m-d--H-i') . "--$hash.html"; // @ timezone may not be set
 	}
 
 
