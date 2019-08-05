@@ -30,7 +30,7 @@
 	min-height: initial;
 }
 
-#tracy-debug *:not(svg):not(img) {
+#tracy-debug *:not(svg):not(img):not(table) {
 	width: initial;
 	height: initial;
 }
