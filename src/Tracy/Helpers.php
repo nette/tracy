@@ -211,12 +211,10 @@ class Helpers
 			$ref = new \ReflectionProperty($e, 'message');
 			$ref->setAccessible(true);
 			$ref->setValue($e, $message);
-			if (property_exists($e, 'tracyAction')) {
-				$e->tracyAction = [
-						'link' => self::editorUri($e->getFile(), $e->getLine(), 'fix', $replace[0] ?? '', $replace[1] ?? ''),
-					'label' => 'fix it',
-				];
-			}
+			$e->tracyAction = [
+				'link' => self::editorUri($e->getFile(), $e->getLine(), 'fix', $replace[0] ?? '', $replace[1] ?? ''),
+				'label' => 'fix it',
+			];
 		}
 	}
 
