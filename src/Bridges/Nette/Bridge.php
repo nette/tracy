@@ -48,7 +48,6 @@ class Bridge
 					. BlueScreen::highlightLine(htmlspecialchars($e->sourceCode, ENT_IGNORE, 'UTF-8'), $e->sourceLine)
 					. '</div></pre>',
 			];
-
 		}
 		if ($e && strpos($file = $e->getFile(), '.latte--')) {
 			$lines = file($file);
