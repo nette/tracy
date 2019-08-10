@@ -25,6 +25,13 @@ $countClasses = function (array $list): int {
 	}));
 };
 
+$ipFormatter = static function (?string $ip): ?string {
+	if ($ip === '127.0.0.1' || $ip === '::1') {
+		$ip .= ' (localhost)';
+	}
+	return $ip;
+};
+
 $opcache = function_exists('opcache_get_status') ? @opcache_get_status() : null; // @ can be restricted
 $cachedFiles = isset($opcache['scripts']) ? array_intersect(array_keys($opcache['scripts']), get_included_files()) : [];
 
@@ -36,8 +43,8 @@ $info = [
 	'OPcache' => $opcache ? round(count($cachedFiles) * 100 / count(get_included_files())) . '% cached' : null,
 	'Classes + interfaces + traits' => $countClasses(get_declared_classes()) . ' + '
 		. $countClasses(get_declared_interfaces()) . ' + ' . $countClasses(get_declared_traits()),
-	'Your IP' => $_SERVER['REMOTE_ADDR'] ?? null,
-	'Server IP' => $_SERVER['SERVER_ADDR'] ?? null,
+	'Your IP' => $ipFormatter($_SERVER['REMOTE_ADDR'] ?? null),
+	'Server IP' => $ipFormatter($_SERVER['SERVER_ADDR'] ?? null),
 	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,
 	'PHP' => PHP_VERSION,
 	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : null,
