@@ -163,7 +163,6 @@ class Logger implements ILogger
 
 		if (
 			$this->email
-			&& $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ file may not be writable
 		) {

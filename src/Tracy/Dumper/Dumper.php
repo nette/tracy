@@ -179,6 +179,7 @@ class Dumper
 			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
 		) : null;
 
+		$options = [];
 		if (is_array($this->snapshot)) {
 			$options[self::SNAPSHOT] = &$this->snapshot;
 		}
@@ -501,7 +502,7 @@ class Dumper
 		static $table;
 		if ($table === null) {
 			foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
-				$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
+				$table[$ch] = '\x' . str_pad(dechex(ord((string) $ch)), 2, '0', STR_PAD_LEFT);
 			}
 			$table['\\'] = '\\\\';
 			$table["\r"] = '\r';
@@ -517,7 +518,7 @@ class Dumper
 				$i = $len = 0;
 				$maxI = $maxLength * 4; // max UTF-8 length
 				do {
-					if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength) || $i >= $maxI) {
+					if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && ((++$len > $maxLength) || $i >= $maxI)) {
 						$s = substr($s, 0, $i);
 						$shortened = true;
 						break;
@@ -539,7 +540,7 @@ class Dumper
 
 
 	/**
-	 * @param  int|string  $k
+	 * @param  int|string  $key
 	 * @return int|string
 	 */
 	private function encodeKey($key)

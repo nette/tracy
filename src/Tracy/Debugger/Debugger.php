@@ -27,7 +27,7 @@ class Debugger
 
 	public const COOKIE_SECRET = 'tracy-debug';
 
-	/** @var bool in production mode is suppressed any debugging output */
+	/** @var bool|null in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
 
 	/** @var bool whether to display debug bar in development mode */

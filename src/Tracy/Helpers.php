@@ -164,10 +164,9 @@ class Helpers
 			return (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
 				. ($_SERVER['HTTP_HOST'] ?? '')
 				. $_SERVER['REQUEST_URI'];
-		} else {
-			return 'CLI (PID: ' . getmypid() . ')'
-				. ': ' . implode(' ', array_map([self::class, 'escapeArg'], $_SERVER['argv']));
 		}
+		return 'CLI (PID: ' . getmypid() . ')'
+			. ': ' . implode(' ', array_map([self::class, 'escapeArg'], $_SERVER['argv']));
 	}
 
 
@@ -212,10 +211,12 @@ class Helpers
 			$ref = new \ReflectionProperty($e, 'message');
 			$ref->setAccessible(true);
 			$ref->setValue($e, $message);
-			$e->tracyAction = [
-				'link' => self::editorUri($e->getFile(), $e->getLine(), 'fix', $replace[0], $replace[1]),
-				'label' => 'fix it',
-			];
+			if (property_exists($e, 'tracyAction')) {
+				$e->tracyAction = [
+						'link' => self::editorUri($e->getFile(), $e->getLine(), 'fix', $replace[0] ?? '', $replace[1] ?? ''),
+					'label' => 'fix it',
+				];
+			}
 		}
 	}
 
@@ -243,14 +244,14 @@ class Helpers
 		$segments = explode(DIRECTORY_SEPARATOR, $class);
 		$res = null;
 		$max = 0;
-		foreach (get_declared_classes() as $class) {
-			$parts = explode(DIRECTORY_SEPARATOR, $class);
+		foreach (get_declared_classes() as $declaredClass) {
+			$parts = explode(DIRECTORY_SEPARATOR, $declaredClass);
 			foreach ($parts as $i => $part) {
 				if ($part !== $segments[$i] ?? null) {
 					break;
 				}
 			}
-			if ($i > $max && ($file = (new \ReflectionClass($class))->getFileName())) {
+			if (isset($i) && $i > $max && ($file = (new \ReflectionClass($declaredClass))->getFileName())) {
 				$max = $i;
 				$res = array_merge(array_slice(explode(DIRECTORY_SEPARATOR, $file), 0, $i - count($parts)), array_slice($segments, $i));
 				$res = implode(DIRECTORY_SEPARATOR, $res) . '.php';

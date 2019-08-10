@@ -33,6 +33,7 @@ class Bridge
 
 	public static function renderLatteError(?\Throwable $e): ?array
 	{
+		assert(\class_exists(Latte\CompileException::class));
 		if ($e instanceof Latte\CompileException) {
 			return [
 				'tab' => 'Template',
@@ -48,7 +49,8 @@ class Bridge
 					. '</div></pre>',
 			];
 
-		} elseif ($e && strpos($file = $e->getFile(), '.latte--')) {
+		}
+		if ($e && strpos($file = $e->getFile(), '.latte--')) {
 			$lines = file($file);
 			if (preg_match('#// source: (\S+\.latte)#', $lines[1], $m) && @is_file($m[1])) { // @ - may trigger error
 				$templateFile = $m[1];
@@ -68,6 +70,7 @@ class Bridge
 
 	public static function renderLatteUnknownMacro(?\Throwable $e): ?array
 	{
+		assert(\class_exists(Latte\CompileException::class));
 		if (
 			$e instanceof Latte\CompileException
 			&& @is_file($e->sourceName) // @ - may trigger error
@@ -94,7 +97,8 @@ class Bridge
 				'link' => Helpers::editorUri($loc['file'], $loc['line'], 'fix', '->' . $m[1], '->' . $m[2]),
 				'label' => 'fix it',
 			];
-		} elseif (preg_match('#Call to undefined (static )?method .+::(\w+)\(\), did you mean (\w+)\(\)?#A', $e->getMessage(), $m)) {
+		}
+		if (preg_match('#Call to undefined (static )?method .+::(\w+)\(\), did you mean (\w+)\(\)?#A', $e->getMessage(), $m)) {
 			$operator = $m[1] ? '::' : '->';
 			return [
 				'link' => Helpers::editorUri($loc['file'], $loc['line'], 'fix', $operator . $m[2] . '(', $operator . $m[3] . '('),
