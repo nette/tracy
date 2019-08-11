@@ -502,7 +502,7 @@ class Dumper
 		static $table;
 		if ($table === null) {
 			foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
-				$table[$ch] = '\x' . str_pad(dechex(ord((string) $ch)), 2, '0', STR_PAD_LEFT);
+				$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
 			}
 			$table['\\'] = '\\\\';
 			$table["\r"] = '\r';

@@ -27,7 +27,7 @@ class Logger implements ILogger
 	/** @var mixed interval for sending email is 2 days */
 	public $emailSnooze = '2 days';
 
-	/** @var callable handler for sending emails */
+	/** @var callable|null handler for sending emails */
 	public $mailer;
 
 	/** @var BlueScreen|null */
@@ -163,6 +163,7 @@ class Logger implements ILogger
 
 		if (
 			$this->email
+			&& $this->mailer
 			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ file may not exist
 			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ file may not be writable
 		) {
