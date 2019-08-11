@@ -33,7 +33,6 @@ class Bridge
 
 	public static function renderLatteError(?\Throwable $e): ?array
 	{
-		assert(\class_exists(Latte\CompileException::class));
 		if ($e instanceof Latte\CompileException) {
 			return [
 				'tab' => 'Template',

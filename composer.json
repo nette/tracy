@@ -23,6 +23,9 @@
 		"nette/utils": "^3.0",
 		"nette/di": "^3.0",
 		"nette/tester": "^2.2",
+		"nette/mail": "^3.0",
+		"nette/http": "^3.0",
+		"latte/latte": "^2.5",
 		"psr/log": "^1.0"
 	},
 	"conflict": {

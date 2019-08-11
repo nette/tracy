@@ -121,7 +121,6 @@ class TracyExtension extends Nette\DI\CompilerExtension
 				));
 			}
 
-			assert(\class_exists(Nette\Http\Session::class));
 			if (!$this->cliMode && ($name = $builder->getByType(Nette\Http\Session::class))) {
 				$initialize->addBody('$this->getService(?)->start();', [$name]);
 				$initialize->addBody('Tracy\Debugger::dispatch();');
