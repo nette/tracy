@@ -68,7 +68,6 @@ class Bridge
 
 	public static function renderLatteUnknownMacro(?\Throwable $e): ?array
 	{
-		assert(\class_exists(Latte\CompileException::class));
 		if (
 			$e instanceof Latte\CompileException
 			&& @is_file($e->sourceName) // @ - may trigger error
