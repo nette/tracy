@@ -58,7 +58,7 @@ class Bridge
 					'panel' => '<p><b>File:</b> ' . Helpers::editorLink($templateFile, $templateLine) . '</p>'
 						. ($templateLine === null
 							? ''
-							: '<pre class="code"><div>' . BlueScreen::highlightFile($templateFile, $templateLine) . '</div></pre>'),
+							: BlueScreen::highlightFile($templateFile, $templateLine)),
 				];
 			}
 		}
