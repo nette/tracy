@@ -43,9 +43,7 @@ class Bridge
 								? '<b>File:</b> ' . Helpers::editorLink($e->sourceName, $e->sourceLine)
 								: '<b>' . htmlspecialchars($e->sourceName . ($e->sourceLine ? ':' . $e->sourceLine : '')) . '</b>')
 							. '</p>')
-					. '<pre class=code><div>'
-					. BlueScreen::highlightLine(htmlspecialchars($e->sourceCode, ENT_IGNORE, 'UTF-8'), $e->sourceLine)
-					. '</div></pre>',
+					. BlueScreen::highlightLine(htmlspecialchars($e->sourceCode, ENT_IGNORE, 'UTF-8'), $e->sourceLine),
 			];
 
 		} elseif ($e && strpos($file = $e->getFile(), '.latte--')) {
@@ -58,7 +56,7 @@ class Bridge
 					'panel' => '<p><b>File:</b> ' . Helpers::editorLink($templateFile, $templateLine) . '</p>'
 						. ($templateLine === null
 							? ''
-							: '<pre class="code"><div>' . BlueScreen::highlightFile($templateFile, $templateLine) . '</div></pre>'),
+							: BlueScreen::highlightFile($templateFile, $templateLine)),
 				];
 			}
 		}
