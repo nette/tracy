@@ -84,7 +84,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 			<div class="<?= $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?= Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
-				<?php if (is_file($ex->getFile())): ?><?= self::highlightFile($ex->getFile(), $ex->getLine(), 15, $ex instanceof \ErrorException && isset($ex->context) ? $ex->context : []) ?><?php endif ?>
+				<?php if (is_file($ex->getFile())): ?><?= self::highlightFile($ex->getFile(), $ex->getLine(), 15, $ex instanceof \ErrorException && isset($ex->context) ? $ex->context : [], $this->keysToHide) ?><?php endif ?>
 			</div></div>
 
 
