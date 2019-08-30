@@ -297,10 +297,13 @@ class Dumper
 				$out = $span . '>' . $out . count($var) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 				$options['parents'][] = $var;
 				foreach ($var as $k => &$v) {
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]) ? self::HIDDEN_VALUE : null;
+					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . '</span> => '
-						. ($hide ? $this->dumpString($hide) : $this->dumpVar($v, $options, $level + 1));
+						. ($hide
+							? Helpers::escapeHtml(self::hideValue($v)) . "\n"
+							: $this->dumpVar($v, $options, $level + 1)
+						);
 				}
 				array_pop($options['parents']);
 
@@ -361,10 +364,13 @@ class Dumper
 						$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]) ? self::HIDDEN_VALUE : null;
+					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . "</span>$vis => "
-						. ($hide ? $this->dumpString($hide) : $this->dumpVar($v, $options, $level + 1));
+						. ($hide
+							? Helpers::escapeHtml(self::hideValue($v)) . "\n"
+							: $this->dumpVar($v, $options, $level + 1)
+						);
 				}
 				array_pop($options['parents']);
 
@@ -419,7 +425,7 @@ class Dumper
 			$options['parents'][] = $var;
 			foreach ($var as $k => &$v) {
 				$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-				$res[] = [$this->encodeKey($k), $hide ? self::HIDDEN_VALUE : $this->toJson($v, $options, $level + 1)];
+				$res[] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1)];
 			}
 			array_pop($options['parents']);
 			return $res;
@@ -456,7 +462,7 @@ class Dumper
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$obj['items'][] = [$this->encodeKey($k), $hide ? self::HIDDEN_VALUE : $this->toJson($v, $options, $level + 1), $vis];
+					$obj['items'][] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1), $vis];
 				}
 			}
 			return ['object' => $obj['id']];
@@ -616,6 +622,12 @@ class Dumper
 			}
 		}
 		return $info;
+	}
+
+
+	private static function hideValue($var): string
+	{
+		return self::HIDDEN_VALUE . ' (' . (is_object($var) ? Helpers::getClass($var) : gettype($var)) . ')';
 	}
 
 
