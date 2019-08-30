@@ -26,14 +26,14 @@ $obj = (object) [
 
 Assert::match('stdClass #%a%
    a => 456
-   password => "*****" (5)
-   PASSWORD => "*****" (5)
-   Pin => "*****" (5)
+   password => ***** (string)
+   PASSWORD => ***** (string)
+   Pin => ***** (string)
    inner => array (4)
    |  a => 123
-   |  password => "*****" (5)
-   |  PASSWORD => "*****" (5)
-   |  Pin => "*****" (5)
+   |  password => ***** (string)
+   |  PASSWORD => ***** (string)
+   |  Pin => ***** (string)
 ', Dumper::toText($obj, [Dumper::KEYS_TO_HIDE => ['password', 'PIN']]));
 
 
@@ -49,16 +49,16 @@ Assert::equal([
 		'hash' => Expect::match('%h%'),
 		'items' => [
 			['a', 456, 0],
-			['password', '*****', 0],
-			['PASSWORD', '*****', 0],
-			['Pin', '*****', 0],
+			['password', ['type' => '***** (string)'], 0],
+			['PASSWORD', ['type' => '***** (string)'], 0],
+			['Pin', ['type' => '***** (string)'], 0],
 			[
 				'inner',
 				[
 					['a', 123],
-					['password', '*****'],
-					['PASSWORD', '*****'],
-					['Pin', '*****'],
+					['password', ['type' => '***** (string)']],
+					['PASSWORD', ['type' => '***** (string)']],
+					['Pin', ['type' => '***** (string)']],
 				],
 				0,
 			],
