@@ -157,6 +157,43 @@ class Helpers
 	}
 
 
+	/**
+	 * Truncates UTF-8 string to maximal length.
+	 */
+	public static function truncate(string $s, int $maxLen = 32768, string $append = "\u{2026}"): string
+	{
+		$length = function (string $s): int {
+			return function_exists('mb_strlen') ? mb_strlen($s, 'UTF-8') : strlen(utf8_decode($s));
+		};
+
+		$substring = function (string $s, int $start, int $len = null) use ($length): string {
+			if (function_exists('mb_substr')) {
+				return mb_substr($s, $start, $len, 'UTF-8'); // MB is much faster
+			}
+			if ($len === null) {
+				$len = $length($s);
+			} elseif ($start < 0 && $len < 0) {
+				$start += $length($s); // unifies iconv_substr behavior with mb_substr
+			}
+			return iconv_substr($s, $start, $len, 'UTF-8');
+		};
+
+		if ($length($s) > $maxLen) {
+			$maxLen -= $length($append);
+			if ($maxLen < 1) {
+				return $append;
+
+			} elseif (preg_match('#^.{1,' . $maxLen . '}(?=[\s\x00-/:-@\[-`{-~])#us', $s, $matches)) {
+				return $matches[0] . $append;
+
+			} else {
+				return $substring($s, 0, $maxLen) . $append;
+			}
+		}
+		return $s;
+	}
+
+
 	/** @internal */
 	public static function getSource(): string
 	{
