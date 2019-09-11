@@ -361,7 +361,7 @@ class Debugger
 	 * @throws ErrorException
 	 * @internal
 	 */
-	public static function errorHandler(int $severity, string $message, string $file, int $line, array $context = []): ?bool
+	public static function errorHandler(int $severity, string $message, string $file, int $line, array $context = null): ?bool
 	{
 		if (self::$scream) {
 			error_reporting(E_ALL);
@@ -403,7 +403,7 @@ class Debugger
 			self::exceptionHandler($e);
 		}
 
-		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, $context);
+		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context);
 		$count = &self::getBar()->getPanel('Tracy:errors')->data["$file|$line|$message"];
 
 		if ($count++) { // repeated error
