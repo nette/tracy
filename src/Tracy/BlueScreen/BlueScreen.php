@@ -274,13 +274,14 @@ class BlueScreen
 
 		if ($vars) {
 			$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function (array $m) use ($vars, $keysToHide): string {
-				$dump = Dumper::toHtml($vars[$m[1]], [
-					Dumper::DEPTH => 1,
-					Dumper::KEYS_TO_HIDE => $keysToHide,
-				]);
-				return array_key_exists($m[1], $vars)
-					? '" title="' . str_replace('"', '&quot;', trim(strip_tags($dump))) . $m[0]
-					: $m[0];
+				if (array_key_exists($m[1], $vars)) {
+					$dump = Dumper::toHtml($vars[$m[1]], [
+						Dumper::DEPTH => 1,
+						Dumper::KEYS_TO_HIDE => $keysToHide,
+					]);
+					return '" title="' . str_replace('"', '&quot;', trim(strip_tags($dump))) . $m[0];
+				}
+				return $m[0];
 			}, $out);
 		}
 
