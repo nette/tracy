@@ -504,43 +504,49 @@ class Dumper
 	 */
 	public static function encodeString(string $s, int $maxLength = null): string
 	{
-		static $table;
-		if ($table === null) {
-			foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
-				$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
-			}
-			$table['\\'] = '\\\\';
-			$table["\r"] = '\r';
-			$table["\n"] = '\n';
-			$table["\t"] = '\t';
-		}
-
-		if ($maxLength && strlen($s) > $maxLength) { // shortens to $maxLength in UTF-8 or longer
-			if (function_exists('mb_substr')) {
-				$s = mb_substr($tmp = $s, 0, $maxLength, 'UTF-8');
-				$shortened = $s !== $tmp;
-			} else {
-				$i = $len = 0;
-				$maxI = $maxLength * 4; // max UTF-8 length
-				do {
-					if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength) || $i >= $maxI) {
-						$s = substr($s, 0, $i);
-						$shortened = true;
-						break;
-					}
-				} while (isset($s[++$i]));
-			}
+		if ($maxLength) {
+			$s = self::truncateString($tmp = $s, $maxLength);
+			$shortened = $s !== $tmp;
 		}
 
 		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) { // is binary?
-			if ($maxLength && strlen($s) > $maxLength) {
-				$s = substr($s, 0, $maxLength);
-				$shortened = true;
+			static $table;
+			if ($table === null) {
+				foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
+					$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
+				}
+				$table['\\'] = '\\\\';
+				$table["\r"] = '\r';
+				$table["\n"] = '\n';
+				$table["\t"] = '\t';
 			}
+
 			$s = strtr($s, $table);
 		}
 
 		return $s . (empty($shortened) ? '' : ' ... ');
+	}
+
+
+	/**
+	 * @internal
+	 */
+	public static function truncateString(string $s, int $maxLength): string
+	{
+		if (!preg_match('##u', $s)) {
+			$s = substr($s, 0, $maxLength); // not UTF-8
+		} elseif (function_exists('mb_substr')) {
+			$s = mb_substr($s, 0, $maxLength, 'UTF-8');
+		} else {
+			$i = $len = 0;
+			do {
+				if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength)) {
+					$s = substr($s, 0, $i);
+					break;
+				}
+			} while (isset($s[++$i]));
+		}
+		return $s;
 	}
 
 
