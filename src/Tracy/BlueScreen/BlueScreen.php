@@ -15,6 +15,8 @@ namespace Tracy;
  */
 class BlueScreen
 {
+	private const MAX_MESSAGE_LENGTH = 2000;
+
 	/** @var string[] */
 	public $info = [];
 
@@ -112,7 +114,7 @@ class BlueScreen
 		$messageHtml = preg_replace(
 			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
 			'<i>$0</i>',
-			htmlspecialchars((string) $exception->getMessage(), ENT_SUBSTITUTE, 'UTF-8')
+			htmlspecialchars(Dumper::encodeString((string) $exception->getMessage(), self::MAX_MESSAGE_LENGTH), ENT_SUBSTITUTE, 'UTF-8')
 		);
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
