@@ -2,6 +2,7 @@
 
 /**
  * Test: Tracy\Debugger E_RECOVERABLE_ERROR error.
+ * @phpversion < 7.4
  */
 
 declare(strict_types=1);
