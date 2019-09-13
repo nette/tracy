@@ -112,7 +112,7 @@ class BlueScreen
 		$messageHtml = preg_replace(
 			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
 			'<i>$0</i>',
-			htmlspecialchars(Helpers::truncate((string) $exception->getMessage()), ENT_SUBSTITUTE, 'UTF-8')
+			htmlspecialchars(Dumper::encodeString((string) $exception->getMessage(), 32768), ENT_SUBSTITUTE, 'UTF-8')
 		);
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
