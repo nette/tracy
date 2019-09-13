@@ -24,6 +24,6 @@ Assert::same('Iñtër', Dumper::truncateString('Iñtërnâtiônàlizætiøn', 5)
 Assert::same("\x00", Dumper::truncateString("\x00\x01", 1));
 Assert::same("\x00\x01", Dumper::truncateString("\x00\x01", 5));
 
-Assert::same("bad", Dumper::truncateString("bad\xff", 3));
+Assert::same('bad', Dumper::truncateString("bad\xff", 3));
 Assert::same("bad\xff", Dumper::truncateString("bad\xff", 4));
 Assert::same("bad\xff", Dumper::truncateString("bad\xff", 5));
