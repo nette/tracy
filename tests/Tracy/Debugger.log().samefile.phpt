@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
-Debugger::$logDirectory = TEMP_DIR;
+Debugger::$logDirectory = getTempDir();
 
 
 function foo($fp)
@@ -24,9 +24,9 @@ function foo($fp)
 
 
 for ($i = 0; $i < 3; $i++) {
-	$path = TEMP_DIR . "/$i";
+	$path = getTempDir() . "/$i";
 	try {
-		$files[] = $file = fopen(TEMP_DIR . "/$i", 'w');
+		$files[] = $file = fopen(getTempDir() . "/$i", 'w');
 		foo($file);
 	} catch (Exception $e) {
 		$name[] = Debugger::log($e);

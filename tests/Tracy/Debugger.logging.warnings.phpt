@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 // Setup environment
 $_SERVER['HTTP_HOST'] = 'nette.org';
 
-$logDirectory = TEMP_DIR;
+$logDirectory = getTempDir();
 
 Debugger::getLogger()->mailer = function () {};
 
