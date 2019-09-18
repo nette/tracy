@@ -37,7 +37,7 @@ class CustomLogger extends Logger
 
 
 test(function () {
-	$logger = new CustomLogger(TEMP_DIR);
+	$logger = new CustomLogger(getTempDir());
 	$logger->log(new Exception('First'), 'a');
 
 	Assert::match('a', $logger->collector[0][0]);
@@ -47,7 +47,7 @@ test(function () {
 });
 
 test(function () {
-	$logger = new CustomLogger(TEMP_DIR);
+	$logger = new CustomLogger(getTempDir());
 	$logger->log('message', 'b');
 
 	Assert::match('b', $logger->collector[0][0]);

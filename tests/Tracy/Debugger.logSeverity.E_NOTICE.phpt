@@ -14,10 +14,10 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
-Debugger::enable(Debugger::PRODUCTION, TEMP_DIR);
+Debugger::enable(Debugger::PRODUCTION, getTempDir());
 Debugger::$logSeverity = E_NOTICE;
 
 $variable = $missingVariable;
 
-Assert::count(1, glob(TEMP_DIR . '/error*.html'));
-Assert::count(1, glob(TEMP_DIR . '/error.log'));
+Assert::count(1, glob(getTempDir() . '/error*.html'));
+Assert::count(1, glob(getTempDir() . '/error.log'));
