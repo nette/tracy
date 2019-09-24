@@ -117,7 +117,8 @@ Errors like a typo in a variable name or an attempt to open a nonexistent file g
 Or they may be displayed like errors:
 
 ```php
-Debugger::$strictMode = true;
+Debugger::$strictMode = true; // display all errors
+Debugger::$strictMode = E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED; // all errors except deprecated notices
 ```
 
 [![Notice rendered by Tracy](https://nette.github.io/tracy/images/tracy-notice.png)](https://nette.github.io/tracy/tracy-notice.html)
