@@ -193,7 +193,7 @@ The output mode is set by the first parameter of `Debugger::enable()`. You can s
 
 If it is not specified, the default value `Debugger::DETECT` is used. In this case the system detects a server by IP address. The production mode is chosen if an application is accessed via public IP address. A local IP address leads to development mode. It is not necessary to set the mode in most cases. The mode is correctly recognized when you are launching the application on your local server or in production.
 
-In the production mode, Tracy automatically captures all errors and exceptions into a text log. Unless you specify otherwise, it will be stored in log/error.log. This error logging is extremely useful. Imagine, that all users of your application are actually betatesters. They are doing cutting-edge work for free when hunting bugs and you would be silly if you threw away their valuable reports to a recycle bin unnoticed.
+When it is in production mode and a log directory is provided, Tracy automatically captures all errors and exceptions into a text log. This error logging is extremely useful. Imagine, that all users of your application are actually betatesters. They are doing cutting-edge work for free when hunting bugs and you would be silly if you threw away their valuable reports to a recycle bin unnoticed.
 
 If you need to log your own messages or caught exceptions, use the method `log()`:
 
