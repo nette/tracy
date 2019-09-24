@@ -199,8 +199,9 @@ class Debugger
 		set_exception_handler([__CLASS__, 'exceptionHandler']);
 		set_error_handler([__CLASS__, 'errorHandler']);
 
-		array_map('class_exists', [Bar::class, BlueScreen::class, DefaultBarPanel::class, Dumper::class,
-			FireLogger::class, Helpers::class, Logger::class, ]);
+		foreach (['Bar/Bar', 'Bar/DefaultBarPanel', 'BlueScreen/BlueScreen', 'Dumper/Dumper', 'Logger/Logger', 'Helpers'] as $path) {
+			require_once dirname(__DIR__) . "/$path.php";
+		}
 
 		self::dispatch();
 		self::$enabled = true;
