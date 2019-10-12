@@ -56,7 +56,7 @@ Activating Tracy is easy. Simply add these two lines of code, preferably just af
 ```php
 use Tracy\Debugger;
 
-Debugger::enable();
+Debugger::enable(); //Note that this involves changing the error reporting level using error_reporting(E_ALL);
 ```
 
 The first thing you will notice on the website is a Debugger Bar.
