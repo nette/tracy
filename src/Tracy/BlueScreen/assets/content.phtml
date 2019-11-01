@@ -309,6 +309,18 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			</table>
 			</div>
 
+			<?php
+			if (($phpInput = (string) file_get_contents('php://input')) !== ''):
+			?>
+			<h3>PHP Input</h3>
+			<pre class="code"><?= Helpers::escapeHtml($phpInput) ?></pre>
+			<?php
+			if (strlen($phpInput) < 10000 && preg_match('/^\{.*\}$/', $phpInput)) {
+		  	echo $dump(json_decode($phpInput, true));
+			}
+			endif
+			?>
+
 
 			<?php foreach (['_GET', '_POST', '_COOKIE'] as $name): ?>
 			<h3>$<?= Helpers::escapeHtml($name) ?></h3>
