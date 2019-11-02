@@ -539,12 +539,13 @@ class Dumper
 			$s = mb_substr($s, 0, $maxLength, 'UTF-8');
 		} else {
 			$i = $len = 0;
-			do {
+			while (isset($s[$i])) {
 				if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength)) {
 					$s = substr($s, 0, $i);
 					break;
 				}
-			} while (isset($s[++$i]));
+				$i++;
+			}
 		}
 		return $s;
 	}
