@@ -310,12 +310,12 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			</div>
 
 			<?php
-			if (($phpInput = (string) file_get_contents('php://input')) !== ''):
+			if (($phpInput = (string) file_get_contents('php://input', false, null, 0, 10000)) !== ''):
 			?>
 			<h3>PHP Input</h3>
 			<pre class="code"><?= Helpers::escapeHtml($phpInput) ?></pre>
 			<?php
-			if (strlen($phpInput) < 10000 && preg_match('/^\{.*\}$/', $phpInput)) {
+			if (strlen($phpInput) < 9500 && strncmp($httpHeaders['Content-Type'] ?? '', 'application/json', 16) === 0) {
 		  	echo $dump(json_decode($phpInput, true));
 			}
 			endif
