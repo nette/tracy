@@ -507,12 +507,12 @@ class Debugger
 	public static function dump($var, bool $return = false)
 	{
 		if ($return) {
-			ob_start(function () {});
-			Dumper::dump($var, [
-				Dumper::DEPTH => self::$maxDepth,
-				Dumper::TRUNCATE => self::$maxLength,
-			]);
-			return ob_get_clean();
+			return Helpers::capture(function () use ($var) {
+				Dumper::dump($var, [
+					Dumper::DEPTH => self::$maxDepth,
+					Dumper::TRUNCATE => self::$maxLength,
+				]);
+			});
 
 		} elseif (!self::$productionMode) {
 			Dumper::dump($var, [

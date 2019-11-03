@@ -317,4 +317,20 @@ class Helpers
 			? '"' . str_replace('"', '""', $s) . '"'
 			: escapeshellarg($s);
 	}
+
+
+	/**
+	 * Captures PHP output into a string.
+	 */
+	public static function capture(callable $func): string
+	{
+		ob_start(function () {});
+		try {
+			$func();
+			return ob_get_clean();
+		} catch (\Throwable $e) {
+			ob_end_clean();
+			throw $e;
+		}
+	}
 }

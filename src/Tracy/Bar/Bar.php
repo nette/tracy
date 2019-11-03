@@ -120,13 +120,14 @@ class Bar
 	{
 		$panels = $this->renderPanels($suffix);
 
-		ob_start(function () {});
-		require __DIR__ . '/assets/bar.phtml';
-		$bar = Helpers::fixEncoding(ob_get_clean());
-
-		ob_start(function () {});
-		require __DIR__ . '/assets/panels.phtml';
-		return ['bar' => $bar, 'panels' => Helpers::fixEncoding(ob_get_clean())];
+		return [
+			'bar' => Helpers::fixEncoding(Helpers::capture(function () use ($type, $panels) {
+				require __DIR__ . '/assets/bar.phtml';
+			})),
+			'panels' => Helpers::fixEncoding(Helpers::capture(function () use ($type, $panels) {
+				require __DIR__ . '/assets/panels.phtml';
+			})),
+		];
 	}
 
 
