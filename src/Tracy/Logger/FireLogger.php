@@ -106,7 +106,7 @@ class FireLogger implements ILogger
 
 		$this->payload['logs'][] = $this->jsonDump($item, -1);
 		foreach (str_split(base64_encode(json_encode($this->payload)), 4990) as $k => $v) {
-			header("FireLogger-de11e-$k:$v");
+			header("FireLogger-de11e-$k: $v");
 		}
 		return true;
 	}
