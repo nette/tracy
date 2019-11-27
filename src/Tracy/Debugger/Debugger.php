@@ -390,7 +390,7 @@ class Debugger
 				self::log($e, self::ERROR);
 			} catch (\Throwable $foo) {
 			}
-			return null;
+			return false; // calls normal error handler to fill-in error_get_last()
 
 		} elseif (
 			!self::$productionMode

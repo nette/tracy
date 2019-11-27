@@ -19,5 +19,7 @@ Debugger::$logSeverity = E_NOTICE;
 
 $variable = $missingVariable;
 
+Assert::same('Undefined variable: missingVariable', error_get_last()['message']);
+
 Assert::count(1, glob(getTempDir() . '/exception*.html'));
 Assert::count(1, glob(getTempDir() . '/error.log'));
