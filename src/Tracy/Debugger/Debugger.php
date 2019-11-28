@@ -263,6 +263,9 @@ class Debugger
 		$error = error_get_last();
 		if (in_array($error['type'] ?? null, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], true)) {
 			self::exceptionHandler(Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])));
+		} elseif (($error['type'] ?? null) === E_COMPILE_WARNING) {
+			error_clear_last();
+			self::errorHandler($error['type'], $error['message'], $error['file'], $error['line']);
 		}
 
 		self::$reserved = null;
@@ -353,6 +356,12 @@ class Debugger
 	 */
 	public static function errorHandler(int $severity, string $message, string $file, int $line, array $context = null): ?bool
 	{
+		$error = error_get_last();
+		if (($error['type'] ?? null) === E_COMPILE_WARNING) {
+			error_clear_last();
+			self::errorHandler($error['type'], $error['message'], $error['file'], $error['line']);
+		}
+
 		if (self::$scream) {
 			error_reporting(E_ALL);
 		}
