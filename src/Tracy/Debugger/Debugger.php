@@ -302,7 +302,7 @@ class Debugger
 		Helpers::improveException($exception);
 		self::removeOutputBuffers(true);
 
-		if (self::$productionMode) {
+		if (self::$productionMode || connection_aborted()) {
 			try {
 				self::log($exception, self::EXCEPTION);
 			} catch (\Throwable $e) {
@@ -316,7 +316,7 @@ class Debugger
 					. (isset($e) ? "Unable to log error.\n" : "Error was logged.\n"));
 			}
 
-		} elseif (!connection_aborted() && (Helpers::isHtmlMode() || Helpers::isAjax())) {
+		} elseif (Helpers::isHtmlMode() || Helpers::isAjax()) {
 			self::getBlueScreen()->render($exception);
 			if (self::$showBar) {
 				self::getBar()->render();
