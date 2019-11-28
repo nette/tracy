@@ -289,9 +289,7 @@ class Debugger
 	 */
 	public static function exceptionHandler(\Throwable $exception): void
 	{
-		if (self::$reserved === null) {
-			return;
-		}
+		$firstTime = (bool) self::$reserved;
 		self::$reserved = null;
 
 		if (!headers_sent()) {
@@ -310,7 +308,9 @@ class Debugger
 			} catch (\Throwable $e) {
 			}
 
-			if (Helpers::isHtmlMode()) {
+			if (!$firstTime) {
+				// nothing
+			} elseif (Helpers::isHtmlMode()) {
 				$logged = empty($e);
 				require self::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml';
 			} elseif (PHP_SAPI === 'cli') {
@@ -318,7 +318,7 @@ class Debugger
 					. (isset($e) ? "Unable to log error.\n" : "Error was logged.\n"));
 			}
 
-		} elseif (Helpers::isHtmlMode() || Helpers::isAjax()) {
+		} elseif ($firstTime && Helpers::isHtmlMode() || Helpers::isAjax()) {
 			self::getBlueScreen()->render($exception);
 			if (self::$showBar) {
 				self::getBar()->render();
@@ -329,7 +329,7 @@ class Debugger
 			try {
 				$file = self::log($exception, self::EXCEPTION);
 				if ($file && !headers_sent()) {
-					header("X-Tracy-Error-Log: $file");
+					header("X-Tracy-Error-Log: $file", false);
 				}
 				echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
 				if ($file && self::$browser) {
@@ -341,7 +341,7 @@ class Debugger
 		}
 
 		try {
-			foreach (self::$onFatalError as $handler) {
+			foreach ($firstTime ? self::$onFatalError : [] as $handler) {
 				$handler($exception);
 			}
 		} catch (\Throwable $e) {
