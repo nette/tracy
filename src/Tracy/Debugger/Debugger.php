@@ -371,7 +371,6 @@ class Debugger
 			throw $e;
 
 		} elseif (($severity & error_reporting()) !== $severity) { // muted errors
-			return false; // calls normal error handler to fill-in error_get_last()
 
 		} elseif (self::$productionMode) {
 			if (($severity & self::$logSeverity) === $severity) {
@@ -386,7 +385,6 @@ class Debugger
 				self::log($e, self::ERROR);
 			} catch (\Throwable $foo) {
 			}
-			return null;
 
 		} elseif (
 			(is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity)) // $strictMode
@@ -410,6 +408,8 @@ class Debugger
 				return Helpers::isHtmlMode() || Helpers::isAjax() ? null : false; // false calls normal error handler
 			}
 		}
+
+		return false; // calls normal error handler to fill-in error_get_last()
 	}
 
 
