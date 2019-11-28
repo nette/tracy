@@ -170,10 +170,10 @@ class Debugger
 		if (self::$logDirectory) {
 			if (!preg_match('#([a-z]+:)?[/\\\\]#Ai', self::$logDirectory)) {
 				self::exceptionHandler(new \RuntimeException('Logging directory must be absolute path.'));
-				self::$logDirectory = null;
+				exit(255);
 			} elseif (!is_dir(self::$logDirectory)) {
 				self::exceptionHandler(new \RuntimeException("Logging directory '" . self::$logDirectory . "' is not found."));
-				self::$logDirectory = null;
+				exit(255);
 			}
 		}
 
@@ -196,7 +196,10 @@ class Debugger
 		}
 
 		register_shutdown_function([__CLASS__, 'shutdownHandler']);
-		set_exception_handler([__CLASS__, 'exceptionHandler']);
+		set_exception_handler(function (\Throwable $e) {
+			self::exceptionHandler($e);
+			exit(255);
+		});
 		set_error_handler([__CLASS__, 'errorHandler']);
 
 		foreach (['Bar/Bar', 'Bar/DefaultBarPanel', 'BlueScreen/BlueScreen', 'Dumper/Dumper', 'Logger/Logger', 'Helpers'] as $path) {
@@ -257,19 +260,18 @@ class Debugger
 	 */
 	public static function shutdownHandler(): void
 	{
+		$error = error_get_last();
+		if (in_array($error['type'] ?? null, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], true)) {
+			self::exceptionHandler(Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])));
+			return;
+		}
+
 		if (self::$reserved === null) {
 			return;
 		}
 		self::$reserved = null;
 
-		$error = error_get_last();
-		if (in_array($error['type'] ?? null, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], true)) {
-			self::exceptionHandler(
-				Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])),
-				false
-			);
-
-		} elseif (self::$showBar && !self::$productionMode) {
+		if (self::$showBar && !self::$productionMode) {
 			self::removeOutputBuffers(false);
 			try {
 				self::getBar()->render();
@@ -285,9 +287,9 @@ class Debugger
 	 * Handler to catch uncaught exception.
 	 * @internal
 	 */
-	public static function exceptionHandler(\Throwable $exception, bool $exit = true): void
+	public static function exceptionHandler(\Throwable $exception): void
 	{
-		if (self::$reserved === null && $exit) {
+		if (self::$reserved === null) {
 			return;
 		}
 		self::$reserved = null;
@@ -339,7 +341,6 @@ class Debugger
 		}
 
 		try {
-			$e = null;
 			foreach (self::$onFatalError as $handler) {
 				$handler($exception);
 			}
@@ -348,10 +349,6 @@ class Debugger
 				self::log($e, self::EXCEPTION);
 			} catch (\Throwable $e) {
 			}
-		}
-
-		if ($exit) {
-			exit(255);
 		}
 	}
 
@@ -374,6 +371,7 @@ class Debugger
 				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
 				$e->context = $context;
 				self::exceptionHandler($e);
+				exit(255);
 			}
 
 			$e = new ErrorException($message, 0, $severity, $file, $line);
@@ -402,6 +400,7 @@ class Debugger
 			$e->context = $context;
 			$e->skippable = true;
 			self::exceptionHandler($e);
+			exit(255);
 		}
 
 		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context);
