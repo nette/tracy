@@ -358,7 +358,7 @@ class Debugger
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
-			if (Helpers::findTrace(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), '*::__toString')) {
+			if (Helpers::findTrace(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), '*::__toString')) { // workaround for PHP < 7.4
 				$previous = isset($context['e']) && $context['e'] instanceof \Throwable ? $context['e'] : null;
 				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
 				$e->context = $context;
@@ -370,13 +370,18 @@ class Debugger
 			$e->context = $context;
 			throw $e;
 
-		} elseif (($severity & error_reporting()) !== $severity) {
+		} elseif (($severity & error_reporting()) !== $severity) { // muted errors
 			return false; // calls normal error handler to fill-in error_get_last()
 
-		} elseif (self::$productionMode && ($severity & self::$logSeverity) === $severity) {
-			$e = new ErrorException($message, 0, $severity, $file, $line);
-			$e->context = $context;
-			Helpers::improveException($e);
+		} elseif (self::$productionMode) {
+			if (($severity & self::$logSeverity) === $severity) {
+				$e = new ErrorException($message, 0, $severity, $file, $line);
+				$e->context = $context;
+				Helpers::improveException($e);
+			} else {
+				$e = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context) . " in $file:$line";
+			}
+
 			try {
 				self::log($e, self::ERROR);
 			} catch (\Throwable $foo) {
@@ -384,33 +389,26 @@ class Debugger
 			return null;
 
 		} elseif (
-			!self::$productionMode
+			(is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity)) // $strictMode
 			&& !isset($_GET['_tracy_skip_error'])
-			&& (is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity))
 		) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			$e->context = $context;
 			$e->skippable = true;
 			self::exceptionHandler($e);
 			exit(255);
-		}
-
-		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context);
-		$count = &self::getBar()->getPanel('Tracy:errors')->data["$file|$line|$message"];
-
-		if ($count++) { // repeated error
-			return null;
-
-		} elseif (self::$productionMode) {
-			try {
-				self::log("$message in $file:$line", self::ERROR);
-			} catch (\Throwable $foo) {
-			}
-			return null;
 
 		} else {
-			self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
-			return Helpers::isHtmlMode() || Helpers::isAjax() ? null : false; // false calls normal error handler
+			$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context);
+			$count = &self::getBar()->getPanel('Tracy:errors')->data["$file|$line|$message"];
+
+			if ($count++) { // repeated error
+				return null;
+
+			} else {
+				self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
+				return Helpers::isHtmlMode() || Helpers::isAjax() ? null : false; // false calls normal error handler
+			}
 		}
 	}
 
