@@ -267,7 +267,7 @@ class Debugger
 		self::$reserved = null;
 
 		$error = error_get_last();
-		if (in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], true)) {
+		if (isset($error['type']) && in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], true)) {
 			self::exceptionHandler(
 				Helpers::fixStack(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line'])),
 				false
@@ -314,8 +314,8 @@ class Debugger
 				$logged = empty($e);
 				require self::$errorTemplate ?: __DIR__ . '/assets/Debugger/error.500.phtml';
 			} elseif (PHP_SAPI === 'cli') {
-				fwrite(STDERR, 'ERROR: application encountered an error and can not continue. '
-					. (isset($e) ? "Unable to log error.\n" : "Error was logged.\n"));
+				@fwrite(STDERR, 'ERROR: application encountered an error and can not continue. '
+					. (isset($e) ? "Unable to log error.\n" : "Error was logged.\n")); // @ triggers E_NOTICE when strerr is closed since PHP 7.4
 			}
 
 		} elseif (!connection_aborted() && (Helpers::isHtmlMode() || Helpers::isAjax())) {
