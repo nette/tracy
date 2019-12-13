@@ -68,6 +68,7 @@
 						this.toWindow();
 					}
 					e.preventDefault();
+					e.stopImmediatePropagation();
 				});
 			});
 
@@ -281,6 +282,7 @@
 						}
 					}
 					e.preventDefault();
+					e.stopImmediatePropagation();
 				});
 
 				link.addEventListener('mouseenter', (e) => {
