@@ -27,7 +27,7 @@ echo '<div itemscope>';
 
 foreach ($panels as $panel) {
 	$content = $panel->panel ? ($panel->panel . "\n" . $icons) : '';
-	$class = 'tracy-panel ' . ($type === 'ajax' ? '' : 'tracy-panel-persist'); ?>
+	$class = 'tracy-panel ' . ($type === 'ajax' ? '' : 'tracy-panel-persist') . ' tracy-panel-' . $type; ?>
 	<div class="<?= $class ?>" id="tracy-debug-panel-<?= $panel->id ?>" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>'></div><?php
 }
 
