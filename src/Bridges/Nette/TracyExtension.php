@@ -36,7 +36,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
 		return Expect::structure([
-			'email' => Expect::email()->dynamic(),
+			'email' => Expect::anyOf(Expect::email(), Expect::listOf('email'))->dynamic(),
 			'fromEmail' => Expect::email()->dynamic(),
 			'logSeverity' => Expect::scalar(),
 			'editor' => Expect::string()->dynamic(),
