@@ -250,7 +250,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	font: normal normal 23px/1.4 Tahoma, sans-serif;
 	color: #575753;
 	margin: -5px -5px 5px;
-	padding: 0 25px 0 5px;
+	padding: 0 5px 0 5px;
 	word-wrap: break-word;
 }
 
@@ -321,6 +321,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 
 #tracy-debug .tracy-mode-float h1 {
 	cursor: move;
+	padding-right: 25px;
 }
 
 #tracy-debug .tracy-mode-float .tracy-icons {
