@@ -120,6 +120,15 @@ class BlueScreen
 			'<i>$0</i>',
 			$messageHtml
 		);
+		$messageHtml = preg_replace_callback(
+			'#\w+\\\\[\w\\\\]+\w#',
+			function ($m) {
+				return class_exists($m[0], false) || interface_exists($m[0], false)
+				? '<a href="' . Helpers::escapeHtml(Helpers::editorUri((new \ReflectionClass($m[0]))->getFileName())) . '">' . $m[0] . '</a>'
+				: $m[0];
+			},
+			$messageHtml
+		);
 
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
