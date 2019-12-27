@@ -113,11 +113,14 @@ class BlueScreen
 
 	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
 	{
+		$messageHtml = Dumper::encodeString((string) $exception->getMessage(), self::MAX_MESSAGE_LENGTH);
+		$messageHtml = htmlspecialchars($messageHtml, ENT_SUBSTITUTE, 'UTF-8');
 		$messageHtml = preg_replace(
 			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
 			'<i>$0</i>',
-			htmlspecialchars(Dumper::encodeString((string) $exception->getMessage(), self::MAX_MESSAGE_LENGTH), ENT_SUBSTITUTE, 'UTF-8')
+			$messageHtml
 		);
+
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
 		$title = $exception instanceof \ErrorException
