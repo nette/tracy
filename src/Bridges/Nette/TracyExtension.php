@@ -74,7 +74,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
-		$initialize = $class->getMethod('initialize');
+		$initialize = $this->initialization ?? $class->getMethod('initialize');
 		$builder = $this->getContainerBuilder();
 
 		$options = (array) $this->config;
