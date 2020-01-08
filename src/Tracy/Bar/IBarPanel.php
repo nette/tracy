@@ -15,7 +15,6 @@ namespace Tracy;
  */
 interface IBarPanel
 {
-
 	/**
 	 * Renders HTML code for custom tab.
 	 * @return string

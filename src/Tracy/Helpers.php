@@ -15,7 +15,6 @@ namespace Tracy;
  */
 class Helpers
 {
-
 	/**
 	 * Returns HTML link to editor.
 	 */
