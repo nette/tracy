@@ -567,9 +567,9 @@ class Debugger
 	 * @param  mixed  $message
 	 * @return mixed
 	 */
-	public static function log($message, string $level = ILogger::INFO)
+	public static function log($message, ?string $level = null)
 	{
-		return self::getLogger()->log($message, $level);
+		return self::getLogger()->log($message, $level ?? ($message instanceof \Exception ? ILogger::EXCEPTION : ILogger::INFO));
 	}
 
 
