@@ -298,12 +298,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 		<div class="tracy-collapsed inner">
 			<h3>URL</h3>
-			<p>
-				<a href="<?= Helpers::escapeHtml($source) ?>"><?= Helpers::escapeHtml($source) ?></a>
-				<a href="<?= Helpers::escapeHtml($source) ?>" target="_blank">
-					<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==" alt="Open in new window">
-				</a>
-			</p>
+			<p><a href="<?= Helpers::escapeHtml($source) ?>" target="_blank"><?= Helpers::escapeHtml($source) ?></a></p>
 
 			<h3>Headers</h3>
 			<div class="outer">
