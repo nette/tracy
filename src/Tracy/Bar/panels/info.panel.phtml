@@ -36,7 +36,7 @@ $serverNameFormatter = static function(string $userIp, string $serverIp): string
 	if ($serverIp !== '127.0.0.1' && $serverIp !== '::1') {
 		return gethostbyaddr($serverIp);
 	}
-	return 'localhost' . ($userIp !== '127.0.0.1' && $userIp !== '::1' ? ' (may not be true)' : '');
+	return 'localhost' . (preg_match('/^127\.0\.0\.\d{1,3}|::1$/', $userIp) ? ' (may not be true)' : '');
 };
 
 $opcache = function_exists('opcache_get_status') ? @opcache_get_status() : null; // @ can be restricted
