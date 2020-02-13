@@ -351,6 +351,7 @@ class BlueScreen
 
 	/**
 	 * Should a file be collapsed in stack trace?
+	 * @internal
 	 */
 	public function isCollapsed(string $file): bool
 	{
@@ -365,6 +366,7 @@ class BlueScreen
 	}
 
 
+	/** @internal */
 	public function getDumper(): \Closure
 	{
 		$keysToHide = array_flip(array_map('strtolower', $this->keysToHide));

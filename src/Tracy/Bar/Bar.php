@@ -53,6 +53,7 @@ class Bar
 
 	/**
 	 * Renders loading <script>
+	 * @internal
 	 */
 	public function renderLoader(): void
 	{
@@ -167,6 +168,7 @@ class Bar
 
 	/**
 	 * Renders debug bar assets.
+	 * @internal
 	 */
 	public function dispatchAssets(): bool
 	{
