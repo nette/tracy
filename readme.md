@@ -64,6 +64,8 @@ The first thing you will notice on the website is a Debugger Bar.
 (If you do not see anything, it means that Tracy is running in production mode. For security reasons, Tracy is visible only on localhost.
 You may force Tracy to run in development mode by passing the `Debugger::DEVELOPMENT` as the first parameter of `enable()` method.)
 
+Note that `enable()` involves changing the error reporting level to E_ALL.
+
 
 Debugger Bar
 ------------
