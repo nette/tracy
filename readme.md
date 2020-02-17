@@ -20,32 +20,31 @@ Tracy library is a useful helper for everyday PHP programmers. It helps you to:
 - see memory consumption
 
 
-PHP is a perfect language for making hardly detectable errors because it gives a great flexibility to programmers. Tracy\Debugger is more valuable because of that. It is a ultimate tool among the diagnostic ones.
-If you are meeting Tracy the first time, believe me, your life starts to be divided one before the Tracy and the one with her.
-Welcome to the good part!
+PHP is a perfect language for making hardly detectable errors because it gives great flexibility to programmers. Tracy\Debugger is more valuable because of that. It is an ultimate tool among the diagnostic ones.
+If you are meeting Tracy for the first time, believe me, your life starts to be divided into one before the Tracy and the one with her. Welcome to the good part!
 
 Documentation can be found on the [website](https://tracy.nette.org).
 
 If you like Tracy, **[please make a donation now](https://nette.org/make-donation?to=tracy)**. Thank you!
 
 
-Installation
-------------
+Installation and requirements
+-----------------------------
 
 The recommended way to is via Composer:
 
-```
+```shell
 composer require tracy/tracy
 ```
 
 Alternatively, you can download the whole package or [tracy.phar](https://github.com/nette/tracy/releases) file.
 
-| Tracy | PHP | compatible with browsers
+| Tracy     | compatible with PHP | compatible with browsers
 |-----------|---------------|----------
 | Tracy 2.7 | PHP 7.1 – 7.4 | Chrome 49+, Firefox 45+, MS Edge 14+, Safari 10+ and iOS Safari 10.2+
 | Tracy 2.6 | PHP 7.1 – 7.4 | Chrome 49+, Firefox 45+, MS Edge 14+, Safari 10+ and iOS Safari 10.2+
-| Tracy 2.5 | PHP 5.4.4 – 7.3 | Chrome 49+, Firefox 45+, MS Edge 12+, Safari 10+ and iOS Safari 10.2+
-| Tracy 2.4 | PHP 5.4.4 – 7.2 | Chrome 29+, Firefox 28+, IE 11+ (except AJAX), MS Edge 12+, Safari 9+ and iOS Safari 9.2+
+| Tracy 2.5 | PHP 5.4 – 7.3 | Chrome 49+, Firefox 45+, MS Edge 12+, Safari 10+ and iOS Safari 10.2+
+| Tracy 2.4 | PHP 5.4 – 7.2 | Chrome 29+, Firefox 28+, IE 11+ (except AJAX), MS Edge 12+, Safari 9+ and iOS Safari 9.2+
 
 
 Usage
@@ -64,7 +63,7 @@ The first thing you will notice on the website is a Debugger Bar.
 (If you do not see anything, it means that Tracy is running in production mode. For security reasons, Tracy is visible only on localhost.
 You may force Tracy to run in development mode by passing the `Debugger::DEVELOPMENT` as the first parameter of `enable()` method.)
 
-Note that `enable()` involves changing the error reporting level to E_ALL.
+The `enable()` involves changing the error reporting level to E_ALL.
 
 
 Debugger Bar
@@ -74,10 +73,13 @@ The Debugger Bar is a floating panel. It is displayed in the bottom right corner
 
 [![Debugger-Bar](https://nette.github.io/tracy/images/tracy-bar.png)](https://nette.github.io/tracy/tracy-debug-bar.html)
 
-You can add other useful panels into the Debugger Bar. You can find interesing ones in [Addons](https://addons.nette.org) or you can create your own.
+You can add other useful panels to the Debugger Bar. You can find interesting ones in [addons](https://componette.com) or you can [create your own](https://tracy.nette.org/en/extensions).
 
-Implementation of custom panel is easy, just implement interface `Tracy\IBarPanel` with two methods `getTab` and `getPanel`, both returning HTML content to be displayed.
-Afterward, registering via `Debugger::getBar()->addPanel(new CustomPanel());` is everything you will need to do.
+If you do not want to show Debugger Bar, set:
+
+```php
+Debugger::$showBar = false;
+```
 
 
 Visualization of errors and exceptions
@@ -125,11 +127,13 @@ Debugger::$strictMode = E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED; // all error
 
 [![Notice rendered by Tracy](https://nette.github.io/tracy/images/tracy-notice.png)](https://nette.github.io/tracy/tracy-notice.html)
 
+In order to detect misspellings when assigning to an object, we use [trait Nette\SmartObject](https://doc.nette.org/en/3.0/smartobject).
+
 
 Content Security Policy
 -----------------------
 
-If your site uses Content Security Policy, you'll need to add `'nonce-<value>'` to `script-src` and eventually the same nonce to `style-src` for Tracy to work properly. Some 3rd plugins may require additional directives.
+If your site uses Content Security Policy, you'll need to add `'nonce-<value>'` to `script-src` and eventually the same nonce to `style-src` for Tracy to work properly. Some 3rd plugins may require additional directives. Avoid adding `'unsafe-inline'` & `'unsafe-eval'` in production mode, if you can.
 
 Configuration example for [Nette Framework](https://nette.org):
 
@@ -183,20 +187,26 @@ Debugger::dispatch();
 ```
 
 
+Opening files in the editor
+---------------------------
+
+When the error page is displayed, you can click on file names and they will open in your editor with the cursor on the corresponding line. Files can also be created (action `create file`) or bug fixed in them (action `fix it`). In order to do this, you need to [configure the browser and the system](https://tracy.nette.org/cs/open-files-in-ide).
+
+
 Production mode and error logging
 ---------------------------------
 
-As you can see, Tracy is quite eloquent. It is appreciated in a development environment, but on a production server it would cause a disaster. Any debugging information cannot be listed there. Therefore Tracy has an environment autodetection and logging functionality. Instead of showing herself, Tracy stores information into a log file and shows the visitor a user-comprehensible server error message:
+As you can see, Tracy is quite eloquent. It is appreciated in a development environment, but on a production server, it would cause a disaster. Any debugging information cannot be listed there. Therefore Tracy has an environment autodetection and logging functionality. Instead of showing herself, Tracy stores information into a log file and shows the visitor a user-comprehensible server error message:
 
 [![Server Error 500](https://nette.github.io/tracy/images/tracy-error2.png)](https://nette.github.io/tracy/tracy-production.html)
 
 Production output mode suppresses all debugging information which is sent out via `dump()` or `Debugger::fireLog()`, and of course all error messages generated by PHP. So, even if you forget `dump($obj)` in the source code, you do not have to worry about it on your production server. Nothing will be seen.
 
-The output mode is set by the first parameter of `Debugger::enable()`. You can specify either a constant `Debugger::PRODUCTION` or `Debugger::DEVELOPMENT`.
+The output mode is set by the first parameter of `Debugger::enable()`. You can specify either a constant `Debugger::PRODUCTION` or `Debugger::DEVELOPMENT`. Other option is to set it up in a way, that development mode will be on when the application is accessed from a defined IP address with a defined value of `tracy-debug` cookie. The syntax used to achieve this is `cookie-value@ip-address`.
 
-If it is not specified, the default value `Debugger::DETECT` is used. In this case the system detects a server by IP address. The production mode is chosen if an application is accessed via public IP address. A local IP address leads to development mode. It is not necessary to set the mode in most cases. The mode is correctly recognized when you are launching the application on your local server or in production.
+If it is not specified, the default value `Debugger::DETECT` is used. In this case, the system detects a server by IP address. The production mode is chosen if an application is accessed via a public IP address. A local IP address leads to development mode. It is not necessary to set the mode in most cases. The mode is correctly recognized when you are launching the application on your local server or in production.
 
-When it is in production mode and a log directory is provided, Tracy automatically captures all errors and exceptions into a text log. This error logging is extremely useful. Imagine, that all users of your application are actually betatesters. They are doing cutting-edge work for free when hunting bugs and you would be silly if you threw away their valuable reports to a recycle bin unnoticed.
+In the production mode, Tracy automatically captures all errors and exceptions into a text log. Unless you specify otherwise, it will be stored in log/error.log. This error logging is extremely useful. Imagine, that all users of your application are actually betatesters. They are doing cutting-edge work for free when hunting bugs and you would be silly if you threw away their valuable reports to a recycle bin unnoticed.
 
 If you need to log your own messages or caught exceptions, use the method `log()`:
 
@@ -230,16 +240,18 @@ For a real professional the error log is a crucial source of information and he 
 Debugger::$email = 'admin@example.com';
 ```
 
+If you use the Nette Framework, you can set this and others in the configuration file.
+
 To protect your e-mail box from flood, Tracy sends **only one message** and creates a file `email-sent`. When a developer receives the e-mail notification, he checks the log, corrects his application and deletes the `email-sent` monitoring file. This activates the e-mail sending again.
 
 
 Variable dumping
------------------
+----------------
 
-Every debugging developer is a good friend with the function `var_dump`, which lists all contents of any variable in detail. Unfortunately, its output is without HTML formatting and outputs the dump into a single line of HTML code, not to mention context escaping. It is necessary to replace the `var_dump` by a handier function. That is just what `dump()` is.
+Every debugging developer is a good friend with the function `var_dump`, which lists all contents of any variable in detail. Unfortunately, its output is without HTML formatting and outputs the dump into a single line of HTML code, not to mention context escaping. It is necessary to replace the `var_dump` with a more handy function. That is just what `dump()` is.
 
 ```php
-$arr = array(10, 20.2, true, null, 'hello');
+$arr = [10, 20.2, true, null, 'hello'];
 
 dump($arr);
 // or Tracy\Debugger::dump($arr);
@@ -256,7 +268,7 @@ Debugger::$maxDepth = 2; // default: 3
 Debugger::$maxLength = 50; // default: 150
 ```
 
-The `dump()` function can display other useful information. `Tracy\Dumper::LOCATION_SOURCE` adds tooltip with path to the file, where the function was called. `Tracy\Dumper::LOCATION_LINK` adds a link to the file. `Tracy\Dumper::LOCATION_CLASS` adds a tooltip to every dumped object containing path to the file, in which the object's class is defined. All these constants can be set in `Debugger::$showLocation` variable before calling the `dump()`. You can set multiple values at once using the `|` operator.
+The `dump()` function can display other useful information. `Tracy\Dumper::LOCATION_SOURCE` adds a tooltip with path to the file, where the function was called. `Tracy\Dumper::LOCATION_LINK` adds a link to the file. `Tracy\Dumper::LOCATION_CLASS` adds a tooltip to every dumped object containing path to the file, in which the object's class is defined. All these constants can be set in `Debugger::$showLocation` variable before calling the `dump()`. You can set multiple values at once using the `|` operator.
 
 ```php
 Debugger::$showLocation = Tracy\Dumper::LOCATION_SOURCE; // Shows path to where the dump() was called
@@ -306,7 +318,7 @@ $pageElapsed = Debugger::timer('page-generating');
 ```php
 Debugger::timer(); // runs the timer
 
-... // some time consuming operation
+... // some time-consuming operation
 
 echo Debugger::timer(); // elapsed time in seconds
 ```
@@ -315,19 +327,14 @@ echo Debugger::timer(); // elapsed time in seconds
 FireLogger
 ----------
 
-You cannot always send debugging information to the browser window. This applies to AJAX requests, or generating XML files to output. In such cases, you can send the messages by a separate channel into FireLogger. Error, Notice and Warning levels are sent to FireLogger window automatically. It is also possible to log suppressed exceptions in running application when attention to them is important.
+You cannot always send debugging information to the browser window. This applies to AJAX requests or generating XML files to output. In such cases, you can send the messages by a separate channel into FireLogger. Error, Notice and Warning levels are sent to FireLogger window automatically. It is also possible to log suppressed exceptions in running application when attention to them is important.
 
 How to do it?
 
-Firefox:
-- install extension [Firebug](http://getfirebug.com/) and [FireLogger](https://addons.mozilla.org/cs/firefox/addon/firelogger/)
-- turn on Firebug (using F12 key), enable tabs Net and Logger (stay on Logger)
-
-Chrome:
 - install extension [FireLogger for Chrome](https://chrome.google.com/webstore/detail/firelogger-for-chrome/hmagilfopmdjkeomnjpchokglfdfjfeh)
 - turn on Chrome DevTools (using Ctrl-Shift-I key) and open Console
 
-Navigate to [demo page](https://examples.nette.org/tracy/) and you will see messages sent from PHP.
+Navigate to the [demo page](https://examples.nette.org/tracy/) and you will see messages sent from PHP.
 
 Because Tracy\Debugger communicates with FireLogger via HTTP headers, you must call the logging function before the PHP script sends anything to output. It is also possible to enable output buffering and delay the output.
 
@@ -345,9 +352,43 @@ The result looks like this:
 
 ![FireLogger](https://nette.github.io/tracy/images/tracy-firelogger.png)
 
+
+Custom Logger
+-------------
+
+We can create a custom logger to log errors, uncatched exceptions, and also be called by `Tracy\Debugger::log()`. Logger implements the interface Tracy\ILogger.
+
+```php
+use Tracy\ILogger;
+
+class SlackLogger implements ILogger
+{
+	public function log($value, $priority = ILogger::INFO)
+	{
+		// sends a request to Slack
+	}
+}
+```
+
+And then we activate it:
+
+```php
+Tracy\Debugger::setLogger(new SlackLogger);
+```
+
+If we use the full Nette Framework, we can set it in the NEON configuration file:
+
+```neon
+services:
+	tracy.logger: SlackLogger
+```
+
+
 Ports
------------------------------
-This is list of unofficial ports to another frameworks and CMS than Nette:
+-----
+
+This is a list of unofficial ports to other frameworks and CMS:
+
 - [Drupal 7](http://drupal.org/project/traced)
 - Laravel framework: [recca0120/laravel-tracy](https://github.com/recca0120/laravel-tracy), [whipsterCZ/laravel-tracy](https://github.com/whipsterCZ/laravel-tracy)
 - [OpenCart](https://github.com/BurdaPraha/oc_tracy)
