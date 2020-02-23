@@ -26,6 +26,7 @@ after_failure:
 jobs:
     include:
         -   name: Nette Code Checker
+            php: 7.4
             install:
                 - travis_retry composer create-project nette/code-checker temp/code-checker ^3.0 --no-progress
             script:
@@ -33,6 +34,7 @@ jobs:
 
 
         -   name: Nette Coding Standard
+            php: 7.4
             install:
                 - travis_retry composer create-project nette/coding-standard temp/coding-standard ^2 --no-progress
             script:
@@ -51,11 +53,13 @@ jobs:
 
 
         -   stage: Static Analysis (informative)
+            php: 7.4
             script:
                 - composer run-script phpstan
 
 
         -   stage: Code Coverage
+            php: 7.4
             script:
                 - vendor/bin/tester -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src
             after_script:
