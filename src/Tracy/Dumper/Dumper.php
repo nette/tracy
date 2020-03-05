@@ -557,7 +557,7 @@ class Dumper
 	 */
 	private function encodeKey($key)
 	{
-		return is_int($key) || preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}$#D', $key)
+		return is_int($key) || (preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
 			? $key
 			: '"' . $this->encodeString($key, $this->maxLength) . '"';
 	}
