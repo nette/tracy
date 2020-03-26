@@ -38,7 +38,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		return Expect::structure([
 			'email' => Expect::anyOf(Expect::email(), Expect::listOf('email'))->dynamic(),
 			'fromEmail' => Expect::email()->dynamic(),
-			'logSeverity' => Expect::scalar(),
+			'logSeverity' => Expect::anyOf(Expect::scalar(), Expect::listOf('scalar')),
 			'editor' => Expect::string()->dynamic(),
 			'browser' => Expect::string()->dynamic(),
 			'errorTemplate' => Expect::string()->dynamic(),
