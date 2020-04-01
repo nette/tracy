@@ -95,7 +95,7 @@ body#tracy-debug { /* in popup window */
 }
 
 #tracy-debug tr:nth-child(2n) td {
-	background: #F7F0CB;
+	background: #00000005;
 }
 
 #tracy-debug td,
