@@ -113,23 +113,7 @@ class BlueScreen
 
 	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
 	{
-		$messageHtml = Dumper::encodeString((string) $exception->getMessage(), self::MAX_MESSAGE_LENGTH);
-		$messageHtml = htmlspecialchars($messageHtml, ENT_SUBSTITUTE, 'UTF-8');
-		$messageHtml = preg_replace(
-			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
-			'<i>$0</i>',
-			$messageHtml
-		);
-		$messageHtml = preg_replace_callback(
-			'#\w+\\\\[\w\\\\]+\w#',
-			function ($m) {
-				return class_exists($m[0], false) || interface_exists($m[0], false)
-				? '<a href="' . Helpers::escapeHtml(Helpers::editorUri((new \ReflectionClass($m[0]))->getFileName())) . '">' . $m[0] . '</a>'
-				: $m[0];
-			},
-			$messageHtml
-		);
-
+		$messageHtml = $this->formatMessage($exception);
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
 		$title = $exception instanceof \ErrorException
@@ -383,5 +367,30 @@ class BlueScreen
 				Dumper::KEYS_TO_HIDE => $this->keysToHide,
 			]);
 		};
+	}
+
+
+	private function formatMessage(\Throwable $exception): string
+	{
+		$msg = Dumper::encodeString((string) $exception->getMessage(), self::MAX_MESSAGE_LENGTH);
+		$msg = htmlspecialchars($msg, ENT_SUBSTITUTE, 'UTF-8');
+
+		$msg = preg_replace(
+			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
+			'<i>$0</i>',
+			$msg
+		);
+
+		$msg = preg_replace_callback(
+			'#\w+\\\\[\w\\\\]+\w#',
+			function ($m) {
+				return class_exists($m[0], false) || interface_exists($m[0], false)
+					? '<a href="' . Helpers::escapeHtml(Helpers::editorUri((new \ReflectionClass($m[0]))->getFileName())) . '">' . $m[0] . '</a>'
+					: $m[0];
+			},
+			$msg
+		);
+
+		return $msg;
 	}
 }
