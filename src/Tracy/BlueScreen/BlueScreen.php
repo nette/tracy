@@ -375,18 +375,36 @@ class BlueScreen
 		$msg = Dumper::encodeString((string) $exception->getMessage(), self::MAX_MESSAGE_LENGTH);
 		$msg = htmlspecialchars($msg, ENT_SUBSTITUTE, 'UTF-8');
 
+		// highlight 'string'
 		$msg = preg_replace(
 			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
 			'<i>$0</i>',
 			$msg
 		);
 
+		// clickable class & methods
 		$msg = preg_replace_callback(
-			'#\w+\\\\[\w\\\\]+\w#',
+			'#(\w+\\\\[\w\\\\]+\w)(?:::(\w+))?#',
 			function ($m) {
-				return class_exists($m[0], false) || interface_exists($m[0], false)
-					? '<a href="' . Helpers::escapeHtml(Helpers::editorUri((new \ReflectionClass($m[0]))->getFileName())) . '">' . $m[0] . '</a>'
-					: $m[0];
+				if (isset($m[2]) && method_exists($m[1], $m[2])) {
+					$r = new \ReflectionMethod($m[1], $m[2]);
+				} elseif (class_exists($m[1], false) || interface_exists($m[1], false)) {
+					$r = new \ReflectionClass($m[1]);
+				} else {
+					return $m[0];
+				}
+				return '<a href="' . Helpers::escapeHtml(Helpers::editorUri($r->getFileName(), $r->getStartLine())) . '">' . $m[0] . '</a>';
+			},
+			$msg
+		);
+
+		// clickable file name
+		$msg = preg_replace_callback(
+			'#([\w\\\\/.:-]+\.(?:php|phpt|phtml|latte|neon))(?|:(\d+)| on line (\d+))?#',
+			function ($m) {
+				return @is_file($m[1])
+				? '<a href="' . Helpers::escapeHtml(Helpers::editorUri($m[1], isset($m[2]) ? (int) $m[2] : null)) . '">' . $m[0] . '</a>'
+				: $m[0];
 			},
 			$msg
 		);
