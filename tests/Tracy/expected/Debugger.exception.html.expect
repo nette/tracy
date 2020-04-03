@@ -126,7 +126,7 @@
 
 
 
-		<div class="panel">
+				<div class="panel">
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
 		<div class="tracy-collapsed inner">
