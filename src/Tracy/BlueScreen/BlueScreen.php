@@ -109,6 +109,7 @@ class BlueScreen
 
 	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
 	{
+		$showEnvironment = strpos($exception->getMessage(), 'Allowed memory size') === false;
 		$messageHtml = preg_replace(
 			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
 			'<i>$0</i>',

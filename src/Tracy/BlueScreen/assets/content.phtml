@@ -208,6 +208,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 		<?php endforeach ?>
 
 
+		<?php if ($showEnvironment):?>
 		<div class="panel">
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
@@ -272,6 +273,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			echo preg_replace('#^.+<body>|</body>.+\z#s', '', $phpinfo)  ?>
 			</div>
 		</div></div>
+		<?php endif ?>
 
 
 		<?php if (PHP_SAPI === 'cli'): ?>
