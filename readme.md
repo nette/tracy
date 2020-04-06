@@ -384,6 +384,22 @@ services:
 ```
 
 
+nginx
+-----
+
+If Tracy does not work on nginx, it is probably misconfigured. If there is something like
+
+```nginx
+try_files $uri $uri/ /index.php;
+```
+
+change it to
+
+```nginx
+try_files $uri $uri/ /index.php$is_args$args;
+```
+
+
 Ports
 -----
 
