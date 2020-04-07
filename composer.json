@@ -22,11 +22,14 @@
 	"require-dev": {
 		"nette/utils": "^3.0",
 		"nette/di": "^3.0",
-		"nette/tester": "^2.2",
 		"nette/mail": "^3.0",
-		"nette/http": "^3.0",
+		"nette/tester": "^2.2",
 		"latte/latte": "^2.5",
-		"psr/log": "^1.0"
+		"psr/log": "^1.0",
+		"phpstan/phpstan": "^0.12"
+	},
+	"conflict": {
+		"nette/di": "<3.0"
 	},
 	"conflict": {
 		"nette/di": "<3.0"
@@ -39,6 +42,10 @@
 		"files": ["src/Tracy/shortcuts.php"]
 	},
 	"minimum-stability": "dev",
+	"scripts": {
+		"phpstan": "phpstan analyse --level 5 src",
+		"tester": "tester tests -s"
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "2.7-dev"

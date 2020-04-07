@@ -95,7 +95,7 @@ body#tracy-debug { /* in popup window */
 }
 
 #tracy-debug tr:nth-child(2n) td {
-	background: #F7F0CB;
+	background: #00000005;
 }
 
 #tracy-debug td,
@@ -250,7 +250,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	font: normal normal 23px/1.4 Tahoma, sans-serif;
 	color: #575753;
 	margin: -5px -5px 5px;
-	padding: 0 25px 0 5px;
+	padding: 0 5px 0 5px;
 	word-wrap: break-word;
 }
 
@@ -261,6 +261,18 @@ body#tracy-debug .tracy-panel { /* in popup window */
 
 #tracy-debug .tracy-panel .tracy-icons {
 	display: none;
+}
+
+#tracy-debug .tracy-panel-ajax > h1::after,
+#tracy-debug .tracy-panel-redirect > h1::after {
+	content: 'ajax';
+	float: right;
+	font-size: 65%;
+	margin: 0 .3em;
+}
+
+#tracy-debug .tracy-panel-redirect h1::after {
+	content: 'redirect';
 }
 
 #tracy-debug .tracy-mode-peek,
@@ -309,6 +321,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 
 #tracy-debug .tracy-mode-float h1 {
 	cursor: move;
+	padding-right: 25px;
 }
 
 #tracy-debug .tracy-mode-float .tracy-icons {

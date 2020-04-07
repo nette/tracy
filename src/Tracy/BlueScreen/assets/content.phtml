@@ -29,12 +29,12 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div class="tracy-bs-main">
 		<div id="tracy-bs-error" class="panel">
-			<?php if ($exception->getMessage()): ?><p><?= Helpers::escapeHtml($title . $code) ?></p><?php endif ?>
+			<?php if ($exception->getMessage()): ?><p><?= Helpers::escapeHtml(Dumper::encodeString($title . $code, self::MAX_MESSAGE_LENGTH)) ?></p><?php endif ?>
 
 
-			<h1><span><?= $messageHtml ?: Helpers::escapeHtml($title . $code) ?></span>
+			<h1><span><?= $messageHtml ?: Helpers::escapeHtml(Dumper::encodeString($title . $code, self::MAX_MESSAGE_LENGTH)) ?></span>
 			<?php foreach ($actions as $item): ?>
-			<a href="<?= Helpers::escapeHtml($item['link']) ?>"<?= empty($item['external']) ? '' : ' target="_blank" rel="noreferrer noopener"'?>><?= Helpers::escapeHtml($item['label']) ?>&#x25ba;</a>
+			<a href="<?= Helpers::escapeHtml($item['link']) ?>" class="action"<?= empty($item['external']) ? '' : ' target="_blank" rel="noreferrer noopener"'?>><?= Helpers::escapeHtml($item['label']) ?>&#x25ba;</a>
 			<?php endforeach ?></h1>
 		</div>
 
@@ -83,7 +83,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 			<div class="<?= $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<p><b>File:</b> <?= Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>
-				<?php if (is_file($ex->getFile())): ?><?= self::highlightFile($ex->getFile(), $ex->getLine(), 15, $ex instanceof \ErrorException && isset($ex->context) ? $ex->context : []) ?><?php endif ?>
+				<?php if (is_file($ex->getFile())): ?><?= self::highlightFile($ex->getFile(), $ex->getLine(), 15, $ex instanceof \ErrorException && isset($ex->context) ? $ex->context : [], $this->keysToHide) ?><?php endif ?>
 			</div></div>
 
 
@@ -207,6 +207,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 		<?php endforeach ?>
 
 
+		<?php if ($showEnvironment):?>
 		<div class="panel">
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
@@ -271,6 +272,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			echo preg_replace('#^.+<body>|</body>.+\z#s', '', $phpinfo)  ?>
 			</div>
 		</div></div>
+		<?php endif ?>
 
 
 		<?php if (PHP_SAPI === 'cli'): ?>
@@ -298,7 +300,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 		<div class="tracy-collapsed inner">
 			<h3>URL</h3>
-			<p><a href="<?= Helpers::escapeHtml($source) ?>"><?= Helpers::escapeHtml($source) ?></a></p>
+			<p><a href="<?= Helpers::escapeHtml($source) ?>" target="_blank" rel="noreferrer noopener"><?= Helpers::escapeHtml($source) ?></a></p>
 
 			<h3>Headers</h3>
 			<div class="outer">
@@ -336,7 +338,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<div class="outer">
 			<table class="tracy-sortable">
 			<?php
-			foreach (headers_list() as $s) { $s = explode(': ', $s, 2); echo '<tr><th>', Helpers::escapeHtml($s[0]), '</th><td>', Helpers::escapeHtml($s[1]), "</td></tr>\n"; }
+			foreach (headers_list() as $s) { $s = explode(':', $s, 2); echo '<tr><th>', Helpers::escapeHtml($s[0]), '</th><td>', Helpers::escapeHtml(trim($s[1])), "</td></tr>\n"; }
 			?>
 			</table>
 			</div>
@@ -359,7 +361,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 		<footer>
 			<ul>
 				<li><b><a href="https://nette.org/make-donation?to=tracy" target="_blank" rel="noreferrer noopener">Please support Tracy via a donation 💙️</a></b></li>
-				<li>Report generated at <?= @date('Y/m/d H:i:s') // @ timezone may not be set ?></li>
+				<li>Report generated at <?= date('Y/m/d H:i:s') ?></li>
 				<?php foreach ($info as $item): ?><li><?= Helpers::escapeHtml($item) ?></li><?php endforeach ?>
 			</ul>
 			<div class="footer-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>

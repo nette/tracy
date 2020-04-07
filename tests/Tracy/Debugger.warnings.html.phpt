@@ -46,6 +46,10 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 	<td class="tracy-right">1%a%</td>
 	<td><pre>PHP Warning: %a% in %a%:%d%</a></pre></td>
 </tr>
+<tr>
+	<td class="tracy-right">1%a%</td>
+	<td><pre>PHP Compile Warning: Unsupported declare &#039;foo&#039; in %a%:%d%</a></pre></td>
+</tr>
 </table>
 </div>%A%', $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725

@@ -298,10 +298,13 @@ class Dumper
 				$out = $span . '>' . $out . count($var) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 				$options['parents'][] = $var;
 				foreach ($var as $k => &$v) {
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]) ? self::HIDDEN_VALUE : null;
+					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . '</span> => '
-						. ($hide ? $this->dumpString($hide) : $this->dumpVar($v, $options, $level + 1));
+						. ($hide
+							? Helpers::escapeHtml(self::hideValue($v)) . "\n"
+							: $this->dumpVar($v, $options, $level + 1)
+						);
 				}
 				array_pop($options['parents']);
 
@@ -362,10 +365,13 @@ class Dumper
 						$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]) ? self::HIDDEN_VALUE : null;
+					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . "</span>$vis => "
-						. ($hide ? $this->dumpString($hide) : $this->dumpVar($v, $options, $level + 1));
+						. ($hide
+							? Helpers::escapeHtml(self::hideValue($v)) . "\n"
+							: $this->dumpVar($v, $options, $level + 1)
+						);
 				}
 				array_pop($options['parents']);
 
@@ -420,7 +426,7 @@ class Dumper
 			$options['parents'][] = $var;
 			foreach ($var as $k => &$v) {
 				$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-				$res[] = [$this->encodeKey($k), $hide ? self::HIDDEN_VALUE : $this->toJson($v, $options, $level + 1)];
+				$res[] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1)];
 			}
 			array_pop($options['parents']);
 			return $res;
@@ -457,7 +463,7 @@ class Dumper
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$obj['items'][] = [$this->encodeKey($k), $hide ? self::HIDDEN_VALUE : $this->toJson($v, $options, $level + 1), $vis];
+					$obj['items'][] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1), $vis];
 				}
 			}
 			return ['object' => $obj['id']];
@@ -499,39 +505,23 @@ class Dumper
 	 */
 	public static function encodeString(string $s, int $maxLength = null): string
 	{
-		static $table;
-		if ($table === null) {
-			foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
-				$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
-			}
-			$table['\\'] = '\\\\';
-			$table["\r"] = '\r';
-			$table["\n"] = '\n';
-			$table["\t"] = '\t';
-		}
-
-		if ($maxLength && strlen($s) > $maxLength) { // shortens to $maxLength in UTF-8 or longer
-			if (function_exists('mb_substr')) {
-				$s = mb_substr($tmp = $s, 0, $maxLength, 'UTF-8');
-				$shortened = $s !== $tmp;
-			} else {
-				$i = $len = 0;
-				$maxI = $maxLength * 4; // max UTF-8 length
-				do {
-					if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && ((++$len > $maxLength) || $i >= $maxI)) {
-						$s = substr($s, 0, $i);
-						$shortened = true;
-						break;
-					}
-				} while (isset($s[++$i]));
-			}
+		if ($maxLength) {
+			$s = self::truncateString($tmp = $s, $maxLength);
+			$shortened = $s !== $tmp;
 		}
 
 		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) { // is binary?
-			if ($maxLength && strlen($s) > $maxLength) {
-				$s = substr($s, 0, $maxLength);
-				$shortened = true;
+			static $table;
+			if ($table === null) {
+				foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
+					$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
+				}
+				$table['\\'] = '\\\\';
+				$table["\r"] = '\r';
+				$table["\n"] = '\n';
+				$table["\t"] = '\t';
 			}
+
 			$s = strtr($s, $table);
 		}
 
@@ -540,12 +530,35 @@ class Dumper
 
 
 	/**
-	 * @param  int|string  $key
+	 * @internal
+	 */
+	public static function truncateString(string $s, int $maxLength): string
+	{
+		if (!preg_match('##u', $s)) {
+			$s = substr($s, 0, $maxLength); // not UTF-8
+		} elseif (function_exists('mb_substr')) {
+			$s = mb_substr($s, 0, $maxLength, 'UTF-8');
+		} else {
+			$i = $len = 0;
+			while (isset($s[$i])) {
+				if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength)) {
+					$s = substr($s, 0, $i);
+					break;
+				}
+				$i++;
+			}
+		}
+		return $s;
+	}
+
+
+	/**
+	 * @param  int|string  $k
 	 * @return int|string
 	 */
 	private function encodeKey($key)
 	{
-		return is_int($key) || preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}$#D', $key)
+		return is_int($key) || (preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
 			? $key
 			: '"' . $this->encodeString($key, $this->maxLength) . '"';
 	}
@@ -617,6 +630,12 @@ class Dumper
 			}
 		}
 		return $info;
+	}
+
+
+	private static function hideValue($var): string
+	{
+		return self::HIDDEN_VALUE . ' (' . (is_object($var) ? Helpers::getClass($var) : gettype($var)) . ')';
 	}
 
 

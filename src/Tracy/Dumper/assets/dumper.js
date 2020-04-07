@@ -122,7 +122,7 @@
 			if (!object) {
 				throw new UnknownEntityException;
 			}
-			parentIds = parentIds || [];
+			parentIds = parentIds ? parentIds.slice() : [];
 			let recursive = parentIds.indexOf(id) > -1;
 			parentIds.push(id);
 

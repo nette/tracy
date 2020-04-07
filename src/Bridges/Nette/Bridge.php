@@ -52,13 +52,13 @@ class Bridge
 			$lines = file($file);
 			if (preg_match('#// source: (\S+\.latte)#', $lines[1], $m) && @is_file($m[1])) { // @ - may trigger error
 				$templateFile = $m[1];
-				$templateLine = preg_match('#/\* line (\d+) \*/#', $lines[$e->getLine() - 1], $m) ? (int) $m[1] : null;
+				$templateLine = $e->getLine() && preg_match('#/\* line (\d+) \*/#', $lines[$e->getLine() - 1], $m) ? (int) $m[1] : 0;
 				return [
 					'tab' => 'Template',
 					'panel' => '<p><b>File:</b> ' . Helpers::editorLink($templateFile, $templateLine) . '</p>'
 						. ($templateLine === null
 							? ''
-							: '<pre class="code"><div>' . BlueScreen::highlightFile($templateFile, $templateLine) . '</div></pre>'),
+							: BlueScreen::highlightFile($templateFile, $templateLine)),
 				];
 			}
 		}

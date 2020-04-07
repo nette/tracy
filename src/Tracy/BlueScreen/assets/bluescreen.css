@@ -57,17 +57,21 @@
 }
 
 #tracy-bs-error a {
+	border-bottom-color: rgba(255, 255, 255, .3) !important;
+}
+
+#tracy-bs-error a.action {
 	color: white !important;
 	opacity: 0;
 	font-size: .7em;
 	border-bottom: none !important;
 }
 
-#tracy-bs-error:hover a {
+#tracy-bs-error:hover a.action {
 	opacity: .6;
 }
 
-#tracy-bs-error a:hover {
+#tracy-bs-error a.action:hover {
 	opacity: 1;
 }
 

@@ -15,7 +15,6 @@ namespace Tracy;
  */
 class Helpers
 {
-
 	/**
 	 * Returns HTML link to editor.
 	 */
@@ -315,5 +314,21 @@ class Helpers
 		return defined('PHP_WINDOWS_VERSION_BUILD')
 			? '"' . str_replace('"', '""', $s) . '"'
 			: escapeshellarg($s);
+	}
+
+
+	/**
+	 * Captures PHP output into a string.
+	 */
+	public static function capture(callable $func): string
+	{
+		ob_start(function () {});
+		try {
+			$func();
+			return ob_get_clean();
+		} catch (\Throwable $e) {
+			ob_end_clean();
+			throw $e;
+		}
 	}
 }

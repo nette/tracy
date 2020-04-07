@@ -19,6 +19,10 @@ $keys = [
 	'key ' => 0,
 	0 => 0,
 	'01' => 0,
+	'true' => 0,
+	'false' => 0,
+	'null' => 0,
+	'NULL' => 0,
 ];
 
 Assert::match('array (%i%)
@@ -30,6 +34,10 @@ Assert::match('array (%i%)
    "key " => 0
    0 => 0
    01 => 0
+   "true" => 0
+   "false" => 0
+   "null" => 0
+   "NULL" => 0
 ', Dumper::toText($keys));
 
 Assert::match('stdClass #%a%
@@ -41,6 +49,10 @@ Assert::match('stdClass #%a%
    "key " => 0
    0 => 0
    01 => 0
+   "true" => 0
+   "false" => 0
+   "null" => 0
+   "NULL" => 0
 ', Dumper::toText((object) $keys));
 
 
@@ -63,6 +75,10 @@ Assert::equal([
 			['"key "', 0, 0],
 			[0, 0, 0],
 			['01', 0, 0],
+			['"true"', 0, 0],
+			['"false"', 0, 0],
+			['"null"', 0, 0],
+			['"NULL"', 0, 0],
 		],
 	],
 ], json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true));

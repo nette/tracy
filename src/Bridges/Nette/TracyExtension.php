@@ -36,9 +36,9 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
 		return Expect::structure([
-			'email' => Expect::email()->dynamic(),
+			'email' => Expect::anyOf(Expect::email(), Expect::listOf('email'))->dynamic(),
 			'fromEmail' => Expect::email()->dynamic(),
-			'logSeverity' => Expect::scalar(),
+			'logSeverity' => Expect::anyOf(Expect::scalar(), Expect::listOf('scalar')),
 			'editor' => Expect::string()->dynamic(),
 			'browser' => Expect::string()->dynamic(),
 			'errorTemplate' => Expect::string()->dynamic(),
@@ -48,9 +48,9 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			'maxDepth' => Expect::int()->dynamic(),
 			'showLocation' => Expect::bool()->dynamic(),
 			'scream' => Expect::bool()->dynamic(),
-			'bar' => Expect::listOf('class|Nette\DI\Definitions\Statement'),
+			'bar' => Expect::listOf('string|Nette\DI\Definitions\Statement'),
 			'blueScreen' => Expect::listOf('callable'),
-			'editorMapping' => Expect::arrayOf('string')->dynamic(),
+			'editorMapping' => Expect::arrayOf('string')->dynamic()->default(null),
 			'netteMailer' => Expect::bool(true),
 		]);
 	}
@@ -74,7 +74,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
-		$initialize = $class->getMethod('initialize');
+		$initialize = $this->initialization ?? $class->getMethod('initialize');
 		$builder = $this->getContainerBuilder();
 
 		$options = (array) $this->config;
@@ -108,12 +108,10 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 		if ($this->debugMode) {
 			foreach ($this->config->bar as $item) {
-				if (is_string($item)) {
-					if ($item[0] ?? '' === '@') {
-						$item = new Nette\DI\Statement(['@' . $builder::THIS_CONTAINER, 'getService'], [substr($item, 1)]);
-					} else {
-						$item = new Nette\DI\Statement($item);
-					}
+				if (is_string($item) && substr($item, 0, 1) === '@') {
+					$item = new Nette\DI\Statement(['@' . $builder::THIS_CONTAINER, 'getService'], [substr($item, 1)]);
+				} elseif (is_string($item)) {
+					$item = new Nette\DI\Statement($item);
 				}
 				$initialize->addBody($builder->formatPhp(
 					'$this->getService(?)->addPanel(?);',
