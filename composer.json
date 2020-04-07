@@ -31,9 +31,6 @@
 	"conflict": {
 		"nette/di": "<3.0"
 	},
-	"conflict": {
-		"nette/di": "<3.0"
-	},
 	"suggest": {
 		"https://nette.org/donate": "Please support Tracy via a donation"
 	},
