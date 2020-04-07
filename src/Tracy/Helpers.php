@@ -163,9 +163,10 @@ class Helpers
 			return (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
 				. ($_SERVER['HTTP_HOST'] ?? '')
 				. $_SERVER['REQUEST_URI'];
+		} else {
+			return 'CLI (PID: ' . getmypid() . ')'
+				. ': ' . implode(' ', array_map([self::class, 'escapeArg'], $_SERVER['argv']));
 		}
-		return 'CLI (PID: ' . getmypid() . ')'
-			. ': ' . implode(' ', array_map([self::class, 'escapeArg'], $_SERVER['argv']));
 	}
 
 
