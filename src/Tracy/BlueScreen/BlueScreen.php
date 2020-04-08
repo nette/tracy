@@ -268,6 +268,7 @@ class BlueScreen
 			ini_set('highlight.string', '#080');
 		}
 
+		$source = preg_replace('#(__halt_compiler\s*\(\)\s*;).*#is', '$1', $source);
 		$source = str_replace(["\r\n", "\r"], "\n", $source);
 		$source = explode("\n", highlight_string($source, true));
 		$out = $source[0]; // <code><span color=highlight.html>
