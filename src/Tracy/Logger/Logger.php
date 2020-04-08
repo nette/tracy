@@ -179,7 +179,7 @@ class Logger implements ILogger
 	 */
 	public function defaultMailer($message, string $email): void
 	{
-		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['HTTP_HOST'] ?? php_uname('n'));
+		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 		$parts = str_replace(
 			["\r\n", "\n"],
 			["\n", PHP_EOL],
