@@ -70,6 +70,7 @@ jobs:
     allow_failures:
         -   stage: Static Analysis (informative)
         -   stage: Code Coverage
+        -   php: 7.4snapshot
 
 
 sudo: false

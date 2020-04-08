@@ -179,6 +179,7 @@ class Dumper
 			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
 		) : null;
 
+		$options = [];
 		if (is_array($this->snapshot)) {
 			$options[self::SNAPSHOT] = &$this->snapshot;
 		}
