@@ -11,7 +11,7 @@
 	{
 		static init() {
 			document.documentElement.addEventListener('click', (e) => {
-				if (e.target.matches('.tracy-sortable tr:first-child *')) {
+				if (e.target.matches('.tracy-sortable > :first-child > tr:first-child *')) {
 					TableSort.sort(e.target.closest('td,th'));
 				}
 			});
