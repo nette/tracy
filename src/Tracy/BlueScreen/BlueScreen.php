@@ -245,13 +245,14 @@ class BlueScreen
 	public static function highlightFile(string $file, int $line, int $lines = 15, array $vars = [], array $keysToHide = []): ?string
 	{
 		$source = @file_get_contents($file); // @ file may not exist
-		if ($source) {
-			$source = static::highlightPhp($source, $line, $lines, $vars, $keysToHide);
-			if ($editor = Helpers::editorUri($file, $line)) {
-				$source = substr_replace($source, ' data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
-			}
-			return $source;
+		if ($source === false) {
+			return null;
 		}
+		$source = static::highlightPhp($source, $line, $lines, $vars, $keysToHide);
+		if ($editor = Helpers::editorUri($file, $line)) {
+			$source = substr_replace($source, ' data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
+		}
+		return $source;
 	}
 
 
