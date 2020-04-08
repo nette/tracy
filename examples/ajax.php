@@ -15,7 +15,7 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 
 
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) { // AJAX request
-	Debugger::barDump('AJAX request ' . date('H:i:s'));
+	bdump('AJAX request ' . date('H:i:s'));
 	if (!empty($_GET['error'])) {
 		this_is_fatal_error();
 	}
@@ -26,7 +26,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) { // AJAX request
 	exit;
 }
 
-Debugger::barDump('classic request ' . date('H:i:s'));
+bdump('classic request ' . date('H:i:s'));
 
 ?>
 <!DOCTYPE html><html class=arrow><link rel="stylesheet" href="assets/style.css">

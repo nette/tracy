@@ -25,7 +25,7 @@ if (isset($_GET['sleep'])) {
 
 <h1>Tracy: Preloading</h1>
 
-<?php Debugger::getBar()->renderLoader() ?>
+<?php Debugger::renderLoader() ?>
 
 <script src="?sleep=1"></script>
 
