@@ -292,9 +292,6 @@ class Debugger
 
 		if (!headers_sent()) {
 			http_response_code(isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== false ? 503 : 500);
-			if (Helpers::isHtmlMode()) {
-				header('Content-Type: text/html; charset=UTF-8');
-			}
 		}
 
 		Helpers::improveException($exception);
@@ -309,6 +306,9 @@ class Debugger
 			if (!$firstTime) {
 				// nothing
 			} elseif (Helpers::isHtmlMode()) {
+				if (!headers_sent()) {
+					header('Content-Type: text/html; charset=UTF-8');
+				}
 				$logged = empty($e);
 				require self::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml';
 			} elseif (PHP_SAPI === 'cli') {
