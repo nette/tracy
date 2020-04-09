@@ -2,11 +2,11 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
-.tracy-sortable tr:first-child > * {
+.tracy-sortable > :first-child > tr:first-child > * {
 	position: relative;
 }
 
-.tracy-sortable tr:first-child > *:hover:before {
+.tracy-sortable > :first-child > tr:first-child > *:hover:before {
 	position: absolute;
 	right: .3em;
 	content: "\21C5";
