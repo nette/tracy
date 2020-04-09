@@ -309,8 +309,9 @@ class Debugger
 				if (!headers_sent()) {
 					header('Content-Type: text/html; charset=UTF-8');
 				}
-				$logged = empty($e);
-				require self::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml';
+				(function ($logged) use ($exception) {
+					require self::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml';
+				})(empty($e));
 			} elseif (PHP_SAPI === 'cli') {
 				@fwrite(STDERR, 'ERROR: application encountered an error and can not continue. '
 					. (isset($e) ? "Unable to log error.\n" : "Error was logged.\n")); // @ triggers E_NOTICE when strerr is closed since PHP 7.4
