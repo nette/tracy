@@ -56,6 +56,14 @@ pre.tracy-dump a:focus {
 	display: none;
 }
 
+.tracy-dump-highlight {
+	background: #C22;
+	color: white;
+	border-radius: 2px;
+	padding: 0 2px;
+	margin: 0 -2px;
+}
+
 span[data-tracy-href] {
 	border-bottom: 1px dotted rgba(0, 0, 0, .2);
 }
