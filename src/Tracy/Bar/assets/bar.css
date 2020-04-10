@@ -401,6 +401,14 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	display: none;
 }
 
+#tracy-debug .tracy-dump-highlight {
+	background: #C22;
+	color: white;
+	border-radius: 2px;
+	padding: 0 2px;
+	margin: 0 -2px;
+}
+
 
 /* toggle */
 #tracy-debug .tracy-toggle:after {

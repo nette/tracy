@@ -66,6 +66,25 @@
 				}
 			});
 
+			document.addEventListener('mouseover', (e) => {
+				let dump;
+				if (e.target.matches('.tracy-dump-hash') && (dump = e.target.closest('.tracy-dump'))) {
+					dump.querySelectorAll('.tracy-dump-hash').forEach((el) => {
+						if (el.textContent === e.target.textContent) {
+							el.classList.add('tracy-dump-highlight');
+						}
+					});
+				}
+			});
+
+			document.addEventListener('mouseout', (e) => {
+				if (e.target.matches('.tracy-dump-hash')) {
+					document.querySelectorAll('.tracy-dump-hash.tracy-dump-highlight').forEach((el) => {
+						el.classList.remove('tracy-dump-highlight');
+					});
+				}
+			});
+
 			Tracy.Toggle.init();
 		}
 	}
