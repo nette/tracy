@@ -300,20 +300,23 @@ class Dumper
 
 			} else {
 				$out = $span . '>' . $out . count($var) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
-				$var[$marker] = true;
-				foreach ($var as $k => &$v) {
-					if ($k === $marker) {
-						continue;
-					}
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+				try {
+					$var[$marker] = true;
+					foreach ($var as $k => &$v) {
+						if ($k === $marker) {
+							continue;
+						}
+						$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
+						$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . '</span> => '
 						. ($hide
 							? Helpers::escapeHtml(self::hideValue($v)) . "\n"
 							: $this->dumpVar($v, $options, $level + 1)
 						);
+					}
+				} finally {
+					unset($var[$marker]);
 				}
-				unset($var[$marker]);
 
 				return $out . '</div>';
 			}
@@ -434,15 +437,18 @@ class Dumper
 				return ['stop' => [count($var) - isset($var[$marker]), isset($var[$marker])]];
 			}
 			$res = [];
-			$var[$marker] = true;
-			foreach ($var as $k => &$v) {
-				if ($k === $marker) {
-					continue;
+			try {
+				$var[$marker] = true;
+				foreach ($var as $k => &$v) {
+					if ($k === $marker) {
+						continue;
+					}
+					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
+					$res[] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1)];
 				}
-				$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-				$res[] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1)];
+			} finally {
+				unset($var[$marker]);
 			}
-			unset($var[$marker]);
 			return $res;
 
 		} elseif (is_object($var)) {
