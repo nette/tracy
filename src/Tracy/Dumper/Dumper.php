@@ -272,12 +272,17 @@ class Dumper
 
 	private function dumpArray(&$var, array $options, int $level): string
 	{
+		static $marker;
+		if ($marker === null) {
+			$marker = uniqid("\x00", true);
+		}
+
 		$out = '<span class="tracy-dump-array">array</span> (';
 
 		if (empty($var)) {
 			return $out . ")\n";
 
-		} elseif (in_array($var, $options['parents'] ?? [], true)) {
+		} elseif (isset($var[$marker])) {
 			return $out . (count($var) - 1) . ") [ <i>RECURSION</i> ]\n";
 
 		} elseif (!$this->maxDepth || $level < $this->maxDepth) {
@@ -295,14 +300,17 @@ class Dumper
 
 			} else {
 				$out = $span . '>' . $out . count($var) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
-				$options['parents'][] = $var;
+				$var[$marker] = true;
 				foreach ($var as $k => &$v) {
+					if ($k === $marker) {
+						continue;
+					}
 					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]) ? self::HIDDEN_VALUE : null;
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . '</span> => '
 						. ($hide ? $this->dumpString($hide) : $this->dumpVar($v, $options, $level + 1));
 				}
-				array_pop($options['parents']);
+				unset($var[$marker]);
 
 				return $out . '</div>';
 			}
@@ -412,16 +420,23 @@ class Dumper
 			return $this->encodeString($var, $this->maxLength);
 
 		} elseif (is_array($var)) {
-			if (count($var) && (($rec = in_array($var, $options['parents'] ?? [], true)) || $level >= $this->maxDepth)) {
-				return ['stop' => [count($var), $rec]];
+			static $marker;
+			if ($marker === null) {
+				$marker = uniqid("\x00", true);
+			}
+			if (count($var) && (isset($var[$marker]) || $level >= $this->maxDepth)) {
+				return ['stop' => [count($var) - isset($var[$marker]), isset($var[$marker])]];
 			}
 			$res = [];
-			$options['parents'][] = $var;
+			$var[$marker] = true;
 			foreach ($var as $k => &$v) {
+				if ($k === $marker) {
+					continue;
+				}
 				$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
 				$res[] = [$this->encodeKey($k), $hide ? self::HIDDEN_VALUE : $this->toJson($v, $options, $level + 1)];
 			}
-			array_pop($options['parents']);
+			unset($var[$marker]);
 			return $res;
 
 		} elseif (is_object($var)) {
