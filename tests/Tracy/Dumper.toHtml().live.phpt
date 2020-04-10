@@ -128,3 +128,51 @@ Assert::equal([
 		],
 	],
 ], formatSnapshot());
+
+
+// live & recursion
+Dumper::$liveSnapshot = [];
+$arr = [1, 2, 3];
+$arr[] = &$arr;
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,{"stop":[4,true]}]]\'></pre>',
+	Dumper::toHtml($arr, $options)
+);
+Assert::same([], Dumper::$liveSnapshot);
+
+$obj = new stdClass;
+$obj->x = $obj;
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	Dumper::toHtml($obj, $options)
+);
+
+
+// live & max depth
+Dumper::$liveSnapshot = [];
+$arr = [1, [2, [3, [4, [5, [6]]]]], 3];
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,{"stop":[2,false]}]]]]]]],[2,3]]\'></pre>',
+	Dumper::toHtml($arr, $options)
+);
+Assert::same([], Dumper::$liveSnapshot);
+
+
+$arr = [1, [2, [3, [4, []]]], 3];
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,[]]]]]]]],[2,3]]\'></pre>',
+	Dumper::toHtml($arr, $options)
+);
+Assert::same([], Dumper::$liveSnapshot);
+
+
+$obj = new stdClass;
+$obj->a = new stdClass;
+$obj->a->b = new stdClass;
+$obj->a->b->c = new stdClass;
+$obj->a->b->c->d = new stdClass;
+$obj->a->b->c->d->e = new stdClass;
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	Dumper::toHtml($obj, $options)
+);
