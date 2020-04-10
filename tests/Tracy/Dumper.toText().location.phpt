@@ -13,6 +13,22 @@ use Tracy\Dumper;
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::match('"Hello" (5)
-in %a%:%d%
-', Dumper::toText(trim(' Hello '), ['location' => true]));
+class Test
+{
+}
+
+Assert::match('Test #%a%
+in %a%:%d%', Dumper::toText(new Test, ['location' => true]));
+
+
+Assert::match('Test #%a%', Dumper::toText(new Test, ['location' => false]));
+
+
+Assert::match('Test #%a%', Dumper::toText(new Test, ['location' => Dumper::LOCATION_SOURCE]));
+
+
+Assert::match('Test #%a%', Dumper::toText(new Test, ['location' => Dumper::LOCATION_CLASS]));
+
+
+Assert::match('Test #%a%
+in %a%:%d%', Dumper::toText(new Test, ['location' => Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS]));

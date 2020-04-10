@@ -67,11 +67,6 @@ Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'[]\'><span class="t
 </div></pre>', Dumper::toHtml([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]));
 
 
-// resource
-Assert::match('<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div class="tracy-collapsed">%A%', Dumper::toHtml(fopen(__FILE__, 'r')));
-
-
 // object
 Assert::match('<pre class="tracy-dump"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span>
 </pre>', Dumper::toHtml(new stdClass));
@@ -84,88 +79,22 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="t
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test));
 
+$obj = new Child;
+$obj->new = 7;
+$obj->{0} = 8;
+$obj->{1} = 9;
+$obj->{''} = 10;
 
-// collapse (with snapshot)
-Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'[]\'><span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,10],[1,null]]\'><span class="tracy-dump-array">array</span> (2)</span>
+Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Child</span> <span class="tracy-dump-hash">#%a%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-dump-number">1</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-number">2</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">3</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x2</span> => <span class="tracy-dump-number">4</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y2</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">5</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z2</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-number">6</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-string">"hello"</span> (5)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
-</div></pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1]));
-
-Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'[]\'><span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,10],[1,null]]\'><span class="tracy-dump-array">array</span> (2)</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-string">"hello"</span> (5)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
-</div></pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1, Dumper::COLLAPSE => false]));
-
-Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"Test","hash":"%a%","items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"object":1}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
-</pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE => true]));
-
-Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"Test","hash":"%a%","items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"object":1}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
-</pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE => 3]));
-
-
-// specials: closure, SplFileInfo, new class
-Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Closure</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">file</span> => <span class="tracy-dump-string">"%a%"</span> (%i%)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">line</span> => <span class="tracy-dump-number">%i%</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">variables</span> => <span class="tracy-dump-array">array</span> ()
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">parameters</span> => <span class="tracy-dump-string">""</span>
-</div></pre>', Dumper::toHtml(function () {}));
-
-Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">SplFileInfo</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">path</span> => <span class="tracy-dump-string">"%a%"</span> (%d%)
-</div></pre>', Dumper::toHtml(new SplFileInfo(__FILE__)));
-
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-object">class@anonymous</span> <span class="tracy-dump-hash">#%a%</span>
-</pre>', Dumper::toHtml(new class {
-}));
-
-
-// recursion (with snapshot)
-$arr = [1, 2, 3, ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']];
-$arr[3][] = &$arr;
-Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'[]\'><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">1</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-number">2</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-number">3</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">3</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"stop":[4,true]}]]\'><span class="tracy-dump-array">array</span> (9)</span>
-</div></pre>',
-	Dumper::toHtml($arr)
-);
-
-$obj = new stdClass;
-$obj->items = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', $obj];
-Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","items":[["items",{"stop":[9,true]},0]]}}\'><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%h%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">items</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"object":1}]]\'><span class="tracy-dump-array">array</span> (9)</span>
-</div></pre>',
-	Dumper::toHtml($obj)
-);
-
-
-// max depth  (with snapshot)
-$arr = [1, [2, ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', [3, [4, [5, [6]]]]]], 3];
-Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'[]\'><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (3)</span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">1</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">2</span>
-<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,[[0,3],[1,{"stop":[2,false]}]]]]\'><span class="tracy-dump-array">array</span> (9)</span>
-</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-number">3</span>
-</div></pre>',
-	Dumper::toHtml($arr)
-);
-
-$obj = new stdClass;
-$obj->items = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-$obj->items['x'] = new stdClass;
-$obj->items['x']->b = new stdClass;
-$obj->items['x']->b->c = new stdClass;
-Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"1":{"name":"stdClass","hash":"%h%","items":[["b",{"object":2},0]]},"2":{"name":"stdClass","hash":"%h%","items":[["c",{"object":3},0]]},"3":{"name":"stdClass","hash":"%h%"}}\'><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%h%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">items</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],["x",{"object":1}]]\'><span class="tracy-dump-array">array</span> (9)</span>
-</div></pre>',
-	Dumper::toHtml($obj)
-);
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">new</span> => <span class="tracy-dump-number">7</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">8</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-number">9</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">&quot;&quot;</span> => <span class="tracy-dump-number">10</span>
+</div></pre>', Dumper::toHtml($obj));
