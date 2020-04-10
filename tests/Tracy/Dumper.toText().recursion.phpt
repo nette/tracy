@@ -29,8 +29,8 @@ Assert::match('array (4)
 
 $arr = (object) ['x' => 1, 'y' => 2];
 $arr->z = &$arr;
-Assert::match('stdClass #%a%
+Assert::match('stdClass #%d%
    x => 1
    y => 2
-   z => stdClass #%a% { RECURSION }
+   z => stdClass #%d% { RECURSION }
 ', Dumper::toText($arr));

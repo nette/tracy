@@ -346,7 +346,7 @@ class Dumper
 		}
 		$out = '<span class="tracy-dump-object"' . $editorAttributes . '>'
 			. Helpers::escapeHtml(Helpers::getClass($var))
-			. '</span> <span class="tracy-dump-hash">#' . substr(md5(spl_object_hash($var)), 0, 4) . '</span>';
+			. '</span> <span class="tracy-dump-hash">#' . spl_object_id($var) . '</span>';
 
 		if (empty($fields)) {
 			return $out . "\n";
@@ -452,16 +452,14 @@ class Dumper
 			return $res;
 
 		} elseif (is_object($var)) {
-			$hash = spl_object_hash($var);
-			$obj = &$options[self::SNAPSHOT][$hash];
+			$id = spl_object_id($var);
+			$obj = &$options[self::SNAPSHOT][$id];
 			if ($obj && $obj['level'] <= $level) {
-				return ['object' => $obj['id']];
+				return ['object' => $id];
 			}
 
 			$obj = $obj ?: [
-				'id' => count($options[self::SNAPSHOT]),
 				'name' => Helpers::getClass($var),
-				'hash' => substr(md5($hash), 0, 4),
 				'level' => $level,
 				'object' => $var,
 			];
@@ -486,20 +484,21 @@ class Dumper
 					$obj['items'][] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1), $vis];
 				}
 			}
-			return ['object' => $obj['id']];
+			return ['object' => $id];
 
 		} elseif (is_resource($var)) {
-			$obj = &$options[self::SNAPSHOT][(string) $var];
+			$id = 'r' . (int) $var;
+			$obj = &$options[self::SNAPSHOT][$id];
 			if (!$obj) {
 				$type = get_resource_type($var);
-				$obj = ['id' => count($options[self::SNAPSHOT]), 'name' => $type . ' resource', 'hash' => (int) $var];
+				$obj = ['name' => $type . ' resource'];
 				if (isset($this->resourceDumpers[$type])) {
 					foreach (($this->resourceDumpers[$type])($var) as $k => $v) {
 						$obj['items'][] = [$k, $this->toJson($v, $options, $level + 1)];
 					}
 				}
 			}
-			return ['resource' => $obj['id']];
+			return ['resource' => $id];
 
 		} else {
 			return ['type' => 'unknown type'];
@@ -509,11 +508,9 @@ class Dumper
 
 	public static function formatSnapshotAttribute(array &$snapshot): string
 	{
-		$res = [];
-		foreach ($snapshot as $obj) {
-			$id = $obj['id'];
-			unset($obj['level'], $obj['object'], $obj['id']);
-			$res[$id] = $obj;
+		$res = $snapshot;
+		foreach ($res as &$obj) {
+			unset($obj['level'], $obj['object']);
 		}
 		$snapshot = [];
 		return "'" . json_encode($res, JSON_HEX_APOS | JSON_HEX_AMP) . "'";
