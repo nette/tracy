@@ -426,7 +426,7 @@ class Dumper
 		} elseif (is_float($var)) {
 			return is_finite($var)
 				? (strpos($tmp = json_encode($var), '.') ? $var : ['number' => "$tmp.0"])
-				: ['type' => (string) $var];
+				: ['number' => (string) $var];
 
 		} elseif (is_string($var)) {
 			return $this->encodeString($var, $this->maxLength);
@@ -447,7 +447,7 @@ class Dumper
 						continue;
 					}
 					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$res[] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1)];
+					$res[] = [$this->encodeKey($k), $hide ? ['text' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1)];
 				}
 			} finally {
 				unset($var[$marker]);
@@ -486,7 +486,7 @@ class Dumper
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$hide = isset($this->keysToHide[strtolower($k)]);
-					$obj['items'][] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1), $vis];
+					$obj['items'][] = [$this->encodeKey($k), $hide ? ['text' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1), $vis];
 				}
 			}
 			return ['ref' => $id];
