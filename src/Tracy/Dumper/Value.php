@@ -20,16 +20,24 @@ final class Value implements \JsonSerializable
 
 	public $value;
 
+	/** @var ?int */
+	public $length;
 
-	public function __construct(string $type, $value)
+
+	public function __construct(string $type, $value, int $length = null)
 	{
 		$this->type = $type;
 		$this->value = $value;
+		$this->length = $length;
 	}
 
 
 	public function jsonSerialize()
 	{
-		return [$this->type => $this->value];
+		$res = [$this->type => $this->value];
+		if ($this->length) {
+			$res['length'] = $this->length;
+		}
+		return $res;
 	}
 }

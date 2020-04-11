@@ -75,8 +75,11 @@
 		let type = data === null ? 'null' : typeof data,
 			collapseCount = collapsed === null ? COLLAPSE_COUNT : COLLAPSE_COUNT_TOP;
 
-		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
-			data = type === 'string' ? '"' + data + '"' : (data + '');
+		if (type === 'string') {
+			data = {string: data};
+		}
+
+		if (type === 'null' || type === 'number' || type === 'boolean') {
 			return createEl(null, null, [
 				createEl(
 					'span',
@@ -110,9 +113,15 @@
 				createEl('span', {'class': 'tracy-dump-number'}, [data.number + '\n'])
 			]);
 
-		} else if (data.type) {
+		} else if (data.text !== undefined) {
 			return createEl(null, null, [
-				createEl('span', null, [data.type + '\n'])
+				createEl('span', null, [data.text + '\n'])
+			]);
+
+		} else if (data.string !== undefined) {
+			return createEl(null, null, [
+				createEl('span', {'class': 'tracy-dump-string'}, ['"' + data.string + '"']),
+				' (' + (data.length || data.string.length) + ')\n',
 			]);
 
 		} else {
