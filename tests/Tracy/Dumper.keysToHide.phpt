@@ -46,16 +46,16 @@ Assert::equal([
 		'object' => 'stdClass',
 		'items' => [
 			['a', 456, 0],
-			['password', ['type' => '***** (string)'], 0],
-			['PASSWORD', ['type' => '***** (string)'], 0],
-			['Pin', ['type' => '***** (string)'], 0],
+			['password', ['text' => '***** (string)'], 0],
+			['PASSWORD', ['text' => '***** (string)'], 0],
+			['Pin', ['text' => '***** (string)'], 0],
 			[
 				'inner',
 				[
 					['a', 123],
-					['password', ['type' => '***** (string)']],
-					['PASSWORD', ['type' => '***** (string)']],
-					['Pin', ['type' => '***** (string)']],
+					['password', ['text' => '***** (string)']],
+					['PASSWORD', ['text' => '***** (string)']],
+					['Pin', ['text' => '***** (string)']],
 				],
 				0,
 			],
