@@ -110,9 +110,15 @@
 				createEl('span', {'class': 'tracy-dump-number'}, [data.number + '\n'])
 			]);
 
-		} else if (data.type) {
+		} else if (data.key) {
 			return createEl(null, null, [
 				createEl('span', null, [data.type + '\n'])
+			]);
+
+		} else if (data.string) {
+			return createEl(null, null, [
+				createEl('span', {'class': 'tracy-dump-string'}, ['"' + data.string + '"']),
+				' (' + data.length + ')\n'
 			]);
 
 		} else {
