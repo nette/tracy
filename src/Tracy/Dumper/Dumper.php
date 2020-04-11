@@ -422,8 +422,8 @@ class Dumper
 
 		} elseif (is_float($var)) {
 			return is_finite($var)
-				? (strpos($tmp = json_encode($var), '.') ? $var : ['number' => "$tmp.0"])
-				: ['type' => (string) $var];
+				? (strpos($tmp = json_encode($var), '.') ? $var : (object) ['number' => "$tmp.0"])
+				: (object) ['type' => (string) $var];
 
 		} elseif (is_string($var)) {
 			return $this->encodeString($var, $this->maxLength);
@@ -434,17 +434,20 @@ class Dumper
 				$marker = uniqid("\x00", true);
 			}
 			if (count($var) && (isset($var[$marker]) || $depth >= $this->maxDepth)) {
-				return ['stop' => [count($var) - isset($var[$marker]), isset($var[$marker])]];
+				return (object) ['stop' => [count($var) - isset($var[$marker]), isset($var[$marker])]];
 			}
 			$res = [];
 			try {
 				$var[$marker] = true;
 				foreach ($var as $k => &$v) {
-					if ($k === $marker) {
-						continue;
+					if ($k !== $marker) {
+						$res[] = [
+							$this->encodeKey($k),
+							is_string($k) && isset($this->keysToHide[strtolower($k)])
+								? (object) ['type' => self::hideValue($v)]
+								: $this->toJson($v, $options, $depth + 1),
+						];
 					}
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$res[] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1)];
 				}
 			} finally {
 				unset($var[$marker]);
@@ -454,25 +457,25 @@ class Dumper
 		} elseif (is_object($var)) {
 			$id = spl_object_id($var);
 			$obj = &$options[self::SNAPSHOT][$id];
-			if ($obj && $obj['depth'] <= $depth) {
-				return ['object' => $id];
+			if ($obj && $obj->depth <= $depth) {
+				return (object) ['object' => $id];
 			}
 
-			$obj = $obj ?: [
+			$obj = $obj ?: (object) [
 				'name' => Helpers::getClass($var),
 				'depth' => $depth,
 				'object' => $var,
 			];
-			if (empty($obj['editor']) && ($this->location & self::LOCATION_CLASS)) {
+			if (empty($obj->editor) && ($this->location & self::LOCATION_CLASS)) {
 				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
 				if ($editor = $rc->getFileName() ? Helpers::editorUri($rc->getFileName(), $rc->getStartLine()) : null) {
-					$obj['editor'] = ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
+					$obj->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
 				}
 			}
 
 			if ($depth < $this->maxDepth || !$this->maxDepth) {
-				$obj['depth'] = $depth;
-				$obj['items'] = [];
+				$obj->depth = $depth;
+				$obj->items = [];
 
 				foreach ($this->exportObject($var) as $k => $v) {
 					$vis = 0;
@@ -480,28 +483,33 @@ class Dumper
 						$vis = $k[1] === '*' ? 1 : 2;
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$obj['items'][] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1), $vis];
+					$obj->items[] = [
+						$this->encodeKey($k),
+						is_string($k) && isset($this->keysToHide[strtolower($k)])
+							? (object) ['type' => self::hideValue($v)]
+							: $this->toJson($v, $options, $depth + 1),
+						$vis,
+					];
 				}
 			}
-			return ['object' => $id];
+			return (object) ['object' => $id];
 
 		} elseif (is_resource($var)) {
 			$id = 'r' . (int) $var;
 			$obj = &$options[self::SNAPSHOT][$id];
 			if (!$obj) {
 				$type = get_resource_type($var);
-				$obj = ['name' => $type . ' resource'];
+				$obj = (object) ['name' => $type . ' resource'];
 				if (isset($this->resourceDumpers[$type])) {
 					foreach (($this->resourceDumpers[$type])($var) as $k => $v) {
-						$obj['items'][] = [$k, $this->toJson($v, $options, $depth + 1)];
+						$obj->items[] = [$k, $this->toJson($v, $options, $depth + 1)];
 					}
 				}
 			}
-			return ['resource' => $id];
+			return (object) ['resource' => $id];
 
 		} else {
-			return ['type' => 'unknown type'];
+			return (object) ['type' => 'unknown type'];
 		}
 	}
 
@@ -509,8 +517,8 @@ class Dumper
 	public static function formatSnapshotAttribute(array &$snapshot): string
 	{
 		$res = $snapshot;
-		foreach ($res as &$obj) {
-			unset($obj['depth'], $obj['object']);
+		foreach ($res as $obj) {
+			unset($obj->depth, $obj->object);
 		}
 		$snapshot = [];
 		return "'" . json_encode($res, JSON_HEX_APOS | JSON_HEX_AMP) . "'";
