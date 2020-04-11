@@ -118,9 +118,9 @@
 				createEl('span', {'class': 'tracy-dump-number'}, [data.number + '\n'])
 			]);
 
-		} else if (data.type) {
+		} else if (data.text !== undefined) {
 			return createEl(null, null, [
-				createEl('span', null, [data.type + '\n'])
+				createEl('span', null, [data.text + '\n'])
 			]);
 
 		} else { // object || resource
