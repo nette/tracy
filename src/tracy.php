@@ -13,6 +13,7 @@ require __DIR__ . '/Tracy/Bar/Bar.php';
 require __DIR__ . '/Tracy/Bar/DefaultBarPanel.php';
 require __DIR__ . '/Tracy/BlueScreen/BlueScreen.php';
 require __DIR__ . '/Tracy/Dumper/Value.php';
+require __DIR__ . '/Tracy/Dumper/Structure.php';
 require __DIR__ . '/Tracy/Dumper/Dumper.php';
 require __DIR__ . '/Tracy/Logger/ILogger.php';
 require __DIR__ . '/Tracy/Logger/FireLogger.php';
