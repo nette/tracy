@@ -227,9 +227,7 @@ class Dumper
 	 */
 	private function dumpVar(&$var, array $options, int $level = 0): string
 	{
-		if (!method_exists(__CLASS__, $m = 'dump' . explode(' ', gettype($var))[0])) {
-			$m = 'dumpResource'; // closed resource is 'unknown type' in PHP 7.1
-		}
+		$m = 'dump' . explode(' ', gettype($var))[0];
 		return $this->$m($var, $options, $level);
 	}
 
@@ -369,12 +367,13 @@ class Dumper
 				$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 				$options['parents'][] = $var;
 				foreach ($fields as $k => &$v) {
+					$k = (string) $k;
 					$vis = '';
 					if (isset($k[0]) && $k[0] === "\x00") {
 						$vis = ' <span class="tracy-dump-visibility">' . ($k[1] === '*' ? 'protected' : 'private') . '</span>';
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
+					$hide = isset($this->keysToHide[strtolower($k)]);
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . "</span>$vis => "
 						. ($hide
@@ -477,11 +476,12 @@ class Dumper
 
 				foreach ($this->exportObject($var) as $k => $v) {
 					$vis = 0;
+					$k = (string) $k;
 					if (isset($k[0]) && $k[0] === "\x00") {
 						$vis = $k[1] === '*' ? 1 : 2;
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
+					$hide = isset($this->keysToHide[strtolower($k)]);
 					$obj['items'][] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1), $vis];
 				}
 			}
@@ -580,10 +580,7 @@ class Dumper
 	}
 
 
-	/**
-	 * @param  object  $obj
-	 */
-	private function exportObject($obj): array
+	private function exportObject(object $obj): array
 	{
 		foreach ($this->objectDumpers as $type => $dumper) {
 			if (!$type || $obj instanceof $type) {
