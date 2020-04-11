@@ -584,10 +584,7 @@ class Dumper
 	}
 
 
-	/**
-	 * @param  object  $obj
-	 */
-	private function exportObject($obj): array
+	private function exportObject(object $obj): array
 	{
 		foreach ($this->objectDumpers as $type => $dumper) {
 			if (!$type || $obj instanceof $type) {
