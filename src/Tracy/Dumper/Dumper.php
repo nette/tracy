@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use Tracy\Dumper\Value;
+
 
 /**
  * Dumps a variable.
@@ -420,8 +422,8 @@ class Dumper
 
 		} elseif (is_float($var)) {
 			return is_finite($var)
-				? (strpos($tmp = json_encode($var), '.') ? $var : ['number' => "$tmp.0"])
-				: ['number' => (string) $var];
+				? (strpos($tmp = json_encode($var), '.') ? $var : new Value('number', "$tmp.0"))
+				: new Value('number', (string) $var);
 
 		} elseif (is_string($var)) {
 			return $this->encodeString($var, $this->maxLength);
@@ -432,17 +434,20 @@ class Dumper
 				$marker = uniqid("\x00", true);
 			}
 			if (count($var) && (isset($var[$marker]) || $depth >= $this->maxDepth)) {
-				return ['stop' => [count($var) - isset($var[$marker]), isset($var[$marker])]];
+				return new Value('stop', [count($var) - isset($var[$marker]), isset($var[$marker])]);
 			}
 			$res = [];
 			try {
 				$var[$marker] = true;
 				foreach ($var as $k => &$v) {
-					if ($k === $marker) {
-						continue;
+					if ($k !== $marker) {
+						$res[] = [
+							$this->encodeKey($k),
+							is_string($k) && isset($this->keysToHide[strtolower($k)])
+								? new Value('text', self::hideValue($v))
+								: $this->toJson($v, $options, $depth + 1),
+						];
 					}
-					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$res[] = [$this->encodeKey($k), $hide ? ['text' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1)];
 				}
 			} finally {
 				unset($var[$marker]);
@@ -453,7 +458,7 @@ class Dumper
 			$id = spl_object_id($var);
 			$obj = &$options[self::SNAPSHOT][$id];
 			if ($obj && $obj['depth'] <= $depth) {
-				return ['ref' => $id];
+				return new Value('ref', $id);
 			}
 
 			$obj = $obj ?: [
@@ -480,11 +485,16 @@ class Dumper
 						$vis = $k[1] === '*' ? 1 : 2;
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$hide = isset($this->keysToHide[strtolower($k)]);
-					$obj['items'][] = [$this->encodeKey($k), $hide ? ['text' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1), $vis];
+					$obj['items'][] = [
+						$this->encodeKey($k),
+						isset($this->keysToHide[strtolower($k)])
+							? new Value('text', self::hideValue($v))
+							: $this->toJson($v, $options, $depth + 1),
+						$vis,
+					];
 				}
 			}
-			return ['ref' => $id];
+			return new Value('ref', $id);
 
 		} else {
 			$id = 'r' . (int) $var;
@@ -498,7 +508,7 @@ class Dumper
 					}
 				}
 			}
-			return ['ref' => $id];
+			return new Value('ref', $id);
 		}
 	}
 
