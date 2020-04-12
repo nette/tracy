@@ -58,3 +58,25 @@ Assert::match('SplObjectStorage #%d%
 ', Dumper::toText($objStorage));
 
 Assert::same($key, $objStorage->key());
+
+
+// ArrayObject
+$obj = new ArrayObject(['a' => 1, 'b' => 2]);
+Assert::match('ArrayObject #%d%
+   storage: array (2)
+   |  a => 1
+   |  b => 2
+', Dumper::toText($obj));
+
+class ArrayObjectChild extends ArrayObject
+{
+	public $prop = 123;
+}
+
+$obj = new ArrayObjectChild(['a' => 1, 'b' => 2]);
+Assert::match('ArrayObjectChild #%d%
+   prop: 123
+   storage: array (2)
+   |  a => 1
+   |  b => 2
+', Dumper::toText($obj));

@@ -70,6 +70,20 @@ class Exposer
 	}
 
 
+	public static function exposeArrayObject(\ArrayObject $obj): array
+	{
+		$res = [];
+		$flags = $obj->getFlags();
+		if (!($flags & \ArrayObject::STD_PROP_LIST)) {
+			$obj->setFlags(\ArrayObject::STD_PROP_LIST);
+			$res = self::exposeObject($obj);
+			$obj->setFlags($flags);
+		}
+		$res[] = ['storage', $obj->getArrayCopy(), self::PROP_PRIVATE];
+		return $res;
+	}
+
+
 	public static function exposeSplFileInfo(\SplFileInfo $obj): array
 	{
 		return ['path' => $obj->getPathname()];
