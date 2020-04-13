@@ -48,7 +48,7 @@ final class Describer
 			return $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1;
 		});
 		return (object) [
-			'value' => $this->toJson($var),
+			'value' => $this->describeVar($var),
 			'snapshot' => $this->snapshot,
 			'location' => self::findLocation(),
 		];
@@ -58,99 +58,133 @@ final class Describer
 	/**
 	 * @return mixed
 	 */
-	private function toJson(&$var, int $depth = 0)
+	private function describeVar(&$var, int $depth = 0)
 	{
-		if (is_bool($var) || $var === null || is_int($var)) {
-			return $var;
+		switch (true) {
+			case $var === null:
+			case is_bool($var):
+			case is_int($var):
+				return $var;
+			default:
+				$m = 'describe' . explode(' ', gettype($var))[0];
+				return $this->$m($var, $depth);
+		}
+	}
 
-		} elseif (is_float($var)) {
-			return is_finite($var)
-				? (strpos($tmp = json_encode($var), '.') ? $var : new Value('number', "$tmp.0"))
-				: new Value('number', (string) $var);
 
-		} elseif (is_string($var)) {
-			$s = Helpers::encodeString($var, $this->maxLength);
-			if ($s === $var) {
-				return $s;
-			}
-			return new Value('string', $s, strlen($var));
+	/**
+	 * @return Value|float
+	 */
+	private function describeDouble(float $num)
+	{
+		if (!is_finite($num)) {
+			return new Value('number', (string) $num);
+		}
+		$js = json_encode($num);
+		return strpos($js, '.')
+			? $num
+			: new Value('number', "$js.0"); // to distinct int and float in JS
+	}
 
-		} elseif (is_array($var)) {
-			static $marker;
-			if ($marker === null) {
-				$marker = uniqid("\x00", true);
-			}
-			if (count($var) && (isset($var[$marker]) || $depth >= $this->maxDepth)) {
-				return new Value('stop', [count($var) - isset($var[$marker]), isset($var[$marker])]);
-			}
-			$res = [];
-			try {
-				$var[$marker] = true;
-				foreach ($var as $k => &$v) {
-					if ($k !== $marker) {
-						$res[] = [
-							$this->encodeKey($k),
-							is_string($k) && isset($this->keysToHide[strtolower($k)])
-								? new Value('text', self::hideValue($v))
-								: $this->toJson($v, $depth + 1),
-						];
-					}
-				}
-			} finally {
-				unset($var[$marker]);
-			}
+
+	/**
+	 * @return Value|string
+	 */
+	private function describeString(string $s)
+	{
+		$res = Helpers::encodeString($s, $this->maxLength);
+		if ($res === $s) {
 			return $res;
+		}
+		return new Value('string', $res, strlen($s));
+	}
 
-		} elseif (is_object($var)) {
-			$id = spl_object_id($var);
-			$obj = &$this->snapshot[$id];
-			if (!$obj) {
-				$obj = new Structure(Helpers::getClass($var), $depth, $var);
-				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
-				if ($rc->getFileName() && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine()))) {
-					$obj->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
-				}
-			} elseif ($obj->depth <= $depth) {
-				return new Value('object', $id);
-			}
 
-			if ($depth < $this->maxDepth || !$this->maxDepth) {
-				$obj->depth = $depth;
-				$obj->items = [];
-
-				foreach ($this->exportObject($var) as $k => $v) {
-					$vis = 0;
-					$k = (string) $k;
-					if (isset($k[0]) && $k[0] === "\x00") {
-						$vis = $k[1] === '*' ? 1 : 2;
-						$k = substr($k, strrpos($k, "\x00") + 1);
-					}
-					$obj->items[] = [
-						$this->encodeKey($k),
-						isset($this->keysToHide[strtolower($k)])
+	/**
+	 * @return Value|array
+	 */
+	private function describeArray(array &$arr, int $depth = 0)
+	{
+		static $marker;
+		if ($marker === null) {
+			$marker = uniqid("\x00", true);
+		}
+		if (count($arr) && (isset($arr[$marker]) || $depth >= $this->maxDepth)) {
+			return new Value('stop', [count($arr) - isset($arr[$marker]), isset($arr[$marker])]);
+		}
+		$res = [];
+		try {
+			$arr[$marker] = true;
+			foreach ($arr as $k => &$v) {
+				if ($k !== $marker) {
+					$res[] = [
+						$this->describeKey($k),
+							is_string($k) && isset($this->keysToHide[strtolower($k)])
 							? new Value('text', self::hideValue($v))
-							: $this->toJson($v, $depth + 1),
-						$vis,
+							: $this->describeVar($v, $depth + 1),
 					];
 				}
 			}
-			return new Value('object', $id);
+		} finally {
+			unset($arr[$marker]);
+		}
+		return $res;
+	}
 
-		} else {
-			$id = 'r' . (int) $var;
-			$obj = &$this->snapshot[$id];
-			if (!$obj) {
-				$type = is_resource($var) ? get_resource_type($var) : 'closed';
-				$obj = new Structure($type . ' resource');
-				$obj->items = [];
-				if (isset($this->resourceExposers[$type])) {
-					foreach (($this->resourceExposers[$type])($var) as $k => $v) {
-						$obj->items[] = [$k, $this->toJson($v, $depth + 1)];
-					}
+
+	private function describeObject(object $obj, int $depth = 0): Value
+	{
+		$id = spl_object_id($obj);
+		$struct = &$this->snapshot[$id];
+		if (!$struct) {
+			$struct = new Structure(Helpers::getClass($obj), $depth, $obj);
+			$rc = $obj instanceof \Closure ? new \ReflectionFunction($obj) : new \ReflectionClass($obj);
+			if ($rc->getFileName() && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine()))) {
+				$struct->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
+			}
+		} elseif ($struct->depth <= $depth) {
+			return new Value('object', $id);
+		}
+
+		if ($depth < $this->maxDepth) {
+			$struct->depth = $depth;
+			$struct->items = [];
+
+			foreach ($this->exposeObject($obj) as $k => $v) {
+				$type = 0;
+				$k = (string) $k;
+				if (isset($k[0]) && $k[0] === "\x00") {
+					$type = $k[1] === '*' ? 1 : 2;
+					$k = substr($k, strrpos($k, "\x00") + 1);
+				}
+				$v = isset($this->keysToHide[strtolower($k)])
+					? new Value('text', self::hideValue($v))
+					: $this->describeVar($v, $depth + 1);
+				$struct->items[] = [$this->describeKey($k), $v, $type];
+			}
+		}
+		return new Value('object', $id);
+	}
+
+
+	/**
+	 * @param  resource  $resource
+	 */
+	private function describeResource($resource, int $depth = 0): Value
+	{
+		$id = 'r' . (int) $resource;
+		$struct = &$this->snapshot[$id];
+		if (!$struct) {
+			$type = is_resource($resource) ? get_resource_type($resource) : 'closed';
+			$struct = new Structure($type . ' resource');
+			$struct->items = [];
+			if (isset($this->resourceExposers[$type])) {
+				foreach (($this->resourceExposers[$type])($resource) as $k => $v) {
+					$struct->items[] = [$k, $this->describeVar($v, $depth + 1)];
 				}
 			}
-			return new Value('resource', $id);
 		}
+		return new Value('resource', $id);
 	}
 
 
@@ -158,7 +192,7 @@ final class Describer
 	 * @param  int|string  $key
 	 * @return int|string
 	 */
-	private function encodeKey($key)
+	private function describeKey($key)
 	{
 		return is_int($key) || (preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
 			? $key
@@ -166,7 +200,7 @@ final class Describer
 	}
 
 
-	private function exportObject(object $obj): array
+	private function exposeObject(object $obj): array
 	{
 		foreach ($this->objectExposers as $type => $dumper) {
 			if (!$type || $obj instanceof $type) {
