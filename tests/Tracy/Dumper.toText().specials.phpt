@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // resource
-Assert::match("stream resource #%d%\n   %S%%A%", Dumper::toText(fopen(__FILE__, 'r')));
+Assert::match("stream resource @%d%\n   %S%%A%", Dumper::toText(fopen(__FILE__, 'r')));
 
 
 // closure

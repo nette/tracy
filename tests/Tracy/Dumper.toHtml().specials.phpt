@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // resource
-Assert::match('<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">#%d%</span></span>
+Assert::match('<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">@%d%</span></span>
 <div class="tracy-collapsed">%A%', Dumper::toHtml(fopen(__FILE__, 'r')));
 
 

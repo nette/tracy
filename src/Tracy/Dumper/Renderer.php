@@ -245,7 +245,7 @@ class Renderer
 	{
 		$resource = $this->snapshot[$model->resource];
 		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($resource->name) . '</span> '
-			. '<span class="tracy-dump-hash">#' . substr($model->resource, 1) . '</span>';
+			. '<span class="tracy-dump-hash">@' . substr($model->resource, 1) . '</span>';
 		if (isset($resource->items)) {
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach ($resource->items as [$k, $v]) {
