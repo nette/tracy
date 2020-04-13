@@ -286,7 +286,7 @@ final class Renderer
 			[$k, $v, $type, $ref] = $info + $fill;
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 				. '<span class="' . $classes[$type] . '">' . Helpers::escapeHtml($k) . '</span>'
-				. ' => '
+				. ': '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);
 		}
@@ -304,7 +304,7 @@ final class Renderer
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach ($resource->items as [$k, $v]) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					. '<span class="tracy-dump-virtual">' . Helpers::escapeHtml($k) . '</span> => ' . $this->renderVar($v, $depth + 1);
+					. '<span class="tracy-dump-virtual">' . Helpers::escapeHtml($k) . '</span>: ' . $this->renderVar($v, $depth + 1);
 			}
 			return $out . '</div>';
 		}
