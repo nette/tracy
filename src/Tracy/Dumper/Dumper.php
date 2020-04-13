@@ -191,7 +191,7 @@ class Dumper
 		$value = $this->toJson($var);
 
 		if ($this->lazy === false) { // no lazy-loading
-			$html = $this->dumpVar($value);
+			$html = $this->renderVar($value);
 			$value = $snapshot = null;
 
 		} elseif ($this->lazy && (is_array($var) && $var || is_object($var) || is_resource($var))) { // full lazy-loading
@@ -199,7 +199,7 @@ class Dumper
 			$snapshot = $collectingMode ? null : (array) $this->snapshot;
 
 		} else { // lazy-loading of collapsed parts
-			$html = $this->dumpVar($value);
+			$html = $this->renderVar($value);
 			$snapshot = $this->snapshotSelection;
 			$value = $this->snapshotSelection = null;
 		}
@@ -221,7 +221,7 @@ class Dumper
 	{
 		$this->lazy = false;
 		$value = $this->toJson($var);
-		$s = $this->dumpVar($value);
+		$s = $this->renderVar($value);
 		if ($colors) {
 			$s = preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m) use ($colors): string {
 				return "\033[" . (isset($m[1], $colors[$m[1]]) ? $colors[$m[1]] : '0') . 'm';
@@ -236,73 +236,49 @@ class Dumper
 
 
 	/**
-	 * Internal toHtml() dump implementation.
-	 * @param  mixed  $var
+	 * @param  mixed  $value
 	 */
-	private function dumpVar(&$var, int $depth = 0): string
-	{
-		$m = 'dump' . explode(' ', gettype($var))[0];
-		return $this->$m($var, $depth);
-	}
-
-
-	private function dumpNull(): string
-	{
-		return "<span class=\"tracy-dump-null\">null</span>\n";
-	}
-
-
-	private function dumpBoolean(&$var): string
-	{
-		return '<span class="tracy-dump-bool">' . ($var ? 'true' : 'false') . "</span>\n";
-	}
-
-
-	private function dumpInteger(&$var): string
-	{
-		return "<span class=\"tracy-dump-number\">$var</span>\n";
-	}
-
-
-	private function dumpDouble(&$var): string
-	{
-		return '<span class="tracy-dump-number">' . json_encode($var) . "</span>\n";
-	}
-
-
-	private function dumpString(&$var): string
-	{
-		return '<span class="tracy-dump-string">"'
-			. Helpers::escapeHtml($var)
-			. '"</span>' . (strlen($var) > 1 ? ' (' . strlen($var) . ')' : '') . "\n";
-	}
-
-
-	private function dumpObject(Value $var, int $depth): string
+	private function renderVar($value, int $depth = 0): string
 	{
 		switch (true) {
-			case $var->type === 'ref':
-				return $this->dumpObject($this->snapshot[$var->value], $depth);
+			case $value === null:
+				return "<span class=\"tracy-dump-null\">null</span>\n";
 
-			case $var->type === 'object':
-				return $this->renderObject($var, $depth);
+			case is_bool($value):
+				return '<span class="tracy-dump-bool">' . ($value ? 'true' : 'false') . "</span>\n";
 
-			case $var->type === 'number':
-				return '<span class="tracy-dump-number">' . Helpers::escapeHtml($var->value) . "</span>\n";
+			case is_int($value):
+				return "<span class=\"tracy-dump-number\">$value</span>\n";
 
-			case $var->type === 'text':
-				return '<span>' . Helpers::escapeHtml($var->value) . "</span>\n";
+			case is_float($value):
+				return '<span class="tracy-dump-number">' . json_encode($value) . "</span>\n";
 
-			case $var->type === 'string':
-				return '<span class="tracy-dump-string">"'
-					. Helpers::escapeHtml($var->value)
-					. '"</span>' . ($var->length > 1 ? ' (' . $var->length . ')' : '') . "\n";
+			case is_string($value):
+				return $this->renderString($value);
 
-			case $var->type === 'stop':
-				return '<span class="tracy-dump-array">array</span> (' . $var->value[0] . ') ' . ($var->value[1] ? '[ <i>RECURSION</i> ]' : '[ ... ]') . "\n";
+			case is_array($value):
+				return $this->renderArray($value, $depth);
 
-			case $var->type === 'resource':
-				return $this->dumpResource($var, $depth);
+			case $value->type === 'ref':
+				return $this->renderVar($this->snapshot[$value->value], $depth);
+
+			case $value->type === 'object':
+				return $this->renderObject($value, $depth);
+
+			case $value->type === 'number':
+				return '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . "</span>\n";
+
+			case $value->type === 'text':
+				return '<span>' . Helpers::escapeHtml($value->value) . "</span>\n";
+
+			case $value->type === 'string':
+				return $this->renderString($value);
+
+			case $value->type === 'stop':
+				return '<span class="tracy-dump-array">array</span> (' . $value->value[0] . ') ' . ($value->value[1] ? '[ <i>RECURSION</i> ]' : '[ ... ]') . "\n";
+
+			case $value->type === 'resource':
+				return $this->renderResource($value, $depth);
 
 			default:
 				throw new \Exception('Unknown type');
@@ -310,32 +286,46 @@ class Dumper
 	}
 
 
-	private function dumpArray($var, int $depth): string
+	private function renderString($str): string
+	{
+		if (is_string($str)) {
+			return '<span class="tracy-dump-string">"'
+				. Helpers::escapeHtml($str)
+				. '"</span>' . (strlen($str) > 1 ? ' (' . strlen($str) . ')' : '') . "\n";
+		} else {
+			return '<span class="tracy-dump-string">"'
+				. Helpers::escapeHtml($str->value)
+				. '"</span>' . ($str->length > 1 ? ' (' . $str->length . ')' : '') . "\n";
+		}
+	}
+
+
+	private function renderArray(array $array, int $depth): string
 	{
 		$out = '<span class="tracy-dump-array">array</span> (';
 
-		if (empty($var)) {
+		if (empty($array)) {
 			return $out . ")\n";
 		}
 
 		$collapsed = $depth
-			? count($var) >= $this->collapseSub
-			: (is_int($this->collapseTop) ? count($var) >= $this->collapseTop : $this->collapseTop);
+			? count($array) >= $this->collapseSub
+			: (is_int($this->collapseTop) ? count($array) >= $this->collapseTop : $this->collapseTop);
 
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
 		if ($collapsed && $this->lazy !== false) {
-			$this->copySnapshot($var);
+			$this->copySnapshot($array);
 			return $span . " data-tracy-dump='"
-				. json_encode($var, JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
-				. $out . count($var) . ")</span>\n";
+				. json_encode($array, JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
+				. $out . count($array) . ")</span>\n";
 		}
 
-		$out = $span . '>' . $out . count($var) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
-		foreach ($var as [$k, $v]) {
+		$out = $span . '>' . $out . count($array) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+		foreach ($array as [$k, $v]) {
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => '
-				. $this->dumpVar($v, $depth + 1);
+				. $this->renderVar($v, $depth + 1);
 		}
 
 		return $out . '</div>';
@@ -387,14 +377,14 @@ class Dumper
 				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span>'
 				. ($vis ? ' <span class="tracy-dump-visibility">' . ($vis === 1 ? 'protected' : 'private') . '</span>' : '')
 				. ' => '
-				. $this->dumpVar($v, $depth + 1);
+				. $this->renderVar($v, $depth + 1);
 		}
 		array_pop($this->parents);
 		return $out . '</div>';
 	}
 
 
-	private function dumpResource(Value $resource, int $depth): string
+	private function renderResource(Value $resource, int $depth): string
 	{
 		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($resource->value) . '</span> '
 			. '<span class="tracy-dump-hash">@' . substr($resource->id, 1) . '</span>';
@@ -402,7 +392,7 @@ class Dumper
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach ($resource->items as [$k, $v]) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => ' . $this->dumpVar($v, $depth + 1);
+					. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => ' . $this->renderVar($v, $depth + 1);
 			}
 			return $out . '</div>';
 		}
