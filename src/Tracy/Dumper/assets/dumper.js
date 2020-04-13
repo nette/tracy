@@ -238,7 +238,7 @@
 			}
 			createEl(el, null, [
 				createEl('span', {'class': array ? 'tracy-dump-key' : classes[vis]}, [key]),
-				' => ',
+				array ? ' => ' : ': ',
 				ref ? createEl('span', {'class': 'tracy-dump-hash'}, ['&' + ref]) : null,
 				ref ? ' ' : null,
 				build(val, repository, null, parentIds)

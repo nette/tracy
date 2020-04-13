@@ -19,10 +19,10 @@ Assert::match("stream resource @%d%\n   %S%%A%", Dumper::toText(fopen(__FILE__, 
 
 // closure
 Assert::match('Closure #%d%
-   file => "%a%" (%i%)
-   line => %i%
-   variables => array ()
-   parameters => ""
+   file: "%a%" (%i%)
+   line: %i%
+   variables: array ()
+   parameters: ""
 ', Dumper::toText(function () {}));
 
 
@@ -33,7 +33,7 @@ Assert::match('class@anonymous #%d%', Dumper::toText(new class {
 
 // SplFileInfo
 Assert::match('SplFileInfo #%d%
-   path => "%a%" (%i%)
+   path: "%a%" (%i%)
 ', Dumper::toText(new SplFileInfo(__FILE__)));
 
 
@@ -48,12 +48,12 @@ $objStorage->next();
 $key = $objStorage->key();
 
 Assert::match('SplObjectStorage #%d%
-   0 => array (2)
+   0: array (2)
    |  object => stdClass #%d%
    |  data => "o1" (2)
-   1 => array (2)
+   1: array (2)
    |  object => stdClass #%d%
-   |  |  foo => "bar" (3)
+   |  |  foo: "bar" (3)
    |  data => "o2" (2)
 ', Dumper::toText($objStorage));
 

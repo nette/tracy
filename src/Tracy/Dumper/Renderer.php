@@ -239,7 +239,7 @@ class Renderer
 		foreach ($object->items as $info) {
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 				. '<span class="' . $classes[$info[2]] . '">' . Helpers::escapeHtml($info[0]) . '</span>'
-				. ' => '
+				. ': '
 				. (isset($info[3]) ? '<span class="tracy-dump-hash">&' . $info[3] . '</span> ' : '')
 				. $this->renderVar($info[1], $depth + 1);
 		}
@@ -257,7 +257,7 @@ class Renderer
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach ($resource->items as [$k, $v]) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => ' . $this->renderVar($v, $depth + 1);
+					. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span>: ' . $this->renderVar($v, $depth + 1);
 			}
 			return $out . '</div>';
 		}
