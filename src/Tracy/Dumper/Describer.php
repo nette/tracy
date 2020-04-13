@@ -40,12 +40,16 @@ class Describer
 	/** @var callable[] */
 	public $objectExposers;
 
+	/** @var int[] */
+	private $references = [];
+
 
 	/**
 	 * @return mixed
 	 */
 	public function describe(&$var)
 	{
+		$this->references = [];
 		uksort($this->objectExposers, function ($a, $b): int {
 			return $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1;
 		});
@@ -106,14 +110,15 @@ class Describer
 		$res = [];
 		try {
 			$arr[$marker] = true;
-			foreach ($arr as $k => &$v) {
+			foreach ($arr as $k => $v) {
 				if ($k !== $marker) {
+					$refId = $this->getReferenceId($arr, $k);
 					$res[] = [
 						$this->encodeKey($k),
 						is_string($k) && isset($this->keysToHide[strtolower($k)])
 							? (object) ['key' => self::hideValue($v)]
-							: $this->describeVar($v, $depth + 1),
-					];
+							: $this->describeVar($arr[$k], $depth + 1),
+					] + ($refId ? [2 => $refId] : []);
 				}
 			}
 		} finally {
@@ -147,8 +152,10 @@ class Describer
 			$shot->depth = $depth;
 			$shot->items = [];
 
-			foreach ($this->exposeObject($obj) as $k => $v) {
+			$props = $this->exposeObject($obj);
+			foreach ($props as $k => $v) {
 				$visibility = 0;
+				$refId = $this->getReferenceId($props, $k);
 				if (isset($k[0]) && $k[0] === "\x00") {
 					$visibility = $k[1] === '*' ? 1 : 2;
 					$k = substr($k, strrpos($k, "\x00") + 1);
@@ -159,7 +166,7 @@ class Describer
 						? (object) ['key' => self::hideValue($v)]
 						: $this->describeVar($v, $depth + 1),
 					$visibility,
-				];
+				] + ($refId ? [3 => $refId] : []);
 			}
 		}
 		return (object) ['object' => $id];
@@ -217,5 +224,34 @@ class Describer
 	private static function hideValue($var): string
 	{
 		return Dumper::HIDDEN_VALUE . ' (' . (is_object($var) ? Helpers::getClass($var) : gettype($var)) . ')';
+	}
+
+
+	private function getReferenceId($arr, $key): ?int
+	{
+		if (PHP_VERSION_ID >= 70400) {
+			if ((!$rr = \ReflectionReference::fromArrayElement($arr, $key))) {
+				return null;
+			}
+			$tmp = &$this->references[$rr->getId()];
+			if ($tmp === null) {
+				return $tmp = count($this->references);
+			}
+			return $tmp;
+		}
+		$uniq = new \stdClass;
+		$copy = $arr;
+		$orig = $copy[$key];
+		$copy[$key] = $uniq;
+		if ($arr[$key] !== $uniq) {
+			return null;
+		}
+		$res = array_search($uniq, $this->references, true);
+		$copy[$key] = $orig;
+		if ($res === false) {
+			$this->references[] = &$arr[$key];
+			return count($this->references);
+		}
+		return $res + 1;
 	}
 }

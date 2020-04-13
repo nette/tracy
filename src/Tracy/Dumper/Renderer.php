@@ -173,10 +173,11 @@ class Renderer
 		}
 
 		$out = $span . '>' . $out . count($model) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
-		foreach ($model as [$k, $v]) {
+		foreach ($model as $info) {
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => '
-				. $this->renderVar($v, $depth + 1);
+				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($info[0]) . '</span> => '
+				. (isset($info[2]) ? '<span class="tracy-dump-hash">&' . $info[2] . '</span> ' : '')
+				. $this->renderVar($info[1], $depth + 1);
 		}
 
 		return $out . '</div>';
@@ -227,12 +228,13 @@ class Renderer
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$this->parents[] = $model->object;
 
-		foreach ($object->items as [$k, $v, $vis]) {
+		foreach ($object->items as $info) {
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span>'
-				. ($vis ? ' <span class="tracy-dump-visibility">' . ($vis === 1 ? 'protected' : 'private') . '</span>' : '')
+				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($info[0]) . '</span>'
+				. ($info[2] ? ' <span class="tracy-dump-visibility">' . ($info[2] === 1 ? 'protected' : 'private') . '</span>' : '')
 				. ' => '
-				. $this->renderVar($v, $depth + 1);
+				. (isset($info[3]) ? '<span class="tracy-dump-hash">&' . $info[3] . '</span> ' : '')
+				. $this->renderVar($info[1], $depth + 1);
 		}
 		array_pop($this->parents);
 		return $out . '</div>';
