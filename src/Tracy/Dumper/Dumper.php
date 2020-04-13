@@ -30,7 +30,7 @@ class Dumper
 
 	public const
 		LOCATION_SOURCE = 0b0001, // shows where dump was called
-		LOCATION_LINK = 0b0010, // appends clickable anchor
+		LOCATION_LINK = 0b0011, // shows source and appends clickable anchor
 		LOCATION_CLASS = 0b0100; // shows where class is defined
 
 	public const
@@ -197,7 +197,7 @@ class Dumper
 			. (is_array($snapshot) && !is_array($this->snapshot) ? ' data-tracy-snapshot=' . $this->formatSnapshotAttribute($snapshot) : '')
 			. ($json ? " data-tracy-dump='" . json_encode($json, JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
 			. $html
-			. ($file && $this->location & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
+			. ($file && ($this->location & self::LOCATION_LINK) === self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
 	}
 
@@ -214,7 +214,7 @@ class Dumper
 			}, $s);
 		}
 		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
-		if ($this->location & self::LOCATION_LINK && ([$file, $line] = $this->findLocation())) {
+		if (($this->location & self::LOCATION_LINK) === self::LOCATION_LINK && ([$file, $line] = $this->findLocation())) {
 			$s .= "in $file:$line";
 		}
 		return $s;
