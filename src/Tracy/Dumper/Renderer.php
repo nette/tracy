@@ -48,10 +48,13 @@ final class Renderer
 	/** @var array */
 	private $parents = [];
 
+	/** @var array */
+	private $above = [];
+
 
 	public function renderAsHtml(\stdClass $model): string
 	{
-		$this->parents = [];
+		$this->parents = $this->above = [];
 		$this->snapshot = $model->snapshot;
 		$value = $model->value;
 
@@ -206,6 +209,13 @@ final class Renderer
 			$out .= $count . ')';
 			if (in_array($value->value, $this->parents, true)) {
 				return $out . ' <i>RECURSION</i>';
+
+			} elseif (in_array($value->value, $this->above, true)) {
+				if ($this->lazy !== false) {
+					$this->copySnapshot($value);
+					return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($value) . "'>" . $out . "</span>\n";
+				}
+				return $out . ' <i>see above</i>';
 			}
 		}
 
@@ -229,7 +239,7 @@ final class Renderer
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$fill = [2 => null];
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
-		$this->parents[] = is_object($value) ? $value->value : null;
+		$this->parents[] = $this->above[] = is_object($value) ? $value->value : null;
 
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + $fill;
@@ -276,6 +286,13 @@ final class Renderer
 
 		} elseif (in_array($value->value, $this->parents, true)) {
 			return $out . ' <i>RECURSION</i>';
+
+		} elseif (in_array($value->value, $this->above, true)) {
+			if ($this->lazy !== false) {
+				$this->copySnapshot($value);
+				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($value) . "'>" . $out . "</span>\n";
+			}
+			return $out . ' <i>see above</i>';
 		}
 
 		$collapsed = $depth
@@ -291,7 +308,7 @@ final class Renderer
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
-		$this->parents[] = $value->value;
+		$this->parents[] = $this->above[] = $value->value;
 		$fill = [3 => null];
 
 		static $classes = [
@@ -328,8 +345,16 @@ final class Renderer
 
 		if (!$struct->items) {
 			return $out;
+
+		} elseif (in_array($value->value, $this->above, true)) {
+			if ($this->lazy !== false) {
+				$this->copySnapshot($value);
+				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($value) . "'>" . $out . "</span>\n";
+			}
+			return $out . ' <i>see above</i>';
 		}
 
+		$this->above[] = $value->value;
 		$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 		foreach ($struct->items as [$k, $v]) {
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
