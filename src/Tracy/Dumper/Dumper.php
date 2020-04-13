@@ -397,7 +397,7 @@ class Dumper
 	{
 		$type = is_resource($var) ? get_resource_type($var) : 'closed';
 		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($type) . ' resource</span> '
-			. '<span class="tracy-dump-hash">#' . (int) $var . '</span>';
+			. '<span class="tracy-dump-hash">@' . (int) $var . '</span>';
 		if (isset($this->resourceDumpers[$type])) {
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach (($this->resourceDumpers[$type])($var) as $k => $v) {
