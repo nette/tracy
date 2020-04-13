@@ -429,7 +429,7 @@ class Dumper
 				: (object) ['number' => (string) $var];
 
 		} elseif (is_string($var)) {
-			$s = $this->encodeString($var, $this->maxLength);
+			$s = Helpers::encodeString($var, $this->maxLength);
 			if ($s === $var) {
 				return $s;
 			}
@@ -533,58 +533,6 @@ class Dumper
 
 
 	/**
-	 * @internal
-	 */
-	public static function encodeString(string $s, int $maxLength = null): string
-	{
-		if ($maxLength) {
-			$s = self::truncateString($tmp = $s, $maxLength);
-			$shortened = $s !== $tmp;
-		}
-
-		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) { // is binary?
-			static $table;
-			if ($table === null) {
-				foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
-					$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
-				}
-				$table['\\'] = '\\\\';
-				$table["\r"] = '\r';
-				$table["\n"] = '\n';
-				$table["\t"] = '\t';
-			}
-
-			$s = strtr($s, $table);
-		}
-
-		return $s . (empty($shortened) ? '' : ' ... ');
-	}
-
-
-	/**
-	 * @internal
-	 */
-	public static function truncateString(string $s, int $maxLength): string
-	{
-		if (!preg_match('##u', $s)) {
-			$s = substr($s, 0, $maxLength); // not UTF-8
-		} elseif (function_exists('mb_substr')) {
-			$s = mb_substr($s, 0, $maxLength, 'UTF-8');
-		} else {
-			$i = $len = 0;
-			while (isset($s[$i])) {
-				if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength)) {
-					$s = substr($s, 0, $i);
-					break;
-				}
-				$i++;
-			}
-		}
-		return $s;
-	}
-
-
-	/**
 	 * @param  int|string  $k
 	 * @return int|string
 	 */
@@ -592,7 +540,7 @@ class Dumper
 	{
 		return is_int($key) || (preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
 			? $key
-			: '"' . $this->encodeString($key, $this->maxLength) . '"';
+			: '"' . Helpers::encodeString($key, $this->maxLength) . '"';
 	}
 
 
