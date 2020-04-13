@@ -41,7 +41,7 @@
 	"minimum-stability": "dev",
 	"scripts": {
 		"phpstan": "phpstan analyse --level 5 src",
-		"tester": "tester tests -s"
+		"tester": "tester tests"
 	},
 	"extra": {
 		"branch-alias": {
