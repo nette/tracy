@@ -397,7 +397,7 @@ class BlueScreen
 
 	private function formatMessage(\Throwable $exception): string
 	{
-		$msg = Dumper::encodeString((string) $exception->getMessage(), self::MAX_MESSAGE_LENGTH);
+		$msg = Helpers::encodeString((string) $exception->getMessage(), self::MAX_MESSAGE_LENGTH);
 		$msg = htmlspecialchars($msg, ENT_SUBSTITUTE, 'UTF-8');
 
 		// highlight 'string'
