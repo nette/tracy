@@ -231,7 +231,7 @@ class Renderer
 		foreach ($object->items as $info) {
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($info[0]) . '</span>'
-				. ($info[2] ? ' <span class="tracy-dump-visibility">' . ($info[2] === 1 ? 'protected' : 'private') . '</span>' : '')
+				. ($info[2] ? ' <span class="tracy-dump-visibility">' . ($info[2] === Exposer::PROP_PROTECTED ? 'protected' : 'private') . '</span>' : '')
 				. ' => '
 				. (isset($info[3]) ? '<span class="tracy-dump-hash">&' . $info[3] . '</span> ' : '')
 				. $this->renderVar($info[1], $depth + 1);

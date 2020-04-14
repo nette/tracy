@@ -154,19 +154,15 @@ class Describer
 			$shot->items = [];
 
 			$props = $this->exposeObject($obj);
-			foreach ($props as $k => $v) {
-				$visibility = 0;
-				$refId = $this->getReferenceId($props, $k);
-				if (isset($k[0]) && $k[0] === "\x00") {
-					$visibility = $k[1] === '*' ? 1 : 2;
-					$k = substr($k, strrpos($k, "\x00") + 1);
-				}
+			foreach ($props as $info) {
+				[$k, $v, $type] = $info;
+				$refId = $this->getReferenceId($info, 1);
 				$shot->items[] = [
 					$this->encodeKey($k),
 					is_string($k) && isset($this->keysToHide[strtolower($k)])
 						? (object) ['key' => self::hideValue($v)]
 						: $this->describeVar($v, $depth + 1, $refId),
-					$visibility,
+					$type,
 				] + ($refId ? [3 => $refId] : []);
 			}
 		}
@@ -210,15 +206,16 @@ class Describer
 	{
 		foreach ($this->objectExposers as $type => $dumper) {
 			if (!$type || $obj instanceof $type) {
-				return $dumper($obj);
+				$info = $dumper($obj);
+				return isset($info[0][0]) ? $info : Exposer::convert($info);
 			}
 		}
 
 		if ($this->debugInfo && method_exists($obj, '__debugInfo')) {
-			return $obj->__debugInfo();
+			return Exposer::convert($obj->__debugInfo());
 		}
 
-		return (array) $obj;
+		return Exposer::exposeObject($obj);
 	}
 
 

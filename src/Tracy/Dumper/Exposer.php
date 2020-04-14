@@ -16,6 +16,39 @@ namespace Tracy;
  */
 class Exposer
 {
+	public const
+		PROP_PUBLIC = 0,
+		PROP_PROTECTED = 1,
+		PROP_PRIVATE = 2;
+
+
+	public static function convert(array $arr, int $type = self::PROP_PUBLIC): array
+	{
+		$res = [];
+		foreach ($arr as $k => $v) {
+			$res[] = [$k, $v, $type];
+		}
+		return $res;
+	}
+
+
+	public static function exposeObject(object $obj): array
+	{
+		$res = [];
+		$arr = (array) $obj;
+		$tmp = $arr; // PHP bug #79477
+		foreach ($tmp as $k => &$v) {
+			$type = self::PROP_PUBLIC;
+			if (isset($k[0]) && $k[0] === "\x00") {
+				[, $class, $k] = explode("\00", $k, 3);
+				$type = $class === '*' ? self::PROP_PROTECTED : self::PROP_PRIVATE;
+			}
+			$res[] = [$k, &$v, $type];
+		}
+		return $res;
+	}
+
+
 	public static function exposeClosure(\Closure $obj): array
 	{
 		$rc = new \ReflectionFunction($obj);
