@@ -12,8 +12,8 @@
 		static init() {
 			document.documentElement.addEventListener('click', (e) => {
 				let el = e.target.closest('.tracy-toggle');
-				if (el && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
-					Toggle.toggle(el);
+				if (el && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+					Toggle.toggle(el, undefined, e.altKey);
 					e.stopImmediatePropagation();
 				}
 			});
@@ -22,16 +22,10 @@
 
 
 		// changes element visibility
-		static toggle(el, show) {
+		static toggle(el, show, inner) {
 			let collapsed = el.classList.contains('tracy-collapsed'),
 				ref = el.getAttribute('data-tracy-ref') || el.getAttribute('href', 2),
 				dest = el;
-
-			if (typeof show === 'undefined') {
-				show = collapsed;
-			} else if (!show === collapsed) {
-				return;
-			}
 
 			if (!ref || ref === '#') {
 				ref = '+';
@@ -44,6 +38,18 @@
 			dest = ref[3] ? Toggle.nextElement(dest.nextElementSibling, ref[4]) : dest;
 			dest = ref[5] ? dest.querySelector(ref[5]) : dest;
 
+			let showInner = show;
+			if (typeof show === 'undefined') {
+				if (inner) {
+					show = true;
+					showInner = dest.querySelector('.tracy-toggle.tracy-collapsed');
+				} else {
+					show = collapsed;
+				}
+			} else if (!show === collapsed) {
+				return;
+			}
+
 			el.classList.toggle('tracy-collapsed', !show);
 			dest.classList.toggle('tracy-collapsed', !show);
 
@@ -51,6 +57,12 @@
 				bubbles: true,
 				detail: {relatedTarget: dest, collapsed: !show}
 			}));
+
+			if (inner) {
+				dest.querySelectorAll('.tracy-toggle').forEach((el) => {
+					Toggle.toggle(el, showInner, showInner);
+				});
+			}
 		}
 
 
