@@ -50,6 +50,7 @@ class Dumper
 		'public' => '1;37',
 		'protected' => '1;37',
 		'private' => '1;37',
+		'dynamic' => '1;37',
 		'object' => '1;31',
 		'resource' => '1;37',
 		'indent' => '1;30',

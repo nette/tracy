@@ -19,7 +19,8 @@ class Exposer
 	public const
 		PROP_PUBLIC = 0,
 		PROP_PROTECTED = 1,
-		PROP_PRIVATE = 2;
+		PROP_PRIVATE = 2,
+		PROP_DYNAMIC = 3;
 
 
 	public static function convert(array $arr, int $type = self::PROP_PUBLIC): array
@@ -34,6 +35,7 @@ class Exposer
 
 	public static function exposeObject(object $obj): array
 	{
+		$defaults = get_class_vars(get_class($obj));
 		$res = [];
 		$arr = (array) $obj;
 		$tmp = $arr; // PHP bug #79477
@@ -42,6 +44,8 @@ class Exposer
 			if (isset($k[0]) && $k[0] === "\x00") {
 				[, $class, $k] = explode("\00", $k, 3);
 				$type = $class === '*' ? self::PROP_PROTECTED : self::PROP_PRIVATE;
+			} else {
+				$type = \array_key_exists($k, $defaults) ? self::PROP_PUBLIC : self::PROP_DYNAMIC;
 			}
 			$res[] = [$k, &$v, $type];
 		}
