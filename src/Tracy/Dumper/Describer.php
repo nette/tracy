@@ -43,13 +43,16 @@ class Describer
 	/** @var int[] */
 	private $references = [];
 
+	/** @var int[] */
+	private $parentArrays = [];
+
 
 	/**
 	 * @return mixed
 	 */
-	public function describe(&$var)
+	public function describe($var)
 	{
-		$this->references = [];
+		$this->references = $this->parentArrays = [];
 		uksort($this->objectExposers, function ($a, $b): int {
 			return $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1;
 		});
@@ -60,7 +63,7 @@ class Describer
 	/**
 	 * @return mixed
 	 */
-	private function describeVar(&$var, int $depth = 0)
+	private function describeVar($var, int $depth = 0, int $refId = null)
 	{
 		switch (true) {
 			case $var === null:
@@ -80,6 +83,15 @@ class Describer
 				}
 				return (object) ['string' => $s, 'length' => strlen($var)];
 
+			case is_array($var) && $refId:
+				if (in_array($refId, $this->parentArrays, true)) {
+					return (object) ['stop' => [count($var), true]];
+				}
+				$this->parentArrays[] = $refId;
+				$res = $this->describeArray($var, $depth);
+				array_pop($this->parentArrays);
+				return $res;
+
 			case is_array($var):
 				return $this->describeArray($var, $depth);
 
@@ -98,31 +110,20 @@ class Describer
 	/**
 	 * @return object|array
 	 */
-	private function describeArray(array &$arr, int $depth = 0)
+	private function describeArray(array $arr, int $depth = 0)
 	{
-		static $marker;
-		if ($marker === null) {
-			$marker = uniqid("\x00", true);
-		}
-		if (count($arr) && (isset($arr[$marker]) || $depth >= $this->maxDepth)) {
-			return (object) ['stop' => [count($arr) - isset($arr[$marker]), isset($arr[$marker])]];
+		if (count($arr) && $depth >= $this->maxDepth) {
+			return (object) ['stop' => [count($arr), false]];
 		}
 		$res = [];
-		try {
-			$arr[$marker] = true;
-			foreach ($arr as $k => $v) {
-				if ($k !== $marker) {
-					$refId = $this->getReferenceId($arr, $k);
-					$res[] = [
-						$this->encodeKey($k),
-						is_string($k) && isset($this->keysToHide[strtolower($k)])
-							? (object) ['key' => self::hideValue($v)]
-							: $this->describeVar($arr[$k], $depth + 1),
-					] + ($refId ? [2 => $refId] : []);
-				}
-			}
-		} finally {
-			unset($arr[$marker]);
+		foreach ($arr as $k => $v) {
+			$refId = $this->getReferenceId($arr, $k);
+			$res[] = [
+				$this->encodeKey($k),
+				is_string($k) && isset($this->keysToHide[strtolower($k)])
+					? (object) ['key' => self::hideValue($v)]
+					: $this->describeVar($v, $depth + 1, $refId),
+			] + ($refId ? [2 => $refId] : []);
 		}
 		return $res;
 	}
@@ -164,7 +165,7 @@ class Describer
 					$this->encodeKey($k),
 					is_string($k) && isset($this->keysToHide[strtolower($k)])
 						? (object) ['key' => self::hideValue($v)]
-						: $this->describeVar($v, $depth + 1),
+						: $this->describeVar($v, $depth + 1, $refId),
 					$visibility,
 				] + ($refId ? [3 => $refId] : []);
 			}
