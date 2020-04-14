@@ -16,6 +16,23 @@ namespace Tracy\Dumper;
  */
 final class Exposer
 {
+	public static function exposeObject(object $obj, Value $value, Describer $describer): void
+	{
+		$arr = (array) $obj;
+		$tmp = $arr; // bug #79477, PHP < 7.4.6
+		foreach ($tmp as $k => $v) {
+			$refId = $describer->getReferenceId($tmp, $k);
+			$type = Value::PROP_PUBLIC;
+			if (isset($k[0]) && $k[0] === "\x00") {
+				$info = explode("\00", $k);
+				$k = end($info);
+				$type = $info[1] === '*' ? Value::PROP_PROTECTED : Value::PROP_PRIVATE;
+			}
+			$describer->addPropertyTo($value, (string) $k, $v, $type, $refId);
+		}
+	}
+
+
 	public static function exposeClosure(\Closure $obj): array
 	{
 		$rc = new \ReflectionFunction($obj);
