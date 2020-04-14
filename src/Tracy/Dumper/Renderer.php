@@ -162,9 +162,9 @@ class Renderer
 			return $out . $model->length . ') ' . ($model->stop === 'r' ? '[ <i>RECURSION</i> ]' : '[ ... ]') . "\n";
 		}
 
-		[$items, $count] = is_array($model)
-			? [$model, count($model)]
-			: [$model->array, $model->length ?? count($model->array)];
+		[$items, $count, $cut] = is_array($model)
+			? [$model, count($model), false]
+			: [$model->array, $model->length ?? count($model->array), !empty($model->cut)];
 
 		if (empty($items)) {
 			return $out . ")\n";
@@ -184,14 +184,18 @@ class Renderer
 		}
 
 		$out = $span . '>' . $out . $count . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 
 		foreach ($items as $info) {
-			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
+			$out .= $indent
 				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($info[0]) . '</span> => '
 				. (isset($info[2]) ? '<span class="tracy-dump-hash">&' . $info[2] . '</span> ' : '')
 				. $this->renderVar($info[1], $depth + 1);
 		}
 
+		if ($cut) {
+			$out .= "$indent...\n";
+		}
 		return $out . '</div>';
 	}
 
@@ -239,6 +243,7 @@ class Renderer
 		}
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[] = $model->object;
 
 		static $classes = [
@@ -250,11 +255,15 @@ class Renderer
 		];
 
 		foreach ($object->items as $info) {
-			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
+			$out .= $indent
 				. '<span class="' . $classes[$info[2]] . '">' . Helpers::escapeHtml($info[0]) . '</span>'
 				. ': '
 				. (isset($info[3]) ? '<span class="tracy-dump-hash">&' . $info[3] . '</span> ' : '')
 				. $this->renderVar($info[1], $depth + 1);
+		}
+
+		if (!empty($object->cut)) {
+			$out .= "$indent...\n";
 		}
 		array_pop($this->parents);
 		return $out . '</div>';

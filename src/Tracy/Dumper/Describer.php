@@ -22,6 +22,9 @@ class Describer
 	/** @var int|null */
 	public $maxLength = 150;
 
+	/** @var int|null */
+	public $maxItems = 50;
+
 	/** @var bool */
 	public $location = false;
 
@@ -114,18 +117,24 @@ class Describer
 	{
 		if (count($arr) && $depth >= $this->maxDepth) {
 			return (object) ['array' => [], 'stop' => true, 'length' => count($arr)];
+
+		} elseif ($this->maxItems && count($arr) > $this->maxItems) {
+			$res = (object) ['array' => &$items, 'length' => count($arr), 'cut' => true];
+			$arr = array_slice($arr, 0, $this->maxItems, true);
 		}
-		$res = [];
+
+		$items = [];
 		foreach ($arr as $k => $v) {
 			$refId = $this->getReferenceId($arr, $k);
-			$res[] = [
+			$items[] = [
 				$this->encodeKey($k),
 				is_string($k) && isset($this->keysToHide[strtolower($k)])
 					? (object) ['key' => self::hideValue($v)]
 					: $this->describeVar($v, $depth + 1, $refId),
 			] + ($refId ? [2 => $refId] : []);
 		}
-		return $res;
+
+		return $res ?? $items;
 	}
 
 
@@ -154,6 +163,11 @@ class Describer
 			$shot->items = [];
 
 			$props = $this->exposeObject($obj);
+			if ($this->maxItems && count($props) > $this->maxItems) {
+				$shot->cut = true;
+				$props = array_slice($props, 0, $this->maxItems, true);
+			}
+
 			foreach ($props as $info) {
 				[$k, $v, $type] = $info;
 				$refId = $this->getReferenceId($info, 1);
