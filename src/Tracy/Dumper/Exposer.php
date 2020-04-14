@@ -20,10 +20,11 @@ class Exposer
 		PROP_PUBLIC = 0,
 		PROP_PROTECTED = 1,
 		PROP_PRIVATE = 2,
-		PROP_DYNAMIC = 3;
+		PROP_DYNAMIC = 3,
+		PROP_VIRTUAL = 4;
 
 
-	public static function convert(array $arr, int $type = self::PROP_PUBLIC): array
+	public static function convert(array $arr, int $type = self::PROP_VIRTUAL): array
 	{
 		$res = [];
 		foreach ($arr as $k => $v) {

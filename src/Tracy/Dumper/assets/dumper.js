@@ -225,6 +225,7 @@
 			'tracy-dump-protected',
 			'tracy-dump-private',
 			'tracy-dump-dynamic',
+			'tracy-dump-virtual',
 		];
 
 		let key, val, vis, ref, i;
