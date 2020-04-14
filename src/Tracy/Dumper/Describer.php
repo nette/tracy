@@ -45,7 +45,7 @@ final class Describer
 	private $references = [];
 
 
-	public function describe(&$var): \stdClass
+	public function describe($var): \stdClass
 	{
 		$this->references = [];
 		uksort($this->objectExposers, function ($a, $b): int {
@@ -62,7 +62,7 @@ final class Describer
 	/**
 	 * @return mixed
 	 */
-	private function describeVar(&$var, int $depth = 0)
+	private function describeVar($var, int $depth = 0, int $refId = null)
 	{
 		switch (true) {
 			case $var === null:
@@ -71,7 +71,7 @@ final class Describer
 				return $var;
 			default:
 				$m = 'describe' . explode(' ', gettype($var))[0];
-				return $this->$m($var, $depth);
+				return $this->$m($var, $depth, $refId);
 		}
 	}
 
@@ -107,33 +107,39 @@ final class Describer
 	/**
 	 * @return Value|array
 	 */
-	private function describeArray(array &$arr, int $depth = 0)
+	private function describeArray(array $arr, int $depth = 0, int $refId = null)
 	{
-		static $marker;
-		if ($marker === null) {
-			$marker = uniqid("\x00", true);
-		}
-		if (count($arr) && (isset($arr[$marker]) || $depth >= $this->maxDepth)) {
-			return new Value('stop', [count($arr) - isset($arr[$marker]), isset($arr[$marker])]);
-		}
-		$res = [];
-		try {
-			$arr[$marker] = true;
-			foreach ($arr as $k => $v) {
-				if ($k !== $marker) {
-					$refId = $this->getReferenceId($arr, $k);
-					$res[] = [
-						$this->describeKey($k),
-							is_string($k) && isset($this->keysToHide[strtolower($k)])
-							? new Value('text', self::hideValue($v))
-							: $this->describeVar($arr[$k], $depth + 1),
-					] + ($refId ? [2 => $refId] : []);
-				}
+		if ($refId) {
+			$res = new Value('array', 'a' . $refId);
+			$struct = &$this->snapshot['a' . $refId];
+			if (!$struct) {
+				$struct = new Structure(null, $depth, $arr);
+			} elseif ($struct->depth <= $depth) {
+				return $res;
 			}
-		} finally {
-			unset($arr[$marker]);
+			if ($depth >= $this->maxDepth) {
+				$struct->length = count($arr);
+				return $res;
+			}
+			$struct->depth = $depth;
+			$items = &$struct->items;
+
+		} elseif ($arr && $depth >= $this->maxDepth) {
+			return new Value('stop', count($arr));
 		}
-		return $res;
+
+		$items = [];
+		foreach ($arr as $k => $v) {
+			$refId = $this->getReferenceId($arr, $k);
+			$items[] = [
+				$this->describeKey($k),
+				is_string($k) && isset($this->keysToHide[strtolower($k)])
+					? new Value('text', self::hideValue($v))
+					: $this->describeVar($v, $depth + 1, $refId),
+			] + ($refId ? [2 => $refId] : []);
+		}
+
+		return $res ?? $items;
 	}
 
 
@@ -166,7 +172,7 @@ final class Describer
 				}
 				$v = isset($this->keysToHide[strtolower($k)])
 					? new Value('text', self::hideValue($v))
-					: $this->describeVar($v, $depth + 1);
+					: $this->describeVar($v, $depth + 1, $refId);
 				$struct->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
 			}
 		}

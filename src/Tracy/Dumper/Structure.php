@@ -15,7 +15,7 @@ namespace Tracy\Dumper;
  */
 final class Structure implements \JsonSerializable
 {
-	/** @var string */
+	/** @var ?string */
 	public $name;
 
 	/** @var ?int */
@@ -31,11 +31,11 @@ final class Structure implements \JsonSerializable
 	public $items;
 
 
-	public function __construct(string $name, int $depth = null, $ref = null)
+	public function __construct(?string $name, int $depth = null, &$ref = null)
 	{
 		$this->name = $name;
 		$this->depth = $depth;
-		$this->ref = $ref; // to be not released by garbage collector in collecting mode
+		$this->ref = &$ref; // to be not released by garbage collector in collecting mode
 	}
 
 

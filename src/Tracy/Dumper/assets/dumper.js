@@ -95,10 +95,10 @@
 			return buildStruct(
 				[
 					createEl('span', {'class': 'tracy-dump-array'}, ['array']),
-					' (' + (data[0] && data.length || '') + ')'
+					' (' + (data.length || '') + ')'
 				],
 				' [ ... ]',
-				data[0] === null ? null : data,
+				data,
 				collapsed === true || data.length >= collapseCount,
 				TYPE_ARRAY,
 				repository,
@@ -108,8 +108,7 @@
 		} else if (data.stop) {
 			return createEl(null, null, [
 				createEl('span', {'class': 'tracy-dump-array'}, ['array']),
-				' (' + data.stop[0] + ')',
-				data.stop[1] ? ' [ RECURSION ]\n' : ' [ ... ]\n',
+				' (' + data.stop + ') [ ... ]\n',
 			]);
 
 		} else if (data.number) {
@@ -129,7 +128,7 @@
 			]);
 
 		} else {
-			let id = data.object || data.resource,
+			let id = data.object || data.resource || data.array,
 				object = repository[id];
 
 			if (!object) {
@@ -140,19 +139,24 @@
 			parentIds.push(id);
 
 			return buildStruct(
-				[
-					createEl('span', {
-						'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
-						title: object.editor ? 'Declared in file ' + object.editor.file + ' on line ' + object.editor.line : null,
-						'data-tracy-href': object.editor ? object.editor.url : null
-					}, [object.name]),
-					' ',
-					createEl('span', {'class': 'tracy-dump-hash'}, [data.resource ? '@' + id.substr(1) : '#' + id])
-				],
+				data.array
+					? [
+						createEl('span', {'class': 'tracy-dump-array'}, ['array']),
+						' (' + (object.length || object.items.length) + ')'
+					]
+					: [
+						createEl('span', {
+							'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
+							title: object.editor ? 'Declared in file ' + object.editor.file + ' on line ' + object.editor.line : null,
+							'data-tracy-href': object.editor ? object.editor.url : null
+						}, [object.name]),
+						' ',
+						createEl('span', {'class': 'tracy-dump-hash'}, [data.resource ? '@' + id.substr(1) : '#' + id])
+					],
 				recursive ? ' { RECURSION }' : ' { ... }',
 				recursive ? null : object.items,
 				collapsed === true || (object.items && object.items.length >= collapseCount),
-				data.object ? TYPE_OBJECT : TYPE_RESOURCE,
+				data.object ? TYPE_OBJECT : data.array ? TYPE_ARRAY : TYPE_RESOURCE,
 				repository,
 				parentIds
 			);

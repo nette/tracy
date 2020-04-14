@@ -130,6 +130,7 @@ final class Renderer
 				return $this->renderString($value);
 
 			case is_array($value):
+			case $value->type === 'array':
 				return $this->renderArray($value, $depth);
 
 			case $value->type === 'object':
@@ -145,7 +146,7 @@ final class Renderer
 				return $this->renderString($value);
 
 			case $value->type === 'stop':
-				return '<span class="tracy-dump-array">array</span> (' . $value->value[0] . ') ' . ($value->value[1] ? '[ <i>RECURSION</i> ]' : '[ ... ]') . "\n";
+				return '<span class="tracy-dump-array">array</span> (' . $value->value . ") [ ... ]\n";
 
 			case $value->type === 'resource':
 				return $this->renderResource($value, $depth);
@@ -156,6 +157,9 @@ final class Renderer
 	}
 
 
+	/**
+	 * @param  string|Value  $value
+	 */
 	private function renderString($value): string
 	{
 		if (is_string($value)) {
@@ -170,17 +174,34 @@ final class Renderer
 	}
 
 
-	private function renderArray(array $value, int $depth): string
+	/**
+	 * @param  array|Value  $value
+	 */
+	private function renderArray($value, int $depth): string
 	{
 		$out = '<span class="tracy-dump-array">array</span> (';
 
-		if (empty($value)) {
+		if (is_array($value)) {
+			$items = $value;
+		} else {
+			$struct = $this->snapshot[$value->value];
+			if (!isset($struct->items)) {
+				return $out . $struct->length . ") [ ... ]\n";
+			}
+			$items = $struct->items;
+			if (in_array($value->value, $this->parents, true)) {
+				return $out . count($items) . ") [ <i>RECURSION</i> ]\n";
+			}
+		}
+
+		$count = count($items);
+		if (!$count) {
 			return $out . ")\n";
 		}
 
 		$collapsed = $depth
-			? count($value) >= $this->collapseSub
-			: (is_int($this->collapseTop) ? count($value) >= $this->collapseTop : $this->collapseTop);
+			? $count >= $this->collapseSub
+			: (is_int($this->collapseTop) ? $count >= $this->collapseTop : $this->collapseTop);
 
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
@@ -188,13 +209,14 @@ final class Renderer
 			$this->copySnapshot($value);
 			return $span . " data-tracy-dump='"
 				. json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
-				. $out . count($value) . ")</span>\n";
+				. $out . $count . ")</span>\n";
 		}
 
-		$out = $span . '>' . $out . count($value) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+		$out = $span . '>' . $out . $count . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$fill = [2 => null];
+		$this->parents[] = is_object($value) ? $value->value : null;
 
-		foreach ($value as $info) {
+		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + $fill;
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => '
@@ -202,6 +224,7 @@ final class Renderer
 				. $this->renderVar($v, $depth + 1);
 		}
 
+		array_pop($this->parents);
 		return $out . '</div>';
 	}
 
@@ -292,7 +315,7 @@ final class Renderer
 			foreach ($value as [$k, $v]) {
 				$this->copySnapshot($v);
 			}
-		} elseif ($value instanceof Value && in_array($value->type, ['object', 'resource'], true)) {
+		} elseif ($value instanceof Value && in_array($value->type, ['object', 'resource', 'array'], true)) {
 			$snap = $this->snapshotSelection[$value->value] = $this->snapshot[$value->value];
 			if (!in_array($value->value, $this->parents, true)) {
 				$this->parents[] = $value->value;
