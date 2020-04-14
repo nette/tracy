@@ -129,6 +129,9 @@ class Renderer
 			case isset($model->object):
 				return $this->renderObject($model, $depth);
 
+			case isset($model->array):
+				return $this->renderArray($model, $depth);
+
 			case isset($model->number):
 				return '<span class="tracy-dump-number">' . Helpers::escapeHtml($model->number) . "</span>\n";
 
@@ -140,9 +143,6 @@ class Renderer
 					. Helpers::escapeHtml($model->string)
 					. '"</span>' . ($model->length > 1 ? ' (' . $model->length . ')' : '') . "\n";
 
-			case isset($model->stop):
-				return '<span class="tracy-dump-array">array</span> (' . $model->stop[0] . ') ' . ($model->stop[1] ? '[ <i>RECURSION</i> ]' : '[ ... ]') . "\n";
-
 			case isset($model->resource):
 				return $this->renderResource($model, $depth);
 
@@ -152,17 +152,27 @@ class Renderer
 	}
 
 
-	private function renderArray(array $model, int $depth): string
+	/**
+	 * @param  object|array  $model
+	 */
+	private function renderArray($model, int $depth): string
 	{
 		$out = '<span class="tracy-dump-array">array</span> (';
+		if (isset($model->stop)) {
+			return $out . $model->length . ') ' . ($model->stop === 'r' ? '[ <i>RECURSION</i> ]' : '[ ... ]') . "\n";
+		}
 
-		if (empty($model)) {
+		[$items, $count] = is_array($model)
+			? [$model, count($model)]
+			: [$model->array, $model->length ?? count($model->array)];
+
+		if (empty($items)) {
 			return $out . ")\n";
 		}
 
 		$collapsed = $depth
-			? count($model) >= $this->collapseSub
-			: (is_int($this->collapseTop) ? count($model) >= $this->collapseTop : $this->collapseTop);
+			? $count >= $this->collapseSub
+			: (is_int($this->collapseTop) ? $count >= $this->collapseTop : $this->collapseTop);
 
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
@@ -170,11 +180,12 @@ class Renderer
 			$this->copySnapshot($model);
 			return $span . " data-tracy-dump='"
 				. json_encode($model, JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
-				. $out . count($model) . ")</span>\n";
+				. $out . $count . ")</span>\n";
 		}
 
-		$out = $span . '>' . $out . count($model) . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
-		foreach ($model as $info) {
+		$out = $span . '>' . $out . $count . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+
+		foreach ($items as $info) {
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($info[0]) . '</span> => '
 				. (isset($info[2]) ? '<span class="tracy-dump-hash">&' . $info[2] . '</span> ' : '')
@@ -289,6 +300,10 @@ class Renderer
 		} elseif (isset($model->resource)) {
 			$resource = $this->snapshotSelection[$model->resource] = $this->snapshot[$model->resource];
 			foreach ($resource->items ?? [] as [$k, $v]) {
+				$this->copySnapshot($v);
+			}
+		} elseif (isset($model->array)) {
+			foreach ($model->array as [$k, $v]) {
 				$this->copySnapshot($v);
 			}
 		}

@@ -94,6 +94,10 @@
 		let type = data === null ? 'null' : typeof data,
 			collapseCount = collapsed === null ? COLLAPSE_COUNT : COLLAPSE_COUNT_TOP;
 
+		if (Array.isArray(data)) {
+			data = {array: data};
+		}
+
 		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
 			data = type === 'string' ? '"' + data + '"' : (data + '');
 			return createEl(null, null, [
@@ -104,26 +108,29 @@
 				)
 			]);
 
-		} else if (Array.isArray(data)) {
+		} else if (data.array) {
+			if (data.stop) {
+				return createEl(null, null, [
+					createEl('span', {'class': 'tracy-dump-array'}, ['array']),
+					' (' + data.length + ')',
+					data.stop === 'r' ? ' [ RECURSION ]\n' : ' [ ... ]\n',
+				]);
+			}
+
+			let len = data.length || data.array.length;
 			return buildStruct(
 				[
 					createEl('span', {'class': 'tracy-dump-array'}, ['array']),
-					' (' + (data[0] && data.length || '') + ')'
+					' (' + len + ')'
 				],
 				' [ ... ]',
-				data[0] === null ? null : data,
-				collapsed === true || data.length >= collapseCount,
+				data.array,
+				collapsed === true || len >= collapseCount,
+
 				true,
 				repository,
 				parentIds
 			);
-
-		} else if (data.stop) {
-			return createEl(null, null, [
-				createEl('span', {'class': 'tracy-dump-array'}, ['array']),
-				' (' + data.stop[0] + ')',
-				data.stop[1] ? ' [ RECURSION ]\n' : ' [ ... ]\n',
-			]);
 
 		} else if (data.number) {
 			return createEl(null, null, [

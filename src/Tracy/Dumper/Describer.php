@@ -85,7 +85,7 @@ class Describer
 
 			case is_array($var) && $refId:
 				if (in_array($refId, $this->parentArrays, true)) {
-					return (object) ['stop' => [count($var), true]];
+					return (object) ['array' => [], 'stop' => 'r', 'length' => count($var)];
 				}
 				$this->parentArrays[] = $refId;
 				$res = $this->describeArray($var, $depth);
@@ -113,7 +113,7 @@ class Describer
 	private function describeArray(array $arr, int $depth = 0)
 	{
 		if (count($arr) && $depth >= $this->maxDepth) {
-			return (object) ['stop' => [count($arr), false]];
+			return (object) ['array' => [], 'stop' => true, 'length' => count($arr)];
 		}
 		$res = [];
 		foreach ($arr as $k => $v) {
