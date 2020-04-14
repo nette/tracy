@@ -62,7 +62,7 @@
 			});
 
 			document.documentElement.addEventListener('tracy-toggle', (e) => {
-				if (e.target.matches('.tracy-dump *')) {
+				if (!e.detail.bulk && e.target.matches('.tracy-dump *')) {
 					e.detail.relatedTarget.classList.toggle('tracy-dump-flash', !e.detail.collapsed);
 				}
 			});
