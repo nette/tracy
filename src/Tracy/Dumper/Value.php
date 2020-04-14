@@ -15,6 +15,11 @@ namespace Tracy\Dumper;
  */
 final class Value implements \JsonSerializable
 {
+	public const
+		PROP_PUBLIC = 0,
+		PROP_PROTECTED = 1,
+		PROP_PRIVATE = 2;
+
 	/** @var string */
 	public $type;
 
