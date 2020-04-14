@@ -13,6 +13,7 @@ use Tracy\Dumper;
 require __DIR__ . '/../bootstrap.php';
 
 
+// default exposer
 $obj = new stdClass;
 Assert::match('stdClass #%d%', Dumper::toText($obj));
 
@@ -23,6 +24,7 @@ Assert::match('stdClass #%d%
 ', Dumper::toText($obj));
 
 
+// custom exposer
 $exporters = [
 	'stdClass' => function ($var) {
 		return ['x' => $var->a + 1];
@@ -34,6 +36,19 @@ Assert::match('stdClass #%d%
 );
 
 
+// custom exposer & new way
+$exporters = [
+	'stdClass' => function ($var, Dumper\Structure $struct, Dumper\Describer $describer) {
+		$describer->addProperty($struct, 'x', $var->a + 2, Dumper\Exposer::PROP_PUBLIC);
+	},
+];
+Assert::match('stdClass #%d%
+   x => 3
+', Dumper::toText($obj, [Dumper::OBJECT_EXPORTERS => $exporters])
+);
+
+
+// PHP incomplete class
 $obj = unserialize('O:1:"Y":7:{s:1:"a";N;s:1:"b";i:2;s:4:"' . "\0" . '*' . "\0" . 'c";N;s:4:"' . "\0" . '*' . "\0" . 'd";s:1:"d";s:4:"' . "\0" . 'Y' . "\0" . 'e";N;s:4:"' . "\0" . 'Y' . "\0" . 'i";s:3:"bar";s:4:"' . "\0" . 'X' . "\0" . 'i";s:3:"foo";}');
 
 Assert::match('__PHP_Incomplete_Class #%d%
@@ -51,7 +66,7 @@ Assert::match('__PHP_Incomplete_Class #%d%
 
 
 
-
+// inheritance
 Dumper::$objectExporters = [
 	null => function ($var) { return ['type' => 'NULL']; },
 	'Iterator' => function ($var) { return ['type' => 'Default Iterator']; },

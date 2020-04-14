@@ -161,19 +161,9 @@ final class Describer
 			$struct->depth = $depth;
 			$struct->items = [];
 
-			$props = $this->exposeObject($obj);
-			foreach ($props as $k => $v) {
-				$type = 0;
-				$refId = $this->getReferenceId($props, $k);
-				$k = (string) $k;
-				if (isset($k[0]) && $k[0] === "\x00") {
-					$type = $k[1] === '*' ? 1 : 2;
-					$k = substr($k, strrpos($k, "\x00") + 1);
-				}
-				$v = isset($this->keysToHide[strtolower($k)])
-					? new Value('text', self::hideValue($v))
-					: $this->describeVar($v, $depth + 1, $refId);
-				$struct->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
+			$props = $this->exposeObject($obj, $struct);
+			foreach ($props ?? [] as $k => $v) {
+				$this->addProperty($struct, $k, $v, Exposer::PROP_PUBLIC, $this->getReferenceId($props, $k));
 			}
 		}
 		return new Value('object', $id);
@@ -213,11 +203,21 @@ final class Describer
 	}
 
 
-	private function exposeObject(object $obj): array
+	public function addProperty(Structure $struct, $k, $v, $type, $refId = null)
+	{
+		$k = (string) $k;
+		$v = isset($this->keysToHide[strtolower($k)])
+			? new Value('text', self::hideValue($v))
+			: $this->describeVar($v, $struct->depth + 1, $refId);
+		$struct->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
+	}
+
+
+	private function exposeObject(object $obj, Structure $struct): ?array
 	{
 		foreach ($this->objectExposers as $type => $dumper) {
 			if (!$type || $obj instanceof $type) {
-				return $dumper($obj);
+				return $dumper($obj, $struct, $this);
 			}
 		}
 
@@ -225,7 +225,8 @@ final class Describer
 			return $obj->__debugInfo();
 		}
 
-		return (array) $obj;
+		Exposer::exposeObject($obj, $struct, $this);
+		return null;
 	}
 
 
@@ -235,7 +236,7 @@ final class Describer
 	}
 
 
-	private function getReferenceId($arr, $key): ?int
+	public function getReferenceId($arr, $key): ?int
 	{
 		if (PHP_VERSION_ID >= 70400) {
 			if ((!$rr = \ReflectionReference::fromArrayElement($arr, $key))) {
