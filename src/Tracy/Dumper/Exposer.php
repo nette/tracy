@@ -19,11 +19,13 @@ final class Exposer
 	public const
 		PROP_PUBLIC = 0,
 		PROP_PROTECTED = 1,
-		PROP_PRIVATE = 2;
+		PROP_PRIVATE = 2,
+		PROP_DYNAMIC = 3;
 
 
 	public static function exposeObject(object $obj, Structure $struct, Describer $describer): void
 	{
+		$defaults = get_class_vars(get_class($obj));
 		$arr = (array) $obj;
 		$tmp = $arr; // PHP bug #79477
 		foreach ($tmp as $k => $v) {
@@ -33,8 +35,11 @@ final class Exposer
 				$info = explode("\00", $k);
 				$k = end($info);
 				$type = $info[1] === '*' ? self::PROP_PROTECTED : self::PROP_PRIVATE;
+			} else {
+				$type = array_key_exists($k, $defaults) ? self::PROP_PUBLIC : self::PROP_DYNAMIC;
+				$k = (string) $k;
 			}
-			$describer->addProperty($struct, (string) $k, $v, $type, $refId);
+			$describer->addProperty($struct, $k, $v, $type, $refId);
 		}
 	}
 
