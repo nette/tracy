@@ -163,7 +163,7 @@ final class Describer
 
 			$props = $this->exposeObject($obj, $struct);
 			foreach ($props ?? [] as $k => $v) {
-				$this->addProperty($struct, $k, $v, Exposer::PROP_PUBLIC, $this->getReferenceId($props, $k));
+				$this->addProperty($struct, $k, $v, Exposer::PROP_VIRTUAL, $this->getReferenceId($props, $k));
 			}
 		}
 		return new Value('object', $id);

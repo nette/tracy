@@ -20,7 +20,8 @@ final class Exposer
 		PROP_PUBLIC = 0,
 		PROP_PROTECTED = 1,
 		PROP_PRIVATE = 2,
-		PROP_DYNAMIC = 3;
+		PROP_DYNAMIC = 3,
+		PROP_VIRTUAL = 4;
 
 
 	public static function exposeObject(object $obj, Structure $struct, Describer $describer): void

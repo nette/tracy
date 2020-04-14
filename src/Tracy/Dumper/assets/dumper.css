@@ -47,6 +47,10 @@ pre.tracy-dump a:focus {
 	color: #850;
 }
 
+.tracy-dump-virtual {
+	font-style: italic;
+}
+
 .tracy-dump-public::after {
 	content: ' public';
 }
