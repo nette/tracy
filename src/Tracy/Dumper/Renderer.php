@@ -273,7 +273,7 @@ final class Renderer
 			[$k, $v, $type, $ref] = $info + [3 => null];
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span>'
-				. ($type ? ' <span class="tracy-dump-visibility">' . ($type === 1 ? 'protected' : 'private') . '</span>' : '')
+				. ($type ? ' <span class="tracy-dump-visibility">' . ($type === Value::PROP_PROTECTED ? 'protected' : 'private') . '</span>' : '')
 				. ' => '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);

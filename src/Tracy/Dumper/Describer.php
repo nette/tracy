@@ -168,20 +168,9 @@ final class Describer
 
 		if ($depth < $this->maxDepth) {
 			$value->items = [];
-
-			$props = $this->exposeObject($obj);
-			foreach ($props as $k => $v) {
-				$type = 0;
-				$refId = $this->getReferenceId($props, $k);
-				$k = (string) $k;
-				if (isset($k[0]) && $k[0] === "\x00") {
-					$type = $k[1] === '*' ? 1 : 2;
-					$k = substr($k, strrpos($k, "\x00") + 1);
-				}
-				$v = isset($this->keysToHide[strtolower($k)])
-					? new Value('text', self::hideValue($v))
-					: $this->describeVar($v, $depth + 1, $refId);
-				$value->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
+			$props = $this->exposeObject($obj, $value);
+			foreach ($props ?? [] as $k => $v) {
+				$this->addProperty($value, $k, $v, Value::PROP_PUBLIC, $this->getReferenceId($props, $k));
 			}
 		}
 		return new Value('ref', $id);
@@ -223,11 +212,21 @@ final class Describer
 	}
 
 
-	private function exposeObject(object $obj): array
+	public function addProperty(Value $value, $k, $v, $type, int $refId = null)
+	{
+		$k = (string) $k;
+		$v = isset($this->keysToHide[strtolower($k)])
+			? new Value('text', self::hideValue($v))
+			: $this->describeVar($v, $value->depth + 1, $refId);
+		$value->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
+	}
+
+
+	private function exposeObject(object $obj, Value $value): ?array
 	{
 		foreach ($this->objectExposers as $type => $dumper) {
 			if (!$type || $obj instanceof $type) {
-				return $dumper($obj);
+				return $dumper($obj, $value, $this);
 			}
 		}
 
@@ -235,7 +234,8 @@ final class Describer
 			return $obj->__debugInfo();
 		}
 
-		return (array) $obj;
+		Exposer::exposeObject($obj, $value, $this);
+		return null;
 	}
 
 
@@ -245,7 +245,7 @@ final class Describer
 	}
 
 
-	private function getReferenceId($arr, $key): ?int
+	public function getReferenceId($arr, $key): ?int
 	{
 		if (PHP_VERSION_ID >= 70400) {
 			if ((!$rr = \ReflectionReference::fromArrayElement($arr, $key))) {
