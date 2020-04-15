@@ -29,7 +29,7 @@ test(function () { // terminal mode
 	putenv('ConEmuANSI=ON');
 	ob_start();
 	Assert::same(123, Dumper::dump(123));
-	Assert::match("\x1b[1;32m123\x1b[0m", ob_get_clean());
+	Assert::match("\e[1;32m123\e[0m", ob_get_clean());
 });
 
 
