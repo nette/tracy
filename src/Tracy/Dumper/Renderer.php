@@ -228,10 +228,15 @@ class Renderer
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$this->parents[] = $model->object;
 
+		static $classes = [
+			Exposer::PROP_PUBLIC => 'tracy-dump-public',
+			Exposer::PROP_PROTECTED => 'tracy-dump-protected',
+			Exposer::PROP_PRIVATE => 'tracy-dump-private',
+		];
+
 		foreach ($object->items as $info) {
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($info[0]) . '</span>'
-				. ($info[2] ? ' <span class="tracy-dump-visibility">' . ($info[2] === Exposer::PROP_PROTECTED ? 'protected' : 'private') . '</span>' : '')
+				. '<span class="' . $classes[$info[2]] . '">' . Helpers::escapeHtml($info[0]) . '</span>'
 				. ' => '
 				. (isset($info[3]) ? '<span class="tracy-dump-hash">&' . $info[3] . '</span> ' : '')
 				. $this->renderVar($info[1], $depth + 1);

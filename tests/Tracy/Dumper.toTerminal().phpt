@@ -35,12 +35,12 @@ $obj->{''} = 10;
 
 Assert::match("\x1b[1;31mChild\x1b[0m \x1b[0m#%d%\x1b[0m\x1b[0m
 \x1b[1;30m   \x1b[0m\x1b[1;37mx\x1b[0m => \x1b[1;32m1\x1b[0m
-\x1b[1;30m   \x1b[0m\x1b[1;37my\x1b[0m \x1b[1;30mprivate\x1b[0m => \x1b[1;32m2\x1b[0m
-\x1b[1;30m   \x1b[0m\x1b[1;37mz\x1b[0m \x1b[1;30mprotected\x1b[0m => \x1b[1;32m3\x1b[0m
+\x1b[1;30m   \x1b[0m\x1b[1;37my\x1b[0m => \x1b[1;32m2\x1b[0m
+\x1b[1;30m   \x1b[0m\x1b[1;37mz\x1b[0m => \x1b[1;32m3\x1b[0m
 \x1b[1;30m   \x1b[0m\x1b[1;37mx2\x1b[0m => \x1b[1;32m4\x1b[0m
-\x1b[1;30m   \x1b[0m\x1b[1;37my2\x1b[0m \x1b[1;30mprotected\x1b[0m => \x1b[1;32m5\x1b[0m
-\x1b[1;30m   \x1b[0m\x1b[1;37mz2\x1b[0m \x1b[1;30mprivate\x1b[0m => \x1b[1;32m6\x1b[0m
-\x1b[1;30m   \x1b[0m\x1b[1;37my\x1b[0m \x1b[1;30mprivate\x1b[0m => \x1b[1;36m\"hello\"\x1b[0m (5)
+\x1b[1;30m   \x1b[0m\x1b[1;37my2\x1b[0m => \x1b[1;32m5\x1b[0m
+\x1b[1;30m   \x1b[0m\x1b[1;37mz2\x1b[0m => \x1b[1;32m6\x1b[0m
+\x1b[1;30m   \x1b[0m\x1b[1;37my\x1b[0m => \x1b[1;36m\"hello\"\x1b[0m (5)
 \x1b[1;30m   \x1b[0m\x1b[1;37mnew\x1b[0m => \x1b[1;32m7\x1b[0m
 \x1b[1;30m   \x1b[0m\x1b[1;37m0\x1b[0m => \x1b[1;32m8\x1b[0m
 \x1b[1;30m   \x1b[0m\x1b[1;37m1\x1b[0m => \x1b[1;32m9\x1b[0m
@@ -53,5 +53,5 @@ $arr->z = &$arr;
 Assert::match("\x1b[1;31mstdClass\x1b[0m \x1b[0m#%d%\x1b[0m\x1b[0m
 \x1b[1;30m   \x1b[0m\x1b[1;37mx\x1b[0m => \x1b[1;32m1\x1b[0m
 \x1b[1;30m   \x1b[0m\x1b[1;37my\x1b[0m => \x1b[1;32m2\x1b[0m
-\x1b[1;30m   \x1b[0m\x1b[1;37mz\x1b[0m => \x1b[0m&%d%\x1b[0m \x1b[1;31mstdClass\x1b[0m \x1b[0m#7\x1b[0m { RECURSION }
+\x1b[1;30m   \x1b[0m\x1b[1;37mz\x1b[0m => \x1b[0m&1\x1b[0m \x1b[1;31mstdClass\x1b[0m \x1b[0m#%d%\x1b[0m { RECURSION }
 ", Dumper::toTerminal($arr));
