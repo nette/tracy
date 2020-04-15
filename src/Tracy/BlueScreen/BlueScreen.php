@@ -252,7 +252,7 @@ class BlueScreen
 		}
 		$source = static::highlightPhp($source, $line, $lines, $vars, $keysToHide);
 		if ($editor = Helpers::editorUri($file, $line)) {
-			$source = substr_replace($source, ' data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
+			$source = substr_replace($source, ' title="Ctrl-Click to open in editor" data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
 		}
 		return $source;
 	}
