@@ -11,6 +11,13 @@
 	class Toggle
 	{
 		static init() {
+			document.documentElement.addEventListener('mouseover', (e) => {
+				let el = e.target.closest('.tracy-toggle');
+				if (el && !el.title) {
+					el.title='Alt-Click to expand all child nodes';
+				}
+			});
+
 			let start;
 			document.documentElement.addEventListener('mousedown', (e) => {
 				start = [e.clientX, e.clientY];
