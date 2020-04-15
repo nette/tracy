@@ -69,7 +69,8 @@ XX
 Assert::match(
 	<<<'XX'
 <pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&apos;location&apos; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS]))
-in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-snapshot='{"%d%":{"name":"Test","editor":{"file":"%a%","line":%d%,"url":"editor:\/\/open\/?file=%a%\u0026line=%d%\u0026search=\u0026replace="},"items":[["x",[[0,10],[1,null]],0],["y","hello","Test"],["z",{"number":"30.0"},1]]}}' data-tracy-dump='{"object":%d%}'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%</b>:%d%</a></small></pre>
+in file %a% on line %d%
+Ctrl-Click to open in editor" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-snapshot='{"%d%":{"name":"Test","editor":{"file":"%a%","line":%d%,"url":"editor:\/\/open\/?file=%a%\u0026line=%d%\u0026search=\u0026replace="},"items":[["x",[[0,10],[1,null]],0],["y","hello","Test"],["z",{"number":"30.0"},1]]}}' data-tracy-dump='{"object":%d%}'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%</b>:%d%</a></small></pre>
 XX
 , Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS]));
 

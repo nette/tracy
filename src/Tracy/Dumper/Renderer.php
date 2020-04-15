@@ -76,9 +76,10 @@ final class Renderer
 		}
 
 		[$file, $line, $code] = $model->location;
+		$uri = $model->location ? Helpers::editorUri($file, $line) : null;
 
 		return '<pre class="tracy-dump' . ($value && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
-			. ($model->location && $this->locationSource ? Helpers::formatHtml(' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)) : null)
+			. ($model->location && $this->locationSource ? Helpers::formatHtml(' title="%in file % on line %%" data-tracy-href="%"', "$code\n", $file, $line, $uri ? "\nCtrl-Click to open in editor" : '', $uri) : null)
 			. ($snapshot === null ? '' : ' data-tracy-snapshot=' . self::formatSnapshotAttribute($snapshot))
 			. ($value ? " data-tracy-dump='" . json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) . "'>" : '>')
 			. $html
@@ -255,9 +256,10 @@ final class Renderer
 		$editorAttributes = '';
 		if ($this->locationClass && isset($object->editor)) {
 			$editorAttributes = Helpers::formatHtml(
-				' title="Declared in file % on line %" data-tracy-href="%"',
+				' title="Declared in file % on line %%" data-tracy-href="%"',
 				$object->editor->file,
 				$object->editor->line,
+				$object->editor->url ? "\nCtrl-Click to open in editor" : '',
 				$object->editor->url
 			);
 		}

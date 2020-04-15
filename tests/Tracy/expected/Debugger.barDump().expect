@@ -7,11 +7,13 @@
 <div class="tracy-inner tracy-DumpPanel">
 
 	<pre class="tracy-dump" title="barDump($arr)
-in file %a% on line %d%" data-tracy-href="editor:%a%" data-tracy-snapshot='{"%d%":{"name":"stdClass","items":[["key1","val1",3],["key2",true,3]]}}' data-tracy-dump='[[0,10],[1,20.2],[2,true],[3,false],[4,null],[5,"hello"],[6,[["key1","val1"],["key2",true]]],[7,{"object":%d%}]]'></pre>
+in file %a% on line %d%
+Ctrl-Click to open in editor" data-tracy-href="editor:%a%" data-tracy-snapshot='{"%d%":{"name":"stdClass","items":[["key1","val1",3],["key2",true,3]]}}' data-tracy-dump='[[0,10],[1,20.2],[2,true],[3,false],[4,null],[5,"hello"],[6,[["key1","val1"],["key2",true]]],[7,{"object":%d%}]]'></pre>
 		<h2>String</h2>
 
 	<pre class="tracy-dump" title="barDump(&apos;&lt;a href=&quot;#&quot;&gt;test&lt;/a&gt;&apos;, &apos;String&apos;)
-in file %a% on line %d%" data-tracy-href="editor:%a%" data-tracy-snapshot='[]' data-tracy-dump='{"string":"\u0026lt;a href=\"#\">test\u0026lt;\/a>","length":20}'></pre>
+in file %a% on line %d%
+Ctrl-Click to open in editor" data-tracy-href="editor:%a%" data-tracy-snapshot='[]' data-tracy-dump='{"string":"\u0026lt;a href=\"#\">test\u0026lt;\/a>","length":20}'></pre>
 </div>
 
 

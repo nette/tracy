@@ -177,7 +177,7 @@
 					: [
 						createEl('span', {
 							'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
-							title: object.editor ? 'Declared in file ' + object.editor.file + ' on line ' + object.editor.line : null,
+							title: object.editor ? 'Declared in file ' + object.editor.file + ' on line ' + object.editor.line + (object.editor.url ? '\nCtrl-Click to open in editor' : '') : null,
 							'data-tracy-href': object.editor ? object.editor.url : null
 						}, [object.name]),
 						' ',
