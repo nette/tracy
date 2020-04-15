@@ -230,6 +230,12 @@
 
 
 	function createItems(el, items, type, repository, parentIds) {
+		const classes = [
+			'tracy-dump-public',
+			'tracy-dump-protected',
+			'tracy-dump-private',
+		];
+
 		let key, val, vis, ref, i;
 
 		for (i = 0; i < items.length; i++) {
@@ -239,9 +245,13 @@
 				[key, val, vis, ref] = items[i];
 			}
 			createEl(el, null, [
-				createEl('span', {'class': 'tracy-dump-key'}, [key]),
-				vis ? ' ' : null,
-				vis ? createEl('span', {'class': 'tracy-dump-visibility'}, [vis === 1 ? 'protected' : 'private']) : null,
+				type === TYPE_ARRAY
+					? createEl('span', {'class': 'tracy-dump-key'}, [key])
+					: createEl(
+						'span',
+						{'class': type === TYPE_OBJECT ? classes[vis] : 'tracy-dump-key'},
+						[key]
+					),
 				' => ',
 				...(ref ? [createEl('span', {'class': 'tracy-dump-hash'}, ['&' + ref]), ' '] : []),
 				build(val, repository, null, parentIds)

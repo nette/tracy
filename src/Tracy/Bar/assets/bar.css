@@ -392,9 +392,19 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	color: #850;
 }
 
-#tracy-debug .tracy-dump-visibility,
+#tracy-debug .tracy-dump-protected::after {
+	content: ' protected';
+}
+
+#tracy-debug .tracy-dump-private::after {
+	content: ' private';
+}
+
+#tracy-debug .tracy-dump-protected::after,
+#tracy-debug .tracy-dump-private::after,
 #tracy-debug .tracy-dump-hash {
-	font-size: 85%; color: #999;
+	font-size: 85%;
+	color: rgba(0, 0, 0, 0.5);
 }
 
 #tracy-debug .tracy-dump-indent {
