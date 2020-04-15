@@ -182,6 +182,7 @@ class Debugger
 			ini_set('display_errors', self::$productionMode ? '0' : '1'); // or 'stderr'
 			ini_set('html_errors', '0');
 			ini_set('log_errors', '0');
+			ini_set('zend.exception_ignore_args', '0');
 
 		} elseif (
 			ini_get('display_errors') != !self::$productionMode // intentionally ==
