@@ -80,7 +80,7 @@ final class Renderer
 		return '<pre class="tracy-dump' . ($value && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
 			. ($model->location && $this->locationSource ? Helpers::formatHtml(' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)) : null)
 			. ($snapshot === null ? '' : ' data-tracy-snapshot=' . self::formatSnapshotAttribute($snapshot))
-			. ($value ? " data-tracy-dump='" . json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
+			. ($value ? " data-tracy-dump='" . json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) . "'>" : '>')
 			. $html
 			. ($model->location && $this->locationLink ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
@@ -209,7 +209,7 @@ final class Renderer
 		if ($collapsed && $this->lazy !== false) {
 			$this->copySnapshot($value);
 			return $span . " data-tracy-dump='"
-				. json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
+				. json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) . "'>"
 				. $out . $count . ")</span>\n";
 		}
 
@@ -270,9 +270,7 @@ final class Renderer
 
 		if ($collapsed && $this->lazy !== false) {
 			$this->copySnapshot($value);
-			return $span . " data-tracy-dump='"
-				. json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP)
-				. "'>" . $out . "</span>\n";
+			return $span . " data-tracy-dump='" . json_encode($value) . "'>" . $out . "</span>\n";
 		}
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
@@ -347,6 +345,6 @@ final class Renderer
 
 	public static function formatSnapshotAttribute(array $snapshot): string
 	{
-		return "'" . json_encode($snapshot, JSON_HEX_APOS | JSON_HEX_AMP) . "'";
+		return "'" . json_encode($snapshot, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) . "'";
 	}
 }
