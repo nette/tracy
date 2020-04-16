@@ -27,6 +27,9 @@ class Debugger
 
 	public const COOKIE_SECRET = 'tracy-debug';
 
+	/** @var bool */
+	public static $behindProxy = false;
+
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
 

@@ -32,6 +32,13 @@ $ipFormatter = static function (?string $ip): ?string {
 	return $ip;
 };
 
+if (Debugger::$behindProxy === true) {
+	$serverIp = $ipFormatter(gethostbyname($serverName = php_uname('n')));
+} else {
+	$serverIp = $ipFormatter($serverIp = $_SERVER['SERVER_ADDR'] ?? null);
+	$serverName = $serverIp !== null && $serverIp !== '127.0.0.1' && $serverIp !== '::1' ? gethostbyaddr($serverIp) : 'localhost';
+}
+
 $opcache = function_exists('opcache_get_status') ? @opcache_get_status() : null; // @ can be restricted
 $cachedFiles = isset($opcache['scripts']) ? array_intersect(array_keys($opcache['scripts']), get_included_files()) : [];
 
@@ -44,7 +51,7 @@ $info = [
 	'Classes + interfaces + traits' => $countClasses(get_declared_classes()) . ' + '
 		. $countClasses(get_declared_interfaces()) . ' + ' . $countClasses(get_declared_traits()),
 	'Your IP' => $ipFormatter($_SERVER['REMOTE_ADDR'] ?? null),
-	'Server IP' => $ipFormatter(gethostbyname($serverName = php_uname('n'))),
+	'Server IP' => $serverIp,
 	'Server name' => $serverName,
 	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,
 	'PHP' => PHP_VERSION,
