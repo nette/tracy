@@ -56,15 +56,15 @@ pre.tracy-dump a:focus {
 }
 
 .tracy-dump-public::after {
-	content: ' public';
+	content: ' pub';
 }
 
 .tracy-dump-protected::after {
-	content: ' protected';
+	content: ' pro';
 }
 
 .tracy-dump-private::after {
-	content: ' private';
+	content: ' pri';
 }
 
 .tracy-dump-public::after,

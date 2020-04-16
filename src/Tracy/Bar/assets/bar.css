@@ -401,15 +401,15 @@ body#tracy-debug .tracy-panel { /* in popup window */
 }
 
 #tracy-debug .tracy-dump-public::after {
-	content: ' public';
+	content: ' pub';
 }
 
 #tracy-debug .tracy-dump-protected::after {
-	content: ' protected';
+	content: ' pro';
 }
 
 #tracy-debug .tracy-dump-private::after {
-	content: ' private';
+	content: ' pri';
 }
 
 #tracy-debug .tracy-dump-public::after,
