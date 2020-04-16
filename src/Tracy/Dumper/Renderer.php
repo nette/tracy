@@ -99,6 +99,7 @@ final class Renderer
 			}, $s);
 		}
 		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
+		$s = str_replace('…', '...', $s);
 
 		if ($this->locationLink && ([$file, $line] = $model->location)) {
 			$s .= "in $file:$line";
@@ -146,7 +147,7 @@ final class Renderer
 				return $this->renderString($value);
 
 			case $value->type === 'stop':
-				return '<span class="tracy-dump-array">array</span> (' . $value->value . ") [ ... ]\n";
+				return '<span class="tracy-dump-array">array</span> (' . $value->value . ") [ … ]\n";
 
 			case $value->type === 'resource':
 				return $this->renderResource($value, $depth);
@@ -187,7 +188,7 @@ final class Renderer
 		} else {
 			$struct = $this->snapshot[$value->value];
 			if (!isset($struct->items)) {
-				return $out . $struct->length . ") [ ... ]\n";
+				return $out . $struct->length . ") [ … ]\n";
 			}
 			$items = $struct->items;
 			$count = $struct->length ?? count($items);
@@ -227,7 +228,7 @@ final class Renderer
 		}
 
 		if ($count !== count($items)) {
-			$out .= $indent . "...\n";
+			$out .= $indent . "…\n";
 		}
 		array_pop($this->parents);
 		return $out . '</div>';
@@ -253,7 +254,7 @@ final class Renderer
 			. '</span> <span class="tracy-dump-hash">#' . $value->value . '</span>';
 
 		if (!isset($object->items)) {
-			return $out . " { ... }\n";
+			return $out . " { … }\n";
 
 		} elseif (!$object->items) {
 			return $out . "\n";
@@ -296,7 +297,7 @@ final class Renderer
 		}
 
 		if (isset($object->length) && $object->length !== count($object->items)) {
-			$out .= $indent . "...\n";
+			$out .= $indent . "…\n";
 		}
 		array_pop($this->parents);
 		return $out . '</div>';

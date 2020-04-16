@@ -72,6 +72,6 @@ Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"A0":{"length":8,"
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">2</span>: <span class="tracy-dump-number">3</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">3</span>: <span class="tracy-dump-number">4</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">4</span>: <span class="tracy-dump-number">5</span>
-<span class="tracy-dump-indent">   |  </span>...
+<span class="tracy-dump-indent">   |  </span>…
 </div></div></pre>
 ', Dumper::toHtml([$arr, (object) $arr], [Dumper::ITEMS => 5]));
