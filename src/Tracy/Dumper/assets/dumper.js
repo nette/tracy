@@ -259,7 +259,10 @@
 					? createEl('span', {'class': 'tracy-dump-key'}, [key])
 					: createEl(
 						'span',
-						{'class': classes[type === TYPE_OBJECT ? vis : 4]},
+						{
+							'class': classes[type === TYPE_RESOURCE ? 4 : typeof vis === 'string' ? 2 : vis],
+							'title': typeof vis === 'string' ? 'declared in ' + vis : null,
+						},
 						[key]
 					),
 				type === TYPE_ARRAY ? ' => ' : ': ',
