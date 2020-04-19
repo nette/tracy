@@ -30,5 +30,8 @@ Assert::match('Test #%d%', Dumper::toText(new Test, ['location' => Dumper::LOCAT
 Assert::match('Test #%d%', Dumper::toText(new Test, ['location' => Dumper::LOCATION_CLASS]));
 
 
-Assert::match('Test #%d%
-in %a%:%d%', Dumper::toText(new Test, ['location' => Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS]));
+Assert::match(<<<'XX'
+Test #%d%
+in %a%:%d%
+XX
+, Dumper::toText(new Test, ['location' => Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS]));
