@@ -39,7 +39,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">3</span> => <span class="tracy-dump-number">0</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-dump-number">0.0</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">5</span> => <span class="tracy-dump-string">'string'</span> (6)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-dump-string">'&#039;&amp;&quot;'</span> (3)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-dump-string">'&apos;&amp;&quot;'</span> (3)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">7</span> => <span class="tracy-dump-string">'\x00'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">8</span> => <span class="tracy-dump-number">INF</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">9</span> => <span class="tracy-dump-number">-INF</span>
@@ -72,7 +72,7 @@ XX
 
 // no lazy dump & location
 Assert::match(<<<'XX'
-<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&#039;location&#039; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS]))
+<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&apos;location&apos; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS]))
 in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace="><span class="tracy-toggle"><span class="tracy-dump-object" title="Declared in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>

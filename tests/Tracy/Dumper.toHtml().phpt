@@ -106,7 +106,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">new</span>: <span class="tracy-dump-number">7</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-number">8</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">9</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">&#039;&#039;</span>: <span class="tracy-dump-number">10</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">&apos;&apos;</span>: <span class="tracy-dump-number">10</span>
 </div></pre>
 XX
 , Dumper::toHtml($obj));

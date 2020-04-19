@@ -36,7 +36,7 @@
 			<h2><a data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
 
 			<div class="inner">
-				<p><b>File:</b> <span>%a% : eval()&#039;d code:1</span></p>
+				<p><b>File:</b> <span>%a% : eval()&apos;d code:1</span></p>
 							</div></div>
 
 
