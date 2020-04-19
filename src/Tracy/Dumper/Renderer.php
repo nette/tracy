@@ -109,7 +109,7 @@ final class Renderer
 				return "\033[" . (isset($m[1], $colors[$m[1]]) ? $colors[$m[1]] : '0') . 'm';
 			}, $s);
 		}
-		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
+		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES | ENT_HTML5);
 		$s = str_replace('…', '...', $s);
 
 		if ($this->sourceLocation && ([$file, $line] = $model->location)) {
