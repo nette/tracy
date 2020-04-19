@@ -164,13 +164,13 @@ final class Renderer
 	private function renderString($value): string
 	{
 		if (is_string($value)) {
-			return '<span class="tracy-dump-string">"'
+			return '<span class="tracy-dump-string">\''
 				. Helpers::escapeHtml($value)
-				. '"</span>' . (strlen($value) > 1 ? ' (' . strlen($value) . ')' : '') . "\n";
+				. '\'</span>' . (strlen($value) > 1 ? ' (' . strlen($value) . ')' : '') . "\n";
 		} else {
-			return '<span class="tracy-dump-string">"'
+			return '<span class="tracy-dump-string">\''
 				. Helpers::escapeHtml($value->value)
-				. '"</span>' . ($value->length > 1 ? ' (' . $value->length . ')' : '') . "\n";
+				. '\'</span>' . ($value->length > 1 ? ' (' . $value->length . ')' : '') . "\n";
 		}
 	}
 

@@ -26,35 +26,35 @@ $keys = [
 
 Assert::match(<<<'XX'
 array (%i%)
-   "" => 0
-   """ => 0
-   "'" => 0
+   '' => 0
+   '"' => 0
+   ''' => 0
    key => 0
-   " key" => 0
-   "key " => 0
+   ' key' => 0
+   'key ' => 0
    0 => 0
    01 => 0
-   "true" => 0
-   "false" => 0
-   "null" => 0
-   "NULL" => 0
+   'true' => 0
+   'false' => 0
+   'null' => 0
+   'NULL' => 0
 XX
 , Dumper::toText($keys));
 
 Assert::match(<<<'XX'
 stdClass #%d%
-   "": 0
-   """: 0
-   "'": 0
+   '': 0
+   '"': 0
+   ''': 0
    key: 0
-   " key": 0
-   "key ": 0
+   ' key': 0
+   'key ': 0
    0: 0
    01: 0
-   "true": 0
-   "false": 0
-   "null": 0
-   "NULL": 0
+   'true': 0
+   'false': 0
+   'null': 0
+   'NULL': 0
 XX
 , Dumper::toText((object) $keys));
 
@@ -69,18 +69,18 @@ Assert::equal([
 	[
 		'name' => 'stdClass',
 		'items' => [
-			['""', 0, 3],
-			['"""', 0, 3],
-			['"\'"', 0, 3],
+			["''", 0, 3],
+			["'\"'", 0, 3],
+			["'''", 0, 3],
 			['key', 0, 3],
-			['" key"', 0, 3],
-			['"key "', 0, 3],
+			["' key'", 0, 3],
+			["'key '", 0, 3],
 			['0', 0, 3],
 			['01', 0, 3],
-			['"true"', 0, 3],
-			['"false"', 0, 3],
-			['"null"', 0, 3],
-			['"NULL"', 0, 3],
+			["'true'", 0, 3],
+			["'false'", 0, 3],
+			["'null'", 0, 3],
+			["'NULL'", 0, 3],
 		],
 	],
 ], array_values(json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true)));

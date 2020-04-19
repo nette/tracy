@@ -15,15 +15,15 @@ require __DIR__ . '/../bootstrap.php';
 
 Assert::match(<<<XX
 array (9)
-   0 => ""
-   1 => " "
-   2 => "utf \n\r\t string" (14)
-   3 => "binary \\n\\r\\t string\\x00" (18)
-   4 => "utf \\n\\r\\t\\xab string" (21)
-   5 => "binary \\\\n\\\\r\\\\t\\\\xab string\\x00" (25)
-   6 => "Iñtërnâtiônàlizætiøn" (27)
-   7 => "\\x00"
-   8 => "\\xff"
+   0 => ''
+   1 => ' '
+   2 => 'utf \n\r\t string' (14)
+   3 => 'binary \\n\\r\\t string\\x00' (18)
+   4 => 'utf \\n\\r\\t\\xab string' (21)
+   5 => 'binary \\\\n\\\\r\\\\t\\\\xab string\\x00' (25)
+   6 => 'Iñtërnâtiônàlizætiøn' (27)
+   7 => '\\x00'
+   8 => '\\xff'
 XX
 , Dumper::toText([
 	'',
