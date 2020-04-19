@@ -99,11 +99,14 @@ final class Describer
 	 */
 	private function describeString(string $s)
 	{
-		$res = Helpers::encodeString($s, $this->maxLength);
+		$res = Helpers::encodeString($s, $this->maxLength, $utf);
 		if ($res === $s) {
 			return $res;
+		} elseif ($utf) { // is UTF-8
+			return new Value('string', $res, strlen(utf8_decode($s)));
+		} else {
+			return new Value('bin', $res, strlen($s));
 		}
-		return new Value('string', $res, strlen($s));
 	}
 
 

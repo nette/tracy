@@ -141,16 +141,19 @@
 				createEl('span', null, [data.text + '\n'])
 			]);
 
-		} else if (data.string !== undefined) {
+		} else if (data.string !== undefined || data.bin !== undefined) {
 			return createEl(null, null, [
 				createEl(
 					'span',
-					{'class': 'tracy-dump-string'},
+					{
+						'class': 'tracy-dump-string',
+						'title': (data.length || [...data.string].length) + (data.bin ? ' bytes' : ' characters'),
+					},
 					{html: data.string.indexOf('\n') < 0
 						? '\'' + data.string + '\''
 						: '\n   \'' + data.string.replace(/\n/g, '\n    ') + '\''}
 				),
-				' (' + (data.length || data.string.length) + ')\n',
+				'\n',
 			]);
 
 		} else {

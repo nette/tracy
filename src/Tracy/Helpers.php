@@ -335,7 +335,7 @@ class Helpers
 
 
 	/** @internal */
-	public static function encodeString(string $s, int $maxLength = null): string
+	public static function encodeString(string $s, int $maxLength = null, &$utf = null): string
 	{
 		static $tableU, $tableB;
 		if ($tableU === null) {

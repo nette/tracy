@@ -19,15 +19,15 @@ Assert::match(<<<XX
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-string">' '</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-string">'<span>\\x00</span>'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">3</span> => <span class="tracy-dump-string">'<span>\\xFF</span>'</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-dump-string">'Iñtërnâtiônàlizætiøn'</span> (27)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">5</span> => <span class="tracy-dump-string">
-   'utf <span>\\n</span>\n    <span>\\r\\t</span>\t<span>\\e\\x00</span> Iñtër'</span> (17)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-dump-string">'utf \\n\\r\\t\\xab Iñtër'</span> (22)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">7</span> => <span class="tracy-dump-string">
-   'binary <span>\\n</span>\n    <span>\\r\\t</span>\t<span>\\e\\x00</span> I<span>\\xC3\\xB1</span>t<span>\\xC3\\xAB</span>r <span>\\xA0</span>'</span> (22)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">8</span> => <span class="tracy-dump-string">'binary \\n\\r\\t\\xab I<span>\\xC3\\xB1</span>t<span>\\xC3\\xAB</span>r <span>\\xA0</span>'</span> (27)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">'utf <span>\\n</span>\n <span>\\r\\t</span>\t<span>\\e\\x00</span> Iñtër'</span> => <span class="tracy-dump-string">
-   'utf <span>\\n</span>\n    <span>\\r\\t</span>\t<span>\\e\\x00</span> Iñtër'</span> (17)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-dump-string" title="20 characters">'Iñtërnâtiônàlizætiøn'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">5</span> => <span class="tracy-dump-string" title="15 characters">
+   'utf <span>\\n</span>\n    <span>\\r\\t</span>\t<span>\\e\\x00</span> Iñtër'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-dump-string" title="20 characters">'utf \\n\\r\\t\\xab Iñtër'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">7</span> => <span class="tracy-dump-string" title="22 bytes">
+   'binary <span>\\n</span>\n    <span>\\r\\t</span>\t<span>\\e\\x00</span> I<span>\\xC3\\xB1</span>t<span>\\xC3\\xAB</span>r <span>\\xA0</span>'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">8</span> => <span class="tracy-dump-string" title="27 bytes">'binary \\n\\r\\t\\xab I<span>\\xC3\\xB1</span>t<span>\\xC3\\xAB</span>r <span>\\xA0</span>'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">'utf <span>\\n</span>\n <span>\\r\\t</span>\t<span>\\e\\x00</span> Iñtër'</span> => <span class="tracy-dump-string" title="15 characters">
+   'utf <span>\\n</span>\n    <span>\\r\\t</span>\t<span>\\e\\x00</span> Iñtër'</span>
 </div></pre>
 XX
 , Dumper::toHtml([

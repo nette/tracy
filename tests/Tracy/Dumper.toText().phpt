@@ -46,7 +46,7 @@ Assert::match("'\\x00'", Dumper::toText("\x00"));
 Assert::match(<<<'XX'
 array (5)
    0 => 1
-   1 => 'hello' (5)
+   1 => 'hello'
    2 => array ()
    3 => array (2)
    |  0 => 1
@@ -68,7 +68,7 @@ Assert::match('stdClass #%d%', Dumper::toText(new stdClass));
 
 Assert::match(<<<'XX'
 stdClass #%d%
-   '': 'foo' (3)
+   '': 'foo'
 XX
 , Dumper::toText((object) ['' => 'foo']));
 
@@ -77,7 +77,7 @@ Test #%d%
    x: array (2)
    |  0 => 10
    |  1 => null
-   y: 'hello' (5)
+   y: 'hello'
    z: 30.0
 XX
 , Dumper::toText(new Test));
@@ -97,7 +97,7 @@ Child #%d%
    x2: 4
    y2: 5
    z2: 6
-   y: 'hello' (5)
+   y: 'hello'
    new: 7
    0: 8
    1: 9

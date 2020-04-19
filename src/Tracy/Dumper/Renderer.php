@@ -144,6 +144,7 @@ final class Renderer
 				return '<span>' . Helpers::escapeHtml($value->value) . "</span>\n";
 
 			case $value->type === 'string':
+			case $value->type === 'bin':
 				return $this->renderString($value);
 
 			case $value->type === 'stop':
@@ -164,13 +165,16 @@ final class Renderer
 	private function renderString($value): string
 	{
 		if (is_string($value)) {
-			return '<span class="tracy-dump-string">\''
-				. $value
-				. '\'</span>' . (strlen($value) > 1 ? ' (' . strlen($value) . ')' : '') . "\n";
+			$len = strlen(utf8_decode($value));
+			return '<span class="tracy-dump-string"'
+				. ($len > 1 ? ' title="' . $len . ' characters"' : '')
+				. ">'$value'</span>\n";
 		} else {
-			return '<span class="tracy-dump-string">' . (strpos($value->value, "\n") === false ? '' : "\n   ") . "'"
+			return '<span class="tracy-dump-string"'
+				. ($value->length > 1 ? ' title="' . $value->length . ' ' . ($value->type === 'string' ? 'characters' : 'bytes') . '">' : '>')
+				. (strpos($value->value, "\n") === false ? '' : "\n   ") . "'"
 				. str_replace("\n", "\n    ", $value->value)
-				. '\'</span>' . ($value->length > 1 ? ' (' . $value->length . ')' : '') . "\n";
+				. "'</span>\n";
 		}
 	}
 
