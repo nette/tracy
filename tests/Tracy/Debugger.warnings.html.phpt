@@ -45,7 +45,7 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 </tr>
 <tr>
 	<td class="tracy-right">1%a%</td>
-	<td><pre>PHP Compile Warning: Unsupported declare &#039;foo&#039; in %a%:%d%</a></pre></td>
+	<td><pre>PHP Compile Warning: Unsupported declare &apos;foo&apos; in %a%:%d%</a></pre></td>
 </tr>
 </table>
 </div>%A%
