@@ -369,8 +369,10 @@ class Helpers
 			? [true, $tableU, strlen(utf8_decode($s))]
 			: [false, $tableB, strlen($s)];
 
-		if ($maxLength && $len > $maxLength) {
-			$s = strtr(self::truncateString($s, $maxLength, $utf), $table) . ' <span>…</span> ';
+		if ($maxLength && $len > $maxLength + 20) {
+			$s = strtr(self::truncateString($s, $maxLength, $utf), $table)
+				. ' <span>…</span> '
+				. strtr(self::truncateString($s, -10, $utf), $table);
 		} else {
 			$s = strtr($s, $table);
 		}
@@ -380,22 +382,15 @@ class Helpers
 
 
 	/** @internal */
-	public static function truncateString(string $s, int $maxLength, bool $utf): string
+	public static function truncateString(string $s, int $len, bool $utf): string
 	{
 		if (!$utf) {
-			return substr($s, 0, $maxLength);
+			return $len < 0 ? substr($s, $len) : substr($s, 0, $len);
 		} elseif (function_exists('mb_substr')) {
-			$s = mb_substr($s, 0, $maxLength, 'UTF-8');
+			return $len < 0 ? mb_substr($s, $len, -$len, 'UTF-8') : mb_substr($s, 0, $len, 'UTF-8');
 		} else {
-			$i = $len = 0;
-			while (isset($s[$i])) {
-				if (($s[$i] < "\x80" || $s[$i] >= "\xC0") && (++$len > $maxLength)) {
-					$s = substr($s, 0, $i);
-					break;
-				}
-				$i++;
-			}
+			$len < 0 ? preg_match('#.{0,' . -$len . '}\z#us', $s, $m) : preg_match("#^.{0,$len}#us", $s, $m);
+			return $m[0];
 		}
-		return $s;
 	}
 }
