@@ -140,7 +140,7 @@ final class Describer
 		foreach ($arr as $k => $v) {
 			$refId = $this->getReferenceId($arr, $k);
 			$items[] = [
-				$this->describeKey($k),
+				is_int($k) ? $k : $this->describeKey($k),
 				is_string($k) && isset($this->keysToHide[strtolower($k)])
 					? new Value('text', self::hideValue($v))
 					: $this->describeVar($v, $depth + 1, $refId),
@@ -192,7 +192,7 @@ final class Describer
 			$struct->items = [];
 			if (isset($this->resourceExposers[$type])) {
 				foreach (($this->resourceExposers[$type])($resource) as $k => $v) {
-					$struct->items[] = [$k, $this->describeVar($v, $depth + 1)];
+					$struct->items[] = [htmlspecialchars($k), $this->describeVar($v, $depth + 1)];
 				}
 			}
 		}
@@ -207,7 +207,7 @@ final class Describer
 	private function describeKey($key)
 	{
 		return is_int($key) || (preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
-			? $key
+			? htmlspecialchars((string) $key)
 			: "'" . Helpers::encodeString($key, $this->maxLength) . "'";
 	}
 
