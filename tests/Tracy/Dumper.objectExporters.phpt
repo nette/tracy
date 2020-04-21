@@ -43,6 +43,9 @@ $exporters = [
 		$describer->addPropertyTo($value, 'x', $var->a + 2, Value::PROP_PUBLIC);
 		$value->items[] = [$describer->describeKey('key'), new Value(Value::TYPE_TEXT, 'hello')];
 		$value->items[] = [new Value(Value::TYPE_TEXT, '$x'), new Value(Value::TYPE_TEXT, 'hello')];
+		$inner = new Value(Value::TYPE_OBJECT, 'hello');
+		$describer->addPropertyTo($inner, 'a', 'b', Value::PROP_PUBLIC);
+		$value->items[] = ['object', $inner];
 	},
 ];
 Assert::match(<<<'XX'
@@ -51,7 +54,9 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">3</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">key</span>: <span>hello</span>
 <span class="tracy-dump-indent">   </span><span>$x</span>: <span>hello</span>
-</div></pre>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">object</span>: <span class="tracy-toggle"><span class="tracy-dump-object">hello</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-dump-string">'b'</span>
+</div></div></pre>
 XX
 , Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));
 
