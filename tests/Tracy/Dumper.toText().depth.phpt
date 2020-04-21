@@ -34,15 +34,15 @@ $arr = [
 
 Assert::match(<<<'XX'
 array (4)
-   'long' => 'Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... '
+   'long' => 'Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ...  Framework'
    0 => array (1)
    |  0 => array (1)
    |  |  0 => array (1)
    |  |  |  'hello' => 'world'
-   'long2' => 'Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... '
-   1 => stdClass #%d%
-   |  0: stdClass #%d%
-   |  |  0: stdClass #%d%
+   'long2' => 'Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ...  Framework'
+   1 => stdClass #%a%
+   |  0: stdClass #%a%
+   |  |  0: stdClass #%a%
    |  |  |  hello: 'world'
 XX
 , Dumper::toText($arr));
@@ -50,12 +50,12 @@ XX
 
 Assert::match(<<<'XX'
 array (4)
-   'long' => 'Nette FrameworkNette FrameworkNette FrameworkNette ... '
+   'long' => 'Nette FrameworkNette FrameworkNette FrameworkNette ...  Framework'
    0 => array (1)
    |  0 => array (1) ...
-   'long2' => 'Nette FrameworkNette FrameworkNette FrameworkNette ... '
-   1 => stdClass #%d%
-   |  0: stdClass #%d% ...
+   'long2' => 'Nette FrameworkNette FrameworkNette FrameworkNette ...  Framework'
+   1 => stdClass #%a%
+   |  0: stdClass #%a% ...
 XX
 , Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
 
