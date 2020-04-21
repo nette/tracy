@@ -273,7 +273,8 @@ final class Renderer
 
 		$out = '<span class="tracy-dump-object"' . $editorAttributes . '>'
 			. Helpers::escapeHtml($object->value)
-			. '</span> <span class="tracy-dump-hash">#' . $object->id . '</span>';
+			. '</span>'
+			. ($object->id ? ' <span class="tracy-dump-hash">#' . $object->id . '</span>' : '');
 
 		if ($object->items === null) {
 			return $out . ' …';
@@ -281,10 +282,10 @@ final class Renderer
 		} elseif (!$object->items) {
 			return $out;
 
-		} elseif (in_array($object->id, $this->parents, true)) {
+		} elseif ($object->id && in_array($object->id, $this->parents, true)) {
 			return $out . ' <i>RECURSION</i>';
 
-		} elseif ($object->depth < $depth || in_array($object->id, $this->above, true)) {
+		} elseif ($object->id && ($object->depth < $depth || in_array($object->id, $this->above, true))) {
 			if ($this->lazy !== false) {
 				$ref = new Value(Value::TYPE_REF, $object->id);
 				$this->copySnapshot($ref);
@@ -300,9 +301,11 @@ final class Renderer
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
 		if ($collapsed && $this->lazy !== false) {
-			$ref = new Value(Value::TYPE_REF, $object->id);
-			$this->copySnapshot($ref);
-			return $span . " data-tracy-dump='" . json_encode($ref) . "'>" . $out . '</span>';
+			$value = isset($object->id) ? new Value(Value::TYPE_REF, $object->id) : $object;
+			$this->copySnapshot($value);
+			return $span . " data-tracy-dump='"
+				. json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "'>"
+				. $out . '</span>';
 		}
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
