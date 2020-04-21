@@ -197,7 +197,7 @@ final class Describer
 	 */
 	private function describeKey($key)
 	{
-		return is_int($key) || (preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
+		return is_int($key) || (preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
 			? $key
 			: '"' . Helpers::encodeString($key, $this->maxLength) . '"';
 	}
