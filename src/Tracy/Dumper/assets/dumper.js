@@ -196,8 +196,7 @@ function build(data, repository, collapsed, parentIds, keyType) {
 						title: data.editor ? 'Declared in file ' + data.editor.file + ' on line ' + data.editor.line + (data.editor.url ? '\nCtrl-Click to open in editor' : '') : null,
 						'data-tracy-href': data.editor ? data.editor.url : null
 					}, [data.object || data.resource]),
-					' ',
-					createEl('span', {'class': 'tracy-dump-hash'}, [data.resource ? '@' + id.substr(1) : '#' + id])
+					...(id ? [' ', createEl('span', {'class': 'tracy-dump-hash'}, [data.resource ? '@' + id.substr(1) : '#' + id])] : [])
 				],
 			recursive ? ' RECURSION' : ' …',
 			recursive ? null : data.items,
