@@ -146,7 +146,9 @@
 				createEl(
 					'span',
 					{'class': 'tracy-dump-string'},
-					{html: '\'' + data.string + '\''}
+					{html: data.string.indexOf('\n') < 0
+						? '\'' + data.string + '\''
+						: '\n   \'' + data.string.replace(/\n/g, '\n    ') + '\''}
 				),
 				' (' + (data.length || data.string.length) + ')\n',
 			]);
@@ -263,6 +265,7 @@
 			} else {
 				[key, val, vis, ref] = items[i];
 			}
+			key = (key + '').replace(/\n/g, '\n ');
 			createEl(el, null, [
 				type === TYPE_ARRAY
 					? createEl('span', {'class': 'tracy-dump-key'}, {html: key})
