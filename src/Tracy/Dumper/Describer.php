@@ -143,7 +143,7 @@ final class Describer
 		foreach ($arr as $k => $v) {
 			$refId = $this->getReferenceId($arr, $k);
 			$items[] = [
-				is_int($k) ? $k : $this->describeKey($k),
+				$this->describeVar($k, $depth + 1),
 				is_string($k) && isset($this->keysToHide[strtolower($k)])
 					? new Value('text', self::hideValue($v))
 					: $this->describeVar($v, $depth + 1, $refId),
@@ -203,14 +203,10 @@ final class Describer
 	}
 
 
-	/**
-	 * @param  int|string  $key
-	 * @return int|string
-	 */
-	private function describeKey($key)
+	private function describeKey(string $key): string
 	{
-		return is_int($key) || (preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
-			? htmlspecialchars((string) $key)
+		return preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key)
+			? htmlspecialchars($key)
 			: "'" . Helpers::encodeString($key, $this->maxLength) . "'";
 	}
 

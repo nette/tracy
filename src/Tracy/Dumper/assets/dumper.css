@@ -42,7 +42,6 @@ pre.tracy-dump a:focus {
 	color: #35D;
 }
 
-.tracy-dump-key span,
 .tracy-dump-virtual span,
 .tracy-dump-dynamic span,
 .tracy-dump-string span {

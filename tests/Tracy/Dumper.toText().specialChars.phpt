@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Assert::match(<<<XX
-array (10)
+array (12)
    0 => ''
    1 => ' '
    2 => '\\x00'
@@ -25,8 +25,11 @@ array (10)
    7 =>
    'binary \\n\n    \\r\\t\t\\e\\x00 I\\xC3\\xB1t\\xC3\\xABr \\xA0'
    8 => 'binary \\n\\r\\t\\xab I\\xC3\\xB1t\\xC3\\xABr \\xA0'
-   'utf \\n\n \\r\\t\t\\e\\x00 Iñtër' =>
-   'utf \\n\n    \\r\\t\t\\e\\x00 Iñtër'
+   'utf \\n\\r\\t\\xab Iñtër' => 1
+   'utf \\n
+ \\r\\t	\\e\\x00 Iñtër' => 2
+   'utf \\n
+ \\r\\t	\\e\\x00 I\\xC3\\xB1t\\xC3\\xABr \\xA0' => 3
 XX
 , Dumper::toText([
 	'',
@@ -38,5 +41,7 @@ XX
 	'utf \n\r\t\xab Iñtër', // slashes
 	"binary \n\r\t\e\x00 Iñtër \xA0", // binary + control chars
 	'binary \n\r\t\xab Iñtër ' . "\xA0", // binary + slashes
-	"utf \n\r\t\e\x00 Iñtër" => "utf \n\r\t\e\x00 Iñtër", // utf + control chars in key
+	'utf \n\r\t\xab Iñtër' => 1, // slashes in key
+	"utf \n\r\t\e\x00 Iñtër" => 2, // utf + control chars in key
+	"utf \n\r\t\e\x00 Iñtër \xA0" => 3, // binary + control chars in key
 ]));

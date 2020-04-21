@@ -70,12 +70,12 @@ $key = $objStorage->key();
 Assert::match(<<<'XX'
 <pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">SplObjectStorage</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">0</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">object</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span>
-<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">data</span> => <span class="tracy-dump-string" title="2 characters">'o1'</span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'object'</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span>
+<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'data'</span> => <span class="tracy-dump-string" title="2 characters">'o1'</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">1</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">object</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'object'</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-dynamic">foo</span>: <span class="tracy-dump-string" title="3 characters">'bar'</span>
-</div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">data</span> => <span class="tracy-dump-string" title="2 characters">'o2'</span>
+</div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'data'</span> => <span class="tracy-dump-string" title="2 characters">'o2'</span>
 </div></div></pre>
 XX
 , Dumper::toHtml($objStorage));

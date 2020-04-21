@@ -95,7 +95,7 @@
 	}
 
 
-	function build(data, repository, collapsed, parentIds) {
+	function build(data, repository, collapsed, parentIds, isKey) {
 		let type = data === null ? 'null' : typeof data,
 			collapseCount = collapsed === null ? COLLAPSE_COUNT : COLLAPSE_COUNT_TOP;
 
@@ -153,7 +153,7 @@
 					},
 					{html: data.string.indexOf('\n') < 0
 						? '\'' + data.string + '\''
-						: '\n   \'' + data.string.replace(/\n/g, '\n    ') + '\''}
+						: (isKey ? '\'' + data.string.replace(/\n/g, '\n ') : '\n   \'' + data.string.replace(/\n/g, '\n    ')) + '\''}
 				),
 			]);
 
@@ -269,17 +269,17 @@
 			} else {
 				[key, val, vis, ref] = items[i];
 			}
-			key = (key + '').replace(/\n/g, '\n ');
+
 			createEl(el, null, [
 				type === TYPE_ARRAY
-					? createEl('span', {'class': 'tracy-dump-key'}, {html: key})
+					? build(key, null, null, null, true)
 					: createEl(
 						'span',
 						{
 							'class': classes[type === TYPE_RESOURCE ? 4 : typeof vis === 'string' ? 2 : vis],
 							'title': typeof vis === 'string' ? 'declared in ' + vis : null,
 						},
-						{html: key}
+						{html: key.replace(/\n/g, '\n ')}
 					),
 				type === TYPE_ARRAY ? ' => ' : ': ',
 				...(ref ? [createEl('span', {'class': 'tracy-dump-hash'}, ['&' + ref]), ' '] : []),

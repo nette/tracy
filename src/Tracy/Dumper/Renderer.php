@@ -113,7 +113,7 @@ final class Renderer
 	/**
 	 * @param  mixed  $value
 	 */
-	private function renderVar($value, int $depth = 0): string
+	private function renderVar($value, int $depth = 0, bool $isKey = false): string
 	{
 		switch (true) {
 			case $value === null:
@@ -129,7 +129,7 @@ final class Renderer
 				return '<span class="tracy-dump-number">' . json_encode($value) . '</span>';
 
 			case is_string($value):
-				return $this->renderString($value);
+				return $this->renderString($value, $isKey);
 
 			case is_array($value):
 			case $value->type === 'array':
@@ -146,7 +146,7 @@ final class Renderer
 
 			case $value->type === 'string':
 			case $value->type === 'bin':
-				return $this->renderString($value);
+				return $this->renderString($value, $isKey);
 
 			case $value->type === 'stop':
 				return '<span class="tracy-dump-array">array</span> (' . $value->value . ') …';
@@ -163,13 +163,17 @@ final class Renderer
 	/**
 	 * @param  string|Value  $value
 	 */
-	private function renderString($value): string
+	private function renderString($value, bool $isKey): string
 	{
-		if (is_string($value)) {
+		if ($isKey) {
+			return '<span class="tracy-dump-string">\'' . str_replace("\n", "\n ", is_string($value) ? $value : $value->value) . "'</span>";
+
+		} elseif (is_string($value)) {
 			$len = strlen(utf8_decode($value));
 			return '<span class="tracy-dump-string"'
 				. ($len > 1 ? ' title="' . $len . ' characters"' : '')
 				. ">'$value'</span>";
+
 		} else {
 			return '<span class="tracy-dump-string"'
 				. ($value->length > 1 ? ' title="' . $value->length . ' ' . ($value->type === 'string' ? 'characters' : 'bytes') . '">' : '>')
@@ -227,7 +231,8 @@ final class Renderer
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + $fill;
 			$out .= $indent
-				. '<span class="tracy-dump-key">' . str_replace("\n", "\n ", $k) . '</span> => '
+				. $this->renderVar($k, $depth + 1, true)
+				. ' => '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))
 				. (substr($tmp, -6) === '</div>' ? '' : "\n");
