@@ -15,44 +15,43 @@ require __DIR__ . '/fixtures/DumpClass.php';
 
 
 // scalars & empty array
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span>
-</pre>', Dumper::toHtml(null));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>' . "\n", Dumper::toHtml(null));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span>
-</pre>', Dumper::toHtml(true));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span></pre>' . "\n", Dumper::toHtml(true));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">false</span>
-</pre>', Dumper::toHtml(false));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-bool">false</span></pre>' . "\n", Dumper::toHtml(false));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span>
-</pre>', Dumper::toHtml(0));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-number">0</span></pre>' . "\n", Dumper::toHtml(0));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">1</span>
-</pre>', Dumper::toHtml(1));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-number">1</span></pre>' . "\n", Dumper::toHtml(1));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0.0</span>
-</pre>', Dumper::toHtml(0.0));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-number">0.0</span></pre>' . "\n", Dumper::toHtml(0.0));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0.1</span>
-</pre>', Dumper::toHtml(0.1));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-number">0.1</span></pre>' . "\n", Dumper::toHtml(0.1));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">INF</span>
-</pre>', Dumper::toHtml(INF));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-number">INF</span></pre>' . "\n", Dumper::toHtml(INF));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">-INF</span>
-</pre>', Dumper::toHtml(-INF));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-number">-INF</span></pre>' . "\n", Dumper::toHtml(-INF));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">NAN</span>
-</pre>', Dumper::toHtml(NAN));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-number">NAN</span></pre>' . "\n", Dumper::toHtml(NAN));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-string">\'\'</span>
-</pre>', Dumper::toHtml(''));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-string">\'\'</span></pre>' . "\n", Dumper::toHtml(''));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-string">\'0\'</span>
-</pre>', Dumper::toHtml('0'));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-string">\'0\'</span></pre>' . "\n", Dumper::toHtml('0'));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-string">\'<span>\\x00</span>\'</span>
-</pre>', Dumper::toHtml("\x00"));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-string">\'<span>\\x00</span>\'</span></pre>' . "\n", Dumper::toHtml("\x00"));
+
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()</pre>' . "\n", Dumper::toHtml([]));
+
+
+// array
+Assert::same(str_replace("\r", '', <<<'XX'
+<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">1</span>
+</div></pre>
+
+XX
+), Dumper::toHtml([1]));
 
 
 // array (with snapshot)
@@ -72,8 +71,7 @@ XX
 
 // object
 Assert::match(<<<'XX'
-<pre class="tracy-dump"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span>
-</pre>
+<pre class="tracy-dump"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
 , Dumper::toHtml(new stdClass));
 

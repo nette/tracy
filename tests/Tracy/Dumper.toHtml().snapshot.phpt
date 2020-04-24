@@ -25,17 +25,13 @@ function formatSnapshot(array $snapshot): array
 $snapshot = [];
 $options = [Dumper::SNAPSHOT => &$snapshot];
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span>
-</pre>', Dumper::toHtml(null, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span>
-</pre>', Dumper::toHtml(true, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span></pre>', Dumper::toHtml(true, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span>
-</pre>', Dumper::toHtml(0, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span></pre>', Dumper::toHtml(0, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()
-</pre>', Dumper::toHtml([], $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()</pre>', Dumper::toHtml([], $options));
 Assert::same([], $snapshot);
 
 
@@ -64,8 +60,7 @@ Assert::equal([
 
 
 // dump() with already created snapshot
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span>
-</pre>', Dumper::toHtml(null, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
 
 
 // snapshot and resource
