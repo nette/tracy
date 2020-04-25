@@ -262,13 +262,15 @@ generates the output:
 
 ![dump](https://nette.github.io/tracy/images/tracy-dump.png)
 
-You can also change the nesting depth by `Dumper::$maxDepth` and displayed strings length by `Dumper::$maxLength`. Naturally, lower values accelerate Tracy rendering.
+You can also change the nesting depth by `Dumper::$maxDepth`, displayed strings length by `Dumper::$maxLength`, maximum number of items by `Dumper::$maxItems` and other options. Naturally, lower values accelerate Tracy rendering.
 
 ```php
 use Tracy\Dumper;
 
 Dumper::$maxDepth = 2; // default: 3
 Dumper::$maxLength = 50; // default: 150
+Dumper::$maxItems = 50; // default: 100
+Dumper::$keysToHide = ['password']; // default: []
 ```
 
 The `dump()` function can display useful location information:
