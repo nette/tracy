@@ -82,8 +82,14 @@ class Dumper
 	/** @var int  how long strings display by dump() */
 	public static $maxLength = 150;
 
+	/** @var int  how many items in array/object display by dump() */
+	public static $maxItems = 100;
+
 	/** @var bool display location by dump()? */
 	public static $showLocation = false;
+
+	/** @var array  sensitive keys not displayed by dump() */
+	public static $keysToHide = [];
 
 	/** @var Describer */
 	private $describer;
@@ -120,7 +126,9 @@ class Dumper
 		return [
 			self::DEPTH => Debugger::$maxDepth ?? self::$maxDepth,
 			self::TRUNCATE => Debugger::$maxLength ?? self::$maxLength,
+			self::ITEMS => self::$maxItems,
 			self::LOCATION => Debugger::$showLocation ?? self::$showLocation,
+			self::KEYS_TO_HIDE => self::$keysToHide,
 		];
 	}
 

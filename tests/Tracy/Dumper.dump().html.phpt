@@ -51,3 +51,20 @@ test(function () { // returned value
 	$obj = new stdClass;
 	Assert::same(Dumper::dump($obj), $obj);
 });
+
+
+test(function () { // options
+	$arr = ['loooooooooooooooooooooong texxxxxt', [2, 3, 4, 5, 6, 7, 8]];
+	ob_start();
+	Dumper::$showLocation = false;
+	Dumper::$maxItems = 3;
+	Dumper::dump($arr, [Dumper::TRUNCATE => 10]);
+	Assert::match(<<<'XX'
+<pre class="tracy-dump" data-tracy-snapshot='[]'
+><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-string" title="34 characters">'looooooooo <span>…</span> g texxxxxt'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"array":null,"length":7,"items":[[0,2],[1,3],[2,4]]}'><span class="tracy-dump-array">array</span> (7)</span>
+</div></pre>
+XX
+, ob_get_clean());
+});
