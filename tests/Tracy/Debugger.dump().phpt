@@ -24,7 +24,7 @@ test(function () { // production mode
 	Debugger::dump('sensitive data');
 	Assert::same('', ob_get_clean());
 
-	Assert::match("'forced'", Debugger::dump('forced', true));
+	Assert::match('%a%forced%a%', Debugger::dump('forced', true));
 });
 
 
@@ -36,7 +36,7 @@ test(function () { // development mode
 	Assert::match("'sensitive data'
 	", ob_get_clean());
 
-	Assert::match("'forced'", Debugger::dump('forced', true));
+	Assert::match('%a%forced%a%', Debugger::dump('forced', true));
 });
 
 

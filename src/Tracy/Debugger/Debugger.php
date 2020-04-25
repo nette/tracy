@@ -61,16 +61,16 @@ class Debugger
 
 	/********************* Debugger::dump() ****************d*g**/
 
-	/** @var int  how many nested levels of array/object properties display by dump() */
-	public static $maxDepth = 3;
+	/** @deprecated  use Tracy\Dumper::$maxDepth */
+	public static $maxDepth;
 
-	/** @var int  how long strings display by dump() */
-	public static $maxLength = 150;
+	/** @deprecated  use Tracy\Dumper::$maxLength */
+	public static $maxLength;
 
-	/** @var bool display location by dump()? */
-	public static $showLocation = false;
+	/** @deprecated  use Tracy\Dumper::$showLocation */
+	public static $showLocation;
 
-	/** @deprecated */
+	/** @deprecated  use Tracy\Dumper::$maxLength */
 	public static $maxLen;
 
 	/********************* logging ****************d*g**/
@@ -498,31 +498,19 @@ class Debugger
 
 
 	/**
-	 * Dumps information about a variable in readable format.
+	 * @deprecated use dump()
 	 * @tracySkipLocation
-	 * @param  mixed  $var  variable to dump
-	 * @param  bool   $return  return output instead of printing it? (bypasses $productionMode)
-	 * @return mixed  variable itself or dump
 	 */
 	public static function dump($var, bool $return = false)
 	{
 		if ($return) {
-			return Helpers::capture(function () use ($var) {
-				Dumper::dump($var, [
-					Dumper::DEPTH => self::$maxDepth,
-					Dumper::TRUNCATE => self::$maxLength,
-				]);
-			});
-
-		} elseif (!self::$productionMode) {
-			Dumper::dump($var, [
-				Dumper::DEPTH => self::$maxDepth,
-				Dumper::TRUNCATE => self::$maxLength,
-				Dumper::LOCATION => self::$showLocation,
+			$m = PHP_SAPI === 'cli' ? 'toText' : 'toHtml';
+			return Dumper::$m($var, [
+				Dumper::DEPTH => self::$maxDepth ?? Dumper::$maxDepth,
+				Dumper::TRUNCATE => self::$maxLength ?? Dumper::$maxLength,
 			]);
 		}
-
-		return $var;
+		return Dumper::dump($var);
 	}
 
 
@@ -554,9 +542,9 @@ class Debugger
 				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'), 'Tracy:dumps');
 			}
 			$panel->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, $options + [
-				Dumper::DEPTH => self::$maxDepth,
-				Dumper::TRUNCATE => self::$maxLength,
-				Dumper::LOCATION => self::$showLocation ?: Dumper::LOCATION_CLASS | Dumper::LOCATION_SOURCE,
+				Dumper::DEPTH => self::$maxDepth ?? Dumper::$maxDepth,
+				Dumper::TRUNCATE => self::$maxLength ?? Dumper::$maxLength,
+				Dumper::LOCATION => (self::$showLocation ?? Dumper::$showLocation) ?: Dumper::LOCATION_CLASS | Dumper::LOCATION_SOURCE,
 				Dumper::LAZY => true,
 			])];
 		}
