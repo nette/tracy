@@ -88,9 +88,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		}
 		foreach ($options as $key => $value) {
 			if ($value !== null) {
-				$key = ($key === 'fromEmail' ? 'getLogger()->' : '$') . $key;
+				static $tbl = [
+					'maxLength' => 'Dumper::$maxLength',
+					'maxDepth' => 'Dumper::$maxDepth',
+					'showLocation' => 'Dumper::$showLocation',
+					'fromEmail' => 'Debugger::getLogger()->fromEmail',
+				];
 				$initialize->addBody($builder->formatPhp(
-					'Tracy\Debugger::' . $key . ' = ?;',
+					'Tracy\\' . ($tbl[$key] ?? 'Debugger::$' . $key) . ' = ?;',
 					Nette\DI\Helpers::filterArguments([$value])
 				));
 			}
