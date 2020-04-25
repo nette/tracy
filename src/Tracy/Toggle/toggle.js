@@ -5,14 +5,24 @@
 'use strict';
 
 (function() {
+	const MOVE_THRESHOLD = 100;
 
 	// enables <a class="tracy-toggle" href="#"> or <span data-tracy-ref="#"> toggling
 	class Toggle
 	{
 		static init() {
+			let start;
+			document.documentElement.addEventListener('mousedown', (e) => {
+				start = [e.clientX, e.clientY];
+			});
+
 			document.documentElement.addEventListener('click', (e) => {
-				let el = e.target.closest('.tracy-toggle');
-				if (el && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
+				let el;
+				if (
+					!e.shiftKey && !e.ctrlKey && !e.metaKey
+					&& (el = e.target.closest('.tracy-toggle'))
+					&& Math.pow(start[0] - e.clientX, 2) + Math.pow(start[1] - e.clientY, 2) < MOVE_THRESHOLD
+				) {
 					Toggle.toggle(el);
 					e.stopImmediatePropagation();
 				}
