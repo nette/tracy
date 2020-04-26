@@ -44,7 +44,10 @@ Assert::same('array (0)' . "\n", Dumper::toText([]));
 
 
 // array
-Assert::same(str_replace("\r", '', <<<'XX'
+Assert::same(str_replace(
+	"\r",
+	'',
+	<<<'XX'
 array (1)
    0 => 1
 

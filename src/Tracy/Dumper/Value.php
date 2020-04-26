@@ -30,11 +30,12 @@ final class Value implements \JsonSerializable
 		PROP_PROTECTED = 1,
 		PROP_DYNAMIC = 3,
 		PROP_VIRTUAL = 4;
-		// private is string
+	// private is string
 
 	/** @var string */
 	public $type;
 
+	/** @var string|int */
 	public $value;
 
 	/** @var ?int */

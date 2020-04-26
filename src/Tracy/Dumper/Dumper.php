@@ -70,10 +70,10 @@ class Dumper
 
 	/** @var array */
 	public static $objectExporters = [
-		'Closure' => [Exposer::class, 'exposeClosure'],
-		'SplFileInfo' => [Exposer::class, 'exposeSplFileInfo'],
-		'SplObjectStorage' => [Exposer::class, 'exposeSplObjectStorage'],
-		'__PHP_Incomplete_Class' => [Exposer::class, 'exposePhpIncompleteClass'],
+		\Closure::class => [Exposer::class, 'exposeClosure'],
+		\SplFileInfo::class => [Exposer::class, 'exposeSplFileInfo'],
+		\SplObjectStorage::class => [Exposer::class, 'exposeSplObjectStorage'],
+		\__PHP_Incomplete_Class::class => [Exposer::class, 'exposePhpIncompleteClass'],
 	];
 
 	/** @var Describer */
@@ -105,7 +105,7 @@ class Dumper
 	 */
 	public static function toHtml($var, array $options = []): string
 	{
-		return (new static($options))->asHtml($var);
+		return (new self($options))->asHtml($var);
 	}
 
 
@@ -114,7 +114,7 @@ class Dumper
 	 */
 	public static function toText($var, array $options = []): string
 	{
-		return (new static($options))->asTerminal($var);
+		return (new self($options))->asTerminal($var);
 	}
 
 
@@ -123,7 +123,7 @@ class Dumper
 	 */
 	public static function toTerminal($var, array $options = []): string
 	{
-		return (new static($options))->asTerminal($var, self::$terminalColors);
+		return (new self($options))->asTerminal($var, self::$terminalColors);
 	}
 
 
