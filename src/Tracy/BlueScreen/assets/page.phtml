@@ -34,7 +34,6 @@ $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 	<style class="tracy-debug">
 	<?= str_replace('</', '<\/', $css) ?>
 	</style>
-	<script<?= $nonceAttr ?>>document.documentElement.className+=' tracy-js'</script>
 </head>
 
 
