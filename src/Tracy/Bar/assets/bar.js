@@ -385,7 +385,6 @@ class Debug
 		Debug.layer.innerHTML = addNonces(content);
 		(document.body || document.documentElement).appendChild(Debug.layer);
 		evalScripts(Debug.layer);
-		Tracy.Dumper.init(); // for common dump()
 		Debug.layer.style.display = 'block';
 		Debug.bar.init();
 
