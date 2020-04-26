@@ -294,3 +294,13 @@ function UnknownEntityException() {}
 
 let Tracy = window.Tracy = window.Tracy || {};
 Tracy.Dumper = Dumper;
+
+function init() {
+	Dumper.init();
+}
+
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', init);
+} else {
+	init();
+}
