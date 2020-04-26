@@ -114,11 +114,11 @@ body#tracy-debug { /* in popup window */
 }
 
 /* TableSort */
-#tracy-debug .tracy-sortable tr:first-child > * {
+#tracy-debug .tracy-sortable > :first-child > tr:first-child > * {
 	position: relative;
 }
 
-#tracy-debug .tracy-sortable tr:first-child > *:hover:before {
+#tracy-debug .tracy-sortable > :first-child > tr:first-child > *:hover:before {
 	position: absolute;
 	right: .3em;
 	content: "\21C5";
