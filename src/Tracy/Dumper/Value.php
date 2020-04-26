@@ -35,6 +35,7 @@ final class Value implements \JsonSerializable
 	/** @var string */
 	public $type;
 
+	/** @var string|int */
 	public $value;
 
 	/** @var ?int */
