@@ -44,10 +44,10 @@ final class Describer
 	/** @var callable[] */
 	public $resourceExposers;
 
-	/** @var callable[] */
+	/** @var array<string,callable> */
 	public $objectExposers;
 
-	/** @var int[] */
+	/** @var (int|\stdClass)[] */
 	private $references = [];
 
 
