@@ -19,4 +19,4 @@ require __DIR__ . '/Tracy/Logger/Logger.php';
 require __DIR__ . '/Tracy/Debugger/Debugger.php';
 require __DIR__ . '/Tracy/OutputDebugger/OutputDebugger.php';
 require __DIR__ . '/Tracy/Helpers.php';
-require __DIR__ . '/Tracy/shortcuts.php';
+require __DIR__ . '/Tracy/functions.php';
