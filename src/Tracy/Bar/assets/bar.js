@@ -5,8 +5,14 @@
 'use strict';
 
 (function(){
-	let nonce, contentId, ajaxCounter = 1;
-	let baseUrl = location.href.split('#')[0];
+	let panelZIndex = 20000,
+		maxAjaxRows = 3,
+		autoRefresh = true,
+		nonce = document.currentScript.getAttribute('nonce') || document.currentScript.nonce,
+		contentId = document.currentScript.dataset.id,
+		ajaxCounter = 1,
+		baseUrl = location.href.split('#')[0];
+
 	baseUrl += (baseUrl.indexOf('?') < 0 ? '?' : '&');
 
 	class Panel
@@ -93,7 +99,7 @@
 					Debug.panels[id].elem.classList.remove(Panel.FOCUSED);
 				}
 				elem.classList.add(Panel.FOCUSED);
-				elem.style.zIndex = Tracy.panelZIndex + Panel.zIndexCounter++;
+				elem.style.zIndex = panelZIndex + Panel.zIndexCounter++;
 			}
 		}
 
@@ -191,7 +197,7 @@
 			if (this.is(Panel.WINDOW)) {
 				localStorage.setItem(key, JSON.stringify({window: true}));
 			} else if (pos.width) { // is visible?
-				localStorage.setItem(key, JSON.stringify({right: pos.right, bottom: pos.bottom, width: pos.width, height: pos.height, zIndex: this.elem.style.zIndex - Tracy.panelZIndex, resized: this.is(Panel.RESIZED)}));
+				localStorage.setItem(key, JSON.stringify({right: pos.right, bottom: pos.bottom, width: pos.width, height: pos.height, zIndex: this.elem.style.zIndex - panelZIndex, resized: this.is(Panel.RESIZED)}));
 			} else {
 				localStorage.removeItem(key);
 			}
@@ -215,7 +221,7 @@
 					this.elem.style.height = pos.height + 'px';
 				}
 				setPosition(this.elem, pos);
-				this.elem.style.zIndex = Tracy.panelZIndex + (pos.zIndex || 1);
+				this.elem.style.zIndex = panelZIndex + (pos.zIndex || 1);
 				Panel.zIndexCounter = Math.max(Panel.zIndexCounter, (pos.zIndex || 1)) + 1;
 			}
 		}
@@ -375,6 +381,8 @@
 	class Debug
 	{
 		static init(content) {
+			Debug.bar = new Bar;
+			Debug.panels = {};
 			Debug.layer = document.createElement('div');
 			Debug.layer.setAttribute('id', 'tracy-debug');
 			Debug.layer.innerHTML = addNonces(content);
@@ -399,7 +407,7 @@
 		static loadAjax(content) {
 			let rows = Debug.bar.elem.querySelectorAll('.tracy-row[data-tracy-group=ajax]');
 			rows = Array.from(rows).reverse();
-			let max = window.TracyMaxAjaxRows || 3;
+			let max = maxAjaxRows;
 			rows.forEach((row) => {
 				if (--max > 0) {
 					return;
@@ -470,7 +478,7 @@
 
 			XMLHttpRequest.prototype.open = function() {
 				oldOpen.apply(this, arguments);
-				if (window.TracyAutoRefresh !== false && new URL(arguments[1], location.origin).host === location.host) {
+				if (autoRefresh && new URL(arguments[1], location.origin).host === location.host) {
 					let reqId = header + '_' + ajaxCounter++;
 					this.setRequestHeader('X-Tracy-Ajax', reqId);
 					this.addEventListener('load', function() {
@@ -485,7 +493,7 @@
 			window.fetch = function(request, options) {
 				request = request instanceof Request ? request : new Request(request, options || {});
 
-				if (window.TracyAutoRefresh !== false && new URL(request.url, location.origin).host === location.host) {
+				if (autoRefresh && new URL(request.url, location.origin).host === location.host) {
 					let reqId = header + '_' + ajaxCounter++;
 					request.headers.set('X-Tracy-Ajax', reqId);
 					return oldFetch(request).then((response) => {
@@ -510,6 +518,13 @@
 			Debug.scriptElem.src = url;
 			Debug.scriptElem.setAttribute('nonce', nonce);
 			(document.body || document.documentElement).appendChild(Debug.scriptElem);
+		}
+
+
+		static setOptions(options) {
+			maxAjaxRows = options.maxAjaxRows || maxAjaxRows;
+			autoRefresh = typeof options.autoRefresh !== 'undefined' ? options.autoRefresh : autoRefresh;
+			panelZIndex = options.panelZIndex || panelZIndex;
 		}
 	}
 
@@ -671,18 +686,15 @@
 	}
 
 
-	if (document.currentScript) {
-		nonce = document.currentScript.getAttribute('nonce') || document.currentScript.nonce;
-		contentId = document.currentScript.dataset.id;
-	}
-
 	let Tracy = window.Tracy = window.Tracy || {};
-	Tracy.panelZIndex = Tracy.panelZIndex || 20000;
 	Tracy.DebugPanel = Panel;
 	Tracy.DebugBar = Bar;
 	Tracy.Debug = Debug;
 	Tracy.getAjaxHeader = () => contentId;
 
-	Debug.bar = new Bar;
-	Debug.panels = {};
+	Debug.setOptions({
+		panelZIndex: Tracy.panelZIndex,
+		maxAjaxRows: window.TracyMaxAjaxRows,
+		autoRefresh: window.TracyAutoRefresh,
+	});
 })();
