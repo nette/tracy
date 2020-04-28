@@ -385,6 +385,82 @@ class Helpers
 	}
 
 
+	/** @internal */
+	public static function minifyJs(string $s): string
+	{
+		// author: Jakub Vrana https://php.vrana.cz/minifikace-javascriptu.php
+		$last = '';
+		return preg_replace_callback(
+			'(
+				(?:
+					(^|[-+\([{}=,:;!%^&*|?~]|/(?![/*])|return|throw) # context before regexp
+					(?:\s|//[^\n]*+\n|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
+					(/(?![/*])(?:\\\\[^\n]|[^[\n/\\\\]|\[(?:\\\\[^\n]|[^]])++)+/) # regexp
+					|(^
+						|\'(?:\\\\.|[^\n\'\\\\])*\'
+						|"(?:\\\\.|[^\n"\\\\])*"
+						|([0-9A-Za-z_$]+)
+						|([-+]+)
+						|.
+					)
+				)(?:\s|//[^\n]*+\n|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
+			())sx',
+			function ($match) use (&$last) {
+				[, $context, $regexp, $result, $word, $operator] = $match;
+				if ($word !== '') {
+					$result = ($last === 'word' ? ' ' : ($last === 'return' ? ' ' : '')) . $result;
+					$last = ($word === 'return' || $word === 'throw' || $word === 'break' ? 'return' : 'word');
+				} elseif ($operator) {
+					$result = ($last === $operator[0] ? ' ' : '') . $result;
+					$last = $operator[0];
+				} else {
+					if ($regexp) {
+						$result = $context . ($context === '/' ? ' ' : '') . $regexp;
+					}
+					$last = '';
+				}
+				return $result;
+			},
+			$s . "\n"
+		);
+	}
+
+
+	/** @internal */
+	public static function minifyCss(string $s): string
+	{
+		$last = '';
+		return preg_replace_callback(
+			'(
+				(^
+					|\'(?:\\\\.|[^\n\'\\\\])*\'
+					|"(?:\\\\.|[^\n"\\\\])*"
+					|([0-9A-Za-z_*#.%:()-]+)
+					|.
+				)(?:\s|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
+			())sx',
+			function ($match) use (&$last) {
+				[, $result, $word] = $match;
+				if ($last === ';') {
+					$result = $result === '}' ? '}' : ';' . $result;
+					$last = '';
+				}
+				if ($word !== '') {
+					$result = ($last === 'word' ? ' ' : '') . $result;
+					$last = 'word';
+				} elseif ($result === ';') {
+					$last = ';';
+					$result = '';
+				} else {
+					$last = '';
+				}
+				return $result;
+			},
+			$s . "\n"
+		);
+	}
+
+
 	public static function detectColors(): bool
 	{
 		return (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg')
