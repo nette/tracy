@@ -8,10 +8,13 @@ declare(strict_types=1);
 
 use Tester\Assert;
 use Tracy\Debugger;
-use Tracy\Dumper;
 
 
 require __DIR__ . '/../bootstrap.php';
+
+if (PHP_SAPI === 'cli') {
+	Tester\Environment::skip('Requires CGI mode');
+}
 
 
 test(function () { // html mode
@@ -27,18 +30,8 @@ XX
 });
 
 
-test(function () { // terminal mode
-	header('Content-Type: text/plain');
-	Dumper::$useColors = true;
-	ob_start();
-	dump(123);
-	Assert::match("\e[1;32m123\e[0m", ob_get_clean());
-});
-
-
 test(function () { // text mode
 	header('Content-Type: text/plain');
-	Dumper::$useColors = false;
 	ob_start();
 	dump(123);
 	Assert::match('123', ob_get_clean());
