@@ -16,7 +16,7 @@ $blueScreen->render(new Exception);
 $output = ob_get_clean();
 
 // divided into two strings so that the searched string is not found in the source code of this file
-Assert::contains('/* custom ' . 'asset <\/> */', $output);
+Assert::contains('custom-asset{}', $output);
 
 
 $bar = new Tracy\Bar;
@@ -25,4 +25,4 @@ $_GET['_tracy_bar'] = 'js';
 $bar->dispatchAssets();
 $output = ob_get_clean();
 
-Assert::contains('\/* custom asset <\/> *\/', $output);
+Assert::contains('custom-asset{}', $output);
