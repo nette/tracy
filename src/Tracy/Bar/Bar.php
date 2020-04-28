@@ -229,11 +229,11 @@ class Bar
 	var el = document.createElement('style');
 	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
 	el.className='tracy-debug';
-	el.textContent=" . json_encode(preg_replace('#\s+#u', ' ', implode($css))) . ";
+	el.textContent=" . json_encode(Helpers::minifyCss(implode($css))) . ";
 	document.head.appendChild(el);})
 ();\n";
 
-		array_map(function ($file) { echo '(function() {', file_get_contents($file), '})();'; }, [
+		array_map(function ($file) { echo '(function(){', Helpers::minifyJs(file_get_contents($file)), '})();'; }, [
 			__DIR__ . '/assets/bar.js',
 			__DIR__ . '/../Toggle/toggle.js',
 			__DIR__ . '/../TableSort/table-sort.js',
