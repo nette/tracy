@@ -111,7 +111,7 @@ class Dumper
 			if (self::$useColors === null) {
 				self::$useColors = Helpers::detectColors();
 			}
-			echo $dumper->asTerminal($var, self::$useColors ? self::$terminalColors : []);
+			fwrite(STDOUT, $dumper->asTerminal($var, self::$useColors ? self::$terminalColors : []));
 
 		} elseif (preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) { // non-html
 			echo $dumper->asTerminal($var);

@@ -12,6 +12,10 @@ use Tracy\Debugger;
 
 require __DIR__ . '/../bootstrap.php';
 
+if (PHP_SAPI === 'cli') {
+	Tester\Environment::skip('Requires CGI mode');
+}
+
 
 header('Content-Type: text/plain');
 Tracy\Dumper::$useColors = false;
