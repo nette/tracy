@@ -229,7 +229,7 @@ class Bar
 	var el = document.createElement('style');
 	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
 	el.className='tracy-debug';
-	el.textContent=" . json_encode(preg_replace('#\s+#u', ' ', implode($css))) . ";
+	el.textContent=" . json_encode(Helpers::minifyCss(implode($css))) . ";
 	document.head.appendChild(el);})
 ();\n";
 

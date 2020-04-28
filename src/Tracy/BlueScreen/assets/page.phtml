@@ -43,7 +43,7 @@ $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 <script<?= $nonceAttr ?>>
 'use strict';
 <?php
-array_map(function ($file) { echo '(function(){', file_get_contents($file), '})();'; }, [
+array_map(function ($file) { echo '(function(){', str_replace(['<!--', '</s'], ['<\!--', '<\/s'], Helpers::minifyJs(file_get_contents($file))), '})();'; }, [
 	__DIR__ . '/../../Toggle/toggle.js',
 	__DIR__ . '/../../TableSort/table-sort.js',
 	__DIR__ . '/../../Dumper/assets/dumper.js',

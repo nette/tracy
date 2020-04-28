@@ -147,7 +147,7 @@ class BlueScreen
 			__DIR__ . '/../TableSort/table-sort.css',
 			__DIR__ . '/../Dumper/assets/dumper.css',
 		], Debugger::$customCssFiles));
-		$css = preg_replace('#\s+#u', ' ', implode($css));
+		$css = Helpers::minifyCss(implode($css));
 
 		$nonce = $toScreen ? Helpers::getNonce() : null;
 		$actions = $toScreen ? $this->renderActions($exception) : [];
