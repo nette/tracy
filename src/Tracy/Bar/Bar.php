@@ -233,12 +233,13 @@ class Bar
 	document.head.appendChild(el);})
 ();\n";
 
-		array_map('readfile', array_merge([
+		array_map(function ($file) { echo '(function() {', file_get_contents($file), '})();'; }, [
 			__DIR__ . '/assets/bar.js',
 			__DIR__ . '/../Toggle/toggle.js',
 			__DIR__ . '/../TableSort/table-sort.js',
 			__DIR__ . '/../Dumper/assets/dumper.js',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.js',
-		], Debugger::$customJsFiles));
+		]);
+		array_map('readfile', Debugger::$customJsFiles);
 	}
 }
