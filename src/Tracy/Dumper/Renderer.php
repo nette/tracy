@@ -147,7 +147,7 @@ final class Renderer
 				return $this->renderString($value);
 
 			case $value->type === 'stop':
-				return '<span class="tracy-dump-array">array</span> (' . $value->value . ") [ … ]\n";
+				return '<span class="tracy-dump-array">array</span> (' . $value->value . ") …\n";
 
 			case $value->type === 'resource':
 				return $this->renderResource($value, $depth);
@@ -188,12 +188,12 @@ final class Renderer
 		} else {
 			$struct = $this->snapshot[$value->value];
 			if (!isset($struct->items)) {
-				return $out . $struct->length . ") [ … ]\n";
+				return $out . $struct->length . ") …\n";
 			}
 			$items = $struct->items;
 			$count = $struct->length ?? count($items);
 			if (in_array($value->value, $this->parents, true)) {
-				return $out . $count . ") [ <i>RECURSION</i> ]\n";
+				return $out . $count . ") <i>RECURSION</i>\n";
 			}
 		}
 
@@ -254,13 +254,13 @@ final class Renderer
 			. '</span> <span class="tracy-dump-hash">#' . $value->value . '</span>';
 
 		if (!isset($object->items)) {
-			return $out . " { … }\n";
+			return $out . " …\n";
 
 		} elseif (!$object->items) {
 			return $out . "\n";
 
 		} elseif (in_array($value->value, $this->parents, true)) {
-			return $out . " { <i>RECURSION</i> }\n";
+			return $out . " <i>RECURSION</i>\n";
 		}
 
 		$collapsed = $depth
