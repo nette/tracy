@@ -194,6 +194,7 @@ final class Renderer
 		if (is_array($value)) {
 			$items = $value;
 			$count = count($value);
+			$out .= $count . ')';
 		} else {
 			$struct = $this->snapshot[$value->value];
 			if (!isset($struct->items)) {
@@ -201,13 +202,14 @@ final class Renderer
 			}
 			$items = $struct->items;
 			$count = $struct->length ?? count($items);
+			$out .= $count . ')';
 			if (in_array($value->value, $this->parents, true)) {
-				return $out . $count . ') <i>RECURSION</i>';
+				return $out . ' <i>RECURSION</i>';
 			}
 		}
 
-		if (!$count) {
-			return $out . '0)';
+		if (!$items) {
+			return $out;
 		}
 
 		$collapsed = $depth
@@ -220,10 +222,10 @@ final class Renderer
 			$this->copySnapshot($value);
 			return $span . " data-tracy-dump='"
 				. json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) . "'>"
-				. $out . $count . ')</span>';
+				. $out . '</span>';
 		}
 
-		$out = $span . '>' . $out . $count . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$fill = [2 => null];
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[] = is_object($value) ? $value->value : null;
@@ -318,20 +320,22 @@ final class Renderer
 
 	private function renderResource(Value $value, int $depth): string
 	{
-		$resource = $this->snapshot[$value->value];
-		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($resource->name) . '</span> '
+		$struct = $this->snapshot[$value->value];
+		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($struct->name) . '</span> '
 			. '<span class="tracy-dump-hash">@' . substr($value->value, 1) . '</span>';
-		if ($resource->items) {
-			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
-			foreach ($resource->items as [$k, $v]) {
-				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					. '<span class="tracy-dump-virtual">' . $k . '</span>: '
-					. ($tmp = $this->renderVar($v, $depth + 1))
-					. (substr($tmp, -6) === '</div>' ? '' : "\n");
-			}
-			return $out . '</div>';
+
+		if (!$struct->items) {
+			return $out;
 		}
-		return $out;
+
+		$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
+		foreach ($struct->items as [$k, $v]) {
+			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
+				. '<span class="tracy-dump-virtual">' . $k . '</span>: '
+				. ($tmp = $this->renderVar($v, $depth + 1))
+				. (substr($tmp, -6) === '</div>' ? '' : "\n");
+		}
+		return $out . '</div>';
 	}
 
 
