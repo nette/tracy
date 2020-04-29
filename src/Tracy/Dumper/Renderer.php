@@ -207,7 +207,7 @@ final class Renderer
 		}
 
 		if (!$count) {
-			return $out . ')';
+			return $out . '0)';
 		}
 
 		$collapsed = $depth

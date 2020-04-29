@@ -116,7 +116,7 @@
 			return buildStruct(
 				[
 					createEl('span', {'class': 'tracy-dump-array'}, ['array']),
-					' (' + (data.length || '') + ')'
+					' (' + data.length + ')'
 				],
 				' …',
 				data,
