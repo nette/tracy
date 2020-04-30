@@ -133,26 +133,26 @@ final class Renderer
 				return $this->renderString($value, $isKey);
 
 			case is_array($value):
-			case $value->type === 'array':
+			case $value->type === $value::TYPE_ARRAY:
 				return $this->renderArray($value, $depth);
 
-			case $value->type === 'object':
+			case $value->type === $value::TYPE_OBJECT:
 				return $this->renderObject($value, $depth);
 
-			case $value->type === 'number':
+			case $value->type === $value::TYPE_NUMBER:
 				return '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . '</span>';
 
-			case $value->type === 'text':
+			case $value->type === $value::TYPE_TEXT:
 				return '<span>' . Helpers::escapeHtml($value->value) . '</span>';
 
-			case $value->type === 'string':
-			case $value->type === 'bin':
+			case $value->type === $value::TYPE_STRING:
+			case $value->type === $value::TYPE_BINARY:
 				return $this->renderString($value, $isKey);
 
-			case $value->type === 'stop':
+			case $value->type === $value::TYPE_STOP:
 				return '<span class="tracy-dump-array">array</span> (' . $value->value . ') …';
 
-			case $value->type === 'resource':
+			case $value->type === $value::TYPE_RESOURCE:
 				return $this->renderResource($value, $depth);
 
 			default:
@@ -177,7 +177,7 @@ final class Renderer
 
 		} else {
 			return '<span class="tracy-dump-string"'
-				. ($value->length > 1 ? ' title="' . $value->length . ' ' . ($value->type === 'string' ? 'characters' : 'bytes') . '">' : '>')
+				. ($value->length > 1 ? ' title="' . $value->length . ' ' . ($value->type === $value::TYPE_STRING ? 'characters' : 'bytes') . '">' : '>')
 				. (strpos($value->value, "\n") === false ? '' : "\n   ") . "'"
 				. str_replace("\n", "\n    ", $value->value)
 				. "'</span>";

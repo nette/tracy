@@ -85,12 +85,12 @@ final class Describer
 	private function describeDouble(float $num)
 	{
 		if (!is_finite($num)) {
-			return new Value('number', (string) $num);
+			return new Value(Value::TYPE_NUMBER, (string) $num);
 		}
 		$js = json_encode($num);
 		return strpos($js, '.')
 			? $num
-			: new Value('number', "$js.0"); // to distinct int and float in JS
+			: new Value(Value::TYPE_NUMBER, "$js.0"); // to distinct int and float in JS
 	}
 
 
@@ -103,9 +103,9 @@ final class Describer
 		if ($res === $s) {
 			return $res;
 		} elseif ($utf) { // is UTF-8
-			return new Value('string', $res, strlen(utf8_decode($s)));
+			return new Value(Value::TYPE_STRING, $res, strlen(utf8_decode($s)));
 		} else {
-			return new Value('bin', $res, strlen($s));
+			return new Value(Value::TYPE_BINARY, $res, strlen($s));
 		}
 	}
 
@@ -117,7 +117,7 @@ final class Describer
 	{
 		if ($refId || count($arr) > $this->maxItems) {
 			$id = $refId ? 'a' . $refId : 'A' . count($this->snapshot);
-			$res = new Value('array', $id);
+			$res = new Value(Value::TYPE_ARRAY, $id);
 
 			$struct = &$this->snapshot[$id];
 			if (!$struct) {
@@ -136,7 +136,7 @@ final class Describer
 			$items = &$struct->items;
 
 		} elseif ($arr && $depth >= $this->maxDepth) {
-			return new Value('stop', count($arr));
+			return new Value(Value::TYPE_STOP, count($arr));
 		}
 
 		$items = [];
@@ -145,7 +145,7 @@ final class Describer
 			$items[] = [
 				$this->describeVar($k, $depth + 1),
 				is_string($k) && isset($this->keysToHide[strtolower($k)])
-					? new Value('text', self::hideValue($v))
+					? new Value(Value::TYPE_TEXT, self::hideValue($v))
 					: $this->describeVar($v, $depth + 1, $refId),
 			] + ($refId ? [2 => $refId] : []);
 		}
@@ -165,7 +165,7 @@ final class Describer
 				$struct->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
 			}
 		} elseif ($struct->depth <= $depth) {
-			return new Value('object', $id);
+			return new Value(Value::TYPE_OBJECT, $id);
 		}
 
 		if ($depth < $this->maxDepth) {
@@ -178,7 +178,7 @@ final class Describer
 				$this->addProperty($struct, $k, $v, Exposer::PROP_VIRTUAL, $this->getReferenceId($props, $k));
 			}
 		}
-		return new Value('object', $id);
+		return new Value(Value::TYPE_OBJECT, $id);
 	}
 
 
@@ -199,7 +199,7 @@ final class Describer
 				}
 			}
 		}
-		return new Value('resource', $id);
+		return new Value(Value::TYPE_RESOURCE, $id);
 	}
 
 
@@ -219,7 +219,7 @@ final class Describer
 		}
 		$k = (string) $k;
 		$v = isset($this->keysToHide[strtolower($k)])
-			? new Value('text', self::hideValue($v))
+			? new Value(Value::TYPE_TEXT, self::hideValue($v))
 			: $this->describeVar($v, $struct->depth + 1, $refId);
 		$struct->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
 	}
