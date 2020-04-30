@@ -257,11 +257,18 @@
 
 
 		initTabs(elem) {
+			if (this.elem.querySelectorAll('.tracy-row li a[rel=toggle]').length) {
+				this.restoreToggleState();
+			}
+
 			elem.querySelectorAll('a').forEach((link) => {
 				link.addEventListener('click', (e) => {
 					if (link.rel === 'close') {
 						this.close();
-
+					} else if (link.rel === 'toggle') {
+						toggleBar(elem, !getToggleState(elem), getExcludedPanels(this.elem));
+						this.saveToggleState();
+						this.restorePosition();
 					} else if (link.rel) {
 						let panel = Debug.panels[link.rel];
 						panel.init();
@@ -286,7 +293,7 @@
 				});
 
 				link.addEventListener('mouseenter', (e) => {
-					if (e.buttons || !link.rel || link.rel === 'close' || elem.classList.contains('tracy-dragged')) {
+					if (e.buttons || !link.rel || link.rel === 'close' || link.rel === 'toggle' || elem.classList.contains('tracy-dragged')) {
 						return;
 					}
 
@@ -313,7 +320,7 @@
 				link.addEventListener('mouseleave', () => {
 					clearTimeout(this.displayTimeout);
 
-					if (link.rel && link.rel !== 'close' && !elem.classList.contains('tracy-dragged')) {
+					if (link.rel && link.rel !== 'close' && link.rel !== 'toggle' && !elem.classList.contains('tracy-dragged')) {
 						Debug.panels[link.rel].blur();
 					}
 				});
@@ -362,6 +369,21 @@
 			let pos = JSON.parse(localStorage.getItem(this.id));
 			setPosition(this.elem, pos || {right: 0, bottom: 0});
 			this.savePosition();
+		}
+
+
+		saveToggleState() {
+			let state = getToggleState(this.elem);
+			if (getPosition(this.elem).width) { // is visible?
+				localStorage.setItem(this.id + '-toggle', state ? 'true' : 'false');
+			}
+		}
+
+
+		restoreToggleState() {
+			let state = localStorage.getItem(this.id + '-toggle') !== 'false';
+			toggleBar(this.elem, state, getExcludedPanels(this.elem));
+			this.saveToggleState();
 		}
 
 
@@ -658,6 +680,75 @@
 			width: elem.offsetWidth,
 			height: elem.offsetHeight
 		};
+	}
+
+
+	function isPanelExcluded(currentRel, excludedPanels) {
+		return excludedPanels.some(function(exception) {
+			return currentRel.match(new RegExp(exception.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&') + '(-|$)'));
+		});
+	}
+
+
+	function getExcludedPanels(elem) {
+		let dataset = JSON.parse(elem.querySelectorAll('.tracy-row li a[rel=toggle]')[0].dataset.excludedPanels), i;
+		for (i = 0; i < dataset.length; i++) {
+			dataset[i] = 'tracy-debug-panel-' + dataset[i];
+		}
+
+		return dataset;
+	}
+
+
+	function toggleBar(elem, state, excludedPanels) {
+		elem.querySelectorAll('.tracy-row').forEach((row) => {
+			let listItems = row.querySelectorAll('li'), i;
+
+			for (i = 0; i < listItems.length; ++i) {
+				let a = listItems[i].querySelectorAll('a');
+
+				if (row.dataset.tracyGroup === 'main') {
+					// skip tracy-debug-logo and close
+					if (i === 0 || i === listItems.length -1) {
+						continue;
+					}
+
+					if (a.length) {
+						if (isPanelExcluded(a[0].rel, excludedPanels)) {
+							continue;
+						}
+
+						if (a[0].rel === 'toggle') {
+							a[0].title = state ? a[0].dataset.titleMinimize : a[0].dataset.titleMaximize;
+							a[0].innerText = state ? '\u2212' : '\u002B';
+
+							continue;
+						}
+					}
+				} else {
+					if ((i === 0 && state === false) || (a.length && isPanelExcluded(a[0].rel, excludedPanels))) {
+						continue;
+					}
+				}
+
+				listItems[i].toggleAttribute('hidden', !state);
+			}
+
+			if (row.dataset.tracyGroup !== 'main') {
+				let visibleItems = row.querySelectorAll('li:not([hidden=""])');
+
+				// some panels are visible occasionally, e.g. Tracy-dumps
+				// hide tracy-debug-logo when there is no other visible panel
+				if (visibleItems.length === 1 && state === false) {
+					visibleItems[0].toggleAttribute('hidden', !state);
+				}
+			}
+		});
+	}
+
+
+	function getToggleState(elem) {
+		return elem.querySelectorAll('.tracy-row[data-tracy-group=main] .tracy-bar-toggler a')[0].innerHTML !== '\u002B'; // plus sign
 	}
 
 
