@@ -19,7 +19,6 @@ if (PHP_SAPI === 'cli') {
 
 
 header('Content-Type: text/plain');
-Dumper::$terminalColors = null;
 
 
 test(function () { // text mode
