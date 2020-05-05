@@ -210,12 +210,12 @@ final class Renderer
 			if (in_array($value->value, $this->parents, true)) {
 				return $out . ' <i>RECURSION</i>';
 
-			} elseif (in_array($value->value, $this->above, true)) {
+			} elseif ($struct->depth < $depth || in_array($value->value, $this->above, true)) {
 				if ($this->lazy !== false) {
 					$this->copySnapshot($value);
 					return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($value) . "'>" . $out . "</span>\n";
 				}
-				return $out . ' <i>see above</i>';
+				return $out . ($struct->depth < $depth ? ' <i>see below</i>' : ' <i>see above</i>');
 			}
 		}
 
@@ -287,12 +287,12 @@ final class Renderer
 		} elseif (in_array($value->value, $this->parents, true)) {
 			return $out . ' <i>RECURSION</i>';
 
-		} elseif (in_array($value->value, $this->above, true)) {
+		} elseif ($object->depth < $depth || in_array($value->value, $this->above, true)) {
 			if ($this->lazy !== false) {
 				$this->copySnapshot($value);
 				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($value) . "'>" . $out . "</span>\n";
 			}
-			return $out . ' <i>see above</i>';
+			return $out . ($object->depth < $depth ? ' <i>see below</i>' : ' <i>see above</i>');
 		}
 
 		$collapsed = $depth

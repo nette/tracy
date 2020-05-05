@@ -42,15 +42,9 @@ array (6)
    'a' => stdClass #%d%
    |  b: array (1)
    |  |  'c' => array (5)
-   |  |  |  0 => Test #%d%
-   |  |  |  |  a: array (1)
-   |  |  |  |  |  1 => array (1)
-   |  |  |  |  |  |  2 => array (1) ...
+   |  |  |  0 => Test #%d% see below
    |  |  |  1 => Test #%d% ...
-   |  |  |  2 => &1 array (1)
-   |  |  |  |  1 => array (1)
-   |  |  |  |  |  2 => array (1)
-   |  |  |  |  |  |  3 => 'item'
+   |  |  |  2 => &1 array (1) see below
    |  |  |  3 => array (1) ...
    |  |  |  4 => stream resource @%d%
    |  |  |  |  timed_out: false
@@ -62,21 +56,27 @@ array (6)
    |  |  |  |  unread_bytes: 0
    |  |  |  |  seekable: true
    |  |  |  |  uri: '%a%'
-   |  0: Test #%d% see above
+   |  0: Test #%d% see below
    |  1: Test #%d%
    |  |  a: array (1)
    |  |  |  1 => array (1) ...
-   |  2: &1 array (1) see above
+   |  2: &1 array (1) see below
    |  3: array (1)
    |  |  1 => array (1)
    |  |  |  2 => array (1) ...
    |  4: stream resource @%d% see above
-   0 => Test #%d% see above
+   0 => Test #%d%
+   |  a: array (1)
+   |  |  1 => array (1)
+   |  |  |  2 => array (1) ...
    1 => Test #%d%
    |  a: array (1)
    |  |  1 => array (1)
    |  |  |  2 => array (1) ...
-   2 => &1 array (1) see above
+   2 => &1 array (1)
+   |  1 => array (1)
+   |  |  2 => array (1)
+   |  |  |  3 => 'item'
    3 => array (1)
    |  1 => array (1)
    |  |  2 => array (1)
