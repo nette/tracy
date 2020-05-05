@@ -18,7 +18,7 @@ if (PHP_SAPI !== 'cli') {
 
 
 test(function () { // colors
-	putenv('ConEmuANSI=ON');
+	putenv('FORCE_COLOR=1');
 	ob_start();
 	dump(123);
 	Assert::match("\e[1;32m123\e[0m", ob_get_clean());
