@@ -29,7 +29,7 @@ XX
 
 test(function () { // terminal mode
 	header('Content-Type: text/plain');
-	putenv('ConEmuANSI=ON');
+	Dumper::$useColors = true;
 	ob_start();
 	Assert::same(123, Dumper::dump(123));
 	Assert::match("\e[1;32m123\e[0m", ob_get_clean());
@@ -38,7 +38,7 @@ test(function () { // terminal mode
 
 test(function () { // text mode
 	header('Content-Type: text/plain');
-	Tracy\Dumper::$terminalColors = null;
+	Dumper::$useColors = false;
 	ob_start();
 	Dumper::dump(123);
 	Assert::match('123', ob_get_clean());
