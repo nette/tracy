@@ -27,6 +27,15 @@ class Debugger
 
 	public const COOKIE_SECRET = 'tracy-debug';
 
+	/** for Debugger::log() and Debugger::fireLog() */
+	public const
+		DEBUG = ILogger::DEBUG,
+		INFO = ILogger::INFO,
+		WARNING = ILogger::WARNING,
+		ERROR = ILogger::ERROR,
+		EXCEPTION = ILogger::EXCEPTION,
+		CRITICAL = ILogger::CRITICAL;
+
 	/** @var bool in production mode is suppressed any debugging output */
 	public static $productionMode = self::DETECT;
 
@@ -38,15 +47,6 @@ class Debugger
 
 	/** @var int size of reserved memory */
 	public static $reservedMemorySize = 500000;
-
-	/** @var bool */
-	private static $enabled = false;
-
-	/** @var string|null reserved memory; also prevents double rendering */
-	private static $reserved;
-
-	/** @var int initial output buffer level */
-	private static $obLevel;
 
 	/********************* errors and exceptions reporting ****************d*g**/
 
@@ -84,15 +84,6 @@ class Debugger
 	/** @var string|array email(s) to which send error notifications */
 	public static $email;
 
-	/** for Debugger::log() and Debugger::fireLog() */
-	public const
-		DEBUG = ILogger::DEBUG,
-		INFO = ILogger::INFO,
-		WARNING = ILogger::WARNING,
-		ERROR = ILogger::ERROR,
-		EXCEPTION = ILogger::EXCEPTION,
-		CRITICAL = ILogger::CRITICAL;
-
 	/********************* misc ****************d*g**/
 
 	/** @var int timestamp with microseconds of the start of the request */
@@ -115,6 +106,15 @@ class Debugger
 
 	/** @var string[] */
 	public static $customJsFiles = [];
+
+	/** @var bool */
+	private static $enabled = false;
+
+	/** @var string|null reserved memory; also prevents double rendering */
+	private static $reserved;
+
+	/** @var int initial output buffer level */
+	private static $obLevel;
 
 	/** @var array|null */
 	private static $cpuUsage;
