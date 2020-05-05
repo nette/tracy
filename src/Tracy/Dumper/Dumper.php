@@ -91,6 +91,9 @@ class Dumper
 	/** @var array  sensitive keys not displayed by dump() */
 	public static $keysToHide = [];
 
+	/** @var bool use colors in console by dump()? */
+	public static $useColors;
+
 	/** @var Describer */
 	private $describer;
 
@@ -110,12 +113,17 @@ class Dumper
 
 		$dumper = new self($options + self::fromStatics());
 
-		if (PHP_SAPI !== 'cli' && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) {
-			echo $dumper->asHtml($var);
-		} elseif (self::detectColors()) {
-			echo $dumper->asTerminal($var, self::$terminalColors);
-		} else {
+		if (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg') {
+			if (self::$useColors === null) {
+				self::$useColors = Helpers::detectColors();
+			}
+			echo $dumper->asTerminal($var, self::$useColors ? self::$terminalColors : []);
+
+		} elseif (preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) { // non-html
 			echo $dumper->asTerminal($var);
+
+		} else { // html
+			echo $dumper->asHtml($var);
 		}
 		return $var;
 	}
@@ -221,15 +229,5 @@ class Dumper
 		$res = "'" . Renderer::jsonEncode($snapshot[0] ?? []) . "'";
 		$snapshot = [];
 		return $res;
-	}
-
-
-	private static function detectColors(): bool
-	{
-		return self::$terminalColors &&
-			(getenv('ConEmuANSI') === 'ON'
-			|| getenv('ANSICON') !== false
-			|| getenv('term') === 'xterm-256color'
-			|| (defined('STDOUT') && function_exists('posix_isatty') && posix_isatty(STDOUT)));
 	}
 }

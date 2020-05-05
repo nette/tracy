@@ -18,7 +18,7 @@ if (PHP_SAPI === 'cli') {
 
 
 header('Content-Type: text/plain');
-Tracy\Dumper::$terminalColors = null;
+Tracy\Dumper::$useColors = false;
 
 
 test(function () { // production mode
