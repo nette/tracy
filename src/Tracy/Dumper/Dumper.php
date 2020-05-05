@@ -95,7 +95,7 @@ class Dumper
 	{
 		if (PHP_SAPI !== 'cli' && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) {
 			echo self::toHtml($var, $options);
-		} elseif (self::detectColors()) {
+		} elseif (self::$terminalColors && Helpers::detectColors()) {
 			echo self::toTerminal($var, $options);
 		} else {
 			echo self::toText($var, $options);
@@ -194,15 +194,5 @@ class Dumper
 		$res = "'" . Renderer::jsonEncode($snapshot[0] ?? []) . "'";
 		$snapshot = [];
 		return $res;
-	}
-
-
-	private static function detectColors(): bool
-	{
-		return self::$terminalColors &&
-			(getenv('ConEmuANSI') === 'ON'
-			|| getenv('ANSICON') !== false
-			|| getenv('term') === 'xterm-256color'
-			|| (defined('STDOUT') && function_exists('posix_isatty') && posix_isatty(STDOUT)));
 	}
 }
