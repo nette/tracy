@@ -95,7 +95,7 @@ Assert::match(
 $arr = [1, [2, [3, [4, [5, [6]]]]], 3];
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-snapshot=\'[]\' data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,{"stop":2}]]]]]]],[2,3]]\'></pre>',
-	Dumper::toHtml($arr, $options)
+	Dumper::toHtml($arr, $options + [Dumper::DEPTH => 4])
 );
 
 $obj = new stdClass;
@@ -106,7 +106,7 @@ $obj->a->b->c->d = new stdClass;
 $obj->a->b->c->d->e = new stdClass;
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"stdClass","items":[["a",{"object":%d%},3]]},"%d%":{"name":"stdClass","items":[["b",{"object":%d%},3]]},"%d%":{"name":"stdClass","items":[["c",{"object":%d%},3]]},"%d%":{"name":"stdClass","items":[["d",{"object":%d%},3]]},"%d%":{"name":"stdClass"}}\' data-tracy-dump=\'{"object":%d%}\'></pre>',
-	Dumper::toHtml($obj, $options)
+	Dumper::toHtml($obj, $options + [Dumper::DEPTH => 4])
 );
 
 

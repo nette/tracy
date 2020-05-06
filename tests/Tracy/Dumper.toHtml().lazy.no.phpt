@@ -131,7 +131,7 @@ Assert::match(
 </div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-number">3</span>
 </div></pre>
 XX
-, Dumper::toHtml($arr, $options));
+, Dumper::toHtml($arr, $options + [Dumper::DEPTH => 4]));
 
 $obj = new stdClass;
 $obj->a = new stdClass;
@@ -148,4 +148,4 @@ Assert::match(
 <div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-dynamic">d</span>: <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> …
 </div></div></div></div></pre>
 XX
-, Dumper::toHtml($obj, $options));
+, Dumper::toHtml($obj, $options + [Dumper::DEPTH => 4]));
