@@ -295,7 +295,7 @@ tracy:
 			- Nette-Bridges-DatabaseTracy-ConnectionPanel
 ```
 
-Items in exclude array matches part of the `rel` attribute value in the panel. 
+Items in exclude array matches part of the `rel` attribute value in the panel.
 E.g. string 'Tracy-dumps' activates an exception for the panel with the `rel` attribute value 'tracy-debug-panel-Tracy-dumps' in the main bar. For the others (ajax, redirect) it matches 'tracy-debug-panel-Tracy-dumps-...'
 
 

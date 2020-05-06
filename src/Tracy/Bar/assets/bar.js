@@ -684,7 +684,7 @@
 
 
 	function isPanelExcluded(currentRel, excludedPanels) {
-		return excludedPanels.some(function(exception) {
+		return excludedPanels.some((exception) => {
 			return currentRel.match(new RegExp(exception.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&') + '(-|$)'));
 		});
 	}
