@@ -30,6 +30,9 @@ final class Structure implements \JsonSerializable
 	/** @var ?array */
 	public $items;
 
+	/** @var ?int */
+	public $length;
+
 
 	public function __construct(?string $name, int $depth = null, &$ref = null)
 	{
@@ -41,7 +44,7 @@ final class Structure implements \JsonSerializable
 
 	public function jsonSerialize()
 	{
-		static $keys = ['name', 'editor', 'items'];
+		static $keys = ['name', 'editor', 'length', 'items'];
 		$res = [];
 		foreach ($keys as $k) {
 			if (isset($this->$k)) {

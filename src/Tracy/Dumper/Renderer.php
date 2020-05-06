@@ -183,18 +183,19 @@ final class Renderer
 
 		if (is_array($value)) {
 			$items = $value;
+			$count = count($value);
 		} else {
 			$struct = $this->snapshot[$value->value];
 			if (!isset($struct->items)) {
 				return $out . $struct->length . ") [ ... ]\n";
 			}
 			$items = $struct->items;
+			$count = $struct->length ?? count($items);
 			if (in_array($value->value, $this->parents, true)) {
-				return $out . count($items) . ") [ <i>RECURSION</i> ]\n";
+				return $out . $count . ") [ <i>RECURSION</i> ]\n";
 			}
 		}
 
-		$count = count($items);
 		if (!$count) {
 			return $out . ")\n";
 		}
@@ -214,16 +215,20 @@ final class Renderer
 
 		$out = $span . '>' . $out . $count . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$fill = [2 => null];
+		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[] = is_object($value) ? $value->value : null;
 
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + $fill;
-			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
+			$out .= $indent
 				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);
 		}
 
+		if ($count !== count($items)) {
+			$out .= $indent . "...\n";
+		}
 		array_pop($this->parents);
 		return $out . '</div>';
 	}
@@ -271,6 +276,7 @@ final class Renderer
 		}
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[] = $value->value;
 		$fill = [3 => null];
 
@@ -284,11 +290,15 @@ final class Renderer
 
 		foreach ($object->items as $info) {
 			[$k, $v, $type, $ref] = $info + $fill;
-			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
+			$out .= $indent
 				. '<span class="' . $classes[$type] . '">' . Helpers::escapeHtml($k) . '</span>'
 				. ': '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);
+		}
+
+		if (isset($object->length) && $object->length !== count($object->items)) {
+			$out .= $indent . "...\n";
 		}
 		array_pop($this->parents);
 		return $out . '</div>';

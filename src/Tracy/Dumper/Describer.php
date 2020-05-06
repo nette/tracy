@@ -26,6 +26,9 @@ final class Describer
 	/** @var int */
 	public $maxLength = 150;
 
+	/** @var int */
+	public $maxItems = 100;
+
 	/** @var Structure[] */
 	public $snapshot = [];
 
@@ -109,17 +112,22 @@ final class Describer
 	 */
 	private function describeArray(array $arr, int $depth = 0, int $refId = null)
 	{
-		if ($refId) {
-			$res = new Value('array', 'a' . $refId);
-			$struct = &$this->snapshot['a' . $refId];
+		if ($refId || count($arr) > $this->maxItems) {
+			$id = $refId ? 'a' . $refId : 'A' . count($this->snapshot);
+			$res = new Value('array', $id);
+
+			$struct = &$this->snapshot[$id];
 			if (!$struct) {
 				$struct = new Structure(null, $depth, $arr);
 			} elseif ($struct->depth <= $depth) {
 				return $res;
 			}
-			if ($depth >= $this->maxDepth) {
+			if (count($arr) > $this->maxItems || $depth >= $this->maxDepth) {
 				$struct->length = count($arr);
-				return $res;
+				if ($depth >= $this->maxDepth) {
+					return $res;
+				}
+				$arr = array_slice($arr, 0, $this->maxItems, true);
 			}
 			$struct->depth = $depth;
 			$items = &$struct->items;
@@ -160,6 +168,7 @@ final class Describer
 		if ($depth < $this->maxDepth) {
 			$struct->depth = $depth;
 			$struct->items = [];
+			$struct->length = null;
 
 			$props = $this->exposeObject($obj, $struct);
 			foreach ($props ?? [] as $k => $v) {
@@ -205,6 +214,10 @@ final class Describer
 
 	public function addProperty(Structure $struct, $k, $v, $type, $refId = null)
 	{
+		if (count($struct->items ?? []) >= $this->maxItems) {
+			$struct->length = ($struct->length ?? count($struct->items)) + 1;
+			return;
+		}
 		$k = (string) $k;
 		$v = isset($this->keysToHide[strtolower($k)])
 			? new Value('text', self::hideValue($v))
