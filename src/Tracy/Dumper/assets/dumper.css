@@ -2,7 +2,7 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
-pre.tracy-dump {
+.tracy-dump {
 	text-align: left;
 	color: #444;
 	background: white;
@@ -10,26 +10,26 @@ pre.tracy-dump {
 	white-space: pre-wrap;
 }
 
-pre.tracy-dump div {
+.tracy-dump div {
 	padding-left: 3ex;
 }
 
-pre.tracy-dump div div {
+.tracy-dump div div {
 	border-left: 1px solid rgba(0, 0, 0, .1);
 	margin-left: .5ex;
 }
 
-pre.tracy-dump div div:hover {
+.tracy-dump div div:hover {
 	border-left-color: rgba(0, 0, 0, .25);
 }
 
-pre.tracy-dump a {
+.tracy-dump a {
 	color: #125EAE;
 	text-decoration: none;
 }
 
-pre.tracy-dump a:hover,
-pre.tracy-dump a:focus {
+.tracy-dump a:hover,
+.tracy-dump a:focus {
 	background-color: #125EAE;
 	color: white;
 }
