@@ -21,7 +21,7 @@ final class Describer
 	public const HIDDEN_VALUE = '*****';
 
 	/** @var int */
-	public $maxDepth = 4;
+	public $maxDepth = 7;
 
 	/** @var int */
 	public $maxLength = 150;

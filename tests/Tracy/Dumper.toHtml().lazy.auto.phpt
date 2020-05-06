@@ -24,7 +24,7 @@ Assert::match(<<<'XX'
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-number">3</span>
 </div></pre>
 XX
-, Dumper::toHtml($arr));
+, Dumper::toHtml($arr, [Dumper::DEPTH => 4]));
 
 $obj = new stdClass;
 $obj->items = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -37,7 +37,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">items</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],["x",{"ref":%d%}]]'><span class="tracy-dump-array">array</span> (9)</span>
 </div></pre>
 XX
-, Dumper::toHtml($obj));
+, Dumper::toHtml($obj, [Dumper::DEPTH => 4]));
 
 
 // recursion

@@ -271,7 +271,7 @@ generates the output:
 You can also change the nesting depth by `Debugger::$maxDepth` and displayed strings length by `Debugger::$maxLength`. Naturally, lower values accelerate Tracy rendering.
 
 ```php
-Debugger::$maxDepth = 2; // default: 3
+Debugger::$maxDepth = 2; // default: 7
 Debugger::$maxLength = 50; // default: 150
 ```
 
