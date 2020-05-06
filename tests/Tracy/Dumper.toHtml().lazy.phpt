@@ -90,7 +90,7 @@ $arr = [1, [2, [3, [4, [5, [6]]]]], 3];
 Assert::match(<<<'XX'
 <pre class="tracy-dump" data-tracy-snapshot='[]' data-tracy-dump='[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,{"array":null,"length":2}]]]]]]],[2,3]]'></pre>
 XX
-, Dumper::toHtml($arr, $options));
+, Dumper::toHtml($arr, $options + [Dumper::DEPTH => 4]));
 
 $obj = new stdClass;
 $obj->a = new stdClass;
@@ -101,7 +101,7 @@ $obj->a->b->c->d->e = new stdClass;
 Assert::match(<<<'XX'
 <pre class="tracy-dump" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["a",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["b",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["c",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["d",{"ref":%d%},3]]},"%d%":{"object":"stdClass"}}' data-tracy-dump='{"ref":%d%}'></pre>
 XX
-, Dumper::toHtml($obj, $options));
+, Dumper::toHtml($obj, $options + [Dumper::DEPTH => 4]));
 
 
 // lazy dump & max string length
