@@ -153,7 +153,7 @@ Dumper::$liveSnapshot = [];
 $arr = [1, [2, [3, [4, [5, [6]]]]], 3];
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,{"array":null,"length":2}]]]]]]],[2,3]]\'></pre>',
-	Dumper::toHtml($arr, $options)
+	Dumper::toHtml($arr, $options + [Dumper::DEPTH => 4])
 );
 Assert::same([], Dumper::$liveSnapshot);
 
@@ -161,7 +161,7 @@ Assert::same([], Dumper::$liveSnapshot);
 $arr = [1, [2, [3, [4, []]]], 3];
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,[]]]]]]]],[2,3]]\'></pre>',
-	Dumper::toHtml($arr, $options)
+	Dumper::toHtml($arr, $options + [Dumper::DEPTH => 4])
 );
 Assert::same([], Dumper::$liveSnapshot);
 
@@ -174,5 +174,5 @@ $obj->a->b->c->d = new stdClass;
 $obj->a->b->c->d->e = new stdClass;
 Assert::match(
 	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":%d%}\'></pre>',
-	Dumper::toHtml($obj, $options)
+	Dumper::toHtml($obj, $options + [Dumper::DEPTH => 4])
 );

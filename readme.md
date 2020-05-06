@@ -267,7 +267,7 @@ You can also change the nesting depth by `Dumper::$maxDepth` and displayed strin
 ```php
 use Tracy\Dumper;
 
-Dumper::$maxDepth = 2; // default: 3
+Dumper::$maxDepth = 2; // default: 7
 Dumper::$maxLength = 50; // default: 150
 ```
 

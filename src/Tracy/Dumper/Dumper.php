@@ -20,7 +20,7 @@ use Tracy\Dumper\Renderer;
 class Dumper
 {
 	public const
-		DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 4)
+		DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 7)
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
 		ITEMS = 'items', // how many items in array/object display? (defaults to 100)
 		COLLAPSE = 'collapse', // collapse top array/object or how big are collapsed? (defaults to 14)
@@ -77,7 +77,7 @@ class Dumper
 	];
 
 	/** @var int  how many nested levels of array/object properties display by dump() */
-	public static $maxDepth = 3;
+	public static $maxDepth = 7;
 
 	/** @var int  how long strings display by dump() */
 	public static $maxLength = 150;
