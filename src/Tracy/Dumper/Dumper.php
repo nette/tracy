@@ -227,11 +227,10 @@ class Dumper
 	 */
 	private function dumpVar(&$var, array $options, int $level = 0): string
 	{
-		if (method_exists(__CLASS__, $m = 'dump' . gettype($var))) {
-			return $this->$m($var, $options, $level);
-		} else {
-			return "<span>unknown type</span>\n";
+		if (!method_exists(__CLASS__, $m = 'dump' . explode(' ', gettype($var))[0])) {
+			$m = 'dumpResource';
 		}
+		return $this->$m($var, $options, $level);
 	}
 
 
@@ -397,7 +396,7 @@ class Dumper
 
 	private function dumpResource(&$var, array $options, int $level): string
 	{
-		$type = get_resource_type($var);
+		$type = is_resource($var) ? get_resource_type($var) : 'closed';
 		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($type) . ' resource</span> '
 			. '<span class="tracy-dump-hash">#' . (int) $var . '</span>';
 		if (isset($this->resourceDumpers[$type])) {
@@ -488,11 +487,11 @@ class Dumper
 			}
 			return ['object' => $obj['id']];
 
-		} elseif (is_resource($var)) {
+		} else {
 			$obj = &$options[self::SNAPSHOT][(string) $var];
 			if (!$obj) {
-				$type = get_resource_type($var);
-				$obj = ['id' => count($options[self::SNAPSHOT]), 'name' => $type . ' resource', 'hash' => (int) $var];
+				$type = is_resource($var) ? get_resource_type($var) : 'closed';
+				$obj = ['id' => count($options[self::SNAPSHOT]), 'name' => $type . ' resource', 'hash' => (int) $var, 'items' => []];
 				if (isset($this->resourceDumpers[$type])) {
 					foreach (($this->resourceDumpers[$type])($var) as $k => $v) {
 						$obj['items'][] = [$k, $this->toJson($v, $options, $level + 1)];
@@ -500,9 +499,6 @@ class Dumper
 				}
 			}
 			return ['resource' => $obj['id']];
-
-		} else {
-			return ['type' => 'unknown type'];
 		}
 	}
 
