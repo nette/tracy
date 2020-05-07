@@ -14,8 +14,13 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // resource
+$f = fopen(__FILE__, 'r');
 Assert::match('<pre class="tracy-dump"><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div class="tracy-collapsed">%A%', Dumper::toHtml(fopen(__FILE__, 'r')));
+<div class="tracy-collapsed">%A%', Dumper::toHtml($f));
+
+fclose($f);
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-resource">closed resource</span> <span class="tracy-dump-hash">#%d%</span>
+</pre>', Dumper::toHtml($f));
 
 
 // closure
