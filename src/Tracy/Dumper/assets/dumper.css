@@ -6,6 +6,8 @@ pre.tracy-dump {
 	text-align: left;
 	color: #444;
 	background: white;
+	word-break: break-all;
+	white-space: pre-wrap;
 }
 
 pre.tracy-dump div {
