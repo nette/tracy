@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/tracy.php';
 
-use Tracy\Debugger;
-
-// For security reasons, Tracy is visible only on localhost.
-// You may force Tracy to run in development mode by passing the Debugger::DEVELOPMENT instead of Debugger::DETECT.
-Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
+use Tracy\Dumper;
 
 ?>
 <!DOCTYPE html><link rel="stylesheet" href="assets/style.css">
@@ -16,6 +12,14 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 <h1>Tracy: Dumper demo</h1>
 
 <?php
+
+// options:
+// Dumper::$maxDepth = 7; // how many nested levels of array/object properties display
+// Dumper::$maxLength = 150; // how long strings display
+// Dumper::$maxItems = 100; // how many items in array/object display
+// Dumper::$keysToHide = []; // sensitive keys not displayed
+// Dumper::$theme = 'dark'; // theme light or dark
+
 
 class Test
 {
@@ -28,23 +32,20 @@ class Test
 
 $arr = [10, 20.2, true, null, 'hello', (object) null, [], fopen(__FILE__, 'r')];
 
-$obj = new Test;
-
-
-dump('<a href="#">test</a>');
-
 dump($arr);
-
-dump($obj);
 
 
 echo "<h2>With location</h2>\n";
 
-Tracy\Dumper::$showLocation = true;
+Dumper::$showLocation = true;
 
 dump($arr);
 
 
-if (Debugger::$productionMode) {
-	echo '<p><b>For security reasons, Tracy is visible only on localhost. Look into the source code to see how to enable Tracy.</b></p>';
-}
+echo "<h2>Dark theme</h2>\n";
+
+Dumper::$theme = 'dark';
+
+$obj = new Test;
+
+dump($obj);
