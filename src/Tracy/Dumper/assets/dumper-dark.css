@@ -1,0 +1,113 @@
+/**
+ * This file is part of the Tracy (https://tracy.nette.org)
+ */
+
+.tracy-dump--dark {
+	text-align: left;
+	color: #f8f8f2;
+	background: #29292e;
+	border-radius: 4px;
+	padding: 1em;
+	margin: 1em 0;
+	word-break: break-all;
+	white-space: pre-wrap;
+}
+
+.tracy-dump--dark div {
+	padding-left: 3ex;
+}
+
+.tracy-dump--dark div div {
+	border-left: 1px solid rgba(255, 255, 255, .1);
+	margin-left: .5ex;
+}
+
+.tracy-dump--dark div div:hover {
+	border-left-color: rgba(255, 255, 255, .25);
+}
+
+.tracy-dump--dark a {
+	color: #578dc4;
+	text-decoration: none;
+}
+
+.tracy-dump--dark a:hover,
+.tracy-dump--dark a:focus {
+	background-color: #578dc4;
+	color: white;
+}
+
+.tracy-dump--dark .tracy-dump-array,
+.tracy-dump--dark .tracy-dump-object {
+	color: #f69c2e;
+}
+
+.tracy-dump--dark .tracy-dump-string {
+	color: #3cdfef;
+}
+
+.tracy-dump--dark .tracy-dump-virtual span,
+.tracy-dump--dark .tracy-dump-dynamic span,
+.tracy-dump--dark .tracy-dump-string span {
+	font-size: 80%;
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.tracy-dump--dark .tracy-dump-number {
+	color: #77d285;
+}
+
+.tracy-dump--dark .tracy-dump-null,
+.tracy-dump--dark .tracy-dump-bool {
+	color: #f3cb44;
+}
+
+.tracy-dump--dark .tracy-dump-virtual {
+	font-style: italic;
+}
+
+.tracy-dump--dark .tracy-dump-public::after {
+	content: ' pub';
+}
+
+.tracy-dump--dark .tracy-dump-protected::after {
+	content: ' pro';
+}
+
+.tracy-dump--dark .tracy-dump-private::after {
+	content: ' pri';
+}
+
+.tracy-dump--dark .tracy-dump-public::after,
+.tracy-dump--dark .tracy-dump-protected::after,
+.tracy-dump--dark .tracy-dump-private::after,
+.tracy-dump--dark .tracy-dump-hash {
+	font-size: 85%;
+	color: rgba(255, 255, 255, 0.4);
+}
+
+.tracy-dump--dark .tracy-dump-indent {
+	display: none;
+}
+
+.tracy-dump--dark .tracy-dump-highlight {
+	background: #C22;
+	color: white;
+	border-radius: 2px;
+	padding: 0 2px;
+	margin: 0 -2px;
+}
+
+span[data-tracy-href] {
+	border-bottom: 1px dotted rgba(255, 255, 255, .2);
+}
+
+.tracy-dump--dark .tracy-dump-flash {
+	animation: tracy-dump-flash .2s ease;
+}
+
+@keyframes tracy-dump-flash {
+	0% {
+		background: #c0c0c033;
+	}
+}

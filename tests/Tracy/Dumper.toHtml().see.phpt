@@ -38,7 +38,7 @@ $var = [
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump" data-tracy-snapshot='{"%d%":{"name":"Test","items":[["a",[[1,[[2,{"stop":1}]]]],0]]},"a1":{"length":1,"items":[[1,[[2,[[3,"item"]]]]]]},"r%d%":{"name":"stream resource","items":[["timed_out",false],["blocked",true],["eof",false],["wrapper_type","plainfile"],["stream_type","STDIO"],["mode","r"],["unread_bytes",0],["seekable",true],["uri","%a%"]]}}'><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (6)</span>
+<pre class="tracy-dump--light" data-tracy-snapshot='{"%d%":{"name":"Test","items":[["a",[[1,[[2,{"stop":1}]]]],0]]},"a1":{"length":1,"items":[[1,[[2,[[3,"item"]]]]]]},"r%d%":{"name":"stream resource","items":[["timed_out",false],["blocked",true],["eof",false],["wrapper_type","plainfile"],["stream_type","STDIO"],["mode","r"],["unread_bytes",0],["seekable",true],["uri","%a%"]]}}'><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (6)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string">'a'</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">b</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-string">'c'</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (5)</span>

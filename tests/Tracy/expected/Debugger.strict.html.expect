@@ -57,7 +57,7 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
+						<tr><th>$arg1</th><td><pre class="tracy-dump--light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>
 						</table>
 						</div>
@@ -74,9 +74,9 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">true</span></pre>
+						<tr><th>$arg1</th><td><pre class="tracy-dump--light"><span class="tracy-dump-bool">true</span></pre>
 </td></tr>
-<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">false</span></pre>
+<tr><th>$arg2</th><td><pre class="tracy-dump--light"><span class="tracy-dump-bool">false</span></pre>
 </td></tr>
 						</table>
 						</div>
@@ -93,9 +93,9 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-number">10</span></pre>
+						<tr><th>$arg1</th><td><pre class="tracy-dump--light"><span class="tracy-dump-number">10</span></pre>
 </td></tr>
-<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-string" title="10 characters">'any string'</span></pre>
+<tr><th>$arg2</th><td><pre class="tracy-dump--light"><span class="tracy-dump-string" title="10 characters">'any string'</span></pre>
 </td></tr>
 						</table>
 						</div>
@@ -110,7 +110,7 @@
 			<div class="tracy-collapsed inner">
 			<div class="outer">
 			<table class="tracy-sortable">
-			<tr><th>$arg1</th><td><pre class="tracy-dump" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
+			<tr><th>$arg1</th><td><pre class="tracy-dump--light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>%A?%
 			</table>
 			</div>
@@ -121,7 +121,7 @@
 				<div class="panel">
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
 		<div class="tracy-collapsed inner">
-		<pre class="tracy-dump" data-tracy-dump='{"object":%d%}'></pre>
+		<pre class="tracy-dump--light" data-tracy-dump='{"object":%d%}'></pre>
 		</div></div>
 
 

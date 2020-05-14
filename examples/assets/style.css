@@ -17,7 +17,7 @@ h1 {
 	color: #036;
 }
 
-pre.tracy-dump {
+pre.tracy-dump--light {
 	border: 1px solid silver;
 	padding: 1em;
 	margin: 1em 0;

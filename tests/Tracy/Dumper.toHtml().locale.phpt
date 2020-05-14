@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 setlocale(LC_ALL, 'czech');
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
+<pre class="tracy-dump--light"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">-10.0</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-number">10.3</span>
 </div></pre>

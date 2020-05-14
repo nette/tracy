@@ -352,27 +352,27 @@ body#tracy-debug .tracy-panel { /* in popup window */
 
 
 /* dump */
-#tracy-debug .tracy-dump div {
+#tracy-debug .tracy-dump--light div {
 	padding-left: 3ex;
 }
 
-#tracy-debug .tracy-dump div div {
+#tracy-debug .tracy-dump--light div div {
 	border-left: 1px solid rgba(0, 0, 0, .1);
 	margin-left: .5ex;
 }
 
-#tracy-debug .tracy-dump div div:hover {
+#tracy-debug .tracy-dump--light div div:hover {
 	border-left-color: rgba(0, 0, 0, .25);
 }
 
-#tracy-debug .tracy-dump {
+#tracy-debug .tracy-dump--light {
 	background: #FDF5CE;
 	padding: .4em .7em;
 	border: 1px dotted silver;
 	overflow: auto;
 }
 
-#tracy-debug table .tracy-dump {
+#tracy-debug table .tracy-dump--light {
 	padding: 0;
 	margin: 0;
 	border: none;
