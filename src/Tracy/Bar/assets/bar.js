@@ -493,7 +493,7 @@ class Debug
 				let reqId = header + '_' + ajaxCounter++;
 				request.headers.set('X-Tracy-Ajax', reqId);
 				return oldFetch(request).then((response) => {
-					if (response.headers.has('X-Tracy-Ajax') && response.headers.get('X-Tracy-Ajax')[0] === '1') {
+					if (response instanceof Response && response.headers.has('X-Tracy-Ajax') && response.headers.get('X-Tracy-Ajax')[0] === '1') {
 						Debug.loadScript(baseUrl + '_tracy_bar=content-ajax.' + reqId + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 					}
 
