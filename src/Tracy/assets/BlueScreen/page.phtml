@@ -46,7 +46,7 @@ $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 })();
 </script>
 <script<?= $nonceAttr ?>>
-Tracy && Tracy.Dumper.init(<?= json_encode(Dumper::fetchLiveData()) ?>);
+Tracy && Tracy.Dumper.init(<?= str_replace('<!--', '<\!--', json_encode(Dumper::fetchLiveData())) ?>);
 </script>
 <script<?= $nonceAttr ?>>
 Tracy && Tracy.BlueScreen.init();
