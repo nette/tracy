@@ -122,12 +122,12 @@ class Bar
 		$panels = $this->renderPanels($suffix);
 
 		return [
-			'bar' => Helpers::fixEncoding(Helpers::capture(function () use ($type, $panels) {
+			'bar' => Helpers::capture(function () use ($type, $panels) {
 				require __DIR__ . '/assets/bar.phtml';
-			})),
-			'panels' => Helpers::fixEncoding(Helpers::capture(function () use ($type, $panels) {
+			}),
+			'panels' => Helpers::capture(function () use ($type, $panels) {
 				require __DIR__ . '/assets/panels.phtml';
-			})),
+			}),
 		];
 	}
 
@@ -198,12 +198,12 @@ class Bar
 			}
 			if ($session) {
 				$method = $m[1] ? 'loadAjax' : 'init';
-				echo "Tracy.Debug.$method(", json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), ');';
+				echo "Tracy.Debug.$method(", json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), ');';
 				$session = null;
 			}
 			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];
 			if ($session) {
-				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), ');';
+				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), ');';
 				$session = null;
 			}
 			return true;
