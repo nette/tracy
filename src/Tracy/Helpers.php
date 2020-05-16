@@ -132,13 +132,6 @@ class Helpers
 
 
 	/** @internal */
-	public static function fixEncoding(string $s): string
-	{
-		return htmlspecialchars_decode(htmlspecialchars($s, ENT_NOQUOTES | ENT_IGNORE, 'UTF-8'), ENT_NOQUOTES);
-	}
-
-
-	/** @internal */
 	public static function errorTypeToString(int $type): string
 	{
 		$types = [
