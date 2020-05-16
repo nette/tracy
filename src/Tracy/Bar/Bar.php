@@ -174,7 +174,7 @@ class Bar
 	{
 		$asset = $_GET['_tracy_bar'] ?? null;
 		if ($asset === 'js') {
-			header('Content-Type: application/javascript');
+			header('Content-Type: application/javascript; charset=UTF-8');
 			header('Cache-Control: max-age=864000');
 			header_remove('Pragma');
 			header_remove('Set-Cookie');
@@ -190,7 +190,7 @@ class Bar
 
 		if ($this->useSession && $asset && preg_match('#^content(-ajax)?\.(\w+)$#', $asset, $m)) {
 			$session = &$_SESSION['_tracy']['bar'][$m[2]];
-			header('Content-Type: application/javascript');
+			header('Content-Type: application/javascript; charset=UTF-8');
 			header('Cache-Control: max-age=60');
 			header_remove('Set-Cookie');
 			if (!$m[1]) {
@@ -198,12 +198,12 @@ class Bar
 			}
 			if ($session) {
 				$method = $m[1] ? 'loadAjax' : 'init';
-				echo "Tracy.Debug.$method(", json_encode($session['content'], JSON_UNESCAPED_SLASHES), ');';
+				echo "Tracy.Debug.$method(", json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), ');';
 				$session = null;
 			}
 			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];
 			if ($session) {
-				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content'], JSON_UNESCAPED_SLASHES), ');';
+				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), ');';
 				$session = null;
 			}
 			return true;
