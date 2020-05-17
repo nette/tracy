@@ -59,7 +59,7 @@ jobs:
         -   stage: Code Coverage
 
 
-sudo: false
+os: linux
 
 cache:
     directories:
@@ -67,3 +67,5 @@ cache:
 
 notifications:
     email: false
+
+dist: trusty
