@@ -229,10 +229,10 @@ class Dumper
 	 * Internal toHtml() dump implementation.
 	 * @param  mixed  $var
 	 */
-	private function dumpVar(&$var, array $options, int $level = 0): string
+	private function dumpVar(&$var, array $options, int $depth = 0): string
 	{
 		$m = 'dump' . explode(' ', gettype($var))[0];
-		return $this->$m($var, $options, $level);
+		return $this->$m($var, $options, $depth);
 	}
 
 
@@ -271,7 +271,7 @@ class Dumper
 	}
 
 
-	private function dumpArray(&$var, array $options, int $level): string
+	private function dumpArray(&$var, array $options, int $depth): string
 	{
 		static $marker;
 		if ($marker === null) {
@@ -286,8 +286,8 @@ class Dumper
 		} elseif (isset($var[$marker])) {
 			return $out . (count($var) - 1) . ") [ <i>RECURSION</i> ]\n";
 
-		} elseif (!$this->maxDepth || $level < $this->maxDepth) {
-			$collapsed = $level
+		} elseif (!$this->maxDepth || $depth < $this->maxDepth) {
+			$collapsed = $depth
 				? count($var) >= $this->collapseSub
 				: (is_int($this->collapseTop) ? count($var) >= $this->collapseTop : $this->collapseTop);
 
@@ -296,7 +296,7 @@ class Dumper
 			if ($collapsed && $options[self::LAZY] !== false) {
 				$options[self::SNAPSHOT] = (array) $options[self::SNAPSHOT];
 				return $span . " data-tracy-dump='"
-					. json_encode($this->toJson($var, $options, $level), JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
+					. json_encode($this->toJson($var, $options, $depth), JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
 					. $out . count($var) . ")</span>\n";
 
 			} else {
@@ -308,11 +308,11 @@ class Dumper
 							continue;
 						}
 						$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-						$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+						$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . '</span> => '
 						. ($hide
 							? Helpers::escapeHtml(self::hideValue($v)) . "\n"
-							: $this->dumpVar($v, $options, $level + 1)
+							: $this->dumpVar($v, $options, $depth + 1)
 						);
 					}
 				} finally {
@@ -328,7 +328,7 @@ class Dumper
 	}
 
 
-	private function dumpObject(&$var, array $options, int $level): string
+	private function dumpObject(&$var, array $options, int $depth): string
 	{
 		$fields = $this->exportObject($var);
 
@@ -359,8 +359,8 @@ class Dumper
 		} elseif (in_array($var, $options['parents'] ?? [], true)) {
 			return $out . " { <i>RECURSION</i> }\n";
 
-		} elseif (!$this->maxDepth || $level < $this->maxDepth || $var instanceof \Closure) {
-			$collapsed = $level
+		} elseif (!$this->maxDepth || $depth < $this->maxDepth || $var instanceof \Closure) {
+			$collapsed = $depth
 				? count($fields) >= $this->collapseSub
 				: (is_int($this->collapseTop) ? count($fields) >= $this->collapseTop : $this->collapseTop);
 
@@ -368,7 +368,7 @@ class Dumper
 
 			if ($collapsed && $options[self::LAZY] !== false) {
 				return $span . " data-tracy-dump='"
-					. json_encode($this->toJson($var, $options, $level), JSON_HEX_APOS | JSON_HEX_AMP)
+					. json_encode($this->toJson($var, $options, $depth), JSON_HEX_APOS | JSON_HEX_AMP)
 					. "'>" . $out . "</span>\n";
 
 			} else {
@@ -382,12 +382,12 @@ class Dumper
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$hide = isset($this->keysToHide[strtolower($k)]);
-					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
+					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . "</span>$vis => "
 						. (
 							$hide
 							? Helpers::escapeHtml(self::hideValue($v)) . "\n"
-							: $this->dumpVar($v, $options, $level + 1)
+							: $this->dumpVar($v, $options, $depth + 1)
 						);
 				}
 				array_pop($options['parents']);
@@ -402,7 +402,7 @@ class Dumper
 	}
 
 
-	private function dumpResource(&$var, array $options, int $level): string
+	private function dumpResource(&$var, array $options, int $depth): string
 	{
 		$type = is_resource($var) ? get_resource_type($var) : 'closed';
 		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($type) . ' resource</span> '
@@ -410,8 +410,8 @@ class Dumper
 		if (isset($this->resourceDumpers[$type])) {
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach (($this->resourceDumpers[$type])($var) as $k => $v) {
-				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
-					. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => ' . $this->dumpVar($v, $options, $level + 1);
+				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
+					. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => ' . $this->dumpVar($v, $options, $depth + 1);
 			}
 			return $out . '</div>';
 		}
@@ -422,7 +422,7 @@ class Dumper
 	/**
 	 * @return mixed
 	 */
-	private function toJson(&$var, array $options = [], int $level = 0)
+	private function toJson(&$var, array $options = [], int $depth = 0)
 	{
 		if (is_bool($var) || $var === null || is_int($var)) {
 			return $var;
@@ -440,7 +440,7 @@ class Dumper
 			if ($marker === null) {
 				$marker = uniqid("\x00", true);
 			}
-			if (count($var) && (isset($var[$marker]) || $level >= $this->maxDepth)) {
+			if (count($var) && (isset($var[$marker]) || $depth >= $this->maxDepth)) {
 				return ['stop' => [count($var) - isset($var[$marker]), isset($var[$marker])]];
 			}
 			$res = [];
@@ -451,7 +451,7 @@ class Dumper
 						continue;
 					}
 					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
-					$res[] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1)];
+					$res[] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1)];
 				}
 			} finally {
 				unset($var[$marker]);
@@ -461,7 +461,7 @@ class Dumper
 		} elseif (is_object($var)) {
 			$hash = spl_object_hash($var);
 			$obj = &$options[self::SNAPSHOT][$hash];
-			if ($obj && $obj['level'] <= $level) {
+			if ($obj && $obj['depth'] <= $depth) {
 				return ['object' => $obj['id']];
 			}
 
@@ -469,7 +469,7 @@ class Dumper
 				'id' => count($options[self::SNAPSHOT]),
 				'name' => Helpers::getClass($var),
 				'hash' => substr(md5($hash), 0, 4),
-				'level' => $level,
+				'depth' => $depth,
 				'object' => $var,
 			];
 			if (empty($obj['editor']) && ($this->location & self::LOCATION_CLASS)) {
@@ -481,8 +481,8 @@ class Dumper
 				}
 			}
 
-			if ($level < $this->maxDepth || !$this->maxDepth) {
-				$obj['level'] = $level;
+			if ($depth < $this->maxDepth || !$this->maxDepth) {
+				$obj['depth'] = $depth;
 				$obj['items'] = [];
 
 				foreach ($this->exportObject($var) as $k => $v) {
@@ -493,7 +493,7 @@ class Dumper
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
 					$hide = isset($this->keysToHide[strtolower($k)]);
-					$obj['items'][] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $level + 1), $vis];
+					$obj['items'][] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1), $vis];
 				}
 			}
 			return ['object' => $obj['id']];
@@ -505,7 +505,7 @@ class Dumper
 				$obj = ['id' => count($options[self::SNAPSHOT]), 'name' => $type . ' resource', 'hash' => (int) $var, 'items' => []];
 				if (isset($this->resourceDumpers[$type])) {
 					foreach (($this->resourceDumpers[$type])($var) as $k => $v) {
-						$obj['items'][] = [$k, $this->toJson($v, $options, $level + 1)];
+						$obj['items'][] = [$k, $this->toJson($v, $options, $depth + 1)];
 					}
 				}
 			}
@@ -519,7 +519,7 @@ class Dumper
 		$res = [];
 		foreach ($snapshot as $obj) {
 			$id = $obj['id'];
-			unset($obj['level'], $obj['object'], $obj['id']);
+			unset($obj['depth'], $obj['object'], $obj['id']);
 			$res[$id] = $obj;
 		}
 		$snapshot = [];
