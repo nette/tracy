@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Tester\Assert;
-use Tester\Expect;
 use Tracy\Dumper;
 
 require __DIR__ . '/../bootstrap.php';
@@ -39,7 +38,7 @@ Assert::match('array (%i%)
    "NULL" => 0
 ', Dumper::toText($keys));
 
-Assert::match('stdClass #%a%
+Assert::match('stdClass #%d%
    "" => 0
    """ => 0
    "\'" => 0
@@ -57,14 +56,13 @@ Assert::match('stdClass #%a%
 
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":%d%}\'></pre>',
 	Dumper::toHtml((object) $keys, [Dumper::SNAPSHOT => &$snapshot])
 );
 
 Assert::equal([
-	1 => [
+	[
 		'name' => 'stdClass',
-		'hash' => Expect::match('%h%'),
 		'items' => [
 			['""', 0, 0],
 			['"""', 0, 0],
@@ -80,4 +78,4 @@ Assert::equal([
 			['"NULL"', 0, 0],
 		],
 	],
-], json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true));
+], array_values(json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true)));

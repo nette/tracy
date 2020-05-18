@@ -67,10 +67,10 @@ Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'[]\'><span class="t
 
 
 // object
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span>
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span>
 </pre>', Dumper::toHtml(new stdClass));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-null">null</span>
@@ -84,7 +84,7 @@ $obj->{0} = 8;
 $obj->{1} = 9;
 $obj->{''} = 10;
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Child</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Child</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> <span class="tracy-dump-visibility">private</span> => <span class="tracy-dump-number">2</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">3</span>

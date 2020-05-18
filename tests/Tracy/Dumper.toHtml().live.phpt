@@ -46,19 +46,19 @@ Assert::match(
 
 // live dump of object
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":%d%}\'></pre>',
 	Dumper::toHtml(new stdClass, $options)
 );
 
 // twice with different identity
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":2}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":%d%}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
 );
 Assert::equal([
-	1 => ['name' => 'stdClass', 'hash' => Expect::match('%h%'), 'items' => []],
-	2 => ['name' => 'stdClass', 'hash' => Expect::match('%h%'), 'items' => []],
-], formatSnapshot());
+	['name' => 'stdClass', 'items' => []],
+	['name' => 'stdClass', 'items' => []],
+], array_values(formatSnapshot()));
 
 
 // dump() with already created live snapshot
@@ -69,7 +69,7 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span>
 // live dump and resource
 Dumper::$liveSnapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"resource":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"resource":"r%d%"}\'></pre>',
 	Dumper::toHtml(fopen(__FILE__, 'r'), $options)
 );
 Assert::count(1, Dumper::$liveSnapshot);
@@ -78,7 +78,7 @@ Assert::count(1, Dumper::$liveSnapshot);
 // live dump and collapse
 Dumper::$liveSnapshot = [];
 Assert::match(
-	'<pre class="tracy-dump tracy-collapsed" data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump tracy-collapsed" data-tracy-dump=\'{"object":%d%}\'></pre>',
 	Dumper::toHtml(new Test, $options + [Dumper::COLLAPSE => true])
 );
 
@@ -86,35 +86,33 @@ Assert::match(
 // snapshot content check
 Dumper::$liveSnapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":%d%}\'></pre>',
 	Dumper::toHtml(new Test, $options)
 );
 
 Assert::equal([
-	1 => [
+	[
 		'name' => 'Test',
-		'hash' => Expect::match('%h%'),
 		'items' => [
 			['x', [[0, 10], [1, null]], 0],
 			['y', 'hello', 2],
 			['z', ['number' => '30.0'], 1],
 		],
 	],
-], formatSnapshot());
+], array_values(formatSnapshot()));
 
 
 // live dump & location
 Dumper::$liveSnapshot = [];
 Assert::match(
 	'<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&#039;location&#039; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
-in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-dump=\'{"object":1}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%:%d%</a></small></pre>',
+in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-dump=\'{"object":%d%}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%:%d%</a></small></pre>',
 	Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
 );
 
 Assert::equal([
-	1 => [
+	[
 		'name' => 'Test',
-		'hash' => Expect::match('%h%'),
 		'editor' => [
 			'file' => __DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'DumpClass.php',
 			'line' => Expect::type('int'),
@@ -126,7 +124,7 @@ Assert::equal([
 			['z', ['number' => '30.0'], 1],
 		],
 	],
-], formatSnapshot());
+], array_values(formatSnapshot()));
 
 
 // live & recursion
@@ -142,7 +140,7 @@ Assert::same([], Dumper::$liveSnapshot);
 $obj = new stdClass;
 $obj->x = $obj;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":%d%}\'></pre>',
 	Dumper::toHtml($obj, $options)
 );
 
@@ -172,6 +170,6 @@ $obj->a->b->c = new stdClass;
 $obj->a->b->c->d = new stdClass;
 $obj->a->b->c->d->e = new stdClass;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":%d%}\'></pre>',
 	Dumper::toHtml($obj, $options)
 );
