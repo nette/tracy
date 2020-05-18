@@ -36,7 +36,7 @@ $obj->{1} = 9;
 $obj->{''} = 10;
 
 Assert::match(<<<XX
-\e[1;31mChild\e[0m \e[0m#%h%\e[0m\e[0m
+\e[1;31mChild\e[0m \e[0m#%d%\e[0m\e[0m
 \e[1;30m   \e[0m\e[1;37mx\e[0m => \e[1;32m1\e[0m
 \e[1;30m   \e[0m\e[1;37my\e[0m \e[1;30mprivate\e[0m => \e[1;32m2\e[0m
 \e[1;30m   \e[0m\e[1;37mz\e[0m \e[1;30mprotected\e[0m => \e[1;32m3\e[0m
@@ -55,9 +55,9 @@ XX
 $arr = (object) ['x' => 1, 'y' => 2];
 $arr->z = &$arr;
 Assert::match(<<<XX
-\e[1;31mstdClass\e[0m \e[0m#%h%\e[0m\e[0m
+\e[1;31mstdClass\e[0m \e[0m#%d%\e[0m\e[0m
 \e[1;30m   \e[0m\e[1;37mx\e[0m => \e[1;32m1\e[0m
 \e[1;30m   \e[0m\e[1;37my\e[0m => \e[1;32m2\e[0m
-\e[1;30m   \e[0m\e[1;37mz\e[0m => \e[1;31mstdClass\e[0m \e[0m#%h%\e[0m { RECURSION }
+\e[1;30m   \e[0m\e[1;37mz\e[0m => \e[1;31mstdClass\e[0m \e[0m#%d%\e[0m { RECURSION }
 XX
 , Dumper::toTerminal($arr));

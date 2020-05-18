@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Tester\Assert;
-use Tester\Expect;
 use Tracy\Dumper;
 
 
@@ -24,7 +23,7 @@ $obj = (object) [
 ];
 
 
-Assert::match('stdClass #%a%
+Assert::match('stdClass #%d%
    a => 456
    password => ***** (string)
    PASSWORD => ***** (string)
@@ -39,14 +38,13 @@ Assert::match('stdClass #%a%
 
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":1}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"object":%d%}\'></pre>',
 	Dumper::toHtml($obj, [Dumper::KEYS_TO_HIDE => ['password', 'pin'], Dumper::SNAPSHOT => &$snapshot])
 );
 
 Assert::equal([
-	1 => [
+	[
 		'name' => 'stdClass',
-		'hash' => Expect::match('%h%'),
 		'items' => [
 			['a', 456, 0],
 			['password', ['type' => '***** (string)'], 0],
@@ -64,4 +62,4 @@ Assert::equal([
 			],
 		],
 	],
-], json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true));
+], array_values(json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true)));
