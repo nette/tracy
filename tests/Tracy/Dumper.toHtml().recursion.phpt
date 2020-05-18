@@ -29,8 +29,8 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="t
 
 $arr = (object) ['x' => 1, 'y' => 2];
 $arr->z = &$arr;
-Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span></span>
+Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">x</span> => <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">y</span> => <span class="tracy-dump-number">2</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span> { <i>RECURSION</i> }
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> { <i>RECURSION</i> }
 </div></pre>', Dumper::toHtml($arr));

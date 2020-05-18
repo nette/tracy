@@ -14,11 +14,11 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $obj = new stdClass;
-Assert::match('stdClass #%a%', Dumper::toText($obj));
+Assert::match('stdClass #%d%', Dumper::toText($obj));
 
 
 $obj->a = 1;
-Assert::match('stdClass #%a%
+Assert::match('stdClass #%d%
    a => 1
 ', Dumper::toText($obj));
 
@@ -28,17 +28,15 @@ $exporters = [
 		return ['x' => $var->a + 1];
 	},
 ];
-Assert::match(
-	'stdClass #%a%
+Assert::match('stdClass #%d%
    x => 2
-',
-	Dumper::toText($obj, [Dumper::OBJECT_EXPORTERS => $exporters])
+', Dumper::toText($obj, [Dumper::OBJECT_EXPORTERS => $exporters])
 );
 
 
 $obj = unserialize('O:1:"Y":7:{s:1:"1";N;s:1:"b";i:2;s:4:"' . "\0" . '*' . "\0" . 'c";N;s:4:"' . "\0" . '*' . "\0" . 'd";s:1:"d";s:4:"' . "\0" . 'Y' . "\0" . 'e";N;s:4:"' . "\0" . 'Y' . "\0" . 'i";s:3:"bar";s:4:"' . "\0" . 'X' . "\0" . 'i";s:3:"foo";}');
 
-Assert::match('__PHP_Incomplete_Class #%a%
+Assert::match('__PHP_Incomplete_Class #%d%
    className => "Y"
    private => array (3)
    |  Y::$e => null
@@ -63,39 +61,27 @@ $exporters = [
 	'SplFileInfo' => function ($var) { return ['type' => 'SplFileInfo']; },
 	'SplFileObject' => function ($var) { return ['type' => 'SplFileObject']; },
 ];
-Assert::match(
-	'SplFileInfo #%a%
+Assert::match('SplFileInfo #%d%
    type => "SplFileInfo" (11)
-',
-	Dumper::toText(new SplFileInfo(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters])
+', Dumper::toText(new SplFileInfo(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters])
 );
-Assert::match(
-	'SplFileObject #%a%
+Assert::match('SplFileObject #%d%
    type => "SplFileObject" (13)
-',
-	Dumper::toText(new SplFileObject(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters])
+', Dumper::toText(new SplFileObject(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters])
 );
-Assert::match(
-	'ArrayIterator #%a%
+Assert::match('ArrayIterator #%d%
    type => "Iterator" (8)
-',
-	Dumper::toText(new ArrayIterator([]), [Dumper::OBJECT_EXPORTERS => $exporters])
+', Dumper::toText(new ArrayIterator([]), [Dumper::OBJECT_EXPORTERS => $exporters])
 );
-Assert::match(
-	'stdClass #%a%
+Assert::match('stdClass #%d%
    type => "NULL" (4)
-',
-	Dumper::toText(new stdClass, [Dumper::OBJECT_EXPORTERS => $exporters])
+', Dumper::toText(new stdClass, [Dumper::OBJECT_EXPORTERS => $exporters])
 );
-Assert::match(
-	'ArrayIterator #%a%
+Assert::match('ArrayIterator #%d%
    type => "Default Iterator" (16)
-',
-	Dumper::toText(new ArrayIterator([]))
+', Dumper::toText(new ArrayIterator([]))
 );
-Assert::match(
-	'stdClass #%a%
+Assert::match('stdClass #%d%
    type => "NULL" (4)
-',
-	Dumper::toText(new stdClass)
+', Dumper::toText(new stdClass)
 );
