@@ -62,13 +62,13 @@ Assert::match('array (5)
 
 
 // object
-Assert::match('stdClass #%a%', Dumper::toText(new stdClass));
+Assert::match('stdClass #%d%', Dumper::toText(new stdClass));
 
-Assert::match('stdClass #%a%
+Assert::match('stdClass #%d%
    "" => "foo" (3)
 ', Dumper::toText((object) ['' => 'foo']));
 
-Assert::match('Test #%a%
+Assert::match('Test #%d%
    x => array (2)
    |  0 => 10
    |  1 => null
@@ -83,7 +83,7 @@ $obj->{0} = 8;
 $obj->{1} = 9;
 $obj->{''} = 10;
 
-Assert::match('Child #%a%
+Assert::match('Child #%d%
    x => 1
    y private => 2
    z protected => 3
