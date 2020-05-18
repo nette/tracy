@@ -25,7 +25,7 @@ test(function () { // html mode
 		Assert::match(<<<'XX'
 <style>%a%</style>
 <script>%a%</script>
-<pre class="tracy-dump"><span class="tracy-dump-number">123</span></pre>
+<pre class="tracy-dump--light"><span class="tracy-dump-number">123</span></pre>
 XX
 , ob_get_clean());
 	}

@@ -25,32 +25,32 @@ function formatSnapshot(array $snapshot): array
 $snapshot = [];
 $options = [Dumper::SNAPSHOT => &$snapshot];
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
+Assert::match('<pre class="tracy-dump--light"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span></pre>', Dumper::toHtml(true, $options));
+Assert::match('<pre class="tracy-dump--light"><span class="tracy-dump-bool">true</span></pre>', Dumper::toHtml(true, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span></pre>', Dumper::toHtml(0, $options));
+Assert::match('<pre class="tracy-dump--light"><span class="tracy-dump-number">0</span></pre>', Dumper::toHtml(0, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> (0)</pre>', Dumper::toHtml([], $options));
+Assert::match('<pre class="tracy-dump--light"><span class="tracy-dump-array">array</span> (0)</pre>', Dumper::toHtml([], $options));
 Assert::same([], $snapshot);
 
 
 // snapshot dump of array
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'[[0,null],[1,true],[2,false],[3,0],[4,{"number":"0.0"}],[5,"string"],[6,{"string":"\u0027\u0026amp;\"","length":3}],[7,{"string":"<span>\\\\x00</span>","length":1}],[8,{"number":"INF"}],[9,{"number":"-INF"}],[10,{"number":"NAN"}]]\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'[[0,null],[1,true],[2,false],[3,0],[4,{"number":"0.0"}],[5,"string"],[6,{"string":"\u0027\u0026amp;\"","length":3}],[7,{"string":"<span>\\\\x00</span>","length":1}],[8,{"number":"INF"}],[9,{"number":"-INF"}],[10,{"number":"NAN"}]]\'></pre>',
 	Dumper::toHtml([null, true, false, 0, 0.0, 'string', "'&\"", "\x00", INF, -INF, NAN], $options)
 );
 
 
 // snapshot dump of object
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":%d%}\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml(new stdClass, $options)
 );
 
 // twice with different identity
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":%d%}\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
 );
 Assert::equal([
@@ -60,13 +60,13 @@ Assert::equal([
 
 
 // dump() with already created snapshot
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
+Assert::match('<pre class="tracy-dump--light"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
 
 
 // snapshot and resource
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":"r%d%"}\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'{"ref":"r%d%"}\'></pre>',
 	Dumper::toHtml(fopen(__FILE__, 'r'), $options)
 );
 Assert::count(1, $snapshot);
@@ -75,7 +75,7 @@ Assert::count(1, $snapshot);
 // snapshot and collapse
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump tracy-collapsed" data-tracy-dump=\'{"ref":%d%}\'></pre>',
+	'<pre class="tracy-dump--light tracy-collapsed" data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml(new Test, $options + [Dumper::COLLAPSE => true])
 );
 
@@ -83,7 +83,7 @@ Assert::match(
 // snapshot content check
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":%d%}\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml(new Test, $options)
 );
 
@@ -102,7 +102,7 @@ Assert::equal([
 // snapshot & location
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&apos;location&apos; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
+	'<pre class="tracy-dump--light" title="Dumper::toHtml(new Test, $options + [&apos;location&apos; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
 in file %a% on line %d%
 Ctrl-Click to open in editor" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-dump=\'{"ref":%d%}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%:%d%</a></small></pre>',
 	Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
@@ -130,7 +130,7 @@ $snapshot = [];
 $arr = [1, 2, 3];
 $arr[] = &$arr;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,{"ref":"p1"},1]]\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,{"ref":"p1"},1]]\'></pre>',
 	Dumper::toHtml($arr, $options)
 );
 Assert::equal([
@@ -144,7 +144,7 @@ Assert::equal([
 $obj = new stdClass;
 $obj->x = $obj;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":%d%}\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml($obj, $options)
 );
 
@@ -153,7 +153,7 @@ Assert::match(
 $snapshot = [];
 $arr = [1, [2, [3, [4, [5, [6]]]]], 3];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,{"array":null,"length":2}]]]]]]],[2,3]]\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,{"array":null,"length":2}]]]]]]],[2,3]]\'></pre>',
 	Dumper::toHtml($arr, $options + [Dumper::DEPTH => 4])
 );
 Assert::same([], $snapshot);
@@ -161,7 +161,7 @@ Assert::same([], $snapshot);
 
 $arr = [1, [2, [3, [4, []]]], 3];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,[]]]]]]]],[2,3]]\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,[]]]]]]]],[2,3]]\'></pre>',
 	Dumper::toHtml($arr, $options + [Dumper::DEPTH => 4])
 );
 Assert::same([], $snapshot);
@@ -174,6 +174,6 @@ $obj->a->b->c = new stdClass;
 $obj->a->b->c->d = new stdClass;
 $obj->a->b->c->d->e = new stdClass;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":%d%}\'></pre>',
+	'<pre class="tracy-dump--light" data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml($obj, $options + [Dumper::DEPTH => 4])
 );

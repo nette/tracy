@@ -26,7 +26,7 @@ test(function () { // html mode
 		Assert::match(<<<'XX'
 <style>%a%</style>
 <script>%a%</script>
-<pre class="tracy-dump"><span class="tracy-dump-number">123</span></pre>
+<pre class="tracy-dump--light"><span class="tracy-dump-number">123</span></pre>
 XX
 , ob_get_clean());
 	}
@@ -38,7 +38,7 @@ test(function () { // repeated html mode
 		ob_start();
 		Assert::same(123, Dumper::dump(123));
 		Assert::match(<<<'XX'
-<pre class="tracy-dump"><span class="tracy-dump-number">123</span></pre>
+<pre class="tracy-dump--light"><span class="tracy-dump-number">123</span></pre>
 XX
 , ob_get_clean());
 	}

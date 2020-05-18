@@ -36,6 +36,9 @@ final class Renderer
 	/** @var bool|null  lazy-loading via JavaScript? true=full, false=none, null=collapsed parts */
 	public $lazy;
 
+	/** @var string */
+	public $theme = 'light';
+
 	/** @var bool */
 	public $collectingMode = false;
 
@@ -81,7 +84,7 @@ final class Renderer
 		[$file, $line, $code] = $model->location;
 		$uri = $model->location ? Helpers::editorUri($file, $line) : null;
 
-		return '<pre class="tracy-dump' . ($value && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
+		return '<pre class="tracy-dump' . ($this->theme ? '--' . $this->theme : '') . ($value && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
 			. ($model->location && $this->locationSource ? Helpers::formatHtml(' title="%in file % on line %%" data-tracy-href="%"', "$code\n", $file, $line, $uri ? "\nCtrl-Click to open in editor" : '', $uri) : null)
 			. ($snapshot === null ? '' : ' data-tracy-snapshot=' . self::formatSnapshotAttribute($snapshot))
 			. ($value ? " data-tracy-dump='" . json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "'>" : '>')

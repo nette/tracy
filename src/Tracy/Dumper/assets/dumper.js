@@ -59,7 +59,7 @@ class Dumper
 		});
 
 		document.documentElement.addEventListener('tracy-toggle', (e) => {
-			if (!e.detail.bulk && e.target.matches('.tracy-dump *')) {
+			if (!e.detail.bulk && e.target.matches('pre[class^=tracy-dump] *')) {
 				e.detail.relatedTarget.classList.toggle('tracy-dump-flash', !e.detail.collapsed);
 			}
 		});
@@ -72,7 +72,7 @@ class Dumper
 
 		document.addEventListener('mouseover', (e) => {
 			let dump;
-			if (e.target.matches('.tracy-dump-hash') && (dump = e.target.closest('.tracy-dump'))) {
+			if (e.target.matches('.tracy-dump-hash') && (dump = e.target.closest('pre[class^=tracy-dump]'))) {
 				dump.querySelectorAll('.tracy-dump-hash').forEach((el) => {
 					if (el.textContent === e.target.textContent) {
 						el.classList.add('tracy-dump-highlight');

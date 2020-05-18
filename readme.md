@@ -271,6 +271,7 @@ Dumper::$maxDepth = 2; // default: 7
 Dumper::$maxLength = 50; // default: 150
 Dumper::$maxItems = 50; // default: 100
 Dumper::$keysToHide = ['password']; // default: []
+Dumper::$theme = 'dark'; // default: light
 ```
 
 The `dump()` function can display other useful information. `Tracy\Dumper::LOCATION_SOURCE` adds a tooltip with path to the file, where the function was called. `Tracy\Dumper::LOCATION_LINK` adds a link to the file. `Tracy\Dumper::LOCATION_CLASS` adds a tooltip to every dumped object containing path to the file, in which the object's class is defined. All these constants can be set in `Dumper::$showLocation` variable before calling the `dump()`. You can set multiple values at once using the `|` operator.

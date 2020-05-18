@@ -49,7 +49,7 @@ $exporters = [
 	},
 ];
 Assert::match(<<<'XX'
-<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<pre class="tracy-dump--light"><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">3</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">key</span>: <span>hello</span>
 <span class="tracy-dump-indent">   </span><span>$x</span>: <span>hello</span>
@@ -68,7 +68,7 @@ $exporters = [
 	},
 ];
 Assert::match(<<<'XX'
-<pre class="tracy-dump" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["x","y",0]],"collapsed":true}}'><span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span></pre>
+<pre class="tracy-dump--light" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["x","y",0]],"collapsed":true}}'><span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span></pre>
 XX
 , Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));
 
