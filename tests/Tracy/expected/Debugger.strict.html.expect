@@ -125,7 +125,7 @@
 				<div class="panel">
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
 		<div class="tracy-collapsed inner">
-		<pre class="tracy-dump" data-tracy-dump='{"object":1}'></pre>
+		<pre class="tracy-dump" data-tracy-dump='{"object":%d%}'></pre>
 		</div></div>
 
 
