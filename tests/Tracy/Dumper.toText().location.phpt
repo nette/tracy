@@ -13,6 +13,15 @@ use Tracy\Dumper;
 require __DIR__ . '/../bootstrap.php';
 
 
+Assert::same("true\nin " . __FILE__ . ':' . __LINE__ . "\n", Dumper::toText(true, ['location' => true]));
+
+
+Assert::same("array ()\nin " . __FILE__ . ':' . __LINE__ . "\n", Dumper::toText([], ['location' => true]));
+
+
+Assert::same("array (1)\n   0 => 1\nin " . __FILE__ . ':' . __LINE__ . "\n", Dumper::toText([1], ['location' => true]));
+
+
 class Test
 {
 }
