@@ -128,13 +128,14 @@
 		}
 
 
-		if (data.string !== undefined) {
+		if (data.string !== undefined || data.bin !== undefined) {
+			let s = data.string === undefined ? data.bin : data.string;
 			if (keyType === TYPE_ARRAY) {
 				return createEl(null, null, [
 					createEl(
 						'span',
 						{'class': 'tracy-dump-string'},
-						{html: '\'' + data.string + '\''}
+						{html: '\'' + s.replace(/\n/g, '\n ') + '\''}
 					),
 				]);
 
@@ -153,7 +154,7 @@
 							'class': classes[typeof keyType === 'string' ? PROP_PRIVATE : keyType],
 							'title': typeof keyType === 'string' ? 'declared in ' + keyType : null,
 						},
-						{html: data.string}
+						{html: s.replace(/\n/g, '\n ')}
 					),
 				]);
 			}
@@ -161,10 +162,14 @@
 			return createEl(null, null, [
 				createEl(
 					'span',
-					{'class': 'tracy-dump-string'},
-					{html: '\'' + data.string + '\''}
+					{
+						'class': 'tracy-dump-string',
+						'title': data.length + (data.bin ? ' bytes' : ' characters'),
+					},
+					{html: s.indexOf('\n') < 0
+						? '\'' + s + '\''
+						: '\n   \'' + s.replace(/\n/g, '\n    ') + '\''}
 				),
-				' (' + data.length + ')',
 			]);
 
 		} else if (data.number) {

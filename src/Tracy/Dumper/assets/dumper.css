@@ -42,6 +42,13 @@ pre.tracy-dump a:focus {
 	color: #35D;
 }
 
+.tracy-dump-virtual span,
+.tracy-dump-dynamic span,
+.tracy-dump-string span {
+	font-size: 80%;
+	color: rgba(0, 0, 0, 0.5);
+}
+
 .tracy-dump-number {
 	color: #090;
 }

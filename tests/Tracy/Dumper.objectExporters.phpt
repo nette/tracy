@@ -63,8 +63,8 @@ __PHP_Incomplete_Class #%d%
    className: 'Y'
    private: array (3)
    |  'Y::$e' => null
-   |  'Y::$i' => 'bar' (3)
-   |  'X::$i' => 'foo' (3)
+   |  'Y::$i' => 'bar'
+   |  'X::$i' => 'foo'
    protected: array (2)
    |  'c' => null
    |  'd' => 'd'
@@ -90,36 +90,36 @@ $exporters = [
 
 Assert::match(<<<'XX'
 SplFileInfo #%d%
-   type: 'SplFileInfo' (11)
+   type: 'SplFileInfo'
 XX
 , Dumper::toText(new SplFileInfo(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 Assert::match(<<<'XX'
 SplFileObject #%d%
-   type: 'SplFileObject' (13)
+   type: 'SplFileObject'
 XX
 , Dumper::toText(new SplFileObject(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 Assert::match(<<<'XX'
 ArrayIterator #%d%
-   type: 'Iterator' (8)
+   type: 'Iterator'
 XX
 , Dumper::toText(new ArrayIterator([]), [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 Assert::match(<<<'XX'
 stdClass #%d%
-   type: 'NULL' (4)
+   type: 'NULL'
 XX
 , Dumper::toText(new stdClass, [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 Assert::match(<<<'XX'
 ArrayIterator #%d%
-   type: 'Default Iterator' (16)
+   type: 'Default Iterator'
 XX
 , Dumper::toText(new ArrayIterator([])));
 
 Assert::match(<<<'XX'
 stdClass #%d%
-   type: 'NULL' (4)
+   type: 'NULL'
 XX
 , Dumper::toText(new stdClass));

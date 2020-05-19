@@ -60,6 +60,12 @@
 	border-bottom-color: rgba(255, 255, 255, .3) !important;
 }
 
+#tracy-bs-error span span {
+	font-size: 80%;
+	color: rgba(255, 255, 255, 0.5);
+	text-shadow: none;
+}
+
 #tracy-bs-error a.action {
 	color: white !important;
 	opacity: 0;
@@ -232,7 +238,7 @@
 	font-style: normal;
 }
 
-#tracy-bs pre:hover span[title] {
+#tracy-bs pre.code:hover span[title] {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
