@@ -458,14 +458,14 @@ class Dumper
 			$id = spl_object_id($var);
 			$obj = &$options[self::SNAPSHOT][$id];
 			if ($obj && $obj['depth'] <= $depth) {
-				return ['object' => $id];
+				return ['ref' => $id];
 			}
 
 			$obj = $obj ?: [
 				'id' => $id,
-				'name' => Helpers::getClass($var),
+				'object' => Helpers::getClass($var),
 				'depth' => $depth,
-				'object' => $var,
+				'holder' => $var,
 			];
 			if (empty($obj['editor']) && ($this->location & self::LOCATION_CLASS)) {
 				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
@@ -489,21 +489,21 @@ class Dumper
 					$obj['items'][] = [$this->encodeKey($k), $hide ? ['type' => self::hideValue($v)] : $this->toJson($v, $options, $depth + 1), $vis];
 				}
 			}
-			return ['object' => $id];
+			return ['ref' => $id];
 
 		} else {
 			$id = 'r' . (int) $var;
 			$obj = &$options[self::SNAPSHOT][$id];
 			if (!$obj) {
 				$type = is_resource($var) ? get_resource_type($var) : 'closed';
-				$obj = ['id' => $id, 'name' => $type . ' resource', 'items' => []];
+				$obj = ['id' => $id, 'resource' => $type . ' resource', 'items' => []];
 				if (isset($this->resourceDumpers[$type])) {
 					foreach (($this->resourceDumpers[$type])($var) as $k => $v) {
 						$obj['items'][] = [$k, $this->toJson($v, $options, $depth + 1)];
 					}
 				}
 			}
-			return ['resource' => $id];
+			return ['ref' => $id];
 		}
 	}
 
@@ -512,7 +512,7 @@ class Dumper
 	{
 		$res = $snapshot;
 		foreach ($res as &$obj) {
-			unset($obj['depth'], $obj['object'], $obj['id']);
+			unset($obj['depth'], $obj['holder'], $obj['id']);
 		}
 		$snapshot = [];
 		return "'" . json_encode($res, JSON_HEX_APOS | JSON_HEX_AMP) . "'";
