@@ -173,7 +173,9 @@ final class Renderer
 	private function renderString($str, $keyType): string
 	{
 		if ($keyType === 'array') {
-			return '<span class="tracy-dump-string">\'' . Helpers::escapeHtml(is_string($str) ? $str : $str->value) . "'</span>";
+			return '<span class="tracy-dump-string">\''
+				. (is_string($str) ? Helpers::escapeHtml($str) : $str->value)
+				. "'</span>";
 
 		} elseif ($keyType !== null) {
 			static $classes = [
@@ -185,7 +187,7 @@ final class Renderer
 			$title = is_string($keyType) ? ' title="declared in ' . Helpers::escapeHtml($keyType) . '"' : null;
 			return '<span class="'
 				. ($title ? 'tracy-dump-private' : $classes[$keyType]) . '"' . $title . '>'
-				. Helpers::escapeHtml(is_string($str) ? $str : $str->value)
+				. (is_string($str) ? Helpers::escapeHtml($str) : $str->value)
 				. '</span>';
 
 		} elseif (is_string($str)) {
@@ -195,7 +197,7 @@ final class Renderer
 
 		} else {
 			return '<span class="tracy-dump-string">\''
-				. Helpers::escapeHtml($str->value)
+				. $str->value
 				. "'</span>" . ($str->length > 1 ? ' (' . $str->length . ')' : '');
 		}
 	}

@@ -379,7 +379,6 @@ class BlueScreen
 	private function formatMessage(\Throwable $exception): string
 	{
 		$msg = Helpers::encodeString((string) $exception->getMessage(), self::MAX_MESSAGE_LENGTH);
-		$msg = htmlspecialchars($msg, ENT_SUBSTITUTE, 'UTF-8');
 
 		// highlight 'string'
 		$msg = preg_replace(
