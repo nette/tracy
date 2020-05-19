@@ -31,8 +31,8 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">2</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">6</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-hash">&2</span> <span class="tracy-dump-number">2</span>
-<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-hash">&1</span> <span class="tracy-dump-number">1</span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-hash">&2</span> <span class="tracy-dump-number">2</span>
+<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-hash">&1</span> <span class="tracy-dump-number">1</span>
 </div></div></pre>
 XX
 , Dumper::toHtml($obj));
