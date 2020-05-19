@@ -275,13 +275,12 @@ Debugger::$maxDepth = 2; // default: 3
 Debugger::$maxLength = 50; // default: 150
 ```
 
-The `dump()` function can display other useful information. `Tracy\Dumper::LOCATION_SOURCE` adds a tooltip with path to the file, where the function was called. `Tracy\Dumper::LOCATION_LINK` adds a link to the file. `Tracy\Dumper::LOCATION_CLASS` adds a tooltip to every dumped object containing path to the file, in which the object's class is defined. All these constants can be set in `Debugger::$showLocation` variable before calling the `dump()`. You can set multiple values at once using the `|` operator.
+The `dump()` function can display useful location information:
 
 ```php
-Debugger::$showLocation = Tracy\Dumper::LOCATION_SOURCE; // Shows path to where the dump() was called
-Debugger::$showLocation = Tracy\Dumper::LOCATION_CLASS | Tracy\Dumper::LOCATION_LINK; // Shows both paths to the classes and link to where the dump() was called
-Debugger::$showLocation = false; // Hides additional location information
-Debugger::$showLocation = true; // Shows all additional location information
+Debugger::$showLocation = true; // shows tooltip with path to the file, where the dump() was called, and tooltips for every dumped objects
+Debugger::$showLocation = Tracy\Dumper::LOCATION_CLASS; // shows only tooltips for every dumped object containing path to the file
+Debugger::$showLocation = false; // hides all location information
 ```
 
 Very handy alternative to `dump()` is `dumpe()` (ie. dump and exit) and `bdump()`. This allows us to dump variables in Debugger Bar. This is useful, because dumps don't mess up the output and we can also add a title to the dump.
