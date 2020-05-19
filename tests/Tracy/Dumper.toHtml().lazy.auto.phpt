@@ -67,7 +67,7 @@ $arr = [1, 2, 3, 4, 5, 6, 7, 8];
 Assert::match(<<<'XX'
 <pre class="tracy-dump" data-tracy-snapshot='[]'><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"array":null,"length":8,"items":[[0,1],[1,2],[2,3],[3,4],[4,5]]}'><span class="tracy-dump-array">array</span> (8)</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#6</span></span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">2</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">2</span>: <span class="tracy-dump-number">3</span>
