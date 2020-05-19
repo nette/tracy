@@ -47,6 +47,10 @@ pre.tracy-dump a:focus {
 	color: #850;
 }
 
+.tracy-dump-public::after {
+	content: ' pub';
+}
+
 .tracy-dump-protected::after {
 	content: ' pro';
 }
@@ -55,6 +59,7 @@ pre.tracy-dump a:focus {
 	content: ' pri';
 }
 
+.tracy-dump-public::after,
 .tracy-dump-protected::after,
 .tracy-dump-private::after,
 .tracy-dump-hash {
