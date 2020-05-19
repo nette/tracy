@@ -39,10 +39,10 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="t
 <div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-key">hello</span> => <span class="tracy-dump-string">"world"</span> (5)
 </div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">long2</span> => <span class="tracy-dump-string">"Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... "</span> (15000)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-key">hello</span> => <span class="tracy-dump-string">"world"</span> (5)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">0</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-public">0</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-public">hello</span> => <span class="tracy-dump-string">"world"</span> (5)
 </div></div></div></div></pre>', Dumper::toHtml($arr));
 
 
@@ -51,6 +51,6 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="t
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-array">array</span> (1) [ ... ]
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">long2</span> => <span class="tracy-dump-string">"Nette FrameworkNette FrameworkNette FrameworkNette ... "</span> (15000)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span></span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%a%</span> { ... }
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">0</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> { ... }
 </div></div></pre>', Dumper::toHtml($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
