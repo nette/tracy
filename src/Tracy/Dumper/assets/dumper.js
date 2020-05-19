@@ -75,8 +75,7 @@
 		let id, type = data === null ? 'null' : typeof data,
 			collapseCount = collapsed === null ? COLLAPSE_COUNT : COLLAPSE_COUNT_TOP;
 
-		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
-			data = type === 'string' ? '"' + data + '"' : (data + '');
+		if (type === 'null' || type === 'number' || type === 'boolean') {
 			return createEl(null, null, [
 				createEl(
 					'span',
@@ -84,6 +83,9 @@
 					[data + '\n']
 				)
 			]);
+
+		} else if (type === 'string') {
+			data = {string: data};
 
 		} else if (data.ref) {
 			id = data.ref;
@@ -105,6 +107,12 @@
 				repository,
 				parentIds
 			);
+
+		} else if (data.string !== undefined) {
+			return createEl(null, null, [
+				createEl('span', {'class': 'tracy-dump-string'}, ['"' + data.string + '"']),
+				' (' + (data.length || data.string.length) + ')\n',
+			]);
 
 		} else if (data.stop) {
 			return createEl(null, null, [

@@ -428,7 +428,11 @@ class Dumper
 				: new Value('number', (string) $var);
 
 		} elseif (is_string($var)) {
-			return $this->encodeString($var, $this->maxLength);
+			$s = $this->encodeString($var, $this->maxLength);
+			if ($s === $var) {
+				return $s;
+			}
+			return new Value('string', $s, strlen($var));
 
 		} elseif (is_array($var)) {
 			static $marker;
