@@ -37,7 +37,7 @@
 
 			<div class="inner">
 				<p><b>File:</b> %a%</p>
-				<pre data-tracy-href="%a%" class='code'>%A%</pre>			</div></div>
+				<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='code'>%A%</pre>			</div></div>
 
 
 									<div class="panel">
