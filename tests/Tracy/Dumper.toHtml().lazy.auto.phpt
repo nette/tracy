@@ -31,8 +31,8 @@ $obj->items['x'] = new stdClass;
 $obj->items['x']->b = new stdClass;
 $obj->items['x']->b->c = new stdClass;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"stdClass","items":[["b",{"object":%d%},0]]},"%d%":{"name":"stdClass","items":[["c",{"object":%d%},0]]},"%d%":{"name":"stdClass"}}\'><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">items</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],["x",{"object":%d%}]]\'><span class="tracy-dump-array">array</span> (9)</span>
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[["b",{"ref":%d%},0]]},"%d%":{"object":"stdClass","items":[["c",{"ref":%d%},0]]},"%d%":{"object":"stdClass"}}\'><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">items</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],["x",{"ref":%d%}]]\'><span class="tracy-dump-array">array</span> (9)</span>
 </div></pre>',
 	Dumper::toHtml($obj)
 );
@@ -54,8 +54,8 @@ Assert::match(
 $obj = new stdClass;
 $obj->items = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', $obj];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"stdClass","items":[["items",[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"object":%d%}]],0]]}}\'><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">items</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"object":%d%}]]\'><span class="tracy-dump-array">array</span> (9)</span>
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[["items",[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"ref":%d%}]],0]]}}\'><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">items</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"ref":%d%}]]\'><span class="tracy-dump-array">array</span> (9)</span>
 </div></pre>',
 	Dumper::toHtml($obj)
 );

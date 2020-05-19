@@ -38,27 +38,27 @@ Assert::match(
 
 // live dump of object
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"stdClass","items":[]}}\' data-tracy-dump=\'{"object":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[]}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml(new stdClass, $options)
 );
 
 // twice with different identity
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"stdClass","items":[]}}\' data-tracy-dump=\'{"object":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[]}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml(new stdClass, $options) // different object
 );
 
 
 // lazy dump and resource
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"r%d%":{"name":"stream resource","items":[%a%]}}\' data-tracy-dump=\'{"resource":"r%d%"}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"r%d%":{"resource":"stream resource","items":[%a%]}}\' data-tracy-dump=\'{"ref":"r%d%"}\'></pre>',
 	Dumper::toHtml(fopen(__FILE__, 'r'), $options)
 );
 
 
 // lazy dump and collapse
 Assert::match(
-	'<pre class="tracy-dump tracy-collapsed" data-tracy-snapshot=\'{"%d%":{"name":"Test","items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"object":%d%}\'></pre>',
+	'<pre class="tracy-dump tracy-collapsed" data-tracy-snapshot=\'{"%d%":{"object":"Test","items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml(new Test, $options + [Dumper::COLLAPSE => true])
 );
 
@@ -66,7 +66,7 @@ Assert::match(
 // lazy dump & location
 Assert::match(
 	'<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&#039;location&#039; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
-in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-snapshot=\'{"%d%":{"name":"Test","editor":{"file":"%a%","line":%d%,"url":"editor:\/\/open\/?file=%a%\u0026line=%d%\u0026search=\u0026replace="},"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"object":%d%}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%</b>:%d%</a></small></pre>',
+in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-snapshot=\'{"%d%":{"object":"Test","editor":{"file":"%a%","line":%d%,"url":"editor:\/\/open\/?file=%a%\u0026line=%d%\u0026search=\u0026replace="},"items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\' data-tracy-dump=\'{"ref":%d%}\'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%</b>:%d%</a></small></pre>',
 	Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_LINK | Dumper::LOCATION_CLASS])
 );
 
@@ -82,7 +82,7 @@ Assert::match(
 $obj = new stdClass;
 $obj->x = $obj;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"stdClass","items":[["x",{"object":%d%},0]]}}\' data-tracy-dump=\'{"object":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[["x",{"ref":%d%},0]]}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml($obj, $options)
 );
 
@@ -101,6 +101,6 @@ $obj->a->b->c = new stdClass;
 $obj->a->b->c->d = new stdClass;
 $obj->a->b->c->d->e = new stdClass;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"stdClass","items":[["a",{"object":%d%},0]]},"%d%":{"name":"stdClass","items":[["b",{"object":%d%},0]]},"%d%":{"name":"stdClass","items":[["c",{"object":%d%},0]]},"%d%":{"name":"stdClass","items":[["d",{"object":%d%},0]]},"%d%":{"name":"stdClass"}}\' data-tracy-dump=\'{"object":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[["a",{"ref":%d%},0]]},"%d%":{"object":"stdClass","items":[["b",{"ref":%d%},0]]},"%d%":{"object":"stdClass","items":[["c",{"ref":%d%},0]]},"%d%":{"object":"stdClass","items":[["d",{"ref":%d%},0]]},"%d%":{"object":"stdClass"}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml($obj, $options)
 );

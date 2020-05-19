@@ -56,13 +56,13 @@ Assert::match('stdClass #%d%
 
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml((object) $keys, [Dumper::SNAPSHOT => &$snapshot])
 );
 
 Assert::equal([
 	[
-		'name' => 'stdClass',
+		'object' => 'stdClass',
 		'items' => [
 			['""', 0, 0],
 			['"""', 0, 0],
