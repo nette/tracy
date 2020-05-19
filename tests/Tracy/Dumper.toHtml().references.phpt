@@ -18,7 +18,8 @@ $b = 2;
 $obj = (object) [&$a, $a, &$b, $b, (object) [&$a, &$b], (object) [$a, $b], [&$b, &$a]];
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<pre class="tracy-dump"
+><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-hash">&1</span> <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">2</span>: <span class="tracy-dump-hash">&2</span> <span class="tracy-dump-number">2</span>

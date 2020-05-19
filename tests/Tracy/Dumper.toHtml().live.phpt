@@ -100,8 +100,8 @@ Assert::equal([
 // live dump & location
 Dumper::$liveSnapshot = [];
 Assert::match(<<<'XX'
-<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&apos;location&apos; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_CLASS]))
-in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-dump='{"ref":%d%}'><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%:%d%</a></small></pre>
+<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&apos;location&apos; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_CLASS]))&#10;in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" data-tracy-dump='{"ref":%d%}'
+><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%:%d%</a></small></pre>
 XX
 , Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_CLASS]));
 
