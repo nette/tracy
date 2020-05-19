@@ -71,14 +71,15 @@ XX
 
 // no lazy dump & location
 Assert::match(<<<'XX'
-<pre class="tracy-dump" title="Dumper::toHtml(new Test, $options + [&apos;location&apos; =&gt; Dumper::LOCATION_SOURCE | Dumper::LOCATION_CLASS]))&#10;in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace="
+<pre class="tracy-dump"
+><a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::toHtml(new Test, $options + ['location' => <span>…</span> N_CLASS])) 📍</a
 ><span class="tracy-toggle"><span class="tracy-dump-object" title="Declared in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-null">null</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters">'hello'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
-</div><small>in <a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" title="%a%:%d%">%a%</b>:%d%</a></small></pre>
+</div></pre>
 XX
 , Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_CLASS]));
 

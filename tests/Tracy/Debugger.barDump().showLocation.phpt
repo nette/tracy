@@ -36,9 +36,9 @@ register_shutdown_function(function () {
 
 <div class="tracy-inner tracy-DumpPanel">
 
-	<pre class="tracy-dump" title="barDump(&apos;value&apos;)&#10;in file %a% on line %d%" data-tracy-href="editor:%a%"
-><span class="tracy-dump-string" title="5 characters">'value'</span>
-<small>in <a href="%a%">%a%:%d%</a></small></pre>
+	<pre class="tracy-dump"
+><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">barDump('value') ð</a
+><span class="tracy-dump-string" title="5 characters">'value'</span></pre>
 </div>
 %A%
 EOD
