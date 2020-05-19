@@ -218,9 +218,7 @@ final class Renderer
 		if ($collapsed && $this->lazy !== false) {
 			$array = isset($array->id) ? new Value('ref', $array->id) : $array;
 			$this->copySnapshot($array);
-			return $span . " data-tracy-dump='"
-				. json_encode($array, JSON_HEX_APOS | JSON_HEX_AMP) . "'>"
-				. $out . $count . ")</span>\n";
+			return $span . " data-tracy-dump='" . self::jsonEncode($array) . "'>" . $out . $count . ")</span>\n";
 		}
 
 		$out = $span . '>' . $out . $count . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
@@ -353,6 +351,6 @@ final class Renderer
 
 	public static function jsonEncode($snapshot): string
 	{
-		return json_encode($snapshot, JSON_HEX_APOS | JSON_HEX_AMP);
+		return json_encode($snapshot, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 	}
 }
