@@ -170,7 +170,7 @@ final class Describer
 			$value->items = [];
 			$props = $this->exposeObject($obj, $value);
 			foreach ($props ?? [] as $k => $v) {
-				$this->addProperty($value, $k, $v, Value::PROP_PUBLIC, $this->getReferenceId($props, $k));
+				$this->addProperty($value, $k, $v, Value::PROP_VIRTUAL, $this->getReferenceId($props, $k));
 			}
 		}
 		return new Value('ref', $id);
@@ -204,7 +204,7 @@ final class Describer
 	 * @param  int|string  $key
 	 * @return int|string
 	 */
-	private function describeKey($key)
+	public function describeKey($key)
 	{
 		return is_int($key) || (preg_match('#^[!\#$%&()*+,./0-9:;<=>?@A-Z[\]^_`a-z{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
 			? $key
@@ -212,7 +212,7 @@ final class Describer
 	}
 
 
-	public function addProperty(Value $value, $k, $v, $type, int $refId = null)
+	public function addProperty(Value $value, $k, $v, $type = Value::PROP_VIRTUAL, int $refId = null)
 	{
 		$k = (string) $k;
 		$v = isset($this->keysToHide[strtolower($k)])

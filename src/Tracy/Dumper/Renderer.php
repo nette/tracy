@@ -274,10 +274,11 @@ final class Renderer
 			Value::PROP_PROTECTED => 'tracy-dump-protected',
 			Value::PROP_PRIVATE => 'tracy-dump-private',
 			Value::PROP_DYNAMIC => 'tracy-dump-dynamic',
+			Value::PROP_VIRTUAL => 'tracy-dump-virtual',
 		];
 
 		foreach ($object->items as $info) {
-			[$k, $v, $type, $ref] = $info + [3 => null];
+			[$k, $v, $type, $ref] = $info + [2 => Value::PROP_VIRTUAL, null];
 			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
 				. '<span class="' . $classes[$type] . '">' . Helpers::escapeHtml($k) . '</span>'
 				. ' => '
@@ -297,7 +298,7 @@ final class Renderer
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach ($resource->items as [$k, $v]) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => ' . $this->renderVar($v, $depth + 1);
+					. '<span class="tracy-dump-virtual">' . Helpers::escapeHtml($k) . '</span> => ' . $this->renderVar($v, $depth + 1);
 			}
 			return $out . '</div>';
 		}

@@ -10,7 +10,8 @@
 		COLLAPSE_COUNT_TOP = 14,
 		TYPE_ARRAY = 1,
 		TYPE_OBJECT = 2,
-		TYPE_RESOURCE = 3;
+		TYPE_RESOURCE = 3,
+		PROP_VIRTUAL = 4;
 
 	class Dumper
 	{
@@ -220,6 +221,7 @@
 			'tracy-dump-protected',
 			'tracy-dump-private',
 			'tracy-dump-dynamic',
+			'tracy-dump-virtual',
 		];
 
 		let key, val, vis, ref, i;
@@ -235,7 +237,7 @@
 					? createEl('span', {'class': 'tracy-dump-key'}, [key])
 					: createEl(
 						'span',
-						{'class': type === TYPE_OBJECT ? classes[vis] : 'tracy-dump-key'},
+						{'class': classes[type === TYPE_OBJECT ? vis : PROP_VIRTUAL]},
 						[key]
 					),
 				' => ',
