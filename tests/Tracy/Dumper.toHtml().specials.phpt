@@ -22,8 +22,7 @@ XX
 
 fclose($f);
 Assert::match(<<<'XX'
-<pre class="tracy-dump"><span class="tracy-dump-resource">closed resource</span> <span class="tracy-dump-hash">@%d%</span>
-</pre>
+<pre class="tracy-dump"><span class="tracy-dump-resource">closed resource</span> <span class="tracy-dump-hash">@%d%</span></pre>
 XX
 , Dumper::toHtml($f));
 
@@ -42,8 +41,7 @@ XX
 
 // new class
 Assert::match(<<<'XX'
-<pre class="tracy-dump"><span class="tracy-dump-object">class@anonymous</span> <span class="tracy-dump-hash">#%d%</span>
-</pre>
+<pre class="tracy-dump"><span class="tracy-dump-object">class@anonymous</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
 , Dumper::toHtml(new class {
 }));

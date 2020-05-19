@@ -16,17 +16,13 @@ require __DIR__ . '/fixtures/DumpClass.php';
 // no lazy dump of scalars & empty array
 $options = [Dumper::LAZY => false];
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span>
-</pre>', Dumper::toHtml(null, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span>
-</pre>', Dumper::toHtml(true, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span></pre>', Dumper::toHtml(true, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span>
-</pre>', Dumper::toHtml(0, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span></pre>', Dumper::toHtml(0, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()
-</pre>', Dumper::toHtml([], $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()</pre>', Dumper::toHtml([], $options));
 
 
 // no lazy dump of array

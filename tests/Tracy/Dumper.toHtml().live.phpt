@@ -23,17 +23,13 @@ function formatSnapshot(): array
 // live dump of scalars & empty array
 $options = [Dumper::LIVE => true];
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span>
-</pre>', Dumper::toHtml(null, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span>
-</pre>', Dumper::toHtml(true, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span></pre>', Dumper::toHtml(true, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span>
-</pre>', Dumper::toHtml(0, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span></pre>', Dumper::toHtml(0, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()
-</pre>', Dumper::toHtml([], $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()</pre>', Dumper::toHtml([], $options));
 Assert::same([], Dumper::$liveSnapshot[0]);
 
 
@@ -62,8 +58,7 @@ Assert::equal([
 
 
 // dump() with already created live snapshot
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span>
-</pre>', Dumper::toHtml(null, $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
 
 
 // live dump and resource
