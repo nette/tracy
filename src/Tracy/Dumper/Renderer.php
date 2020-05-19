@@ -107,6 +107,7 @@ final class Renderer
 			}, $s);
 		}
 		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
+		$s = str_replace('…', '...', $s);
 
 		if ($this->sourceLocation && ([$file, $line] = $model->location)) {
 			$s .= "in $file:$line";
@@ -193,7 +194,7 @@ final class Renderer
 			$items = $array;
 			$count = count($items);
 		} elseif ($array->items === null) {
-			return $out . $array->length . ") [ ... ]\n";
+			return $out . $array->length . ") [ … ]\n";
 		} else {
 			$items = $array->items;
 			$count = $array->length ?? count($items);
@@ -231,7 +232,7 @@ final class Renderer
 		}
 
 		if ($count > count($items)) {
-			$out .= $indent . "...\n";
+			$out .= $indent . "…\n";
 		}
 		unset($this->parents[$array->id ?? null]);
 		return $out . '</div>';
@@ -255,7 +256,7 @@ final class Renderer
 			. '</span> <span class="tracy-dump-hash">#' . $object->id . '</span>';
 
 		if ($object->items === null) {
-			return $out . " { ... }\n";
+			return $out . " { … }\n";
 
 		} elseif (!$object->items) {
 			return $out . "\n";
@@ -298,7 +299,7 @@ final class Renderer
 		}
 
 		if ($object->length > count($object->items)) {
-			$out .= $indent . "...\n";
+			$out .= $indent . "…\n";
 		}
 		unset($this->parents[$object->id]);
 		return $out . '</div>';
