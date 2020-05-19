@@ -274,9 +274,10 @@ final class Renderer
 		$editorAttributes = '';
 		if ($this->classLocation && $object->editor) {
 			$editorAttributes = Helpers::formatHtml(
-				' title="Declared in file % on line %" data-tracy-href="%"',
+				' title="Declared in file % on line %%" data-tracy-href="%"',
 				$object->editor->file,
 				$object->editor->line,
+				$object->editor->url ? "\nCtrl-Click to open in editor" : '',
 				$object->editor->url
 			);
 		}
