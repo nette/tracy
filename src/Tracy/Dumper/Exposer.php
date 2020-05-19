@@ -37,19 +37,31 @@ final class Exposer
 	}
 
 
-	public static function exposeClosure(\Closure $obj): array
+	public static function exposeClosure(\Closure $obj, Value $value, Describer $describer): void
 	{
 		$rc = new \ReflectionFunction($obj);
-		$res = [];
-		foreach ($rc->getParameters() as $param) {
-			$res[] = '$' . $param->getName();
+		if ($describer->showLocation) {
+			$describer->addProperty($value, 'file', $rc->getFileName() . ':' . $rc->getStartLine());
 		}
-		return [
-			'file' => $rc->getFileName(),
-			'line' => $rc->getStartLine(),
-			'variables' => $rc->getStaticVariables(),
-			'parameters' => implode(', ', $res),
-		];
+
+		$params = [];
+		foreach ($rc->getParameters() as $param) {
+			$params[] = '$' . $param->getName();
+		}
+		$value->value .= '(' . implode(', ', $params) . ')';
+
+		$uses = [];
+		$useValue = new Value(Value::TYPE_OBJECT);
+		$useValue->depth = $value->depth + 1;
+		foreach ($rc->getStaticVariables() as $name => $v) {
+			$uses[] = '$' . $name;
+			$describer->addProperty($useValue, '$' . $name, $v);
+		}
+		if ($uses) {
+			$useValue->value = implode(', ', $uses);
+			$useValue->collapsed = true;
+			$value->items[] = ['use', $useValue];
+		}
 	}
 
 
