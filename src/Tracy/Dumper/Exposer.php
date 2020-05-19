@@ -77,6 +77,27 @@ final class Exposer
 	}
 
 
+	public static function exposeDOMNode(\DOMNode $obj, Value $value, Describer $describer): void
+	{
+		preg_match_all('#^\s*\[([^\]]+)\] =>#m', print_r($obj, true), $tmp);
+		$props = $tmp[1];
+		sort($props);
+		foreach ($props as $p) {
+			$describer->addProperty($value, $p, $obj->$p, Value::PROP_PUBLIC);
+		}
+	}
+
+
+	/**
+	 * @param  \DOMNodeList|\DOMNamedNodeMap  $obj
+	 */
+	public static function exposeDOMNodeList($obj, Value $value, Describer $describer): void
+	{
+		$describer->addProperty($value, 'length', $obj->length, Value::PROP_PUBLIC);
+		$describer->addProperty($value, 'items', iterator_to_array($obj));
+	}
+
+
 	public static function exposeSplFileInfo(\SplFileInfo $obj): array
 	{
 		return ['path' => $obj->getPathname()];
