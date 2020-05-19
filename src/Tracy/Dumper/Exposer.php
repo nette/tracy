@@ -120,12 +120,12 @@ final class Exposer
 		foreach ((array) $obj as $name => $value) {
 			if ($name === '__PHP_Incomplete_Class_Name') {
 				$info['className'] = $value;
-			} elseif (preg_match('#^\x0\*\x0(.+)$#D', $name, $m)) {
+			} elseif (preg_match('#^\x0\*\x0(.+)$#D', (string) $name, $m)) {
 				$info['protected'][$m[1]] = $value;
-			} elseif (preg_match('#^\x0(.+)\x0(.+)$#D', $name, $m)) {
+			} elseif (preg_match('#^\x0(.+)\x0(.+)$#D', (string) $name, $m)) {
 				$info['private'][$m[1] . '::$' . $m[2]] = $value;
 			} else {
-				$info['public'][$name] = $value;
+				$info['public'][(string) $name] = $value;
 			}
 		}
 		return $info;
