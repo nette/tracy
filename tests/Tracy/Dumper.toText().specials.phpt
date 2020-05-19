@@ -23,13 +23,18 @@ Assert::match('closed resource @%d%', Dumper::toText($f));
 
 // closure
 Assert::match(<<<'XX'
-Closure #%d%
-   file: '%a%'
-   line: %i%
-   variables: array (0)
-   parameters: ''
+Closure() #%d%
 XX
 , Dumper::toText(function () {}));
+
+
+Assert::match(<<<'XX'
+Closure($x, $y) #%d%
+   file: '%a%:%d%'
+   use: $use
+   |  $use: null
+XX
+, Dumper::toText(function ($x, int $y = 1) use (&$use) {}, [Dumper::LOCATION => Dumper::LOCATION_CLASS]));
 
 
 // new class
