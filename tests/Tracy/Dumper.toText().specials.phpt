@@ -24,7 +24,7 @@ Assert::match('closed resource @%d%', Dumper::toText($f));
 // closure
 Assert::match(<<<'XX'
 Closure #%d%
-   file: '%a%' (%i%)
+   file: '%a%'
    line: %i%
    variables: array ()
    parameters: ''
@@ -39,7 +39,7 @@ Assert::match('class@anonymous #%d%', Dumper::toText(new class {
 
 // SplFileInfo
 Assert::match("SplFileInfo #%d%
-   path: '%a%' (%i%)
+   path: '%a%'
 ", Dumper::toText(new SplFileInfo(__FILE__)));
 
 
@@ -57,11 +57,11 @@ Assert::match(<<<'XX'
 SplObjectStorage #%d%
    0: array (2)
    |  'object' => stdClass #%d%
-   |  'data' => 'o1' (2)
+   |  'data' => 'o1'
    1: array (2)
    |  'object' => stdClass #%d%
-   |  |  foo: 'bar' (3)
-   |  'data' => 'o2' (2)
+   |  |  foo: 'bar'
+   |  'data' => 'o2'
 XX
 , Dumper::toText($objStorage));
 
