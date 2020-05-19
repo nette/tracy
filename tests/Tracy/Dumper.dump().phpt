@@ -18,8 +18,11 @@ test(function () { // html mode
 	if (headers_list()) {
 		ob_start();
 		Assert::same(123, Dumper::dump(123));
-		Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">123</span>
-</pre>', ob_get_clean());
+		Assert::match(<<<'XX'
+<pre class="tracy-dump"><span class="tracy-dump-number">123</span>
+</pre>
+XX
+, ob_get_clean());
 	}
 });
 
