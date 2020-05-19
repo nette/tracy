@@ -30,15 +30,27 @@ XX
 
 // closure
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
-><span class="tracy-toggle"><span class="tracy-dump-object">Closure</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">file</span>: <span class="tracy-dump-string" title="%i% characters">'%a%'</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">line</span>: <span class="tracy-dump-number">%i%</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">variables</span>: <span class="tracy-dump-array">array</span> (0)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">parameters</span>: <span class="tracy-dump-string">''</span>
-</div></pre>
+<pre class="tracy-dump"><span class="tracy-dump-object">Closure()</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
 , Dumper::toHtml(function () {}));
+
+
+Assert::match(<<<'XX'
+<pre class="tracy-dump"
+><span class="tracy-toggle"><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=">Closure()</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">file</span>: <span class="tracy-dump-string" title="%d% characters">'%a%:%d%'</span>
+</div></pre>
+XX
+, Dumper::toHtml(function () {}, [Dumper::LOCATION => Dumper::LOCATION_CLASS]));
+
+
+Assert::match(<<<'XX'
+<pre class="tracy-dump" data-tracy-snapshot='[]'
+><span class="tracy-toggle"><span class="tracy-dump-object">Closure($x, $y)</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">use</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"object":"$use","items":[["$use",null,4]],"collapsed":true}'><span class="tracy-dump-object">$use</span></span>
+</div></pre>
+XX
+, Dumper::toHtml(function ($x, int $y = 1) use (&$use) {}));
 
 
 // new class
