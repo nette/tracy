@@ -28,7 +28,9 @@
 					el.removeAttribute('data-tracy-snapshot');
 				} else { // <span data-tracy-dump>
 					el.querySelectorAll('[data-tracy-dump]').forEach((el) => {
-						el.parentNode.removeChild(el.nextSibling); // remove \n after toggler
+						if (el.nextSibling) {
+							el.parentNode.removeChild(el.nextSibling); // remove \n after toggler
+						}
 						el.parentNode.replaceChild( // replace toggler
 							build(JSON.parse(el.getAttribute('data-tracy-dump')), snapshot, el.classList.contains('tracy-collapsed')),
 							el
@@ -104,7 +106,7 @@
 				createEl(
 					'span',
 					{'class': 'tracy-dump-' + type.replace('ean', '')},
-					[data + '\n']
+					[data + '']
 				)
 			]);
 
@@ -126,17 +128,17 @@
 		if (data.string !== undefined) {
 			return createEl(null, null, [
 				createEl('span', {'class': 'tracy-dump-string'}, ['\'' + data.string + '\'']),
-				' (' + (data.length || data.string.length) + ')\n',
+				' (' + (data.length || data.string.length) + ')',
 			]);
 
 		} else if (data.number) {
 			return createEl(null, null, [
-				createEl('span', {'class': 'tracy-dump-number'}, [data.number + '\n'])
+				createEl('span', {'class': 'tracy-dump-number'}, [data.number])
 			]);
 
 		} else if (data.text !== undefined) {
 			return createEl(null, null, [
-				createEl('span', null, [data.text + '\n'])
+				createEl('span', null, [data.text])
 			]);
 
 		} else { // object || resource || array
@@ -175,7 +177,7 @@
 		let res, toggle, div, handler;
 
 		if (!items || !items.length) {
-			span.push(!items || items.length ? ellipsis + '\n' : '\n');
+			span.push(!items || items.length ? ellipsis : '');
 			return createEl(null, null, span);
 		}
 
@@ -190,13 +192,13 @@
 				toggle.removeEventListener('tracy-toggle', handler);
 				createItems(div, items, type, repository, parentIds);
 				if (cut) {
-					createEl(div, null, ['…']);
+					createEl(div, null, ['…\n']);
 				}
 			});
 		} else {
 			createItems(div, items, type, repository, parentIds);
 			if (cut) {
-				createEl(div, null, ['…']);
+				createEl(div, null, ['…\n']);
 			}
 		}
 		return res;
@@ -232,7 +234,7 @@
 			'tracy-dump-virtual',
 		];
 
-		let key, val, vis, ref, i;
+		let key, val, vis, ref, i, tmp;
 
 		for (i = 0; i < items.length; i++) {
 			if (type === TYPE_ARRAY) {
@@ -253,7 +255,8 @@
 					),
 				type === TYPE_ARRAY ? ' => ' : ': ',
 				...(ref ? [createEl('span', {'class': 'tracy-dump-hash'}, ['&' + ref]), ' '] : []),
-				build(val, repository, null, parentIds)
+				tmp = build(val, repository, null, parentIds),
+				tmp.lastElementChild.tagName === 'DIV' ? '' : '\n',
 			]);
 		}
 	}

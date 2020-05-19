@@ -56,11 +56,9 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$message</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'The my error'</span> (%d%)
-</pre>
+						<tr><th>$message</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'The my error'</span> (%d%)</pre>
 </td></tr>
-<tr><th>$error_type</th><td><pre class="tracy-dump"><span class="tracy-dump-number">256</span>
-</pre>
+<tr><th>$error_type</th><td><pre class="tracy-dump"><span class="tracy-dump-number">256</span></pre>
 </td></tr>
 						</table>
 						</div>
@@ -88,11 +86,9 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'root'</span> (4)
-</pre>
+						<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'root'</span> (4)</pre>
 </td></tr>
-<tr><th>$pass</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'*****'</span> (5)
-</pre>
+<tr><th>$pass</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'*****'</span> (5)</pre>
 </td></tr>
 						</table>
 						</div>
@@ -107,11 +103,9 @@
 			<div class="tracy-collapsed inner">
 			<div class="outer">
 			<table class="tracy-sortable">
-			<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'root'</span> (4)
-</pre>
+			<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'root'</span> (4)</pre>
 </td></tr>
-<tr><th>$pass</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'*****'</span> (5)
-</pre>
+<tr><th>$pass</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'*****'</span> (5)</pre>
 </td></tr>
 			</table>
 			</div>
