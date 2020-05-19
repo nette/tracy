@@ -72,7 +72,7 @@
 
 
 	function build(data, repository, collapsed, parentIds) {
-		let type = data === null ? 'null' : typeof data,
+		let id, type = data === null ? 'null' : typeof data,
 			collapseCount = collapsed === null ? COLLAPSE_COUNT : COLLAPSE_COUNT_TOP;
 
 		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
@@ -85,7 +85,15 @@
 				)
 			]);
 
-		} else if (Array.isArray(data)) {
+		} else if (data.ref) {
+			id = data.ref;
+			data = repository[id];
+			if (!data) {
+				throw new UnknownEntityException;
+			}
+		}
+
+		if (Array.isArray(data)) {
 			return buildStruct(
 				[
 					createEl('span', {'class': 'tracy-dump-array'}, ['array']),
@@ -115,13 +123,7 @@
 				createEl('span', null, [data.type + '\n'])
 			]);
 
-		} else {
-			let id = data.object || data.resource,
-				object = repository[id];
-
-			if (!object) {
-				throw new UnknownEntityException;
-			}
+		} else { // object || resource
 			parentIds = parentIds ? parentIds.slice() : [];
 			let recursive = parentIds.indexOf(id) > -1;
 			parentIds.push(id);
@@ -130,15 +132,15 @@
 				[
 					createEl('span', {
 						'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
-						title: object.editor ? 'Declared in file ' + object.editor.file + ' on line ' + object.editor.line : null,
-						'data-tracy-href': object.editor ? object.editor.url : null
-					}, [object.name]),
+						title: data.editor ? 'Declared in file ' + data.editor.file + ' on line ' + data.editor.line : null,
+						'data-tracy-href': data.editor ? data.editor.url : null
+					}, [data.object || data.resource]),
 					' ',
 					createEl('span', {'class': 'tracy-dump-hash'}, [data.resource ? '@' + id.substr(1) : '#' + id])
 				],
 				recursive ? ' { RECURSION }' : ' { ... }',
-				recursive ? null : object.items,
-				collapsed === true || (object.items && object.items.length >= collapseCount),
+				recursive ? null : data.items,
+				collapsed === true || (data.items && data.items.length >= collapseCount),
 				repository,
 				parentIds
 			);
