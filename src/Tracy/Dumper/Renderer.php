@@ -294,9 +294,9 @@ final class Renderer
 			return $out . (in_array($object->id, $this->above, true) ? ' <i>see above</i>' : ' <i>see below</i>');
 		}
 
-		$collapsed = $depth
+		$collapsed = $object->collapsed ?? ($depth
 			? count($object->items) >= $this->collapseSub
-			: (is_int($this->collapseTop) ? count($object->items) >= $this->collapseTop : $this->collapseTop);
+			: (is_int($this->collapseTop) ? count($object->items) >= $this->collapseTop : $this->collapseTop));
 
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 

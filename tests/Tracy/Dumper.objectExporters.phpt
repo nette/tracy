@@ -60,6 +60,19 @@ XX
 , Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 
+// custom exposer & collapsed
+$exporters = [
+	'stdClass' => function ($var, Value $value, Dumper\Describer $describer) {
+		$describer->addProperty($value, 'x', 'y', Value::PROP_PUBLIC);
+		$value->collapsed = true;
+	},
+];
+Assert::match(<<<'XX'
+<pre class="tracy-dump" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["x","y",0]],"collapsed":true}}'><span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span></pre>
+XX
+, Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));
+
+
 // PHP incomplete class
 $obj = unserialize('O:1:"Y":7:{s:1:"a";N;s:1:"b";i:2;s:4:"' . "\0" . '*' . "\0" . 'c";N;s:4:"' . "\0" . '*' . "\0" . 'd";s:1:"d";s:4:"' . "\0" . 'Y' . "\0" . 'e";N;s:4:"' . "\0" . 'Y' . "\0" . 'i";s:3:"bar";s:4:"' . "\0" . 'X' . "\0" . 'i";s:3:"foo";}');
 

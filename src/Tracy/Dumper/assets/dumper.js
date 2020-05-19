@@ -168,7 +168,7 @@ function build(data, repository, collapsed, parentIds, isKey) {
 				],
 			recursive ? ' RECURSION' : ' …',
 			recursive ? null : data.items,
-			collapsed === true || (data.items && data.items.length >= collapseCount),
+			collapsed === true || data.collapsed || (data.items && data.items.length >= collapseCount),
 			data.items && data.length > data.items.length,
 			data.object ? TYPE_OBJECT : data.resource ? TYPE_RESOURCE : TYPE_ARRAY,
 			repository,
