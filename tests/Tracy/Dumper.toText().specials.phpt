@@ -71,3 +71,29 @@ XX
 , Dumper::toText($objStorage));
 
 Assert::same($key, $objStorage->key());
+
+
+// ArrayObject
+$obj = new ArrayObject(['a' => 1, 'b' => 2]);
+Assert::match(<<<'XX'
+ArrayObject #%d%
+   storage: array (2)
+   |  'a' => 1
+   |  'b' => 2
+XX
+, Dumper::toText($obj));
+
+class ArrayObjectChild extends ArrayObject
+{
+	public $prop = 123;
+}
+
+$obj = new ArrayObjectChild(['a' => 1, 'b' => 2]);
+Assert::match(<<<'XX'
+ArrayObjectChild #%d%
+   prop: 123
+   storage: array (2)
+   |  'a' => 1
+   |  'b' => 2
+XX
+, Dumper::toText($obj));
