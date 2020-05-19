@@ -42,12 +42,14 @@ $exporters = [
 	'stdClass' => function ($var, Value $value, Dumper\Describer $describer) {
 		$describer->addPropertyTo($value, 'x', $var->a + 2, Value::PROP_PUBLIC);
 		$value->items[] = [$describer->describeKey('key'), new Value('text', 'hello')];
+		$value->items[] = [new Value('text', '$x'), new Value('text', 'hello')];
 	},
 ];
 Assert::match(<<<'XX'
 <pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">3</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">key</span>: <span>hello</span>
+<span class="tracy-dump-indent">   </span><span>$x</span>: <span>hello</span>
 </div></pre>
 XX
 , Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));
@@ -64,11 +66,11 @@ __PHP_Incomplete_Class #%d%
    |  'Y::$i' => 'bar' (3)
    |  'X::$i' => 'foo' (3)
    protected: array (2)
-   |  c => null
-   |  d => 'd'
+   |  'c' => null
+   |  'd' => 'd'
    public: array (2)
    |  1 => null
-   |  b => 2
+   |  'b' => 2
 XX
 , Dumper::toText($obj));
 
