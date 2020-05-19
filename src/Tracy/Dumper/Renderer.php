@@ -318,9 +318,10 @@ final class Renderer
 
 		foreach ($object->items as $info) {
 			[$k, $v, $type, $ref] = $info + [2 => Value::PROP_VIRTUAL, null];
-			$title = is_string($type) ? ' title="declared in ' . Helpers::escapeHtml($type) . '"' : null;
 			$out .= $indent
-				. '<span class="' . ($title ? 'tracy-dump-private' : $classes[$type]) . '"' . $title . '>' . str_replace("\n", "\n ", $k) . '</span>'
+				. ($k instanceof Value
+					? $this->renderVar($k, $depth + 1, true)
+					: '<span class="' . (is_string($type) ? 'tracy-dump-private" title="declared in ' . Helpers::escapeHtml($type) : $classes[$type]) . '">' . str_replace("\n", "\n ", $k) . '</span>')
 				. ': '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))

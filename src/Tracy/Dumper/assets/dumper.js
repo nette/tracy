@@ -255,7 +255,7 @@ function createItems(el, items, type, repository, parentIds) {
 		}
 
 		createEl(el, null, [
-			type === TYPE_ARRAY
+			type === TYPE_ARRAY || typeof key === 'object'
 				? build(key, null, null, null, true)
 				: createEl(
 					'span',
