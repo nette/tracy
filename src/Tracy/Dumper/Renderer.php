@@ -57,7 +57,7 @@ final class Renderer
 				$json = $snapshot = null;
 
 			} elseif ($this->lazy && (is_array($value) && $value || is_object($value))) { // full lazy-loading
-				$html = null;
+				$html = '';
 				$snapshot = $this->collectingMode ? null : $this->snapshot;
 				$json = $value;
 
@@ -84,6 +84,7 @@ final class Renderer
 				. $location
 				. ($snapshot !== null ? " data-tracy-snapshot='" . self::jsonEncode($snapshot) . "'" : '')
 				. ($json ? " data-tracy-dump='" . self::jsonEncode($json) . "'" : '')
+				. ($location || strlen($html) > 100 ? "\n" : '')
 			. '>'
 			. $html
 			. ($location ? ($html && substr($html, -6) !== '</div>' ? "\n" : '') . '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
