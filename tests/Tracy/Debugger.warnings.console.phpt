@@ -42,7 +42,8 @@ function third($arg1)
 
 
 first(10, 'any string');
-Assert::match("
+Assert::match(<<<'XX'
+
 Deprecated: mktime(): You should be using the time() function instead in %a% on line %d%
 
 Notice: Undefined variable: x in %a% on line %d%
@@ -50,4 +51,5 @@ Notice: Undefined variable: x in %a% on line %d%
 Warning: %a% in %a% on line %d%
 
 Warning: Unsupported declare 'foo' in %a% on line %d%
-", ob_get_clean());
+XX
+, ob_get_clean());
