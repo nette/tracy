@@ -387,7 +387,6 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	color: #35D;
 }
 
-#tracy-debug .tracy-dump-key span,
 #tracy-debug .tracy-dump-virtual span,
 #tracy-debug .tracy-dump-dynamic span,
 #tracy-debug .tracy-dump-string span {

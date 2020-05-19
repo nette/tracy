@@ -64,11 +64,11 @@ __PHP_Incomplete_Class #%d%
    |  'Y::$i' => 'bar'
    |  'X::$i' => 'foo'
    protected: array (2)
-   |  c => null
-   |  d => 'd'
+   |  'c' => null
+   |  'd' => 'd'
    public: array (2)
-   |  a => null
-   |  b => 2
+   |  'a' => null
+   |  'b' => 2
 XX
 , Dumper::toText($obj));
 
