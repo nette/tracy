@@ -40,10 +40,12 @@ function third($arg1)
 
 
 first(10, 'any string');
-Assert::match("
+Assert::match(<<<'XX'
+
 Notice: Only variables should be assigned by reference in %a% on line %d%
 
 Warning: hex2bin(): Hexadecimal input string must have an even length in %a% on line %d%
 
 Warning: Unsupported declare 'foo' in %a% on line %d%
-", ob_get_clean());
+XX
+, ob_get_clean());

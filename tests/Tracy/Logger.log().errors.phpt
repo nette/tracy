@@ -19,11 +19,11 @@ $logger->log('Hello'); // no error
 Assert::exception(function () {
 	$logger = new Logger(getTempDir() . '/unknown');
 	$logger->log('Hello');
-}, 'RuntimeException', "Logging directory '%a%' is not found or is not directory.");
+}, RuntimeException::class, "Logging directory '%a%' is not found or is not directory.");
 
 
 Assert::exception(function () {
 	$logger = new Logger(getTempDir());
 	mkdir(getTempDir() . '/test.log');
 	$logger->log('Hello', 'test');
-}, 'RuntimeException', "Unable to write to log file '%a%'. Is directory writable?");
+}, RuntimeException::class, "Unable to write to log file '%a%'. Is directory writable?");
