@@ -55,6 +55,9 @@ final class Value implements \JsonSerializable
 	/** @var ?\stdClass */
 	public $editor;
 
+	/** @var ?bool */
+	public $collapsed;
+
 
 	public function __construct(string $type, $value = null, int $length = null)
 	{
@@ -67,7 +70,7 @@ final class Value implements \JsonSerializable
 	public function jsonSerialize(): array
 	{
 		$res = [$this->type => $this->value];
-		foreach (['length', 'editor', 'items'] as $k) {
+		foreach (['length', 'editor', 'items', 'collapsed'] as $k) {
 			if ($this->$k !== null) {
 				$res[$k] = $this->$k;
 			}
