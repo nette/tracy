@@ -57,6 +57,6 @@ Assert::match(<<<XX
 \e[1;31mstdClass\e[0m \e[0m#%d%\e[0m\e[0m
 \e[1;30m   \e[0m\e[1;37mx\e[0m: \e[1;32m1\e[0m
 \e[1;30m   \e[0m\e[1;37my\e[0m: \e[1;32m2\e[0m
-\e[1;30m   \e[0m\e[1;37mz\e[0m: \e[0m&1\e[0m \e[1;31mstdClass\e[0m \e[0m#%d%\e[0m { RECURSION }
+\e[1;30m   \e[0m\e[1;37mz\e[0m: \e[0m&1\e[0m \e[1;31mstdClass\e[0m \e[0m#%d%\e[0m RECURSION
 XX
 , Dumper::toTerminal($arr));

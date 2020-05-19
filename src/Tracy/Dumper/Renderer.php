@@ -197,12 +197,12 @@ final class Renderer
 			$items = $array;
 			$count = count($items);
 		} elseif ($array->items === null) {
-			return $out . $array->length . ") [ … ]\n";
+			return $out . $array->length . ") …\n";
 		} else {
 			$items = $array->items;
 			$count = $array->length ?? count($items);
 			if ($array->id && isset($this->parents[$array->id])) {
-				return $out . $count . ") [ <i>RECURSION</i> ]\n";
+				return $out . $count . ") <i>RECURSION</i>\n";
 			}
 		}
 
@@ -259,13 +259,13 @@ final class Renderer
 			. '</span> <span class="tracy-dump-hash">#' . $object->id . '</span>';
 
 		if ($object->items === null) {
-			return $out . " { … }\n";
+			return $out . " …\n";
 
 		} elseif (!$object->items) {
 			return $out . "\n";
 
 		} elseif (isset($this->parents[$object->id])) {
-			return $out . " { <i>RECURSION</i> }\n";
+			return $out . " <i>RECURSION</i>\n";
 		}
 
 		$collapsed = $depth
