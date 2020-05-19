@@ -238,7 +238,7 @@
 	font-style: normal;
 }
 
-#tracy-bs pre:hover span[title] {
+#tracy-bs pre.code:hover span[title] {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 

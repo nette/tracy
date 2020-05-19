@@ -123,16 +123,20 @@
 		}
 
 
-		if (data.string !== undefined) {
+		if (data.string !== undefined || data.bin !== undefined) {
+			let s = data.string === undefined ? data.bin : data.string;
 			return createEl(null, null, [
 				createEl(
 					'span',
-					{'class': 'tracy-dump-string'},
-					{html: data.string.indexOf('\n') < 0
-						? '\'' + data.string + '\''
-						: '\n   \'' + data.string.replace(/\n/g, '\n    ') + '\''}
+					{
+						'class': 'tracy-dump-string',
+						'title': (data.length || [...s].length) + (data.bin ? ' bytes' : ' characters'),
+					},
+					{html: s.indexOf('\n') < 0
+						? '\'' + s + '\''
+						: '\n   \'' + s.replace(/\n/g, '\n    ') + '\''}
 				),
-				' (' + (data.length || data.string.length) + ')\n',
+				'\n',
 			]);
 
 		} else if (data.number) {

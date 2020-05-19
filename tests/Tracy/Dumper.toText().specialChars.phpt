@@ -19,14 +19,14 @@ array (10)
    1 => ' '
    2 => '\\x00'
    3 => '\\xFF'
-   4 => 'Iñtërnâtiônàlizætiøn' (27)
-   5 =>\n   'utf \\n\n    \\r\\t\t\\e\\x00 Iñtër' (17)
-   6 => 'utf \\n\\r\\t\\xab Iñtër' (22)
+   4 => 'Iñtërnâtiônàlizætiøn'
+   5 =>\n   'utf \\n\n    \\r\\t\t\\e\\x00 Iñtër'
+   6 => 'utf \\n\\r\\t\\xab Iñtër'
    7 =>
-   'binary \\n\n    \\r\\t\t\\e\\x00 I\\xC3\\xB1t\\xC3\\xABr \\xA0' (22)
-   8 => 'binary \\n\\r\\t\\xab I\\xC3\\xB1t\\xC3\\xABr \\xA0' (27)
+   'binary \\n\n    \\r\\t\t\\e\\x00 I\\xC3\\xB1t\\xC3\\xABr \\xA0'
+   8 => 'binary \\n\\r\\t\\xab I\\xC3\\xB1t\\xC3\\xABr \\xA0'
    'utf \\n\n \\r\\t\t\\e\\x00 Iñtër' =>
-   'utf \\n\n    \\r\\t\t\\e\\x00 Iñtër' (17)
+   'utf \\n\n    \\r\\t\t\\e\\x00 Iñtër'
 XX
 , Dumper::toText([
 	'',
