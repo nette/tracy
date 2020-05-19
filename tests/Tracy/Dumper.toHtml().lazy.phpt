@@ -32,7 +32,7 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</spa
 
 // lazy dump of array
 Assert::match(<<<'XX'
-<pre class="tracy-dump" data-tracy-snapshot='[]' data-tracy-dump='[[0,null],[1,true],[2,false],[3,0],[4,{"number":"0.0"}],[5,"string"],[6,"\u0027\u0026\""],[7,{"string":"\\x00","length":1}],[8,{"number":"INF"}],[9,{"number":"-INF"}],[10,{"number":"NAN"}]]'></pre>
+<pre class="tracy-dump" data-tracy-snapshot='[]' data-tracy-dump='[[0,null],[1,true],[2,false],[3,0],[4,{"number":"0.0"}],[5,"string"],[6,{"string":"\u0027\u0026amp;\"","length":3}],[7,{"string":"\\x00","length":1}],[8,{"number":"INF"}],[9,{"number":"-INF"}],[10,{"number":"NAN"}]]'></pre>
 XX
 , Dumper::toHtml([null, true, false, 0, 0.0, 'string', "'&\"", "\x00", INF, -INF, NAN], $options));
 

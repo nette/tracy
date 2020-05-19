@@ -125,7 +125,11 @@
 
 		if (data.string !== undefined) {
 			return createEl(null, null, [
-				createEl('span', {'class': 'tracy-dump-string'}, ['\'' + data.string + '\'']),
+				createEl(
+					'span',
+					{'class': 'tracy-dump-string'},
+					{html: '\'' + data.string + '\''}
+				),
 				' (' + (data.length || data.string.length) + ')\n',
 			]);
 
@@ -212,6 +216,11 @@
 				el.setAttribute(id, attrs[id]);
 			}
 		}
+
+		if (content && content.html !== undefined) {
+			el.innerHTML = content.html;
+			return el;
+		}
 		content = content || [];
 		for (let id = 0; id < content.length; id++) {
 			let child = content[id];
@@ -242,14 +251,14 @@
 			}
 			createEl(el, null, [
 				type === TYPE_ARRAY
-					? createEl('span', {'class': 'tracy-dump-key'}, [key])
+					? createEl('span', {'class': 'tracy-dump-key'}, {html: key})
 					: createEl(
 						'span',
 						{
 							'class': classes[type === TYPE_RESOURCE ? PROP_VIRTUAL : typeof vis === 'string' ? PROP_PRIVATE : vis],
 							'title': typeof vis === 'string' ? 'declared in ' + vis : null,
 						},
-						[key]
+						{html: key}
 					),
 				type === TYPE_ARRAY ? ' => ' : ': ',
 				...(ref ? [createEl('span', {'class': 'tracy-dump-hash'}, ['&' + ref]), ' '] : []),

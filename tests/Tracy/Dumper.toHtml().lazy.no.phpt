@@ -39,7 +39,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">3</span> => <span class="tracy-dump-number">0</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-dump-number">0.0</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">5</span> => <span class="tracy-dump-string">'string'</span> (6)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-dump-string">'&apos;&amp;&quot;'</span> (3)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-dump-string">''&amp;"'</span> (3)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">7</span> => <span class="tracy-dump-string">'\x00'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">8</span> => <span class="tracy-dump-number">INF</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">9</span> => <span class="tracy-dump-number">-INF</span>
