@@ -35,18 +35,18 @@ Assert::match('-INF', Dumper::toText(-INF));
 
 Assert::match('NAN', Dumper::toText(NAN));
 
-Assert::match('""', Dumper::toText(''));
+Assert::match("''", Dumper::toText(''));
 
-Assert::match('"0"', Dumper::toText('0'));
+Assert::match("'0'", Dumper::toText('0'));
 
-Assert::match('"\\x00"', Dumper::toText("\x00"));
+Assert::match("'\\x00'", Dumper::toText("\x00"));
 
 
 // array
 Assert::match(<<<'XX'
 array (5)
    0 => 1
-   1 => "hello" (5)
+   1 => 'hello' (5)
    2 => array ()
    3 => array (2)
    |  0 => 1
@@ -68,7 +68,7 @@ Assert::match('stdClass #%d%', Dumper::toText(new stdClass));
 
 Assert::match(<<<'XX'
 stdClass #%d%
-   "": "foo" (3)
+   '': 'foo' (3)
 XX
 , Dumper::toText((object) ['' => 'foo']));
 
@@ -77,7 +77,7 @@ Test #%d%
    x: array (2)
    |  0 => 10
    |  1 => null
-   y: "hello" (5)
+   y: 'hello' (5)
    z: 30.0
 XX
 , Dumper::toText(new Test));
@@ -97,10 +97,10 @@ Child #%d%
    x2: 4
    y2: 5
    z2: 6
-   y: "hello" (5)
+   y: 'hello' (5)
    new: 7
    0: 8
    1: 9
-   "": 10
+   '': 10
 XX
 , Dumper::toText($obj));

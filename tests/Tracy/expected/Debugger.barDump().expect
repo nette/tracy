@@ -11,7 +11,7 @@ in file %a% on line %d%" data-tracy-href="editor:%a%" data-tracy-snapshot='{"%d%
 		<h2>String</h2>
 
 	<pre class="tracy-dump" title="barDump(&#039;&lt;a href=&quot;#&quot;&gt;test&lt;/a&gt;&#039;, &#039;String&#039;)
-in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-string">"&lt;a href=&quot;#&quot;&gt;test&lt;/a&gt;"</span> (20)
+in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-string">'&lt;a href=&quot;#&quot;&gt;test&lt;/a&gt;'</span> (20)
 <small>in <a href="editor://open/%a%" title="%a%">%a%<b>Debugger.barDump().phpt</b>:%d%</a></small></pre>
 </div>
 

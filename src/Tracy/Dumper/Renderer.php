@@ -172,13 +172,13 @@ final class Renderer
 	private function renderString($str): string
 	{
 		if (is_string($str)) {
-			return '<span class="tracy-dump-string">"'
+			return '<span class="tracy-dump-string">\''
 				. Helpers::escapeHtml($str)
-				. '"</span>' . (strlen($str) > 1 ? ' (' . strlen($str) . ')' : '') . "\n";
+				. "'</span>" . (strlen($str) > 1 ? ' (' . strlen($str) . ')' : '') . "\n";
 		} else {
-			return '<span class="tracy-dump-string">"'
+			return '<span class="tracy-dump-string">\''
 				. Helpers::escapeHtml($str->value)
-				. '"</span>' . ($str->length > 1 ? ' (' . $str->length . ')' : '') . "\n";
+				. "'</span>" . ($str->length > 1 ? ' (' . $str->length . ')' : '') . "\n";
 		}
 	}
 
