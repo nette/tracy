@@ -75,6 +75,9 @@ class Dumper
 		\SplFileInfo::class => [Exposer::class, 'exposeSplFileInfo'],
 		\SplObjectStorage::class => [Exposer::class, 'exposeSplObjectStorage'],
 		\__PHP_Incomplete_Class::class => [Exposer::class, 'exposePhpIncompleteClass'],
+		\DOMNode::class => [Exposer::class, 'exposeDOMNode'],
+		\DOMNodeList::class => [Exposer::class, 'exposeDOMNodeList'],
+		\DOMNamedNodeMap::class => [Exposer::class, 'exposeDOMNodeList'],
 	];
 
 	/** @var Describer */
