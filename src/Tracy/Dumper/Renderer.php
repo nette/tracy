@@ -208,13 +208,13 @@ final class Renderer
 			if ($array->id && in_array($array->id, $this->parents, true)) {
 				return $out . ' <i>RECURSION</i>';
 
-			} elseif ($array->id && in_array($array->id, $this->above, true)) {
+			} elseif ($array->id && ($array->depth < $depth || in_array($array->id, $this->above, true))) {
 				if ($this->lazy !== false) {
 					$ref = new Value(Value::TYPE_REF, $array->id);
 					$this->copySnapshot($ref);
 					return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
 				}
-				return $out . ' <i>see above</i>';
+				return $out . (in_array($array->id, $this->above, true) ? ' <i>see above</i>' : ' <i>see below</i>');
 			}
 		}
 
@@ -284,13 +284,13 @@ final class Renderer
 		} elseif (in_array($object->id, $this->parents, true)) {
 			return $out . ' <i>RECURSION</i>';
 
-		} elseif (in_array($object->id, $this->above, true)) {
+		} elseif ($object->depth < $depth || in_array($object->id, $this->above, true)) {
 			if ($this->lazy !== false) {
 				$ref = new Value(Value::TYPE_REF, $object->id);
 				$this->copySnapshot($ref);
 				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
 			}
-			return $out . ' <i>see above</i>';
+			return $out . (in_array($object->id, $this->above, true) ? ' <i>see above</i>' : ' <i>see below</i>');
 		}
 
 		$collapsed = $depth
