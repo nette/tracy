@@ -16,6 +16,16 @@ namespace Tracy\Dumper;
 final class Value implements \JsonSerializable
 {
 	public const
+		TYPE_ARRAY = 'array',
+		TYPE_BINARY = 'bin',
+		TYPE_NUMBER = 'number',
+		TYPE_OBJECT = 'object',
+		TYPE_REF = 'ref',
+		TYPE_RESOURCE = 'resource',
+		TYPE_STRING = 'string',
+		TYPE_TEXT = 'text';
+
+	public const
 		PROP_PUBLIC = 0,
 		PROP_PROTECTED = 1,
 		PROP_DYNAMIC = 3,

@@ -88,12 +88,12 @@ final class Describer
 	private function describeDouble(float $num)
 	{
 		if (!is_finite($num)) {
-			return new Value('number', (string) $num);
+			return new Value(Value::TYPE_NUMBER, (string) $num);
 		}
 		$js = json_encode($num);
 		return strpos($js, '.')
 			? $num
-			: new Value('number', "$js.0"); // to distinct int and float in JS
+			: new Value(Value::TYPE_NUMBER, "$js.0"); // to distinct int and float in JS
 	}
 
 
@@ -106,9 +106,9 @@ final class Describer
 		if ($encoded === $s) {
 			return $encoded;
 		} elseif ($utf) {
-			return new Value('string', $encoded, strlen(utf8_decode($s)));
+			return new Value(Value::TYPE_STRING, $encoded, strlen(utf8_decode($s)));
 		} else {
-			return new Value('bin', $encoded, strlen($s));
+			return new Value(Value::TYPE_BINARY, $encoded, strlen($s));
 		}
 	}
 
@@ -119,13 +119,13 @@ final class Describer
 	private function describeArray(array $arr, int $depth = 0, int $refId = null)
 	{
 		if ($refId) {
-			$res = new Value('ref', 'p' . $refId);
+			$res = new Value(Value::TYPE_REF, 'p' . $refId);
 			$value = &$this->snapshot[$res->value];
 			if ($value && $value->depth <= $depth) {
 				return $res;
 			}
 
-			$value = new Value('array');
+			$value = new Value(Value::TYPE_ARRAY);
 			$value->id = $res->value;
 			$value->depth = $depth;
 			if ($depth >= $this->maxDepth) {
@@ -138,10 +138,10 @@ final class Describer
 			$items = &$value->items;
 
 		} elseif ($arr && $depth >= $this->maxDepth) {
-			return new Value('array', null, count($arr));
+			return new Value(Value::TYPE_ARRAY, null, count($arr));
 
 		} elseif (count($arr) > $this->maxItems) {
-			$res = new Value('array', null, count($arr));
+			$res = new Value(Value::TYPE_ARRAY, null, count($arr));
 			$res->depth = $depth;
 			$items = &$res->items;
 			$arr = array_slice($arr, 0, $this->maxItems, true);
@@ -153,7 +153,7 @@ final class Describer
 			$items[] = [
 				$this->describeVar($k, $depth + 1),
 				is_string($k) && isset($this->keysToHide[strtolower($k)])
-					? new Value('text', self::hideValue($v))
+					? new Value(Value::TYPE_TEXT, self::hideValue($v))
 					: $this->describeVar($v, $depth + 1, $refId),
 			] + ($refId ? [2 => $refId] : []);
 		}
@@ -167,10 +167,10 @@ final class Describer
 		$id = spl_object_id($obj);
 		$value = &$this->snapshot[$id];
 		if ($value && $value->depth <= $depth) {
-			return new Value('ref', $id);
+			return new Value(Value::TYPE_REF, $id);
 		}
 
-		$value = new Value('object', Helpers::getClass($obj));
+		$value = new Value(Value::TYPE_OBJECT, Helpers::getClass($obj));
 		$value->id = $id;
 		$value->depth = $depth;
 		$value->holder = $obj; // to be not released by garbage collector in collecting mode
@@ -188,7 +188,7 @@ final class Describer
 				$this->addProperty($value, $k, $v, Value::PROP_VIRTUAL, $this->getReferenceId($props, $k));
 			}
 		}
-		return new Value('ref', $id);
+		return new Value(Value::TYPE_REF, $id);
 	}
 
 
@@ -201,7 +201,7 @@ final class Describer
 		$value = &$this->snapshot[$id];
 		if (!$value) {
 			$type = is_resource($resource) ? get_resource_type($resource) : 'closed';
-			$value = new Value('resource', $type . ' resource');
+			$value = new Value(Value::TYPE_RESOURCE, $type . ' resource');
 			$value->id = $id;
 			$value->depth = $depth;
 			$value->items = [];
@@ -211,7 +211,7 @@ final class Describer
 				}
 			}
 		}
-		return new Value('ref', $id);
+		return new Value(Value::TYPE_REF, $id);
 	}
 
 
@@ -231,7 +231,7 @@ final class Describer
 		}
 		$k = (string) $k;
 		$v = isset($this->keysToHide[strtolower($k)])
-			? new Value('text', self::hideValue($v))
+			? new Value(Value::TYPE_TEXT, self::hideValue($v))
 			: $this->describeVar($v, $value->depth + 1, $refId);
 		$value->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
 	}

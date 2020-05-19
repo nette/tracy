@@ -41,7 +41,7 @@ Assert::match('stdClass #%d%
 $exporters = [
 	'stdClass' => function ($var, Value $value, Dumper\Describer $describer) {
 		$describer->addProperty($value, 'x', $var->a + 2, Value::PROP_PUBLIC);
-		$value->items[] = [$describer->describeKey('key'), new Value('text', 'hello')];
+		$value->items[] = [$describer->describeKey('key'), new Value(Value::TYPE_TEXT, 'hello')];
 	},
 ];
 Assert::match(<<<'XX'
