@@ -48,10 +48,13 @@ final class Renderer
 	/** @var array */
 	private $parents = [];
 
+	/** @var array */
+	private $above = [];
+
 
 	public function renderAsHtml(\stdClass $model): string
 	{
-		$this->parents = [];
+		$this->parents = $this->above = [];
 		$this->snapshot = $model->snapshot;
 		$value = $model->value;
 
@@ -204,6 +207,14 @@ final class Renderer
 			$out .= $count . ')';
 			if ($array->id && in_array($array->id, $this->parents, true)) {
 				return $out . ' <i>RECURSION</i>';
+
+			} elseif ($array->id && in_array($array->id, $this->above, true)) {
+				if ($this->lazy !== false) {
+					$ref = new Value(Value::TYPE_REF, $array->id);
+					$this->copySnapshot($ref);
+					return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
+				}
+				return $out . ' <i>see above</i>';
 			}
 		}
 
@@ -227,7 +238,7 @@ final class Renderer
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
-		$this->parents[] = is_object($array) ? $array->id : null;
+		$this->parents[] = $this->above[] = is_object($array) ? $array->id : null;
 
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + [2 => null];
@@ -272,6 +283,14 @@ final class Renderer
 
 		} elseif (in_array($object->id, $this->parents, true)) {
 			return $out . ' <i>RECURSION</i>';
+
+		} elseif (in_array($object->id, $this->above, true)) {
+			if ($this->lazy !== false) {
+				$ref = new Value(Value::TYPE_REF, $object->id);
+				$this->copySnapshot($ref);
+				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
+			}
+			return $out . ' <i>see above</i>';
 		}
 
 		$collapsed = $depth
@@ -288,7 +307,7 @@ final class Renderer
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
-		$this->parents[] = $object->id;
+		$this->parents[] = $this->above[] = $object->id;
 
 		static $classes = [
 			Value::PROP_PUBLIC => 'tracy-dump-public',
@@ -320,7 +339,20 @@ final class Renderer
 	{
 		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($resource->value) . '</span> '
 			. '<span class="tracy-dump-hash">@' . substr($resource->id, 1) . '</span>';
-		if ($resource->items) {
+
+		if (!$resource->items) {
+			return $out;
+
+		} elseif (in_array($resource->id, $this->above, true)) {
+			if ($this->lazy !== false) {
+				$ref = new Value(Value::TYPE_REF, $resource->id);
+				$this->copySnapshot($ref);
+				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . "</span>\n";
+			}
+			return $out . ' <i>see above</i>';
+
+		} else {
+			$this->above[] = $resource->id;
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach ($resource->items as [$k, $v]) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
@@ -330,7 +362,6 @@ final class Renderer
 			}
 			return $out . '</div>';
 		}
-		return $out;
 	}
 
 
