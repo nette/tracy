@@ -18,7 +18,8 @@ $a = 1;
 $b = 2;
 $obj = (object) [&$a, $a, &$b, $b, (object) [&$a, &$b], (object) [$a, $b], [&$b, &$a]];
 
-Assert::match('stdClass #%d%
+Assert::match(<<<'XX'
+stdClass #%d%
    0: &1 1
    1: 1
    2: &2 2
@@ -32,4 +33,5 @@ Assert::match('stdClass #%d%
    6: array (2)
    |  0 => &2 2
    |  1 => &1 1
-', Dumper::toText($obj));
+XX
+, Dumper::toText($obj));
