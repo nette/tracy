@@ -74,11 +74,9 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">true</span>
-</pre>
+						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">true</span></pre>
 </td></tr>
-<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">false</span>
-</pre>
+<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-bool">false</span></pre>
 </td></tr>
 						</table>
 						</div>
@@ -95,11 +93,9 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-number">10</span>
-</pre>
+						<tr><th>$arg1</th><td><pre class="tracy-dump"><span class="tracy-dump-number">10</span></pre>
 </td></tr>
-<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-string" title="10 characters">'any string'</span>
-</pre>
+<tr><th>$arg2</th><td><pre class="tracy-dump"><span class="tracy-dump-string" title="10 characters">'any string'</span></pre>
 </td></tr>
 						</table>
 						</div>

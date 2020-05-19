@@ -82,7 +82,7 @@ final class Renderer
 			. ($snapshot === null ? '' : ' data-tracy-snapshot=' . self::formatSnapshotAttribute($snapshot))
 			. ($value ? " data-tracy-dump='" . json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "'>" : '>')
 			. $html
-			. ($model->location && $this->locationLink ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
+			. ($model->location && $this->locationLink ? ($html && substr($html, -6) !== '</div>' ? "\n" : '') . '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
 	}
 
@@ -100,9 +100,10 @@ final class Renderer
 		}
 		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES | ENT_HTML5);
 		$s = str_replace('…', '...', $s);
+		$s .= substr($s, -1) === "\n" ? '' : "\n";
 
 		if ($this->locationLink && ([$file, $line] = $model->location)) {
-			$s .= "in $file:$line";
+			$s .= "in $file:$line\n";
 		}
 
 		return $s;
@@ -116,16 +117,16 @@ final class Renderer
 	{
 		switch (true) {
 			case $value === null:
-				return "<span class=\"tracy-dump-null\">null</span>\n";
+				return '<span class="tracy-dump-null">null</span>';
 
 			case is_bool($value):
-				return '<span class="tracy-dump-bool">' . ($value ? 'true' : 'false') . "</span>\n";
+				return '<span class="tracy-dump-bool">' . ($value ? 'true' : 'false') . '</span>';
 
 			case is_int($value):
-				return "<span class=\"tracy-dump-number\">$value</span>\n";
+				return '<span class="tracy-dump-number">' . $value . '</span>';
 
 			case is_float($value):
-				return '<span class="tracy-dump-number">' . json_encode($value) . "</span>\n";
+				return '<span class="tracy-dump-number">' . json_encode($value) . '</span>';
 
 			case is_string($value):
 				return $this->renderString($value);
@@ -141,10 +142,10 @@ final class Renderer
 				return $this->renderObject($value, $depth);
 
 			case $value->type === 'number':
-				return '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . "</span>\n";
+				return '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . '</span>';
 
 			case $value->type === 'text':
-				return '<span>' . Helpers::escapeHtml($value->value) . "</span>\n";
+				return '<span>' . Helpers::escapeHtml($value->value) . '</span>';
 
 			case $value->type === 'string':
 			case $value->type === 'bin':
@@ -168,13 +169,13 @@ final class Renderer
 			$len = strlen(utf8_decode($str));
 			return '<span class="tracy-dump-string"'
 				. ($len > 1 ? ' title="' . $len . ' characters"' : '')
-				. ">'$str'</span>\n";
+				. ">'$str'</span>";
 		} else {
 			return '<span class="tracy-dump-string"'
 				. ($str->length > 1 ? ' title="' . $str->length . ' ' . ($str->type === 'string' ? 'characters' : 'bytes') . '">' : '>')
 				. (strpos($str->value, "\n") === false ? '' : "\n   ") . "'"
 				. str_replace("\n", "\n    ", $str->value)
-				. "'</span>\n";
+				. "'</span>";
 		}
 	}
 
@@ -190,17 +191,17 @@ final class Renderer
 			$items = $array;
 			$count = count($items);
 		} elseif ($array->items === null) {
-			return $out . $array->length . ") …\n";
+			return $out . $array->length . ') …';
 		} else {
 			$items = $array->items;
 			$count = $array->length ?? count($items);
 			if ($array->id && in_array($array->id, $this->parents, true)) {
-				return $out . $count . ") <i>RECURSION</i>\n";
+				return $out . $count . ') <i>RECURSION</i>';
 			}
 		}
 
 		if (!$count) {
-			return $out . ")\n";
+			return $out . ')';
 		}
 
 		$collapsed = $depth
@@ -214,7 +215,7 @@ final class Renderer
 			$this->copySnapshot($array);
 			return $span . " data-tracy-dump='"
 				. json_encode($array, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "'>"
-				. $out . $count . ")</span>\n";
+				. $out . $count . ')</span>';
 		}
 
 		$out = $span . '>' . $out . $count . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
@@ -226,7 +227,8 @@ final class Renderer
 			$out .= $indent
 				. '<span class="tracy-dump-key">' . str_replace("\n", "\n ", $k) . '</span> => '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
-				. $this->renderVar($v, $depth + 1);
+				. ($tmp = $this->renderVar($v, $depth + 1))
+				. (substr($tmp, -6) === '</div>' ? '' : "\n");
 		}
 
 		if ($count > count($items)) {
@@ -254,13 +256,13 @@ final class Renderer
 			. '</span> <span class="tracy-dump-hash">#' . $object->id . '</span>';
 
 		if ($object->items === null) {
-			return $out . " …\n";
+			return $out . ' …';
 
 		} elseif (!$object->items) {
-			return $out . "\n";
+			return $out;
 
 		} elseif (in_array($object->id, $this->parents, true)) {
-			return $out . " <i>RECURSION</i>\n";
+			return $out . ' <i>RECURSION</i>';
 		}
 
 		$collapsed = $depth
@@ -272,7 +274,7 @@ final class Renderer
 		if ($collapsed && $this->lazy !== false) {
 			$ref = new Value('ref', $object->id);
 			$this->copySnapshot($ref);
-			return $span . " data-tracy-dump='" . json_encode($ref) . "'>" . $out . "</span>\n";
+			return $span . " data-tracy-dump='" . json_encode($ref) . "'>" . $out . '</span>';
 		}
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
@@ -293,7 +295,8 @@ final class Renderer
 				. '<span class="' . ($title ? 'tracy-dump-private' : $classes[$type]) . '"' . $title . '>' . str_replace("\n", "\n ", $k) . '</span>'
 				. ': '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
-				. $this->renderVar($v, $depth + 1);
+				. ($tmp = $this->renderVar($v, $depth + 1))
+				. (substr($tmp, -6) === '</div>' ? '' : "\n");
 		}
 
 		if ($object->length > count($object->items)) {
@@ -312,11 +315,13 @@ final class Renderer
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach ($resource->items as [$k, $v]) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					. '<span class="tracy-dump-virtual">' . $k . '</span>: ' . $this->renderVar($v, $depth + 1);
+					. '<span class="tracy-dump-virtual">' . $k . '</span>: '
+					. ($tmp = $this->renderVar($v, $depth + 1))
+					. (substr($tmp, -6) === '</div>' ? '' : "\n");
 			}
 			return $out . '</div>';
 		}
-		return "$out\n";
+		return $out;
 	}
 
 
