@@ -22,12 +22,14 @@ Assert::match('closed resource @%d%', Dumper::toText($f));
 
 
 // closure
-Assert::match('Closure #%d%
+Assert::match(<<<'XX'
+Closure #%d%
    file: "%a%" (%i%)
    line: %i%
    variables: array ()
    parameters: ""
-', Dumper::toText(function () {}));
+XX
+, Dumper::toText(function () {}));
 
 
 // new class
@@ -51,7 +53,8 @@ $objStorage[$o2] = 'o2';
 $objStorage->next();
 $key = $objStorage->key();
 
-Assert::match('SplObjectStorage #%d%
+Assert::match(<<<'XX'
+SplObjectStorage #%d%
    0: array (2)
    |  object => stdClass #%d%
    |  data => "o1" (2)
@@ -59,6 +62,7 @@ Assert::match('SplObjectStorage #%d%
    |  object => stdClass #%d%
    |  |  foo: "bar" (3)
    |  data => "o2" (2)
-', Dumper::toText($objStorage));
+XX
+, Dumper::toText($objStorage));
 
 Assert::same($key, $objStorage->key());

@@ -24,10 +24,11 @@ $keys = [
 	'NULL' => 0,
 ];
 
-Assert::match('array (%i%)
+Assert::match(<<<'XX'
+array (%i%)
    "" => 0
    """ => 0
-   "\'" => 0
+   "'" => 0
    key => 0
    " key" => 0
    "key " => 0
@@ -37,12 +38,14 @@ Assert::match('array (%i%)
    "false" => 0
    "null" => 0
    "NULL" => 0
-', Dumper::toText($keys));
+XX
+, Dumper::toText($keys));
 
-Assert::match('stdClass #%d%
+Assert::match(<<<'XX'
+stdClass #%d%
    "": 0
    """: 0
-   "\'": 0
+   "'": 0
    key: 0
    " key": 0
    "key ": 0
@@ -52,7 +55,8 @@ Assert::match('stdClass #%d%
    "false": 0
    "null": 0
    "NULL": 0
-', Dumper::toText((object) $keys));
+XX
+, Dumper::toText((object) $keys));
 
 
 $snapshot = [];

@@ -43,7 +43,8 @@ Assert::match('"\\x00"', Dumper::toText("\x00"));
 
 
 // array
-Assert::match('array (5)
+Assert::match(<<<'XX'
+array (5)
    0 => 1
    1 => "hello" (5)
    2 => array ()
@@ -58,23 +59,28 @@ Assert::match('array (5)
    |  5 => 5
    |  6 => 6
    |  7 => 7
-', Dumper::toText([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]));
+XX
+, Dumper::toText([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]));
 
 
 // object
 Assert::match('stdClass #%d%', Dumper::toText(new stdClass));
 
-Assert::match('stdClass #%d%
+Assert::match(<<<'XX'
+stdClass #%d%
    "": "foo" (3)
-', Dumper::toText((object) ['' => 'foo']));
+XX
+, Dumper::toText((object) ['' => 'foo']));
 
-Assert::match('Test #%d%
+Assert::match(<<<'XX'
+Test #%d%
    x: array (2)
    |  0 => 10
    |  1 => null
    y: "hello" (5)
    z: 30.0
-', Dumper::toText(new Test));
+XX
+, Dumper::toText(new Test));
 
 
 $obj = new Child;
@@ -83,7 +89,8 @@ $obj->{0} = 8;
 $obj->{1} = 9;
 $obj->{''} = 10;
 
-Assert::match('Child #%d%
+Assert::match(<<<'XX'
+Child #%d%
    x: 1
    y: 2
    z: 3
@@ -95,4 +102,5 @@ Assert::match('Child #%d%
    0: 8
    1: 9
    "": 10
-', Dumper::toText($obj));
+XX
+, Dumper::toText($obj));

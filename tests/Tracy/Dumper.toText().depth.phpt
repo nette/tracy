@@ -32,7 +32,8 @@ $arr = [
 ];
 
 
-Assert::match('array (4)
+Assert::match(<<<'XX'
+array (4)
    long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
    0 => array (1)
    |  0 => array (1)
@@ -43,36 +44,44 @@ Assert::match('array (4)
    |  0: stdClass #%a%
    |  |  0: stdClass #%a%
    |  |  |  hello: "world" (5)
-', Dumper::toText($arr));
+XX
+, Dumper::toText($arr));
 
 
-Assert::match('array (4)
+Assert::match(<<<'XX'
+array (4)
    long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    0 => array (1)
    |  0 => array (1) ...
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    1 => stdClass #%a%
    |  0: stdClass #%a% ...
-', Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
+XX
+, Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
 
 
 $arr = [1, 2, 3, 4];
 
-Assert::match('array (4)
+Assert::match(<<<'XX'
+array (4)
    0 => 1
    1 => 2
    2 => 3
    3 => 4
-', Dumper::toText($arr, [Dumper::ITEMS => 2]));
+XX
+, Dumper::toText($arr, [Dumper::ITEMS => 2]));
 
-Assert::match('stdClass #%d%
+Assert::match(<<<'XX'
+stdClass #%d%
    0: 1
    1: 2
    2: 3
    3: 4
-', Dumper::toText((object) $arr, [Dumper::ITEMS => 2]));
+XX
+, Dumper::toText((object) $arr, [Dumper::ITEMS => 2]));
 
-Assert::match('array (2)
+Assert::match(<<<'XX'
+array (2)
    0 => array (4)
    |  0 => 1
    |  1 => 2
@@ -81,4 +90,5 @@ Assert::match('array (2)
    |  0: 1
    |  1: 2
    |  ...
-', Dumper::toText([$arr, (object) $arr], [Dumper::ITEMS => 2]));
+XX
+, Dumper::toText([$arr, (object) $arr], [Dumper::ITEMS => 2]));
