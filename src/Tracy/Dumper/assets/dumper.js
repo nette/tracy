@@ -240,7 +240,7 @@
 						{'class': classes[type === TYPE_OBJECT ? vis : PROP_VIRTUAL]},
 						[key]
 					),
-				' => ',
+				type === TYPE_ARRAY ? ' => ' : ': ',
 				...(ref ? [createEl('span', {'class': 'tracy-dump-hash'}, ['&' + ref]), ' '] : []),
 				build(val, repository, null, parentIds)
 			]);

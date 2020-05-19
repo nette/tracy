@@ -40,9 +40,9 @@ Assert::match('array (4)
    |  |  |  hello => "world" (5)
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
    1 => stdClass #%a%
-   |  0 => stdClass #%a%
-   |  |  0 => stdClass #%a%
-   |  |  |  hello => "world" (5)
+   |  0: stdClass #%a%
+   |  |  0: stdClass #%a%
+   |  |  |  hello: "world" (5)
 ', Dumper::toText($arr));
 
 
@@ -52,5 +52,5 @@ Assert::match('array (4)
    |  0 => array (1) [ ... ]
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    1 => stdClass #%a%
-   |  0 => stdClass #%a% { ... }
+   |  0: stdClass #%a% { ... }
 ', Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
