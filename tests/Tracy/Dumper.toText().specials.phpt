@@ -56,12 +56,12 @@ $key = $objStorage->key();
 Assert::match(<<<'XX'
 SplObjectStorage #%d%
    0: array (2)
-   |  object => stdClass #%d%
-   |  data => 'o1' (2)
+   |  'object' => stdClass #%d%
+   |  'data' => 'o1' (2)
    1: array (2)
-   |  object => stdClass #%d%
+   |  'object' => stdClass #%d%
    |  |  foo: 'bar' (3)
-   |  data => 'o2' (2)
+   |  'data' => 'o2' (2)
 XX
 , Dumper::toText($objStorage));
 

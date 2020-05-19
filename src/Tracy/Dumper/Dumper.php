@@ -51,7 +51,6 @@ class Dumper
 		'number' => '1;32',
 		'string' => '1;36',
 		'array' => '1;31',
-		'key' => '1;37',
 		'public' => '1;37',
 		'protected' => '1;37',
 		'private' => '1;37',
