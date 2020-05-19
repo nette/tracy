@@ -14,7 +14,8 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Assert::match(<<<XX
-<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (13)</span>
+<pre class="tracy-dump"
+><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (13)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-string">''</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-string">' '</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-string">'<span>\\x00</span>'</span>
