@@ -49,10 +49,10 @@ Assert::match('array (4)
 Assert::match('array (4)
    long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    0 => array (1)
-   |  0 => array (1) [ ... ]
+   |  0 => array (1) ...
    long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
    1 => stdClass #%a%
-   |  0: stdClass #%a% { ... }
+   |  0: stdClass #%a% ...
 ', Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
 
 
