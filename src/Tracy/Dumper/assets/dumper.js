@@ -159,7 +159,7 @@
 						' ',
 						createEl('span', {'class': 'tracy-dump-hash'}, [data.resource ? '@' + id.substr(1) : '#' + id])
 					],
-				recursive ? ' { RECURSION }' : ' { … }',
+				recursive ? ' RECURSION' : ' …',
 				recursive ? null : data.items,
 				collapsed === true || (data.items && data.items.length >= collapseCount),
 				data.items && data.length > data.items.length,
