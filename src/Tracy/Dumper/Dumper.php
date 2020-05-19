@@ -71,6 +71,7 @@ class Dumper
 	/** @var array */
 	public static $objectExporters = [
 		\Closure::class => [Exposer::class, 'exposeClosure'],
+		\ArrayObject::class => [Exposer::class, 'exposeArrayObject'],
 		\SplFileInfo::class => [Exposer::class, 'exposeSplFileInfo'],
 		\SplObjectStorage::class => [Exposer::class, 'exposeSplObjectStorage'],
 		\__PHP_Incomplete_Class::class => [Exposer::class, 'exposePhpIncompleteClass'],

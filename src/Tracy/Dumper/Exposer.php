@@ -104,6 +104,16 @@ final class Exposer
 	}
 
 
+	public static function exposeArrayObject(\ArrayObject $obj, Value $value, Describer $describer): void
+	{
+		$flags = $obj->getFlags();
+		$obj->setFlags(\ArrayObject::STD_PROP_LIST);
+		self::exposeObject($obj, $value, $describer);
+		$obj->setFlags($flags);
+		$describer->addPropertyTo($value, 'storage', $obj->getArrayCopy(), \ArrayObject::class);
+	}
+
+
 	public static function exposeSplFileInfo(\SplFileInfo $obj): array
 	{
 		return ['path' => $obj->getPathname()];
