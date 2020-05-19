@@ -74,20 +74,20 @@ final class Renderer
 		$location = null;
 		if ($model->location && $this->sourceLocation) {
 			[$file, $line, $code] = $model->location;
+			$uri = Helpers::editorUri($file, $line);
 			$location = Helpers::formatHtml(
-				' title="%in file % on line %" data-tracy-href="%"', "$code\n",
-				$file, $line, Helpers::editorUri($file, $line)
-			);
+				'<a href="%" class="tracy-dump-location" title="in file % on line %%">',
+				$uri ?? '#', $file, $line, $uri ? "\nClick to open in editor" : ''
+			) . Helpers::encodeString($code, 50) . " 📍</a\n>";
 		}
 
 		return '<pre class="tracy-dump' . ($json && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
-				. $location
 				. ($snapshot !== null ? " data-tracy-snapshot='" . self::jsonEncode($snapshot) . "'" : '')
 				. ($json ? " data-tracy-dump='" . self::jsonEncode($json) . "'" : '')
 				. ($location || strlen($html) > 100 ? "\n" : '')
 			. '>'
+			. $location
 			. $html
-			. ($location ? ($html && substr($html, -6) !== '</div>' ? "\n" : '') . '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
 	}
 
