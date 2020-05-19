@@ -64,15 +64,15 @@ Assert::match('array (5)
 Assert::match('stdClass #%d%', Dumper::toText(new stdClass));
 
 Assert::match('stdClass #%d%
-   "" => "foo" (3)
+   "": "foo" (3)
 ', Dumper::toText((object) ['' => 'foo']));
 
 Assert::match('Test #%d%
-   x => array (2)
+   x: array (2)
    |  0 => 10
    |  1 => null
-   y => "hello" (5)
-   z => 30.0
+   y: "hello" (5)
+   z: 30.0
 ', Dumper::toText(new Test));
 
 
@@ -83,15 +83,15 @@ $obj->{1} = 9;
 $obj->{''} = 10;
 
 Assert::match('Child #%d%
-   x => 1
-   y => 2
-   z => 3
-   x2 => 4
-   y2 => 5
-   z2 => 6
-   y => "hello" (5)
-   new => 7
-   0 => 8
-   1 => 9
-   "" => 10
+   x: 1
+   y: 2
+   z: 3
+   x2: 4
+   y2: 5
+   z2: 6
+   y: "hello" (5)
+   new: 7
+   0: 8
+   1: 9
+   "": 10
 ', Dumper::toText($obj));

@@ -39,18 +39,18 @@ Assert::match('array (%i%)
 ', Dumper::toText($keys));
 
 Assert::match('stdClass #%d%
-   "" => 0
-   """ => 0
-   "\'" => 0
-   key => 0
-   " key" => 0
-   "key " => 0
-   0 => 0
-   01 => 0
-   "true" => 0
-   "false" => 0
-   "null" => 0
-   "NULL" => 0
+   "": 0
+   """: 0
+   "\'": 0
+   key: 0
+   " key": 0
+   "key ": 0
+   0: 0
+   01: 0
+   "true": 0
+   "false": 0
+   "null": 0
+   "NULL": 0
 ', Dumper::toText((object) $keys));
 
 

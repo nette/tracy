@@ -23,11 +23,11 @@ $obj = (object) [
 
 
 Assert::match('stdClass #%d%
-   a => 456
-   password => ***** (string)
-   PASSWORD => ***** (string)
-   Pin => ***** (string)
-   inner => array (4)
+   a: 456
+   password: ***** (string)
+   PASSWORD: ***** (string)
+   Pin: ***** (string)
+   inner: array (4)
    |  a => 123
    |  password => ***** (string)
    |  PASSWORD => ***** (string)

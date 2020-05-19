@@ -32,12 +32,12 @@ $obj->password = 'secret';
 
 
 Assert::match('Password #%d%
-   password => "[censored]" (10)', Dumper::toText($obj, [Dumper::DEBUGINFO => true]));
+   password: "[censored]" (10)', Dumper::toText($obj, [Dumper::DEBUGINFO => true]));
 
 
 Assert::match('Password #%d%
-   password => "secret" (6)
-   extra => "foo" (3)
+   password: "secret" (6)
+   extra: "foo" (3)
 ', Dumper::toText($obj)
 );
 
@@ -47,13 +47,13 @@ $container->passwordObject = $obj;
 
 
 Assert::match('stdClass #%d%
-   passwordObject => Password #%d%
-   |  password => "[censored]" (10)
+   passwordObject: Password #%d%
+   |  password: "[censored]" (10)
 ', Dumper::toText($container, [Dumper::DEBUGINFO => true]));
 
 
 Assert::match('stdClass #%d%
-   passwordObject => Password #%d%
-   |  password => "secret" (6)
-   |  extra => "foo" (3)
+   passwordObject: Password #%d%
+   |  password: "secret" (6)
+   |  extra: "foo" (3)
 ', Dumper::toText($container));
