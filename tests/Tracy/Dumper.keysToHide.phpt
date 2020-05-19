@@ -29,10 +29,10 @@ stdClass #%d%
    PASSWORD: ***** (string)
    Pin: ***** (string)
    inner: array (4)
-   |  a => 123
-   |  password => ***** (string)
-   |  PASSWORD => ***** (string)
-   |  Pin => ***** (string)
+   |  'a' => 123
+   |  'password' => ***** (string)
+   |  'PASSWORD' => ***** (string)
+   |  'Pin' => ***** (string)
 XX
 , Dumper::toText($obj, [Dumper::KEYS_TO_HIDE => ['password', 'PIN']]));
 

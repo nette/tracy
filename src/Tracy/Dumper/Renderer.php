@@ -124,7 +124,7 @@ final class Renderer
 	/**
 	 * @param  mixed  $value
 	 */
-	private function renderVar($value, int $depth = 0): string
+	private function renderVar($value, int $depth = 0, $keyType = null): string
 	{
 		switch (true) {
 			case $value === null:
@@ -140,7 +140,7 @@ final class Renderer
 				return '<span class="tracy-dump-number">' . json_encode($value) . '</span>';
 
 			case is_string($value):
-				return $this->renderString($value);
+				return $this->renderString($value, $keyType);
 
 			case is_array($value):
 			case $value->type === 'array':
@@ -159,7 +159,7 @@ final class Renderer
 				return '<span>' . Helpers::escapeHtml($value->value) . '</span>';
 
 			case $value->type === 'string':
-				return $this->renderString($value);
+				return $this->renderString($value, $keyType);
 
 			case $value->type === 'resource':
 				return $this->renderResource($value, $depth);
@@ -173,12 +173,31 @@ final class Renderer
 	/**
 	 * @param  string|Value  $str
 	 */
-	private function renderString($str): string
+	private function renderString($str, $keyType): string
 	{
-		if (is_string($str)) {
+		if ($keyType === 'array') {
+			return '<span class="tracy-dump-string">\'' . Helpers::escapeHtml(is_string($str) ? $str : $str->value) . "'</span>";
+
+		} elseif ($keyType !== null) {
+			static $classes = [
+				Value::PROP_PUBLIC => 'tracy-dump-public',
+				Value::PROP_PROTECTED => 'tracy-dump-protected',
+				Value::PROP_DYNAMIC => 'tracy-dump-dynamic',
+				Value::PROP_VIRTUAL => 'tracy-dump-virtual',
+			];
+			$title = is_string($keyType)
+				? ' title="declared in ' . Helpers::escapeHtml($keyType) . '"'
+				: null;
+			return '<span class="'
+				. ($title ? 'tracy-dump-private' : $classes[$keyType]) . '"' . $title . '>'
+				. Helpers::escapeHtml(is_string($str) ? $str : $str->value)
+				. '</span>';
+
+		} elseif (is_string($str)) {
 			return '<span class="tracy-dump-string">\''
 				. Helpers::escapeHtml($str)
 				. "'</span>" . (strlen($str) > 1 ? ' (' . strlen($str) . ')' : '');
+
 		} else {
 			return '<span class="tracy-dump-string">\''
 				. Helpers::escapeHtml($str->value)
@@ -230,7 +249,8 @@ final class Renderer
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + [2 => null];
 			$out .= $indent
-				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => '
+				. $this->renderVar($k, $depth + 1, 'array')
+				. ' => '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))
 				. (substr($tmp, -6) === '</div>' ? '' : "\n");
@@ -286,18 +306,10 @@ final class Renderer
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[$object->id] = true;
 
-		static $classes = [
-			Value::PROP_PUBLIC => 'tracy-dump-public',
-			Value::PROP_PROTECTED => 'tracy-dump-protected',
-			Value::PROP_DYNAMIC => 'tracy-dump-dynamic',
-			Value::PROP_VIRTUAL => 'tracy-dump-virtual',
-		];
-
 		foreach ($object->items as $info) {
 			[$k, $v, $type, $ref] = $info + [2 => Value::PROP_VIRTUAL, null];
-			$title = is_string($type) ? ' title="declared in ' . Helpers::escapeHtml($type) . '"' : null;
 			$out .= $indent
-				. '<span class="' . ($title ? 'tracy-dump-private' : $classes[$type]) . '"' . $title . '>' . Helpers::escapeHtml($k) . '</span>'
+				. $this->renderVar($k, $depth + 1, $type)
 				. ': '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))
@@ -320,7 +332,8 @@ final class Renderer
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach ($resource->items as [$k, $v]) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					. '<span class="tracy-dump-virtual">' . Helpers::escapeHtml($k) . '</span>: '
+					. $this->renderVar($k, $depth + 1, Value::PROP_VIRTUAL)
+					. ': '
 					. ($tmp = $this->renderVar($v, $depth + 1))
 					. (substr($tmp, -6) === '</div>' ? '' : "\n");
 			}
