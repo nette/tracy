@@ -111,7 +111,10 @@
 			]);
 
 		} else if (type === 'string') {
-			data = {string: data};
+			data = {
+				string: data.replace(/&/g, '&amp;').replace(/</g, '&lt;'),
+				length: [...data].length
+			};
 
 		} else if (Array.isArray(data)) {
 			data = {array: null, items: data};
@@ -128,7 +131,11 @@
 		if (data.string !== undefined) {
 			if (keyType === TYPE_ARRAY) {
 				return createEl(null, null, [
-					createEl('span', {'class': 'tracy-dump-string'}, ['\'' + data.string + '\'']),
+					createEl(
+						'span',
+						{'class': 'tracy-dump-string'},
+						{html: '\'' + data.string + '\''}
+					),
 				]);
 
 			} else if (keyType !== undefined) {
@@ -146,14 +153,18 @@
 							'class': classes[typeof keyType === 'string' ? PROP_PRIVATE : keyType],
 							'title': typeof keyType === 'string' ? 'declared in ' + keyType : null,
 						},
-						[data.string]
+						{html: data.string}
 					),
 				]);
 			}
 
 			return createEl(null, null, [
-				createEl('span', {'class': 'tracy-dump-string'}, ['\'' + data.string + '\'']),
-				' (' + (data.length || data.string.length) + ')',
+				createEl(
+					'span',
+					{'class': 'tracy-dump-string'},
+					{html: '\'' + data.string + '\''}
+				),
+				' (' + data.length + ')',
 			]);
 
 		} else if (data.number) {
@@ -238,6 +249,11 @@
 			if (attrs[id] !== null) {
 				el.setAttribute(id, attrs[id]);
 			}
+		}
+
+		if (content && content.html !== undefined) {
+			el.innerHTML = content.html;
+			return el;
 		}
 		content = content || [];
 		for (let id = 0; id < content.length; id++) {
