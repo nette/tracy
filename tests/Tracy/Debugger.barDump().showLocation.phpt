@@ -36,7 +36,7 @@ register_shutdown_function(function () {
 <div class="tracy-inner tracy-DumpPanel">
 
 	<pre class="tracy-dump" title="barDump(&apos;value&apos;)
-in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-string">'value'</span> (5)
+in file %a% on line %d%" data-tracy-href="editor:%a%"><span class="tracy-dump-string" title="5 characters">'value'</span>
 <small>in <a href="%a%">%a%:%d%</a></small></pre>
 </div>
 %A%

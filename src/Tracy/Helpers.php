@@ -338,38 +338,45 @@ class Helpers
 
 
 	/** @internal */
-	public static function encodeString(string $s, int $maxLength = null): string
+	public static function encodeString(string $s, int $maxLength = null, &$utf = null): string
 	{
-		if ($maxLength) {
-			$s = self::truncateString($tmp = $s, $maxLength);
-			$shortened = $s !== $tmp;
+		static $tableU, $tableB;
+		if ($tableU === null) {
+			foreach (range("\x00", "\x1F") as $ch) {
+				$tableU[$ch] = '<span>\x' . str_pad(strtoupper(dechex(ord($ch))), 2, '0', STR_PAD_LEFT) . '</span>';
+			}
+			$tableB = $tableU = [
+				"\r" => '<span>\r</span>',
+				"\n" => "<span>\\n</span>\n",
+				"\t" => "<span>\\t</span>\t",
+				"\e" => '<span>\e</span>',
+				'<' => '&lt;',
+				'&' => '&amp;',
+			] + $tableU;
+			foreach (range("\x7F", "\xFF") as $ch) {
+				$tableB[$ch] = '<span>\x' . str_pad(strtoupper(dechex(ord($ch))), 2, '0', STR_PAD_LEFT) . '</span>';
+			}
 		}
 
-		if (preg_match('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u', $s) || preg_last_error()) { // is binary?
-			static $table;
-			if ($table === null) {
-				foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
-					$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
-				}
-				$table['\\'] = '\\\\';
-				$table["\r"] = '\r';
-				$table["\n"] = '\n';
-				$table["\t"] = '\t';
-			}
+		[$utf, $table, $len] = preg_match('##u', $s)
+			? [true, $tableU, strlen(utf8_decode($s))]
+			: [false, $tableB, strlen($s)];
 
+		if ($maxLength && $len > $maxLength) {
+			$s = strtr(self::truncateString($s, $maxLength, $utf), $table) . ' <span>…</span> ';
+		} else {
 			$s = strtr($s, $table);
 		}
 
-		$s = strtr($s, ['&' => '&amp;', '<' => '&lt;']);
-		return $s . (empty($shortened) ? '' : ' … ');
+		return str_replace('</span><span>', '', $s);
 	}
 
 
 	/** @internal */
-	public static function truncateString(string $s, int $maxLength): string
+	public static function truncateString(string $s, int $maxLength, bool $utf): string
 	{
-		if (!preg_match('##u', $s)) {
-			$s = substr($s, 0, $maxLength); // not UTF-8
+		if (!$utf) {
+			return substr($s, 0, $maxLength);
 		} elseif (function_exists('mb_substr')) {
 			$s = mb_substr($s, 0, $maxLength, 'UTF-8');
 		} else {

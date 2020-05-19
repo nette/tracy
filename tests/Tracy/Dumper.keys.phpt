@@ -21,6 +21,7 @@ $keys = [
 	'false' => 0,
 	'null' => 0,
 	'NULL' => 0,
+	'<a> &amp;' => 0,
 ];
 
 Assert::match(<<<'XX'
@@ -37,6 +38,7 @@ array (%i%)
    'false' => 0
    'null' => 0
    'NULL' => 0
+   '<a> &amp;' => 0
 XX
 , Dumper::toText($keys));
 
@@ -54,6 +56,7 @@ stdClass #%d%
    'false': 0
    'null': 0
    'NULL': 0
+   '<a> &amp;': 0
 XX
 , Dumper::toText((object) $keys));
 
@@ -80,6 +83,7 @@ Assert::equal([
 			["'false'", 0, 3],
 			["'null'", 0, 3],
 			["'NULL'", 0, 3],
+			[['string' => '\'&lt;a> &amp;amp;\'', 'length' => 11], 0, 3],
 		],
 	],
 ], array_values(json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true)));

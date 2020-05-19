@@ -30,7 +30,7 @@ XX
 // closure
 Assert::match(<<<'XX'
 <pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">Closure</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">file</span>: <span class="tracy-dump-string">'%a%'</span> (%i%)
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">file</span>: <span class="tracy-dump-string" title="%i% characters">'%a%'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">line</span>: <span class="tracy-dump-number">%i%</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">variables</span>: <span class="tracy-dump-array">array</span> ()
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">parameters</span>: <span class="tracy-dump-string">''</span>
@@ -50,7 +50,7 @@ XX
 // SplFileInfo
 Assert::match(<<<'XX'
 <pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">SplFileInfo</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">path</span>: <span class="tracy-dump-string">'%a%'</span> (%d%)
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">path</span>: <span class="tracy-dump-string" title="%d% characters">'%a%'</span>
 </div></pre>
 XX
 , Dumper::toHtml(new SplFileInfo(__FILE__)));
@@ -70,11 +70,11 @@ Assert::match(<<<'XX'
 <pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">SplObjectStorage</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">0</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'object'</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span>
-<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'data'</span> => <span class="tracy-dump-string">'o1'</span> (2)
+<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'data'</span> => <span class="tracy-dump-string" title="2 characters">'o1'</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">1</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'object'</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-dynamic">foo</span>: <span class="tracy-dump-string">'bar'</span> (3)
-</div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'data'</span> => <span class="tracy-dump-string">'o2'</span> (2)
+<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-dynamic">foo</span>: <span class="tracy-dump-string" title="3 characters">'bar'</span>
+</div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string">'data'</span> => <span class="tracy-dump-string" title="2 characters">'o2'</span>
 </div></div></pre>
 XX
 , Dumper::toHtml($objStorage));
