@@ -27,7 +27,7 @@ final class Exposer
 			if (isset($k[0]) && $k[0] === "\x00") {
 				$info = explode("\00", $k);
 				$k = end($info);
-				$type = $info[1] === '*' ? Value::PROP_PROTECTED : Value::PROP_PRIVATE;
+				$type = $info[1] === '*' ? Value::PROP_PROTECTED : $info[1];
 			} else {
 				$type = array_key_exists($k, $defaults) ? Value::PROP_PUBLIC : Value::PROP_DYNAMIC;
 				$k = (string) $k;

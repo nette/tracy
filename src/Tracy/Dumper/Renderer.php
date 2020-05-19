@@ -94,7 +94,7 @@ final class Renderer
 		$this->lazy = false;
 		$s = $this->renderVar($model->value);
 		if ($colors) {
-			$s = preg_replace_callback('#<span class="tracy-dump-(\w+)">|</span>#', function ($m) use ($colors): string {
+			$s = preg_replace_callback('#<span class="tracy-dump-(\w+)"[^>]*>|</span>#', function ($m) use ($colors): string {
 				return "\033[" . (isset($m[1], $colors[$m[1]]) ? $colors[$m[1]] : '0') . 'm';
 			}, $s);
 		}
@@ -277,15 +277,15 @@ final class Renderer
 		static $classes = [
 			Value::PROP_PUBLIC => 'tracy-dump-public',
 			Value::PROP_PROTECTED => 'tracy-dump-protected',
-			Value::PROP_PRIVATE => 'tracy-dump-private',
 			Value::PROP_DYNAMIC => 'tracy-dump-dynamic',
 			Value::PROP_VIRTUAL => 'tracy-dump-virtual',
 		];
 
 		foreach ($object->items as $info) {
 			[$k, $v, $type, $ref] = $info + [2 => Value::PROP_VIRTUAL, null];
+			$title = is_string($type) ? ' title="declared in ' . Helpers::escapeHtml($type) . '"' : null;
 			$out .= $indent
-				. '<span class="' . $classes[$type] . '">' . Helpers::escapeHtml($k) . '</span>'
+				. '<span class="' . ($title ? 'tracy-dump-private' : $classes[$type]) . '"' . $title . '>' . Helpers::escapeHtml($k) . '</span>'
 				. ': '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);

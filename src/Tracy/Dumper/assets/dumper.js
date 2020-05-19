@@ -11,7 +11,8 @@
 		TYPE_ARRAY = 1,
 		TYPE_OBJECT = 2,
 		TYPE_RESOURCE = 3,
-		PROP_VIRTUAL = 4;
+		PROP_VIRTUAL = 4,
+		PROP_PRIVATE = 2;
 
 	class Dumper
 	{
@@ -244,7 +245,10 @@
 					? createEl('span', {'class': 'tracy-dump-key'}, [key])
 					: createEl(
 						'span',
-						{'class': classes[type === TYPE_OBJECT ? vis : PROP_VIRTUAL]},
+						{
+							'class': classes[type === TYPE_RESOURCE ? PROP_VIRTUAL : typeof vis === 'string' ? PROP_PRIVATE : vis],
+							'title': typeof vis === 'string' ? 'declared in ' + vis : null,
+						},
 						[key]
 					),
 				type === TYPE_ARRAY ? ' => ' : ': ',
