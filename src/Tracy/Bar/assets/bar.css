@@ -378,6 +378,23 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	border: none;
 }
 
+#tracy-debug .tracy-dump-location {
+	color: gray;
+	font-size: 80%;
+	text-decoration: none;
+	background: none;
+	opacity: .5;
+	float: right;
+	cursor: pointer;
+}
+
+#tracy-debug .tracy-dump-location:hover,
+#tracy-debug .tracy-dump-location:focus {
+	color: gray;
+	background: none;
+	opacity: 1;
+}
+
 #tracy-debug .tracy-dump-array,
 #tracy-debug .tracy-dump-object {
 	color: #C22;

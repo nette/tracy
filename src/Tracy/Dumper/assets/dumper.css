@@ -21,15 +21,19 @@ pre.tracy-dump div div:hover {
 	border-left-color: rgba(0, 0, 0, .25);
 }
 
-pre.tracy-dump a {
-	color: #125EAE;
+.tracy-dump-location {
+	color: gray;
+	font-size: 80%;
 	text-decoration: none;
+	background: none;
+	opacity: .5;
+	float: right;
+	cursor: pointer;
 }
 
-pre.tracy-dump a:hover,
-pre.tracy-dump a:focus {
-	background-color: #125EAE;
-	color: white;
+.tracy-dump-location:hover,
+.tracy-dump-location:focus {
+	opacity: 1;
 }
 
 .tracy-dump-array,
