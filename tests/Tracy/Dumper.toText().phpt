@@ -15,34 +15,43 @@ require __DIR__ . '/fixtures/DumpClass.php';
 
 
 // scalars & empty array
-Assert::match('null', Dumper::toText(null));
+Assert::same('null' . "\n", Dumper::toText(null));
 
-Assert::match('true', Dumper::toText(true));
+Assert::same('true' . "\n", Dumper::toText(true));
 
-Assert::match('false', Dumper::toText(false));
+Assert::same('false' . "\n", Dumper::toText(false));
 
-Assert::match('0', Dumper::toText(0));
+Assert::same('0' . "\n", Dumper::toText(0));
 
-Assert::match('1', Dumper::toText(1));
+Assert::same('1' . "\n", Dumper::toText(1));
 
-Assert::match('0.0', Dumper::toText(0.0));
+Assert::same('0.0' . "\n", Dumper::toText(0.0));
 
-Assert::match('0.1', Dumper::toText(0.1));
+Assert::same('0.1' . "\n", Dumper::toText(0.1));
 
-Assert::match('INF', Dumper::toText(INF));
+Assert::same('INF' . "\n", Dumper::toText(INF));
 
-Assert::match('-INF', Dumper::toText(-INF));
+Assert::same('-INF' . "\n", Dumper::toText(-INF));
 
-Assert::match('NAN', Dumper::toText(NAN));
+Assert::same('NAN' . "\n", Dumper::toText(NAN));
 
-Assert::match("''", Dumper::toText(''));
+Assert::same("''\n", Dumper::toText(''));
 
-Assert::match("'0'", Dumper::toText('0'));
+Assert::same("'0'\n", Dumper::toText('0'));
 
-Assert::match("'\\x00'", Dumper::toText("\x00"));
+Assert::same("'\\x00'\n", Dumper::toText("\x00"));
+
+Assert::same('array ()' . "\n", Dumper::toText([]));
 
 
 // array
+Assert::same(str_replace("\r", '', <<<'XX'
+array (1)
+   0 => 1
+
+XX
+), Dumper::toText([1]));
+
 Assert::match(<<<'XX'
 array (5)
    0 => 1
