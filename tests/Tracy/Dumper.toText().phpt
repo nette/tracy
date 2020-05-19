@@ -71,8 +71,8 @@ Assert::match('Test #%d%
    x => array (2)
    |  0 => 10
    |  1 => null
-   y private => "hello" (5)
-   z protected => 30.0
+   y => "hello" (5)
+   z => 30.0
 ', Dumper::toText(new Test));
 
 
@@ -84,12 +84,12 @@ $obj->{''} = 10;
 
 Assert::match('Child #%d%
    x => 1
-   y private => 2
-   z protected => 3
+   y => 2
+   z => 3
    x2 => 4
-   y2 protected => 5
-   z2 private => 6
-   y private => "hello" (5)
+   y2 => 5
+   z2 => 6
+   y => "hello" (5)
    new => 7
    0 => 8
    1 => 9
