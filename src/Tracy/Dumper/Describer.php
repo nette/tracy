@@ -213,7 +213,7 @@ final class Describer
 			$value->items = [];
 			if (isset($this->resourceExposers[$type])) {
 				foreach (($this->resourceExposers[$type])($resource) as $k => $v) {
-					$value->items[] = [$k, $this->describeVar($v, $depth + 1)];
+					$value->items[] = [htmlspecialchars($k), $this->describeVar($v, $depth + 1)];
 				}
 			}
 		}
