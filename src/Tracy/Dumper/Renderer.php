@@ -188,8 +188,8 @@ final class Renderer
 			return $out . $array->length . ") [ ... ]\n";
 		} else {
 			$items = $array->items;
-			$count = count($items);
-			if (in_array($array->id, $this->parents, true)) {
+			$count = $array->length ?? count($items);
+			if ($array->id && in_array($array->id, $this->parents, true)) {
 				return $out . $count . ") [ <i>RECURSION</i> ]\n";
 			}
 		}
@@ -213,16 +213,20 @@ final class Renderer
 		}
 
 		$out = $span . '>' . $out . $count . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[] = is_object($array) ? $array->id : null;
 
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + [2 => null];
-			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
+			$out .= $indent
 				. '<span class="tracy-dump-key">' . Helpers::escapeHtml($k) . '</span> => '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);
 		}
 
+		if ($count > count($items)) {
+			$out .= $indent . "...\n";
+		}
 		array_pop($this->parents);
 		return $out . '</div>';
 	}
@@ -267,6 +271,7 @@ final class Renderer
 		}
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[] = $object->id;
 
 		static $classes = [
@@ -279,11 +284,15 @@ final class Renderer
 
 		foreach ($object->items as $info) {
 			[$k, $v, $type, $ref] = $info + [2 => Value::PROP_VIRTUAL, null];
-			$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
+			$out .= $indent
 				. '<span class="' . $classes[$type] . '">' . Helpers::escapeHtml($k) . '</span>'
 				. ': '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);
+		}
+
+		if ($object->length > count($object->items)) {
+			$out .= $indent . "...\n";
 		}
 		array_pop($this->parents);
 		return $out . '</div>';
