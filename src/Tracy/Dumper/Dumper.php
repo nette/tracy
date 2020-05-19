@@ -31,9 +31,9 @@ class Dumper
 		KEYS_TO_HIDE = 'keystohide'; // sensitive keys not displayed (defaults to [])
 
 	public const
-		LOCATION_SOURCE = 0b0001, // shows where dump was called
-		LOCATION_LINK = 0b0010, // appends clickable anchor
-		LOCATION_CLASS = 0b0100; // shows where class is defined
+		LOCATION_CLASS = 0b0001, // shows where classes are defined
+		LOCATION_SOURCE = 0b0011, // additionally shows where dump was called
+		LOCATION_LINK = self::LOCATION_SOURCE; // deprecated
 
 	public const
 		HIDDEN_VALUE = '*****';
@@ -183,7 +183,7 @@ class Dumper
 	private function asHtml($var): string
 	{
 		[$file, $line, $code] = $this->location ? $this->findLocation() : null;
-		$locAttrs = $file && $this->location & self::LOCATION_SOURCE ? Helpers::formatHtml(
+		$locAttrs = $file && !(~$this->location & self::LOCATION_SOURCE) ? Helpers::formatHtml(
 			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
 		) : null;
 
@@ -210,7 +210,7 @@ class Dumper
 			. ($snapshot === null ? '' : ' data-tracy-snapshot=' . $this->formatSnapshotAttribute($snapshot))
 			. ($json ? " data-tracy-dump='" . json_encode($json, JSON_HEX_APOS | JSON_HEX_AMP) . "'>" : '>')
 			. $html
-			. ($file && $this->location & self::LOCATION_LINK ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
+			. ($file && !(~$this->location & self::LOCATION_SOURCE) ? '<small>in ' . Helpers::editorLink($file, $line) . '</small>' : '')
 			. "</pre>\n";
 	}
 
@@ -229,7 +229,7 @@ class Dumper
 			}, $s);
 		}
 		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES);
-		if ($this->location & self::LOCATION_LINK && ([$file, $line] = $this->findLocation())) {
+		if (!(~$this->location & self::LOCATION_SOURCE) && ([$file, $line] = $this->findLocation())) {
 			$s .= "in $file:$line";
 		}
 		return $s;
@@ -480,7 +480,7 @@ class Dumper
 			$obj->id = $id;
 			$obj->depth = $depth;
 			$obj->holder = $var; // to be not released by garbage collector in collecting mode
-			if (!$obj->editor && ($this->location & self::LOCATION_CLASS)) {
+			if (!$obj->editor && !(~$this->location & self::LOCATION_CLASS)) {
 				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
 				if ($editor = $rc->getFileName() ? Helpers::editorUri($rc->getFileName(), $rc->getStartLine()) : null) {
 					$obj->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
