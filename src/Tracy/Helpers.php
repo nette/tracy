@@ -357,6 +357,7 @@ class Helpers
 			$s = strtr($s, $table);
 		}
 
+		$s = strtr($s, ['&' => '&amp;', '<' => '&lt;']);
 		return $s . (empty($shortened) ? '' : ' … ');
 	}
 
