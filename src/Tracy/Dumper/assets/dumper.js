@@ -97,7 +97,7 @@
 	}
 
 
-	function build(data, repository, collapsed, parentIds) {
+	function build(data, repository, collapsed, parentIds, keyType) {
 		let id, type = data === null ? 'null' : typeof data,
 			collapseCount = collapsed === null ? COLLAPSE_COUNT : COLLAPSE_COUNT_TOP;
 
@@ -126,6 +126,31 @@
 
 
 		if (data.string !== undefined) {
+			if (keyType === TYPE_ARRAY) {
+				return createEl(null, null, [
+					createEl('span', {'class': 'tracy-dump-string'}, ['\'' + data.string + '\'']),
+				]);
+
+			} else if (keyType !== undefined) {
+				const classes = [
+					'tracy-dump-public',
+					'tracy-dump-protected',
+					'tracy-dump-private',
+					'tracy-dump-dynamic',
+					'tracy-dump-virtual',
+				];
+				return createEl(null, null, [
+					createEl(
+						'span',
+						{
+							'class': classes[typeof keyType === 'string' ? PROP_PRIVATE : keyType],
+							'title': typeof keyType === 'string' ? 'declared in ' + keyType : null,
+						},
+						[data.string]
+					),
+				]);
+			}
+
 			return createEl(null, null, [
 				createEl('span', {'class': 'tracy-dump-string'}, ['\'' + data.string + '\'']),
 				' (' + (data.length || data.string.length) + ')',
@@ -226,14 +251,6 @@
 
 
 	function createItems(el, items, type, repository, parentIds) {
-		const classes = [
-			'tracy-dump-public',
-			'tracy-dump-protected',
-			'tracy-dump-private',
-			'tracy-dump-dynamic',
-			'tracy-dump-virtual',
-		];
-
 		let key, val, vis, ref, i, tmp;
 
 		for (i = 0; i < items.length; i++) {
@@ -242,17 +259,9 @@
 			} else {
 				[key, val, vis = PROP_VIRTUAL, ref] = items[i];
 			}
+
 			createEl(el, null, [
-				type === TYPE_ARRAY
-					? createEl('span', {'class': 'tracy-dump-key'}, [key])
-					: createEl(
-						'span',
-						{
-							'class': classes[type === TYPE_RESOURCE ? PROP_VIRTUAL : typeof vis === 'string' ? PROP_PRIVATE : vis],
-							'title': typeof vis === 'string' ? 'declared in ' + vis : null,
-						},
-						[key]
-					),
+				build(key, null, null, null, type === TYPE_ARRAY ? TYPE_ARRAY : vis),
 				type === TYPE_ARRAY ? ' => ' : ': ',
 				...(ref ? [createEl('span', {'class': 'tracy-dump-hash'}, ['&' + ref]), ' '] : []),
 				tmp = build(val, repository, null, parentIds),
