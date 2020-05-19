@@ -194,18 +194,20 @@ final class Renderer
 		if (is_array($array)) {
 			$items = $array;
 			$count = count($items);
+			$out .= $count . ')';
 		} elseif ($array->items === null) {
 			return $out . $array->length . ') …';
 		} else {
 			$items = $array->items;
 			$count = $array->length ?? count($items);
+			$out .= $count . ')';
 			if ($array->id && in_array($array->id, $this->parents, true)) {
-				return $out . $count . ') <i>RECURSION</i>';
+				return $out . ' <i>RECURSION</i>';
 			}
 		}
 
 		if (!$count) {
-			return $out . ')';
+			return $out;
 		}
 
 		$collapsed = $depth
@@ -219,10 +221,10 @@ final class Renderer
 			$this->copySnapshot($array);
 			return $span . " data-tracy-dump='"
 				. json_encode($array, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "'>"
-				. $out . $count . ')</span>';
+				. $out . '</span>';
 		}
 
-		$out = $span . '>' . $out . $count . ")</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
+		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[] = is_object($array) ? $array->id : null;
 

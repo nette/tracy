@@ -21,7 +21,7 @@ Assert::match(<<<XX
 \e[1;31marray\e[0m (4)\e[0m
 \e[1;30m   \e[0m\e[1;32m0\e[0m => \e[1;32m1\e[0m
 \e[1;30m   \e[0m\e[1;32m1\e[0m => \e[1;36m'hello'\e[0m
-\e[1;30m   \e[0m\e[1;32m2\e[0m => \e[1;31marray\e[0m ()
+\e[1;30m   \e[0m\e[1;32m2\e[0m => \e[1;31marray\e[0m (0)
 \e[1;30m   \e[0m\e[1;32m3\e[0m => \e[1;31marray\e[0m (2)\e[0m
 \e[1;30m   |  \e[0m\e[1;32m0\e[0m => \e[1;33mtrue\e[0m
 \e[1;30m   |  \e[0m\e[1;32m1\e[0m => \e[1;33mnull\e[0m
