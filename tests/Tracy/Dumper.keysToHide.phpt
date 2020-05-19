@@ -38,13 +38,13 @@ Assert::match('stdClass #%d%
 
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"object":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml($obj, [Dumper::KEYS_TO_HIDE => ['password', 'pin'], Dumper::SNAPSHOT => &$snapshot])
 );
 
 Assert::equal([
 	[
-		'name' => 'stdClass',
+		'object' => 'stdClass',
 		'items' => [
 			['a', 456, 0],
 			['password', ['type' => '***** (string)'], 0],

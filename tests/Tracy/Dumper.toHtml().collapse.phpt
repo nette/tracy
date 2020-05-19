@@ -26,8 +26,8 @@ Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'[]\'><span class="t
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-key">z</span> <span class="tracy-dump-visibility">protected</span> => <span class="tracy-dump-number">30.0</span>
 </div></pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1, Dumper::COLLAPSE => false]));
 
-Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"Test","items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"object":%d%}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
+Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"Test","items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"ref":%d%}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 </pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE => true]));
 
-Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"name":"Test","items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"object":%d%}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
+Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"Test","items":[["x",[[0,10],[1,null]],0],["y","hello",2],["z",{"number":"30.0"},1]]}}\'><span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"ref":%d%}\'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 </pre>', Dumper::toHtml(new Test, [Dumper::COLLAPSE => 3]));
