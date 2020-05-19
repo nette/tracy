@@ -97,7 +97,7 @@ Assert::equal([
 		'object' => 'Test',
 		'items' => [
 			['x', [[0, 10], [1, null]], 0],
-			['y', 'hello', 2],
+			['y', 'hello', 'Test'],
 			['z', ['number' => '30.0'], 1],
 		],
 	],
@@ -122,7 +122,7 @@ Assert::equal([
 		],
 		'items' => [
 			['x', [[0, 10], [1, null]], 0],
-			['y', 'hello', 2],
+			['y', 'hello', 'Test'],
 			['z', ['number' => '30.0'], 1],
 		],
 	],
