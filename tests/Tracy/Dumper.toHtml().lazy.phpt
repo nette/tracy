@@ -109,7 +109,7 @@ Assert::match(
 // lazy dump & max string length
 $arr = [str_repeat('x', 80)];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'[]\' data-tracy-dump=\'[[0,{"string":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ... ","length":80}]]\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'[]\' data-tracy-dump=\'[[0,{"string":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx … ","length":80}]]\'></pre>',
 	Dumper::toHtml($arr, $options + [Dumper::TRUNCATE => 50])
 );
 

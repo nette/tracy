@@ -360,7 +360,7 @@ class Helpers
 			$s = strtr($s, $table);
 		}
 
-		return $s . (empty($shortened) ? '' : ' ... ');
+		return $s . (empty($shortened) ? '' : ' … ');
 	}
 
 
