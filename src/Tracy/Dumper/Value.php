@@ -20,6 +20,21 @@ final class Value implements \JsonSerializable
 
 	public $value;
 
+	/** @var ?int */
+	public $depth;
+
+	/** @var int|string */
+	public $id;
+
+	/** @var object */
+	public $holder;
+
+	/** @var ?array */
+	public $items;
+
+	/** @var ?\stdClass */
+	public $editor;
+
 
 	public function __construct(string $type, $value)
 	{
@@ -30,6 +45,12 @@ final class Value implements \JsonSerializable
 
 	public function jsonSerialize(): array
 	{
-		return [$this->type => $this->value];
+		$res = [$this->type => $this->value];
+		foreach (['editor', 'items'] as $k) {
+			if ($this->$k !== null) {
+				$res[$k] = $this->$k;
+			}
+		}
+		return $res;
 	}
 }

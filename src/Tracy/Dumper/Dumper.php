@@ -38,7 +38,7 @@ class Dumper
 	public const
 		HIDDEN_VALUE = '*****';
 
-	/** @var array */
+	/** @var Value[] */
 	public static $liveSnapshot = [];
 
 	/** @var array */
@@ -88,7 +88,7 @@ class Dumper
 	/** @var bool|null  lazy-loading via JavaScript? true=full, false=none, null=collapsed parts */
 	private $lazy;
 
-	/** @var array|null */
+	/** @var Value[]|null */
 	private $snapshot;
 
 	/** @var bool */
@@ -466,28 +466,26 @@ class Dumper
 		} elseif (is_object($var)) {
 			$id = spl_object_id($var);
 			$obj = &$options[self::SNAPSHOT][$id];
-			if ($obj && $obj['depth'] <= $depth) {
+			if ($obj && $obj->depth <= $depth) {
 				return new Value('ref', $id);
 			}
 
-			$obj = $obj ?: [
-				'id' => $id,
-				'object' => Helpers::getClass($var),
-				'depth' => $depth,
-				'holder' => $var,
-			];
-			if (empty($obj['editor']) && ($this->location & self::LOCATION_CLASS)) {
+			$obj = $obj ?? new Value('object', Helpers::getClass($var));
+			$obj->id = $id;
+			$obj->depth = $depth;
+			$obj->holder = $var; // to be not released by garbage collector in collecting mode
+			if (!$obj->editor && ($this->location & self::LOCATION_CLASS)) {
 				$rc = $var instanceof \Closure
 					? new \ReflectionFunction($var)
 					: new \ReflectionClass($var);
 				if ($editor = $rc->getFileName() ? Helpers::editorUri($rc->getFileName(), $rc->getStartLine()) : null) {
-					$obj['editor'] = ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
+					$obj->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
 				}
 			}
 
 			if ($depth < $this->maxDepth || !$this->maxDepth) {
-				$obj['depth'] = $depth;
-				$obj['items'] = [];
+				$obj->depth = $depth;
+				$obj->items = [];
 
 				foreach ($this->exportObject($var) as $k => $v) {
 					$vis = 0;
@@ -496,7 +494,7 @@ class Dumper
 						$vis = $k[1] === '*' ? 1 : 2;
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$obj['items'][] = [
+					$obj->items[] = [
 						$this->encodeKey($k),
 						isset($this->keysToHide[strtolower($k)])
 							? new Value('text', self::hideValue($v))
@@ -512,10 +510,13 @@ class Dumper
 			$obj = &$options[self::SNAPSHOT][$id];
 			if (!$obj) {
 				$type = is_resource($var) ? get_resource_type($var) : 'closed';
-				$obj = ['id' => $id, 'resource' => $type . ' resource', 'items' => []];
+				$obj = new Value('resource', $type . ' resource');
+				$obj->id = $id;
+				$obj->depth = $depth;
+				$obj->items = [];
 				if (isset($this->resourceDumpers[$type])) {
 					foreach (($this->resourceDumpers[$type])($var) as $k => $v) {
-						$obj['items'][] = [$k, $this->toJson($v, $options, $depth + 1)];
+						$obj->items[] = [$k, $this->toJson($v, $options, $depth + 1)];
 					}
 				}
 			}
@@ -527,9 +528,6 @@ class Dumper
 	public static function formatSnapshotAttribute(array &$snapshot): string
 	{
 		$res = $snapshot;
-		foreach ($res as &$obj) {
-			unset($obj['depth'], $obj['holder'], $obj['id']);
-		}
 		$snapshot = [];
 		return "'" . json_encode($res, JSON_HEX_APOS | JSON_HEX_AMP) . "'";
 	}
