@@ -156,6 +156,7 @@ final class Renderer
 				return '<span>' . Helpers::escapeHtml($value->value) . '</span>';
 
 			case $value->type === 'string':
+			case $value->type === 'bin':
 				return $this->renderString($value, $keyType);
 
 			case $value->type === 'resource':
@@ -174,7 +175,7 @@ final class Renderer
 	{
 		if ($keyType === 'array') {
 			return '<span class="tracy-dump-string">\''
-				. (is_string($str) ? Helpers::escapeHtml($str) : $str->value)
+				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n ", $str->value))
 				. "'</span>";
 
 		} elseif ($keyType !== null) {
@@ -187,18 +188,22 @@ final class Renderer
 			$title = is_string($keyType) ? ' title="declared in ' . Helpers::escapeHtml($keyType) . '"' : null;
 			return '<span class="'
 				. ($title ? 'tracy-dump-private' : $classes[$keyType]) . '"' . $title . '>'
-				. (is_string($str) ? Helpers::escapeHtml($str) : $str->value)
+				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n ", $str->value))
 				. '</span>';
 
 		} elseif (is_string($str)) {
-			return '<span class="tracy-dump-string">\''
-				. Helpers::escapeHtml($str)
-				. "'</span>" . (strlen($str) > 1 ? ' (' . strlen($str) . ')' : '');
+			$len = strlen(utf8_decode($str));
+			return '<span class="tracy-dump-string"'
+				. ($len > 1 ? ' title="' . $len . ' characters"' : '')
+				. ">'" . Helpers::escapeHtml($str) . "'</span>";
 
 		} else {
-			return '<span class="tracy-dump-string">\''
-				. $str->value
-				. "'</span>" . ($str->length > 1 ? ' (' . $str->length . ')' : '');
+			$unit = $str->type === 'string' ? 'characters' : 'bytes';
+			return '<span class="tracy-dump-string"'
+				. ($str->length > 1 ? " title=\"$str->length $unit\">" : '>')
+				. (strpos($str->value, "\n") === false ? '' : "\n   ") . "'"
+				. str_replace("\n", "\n    ", $str->value)
+				. "'</span>";
 		}
 	}
 
