@@ -17,5 +17,5 @@ Assert::match('array (1)
    0 => array (1)
    |  0 => &1 array (1)
    |  |  0 => array (1)
-   |  |  |  0 => &1 array (1) [ RECURSION ]
+   |  |  |  0 => &1 array (1) RECURSION
 ', Dumper::toText($a));
