@@ -14,15 +14,15 @@ require __DIR__ . '/../bootstrap.php';
 
 Assert::match(<<<XX
 <pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (9)</span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-string">""</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-string">" "</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-string">"utf \n\r\t string"</span> (14)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">3</span> => <span class="tracy-dump-string">"binary \\n\\r\\t string\\x00"</span> (18)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-dump-string">"utf \\n\\r\\t\\xab string"</span> (21)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">5</span> => <span class="tracy-dump-string">"binary \\\\n\\\\r\\\\t\\\\xab string\\x00"</span> (25)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-dump-string">"Iñtërnâtiônàlizætiøn"</span> (27)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">7</span> => <span class="tracy-dump-string">"\\x00"</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">8</span> => <span class="tracy-dump-string">"\\xff"</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-string">''</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-dump-string">' '</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">2</span> => <span class="tracy-dump-string">'utf \n\r\t string'</span> (14)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">3</span> => <span class="tracy-dump-string">'binary \\n\\r\\t string\\x00'</span> (18)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">4</span> => <span class="tracy-dump-string">'utf \\n\\r\\t\\xab string'</span> (21)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">5</span> => <span class="tracy-dump-string">'binary \\\\n\\\\r\\\\t\\\\xab string\\x00'</span> (25)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">6</span> => <span class="tracy-dump-string">'Iñtërnâtiônàlizætiøn'</span> (27)
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">7</span> => <span class="tracy-dump-string">'\\x00'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">8</span> => <span class="tracy-dump-string">'\\xff'</span>
 </div></pre>
 XX
 , Dumper::toHtml([

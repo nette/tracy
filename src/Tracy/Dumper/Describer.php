@@ -229,7 +229,7 @@ final class Describer
 	{
 		return is_int($key) || (preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key))
 			? $key
-			: '"' . Helpers::encodeString($key, $this->maxLength) . '"';
+			: "'" . Helpers::encodeString($key, $this->maxLength) . "'";
 	}
 
 

@@ -56,7 +56,7 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$message</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"The my error"</span> (%d%)
+						<tr><th>$message</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'The my error'</span> (%d%)
 </pre>
 </td></tr>
 <tr><th>$error_%a%</th><td><pre class="tracy-dump"><span class="tracy-dump-number">256</span>
@@ -88,7 +88,7 @@
 
 											<div class="tracy-collapsed outer args">
 						<table>
-						<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"root"</span> (4)
+						<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">'root'</span> (4)
 </pre>
 </td></tr>
 <tr><th>$pass</th><td><pre class="tracy-dump">***** (string)</pre></td></tr>

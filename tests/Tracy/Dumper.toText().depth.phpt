@@ -33,26 +33,26 @@ $arr = [
 
 Assert::match(<<<'XX'
 array (4)
-   long => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
+   long => 'Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... ' (15000)
    0 => array (1)
    |  0 => array (1)
    |  |  0 => array (1)
-   |  |  |  hello => "world" (5)
-   long2 => "Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... " (15000)
+   |  |  |  hello => 'world' (5)
+   long2 => 'Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework ... ' (15000)
    1 => stdClass #%a%
    |  0: stdClass #%a%
    |  |  0: stdClass #%a%
-   |  |  |  hello: "world" (5)
+   |  |  |  hello: 'world' (5)
 XX
 , Dumper::toText($arr));
 
 
 Assert::match(<<<'XX'
 array (4)
-   long => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
+   long => 'Nette FrameworkNette FrameworkNette FrameworkNette ... ' (15000)
    0 => array (1)
    |  0 => array (1) ...
-   long2 => "Nette FrameworkNette FrameworkNette FrameworkNette ... " (15000)
+   long2 => 'Nette FrameworkNette FrameworkNette FrameworkNette ... ' (15000)
    1 => stdClass #%a%
    |  0: stdClass #%a% ...
 XX
