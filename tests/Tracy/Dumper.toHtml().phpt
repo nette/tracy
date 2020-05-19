@@ -51,7 +51,7 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-dump-string">\'\'</spa
 Assert::match('<pre class="tracy-dump"><span class="tracy-dump-string">\'0\'</span>
 </pre>', Dumper::toHtml('0'));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-string">\'\\x00\'</span>
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-string">\'<span>\\x00</span>\'</span>
 </pre>', Dumper::toHtml("\x00"));
 
 

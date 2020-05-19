@@ -168,8 +168,8 @@ final class Renderer
 				. $str
 				. "'</span>" . (strlen($str) > 1 ? ' (' . strlen($str) . ')' : '') . "\n";
 		} else {
-			return '<span class="tracy-dump-string">\''
-				. $str->value
+			return '<span class="tracy-dump-string">' . (strpos($str->value, "\n") === false ? '' : "\n   ") . "'"
+				. str_replace("\n", "\n    ", $str->value)
 				. "'</span>" . ($str->length > 1 ? ' (' . $str->length . ')' : '') . "\n";
 		}
 	}
@@ -220,7 +220,7 @@ final class Renderer
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + [2 => null];
 			$out .= $indent
-				. '<span class="tracy-dump-key">' . $k . '</span> => '
+				. '<span class="tracy-dump-key">' . str_replace("\n", "\n ", $k) . '</span> => '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);
 		}
@@ -286,7 +286,7 @@ final class Renderer
 			[$k, $v, $type, $ref] = $info + [2 => Value::PROP_VIRTUAL, null];
 			$title = is_string($type) ? ' title="declared in ' . Helpers::escapeHtml($type) . '"' : null;
 			$out .= $indent
-				. '<span class="' . ($title ? 'tracy-dump-private' : $classes[$type]) . '"' . $title . '>' . $k . '</span>'
+				. '<span class="' . ($title ? 'tracy-dump-private' : $classes[$type]) . '"' . $title . '>' . str_replace("\n", "\n ", $k) . '</span>'
 				. ': '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);

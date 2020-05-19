@@ -387,6 +387,14 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	color: #35D;
 }
 
+#tracy-debug .tracy-dump-key span,
+#tracy-debug .tracy-dump-virtual span,
+#tracy-debug .tracy-dump-dynamic span,
+#tracy-debug .tracy-dump-string span {
+	font-size: 80%;
+	color: rgba(0, 0, 0, 0.5);
+}
+
 #tracy-debug .tracy-dump-number {
 	color: #090;
 }

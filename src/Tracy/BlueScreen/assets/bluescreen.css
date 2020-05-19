@@ -60,6 +60,12 @@
 	border-bottom-color: rgba(255, 255, 255, .3) !important;
 }
 
+#tracy-bs-error span span {
+	font-size: 80%;
+	color: rgba(255, 255, 255, 0.5);
+	text-shadow: none;
+}
+
 #tracy-bs-error a.action {
 	color: white !important;
 	opacity: 0;
