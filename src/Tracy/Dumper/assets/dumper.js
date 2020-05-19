@@ -41,7 +41,7 @@
 
 				preList.forEach((el) => { // <pre>
 					let built = build(JSON.parse(el.getAttribute('data-tracy-dump')), snapshot, el.classList.contains('tracy-collapsed'));
-					el.insertBefore(built, el.lastChild);
+					el.appendChild(built);
 					el.classList.remove('tracy-collapsed');
 					el.removeAttribute('data-tracy-dump');
 				});
