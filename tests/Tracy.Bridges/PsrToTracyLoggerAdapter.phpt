@@ -40,6 +40,6 @@ Assert::same([
 	[Psr\Log\LogLevel::INFO, 'info', []],
 	[Psr\Log\LogLevel::WARNING, 'warning', []],
 	[Psr\Log\LogLevel::INFO, '123', []],
-	[Psr\Log\LogLevel::INFO, "array (1)\n   x => \"y\"", []],
+	[Psr\Log\LogLevel::INFO, "array (1)\n   x => 'y'", []],
 	[Psr\Log\LogLevel::INFO, 'Exception: Something went wrong #123 in ' . __DIR__ . DIRECTORY_SEPARATOR . 'PsrToTracyLoggerAdapter.phpt:31', ['exception' => $exception]],
 ], $psrLogger->entries);
