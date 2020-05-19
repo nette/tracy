@@ -7,7 +7,7 @@
 <div class="tracy-inner tracy-DumpPanel">
 
 	<pre class="tracy-dump" title="barDump($arr)
-in file %a% on line %d%" data-tracy-href="editor:%a%" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["key1","val1",0],["key2",true,0]]}}' data-tracy-dump='[[0,10],[1,20.2],[2,true],[3,false],[4,null],[5,"hello <!-- <script> <\/script>"],[6,[["key1","val1"],["key2",true]]],[7,{"ref":%d%}]]'></pre>
+in file %a% on line %d%" data-tracy-href="editor:%a%" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["key1","val1",3],["key2",true,3]]}}' data-tracy-dump='[[0,10],[1,20.2],[2,true],[3,false],[4,null],[5,"hello <!-- <script> <\/script>"],[6,[["key1","val1"],["key2",true]]],[7,{"ref":%d%}]]'></pre>
 		<h2>String</h2>
 
 	<pre class="tracy-dump" title="barDump(&#039;&lt;a href=&quot;#&quot;&gt;test&lt;/a&gt;&#039;, &#039;String&#039;)

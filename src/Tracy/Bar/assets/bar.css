@@ -392,6 +392,10 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	color: #850;
 }
 
+#tracy-debug .tracy-dump-public::after {
+	content: ' pub';
+}
+
 #tracy-debug .tracy-dump-protected::after {
 	content: ' pro';
 }
@@ -400,6 +404,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	content: ' pri';
 }
 
+#tracy-debug .tracy-dump-public::after,
 #tracy-debug .tracy-dump-protected::after,
 #tracy-debug .tracy-dump-private::after,
 #tracy-debug .tracy-dump-hash {

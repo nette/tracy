@@ -105,7 +105,7 @@ $obj = new stdClass;
 $obj->x = $obj;
 Assert::match(
 	'<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> { <i>RECURSION</i> }
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">x</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> { <i>RECURSION</i> }
 </div></pre>',
 	Dumper::toHtml($obj, $options)
 );
@@ -136,10 +136,10 @@ $obj->a->b->c->d = new stdClass;
 $obj->a->b->c->d->e = new stdClass;
 Assert::match(
 	'<pre class="tracy-dump"><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">a</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">b</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-public">c</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-public">d</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> { ... }
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">a</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">b</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-dynamic">c</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-dynamic">d</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> { ... }
 </div></div></div></div></pre>',
 	Dumper::toHtml($obj, $options)
 );

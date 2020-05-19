@@ -273,6 +273,7 @@ final class Renderer
 			Value::PROP_PUBLIC => 'tracy-dump-public',
 			Value::PROP_PROTECTED => 'tracy-dump-protected',
 			Value::PROP_PRIVATE => 'tracy-dump-private',
+			Value::PROP_DYNAMIC => 'tracy-dump-dynamic',
 		];
 
 		foreach ($object->items as $info) {

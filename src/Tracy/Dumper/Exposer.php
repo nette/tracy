@@ -18,6 +18,7 @@ final class Exposer
 {
 	public static function exposeObject(object $obj, Value $value, Describer $describer): void
 	{
+		$defaults = get_class_vars(get_class($obj));
 		$arr = (array) $obj;
 		$tmp = $arr; // bug #79477, PHP < 7.4.6
 		foreach ($tmp as $k => $v) {
@@ -27,8 +28,11 @@ final class Exposer
 				$info = explode("\00", $k);
 				$k = end($info);
 				$type = $info[1] === '*' ? Value::PROP_PROTECTED : Value::PROP_PRIVATE;
+			} else {
+				$type = array_key_exists($k, $defaults) ? Value::PROP_PUBLIC : Value::PROP_DYNAMIC;
+				$k = (string) $k;
 			}
-			$describer->addProperty($value, (string) $k, $v, $type, $refId);
+			$describer->addProperty($value, $k, $v, $type, $refId);
 		}
 	}
 
