@@ -90,6 +90,9 @@
 		} else if (type === 'string') {
 			data = {string: data};
 
+		} else if (Array.isArray(data)) {
+			data = {array: null, items: data};
+
 		} else if (data.ref) {
 			id = data.ref;
 			data = repository[id];
@@ -98,31 +101,11 @@
 			}
 		}
 
-		if (Array.isArray(data)) {
-			return buildStruct(
-				[
-					createEl('span', {'class': 'tracy-dump-array'}, ['array']),
-					' (' + (data[0] && data.length || '') + ')'
-				],
-				' [ ... ]',
-				data[0] === null ? null : data,
-				collapsed === true || data.length >= collapseCount,
-				TYPE_ARRAY,
-				repository,
-				parentIds
-			);
 
-		} else if (data.string !== undefined) {
+		if (data.string !== undefined) {
 			return createEl(null, null, [
 				createEl('span', {'class': 'tracy-dump-string'}, ['"' + data.string + '"']),
 				' (' + (data.length || data.string.length) + ')\n',
-			]);
-
-		} else if (data.stop) {
-			return createEl(null, null, [
-				createEl('span', {'class': 'tracy-dump-array'}, ['array']),
-				' (' + data.stop[0] + ')',
-				data.stop[1] ? ' [ RECURSION ]\n' : ' [ ... ]\n',
 			]);
 
 		} else if (data.number) {
@@ -135,25 +118,30 @@
 				createEl('span', null, [data.text + '\n'])
 			]);
 
-		} else { // object || resource
+		} else { // object || resource || array
 			parentIds = parentIds ? parentIds.slice() : [];
-			let recursive = parentIds.indexOf(id) > -1;
+			let recursive = id && parentIds.indexOf(id) > -1;
 			parentIds.push(id);
 
 			return buildStruct(
-				[
-					createEl('span', {
-						'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
-						title: data.editor ? 'Declared in file ' + data.editor.file + ' on line ' + data.editor.line : null,
-						'data-tracy-href': data.editor ? data.editor.url : null
-					}, [data.object || data.resource]),
-					' ',
-					createEl('span', {'class': 'tracy-dump-hash'}, [data.resource ? '@' + id.substr(1) : '#' + id])
-				],
+				data.array !== undefined
+					? [
+						createEl('span', {'class': 'tracy-dump-array'}, ['array']),
+						' (' + (data.length || data.items.length) + ')'
+					]
+					: [
+						createEl('span', {
+							'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
+							title: data.editor ? 'Declared in file ' + data.editor.file + ' on line ' + data.editor.line : null,
+							'data-tracy-href': data.editor ? data.editor.url : null
+						}, [data.object || data.resource]),
+						' ',
+						createEl('span', {'class': 'tracy-dump-hash'}, [data.resource ? '@' + id.substr(1) : '#' + id])
+					],
 				recursive ? ' { RECURSION }' : ' { ... }',
 				recursive ? null : data.items,
 				collapsed === true || (data.items && data.items.length >= collapseCount),
-				data.object ? TYPE_OBJECT : TYPE_RESOURCE,
+				data.object ? TYPE_OBJECT : data.resource ? TYPE_RESOURCE : TYPE_ARRAY,
 				repository,
 				parentIds
 			);
