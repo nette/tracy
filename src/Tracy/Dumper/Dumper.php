@@ -635,6 +635,7 @@ class Dumper
 	{
 		$info = ['className' => null, 'private' => [], 'protected' => [], 'public' => []];
 		foreach ((array) $obj as $name => $value) {
+			$name = (string) $name;
 			if ($name === '__PHP_Incomplete_Class_Name') {
 				$info['className'] = $value;
 			} elseif (preg_match('#^\x0\*\x0(.+)$#D', $name, $m)) {

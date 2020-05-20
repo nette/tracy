@@ -34,7 +34,7 @@ Assert::match('stdClass #%a%
 );
 
 
-$obj = unserialize('O:1:"Y":7:{s:1:"a";N;s:1:"b";i:2;s:4:"' . "\0" . '*' . "\0" . 'c";N;s:4:"' . "\0" . '*' . "\0" . 'd";s:1:"d";s:4:"' . "\0" . 'Y' . "\0" . 'e";N;s:4:"' . "\0" . 'Y' . "\0" . 'i";s:3:"bar";s:4:"' . "\0" . 'X' . "\0" . 'i";s:3:"foo";}');
+$obj = unserialize('O:1:"Y":7:{s:1:"1";N;s:1:"b";i:2;s:4:"' . "\0" . '*' . "\0" . 'c";N;s:4:"' . "\0" . '*' . "\0" . 'd";s:1:"d";s:4:"' . "\0" . 'Y' . "\0" . 'e";N;s:4:"' . "\0" . 'Y' . "\0" . 'i";s:3:"bar";s:4:"' . "\0" . 'X' . "\0" . 'i";s:3:"foo";}');
 
 Assert::match('__PHP_Incomplete_Class #%a%
    className => "Y"
@@ -46,7 +46,7 @@ Assert::match('__PHP_Incomplete_Class #%a%
    |  c => null
    |  d => "d"
    public => array (2)
-   |  a => null
+   |  1 => null
    |  b => 2', Dumper::toText($obj));
 
 
