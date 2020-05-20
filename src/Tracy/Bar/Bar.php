@@ -219,7 +219,8 @@ class Bar
 			__DIR__ . '/assets/bar.css',
 			__DIR__ . '/../Toggle/toggle.css',
 			__DIR__ . '/../TableSort/table-sort.css',
-			__DIR__ . '/../Dumper/assets/dumper.css',
+			__DIR__ . '/../Dumper/assets/dumper-light.css',
+			__DIR__ . '/../Dumper/assets/dumper-dark.css',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
 		], Debugger::$customCssFiles));
 

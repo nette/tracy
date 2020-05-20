@@ -15,7 +15,7 @@ require __DIR__ . '/fixtures/DumpClass.php';
 
 
 // lazy dump of scalars & empty array
-$options = [Dumper::LAZY => true];
+$options = [Dumper::LAZY => true, Dumper::THEME => false];
 
 Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
 
