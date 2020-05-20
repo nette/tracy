@@ -24,7 +24,9 @@ test(function () { // html mode
 	Assert::match(<<<'XX'
 <style>%a%</style>
 <script>%a%</script>
-<pre class="tracy-dump"><span class="tracy-dump-number">123</span></pre>
+<pre class="tracy-dump"
+><a href="editor://%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">dump(123) 📍</a
+><span class="tracy-dump-number">123</span></pre>
 XX
 , ob_get_clean());
 });
