@@ -104,3 +104,19 @@ Assert::match(
 	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[["a",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["b",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["c",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["d",{"ref":%d%},3]]},"%d%":{"object":"stdClass"}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml($obj, $options)
 );
+
+
+// lazy dump & max string length
+$arr = [str_repeat('x', 80)];
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-snapshot=\'[]\' data-tracy-dump=\'[[0,{"string":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ... ","length":80}]]\'></pre>',
+	Dumper::toHtml($arr, $options + [Dumper::TRUNCATE => 50])
+);
+
+
+// lazy dump & max items
+$arr = [1, 2, 3, 4, 5, 6, 7, 8];
+Assert::match(
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","length":8,"items":[["0",1,3],["1",2,3],["2",3,3],["3",4,3],["4",5,3]]}}\' data-tracy-dump=\'[[0,{"array":null,"length":8,"items":[[0,1],[1,2],[2,3],[3,4],[4,5]]}],[1,{"ref":%d%}]]\'></pre>',
+	Dumper::toHtml([$arr, (object) $arr], $options + [Dumper::ITEMS => 5])
+);

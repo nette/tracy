@@ -22,6 +22,7 @@ class Dumper
 	public const
 		DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 4)
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
+		ITEMS = 'items', // how many items in array/object display? (defaults to 100)
 		COLLAPSE = 'collapse', // collapse top array/object or how big are collapsed? (defaults to 14)
 		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
 		LOCATION = 'location', // show location string? (defaults to 0)
@@ -135,6 +136,7 @@ class Dumper
 		$describer = $this->describer = new Describer;
 		$describer->maxDepth = $options[self::DEPTH] ?? $describer->maxDepth;
 		$describer->maxLength = $options[self::TRUNCATE] ?? $describer->maxLength;
+		$describer->maxItems = $options[self::ITEMS] ?? $describer->maxItems;
 		$describer->debugInfo = $options[self::DEBUGINFO] ?? $describer->debugInfo;
 		$describer->keysToHide = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE] ?? []));
 		$describer->resourceExposers = ($options['resourceExporters'] ?? []) + self::$resources;
