@@ -7,7 +7,10 @@
 (function() {
 	const
 		COLLAPSE_COUNT = 7,
-		COLLAPSE_COUNT_TOP = 14;
+		COLLAPSE_COUNT_TOP = 14,
+		TYPE_ARRAY = 'a',
+		TYPE_OBJECT = 'o',
+		TYPE_RESOURCE = 'r';
 
 	class Dumper
 	{
@@ -104,6 +107,7 @@
 				' [ ... ]',
 				data[0] === null ? null : data,
 				collapsed === true || data.length >= collapseCount,
+				TYPE_ARRAY,
 				repository,
 				parentIds
 			);
@@ -149,6 +153,7 @@
 				recursive ? ' { RECURSION }' : ' { ... }',
 				recursive ? null : data.items,
 				collapsed === true || (data.items && data.items.length >= collapseCount),
+				data.object ? TYPE_OBJECT : TYPE_RESOURCE,
 				repository,
 				parentIds
 			);
@@ -156,7 +161,7 @@
 	}
 
 
-	function buildStruct(span, ellipsis, items, collapsed, repository, parentIds) {
+	function buildStruct(span, ellipsis, items, collapsed, type, repository, parentIds) {
 		let res, toggle, div, handler;
 
 		if (!items || !items.length) {
@@ -173,10 +178,10 @@
 		if (collapsed) {
 			toggle.addEventListener('tracy-toggle', handler = function() {
 				toggle.removeEventListener('tracy-toggle', handler);
-				createItems(div, items, repository, parentIds);
+				createItems(div, items, type, repository, parentIds);
 			});
 		} else {
-			createItems(div, items, repository, parentIds);
+			createItems(div, items, type, repository, parentIds);
 		}
 		return res;
 	}
@@ -202,15 +207,22 @@
 	}
 
 
-	function createItems(el, items, repository, parentIds) {
-		for (let i = 0; i < items.length; i++) {
-			let vis = items[i][2];
+	function createItems(el, items, type, repository, parentIds) {
+		let key, val, vis, ref, i;
+
+		for (i = 0; i < items.length; i++) {
+			if (type === TYPE_ARRAY) {
+				[key, val, ref] = items[i];
+			} else {
+				[key, val, vis, ref] = items[i];
+			}
 			createEl(el, null, [
-				createEl('span', {'class': 'tracy-dump-key'}, [items[i][0]]),
+				createEl('span', {'class': 'tracy-dump-key'}, [key]),
 				vis ? ' ' : null,
 				vis ? createEl('span', {'class': 'tracy-dump-visibility'}, [vis === 1 ? 'protected' : 'private']) : null,
 				' => ',
-				build(items[i][1], repository, null, parentIds)
+				...(ref ? [createEl('span', {'class': 'tracy-dump-hash'}, ['&' + ref]), ' '] : []),
+				build(val, repository, null, parentIds)
 			]);
 		}
 	}
