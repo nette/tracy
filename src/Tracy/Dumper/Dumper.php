@@ -137,9 +137,15 @@ class Dumper
 		$describer->objectExposers = ($options[self::OBJECT_EXPORTERS] ?? []) + self::$objectExporters;
 		$describer->location = (bool) $location;
 		if ($options[self::LIVE] ?? false) {
-			$describer->snapshot = &self::$liveSnapshot;
+			$tmp = &self::$liveSnapshot;
 		} elseif (isset($options[self::SNAPSHOT])) {
-			$describer->snapshot = &$options[self::SNAPSHOT];
+			$tmp = &$options[self::SNAPSHOT];
+		}
+		if (isset($tmp)) {
+			$tmp[0] = $tmp[0] ?? [];
+			$tmp[1] = $tmp[1] ?? [];
+			$describer->snapshot = &$tmp[0];
+			$describer->references = &$tmp[1];
 		}
 
 		$renderer = $this->renderer = new Renderer;
@@ -174,7 +180,7 @@ class Dumper
 
 	public static function formatSnapshotAttribute(array &$snapshot): string
 	{
-		$res = "'" . Renderer::jsonEncode($snapshot) . "'";
+		$res = "'" . Renderer::jsonEncode($snapshot[0] ?? []) . "'";
 		$snapshot = [];
 		return $res;
 	}
