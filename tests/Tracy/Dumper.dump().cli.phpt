@@ -38,7 +38,7 @@ test(function () { // production mode
 	Debugger::$productionMode = true;
 	ob_start();
 	Dumper::dump('sensitive data');
-	Assert::match("'sensitive data'", ob_get_clean());
+	Assert::same('', ob_get_clean());
 });
 
 
