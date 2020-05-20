@@ -255,26 +255,28 @@ Every debugging developer is a good friend with the function `var_dump`, which l
 $arr = [10, 20.2, true, null, 'hello'];
 
 dump($arr);
-// or Tracy\Debugger::dump($arr);
+// or Tracy\Dumper::dump($arr);
 ```
 
 generates the output:
 
 ![dump](https://nette.github.io/tracy/images/tracy-dump.png)
 
-You can also change the nesting depth by `Debugger::$maxDepth` and displayed strings length by `Debugger::$maxLength`. Naturally, lower values accelerate Tracy rendering.
+You can also change the nesting depth by `Dumper::$maxDepth` and displayed strings length by `Dumper::$maxLength`. Naturally, lower values accelerate Tracy rendering.
 
 ```php
-Debugger::$maxDepth = 2; // default: 3
-Debugger::$maxLength = 50; // default: 150
+use Tracy\Dumper;
+
+Dumper::$maxDepth = 2; // default: 3
+Dumper::$maxLength = 50; // default: 150
 ```
 
 The `dump()` function can display useful location information:
 
 ```php
-Debugger::$showLocation = true; // shows tooltip with path to the file, where the dump() was called, and tooltips for every dumped objects
-Debugger::$showLocation = Tracy\Dumper::LOCATION_CLASS; // shows only tooltips for every dumped object containing path to the file
-Debugger::$showLocation = false; // hides all location information
+Dumper::$showLocation = true; // shows tooltip with path to the file, where the dump() was called, and tooltips for every dumped objects
+Dumper::$showLocation = Dumper::LOCATION_CLASS; // shows only tooltips for every dumped object containing path to the file
+Dumper::$showLocation = false; // hides all location information
 ```
 
 Very handy alternative to `dump()` is `dumpe()` (ie. dump and exit) and `bdump()`. This allows us to dump variables in Debugger Bar. This is useful, because dumps don't mess up the output and we can also add a title to the dump.
