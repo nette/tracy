@@ -273,7 +273,7 @@ Dumper::$maxItems = 50; // default: 100
 Dumper::$keysToHide = ['password']; // default: []
 ```
 
-The `dump()` function can display useful location information:
+The `Dumper::$showLocation` function can display useful location information (default is `true` in HTML mode):
 
 ```php
 Dumper::$showLocation = true; // shows tooltip with path to the file, where the dump() was called, and tooltips for every dumped objects

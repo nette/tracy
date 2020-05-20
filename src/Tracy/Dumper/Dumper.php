@@ -86,7 +86,7 @@ class Dumper
 	public static $maxItems = 100;
 
 	/** @var bool display location by dump()? */
-	public static $showLocation = false;
+	public static $showLocation;
 
 	/** @var array  sensitive keys not displayed by dump() */
 	public static $keysToHide = [];
@@ -111,19 +111,23 @@ class Dumper
 			return $var;
 		}
 
-		$dumper = new self($options + self::fromStatics());
+		$options += self::fromStatics();
 
 		if (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg') {
 			if (self::$useColors === null) {
 				self::$useColors = Helpers::detectColors();
 			}
+			$dumper = new self($options);
 			fwrite(STDOUT, $dumper->asTerminal($var, self::$useColors ? self::$terminalColors : []));
 
 		} elseif (preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) { // non-html
+			$dumper = new self($options);
 			echo $dumper->asTerminal($var);
 
 		} else { // html
+			$options[self::LOCATION] = $options[self::LOCATION] ?? true;
 			self::renderAssets();
+			$dumper = new self($options);
 			echo $dumper->asHtml($var);
 		}
 		return $var;
