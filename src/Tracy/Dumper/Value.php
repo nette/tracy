@@ -39,7 +39,7 @@ final class Value implements \JsonSerializable
 	public $editor;
 
 
-	public function __construct(string $type, $value, int $length = null)
+	public function __construct(string $type, $value = null, int $length = null)
 	{
 		$this->type = $type;
 		$this->value = $value;
