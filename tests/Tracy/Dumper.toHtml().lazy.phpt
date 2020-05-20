@@ -75,7 +75,7 @@ in file %a% on line %d%" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&a
 $arr = [1, 2, 3];
 $arr[] = &$arr;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'[]\' data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,[[0,1],[1,2],[2,3],[3,{"stop":[4,true]}]]]]\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'[]\' data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,[[0,1],[1,2],[2,3],[3,{"stop":[4,true]},1]],1]]\'></pre>',
 	Dumper::toHtml($arr, $options)
 );
 
