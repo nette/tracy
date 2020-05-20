@@ -68,7 +68,7 @@ class Debugger
 	public static $maxLength = 150;
 
 	/** @var bool display location by dump()? */
-	public static $showLocation = false;
+	public static $showLocation;
 
 	/** @deprecated */
 	public static $maxLen;

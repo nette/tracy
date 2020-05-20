@@ -103,6 +103,7 @@ class Dumper
 			echo self::toText($var, $options);
 
 		} else { // html
+			$options[self::LOCATION] = $options[self::LOCATION] ?? true;
 			self::renderAssets();
 			echo self::toHtml($var, $options);
 		}

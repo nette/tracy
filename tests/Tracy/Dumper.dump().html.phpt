@@ -24,7 +24,9 @@ test('html mode', function () {
 	Assert::match(<<<'XX'
 <style>%a%</style>
 <script>%a%</script>
-<pre class="tracy-dump"><span class="tracy-dump-number">123</span></pre>
+<pre class="tracy-dump"
+><a href="editor://%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::dump(123)) 📍</a
+><span class="tracy-dump-number">123</span></pre>
 XX
 , ob_get_clean());
 });
@@ -34,7 +36,9 @@ test('repeated html mode', function () {
 	ob_start();
 	Assert::same(123, Dumper::dump(123));
 	Assert::match(<<<'XX'
-<pre class="tracy-dump"><span class="tracy-dump-number">123</span></pre>
+<pre class="tracy-dump"
+><a %A%>Dumper::dump(123)) 📍</a
+><span class="tracy-dump-number">123</span></pre>
 XX
 , ob_get_clean());
 });
