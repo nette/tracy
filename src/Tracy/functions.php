@@ -9,24 +9,24 @@ declare(strict_types=1);
 
 if (!function_exists('dump')) {
 	/**
-	 * Tracy\Debugger::dump() shortcut.
+	 * Tracy\Dumper::dump() shortcut.
 	 * @tracySkipLocation
 	 */
 	function dump($var)
 	{
-		array_map([Tracy\Debugger::class, 'dump'], func_get_args());
+		array_map([Tracy\Dumper::class, 'dump'], func_get_args());
 		return $var;
 	}
 }
 
 if (!function_exists('dumpe')) {
 	/**
-	 * Tracy\Debugger::dump() & exit shortcut.
+	 * Tracy\Dumper::dump() & exit shortcut.
 	 * @tracySkipLocation
 	 */
 	function dumpe($var): void
 	{
-		array_map([Tracy\Debugger::class, 'dump'], func_get_args());
+		array_map([Tracy\Dumper::class, 'dump'], func_get_args());
 		if (!Tracy\Debugger::$productionMode) {
 			exit;
 		}

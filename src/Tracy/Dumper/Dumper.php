@@ -76,6 +76,15 @@ class Dumper
 		'__PHP_Incomplete_Class' => [Exposer::class, 'exposePhpIncompleteClass'],
 	];
 
+	/** @var int  how many nested levels of array/object properties display by dump() */
+	public static $maxDepth = 3;
+
+	/** @var int  how long strings display by dump() */
+	public static $maxLength = 150;
+
+	/** @var bool display location by dump()? */
+	public static $showLocation = false;
+
 	/** @var Describer */
 	private $describer;
 
@@ -89,14 +98,30 @@ class Dumper
 	 */
 	public static function dump($var, array $options = [])
 	{
+		if (Debugger::$productionMode === true) {
+			return $var;
+		}
+
+		$dumper = new self($options + self::fromStatics());
+
 		if (PHP_SAPI !== 'cli' && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) {
-			echo self::toHtml($var, $options);
+			echo $dumper->asHtml($var);
 		} elseif (self::detectColors()) {
-			echo self::toTerminal($var, $options);
+			echo $dumper->asTerminal($var, self::$terminalColors);
 		} else {
-			echo self::toText($var, $options);
+			echo $dumper->asTerminal($var);
 		}
 		return $var;
+	}
+
+
+	private static function fromStatics(): array
+	{
+		return [
+			self::DEPTH => Debugger::$maxDepth ?? self::$maxDepth,
+			self::TRUNCATE => Debugger::$maxLength ?? self::$maxLength,
+			self::LOCATION => Debugger::$showLocation ?? self::$showLocation,
+		];
 	}
 
 
