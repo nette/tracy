@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Tracy\Dumper::toText() depth & truncate
+ * Test: Tracy\Dumper::toText() depth & truncate & items
  */
 
 declare(strict_types=1);
@@ -54,3 +54,31 @@ Assert::match('array (4)
    1 => stdClass #%a%
    |  0: stdClass #%a% { ... }
 ', Dumper::toText($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
+
+
+$arr = [1, 2, 3, 4];
+
+Assert::match('array (4)
+   0 => 1
+   1 => 2
+   2 => 3
+   3 => 4
+', Dumper::toText($arr, [Dumper::ITEMS => 2]));
+
+Assert::match('stdClass #%d%
+   0: 1
+   1: 2
+   2: 3
+   3: 4
+', Dumper::toText((object) $arr, [Dumper::ITEMS => 2]));
+
+Assert::match('array (2)
+   0 => array (4)
+   |  0 => 1
+   |  1 => 2
+   |  ...
+   1 => stdClass #%d%
+   |  0: 1
+   |  1: 2
+   |  ...
+', Dumper::toText([$arr, (object) $arr], [Dumper::ITEMS => 2]));
