@@ -37,7 +37,7 @@ XX
 
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
-><span class="tracy-toggle"><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=">Closure()</span> <span class="tracy-dump-hash">#%d%</span></span>
+><span class="tracy-toggle"><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor&#10;Alt-Click to expand/collapse all child nodes" data-tracy-href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=">Closure()</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">file</span>: <span class="tracy-dump-string" title="%d% characters"><span>'</span>%a%:%d%<span>'</span></span>
 </div></pre>
 XX

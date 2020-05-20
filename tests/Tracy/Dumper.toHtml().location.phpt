@@ -32,7 +32,7 @@ class Test
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
 ><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::toHtml(new Test, ['location' => true])) 📍</a
-><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
+><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor&#10;Alt-Click to expand/collapse all child nodes" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
 , Dumper::toHtml(new Test, ['location' => true]));
 
@@ -46,13 +46,13 @@ XX
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
 ><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::toHtml(new Test, ['location' => Dumper::LOCATION_SOURCE])) 📍</a
-><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
+><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor&#10;Alt-Click to expand/collapse all child nodes" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
 , Dumper::toHtml(new Test, ['location' => Dumper::LOCATION_SOURCE]));
 
 
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
-><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
+><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor&#10;Alt-Click to expand/collapse all child nodes" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
 , Dumper::toHtml(new Test, ['location' => Dumper::LOCATION_CLASS]));

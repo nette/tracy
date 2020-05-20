@@ -20,7 +20,7 @@ class Toggle
 				&& (el = e.target.closest('.tracy-toggle'))
 				&& Math.pow(start[0] - e.clientX, 2) + Math.pow(start[1] - e.clientY, 2) < MOVE_THRESHOLD
 			) {
-				Toggle.toggle(el);
+				Toggle.toggle(el, undefined, e);
 				e.stopImmediatePropagation();
 			}
 		});
@@ -29,15 +29,13 @@ class Toggle
 
 
 	// changes element visibility
-	static toggle(el, expand) {
+	static toggle(el, expand, e) {
 		let collapsed = el.classList.contains('tracy-collapsed'),
 			ref = el.getAttribute('data-tracy-ref') || el.getAttribute('href', 2),
 			dest = el;
 
 		if (typeof expand === 'undefined') {
 			expand = collapsed;
-		} else if (!expand === collapsed) {
-			return;
 		}
 
 		if (!ref || ref === '#') {
@@ -56,7 +54,7 @@ class Toggle
 
 		el.dispatchEvent(new CustomEvent('tracy-toggle', {
 			bubbles: true,
-			detail: {relatedTarget: dest, collapsed: !expand}
+			detail: {relatedTarget: dest, collapsed: !expand, originalEvent: e}
 		}));
 	}
 
