@@ -113,21 +113,10 @@ final class Exposer
 	}
 
 
-	public static function exposePhpIncompleteClass(\__PHP_Incomplete_Class $obj): array
+	public static function exposePhpIncompleteClass(\__PHP_Incomplete_Class $obj, Value $value, Describer $describer): void
 	{
-		$info = ['className' => null, 'private' => [], 'protected' => [], 'public' => []];
-		foreach ((array) $obj as $name => $value) {
-			$name = (string) $name;
-			if ($name === '__PHP_Incomplete_Class_Name') {
-				$info['className'] = $value;
-			} elseif (preg_match('#^\x0\*\x0(.+)$#D', $name, $m)) {
-				$info['protected'][$m[1]] = $value;
-			} elseif (preg_match('#^\x0(.+)\x0(.+)$#D', $name, $m)) {
-				$info['private'][$m[1] . '::$' . $m[2]] = $value;
-			} else {
-				$info['public'][$name] = $value;
-			}
-		}
-		return $info;
+		self::exposeObject($obj, $value, $describer);
+		unset($value->items[0]);
+		$value->value = ((array) $obj)['__PHP_Incomplete_Class_Name'] . ' (Incomplete Class)';
 	}
 }
