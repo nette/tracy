@@ -60,3 +60,26 @@ Assert::match(
 </div></pre>',
 	Dumper::toHtml($obj)
 );
+
+
+// lazy dump & max items
+$arr = [1, 2, 3, 4, 5, 6, 7, 8];
+Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'[]\'><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"array":null,"length":8,"items":[[0,1],[1,2],[2,3],[3,4],[4,5]]}\'><span class="tracy-dump-array">array</span> (8)</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-key">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-number">1</span>
+<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">2</span>
+<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">2</span>: <span class="tracy-dump-number">3</span>
+<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">3</span>: <span class="tracy-dump-number">4</span>
+<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">4</span>: <span class="tracy-dump-number">5</span>
+<span class="tracy-dump-indent">   |  </span>...
+</div></div></pre>
+', Dumper::toHtml([$arr, (object) $arr], [Dumper::ITEMS => 5]));
+
+
+// lazy dump & max items & reference
+$arr = [1, 2, 3, 4, 5, 6, 7, 8];
+Assert::match('<pre class="tracy-dump" data-tracy-snapshot=\'{"p1":{"array":null,"length":8,"items":[[0,1],[1,2],[2,3],[3,4],[4,5]]}}\'><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-key">0</span> => <span class="tracy-dump-hash">&1</span> <span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'{"ref":"p1"}\'><span class="tracy-dump-array">array</span> (8)</span>
+</div></pre>
+', Dumper::toHtml([&$arr], [Dumper::ITEMS => 5]));
