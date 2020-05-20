@@ -41,7 +41,7 @@ Assert::same("'0'\n", Dumper::toText('0'));
 
 Assert::same("'\\x00'\n", Dumper::toText("\x00"));
 
-Assert::same('array ()' . "\n", Dumper::toText([]));
+Assert::same('array (0)' . "\n", Dumper::toText([]));
 
 
 // array
@@ -56,7 +56,7 @@ Assert::match(<<<'XX'
 array (5)
    0 => 1
    1 => 'hello'
-   2 => array ()
+   2 => array (0)
    3 => array (2)
    |  0 => 1
    |  1 => 2
