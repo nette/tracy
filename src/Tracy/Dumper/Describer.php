@@ -45,7 +45,7 @@ final class Describer
 	public $objectExposers;
 
 	/** @var int[] */
-	private $references = [];
+	public $references = [];
 
 
 	public function describe(&$var): \stdClass
@@ -62,9 +62,9 @@ final class Describer
 			];
 
 		} finally {
-			$free = [];
-			$this->snapshot = &$free;
-			$this->references = [];
+			$free = [[], []];
+			$this->snapshot = &$free[0];
+			$this->references = &$free[1];
 		}
 	}
 
