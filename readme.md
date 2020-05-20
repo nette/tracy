@@ -271,6 +271,7 @@ Dumper::$maxDepth = 2; // default: 7
 Dumper::$maxLength = 50; // default: 150
 Dumper::$maxItems = 50; // default: 100
 Dumper::$keysToHide = ['password']; // default: []
+Dumper::$theme = 'dark'; // default: light
 ```
 
 The `Dumper::$showLocation` function can display useful location information (default is `true` in HTML mode):

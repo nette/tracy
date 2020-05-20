@@ -140,7 +140,7 @@ class BlueScreen
 			__DIR__ . '/assets/bluescreen.css',
 			__DIR__ . '/../Toggle/toggle.css',
 			__DIR__ . '/../TableSort/table-sort.css',
-			__DIR__ . '/../Dumper/assets/dumper.css',
+			__DIR__ . '/../Dumper/assets/dumper-light.css',
 		], Debugger::$customCssFiles));
 		$css = Helpers::minifyCss(implode($css));
 

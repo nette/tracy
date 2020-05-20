@@ -31,7 +31,8 @@ class Dumper
 		LIVE = 'live', // use static $liveSnapshot (used by Bar)
 		SNAPSHOT = 'snapshot', // array used for shared snapshot for lazy-loading via JavaScript
 		DEBUGINFO = 'debuginfo', // use magic method __debugInfo if exists (defaults to false)
-		KEYS_TO_HIDE = 'keystohide'; // sensitive keys not displayed (defaults to [])
+		KEYS_TO_HIDE = 'keystohide', // sensitive keys not displayed (defaults to [])
+		THEME = 'theme'; // color theme (defaults to light)
 
 	public const
 		LOCATION_CLASS = 0b0001, // shows where classes are defined
@@ -98,6 +99,9 @@ class Dumper
 	/** @var bool use colors in console by dump()? */
 	public static $useColors;
 
+	/** @var string  theme used by dump() */
+	public static $theme = 'light';
+
 	/** @var Describer */
 	private $describer;
 
@@ -146,6 +150,7 @@ class Dumper
 			self::ITEMS => self::$maxItems,
 			self::LOCATION => Debugger::$showLocation ?? self::$showLocation,
 			self::KEYS_TO_HIDE => self::$keysToHide,
+			self::THEME => self::$theme,
 		];
 	}
 
@@ -191,7 +196,8 @@ class Dumper
 		$nonce = Helpers::getNonce();
 		$nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 		$s = file_get_contents(__DIR__ . '/../Toggle/toggle.css')
-			. file_get_contents(__DIR__ . '/../Dumper/assets/dumper.css');
+			. file_get_contents(__DIR__ . '/assets/dumper-light.css')
+			. file_get_contents(__DIR__ . '/assets/dumper-dark.css');
 		echo "<style{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
 
 		if (!Debugger::isEnabled()) {
@@ -235,6 +241,7 @@ class Dumper
 		$renderer->lazy = $renderer->collectingMode ? true : ($options[self::LAZY] ?? $renderer->lazy);
 		$renderer->sourceLocation = !(~$location & self::LOCATION_SOURCE);
 		$renderer->classLocation = !(~$location & self::LOCATION_CLASS);
+		$renderer->theme = $options[self::THEME] ?? $renderer->theme;
 	}
 
 
