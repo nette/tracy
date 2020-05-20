@@ -40,7 +40,7 @@ Assert::same('<pre class="tracy-dump"><span class="tracy-dump-string">\'0\'</spa
 
 Assert::same('<pre class="tracy-dump"><span class="tracy-dump-string">\'<span>\\x00</span>\'</span></pre>' . "\n", Dumper::toHtml("\x00"));
 
-Assert::same('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()</pre>' . "\n", Dumper::toHtml([]));
+Assert::same('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> (0)</pre>' . "\n", Dumper::toHtml([]));
 
 
 // array
@@ -58,7 +58,7 @@ Assert::match(<<<'XX'
 <pre class="tracy-dump" data-tracy-snapshot='[]'><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (5)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-string" title="5 characters">'hello'</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-array">array</span> ()
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-array">array</span> (0)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">3</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-number">2</span>

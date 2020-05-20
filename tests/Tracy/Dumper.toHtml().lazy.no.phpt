@@ -22,7 +22,7 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-dump-bool">true</span>
 
 Assert::match('<pre class="tracy-dump"><span class="tracy-dump-number">0</span></pre>', Dumper::toHtml(0, $options));
 
-Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()</pre>', Dumper::toHtml([], $options));
+Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</span> (0)</pre>', Dumper::toHtml([], $options));
 
 
 // no lazy dump of array
