@@ -133,10 +133,16 @@ Dumper::$liveSnapshot = [];
 $arr = [1, 2, 3];
 $arr[] = &$arr;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,[[0,1],[1,2],[2,3],[3,{"stop":[4,true]},1]],1]]\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,2],[2,3],[3,{"ref":"p1"},1]]\'></pre>',
 	Dumper::toHtml($arr, $options)
 );
-Assert::same([], Dumper::$liveSnapshot[0]);
+Assert::equal([
+	[
+		'array' => null,
+		'items' => [[0, 1], [1, 2], [2, 3], [3, ['ref' => 'p1'], 1]],
+	],
+], array_values(formatSnapshot()));
+
 
 $obj = new stdClass;
 $obj->x = $obj;
@@ -150,7 +156,7 @@ Assert::match(
 Dumper::$liveSnapshot = [];
 $arr = [1, [2, [3, [4, [5, [6]]]]], 3];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,{"stop":[2,false]}]]]]]]],[2,3]]\'></pre>',
+	'<pre class="tracy-dump" data-tracy-dump=\'[[0,1],[1,[[0,2],[1,[[0,3],[1,[[0,4],[1,{"array":null,"length":2}]]]]]]],[2,3]]\'></pre>',
 	Dumper::toHtml($arr, $options)
 );
 Assert::same([], Dumper::$liveSnapshot[0]);
