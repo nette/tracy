@@ -33,6 +33,9 @@ final class Renderer
 	/** @var bool|null  lazy-loading via JavaScript? true=full, false=none, null=collapsed parts */
 	public $lazy;
 
+	/** @var string */
+	public $theme = 'light';
+
 	/** @var bool */
 	public $collectingMode = false;
 
@@ -84,7 +87,8 @@ final class Renderer
 			) . Helpers::encodeString($code, 50) . " 📍</a\n>";
 		}
 
-		return '<pre class="tracy-dump' . ($json && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
+		return '<pre class="tracy-dump' . ($this->theme ? ' tracy-' . htmlspecialchars($this->theme) : '')
+				. ($json && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
 				. ($snapshot !== null ? " data-tracy-snapshot='" . self::jsonEncode($snapshot) . "'" : '')
 				. ($json ? " data-tracy-dump='" . self::jsonEncode($json) . "'" : '')
 				. ($location || strlen($html) > 100 ? "\n" : '')

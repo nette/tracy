@@ -22,7 +22,7 @@ function formatSnapshot(): array
 
 
 // live dump of scalars & empty array
-$options = [Dumper::LIVE => true];
+$options = [Dumper::LIVE => true, Dumper::THEME => false];
 
 Assert::match('<pre class="tracy-dump"><span class="tracy-dump-null">null</span></pre>', Dumper::toHtml(null, $options));
 
