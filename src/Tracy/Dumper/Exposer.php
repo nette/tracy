@@ -150,21 +150,26 @@ final class Exposer
 	}
 
 
-	public static function exposePhpIncompleteClass(\__PHP_Incomplete_Class $obj): array
-	{
-		$info = ['className' => null, 'private' => [], 'protected' => [], 'public' => []];
-		foreach ((array) $obj as $name => $value) {
-			$name = (string) $name;
-			if ($name === '__PHP_Incomplete_Class_Name') {
-				$info['className'] = $value;
-			} elseif (preg_match('#^\x0\*\x0(.+)$#D', $name, $m)) {
-				$info['protected'][$m[1]] = $value;
-			} elseif (preg_match('#^\x0(.+)\x0(.+)$#D', $name, $m)) {
-				$info['private'][$m[1] . '::$' . $m[2]] = $value;
+	public static function exposePhpIncompleteClass(
+		\__PHP_Incomplete_Class $obj,
+		Value $value,
+		Describer $describer
+	): void {
+		$values = (array) $obj;
+		$class = $values['__PHP_Incomplete_Class_Name'];
+		unset($values['__PHP_Incomplete_Class_Name']);
+		foreach ($values as $k => $v) {
+			$refId = $describer->getReferenceId($values, $k);
+			if (isset($k[0]) && $k[0] === "\x00") {
+				$info = explode("\00", $k);
+				$k = end($info);
+				$type = $info[1] === '*' ? Value::PROP_PROTECTED : $info[1];
 			} else {
-				$info['public'][$name] = $value;
+				$type = Value::PROP_PUBLIC;
+				$k = (string) $k;
 			}
+			$describer->addPropertyTo($value, $k, $v, $type, $refId);
 		}
-		return $info;
+		$value->value = $class . ' (Incomplete Class)';
 	}
 }

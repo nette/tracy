@@ -80,18 +80,14 @@ XX
 $obj = unserialize('O:1:"Y":7:{s:1:"1";N;s:1:"b";i:2;s:4:"' . "\0" . '*' . "\0" . 'c";N;s:4:"' . "\0" . '*' . "\0" . 'd";s:1:"d";s:4:"' . "\0" . 'Y' . "\0" . 'e";N;s:4:"' . "\0" . 'Y' . "\0" . 'i";s:3:"bar";s:4:"' . "\0" . 'X' . "\0" . 'i";s:3:"foo";}');
 
 Assert::match(<<<'XX'
-__PHP_Incomplete_Class #%d%
-   className: 'Y'
-   private: array (3)
-   |  'Y::$e' => null
-   |  'Y::$i' => 'bar'
-   |  'X::$i' => 'foo'
-   protected: array (2)
-   |  'c' => null
-   |  'd' => 'd'
-   public: array (2)
-   |  1 => null
-   |  'b' => 2
+Y (Incomplete Class) #%d%
+   1: null
+   b: 2
+   c: null
+   d: 'd'
+   e: null
+   i: 'bar'
+   i: 'foo'
 XX
 , Dumper::toText($obj));
 
