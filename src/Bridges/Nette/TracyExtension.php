@@ -48,6 +48,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			'maxDepth' => Expect::int()->dynamic(),
 			'maxItems' => Expect::int()->dynamic(),
 			'keysToHide' => Expect::array()->dynamic(),
+			'theme' => Expect::string()->dynamic(),
 			'showLocation' => Expect::bool()->dynamic(),
 			'scream' => Expect::bool()->dynamic(),
 			'bar' => Expect::listOf('string|Nette\DI\Definitions\Statement'),
@@ -97,6 +98,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 					'maxDepth' => 'Dumper::$maxDepth',
 					'maxItems' => 'Dumper::$maxItems',
 					'keysToHide' => 'Dumper::$keysToHide',
+					'theme' => 'Dumper::$theme',
 					'showLocation' => 'Dumper::$showLocation',
 					'fromEmail' => 'Debugger::getLogger()->fromEmail',
 				];

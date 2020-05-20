@@ -143,7 +143,7 @@ class BlueScreen
 			__DIR__ . '/assets/bluescreen.css',
 			__DIR__ . '/../Toggle/toggle.css',
 			__DIR__ . '/../TableSort/table-sort.css',
-			__DIR__ . '/../Dumper/assets/dumper.css',
+			__DIR__ . '/../Dumper/assets/dumper-light.css',
 		], Debugger::$customCssFiles));
 		$css = Helpers::minifyCss(implode($css));
 
@@ -432,7 +432,7 @@ class BlueScreen
 		$info = ob_get_clean();
 
 		if (strpos($license, '<body') === false) {
-			echo '<pre class="tracy-dump">', Helpers::escapeHtml($info), '</pre>';
+			echo '<pre class="tracy-dump tracy-light">', Helpers::escapeHtml($info), '</pre>';
 		} else {
 			$info = str_replace('<table', '<table class="tracy-sortable"', $info);
 			echo preg_replace('#^.+<body>|</body>.+\z#s', '', $info);
