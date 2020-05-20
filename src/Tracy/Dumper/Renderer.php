@@ -241,7 +241,7 @@ final class Renderer
 		} elseif (!$object->items) {
 			return $out . "\n";
 
-		} elseif (in_array($object->id, $this->parents, true)) {
+		} elseif (isset($this->parents[$object->id])) {
 			return $out . " { <i>RECURSION</i> }\n";
 		}
 
@@ -258,7 +258,7 @@ final class Renderer
 		}
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
-		$this->parents[] = $object->id;
+		$this->parents[$object->id] = true;
 
 		foreach ($object->items as $info) {
 			[$k, $v, $type, $ref] = $info + [3 => null];
@@ -269,7 +269,8 @@ final class Renderer
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. $this->renderVar($v, $depth + 1);
 		}
-		array_pop($this->parents);
+
+		unset($this->parents[$object->id]);
 		return $out . '</div>';
 	}
 
@@ -302,10 +303,10 @@ final class Renderer
 			}
 		} elseif ($value instanceof Value && $value->type === 'ref') {
 			$ref = $this->snapshotSelection[$value->value] = $this->snapshot[$value->value];
-			if (!in_array($value->value, $this->parents, true)) {
-				$this->parents[] = $value->value;
+			if (!isset($this->parents[$value->value])) {
+				$this->parents[$value->value] = true;
 				$this->copySnapshot($ref);
-				array_pop($this->parents);
+				unset($this->parents[$value->value]);
 			}
 		} elseif ($value instanceof Value && $value->items) {
 			foreach ($value->items as [, $v]) {
