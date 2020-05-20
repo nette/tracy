@@ -123,6 +123,7 @@ class Dumper
 			echo $dumper->asTerminal($var);
 
 		} else { // html
+			self::renderAssets();
 			echo $dumper->asHtml($var);
 		}
 		return $var;
@@ -165,6 +166,31 @@ class Dumper
 	public static function toTerminal($var, array $options = []): string
 	{
 		return (new static($options))->asTerminal($var, self::$terminalColors);
+	}
+
+
+	/**
+	 * Renders <script> & <style>
+	 */
+	public static function renderAssets(): void
+	{
+		static $sent;
+		if (Debugger::$productionMode === true || $sent) {
+			return;
+		}
+		$sent = true;
+
+		$nonce = Helpers::getNonce();
+		$nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
+		$s = file_get_contents(__DIR__ . '/../Toggle/toggle.css')
+			. file_get_contents(__DIR__ . '/../Dumper/assets/dumper.css');
+		echo "<style{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
+
+		if (!Debugger::isEnabled()) {
+			$s = '(function(){' . file_get_contents(__DIR__ . '/../Toggle/toggle.js') . '})();'
+				. '(function(){' . file_get_contents(__DIR__ . '/../Dumper/assets/dumper.js') . '})();';
+			echo "<script{$nonceAttr}>", str_replace(['<!--', '</s'], ['<\!--', '<\/s'], Helpers::minifyJs($s)), "</script>\n";
+		}
 	}
 
 
