@@ -26,6 +26,9 @@ final class Describer
 	/** @var int */
 	public $maxLength = 150;
 
+	/** @var int */
+	public $maxItems = 100;
+
 	/** @var Value[] */
 	public $snapshot = [];
 
@@ -132,11 +135,20 @@ final class Describer
 			if ($depth >= $this->maxDepth) {
 				$value->length = count($arr);
 				return $res;
+			} elseif ($depth && count($arr) > $this->maxItems) {
+				$value->length = count($arr);
+				$arr = array_slice($arr, 0, $this->maxItems, true);
 			}
 			$items = &$value->items;
 
 		} elseif ($arr && $depth >= $this->maxDepth) {
 			return new Value('array', null, count($arr));
+
+		} elseif ($depth && count($arr) > $this->maxItems) {
+			$res = new Value('array', null, count($arr));
+			$res->depth = $depth;
+			$items = &$res->items;
+			$arr = array_slice($arr, 0, $this->maxItems, true);
 		}
 
 		$items = [];
@@ -221,6 +233,10 @@ final class Describer
 
 	public function addPropertyTo(Value $value, string $k, $v, $type = Value::PROP_VIRTUAL, int $refId = null)
 	{
+		if ($value->depth && count($value->items ?? []) >= $this->maxItems) {
+			$value->length = ($value->length ?? count($value->items)) + 1;
+			return;
+		}
 		$v = isset($this->keysToHide[strtolower($k)])
 			? new Value('text', self::hideValue($v))
 			: $this->describeVar($v, $value->depth + 1, $refId);
