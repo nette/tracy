@@ -22,6 +22,18 @@ test('html mode', function () {
 	ob_start();
 	Assert::same(123, Dumper::dump(123));
 	Assert::match(<<<'XX'
+<style>%a%</style>
+<script>%a%</script>
+<pre class="tracy-dump"><span class="tracy-dump-number">123</span></pre>
+XX
+, ob_get_clean());
+});
+
+
+test('repeated html mode', function () {
+	ob_start();
+	Assert::same(123, Dumper::dump(123));
+	Assert::match(<<<'XX'
 <pre class="tracy-dump"><span class="tracy-dump-number">123</span></pre>
 XX
 , ob_get_clean());
