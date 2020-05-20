@@ -161,6 +161,7 @@
 				recursive ? ' { RECURSION }' : ' { ... }',
 				recursive ? null : data.items,
 				collapsed === true || (data.items && data.items.length >= collapseCount),
+				data.items && data.length > data.items.length,
 				data.object ? TYPE_OBJECT : data.resource ? TYPE_RESOURCE : TYPE_ARRAY,
 				repository,
 				parentIds
@@ -169,7 +170,7 @@
 	}
 
 
-	function buildStruct(span, ellipsis, items, collapsed, type, repository, parentIds) {
+	function buildStruct(span, ellipsis, items, collapsed, cut, type, repository, parentIds) {
 		let res, toggle, div, handler;
 
 		if (!items || !items.length) {
@@ -187,9 +188,15 @@
 			toggle.addEventListener('tracy-toggle', handler = function() {
 				toggle.removeEventListener('tracy-toggle', handler);
 				createItems(div, items, type, repository, parentIds);
+				if (cut) {
+					createEl(div, null, ['...']);
+				}
 			});
 		} else {
 			createItems(div, items, type, repository, parentIds);
+			if (cut) {
+				createEl(div, null, ['...']);
+			}
 		}
 		return res;
 	}
