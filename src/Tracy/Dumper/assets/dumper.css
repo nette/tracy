@@ -5,7 +5,10 @@
 .tracy-dump {
 	text-align: left;
 	color: #444;
-	background: white;
+	background: #fdf9e2;
+	border-radius: 4px;
+	padding: 1em;
+	margin: 1em 0;
 	word-break: break-all;
 	white-space: pre-wrap;
 }
