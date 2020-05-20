@@ -26,7 +26,7 @@ Assert::match(<<<'XX'
 Closure #%d%
    file: '%a%'
    line: %i%
-   variables: array ()
+   variables: array (0)
    parameters: ''
 XX
 , Dumper::toText(function () {}));
