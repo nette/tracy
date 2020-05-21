@@ -392,6 +392,10 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	color: #850;
 }
 
+#tracy-debug .tracy-dump-virtual {
+	font-style: italic;
+}
+
 #tracy-debug .tracy-dump-public::after {
 	content: ' pub';
 }
