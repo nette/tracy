@@ -144,26 +144,26 @@ final class Renderer
 				return $this->renderString($value, $keyType);
 
 			case is_array($value):
-			case $value->type === 'array':
+			case $value->type === Value::TYPE_ARRAY:
 				return $this->renderArray($value, $depth);
 
-			case $value->type === 'ref':
+			case $value->type === Value::TYPE_REF:
 				return $this->renderVar($this->snapshot[$value->value], $depth);
 
-			case $value->type === 'object':
+			case $value->type === Value::TYPE_OBJECT:
 				return $this->renderObject($value, $depth);
 
-			case $value->type === 'number':
+			case $value->type === Value::TYPE_NUMBER:
 				return '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . '</span>';
 
-			case $value->type === 'text':
+			case $value->type === Value::TYPE_TEXT:
 				return '<span>' . Helpers::escapeHtml($value->value) . '</span>';
 
-			case $value->type === 'string':
-			case $value->type === 'bin':
+			case $value->type === Value::TYPE_STRING_HTML:
+			case $value->type === Value::TYPE_BINARY_HTML:
 				return $this->renderString($value, $keyType);
 
-			case $value->type === 'resource':
+			case $value->type === Value::TYPE_RESOURCE:
 				return $this->renderResource($value, $depth);
 
 			default:
@@ -204,7 +204,7 @@ final class Renderer
 				. ">'" . Helpers::escapeHtml($str) . "'</span>";
 
 		} else {
-			$unit = $str->type === 'string' ? 'characters' : 'bytes';
+			$unit = $str->type === Value::TYPE_STRING_HTML ? 'characters' : 'bytes';
 			return '<span class="tracy-dump-string"'
 				. ($str->length > 1 ? " title=\"$str->length $unit\">" : '>')
 				. (strpos($str->value, "\n") === false ? '' : "\n   ") . "'"
@@ -247,7 +247,7 @@ final class Renderer
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
 		if ($collapsed && $this->lazy !== false) {
-			$array = isset($array->id) ? new Value('ref', $array->id) : $array;
+			$array = isset($array->id) ? new Value(Value::TYPE_REF, $array->id) : $array;
 			$this->copySnapshot($array);
 			return $span . " data-tracy-dump='" . self::jsonEncode($array) . "'>" . $out . '</span>';
 		}
@@ -308,7 +308,7 @@ final class Renderer
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
 		if ($collapsed && $this->lazy !== false) {
-			$ref = new Value('ref', $object->id);
+			$ref = new Value(Value::TYPE_REF, $object->id);
 			$this->copySnapshot($ref);
 			return $span . " data-tracy-dump='" . json_encode($ref) . "'>" . $out . '</span>';
 		}
@@ -364,7 +364,7 @@ final class Renderer
 			foreach ($value as [, $v]) {
 				$this->copySnapshot($v);
 			}
-		} elseif ($value instanceof Value && $value->type === 'ref') {
+		} elseif ($value instanceof Value && $value->type === Value::TYPE_REF) {
 			$ref = $this->snapshotSelection[$value->value] = $this->snapshot[$value->value];
 			if (!isset($this->parents[$value->value])) {
 				$this->parents[$value->value] = true;
