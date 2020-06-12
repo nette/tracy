@@ -142,7 +142,7 @@ final class Renderer
 				return '<span class="tracy-dump-number">' . $value . '</span>';
 
 			case is_float($value):
-				return '<span class="tracy-dump-number">' . json_encode($value) . '</span>';
+				return '<span class="tracy-dump-number">' . self::jsonEncode($value) . '</span>';
 
 			case is_string($value):
 				return $this->renderString($value, $keyType);
@@ -412,6 +412,11 @@ final class Renderer
 
 	public static function jsonEncode($snapshot): string
 	{
-		return json_encode($snapshot, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+		$old = @ini_set('serialize_precision', '-1'); // @ may be disabled
+		try {
+			return json_encode($snapshot, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+		} finally {
+			@ini_set('serialize_precision', $old); // @ may be disabled
+		}
 	}
 }
