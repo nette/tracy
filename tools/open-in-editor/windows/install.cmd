@@ -6,3 +6,4 @@ if defined PROCESSOR_ARCHITEW6432 (set reg="%systemroot%\sysnative\reg.exe") els
 %reg% ADD HKCR\editor /ve /d "URL:editor Protocol" /f
 %reg% ADD HKCR\editor /v "URL Protocol" /d "" /f
 %reg% ADD HKCR\editor\shell\open\command /ve /d "wscript \"%~dp0open-editor.js\" \"%%1\"" /f
+%reg% ADD HKLM\SOFTWARE\Policies\Google\Chrome\URLWhitelist /v "123" /d "editor://*" /f
