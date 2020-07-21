@@ -36,6 +36,8 @@ $compiler->addConfig([
 
 eval($compiler->compile());
 
+Tracy\Debugger::enable();
+
 $container = new Container;
 $container->initialize();
 
