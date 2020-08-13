@@ -396,7 +396,8 @@ class BlueScreen
 					$r = new \ReflectionMethod($m[1], $m[2]);
 				} elseif (class_exists($m[1], false) || interface_exists($m[1], false)) {
 					$r = new \ReflectionClass($m[1]);
-				} else {
+				}
+				if (empty($r) || !$r->getFileName()) {
 					return $m[0];
 				}
 				return '<a href="' . Helpers::escapeHtml(Helpers::editorUri($r->getFileName(), $r->getStartLine())) . '">' . $m[0] . '</a>';
