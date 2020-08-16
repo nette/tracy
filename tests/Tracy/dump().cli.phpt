@@ -38,7 +38,7 @@ stream_filter_register('Capture', 'Capture');
 stream_filter_append(STDOUT, 'Capture');
 
 
-test(function () { // colors
+test('colors', function () {
 	Dumper::$useColors = true;
 	Capture::$buffer = '';
 	dump(123);
@@ -46,7 +46,7 @@ test(function () { // colors
 });
 
 
-test(function () { // no color
+test('no color', function () {
 	Dumper::$useColors = false;
 	Capture::$buffer = '';
 	dump(123);
@@ -54,7 +54,7 @@ test(function () { // no color
 });
 
 
-test(function () { // production mode
+test('production mode', function () {
 	Debugger::$productionMode = true;
 	Capture::$buffer = '';
 	ob_start();
@@ -64,7 +64,7 @@ test(function () { // production mode
 });
 
 
-test(function () { // development mode
+test('development mode', function () {
 	Debugger::$productionMode = false;
 	Capture::$buffer = '';
 	dump('sensitive data');
@@ -72,7 +72,7 @@ test(function () { // development mode
 });
 
 
-test(function () { // returned value
+test('returned value', function () {
 	$obj = new stdClass;
 	Assert::same(dump($obj), $obj);
 });
