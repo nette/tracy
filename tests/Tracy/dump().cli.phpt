@@ -17,7 +17,7 @@ if (PHP_SAPI !== 'cli') {
 }
 
 
-test(function () { // colors
+test('colors', function () {
 	putenv('FORCE_COLOR=1');
 	ob_start();
 	dump(123);
@@ -25,7 +25,7 @@ test(function () { // colors
 });
 
 
-test(function () { // no color
+test('no color', function () {
 	Dumper::$terminalColors = null;
 	ob_start();
 	dump(123);
@@ -33,7 +33,7 @@ test(function () { // no color
 });
 
 
-test(function () { // production mode
+test('production mode', function () {
 	Debugger::$productionMode = true;
 	ob_start();
 	dump('sensitive data');
@@ -41,7 +41,7 @@ test(function () { // production mode
 });
 
 
-test(function () { // development mode
+test('development mode', function () {
 	Debugger::$productionMode = false;
 	ob_start();
 	dump('sensitive data');
@@ -49,7 +49,7 @@ test(function () { // development mode
 });
 
 
-test(function () { // returned value
+test('returned value', function () {
 	$obj = new stdClass;
 	Assert::same(dump($obj), $obj);
 });

@@ -50,8 +50,7 @@ function myFunction()
 $obj = new TestClass;
 
 
-// calling
-test(function () {
+test('calling', function () {
 	try {
 		trimx();
 	} catch (\Error $e) {
@@ -62,7 +61,7 @@ test(function () {
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
-test(function () {
+test('', function () {
 	try {
 		abc\trimx();
 	} catch (\Error $e) {
@@ -73,7 +72,7 @@ test(function () {
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
-test(function () {
+test('', function () {
 	try {
 		myFunctionx();
 	} catch (\Error $e) {
@@ -84,7 +83,7 @@ test(function () {
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
-test(function () {
+test('', function () {
 	try {
 		TestClass::publicMethodX();
 	} catch (\Error $e) {
@@ -95,7 +94,7 @@ test(function () {
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
-test(function () use ($obj) {
+test('', function () use ($obj) {
 	try {
 		$obj->publicMethodX();
 	} catch (\Error $e) {
@@ -106,7 +105,7 @@ test(function () use ($obj) {
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
-test(function () use ($obj) { // suggest static method
+test('suggest static method', function () use ($obj) {
 	try {
 		$obj->publicMethodStaticX();
 	} catch (\Error $e) {
@@ -117,7 +116,7 @@ test(function () use ($obj) { // suggest static method
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
-test(function () use ($obj) { // suggest only public method
+test('suggest only public method', function () use ($obj) {
 	try {
 		$obj->protectedMethodX();
 	} catch (\Error $e) {
@@ -127,7 +126,7 @@ test(function () use ($obj) { // suggest only public method
 	Assert::false(isset($e->tracyAction));
 });
 
-test(function () { // do not suggest anything when accessing anonymous class
+test('do not suggest anything when accessing anonymous class', function () {
 	try {
 		$obj = new class {
 		};
@@ -140,8 +139,7 @@ test(function () { // do not suggest anything when accessing anonymous class
 });
 
 
-// reading
-test(function () use ($obj) {
+test('reading', function () use ($obj) {
 	@$val = $obj->publicX;
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
 	Helpers::improveException($e);
@@ -150,7 +148,7 @@ test(function () use ($obj) {
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
-test(function () use ($obj) { // suggest only non-static property
+test('suggest only non-static property', function () use ($obj) {
 	@$val = $obj->publicStaticX;
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
 	Helpers::improveException($e);
@@ -158,7 +156,7 @@ test(function () use ($obj) { // suggest only non-static property
 	Assert::false(isset($e->tracyAction));
 });
 
-test(function () use ($obj) { // suggest only public property
+test('suggest only public property', function () use ($obj) {
 	@$val = $obj->protectedX;
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
 	Helpers::improveException($e);
@@ -166,7 +164,7 @@ test(function () use ($obj) { // suggest only public property
 	Assert::false(isset($e->tracyAction));
 });
 
-test(function () use ($obj) { // suggest only static property
+test('suggest only static property', function () use ($obj) {
 	try {
 		$val = TestClass::$publicStaticX;
 	} catch (\Error $e) {
@@ -177,7 +175,7 @@ test(function () use ($obj) { // suggest only static property
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
-test(function () use ($obj) { // suggest only public static property
+test('suggest only public static property', function () use ($obj) {
 	try {
 		$val = TestClass::$protectedMethodX;
 	} catch (\Error $e) {
@@ -187,7 +185,7 @@ test(function () use ($obj) { // suggest only public static property
 	Assert::false(isset($e->tracyAction));
 });
 
-test(function () { // do not suggest anything when accessing anonymous class
+test('do not suggest anything when accessing anonymous class', function () {
 	$obj = new class {
 	};
 	@$val = $obj->property;
@@ -197,7 +195,7 @@ test(function () { // do not suggest anything when accessing anonymous class
 	Assert::false(isset($e->tracyAction));
 });
 
-test(function () { // do not suggest anything when accessing anonymous class
+test('do not suggest anything when accessing anonymous class', function () {
 	try {
 		$obj = new class {
 		};
@@ -211,8 +209,7 @@ test(function () { // do not suggest anything when accessing anonymous class
 });
 
 
-// variables
-test(function () use ($obj) {
+test('variables', function () use ($obj) {
 	$abcd = 1;
 	@$val = $abc;
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);

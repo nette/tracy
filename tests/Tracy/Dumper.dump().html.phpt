@@ -17,7 +17,7 @@ if (PHP_SAPI === 'cli') {
 }
 
 
-test(function () { // html mode
+test('html mode', function () {
 	header('Content-Type: text/html');
 	ob_start();
 	Assert::same(123, Dumper::dump(123));
@@ -28,7 +28,7 @@ XX
 });
 
 
-test(function () { // production mode
+test('production mode', function () {
 	Debugger::$productionMode = true;
 
 	ob_start();
@@ -37,7 +37,7 @@ test(function () { // production mode
 });
 
 
-test(function () { // development mode
+test('development mode', function () {
 	Debugger::$productionMode = false;
 
 	ob_start();
@@ -46,7 +46,7 @@ test(function () { // development mode
 });
 
 
-test(function () { // returned value
+test('returned value', function () {
 	$obj = new stdClass;
 	Assert::same(Dumper::dump($obj), $obj);
 });

@@ -47,7 +47,7 @@ class TestClass
 $obj = new TestClass;
 
 
-test(function () {
+test('', function () {
 	try {
 		TestClass::publicMethodX();
 	} catch (Nette\MemberAccessException $e) {
@@ -57,7 +57,7 @@ test(function () {
 	Assert::null($action);
 });
 
-test(function () use ($obj) {
+test('', function () use ($obj) {
 	try {
 		$obj->publicMethodX();
 	} catch (Nette\MemberAccessException $e) {
@@ -68,7 +68,7 @@ test(function () use ($obj) {
 	Assert::same('fix it', $action['label']);
 });
 
-test(function () use ($obj) { // suggest static method
+test('suggest static method', function () use ($obj) {
 	try {
 		$obj->publicMethodStaticX();
 	} catch (Nette\MemberAccessException $e) {
@@ -79,7 +79,7 @@ test(function () use ($obj) { // suggest static method
 	Assert::same('fix it', $action['label']);
 });
 
-test(function () use ($obj) {
+test('', function () use ($obj) {
 	try {
 		$val = $obj->publicX;
 	} catch (Nette\MemberAccessException $e) {

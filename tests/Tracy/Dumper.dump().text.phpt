@@ -21,14 +21,14 @@ header('Content-Type: text/plain');
 Dumper::$terminalColors = null;
 
 
-test(function () { // text mode
+test('text mode', function () {
 	ob_start();
 	Dumper::dump(123);
 	Assert::match('123', ob_get_clean());
 });
 
 
-test(function () { // production mode
+test('production mode', function () {
 	Debugger::$productionMode = true;
 
 	ob_start();
@@ -37,7 +37,7 @@ test(function () { // production mode
 });
 
 
-test(function () { // development mode
+test('development mode', function () {
 	Debugger::$productionMode = false;
 
 	ob_start();
