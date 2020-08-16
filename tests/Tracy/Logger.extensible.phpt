@@ -38,7 +38,7 @@ class CustomLogger extends Logger
 
 
 
-test(function () {
+test('', function () {
 	$logger = new CustomLogger(getTempDir());
 	$logger->log(new Exception('First'), 'a');
 
@@ -48,7 +48,7 @@ test(function () {
 	Assert::match('%a%%ds%exception-%a%.html', $logger->collector[0][3]);
 });
 
-test(function () {
+test('', function () {
 	$logger = new CustomLogger(getTempDir());
 	$logger->log('message', 'b');
 
