@@ -23,5 +23,8 @@ interface ILogger
 		EXCEPTION = 'exception',
 		CRITICAL = 'critical';
 
+	/**
+	 * @phpstan-param  self::*  $level
+	 */
 	function log($value, $level = self::INFO);
 }
