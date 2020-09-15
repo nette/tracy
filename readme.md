@@ -405,10 +405,10 @@ try_files $uri $uri/ /index.php$is_args$args;
 ```
 
 
-Ports
------
+Integrations
+------------
 
-This is a list of unofficial ports to other frameworks and CMS:
+This is a list of unofficial integrations to other frameworks and CMS:
 
 - [Drupal 7](http://drupal.org/project/traced)
 - Laravel framework: [recca0120/laravel-tracy](https://github.com/recca0120/laravel-tracy), [whipsterCZ/laravel-tracy](https://github.com/whipsterCZ/laravel-tracy)
@@ -418,4 +418,4 @@ This is a list of unofficial ports to other frameworks and CMS:
 - Symfony framework: [kutny/tracy-bundle](https://github.com/kutny/tracy-bundle), [VasekPurchart/Tracy-Blue-Screen-Bundle](https://github.com/VasekPurchart/Tracy-Blue-Screen-Bundle)
 - [Wordpress](https://github.com/ktstudio/WP-Tracy)
 
-... feel free to be famous, create a port for your favourite platform!
+... feel free to be famous, create an integration for your favourite platform!
