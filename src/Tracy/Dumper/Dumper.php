@@ -31,6 +31,7 @@ class Dumper
 		LIVE = 'live', // use static $liveSnapshot (used by Bar)
 		SNAPSHOT = 'snapshot', // array used for shared snapshot for lazy-loading via JavaScript
 		DEBUGINFO = 'debuginfo', // use magic method __debugInfo if exists (defaults to false)
+		SCRUBBER = 'scrubber', // detects sensitive keys not to be displayed
 		KEYS_TO_HIDE = 'keystohide', // sensitive keys not displayed (defaults to [])
 		THEME = 'theme'; // color theme (defaults to light)
 
@@ -93,6 +94,9 @@ class Dumper
 	/** @var bool display location by dump()? */
 	public static $showLocation;
 
+	/** @var callable|null  detects sensitive keys not to be displayed by dump() */
+	public static $scrubber = null;
+
 	/** @var array  sensitive keys not displayed by dump() */
 	public static $keysToHide = [];
 
@@ -150,6 +154,7 @@ class Dumper
 			self::ITEMS => self::$maxItems,
 			self::LOCATION => Debugger::$showLocation ?? self::$showLocation,
 			self::KEYS_TO_HIDE => self::$keysToHide,
+			self::SCRUBBER => self::$scrubber,
 			self::THEME => self::$theme,
 		];
 	}
@@ -218,6 +223,7 @@ class Dumper
 		$describer->maxLength = $options[self::TRUNCATE] ?? $describer->maxLength;
 		$describer->maxItems = $options[self::ITEMS] ?? $describer->maxItems;
 		$describer->debugInfo = $options[self::DEBUGINFO] ?? $describer->debugInfo;
+		$describer->scrubber = $options[self::SCRUBBER] ?? $describer->scrubber;
 		$describer->keysToHide = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE] ?? []));
 		$describer->resourceExposers = ($options['resourceExporters'] ?? []) + self::$resources;
 		$describer->objectExposers = ($options[self::OBJECT_EXPORTERS] ?? []) + self::$objectExporters;
