@@ -35,6 +35,9 @@ class BlueScreen
 	/** @var string[] */
 	public $keysToHide = ['password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin'];
 
+	/** @var bool */
+	public $showEnvironment = true;
+
 	/** @var callable[] */
 	private $panels = [];
 
@@ -119,7 +122,7 @@ class BlueScreen
 
 	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
 	{
-		$showEnvironment = strpos($exception->getMessage(), 'Allowed memory size') === false;
+		$showEnvironment = $this->showEnvironment && (strpos($exception->getMessage(), 'Allowed memory size') === false);
 		$messageHtml = $this->formatMessage($exception);
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
