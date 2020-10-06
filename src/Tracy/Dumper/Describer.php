@@ -38,6 +38,9 @@ final class Describer
 	/** @var array */
 	public $keysToHide = [];
 
+	/** @var callable|null  fn(string $key, mixed $val): bool */
+	public $scrubber;
+
 	/** @var bool */
 	public $location = false;
 
@@ -78,7 +81,7 @@ final class Describer
 	private function describeVar($var, int $depth = 0, int $refId = null, $key = null)
 	{
 		switch (true) {
-			case is_string($key) && isset($this->keysToHide[strtolower($key)]):
+			case is_string($key) && $this->isSensitive($key, $var):
 				return $this->hideValue($var);
 			case $var === null:
 			case is_bool($var):
@@ -257,6 +260,14 @@ final class Describer
 
 		Exposer::exposeObject($obj, $value, $this);
 		return null;
+	}
+
+
+	private function isSensitive(string $k, $v = null): bool
+	{
+		return
+			($this->scrubber !== null && ($this->scrubber)($k, $v)) ||
+			isset($this->keysToHide[strtolower($k)]);
 	}
 
 

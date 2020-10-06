@@ -76,3 +76,47 @@ test('returned value', function () {
 	$obj = new stdClass;
 	Assert::same(Dumper::dump($obj), $obj);
 });
+
+test('with custom scrubber', function () {
+	// this test could be placed in a separate file,
+	// but then `Capture` class and stream setup would have to be copied or refactored to a separate file
+	$obj = (object) [
+		'a' => 456,
+		'password' => 'secret1',
+		'PASSWORD' => 'secret2',
+		'Pin' => 'secret3',
+		'foo' => 'bar',
+		'q' => 42,
+		'inner' => [
+			'a' => 123,
+			'password' => 'secret4',
+			'PASSWORD' => 'secret5',
+			'Pin' => 'secret6',
+			'bar' => 42,
+		],
+	];
+	$scrubber = function (string $k, $v = null): bool {
+		return strtolower($k) === 'pin' || strtolower($k) === 'foo' || $v === 42;
+	};
+	$expect = <<<'XX'
+stdClass #%d%
+   a: 456
+   password: 'secret1'
+   PASSWORD: 'secret2'
+   Pin: ***** (string)
+   foo: ***** (string)
+   q: ***** (integer)
+   inner: array (5)
+   |  'a' => 123
+   |  'password' => 'secret4'
+   |  'PASSWORD' => 'secret5'
+   |  'Pin' => ***** (string)
+   |  'bar' => ***** (integer)
+XX;
+	Dumper::$useColors = false;
+	Capture::$buffer = '';
+
+	Dumper::$scrubber = $scrubber;
+	Dumper::dump($obj);
+	Assert::match($expect, Capture::$buffer);
+});
