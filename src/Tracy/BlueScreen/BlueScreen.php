@@ -29,6 +29,9 @@ class BlueScreen
 	/** @var int  */
 	public $maxLength = 150;
 
+	/** @var callable|null  a callable returning true for sensitive data; fn(string $key, mixed $val): bool */
+	public $scrubber;
+
 	/** @var string[] */
 	public $keysToHide = ['password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin'];
 
@@ -384,6 +387,7 @@ class BlueScreen
 				Dumper::TRUNCATE => $this->maxLength,
 				Dumper::SNAPSHOT => &$this->snapshot,
 				Dumper::LOCATION => Dumper::LOCATION_CLASS,
+				Dumper::SCRUBBER => $this->scrubber,
 				Dumper::KEYS_TO_HIDE => $this->keysToHide,
 			], $k);
 		};
