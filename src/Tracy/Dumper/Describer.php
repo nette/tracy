@@ -38,6 +38,9 @@ final class Describer
 	/** @var array */
 	public $keysToHide = [];
 
+	/** @var callable|null  fn(string $key, mixed $val): bool */
+	public $scrubber;
+
 	/** @var bool */
 	public $location = false;
 
@@ -159,7 +162,7 @@ final class Describer
 			$refId = $this->getReferenceId($arr, $k);
 			$items[] = [
 				$this->describeVar($k, $depth + 1),
-				is_string($k) && isset($this->keysToHide[strtolower($k)])
+				is_string($k) && $this->isSensitive($k, $v)
 					? new Value(Value::TYPE_TEXT, self::hideValue($v))
 					: $this->describeVar($v, $depth + 1, $refId),
 			] + ($refId ? [2 => $refId] : []);
@@ -240,7 +243,7 @@ final class Describer
 			$value->length = ($value->length ?? count($value->items)) + 1;
 			return;
 		}
-		$v = isset($this->keysToHide[strtolower($k)])
+		$v = $this->isSensitive($k, $v)
 			? new Value(Value::TYPE_TEXT, self::hideValue($v))
 			: $this->describeVar($v, $value->depth + 1, $refId);
 		$value->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
@@ -261,6 +264,14 @@ final class Describer
 
 		Exposer::exposeObject($obj, $value, $this);
 		return null;
+	}
+
+
+	private function isSensitive(string $k, $v): bool
+	{
+		return
+			($this->scrubber !== null && ($this->scrubber)($k, $v))
+			|| isset($this->keysToHide[strtolower($k)]);
 	}
 
 
