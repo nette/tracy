@@ -25,7 +25,13 @@ If you are meeting Tracy for the first time, believe me, your life starts to be 
 
 Documentation can be found on the [website](https://tracy.nette.org).
 
-If you like Tracy, **[please make a donation now](https://nette.org/make-donation?to=tracy)**. Thank you!
+
+Support Project
+---------------
+
+Do you like Tracy? Are you looking forward to the new features?
+
+[![Donate](https://files.nette.org/icons/donation-1.svg?)](https://nette.org/make-donation?to=tracy)
 
 
 Installation and requirements
