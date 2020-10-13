@@ -24,7 +24,7 @@
 			let preserveFirst = !tcell.closest('thead') && !tcell.parentNode.querySelectorAll('td').length;
 			let asc = !(tbody.tracyAsc === tcell.cellIndex);
 			tbody.tracyAsc = asc ? tcell.cellIndex : null;
-			let getText = (cell) => { return cell ? cell.innerText : ''; };
+			let getText = (cell) => { return cell ? (cell.getAttribute('data-order') || cell.innerText) : ''; };
 
 			Array.from(tbody.children)
 				.slice(preserveFirst ? 1 : 0)
