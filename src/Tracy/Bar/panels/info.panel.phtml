@@ -34,15 +34,17 @@ $ipFormatter = static function (?string $ip): ?string {
 
 $opcache = function_exists('opcache_get_status') ? @opcache_get_status() : null; // @ can be restricted
 $cachedFiles = isset($opcache['scripts']) ? array_intersect(array_keys($opcache['scripts']), get_included_files()) : [];
+$jit = empty($opcache['jit']['enabled']) ? null : $opcache['jit'];
 
 $info = [
 	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
 	'CPU usage user + system' => isset($userUsage) ? (int) $userUsage . ' % + ' . (int) $systemUsage . ' %' : null,
 	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ') . ' MB',
 	'Included files' => count(get_included_files()),
-	'OPcache' => $opcache ? round(count($cachedFiles) * 100 / count(get_included_files())) . '% cached' : null,
 	'Classes + interfaces + traits' => $countClasses(get_declared_classes()) . ' + '
 		. $countClasses(get_declared_interfaces()) . ' + ' . $countClasses(get_declared_traits()),
+	'OPcache' => $opcache ? round(count($cachedFiles) * 100 / count(get_included_files())) . ' % cached' : '–',
+	'JIT' => $jit ? round($jit['buffer_free'] / $jit['buffer_size'] * 100) . ' % used' : '–',
 	'Your IP' => $ipFormatter($_SERVER['REMOTE_ADDR'] ?? null),
 	'Server IP' => $ipFormatter($_SERVER['SERVER_ADDR'] ?? null),
 	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,
