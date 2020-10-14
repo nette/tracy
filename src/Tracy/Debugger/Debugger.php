@@ -367,6 +367,7 @@ class Debugger
 		if (self::$scream) {
 			error_reporting(E_ALL);
 		}
+		$context = (array) (object) $context; // workaround for PHP bug #80234
 
 		if ($context) {
 			$context = (array) (object) $context; // workaround for PHP bug #80234
