@@ -91,9 +91,7 @@
 						<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"root"</span> (4)
 </pre>
 </td></tr>
-<tr><th>$pass</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"*****"</span> (5)
-</pre>
-</td></tr>
+<tr><th>$pass</th><td><pre class="tracy-dump">***** (string)</pre></td></tr>
 						</table>
 						</div>
 										</li>
@@ -110,9 +108,7 @@
 			<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"root"</span> (4)
 </pre>
 </td></tr>
-<tr><th>$pass</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"*****"</span> (5)
-</pre>
-</td></tr>
+<tr><th>$pass</th><td><pre class="tracy-dump">***** (string)</pre></td></tr>
 			</table>
 			</div>
 			</div></div>

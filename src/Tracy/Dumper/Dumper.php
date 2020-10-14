@@ -650,7 +650,8 @@ class Dumper
 	}
 
 
-	private static function hideValue($var): string
+	/** @internal */
+	public static function hideValue($var): string
 	{
 		return self::HIDDEN_VALUE . ' (' . (is_object($var) ? Helpers::getClass($var) : gettype($var)) . ')';
 	}
