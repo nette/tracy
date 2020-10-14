@@ -238,13 +238,13 @@
 	font-style: normal;
 }
 
-#tracy-bs a[href^=editor\:] {
+#tracy-bs a.tracy-editor {
 	color: inherit;
 	border-bottom: 1px dotted rgba(0, 0, 0, .3);
 	border-radius: 3px;
 }
 
-#tracy-bs a[href^=editor\:]:hover {
+#tracy-bs a.tracy-editor:hover {
 	background: #0001;
 }
 
