@@ -107,9 +107,9 @@ class Dumper
 	/**
 	 * Dumps variable to HTML.
 	 */
-	public static function toHtml($var, array $options = []): string
+	public static function toHtml($var, array $options = [], $key = null): string
 	{
-		return (new self($options))->asHtml($var);
+		return (new self($options))->asHtml($var, $key);
 	}
 
 
@@ -172,9 +172,14 @@ class Dumper
 	/**
 	 * Dumps variable to HTML.
 	 */
-	private function asHtml($var): string
+	private function asHtml($var, $key = null): string
 	{
-		$model = $this->describer->describe($var);
+		if ($key === null) {
+			$model = $this->describer->describe($var);
+		} else {
+			$model = $this->describer->describe([$key => $var]);
+			$model->value = $model->value[0][1];
+		}
 		return $this->renderer->renderAsHtml($model);
 	}
 
