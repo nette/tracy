@@ -250,13 +250,13 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code.
 	 */
-	public static function highlightFile(string $file, int $line, int $lines = 15, array $vars = [], array $keysToHide = []): ?string
+	public static function highlightFile(string $file, int $line, int $lines = 15): ?string
 	{
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source === false) {
 			return null;
 		}
-		$source = static::highlightPhp($source, $line, $lines, $vars, $keysToHide);
+		$source = static::highlightPhp($source, $line, $lines);
 		if ($editor = Helpers::editorUri($file, $line)) {
 			$source = substr_replace($source, ' title="Ctrl-Click to open in editor" data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
 		}
@@ -267,7 +267,7 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code.
 	 */
-	public static function highlightPhp(string $source, int $line, int $lines = 15, array $vars = [], array $keysToHide = []): string
+	public static function highlightPhp(string $source, int $line, int $lines = 15): string
 	{
 		if (function_exists('ini_set')) {
 			ini_set('highlight.comment', '#998; font-style: italic');
@@ -283,20 +283,6 @@ class BlueScreen
 		$out = $source[0]; // <code><span color=highlight.html>
 		$source = str_replace('<br />', "\n", $source[1]);
 		$out .= static::highlightLine($source, $line, $lines);
-
-		if ($vars) {
-			$out = preg_replace_callback('#">\$(\w+)(&nbsp;)?</span>#', function (array $m) use ($vars, $keysToHide): string {
-				if (array_key_exists($m[1], $vars)) {
-					$dump = Dumper::toHtml($vars[$m[1]], [
-						Dumper::DEPTH => 1,
-						Dumper::KEYS_TO_HIDE => $keysToHide,
-					]);
-					return '" title="' . str_replace('"', '&quot;', trim(strip_tags($dump))) . $m[0];
-				}
-				return $m[0];
-			}, $out);
-		}
-
 		$out = str_replace('&nbsp;', ' ', $out);
 		return "<pre class='code'><div>$out</div></pre>";
 	}
