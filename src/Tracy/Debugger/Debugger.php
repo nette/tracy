@@ -368,6 +368,10 @@ class Debugger
 			error_reporting(E_ALL);
 		}
 
+		if ($context) {
+			$context = (array) (object) $context; // workaround for PHP bug #80234
+		}
+
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
 			if (Helpers::findTrace(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), '*::__toString')) { // workaround for PHP < 7.4
 				$previous = isset($context['e']) && $context['e'] instanceof \Throwable ? $context['e'] : null;
