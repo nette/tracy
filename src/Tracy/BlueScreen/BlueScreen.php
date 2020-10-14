@@ -366,7 +366,7 @@ class BlueScreen
 
 		return function ($v, $k = null) use ($keysToHide): string {
 			if (is_string($k) && isset($keysToHide[strtolower($k)])) {
-				return '<pre class="tracy-dump">' . Helpers::escapeHtml(Dumper::hideValue($v)) . '</pre>';
+				return '<pre class="tracy-dump">' . Helpers::escapeHtml(Dumper\Describer::hideValue($v)) . '</pre>';
 			}
 			return Dumper::toHtml($v, [
 				Dumper::DEPTH => $this->maxDepth,
