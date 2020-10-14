@@ -555,6 +555,7 @@ class Debugger
 	/**
 	 * Logs message or exception.
 	 * @param  mixed  $message
+	 * @phpstan-param  ILogger::*  $level
 	 * @return mixed
 	 */
 	public static function log($message, string $level = ILogger::INFO)
