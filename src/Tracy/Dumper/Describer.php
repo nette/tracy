@@ -51,7 +51,7 @@ final class Describer
 	public $references = [];
 
 
-	public function describe($var): \stdClass
+	public function describe($var, $key = null): \stdClass
 	{
 		uksort($this->objectExposers, function ($a, $b): int {
 			return $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1;
@@ -59,7 +59,7 @@ final class Describer
 
 		try {
 			return (object) [
-				'value' => $this->describeVar($var),
+				'value' => $this->describeVar($var, 0, null, $key),
 				'snapshot' => $this->snapshot,
 				'location' => $this->location ? self::findLocation() : null,
 			];
@@ -75,9 +75,11 @@ final class Describer
 	/**
 	 * @return mixed
 	 */
-	private function describeVar($var, int $depth = 0, int $refId = null)
+	private function describeVar($var, int $depth = 0, int $refId = null, $key = null)
 	{
 		switch (true) {
+			case is_string($key) && isset($this->keysToHide[strtolower($key)]):
+				return $this->hideValue($var);
 			case $var === null:
 			case is_bool($var):
 			case is_int($var):
@@ -159,9 +161,7 @@ final class Describer
 			$refId = $this->getReferenceId($arr, $k);
 			$items[] = [
 				$this->describeVar($k, $depth + 1),
-				is_string($k) && isset($this->keysToHide[strtolower($k)])
-					? new Value(Value::TYPE_TEXT, self::hideValue($v))
-					: $this->describeVar($v, $depth + 1, $refId),
+				$this->describeVar($v, $depth + 1, $refId, $k),
 			] + ($refId ? [2 => $refId] : []);
 		}
 
@@ -238,9 +238,7 @@ final class Describer
 			$value->length = ($value->length ?? count($value->items)) + 1;
 			return;
 		}
-		$v = isset($this->keysToHide[strtolower($k)])
-			? new Value(Value::TYPE_TEXT, self::hideValue($v))
-			: $this->describeVar($v, $value->depth + 1, $refId);
+		$v = $this->describeVar($v, $value->depth + 1, $refId, $k);
 		$value->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
 	}
 
@@ -262,9 +260,10 @@ final class Describer
 	}
 
 
-	public static function hideValue($var): string
+	private function hideValue($var): Value
 	{
-		return self::HIDDEN_VALUE . ' (' . (is_object($var) ? Helpers::getClass($var) : gettype($var)) . ')';
+		$s = self::HIDDEN_VALUE . ' (' . (is_object($var) ? Helpers::getClass($var) : gettype($var)) . ')';
+		return new Value(Value::TYPE_TEXT, $s);
 	}
 
 

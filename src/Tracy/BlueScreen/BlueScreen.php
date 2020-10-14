@@ -362,19 +362,14 @@ class BlueScreen
 	/** @internal */
 	public function getDumper(): \Closure
 	{
-		$keysToHide = array_flip(array_map('strtolower', $this->keysToHide));
-
-		return function ($v, $k = null) use ($keysToHide): string {
-			if (is_string($k) && isset($keysToHide[strtolower($k)])) {
-				return '<pre class="tracy-dump">' . Helpers::escapeHtml(Dumper\Describer::hideValue($v)) . '</pre>';
-			}
+		return function ($v, $k = null): string {
 			return Dumper::toHtml($v, [
 				Dumper::DEPTH => $this->maxDepth,
 				Dumper::TRUNCATE => $this->maxLength,
 				Dumper::SNAPSHOT => &$this->snapshot,
 				Dumper::LOCATION => Dumper::LOCATION_CLASS,
 				Dumper::KEYS_TO_HIDE => $this->keysToHide,
-			]);
+			], $k);
 		};
 	}
 
