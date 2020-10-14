@@ -40,7 +40,7 @@ function second($arg1, $arg2)
 
 function third($arg1)
 {
-	$x++;
+	$x = &pi();
 }
 
 

@@ -1,6 +1,4 @@
 
-Deprecated: mktime(): You should be using the time() function instead in %a% on line %d%
+Notice: Only variables should be assigned by reference in %a% on line %d%
 
-Notice: Undefined variable: x in %a% on line %d%
-
-Warning: %a% in %a% on line %d%
+Warning: hex2bin(): Hexadecimal input string must have an even length in %a% on line %d%

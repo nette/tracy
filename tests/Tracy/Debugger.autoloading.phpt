@@ -3,6 +3,7 @@
 /**
  * Test: Tracy\Debugger autoloading.
  * @outputMatch %A%: Declaration of B::test(%a?%) should be compatible %a% A::test() in %A%
+ * @phpVersion < 8
  */
 
 declare(strict_types=1);

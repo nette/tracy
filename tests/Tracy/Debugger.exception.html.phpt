@@ -44,5 +44,5 @@ function third($arg1)
 
 
 define('MY_CONST', 123);
-echo @$undefined;
+@hex2bin('a'); // E_WARNING
 first(10, 'any string');

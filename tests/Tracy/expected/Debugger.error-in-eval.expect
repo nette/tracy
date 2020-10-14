@@ -59,7 +59,7 @@
 						<tr><th>$message</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"The my error"</span> (%d%)
 </pre>
 </td></tr>
-<tr><th>$error_type</th><td><pre class="tracy-dump"><span class="tracy-dump-number">256</span>
+<tr><th>$error_%a%</th><td><pre class="tracy-dump"><span class="tracy-dump-number">256</span>
 </pre>
 </td></tr>
 						</table>
@@ -97,21 +97,7 @@
 										</li>
 									</ol>
 			</div></div>
-
-
-						<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Variables</a></h2>
-
-			<div class="tracy-collapsed inner">
-			<div class="outer">
-			<table class="tracy-sortable">
-			<tr><th>$user</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"root"</span> (4)
-</pre>
-</td></tr>
-<tr><th>$pass</th><td><pre class="tracy-dump">***** (string)</pre></td></tr>
-			</table>
-			</div>
-			</div></div>
+%A%
 
 
 
