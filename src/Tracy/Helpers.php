@@ -27,7 +27,7 @@ class Helpers
 				$file = '...' . $m[0];
 			}
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
-			return self::formatHtml('<a href="%" title="%">%<b>%</b>%</a>',
+			return self::formatHtml('<a href="%" title="%" class="tracy-editor">%<b>%</b>%</a>',
 				$editor,
 				$origFile . ($line ? ":$line" : ''),
 				rtrim(dirname($file), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,

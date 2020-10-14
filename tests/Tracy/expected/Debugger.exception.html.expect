@@ -47,7 +47,7 @@
 				<ol>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
+											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
 					third(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
@@ -64,7 +64,7 @@
 										</li>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
+											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
 					second(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
@@ -83,7 +83,7 @@
 										</li>
 										<li><p>
 
-											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
+											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
 					first(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
@@ -114,7 +114,7 @@
 		<div class="tracy-collapsed inner">
 
 		<h3>Warning: hex2bin(): Hexadecimal input string must have an even length</h3>
-					<p><a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
+					<p><a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
 			<div>%A%</div>
 
 		</div></div>
