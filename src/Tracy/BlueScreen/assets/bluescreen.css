@@ -57,7 +57,7 @@
 }
 
 #tracy-bs-error a {
-	border-bottom-color: rgba(255, 255, 255, .3) !important;
+	color: #ffefa1 !important;
 }
 
 #tracy-bs-error a.action {
@@ -239,6 +239,11 @@
 #tracy-bs a[href^=editor\:] {
 	color: inherit;
 	border-bottom: 1px dotted rgba(0, 0, 0, .3);
+	border-radius: 3px;
+}
+
+#tracy-bs a[href^=editor\:]:hover {
+	background: #0001;
 }
 
 #tracy-bs span[data-tracy-href] {
