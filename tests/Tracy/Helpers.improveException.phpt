@@ -173,7 +173,7 @@ test(function () use ($obj) { // suggest only static property
 	} catch (\Error $e) {
 	}
 	Helpers::improveException($e);
-	Assert::same('Access to undeclared static property: TestClass::$publicStaticX, did you mean $publicStatic?', $e->getMessage());
+	Assert::match('Access to undeclared static property%a?% TestClass::$publicStaticX, did you mean $publicStatic?', $e->getMessage());
 	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=%3A%3A%24publicStaticX&replace=%3A%3A%24publicStatic', $e->tracyAction['link']);
 	Assert::same('fix it', $e->tracyAction['label']);
 });
@@ -184,7 +184,7 @@ test(function () use ($obj) { // suggest only public static property
 	} catch (\Error $e) {
 	}
 	Helpers::improveException($e);
-	Assert::same('Access to undeclared static property: TestClass::$protectedMethodX', $e->getMessage());
+	Assert::match('Access to undeclared static property%a?% TestClass::$protectedMethodX', $e->getMessage());
 	Assert::false(isset($e->tracyAction));
 });
 

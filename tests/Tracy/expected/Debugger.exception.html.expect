@@ -117,7 +117,7 @@
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last muted error</a></h2>
 		<div class="tracy-collapsed inner">
 
-		<h3>Notice: Undefined variable: undefined</h3>
+		<h3>Warning: hex2bin(): Hexadecimal input string must have an even length</h3>
 					<p><a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
 			<div>%A%</div>
 

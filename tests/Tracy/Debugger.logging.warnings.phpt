@@ -24,7 +24,7 @@ Debugger::enable(Debugger::PRODUCTION, $logDirectory, 'admin@example.com');
 
 
 // throw error
-$a++;
+hex2bin('a'); // E_WARNING
 
-Assert::match('%a%PHP Notice: Undefined variable: a in %a%', file_get_contents($logDirectory . '/error.log'));
+Assert::match('%a%PHP Warning: hex2bin(): Hexadecimal input string must have an even length in %a%', file_get_contents($logDirectory . '/error.log'));
 Assert::true(is_file($logDirectory . '/email-sent'));
