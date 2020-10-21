@@ -421,4 +421,22 @@ class BlueScreen
 
 		return $msg;
 	}
+
+
+	private function renderPhpInfo(): void
+	{
+		ob_start();
+		@phpinfo(INFO_LICENSE); // @ phpinfo may be disabled
+		$license = ob_get_clean();
+		ob_start();
+		@phpinfo(INFO_CONFIGURATION | INFO_MODULES); // @ phpinfo may be disabled
+		$info = ob_get_clean();
+
+		if (strpos($license, '<body') === false) {
+			echo '<pre class="tracy-dump">', Helpers::escapeHtml($info), '</pre>';
+		} else {
+			$info = str_replace('<table', '<table class="tracy-sortable"', $info);
+			echo preg_replace('#^.+<body>|</body>.+\z#s', '', $info);
+		}
+	}
 }

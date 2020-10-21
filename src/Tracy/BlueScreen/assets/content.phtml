@@ -267,9 +267,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
 			<div class="outer tracy-collapsed">
-			<?php ob_start(); @phpinfo(INFO_CONFIGURATION | INFO_MODULES); $phpinfo = ob_get_clean(); // @ phpinfo can be disabled
-			$phpinfo = str_replace('<table', '<table class="tracy-sortable"', $phpinfo);
-			echo preg_replace('#^.+<body>|</body>.+\z#s', '', $phpinfo)  ?>
+			<?php $this->renderPhpInfo() ?>
 			</div>
 		</div></div>
 		<?php endif ?>
