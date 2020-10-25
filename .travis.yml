@@ -27,7 +27,6 @@ after_failure:
 jobs:
     include:
         -   name: Nette Code Checker
-            php: 7.4
             install:
                 - travis_retry composer create-project nette/code-checker temp/code-checker ^3.0 --no-progress
             script:
@@ -37,9 +36,9 @@ jobs:
         -   name: Nette Coding Standard
             php: 7.4
             install:
-                - travis_retry composer create-project nette/coding-standard temp/coding-standard ^2 --no-progress
+                - travis_retry composer create-project nette/coding-standard temp/coding-standard ^3 --no-progress
             script:
-                - php temp/coding-standard/ecs check src tests examples tools --config tests/coding-standard.yml
+                - php temp/coding-standard/ecs check src tests examples tools
 
 
         -   name: Code Standard Checker (JS)
