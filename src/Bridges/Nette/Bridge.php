@@ -88,7 +88,7 @@ class Bridge
 		if (!$e instanceof Nette\MemberAccessException && !$e instanceof \LogicException) {
 			return null;
 		}
-		$loc = $e instanceof Nette\MemberAccessException ? $e->getTrace()[1] : $e->getTrace()[0];
+		$loc = $e->getTrace()[$e instanceof Nette\MemberAccessException ? 1 : 0];
 		if (preg_match('#Cannot (?:read|write to) an undeclared property .+::\$(\w+), did you mean \$(\w+)\?#A', $e->getMessage(), $m)) {
 			return [
 				'link' => Helpers::editorUri($loc['file'], $loc['line'], 'fix', '->' . $m[1], '->' . $m[2]),

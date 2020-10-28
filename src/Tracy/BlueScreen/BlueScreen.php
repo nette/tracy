@@ -126,7 +126,9 @@ class BlueScreen
 		$title = $exception instanceof \ErrorException
 			? Helpers::errorTypeToString($exception->getSeverity())
 			: Helpers::getClass($exception);
-		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error ? null : error_get_last();
+		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error
+			? null
+			: error_get_last();
 
 		if (function_exists('apache_request_headers')) {
 			$httpHeaders = apache_request_headers();
@@ -197,7 +199,11 @@ class BlueScreen
 			}
 		}
 
-		if (property_exists($ex, 'tracyAction') && !empty($ex->tracyAction['link']) && !empty($ex->tracyAction['label'])) {
+		if (
+			property_exists($ex, 'tracyAction')
+			&& !empty($ex->tracyAction['link'])
+			&& !empty($ex->tracyAction['label'])
+		) {
 			$actions[] = $ex->tracyAction;
 		}
 
@@ -247,8 +253,13 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code.
 	 */
-	public static function highlightFile(string $file, int $line, int $lines = 15, array $vars = [], array $keysToHide = []): ?string
-	{
+	public static function highlightFile(
+		string $file,
+		int $line,
+		int $lines = 15,
+		array $vars = [],
+		array $keysToHide = []
+	): ?string {
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source === false) {
 			return null;
@@ -264,8 +275,13 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code.
 	 */
-	public static function highlightPhp(string $source, int $line, int $lines = 15, array $vars = [], array $keysToHide = []): string
-	{
+	public static function highlightPhp(
+		string $source,
+		int $line,
+		int $lines = 15,
+		array $vars = [],
+		array $keysToHide = []
+	): string {
 		if (function_exists('ini_set')) {
 			ini_set('highlight.comment', '#998; font-style: italic');
 			ini_set('highlight.default', '#000');

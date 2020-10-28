@@ -36,10 +36,12 @@ Assert::match('Password #%a%
    password => "[censored]" (10)', Dumper::toText($obj, [Dumper::DEBUGINFO => true]));
 
 
-Assert::match('Password #%a%
+Assert::match(
+	'Password #%a%
    password => "secret" (6)
    extra => "foo" (3)
-', Dumper::toText($obj)
+',
+	Dumper::toText($obj)
 );
 
 

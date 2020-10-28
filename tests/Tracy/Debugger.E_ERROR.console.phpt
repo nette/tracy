@@ -27,14 +27,16 @@ $onFatalErrorCalled = false;
 register_shutdown_function(function () use (&$onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
 	Assert::match(
-"Error: Call to undefined function missing_function() in %a%
+		"Error: Call to undefined function missing_function() in %a%
 Stack trace:
 #0 %a%: third(Array)
 #1 %a%: second(true, false)
 #2 %a%: first(10, 'any string')
 #3 {main}
 Unable to log error: Logging directory is not specified.
-", ob_get_clean());
+",
+		ob_get_clean()
+	);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

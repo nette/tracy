@@ -27,7 +27,8 @@ class Helpers
 				$file = '...' . $m[0];
 			}
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
-			return self::formatHtml('<a href="%" title="%">%<b>%</b>%</a>',
+			return self::formatHtml(
+				'<a href="%" title="%">%<b>%</b>%</a>',
 				$editor,
 				$origFile . ($line ? ":$line" : ''),
 				rtrim(dirname($file), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,
@@ -43,8 +44,13 @@ class Helpers
 	/**
 	 * Returns link to editor.
 	 */
-	public static function editorUri(string $file, int $line = null, string $action = 'open', string $search = '', string $replace = ''): ?string
-	{
+	public static function editorUri(
+		string $file,
+		int $line = null,
+		string $action = 'open',
+		string $search = '',
+		string $replace = ''
+	): ?string {
 		if (Debugger::$editor && $file && ($action === 'create' || is_file($file))) {
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 			$file = strtr($file, Debugger::$editorMapping);
@@ -224,7 +230,9 @@ class Helpers
 	{
 		if (preg_match('#^Undefined variable:? \$?(\w+)#', $message, $m) && $context) {
 			$hint = self::getSuggestion(array_keys($context), $m[1]);
-			return $hint ? "Undefined variable $$m[1], did you mean $$hint?" : $message;
+			return $hint
+				? "Undefined variable $$m[1], did you mean $$hint?"
+				: $message;
 
 		} elseif (preg_match('#^Undefined property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
@@ -267,7 +275,9 @@ class Helpers
 	{
 		$best = null;
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
-		$items = array_map(function ($item) { return $item instanceof \Reflector ? $item->getName() : (string) $item; }, $items);
+		$items = array_map(function ($item) {
+			return $item instanceof \Reflector ? $item->getName() : (string) $item;
+		}, $items);
 		foreach (array_unique($items) as $item) {
 			if (($len = levenshtein($item, $value, 10, 11, 10)) > 0 && $len < $min) {
 				$min = $len;

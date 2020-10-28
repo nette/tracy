@@ -98,7 +98,10 @@ class FireLogger implements ILogger
 			$item['exc_frames'][] = $frame['args'];
 		}
 
-		if (isset($args[0]) && in_array($args[0], [self::DEBUG, self::INFO, self::WARNING, self::ERROR, self::CRITICAL], true)) {
+		if (
+			isset($args[0])
+			&& in_array($args[0], [self::DEBUG, self::INFO, self::WARNING, self::ERROR, self::CRITICAL], true)
+		) {
 			$item['level'] = array_shift($args);
 		}
 
@@ -115,7 +118,7 @@ class FireLogger implements ILogger
 	/**
 	 * Dump implementation for JSON.
 	 * @param  mixed  $var
-	 * @return array|null|int|float|bool|string
+	 * @return array|int|float|bool|string|null
 	 */
 	private function jsonDump(&$var, int $level = 0)
 	{

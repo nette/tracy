@@ -28,9 +28,11 @@ $exporters = [
 		return ['x' => $var->a + 1];
 	},
 ];
-Assert::match('stdClass #%a%
+Assert::match(
+	'stdClass #%a%
    x => 2
-', Dumper::toText($obj, [Dumper::OBJECT_EXPORTERS => $exporters])
+',
+	Dumper::toText($obj, [Dumper::OBJECT_EXPORTERS => $exporters])
 );
 
 
@@ -61,27 +63,39 @@ $exporters = [
 	'SplFileInfo' => function ($var) { return ['type' => 'SplFileInfo']; },
 	'SplFileObject' => function ($var) { return ['type' => 'SplFileObject']; },
 ];
-Assert::match('SplFileInfo #%a%
+Assert::match(
+	'SplFileInfo #%a%
    type => "SplFileInfo" (11)
-', Dumper::toText(new SplFileInfo(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters])
+',
+	Dumper::toText(new SplFileInfo(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters])
 );
-Assert::match('SplFileObject #%a%
+Assert::match(
+	'SplFileObject #%a%
    type => "SplFileObject" (13)
-', Dumper::toText(new SplFileObject(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters])
+',
+	Dumper::toText(new SplFileObject(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters])
 );
-Assert::match('ArrayIterator #%a%
+Assert::match(
+	'ArrayIterator #%a%
    type => "Iterator" (8)
-', Dumper::toText(new ArrayIterator([]), [Dumper::OBJECT_EXPORTERS => $exporters])
+',
+	Dumper::toText(new ArrayIterator([]), [Dumper::OBJECT_EXPORTERS => $exporters])
 );
-Assert::match('stdClass #%a%
+Assert::match(
+	'stdClass #%a%
    type => "NULL" (4)
-', Dumper::toText(new stdClass, [Dumper::OBJECT_EXPORTERS => $exporters])
+',
+	Dumper::toText(new stdClass, [Dumper::OBJECT_EXPORTERS => $exporters])
 );
-Assert::match('ArrayIterator #%a%
+Assert::match(
+	'ArrayIterator #%a%
    type => "Default Iterator" (16)
-', Dumper::toText(new ArrayIterator([]))
+',
+	Dumper::toText(new ArrayIterator([]))
 );
-Assert::match('stdClass #%a%
+Assert::match(
+	'stdClass #%a%
    type => "NULL" (4)
-', Dumper::toText(new stdClass)
+',
+	Dumper::toText(new stdClass)
 );

@@ -158,7 +158,9 @@ class Dumper
 		if ($options[self::LIVE] ?? false) {
 			$this->snapshot = &self::$liveSnapshot;
 		}
-		$this->lazy = is_array($this->snapshot) ? true : ($options[self::LAZY] ?? $this->lazy);
+		$this->lazy = is_array($this->snapshot)
+			? true
+			: ($options[self::LAZY] ?? $this->lazy);
 		$this->debugInfo = $options[self::DEBUGINFO] ?? $this->debugInfo;
 		$this->keysToHide = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE] ?? []));
 		$this->resourceDumpers = ($options['resourceExporters'] ?? []) + self::$resources;
@@ -176,7 +178,11 @@ class Dumper
 	{
 		[$file, $line, $code] = $this->location ? $this->findLocation() : null;
 		$locAttrs = $file && $this->location & self::LOCATION_SOURCE ? Helpers::formatHtml(
-			' title="%in file % on line %" data-tracy-href="%"', "$code\n", $file, $line, Helpers::editorUri($file, $line)
+			' title="%in file % on line %" data-tracy-href="%"',
+			"$code\n",
+			$file,
+			$line,
+			Helpers::editorUri($file, $line)
 		) : null;
 
 		if (is_array($this->snapshot)) {
@@ -227,7 +233,7 @@ class Dumper
 	 */
 	private function dumpVar(&$var, array $options, int $level = 0): string
 	{
-		if (!method_exists(__CLASS__, $m = 'dump' . explode(' ', gettype($var))[0])) {
+		if (!method_exists(self::class, $m = 'dump' . explode(' ', gettype($var))[0])) {
 			$m = 'dumpResource'; // closed resource is 'unknown type' in PHP 7.1
 		}
 		return $this->$m($var, $options, $level);
@@ -332,8 +338,12 @@ class Dumper
 
 		$editorAttributes = '';
 		if ($this->location & self::LOCATION_CLASS) {
-			$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
-			$editor = $rc->getFileName() ? Helpers::editorUri($rc->getFileName(), $rc->getStartLine()) : null;
+			$rc = $var instanceof \Closure
+				? new \ReflectionFunction($var)
+				: new \ReflectionClass($var);
+			$editor = $rc->getFileName()
+				? Helpers::editorUri($rc->getFileName(), $rc->getStartLine())
+				: null;
 			if ($editor) {
 				$editorAttributes = Helpers::formatHtml(
 					' title="Declared in file % on line %" data-tracy-href="%"',
@@ -377,7 +387,8 @@ class Dumper
 					$hide = is_string($k) && isset($this->keysToHide[strtolower($k)]);
 					$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $level) . '</span>'
 						. '<span class="tracy-dump-key">' . Helpers::escapeHtml($this->encodeKey($k)) . "</span>$vis => "
-						. ($hide
+						. (
+							$hide
 							? Helpers::escapeHtml(self::hideValue($v)) . "\n"
 							: $this->dumpVar($v, $options, $level + 1)
 						);
@@ -465,7 +476,9 @@ class Dumper
 				'object' => $var,
 			];
 			if (empty($obj['editor']) && ($this->location & self::LOCATION_CLASS)) {
-				$rc = $var instanceof \Closure ? new \ReflectionFunction($var) : new \ReflectionClass($var);
+				$rc = $var instanceof \Closure
+					? new \ReflectionFunction($var)
+					: new \ReflectionClass($var);
 				if ($editor = $rc->getFileName() ? Helpers::editorUri($rc->getFileName(), $rc->getStartLine()) : null) {
 					$obj['editor'] = ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
 				}
@@ -663,7 +676,7 @@ class Dumper
 	private static function findLocation(): ?array
 	{
 		foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $item) {
-			if (isset($item['class']) && $item['class'] === __CLASS__) {
+			if (isset($item['class']) && $item['class'] === self::class) {
 				$location = $item;
 				continue;
 			} elseif (isset($item['function'])) {
@@ -671,7 +684,10 @@ class Dumper
 					$reflection = isset($item['class'])
 						? new \ReflectionMethod($item['class'], $item['function'])
 						: new \ReflectionFunction($item['function']);
-					if ($reflection->isInternal() || preg_match('#\s@tracySkipLocation\s#', (string) $reflection->getDocComment())) {
+					if (
+						$reflection->isInternal()
+						|| preg_match('#\s@tracySkipLocation\s#', (string) $reflection->getDocComment())
+					) {
 						$location = $item;
 						continue;
 					}
