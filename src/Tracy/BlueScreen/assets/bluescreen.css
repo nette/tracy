@@ -238,10 +238,6 @@
 	font-style: normal;
 }
 
-#tracy-bs pre.code:hover span[title] {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-}
-
 #tracy-bs a[href^=editor\:] {
 	color: inherit;
 	border-bottom: 1px dotted rgba(0, 0, 0, .3);
