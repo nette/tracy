@@ -31,9 +31,11 @@ $exporters = [
 		return ['x' => $var->a + 1];
 	},
 ];
-Assert::match('stdClass #%d%
+Assert::match(
+	'stdClass #%d%
    x: 2
-', Dumper::toText($obj, [Dumper::OBJECT_EXPORTERS => $exporters])
+',
+	Dumper::toText($obj, [Dumper::OBJECT_EXPORTERS => $exporters])
 );
 
 

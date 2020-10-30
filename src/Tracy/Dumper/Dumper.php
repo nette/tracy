@@ -244,7 +244,9 @@ class Dumper
 		$renderer->collapseTop = $options[self::COLLAPSE] ?? $renderer->collapseTop;
 		$renderer->collapseSub = $options[self::COLLAPSE_COUNT] ?? $renderer->collapseSub;
 		$renderer->collectingMode = isset($options[self::SNAPSHOT]) || !empty($options[self::LIVE]);
-		$renderer->lazy = $renderer->collectingMode ? true : ($options[self::LAZY] ?? $renderer->lazy);
+		$renderer->lazy = $renderer->collectingMode
+			? true
+			: ($options[self::LAZY] ?? $renderer->lazy);
 		$renderer->sourceLocation = !(~$location & self::LOCATION_SOURCE);
 		$renderer->classLocation = !(~$location & self::LOCATION_CLASS);
 		$renderer->theme = $options[self::THEME] ?? $renderer->theme;

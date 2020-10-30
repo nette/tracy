@@ -29,7 +29,9 @@ final class Exposer
 				$k = end($info);
 				$type = $info[1] === '*' ? Value::PROP_PROTECTED : $info[1];
 			} else {
-				$type = array_key_exists($k, $defaults) ? Value::PROP_PUBLIC : Value::PROP_DYNAMIC;
+				$type = array_key_exists($k, $defaults)
+					? Value::PROP_PUBLIC
+					: Value::PROP_DYNAMIC;
 				$k = (string) $k;
 			}
 			$describer->addPropertyTo($value, $k, $v, $type, $refId);
@@ -113,8 +115,11 @@ final class Exposer
 	}
 
 
-	public static function exposePhpIncompleteClass(\__PHP_Incomplete_Class $obj, Value $value, Describer $describer): void
-	{
+	public static function exposePhpIncompleteClass(
+		\__PHP_Incomplete_Class $obj,
+		Value $value,
+		Describer $describer
+	): void {
 		self::exposeObject($obj, $value, $describer);
 		unset($value->items[0]);
 		$value->value = ((array) $obj)['__PHP_Incomplete_Class_Name'] . ' (Incomplete Class)';

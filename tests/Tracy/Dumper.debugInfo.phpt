@@ -39,12 +39,14 @@ XX
 , Dumper::toText($obj, [Dumper::DEBUGINFO => true]));
 
 
-Assert::match(<<<'XX'
+Assert::match(
+	<<<'XX'
 Password #%d%
    password: 'secret'
    extra: 'foo'
 XX
-, Dumper::toText($obj)
+,
+	Dumper::toText($obj)
 );
 
 

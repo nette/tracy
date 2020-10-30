@@ -83,7 +83,10 @@ final class Renderer
 			$uri = Helpers::editorUri($file, $line);
 			$location = Helpers::formatHtml(
 				'<a href="%" class="tracy-dump-location" title="in file % on line %%">',
-				$uri ?? '#', $file, $line, $uri ? "\nClick to open in editor" : ''
+				$uri ?? '#',
+				$file,
+				$line,
+				$uri ? "\nClick to open in editor" : ''
 			) . Helpers::encodeString($code, 50) . " 📍</a\n>";
 		}
 
@@ -193,7 +196,9 @@ final class Renderer
 				Value::PROP_DYNAMIC => 'tracy-dump-dynamic',
 				Value::PROP_VIRTUAL => 'tracy-dump-virtual',
 			];
-			$title = is_string($keyType) ? ' title="declared in ' . Helpers::escapeHtml($keyType) . '"' : null;
+			$title = is_string($keyType)
+				? ' title="declared in ' . Helpers::escapeHtml($keyType) . '"'
+				: null;
 			return '<span class="'
 				. ($title ? 'tracy-dump-private' : $classes[$keyType]) . '"' . $title . '>'
 				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n ", $str->value))
