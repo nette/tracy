@@ -185,7 +185,9 @@ final class Describer
 		$value->depth = $depth;
 		$value->holder = $obj; // to be not released by garbage collector in collecting mode
 		if ($this->location) {
-			$rc = $obj instanceof \Closure ? new \ReflectionFunction($obj) : new \ReflectionClass($obj);
+			$rc = $obj instanceof \Closure
+				? new \ReflectionFunction($obj)
+				: new \ReflectionClass($obj);
 			if ($rc->getFileName() && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine()))) {
 				$value->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
 			}
@@ -321,7 +323,10 @@ final class Describer
 					$reflection = isset($item['class'])
 						? new \ReflectionMethod($item['class'], $item['function'])
 						: new \ReflectionFunction($item['function']);
-					if ($reflection->isInternal() || preg_match('#\s@tracySkipLocation\s#', (string) $reflection->getDocComment())) {
+					if (
+						$reflection->isInternal()
+						|| preg_match('#\s@tracySkipLocation\s#', (string) $reflection->getDocComment())
+					) {
 						$location = $item;
 						continue;
 					}

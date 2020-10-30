@@ -45,7 +45,10 @@ Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-array"
 
 
 // array
-Assert::same(str_replace("\r", '', <<<'XX'
+Assert::same(str_replace(
+	"\r",
+	'',
+	<<<'XX'
 <pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>

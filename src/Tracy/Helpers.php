@@ -27,7 +27,8 @@ class Helpers
 				$file = '...' . $m[0];
 			}
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
-			return self::formatHtml('<a href="%" title="%" class="tracy-editor">%<b>%</b>%</a>',
+			return self::formatHtml(
+				'<a href="%" title="%" class="tracy-editor">%<b>%</b>%</a>',
 				$editor,
 				$origFile . ($line ? ":$line" : ''),
 				rtrim(dirname($file), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,
@@ -361,13 +362,11 @@ class Helpers
 			? [true, $tableU, strlen(utf8_decode($s))]
 			: [false, $tableB, strlen($s)];
 
-		if ($maxLength && $len > $maxLength + 20) {
-			$s = strtr(self::truncateString($s, $maxLength, $utf), $table)
+		$s = $maxLength && $len > $maxLength + 20
+			? strtr(self::truncateString($s, $maxLength, $utf), $table)
 				. ' <span>…</span> '
-				. strtr(self::truncateString($s, -10, $utf), $table);
-		} else {
-			$s = strtr($s, $table);
-		}
+				. strtr(self::truncateString($s, -10, $utf), $table)
+			: strtr($s, $table);
 
 		return str_replace('</span><span>', '', $s);
 	}
@@ -379,9 +378,13 @@ class Helpers
 		if (!$utf) {
 			return $len < 0 ? substr($s, $len) : substr($s, 0, $len);
 		} elseif (function_exists('mb_substr')) {
-			return $len < 0 ? mb_substr($s, $len, -$len, 'UTF-8') : mb_substr($s, 0, $len, 'UTF-8');
+			return $len < 0
+				? mb_substr($s, $len, -$len, 'UTF-8')
+				: mb_substr($s, 0, $len, 'UTF-8');
 		} else {
-			$len < 0 ? preg_match('#.{0,' . -$len . '}\z#us', $s, $m) : preg_match("#^.{0,$len}#us", $s, $m);
+			$len < 0
+				? preg_match('#.{0,' . -$len . '}\z#us', $s, $m)
+				: preg_match("#^.{0,$len}#us", $s, $m);
 			return $m[0];
 		}
 	}
