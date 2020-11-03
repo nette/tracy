@@ -20,6 +20,10 @@ class Helpers
 	 */
 	public static function editorLink(string $file, int $line = null): string
 	{
+		if (preg_match('/^(.+):(\d+)$/', $file, $filePartParser)) {
+			$file = $filePartParser[1];
+			$line = (int) $filePartParser[2];
+		}
 		$file = strtr($origFile = $file, Debugger::$editorMapping);
 		if ($editor = self::editorUri($origFile, $line)) {
 			$file = strtr($file, '\\', '/');
