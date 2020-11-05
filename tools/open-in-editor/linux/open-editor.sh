@@ -15,6 +15,10 @@ declare -A mapping
 #editor='gedit +$LINE "$FILE"'
 # Pluma
 #editor='pluma +$LINE "$FILE"'
+# PHPStorm
+# To enable PHPStorm command-line interface, folow this guide: https://www.jetbrains.com/help/phpstorm/working-with-the-ide-features-from-command-line.html
+#editor='phpstorm --line $LINE "$FILE"'
+
 
 #
 # Optionally configure custom mapping here:
