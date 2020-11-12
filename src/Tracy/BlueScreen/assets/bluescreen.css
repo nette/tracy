@@ -21,6 +21,10 @@
 	margin: -2px -4px;
 }
 
+#tracy-bs a + a {
+	margin-left: 0;
+}
+
 #tracy-bs a:hover,
 #tracy-bs a:focus {
 	color: #085AA3;
