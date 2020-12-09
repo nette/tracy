@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Test: TracyExtension accessors.
- */
-
 declare(strict_types=1);
 
 use Nette\DI;
@@ -28,6 +24,7 @@ $compiler->addExtension('tracy', new TracyExtension);
 $compiler->addConfig([
 	'tracy' => [
 		'logSeverity' => 'E_USER_WARNING',
+		'keysToHide' => ['abc'],
 	],
 	'services' => [
 		'tracy.logger' => 'CustomLogger',
@@ -50,3 +47,5 @@ Assert::same(Tracy\Debugger::getBlueScreen(), $container->getService('tracy.blue
 Assert::same(Tracy\Debugger::getBar(), $container->getService('tracy.bar'));
 
 Assert::same(E_USER_WARNING, Tracy\Debugger::$logSeverity);
+Assert::contains('password', Tracy\Debugger::getBlueScreen()->keysToHide);
+Assert::contains('abc', Tracy\Debugger::getBlueScreen()->keysToHide);

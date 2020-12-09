@@ -46,6 +46,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			'showBar' => Expect::bool()->dynamic(),
 			'maxLength' => Expect::int()->dynamic(),
 			'maxDepth' => Expect::int()->dynamic(),
+			'keysToHide' => Expect::array(null)->dynamic(),
 			'dumpTheme' => Expect::string()->dynamic(),
 			'showLocation' => Expect::bool()->dynamic(),
 			'scream' => Expect::bool()->dynamic(),
@@ -91,9 +92,12 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		}
 		foreach ($options as $key => $value) {
 			if ($value !== null) {
-				$key = ($key === 'fromEmail' ? 'getLogger()->' : '$') . $key;
+				static $tbl = [
+					'keysToHide' => 'array_push(Tracy\Debugger::getBlueScreen()->keysToHide, ... ?)',
+					'fromEmail' => 'Tracy\Debugger::getLogger()->fromEmail = ?',
+				];
 				$initialize->addBody($builder->formatPhp(
-					'Tracy\Debugger::' . $key . ' = ?;',
+					($tbl[$key] ?? 'Tracy\Debugger::$' . $key . ' = ?') . ';',
 					Nette\DI\Helpers::filterArguments([$value])
 				));
 			}
