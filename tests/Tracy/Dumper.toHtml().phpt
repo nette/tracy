@@ -99,20 +99,55 @@ $obj->{"a\xA0"} = 12;
 Assert::match(<<<'XX'
 <pre class="tracy-dump"
 ><span class="tracy-toggle"><span class="tracy-dump-object">Child</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">1</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Child">y</span>: <span class="tracy-dump-number">2</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">3</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x2</span>: <span class="tracy-dump-number">4</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">y2</span>: <span class="tracy-dump-number">5</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Child">z2</span>: <span class="tracy-dump-number">6</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters">'hello'</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">new</span>: <span class="tracy-dump-number">7</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">new</span>: <span class="tracy-dump-number">7</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-number">8</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">9</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">&apos;&apos;</span>: <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">'a<span>\x00\n</span>
  '</span>: <span class="tracy-dump-number">11</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">'a<span>\xA0</span>'</span>: <span class="tracy-dump-number">12</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">1</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Child">y</span>: <span class="tracy-dump-number">2</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">3</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x2</span>: <span class="tracy-dump-number">4</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">y2</span>: <span class="tracy-dump-number">5</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Child">z2</span>: <span class="tracy-dump-number">6</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters">'hello'</span>
 </div></pre>
 XX
 , Dumper::toHtml($obj));
+
+
+if (PHP_VERSION_ID >= 70400) {
+	require __DIR__ . '/fixtures/DumpClass.74.php';
+
+	Assert::match(<<<'XX'
+<pre class="tracy-dump"
+><span class="tracy-toggle"><span class="tracy-dump-object">Test74</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">1</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test74">y</span>: <span class="tracy-dump-virtual">unset</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-virtual">unset</span>
+</div></pre>
+XX
+	, Dumper::toHtml(new Test74));
+
+
+	$obj = new Child74;
+	$obj->new = 7;
+	unset($obj->unset1, $obj->unset2);
+
+
+	Assert::match(<<<'XX'
+<pre class="tracy-dump"
+><span class="tracy-toggle"><span class="tracy-dump-object">Child74</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">new</span>: <span class="tracy-dump-number">7</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">2</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Child74">y</span>: <span class="tracy-dump-virtual">unset</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-virtual">unset</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">unset1</span>: <span class="tracy-dump-virtual">unset</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">unset2</span>: <span class="tracy-dump-virtual">unset</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test74">y</span>: <span class="tracy-dump-virtual">unset</span>
+</div></pre>
+XX
+	, Dumper::toHtml($obj));
+}

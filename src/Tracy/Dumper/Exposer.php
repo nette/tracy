@@ -18,21 +18,61 @@ final class Exposer
 {
 	public static function exposeObject(object $obj, Value $value, Describer $describer): void
 	{
-		$defaults = get_class_vars(get_class($obj));
 		$tmp = (array) $obj;
 		$values = $tmp; // bug #79477, PHP < 7.4.6
-		foreach ($values as $k => $v) {
-			$refId = $describer->getReferenceId($values, $k);
-			if (isset($k[0]) && $k[0] === "\x00") {
-				$info = explode("\00", $k);
-				$k = end($info);
-				$type = $info[1] === '*' ? Value::PROP_PROTECTED : $info[1];
-			} else {
-				$type = array_key_exists($k, $defaults) ? Value::PROP_PUBLIC : Value::PROP_DYNAMIC;
-				$k = (string) $k;
-			}
-			$describer->addPropertyTo($value, $k, $v, $type, $refId);
+		$props = self::getProperties(get_class($obj));
+
+		foreach (array_diff_key($values, $props) as $k => $v) {
+			$describer->addPropertyTo(
+				$value,
+				(string) $k,
+				$v,
+				Value::PROP_DYNAMIC,
+				$describer->getReferenceId($values, $k)
+			);
 		}
+
+		foreach ($props as $k => [$name, $type]) {
+			if (array_key_exists($k, $values)) {
+				$describer->addPropertyTo(
+					$value,
+					$name,
+					$values[$k],
+					$type,
+					$describer->getReferenceId($values, $k)
+				);
+			} else {
+				$value->items[] = [$name, new Value(Value::TYPE_TEXT, 'unset'), $type];
+			}
+		}
+	}
+
+
+	private static function getProperties($class): array
+	{
+		static $cache;
+		if (isset($cache[$class])) {
+			return $cache[$class];
+		}
+		$rc = new \ReflectionClass($class);
+		$parentProps = $rc->getParentClass() ? self::getProperties($rc->getParentClass()->getName()) : [];
+		$props = [];
+
+		foreach ($rc->getProperties() as $prop) {
+			$name = $prop->getName();
+			if ($prop->isStatic()) {
+				// nothing
+			} elseif ($prop->isPrivate()) {
+				$props["\x00" . $class . "\x00" . $name] = [$name, $class];
+			} elseif ($prop->isProtected()) {
+				$props["\x00*\x00" . $name] = [$name, Value::PROP_PROTECTED];
+			} else {
+				$props[$name] = [$name, Value::PROP_PUBLIC];
+				unset($parentProps["\x00*\x00" . $name]);
+			}
+		}
+
+		return $cache[$class] = $props + $parentProps;
 	}
 
 
