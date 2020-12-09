@@ -33,6 +33,7 @@ Warning: Unsupported declare \'foo\' in %a% on line %d%%A%', $output);
 	$rawContent = json_decode($m[1]);
 	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-errors')[0]['data-tracy-content'];
 	Assert::match('%A%<table class="tracy-sortable">
+<tr><th>Count</th><th>Error</th></tr>
 <tr>
 	<td class="tracy-right">1%a%</td>
 	<td><pre>PHP Notice: Only variables should be assigned by reference in %a%:%d%</a></pre></td>
