@@ -9,7 +9,6 @@ declare(strict_types=1);
 use Tester\Assert;
 use Tracy\Bridges\Nette\Bridge;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

@@ -6,7 +6,6 @@ use Tester\Assert;
 use Tester\Expect;
 use Tracy\Dumper;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
