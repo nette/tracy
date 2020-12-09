@@ -59,7 +59,7 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="t
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">data</span> => <span class="tracy-dump-string">"o1"</span> (2)
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">1</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">object</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-public">foo</span> => <span class="tracy-dump-string">"bar"</span> (3)
+<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-dynamic">foo</span> => <span class="tracy-dump-string">"bar"</span> (3)
 </div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-key">data</span> => <span class="tracy-dump-string">"o2"</span> (2)
 </div></div></pre>', Dumper::toHtml($objStorage));
 

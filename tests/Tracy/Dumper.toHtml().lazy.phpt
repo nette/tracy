@@ -82,7 +82,7 @@ Assert::match(
 $obj = new stdClass;
 $obj->x = $obj;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[["x",{"ref":%d%},0]]}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[["x",{"ref":%d%},3]]}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml($obj, $options)
 );
 
@@ -101,6 +101,6 @@ $obj->a->b->c = new stdClass;
 $obj->a->b->c->d = new stdClass;
 $obj->a->b->c->d->e = new stdClass;
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[["a",{"ref":%d%},0]]},"%d%":{"object":"stdClass","items":[["b",{"ref":%d%},0]]},"%d%":{"object":"stdClass","items":[["c",{"ref":%d%},0]]},"%d%":{"object":"stdClass","items":[["d",{"ref":%d%},0]]},"%d%":{"object":"stdClass"}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
+	'<pre class="tracy-dump" data-tracy-snapshot=\'{"%d%":{"object":"stdClass","items":[["a",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["b",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["c",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["d",{"ref":%d%},3]]},"%d%":{"object":"stdClass"}}\' data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml($obj, $options)
 );

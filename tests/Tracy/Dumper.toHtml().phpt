@@ -92,8 +92,8 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-toggle"><span class="t
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">y2</span> => <span class="tracy-dump-number">5</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-private">z2</span> => <span class="tracy-dump-number">6</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-private">y</span> => <span class="tracy-dump-string">"hello"</span> (5)
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">new</span> => <span class="tracy-dump-number">7</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">0</span> => <span class="tracy-dump-number">8</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">1</span> => <span class="tracy-dump-number">9</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">&quot;&quot;</span> => <span class="tracy-dump-number">10</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">new</span> => <span class="tracy-dump-number">7</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">0</span> => <span class="tracy-dump-number">8</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">1</span> => <span class="tracy-dump-number">9</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">&quot;&quot;</span> => <span class="tracy-dump-number">10</span>
 </div></pre>', Dumper::toHtml($obj));
