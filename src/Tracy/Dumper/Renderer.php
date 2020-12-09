@@ -160,7 +160,7 @@ final class Renderer
 				return '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . '</span>';
 
 			case $value->type === Value::TYPE_TEXT:
-				return '<span>' . Helpers::escapeHtml($value->value) . '</span>';
+				return '<span class="tracy-dump-virtual">' . Helpers::escapeHtml($value->value) . '</span>';
 
 			case $value->type === Value::TYPE_STRING_HTML:
 			case $value->type === Value::TYPE_BINARY_HTML:

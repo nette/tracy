@@ -51,8 +51,8 @@ Assert::match(<<<'XX'
 <pre class="tracy-dump"
 ><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">3</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">key</span>: <span>hello</span>
-<span class="tracy-dump-indent">   </span><span>$x</span>: <span>hello</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">key</span>: <span class="tracy-dump-virtual">hello</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">$x</span>: <span class="tracy-dump-virtual">hello</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">object</span>: <span class="tracy-toggle"><span class="tracy-dump-object">hello</span></span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-dump-string">'b'</span>
 </div></div></pre>

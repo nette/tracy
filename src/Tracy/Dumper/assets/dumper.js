@@ -176,7 +176,7 @@ function build(data, repository, collapsed, parentIds, keyType) {
 
 	} else if (data.text !== undefined) {
 		return createEl(null, null, [
-			createEl('span', null, [data.text])
+			createEl('span', {class: 'tracy-dump-virtual'}, [data.text])
 		]);
 
 	} else { // object || resource || array
