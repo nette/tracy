@@ -94,12 +94,16 @@ class Dumper
 	 */
 	public static function dump($var, array $options = [])
 	{
-		if (PHP_SAPI !== 'cli' && !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) {
-			echo self::toHtml($var, $options);
-		} elseif (self::$terminalColors && Helpers::detectColors()) {
-			echo self::toTerminal($var, $options);
-		} else {
+		if (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg') {
+			$useColors = self::$terminalColors && Helpers::detectColors();
+			$dumper = new self($options);
+			fwrite(STDOUT, $dumper->asTerminal($var, $useColors ? self::$terminalColors : []));
+
+		} elseif (preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) { // non-html
 			echo self::toText($var, $options);
+
+		} else { // html
+			echo self::toHtml($var, $options);
 		}
 		return $var;
 	}
