@@ -19,11 +19,6 @@ $_GET = $_POST = $_COOKIE = [];
 define('USER_CONST', 1);
 
 
-if (extension_loaded('xdebug')) {
-	xdebug_disable();
-}
-
-
 function getTempDir(): string
 {
 	$dir = __DIR__ . '/tmp/' . getmypid();
