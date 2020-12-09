@@ -63,7 +63,7 @@ XX
 
 $snapshot = [];
 Assert::match(
-	'<pre class="tracy-dump" data-tracy-dump=\'{"ref":%d%}\'></pre>',
+	'<pre class="tracy-dump tracy-light" data-tracy-dump=\'{"ref":%d%}\'></pre>',
 	Dumper::toHtml((object) $keys, [Dumper::SNAPSHOT => &$snapshot])
 );
 

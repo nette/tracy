@@ -70,6 +70,9 @@ class Debugger
 	/** @var bool display location by dump()? */
 	public static $showLocation;
 
+	/** @var string theme for dump() */
+	public static $dumpTheme = 'light';
+
 	/** @deprecated */
 	public static $maxLen;
 
@@ -534,6 +537,7 @@ class Debugger
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation,
+				Dumper::THEME => self::$dumpTheme,
 			]);
 		}
 

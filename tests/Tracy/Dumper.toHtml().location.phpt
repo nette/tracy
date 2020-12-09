@@ -16,7 +16,7 @@ Assert::same("</pre>\n", substr(Dumper::toHtml(true, ['location' => true]), -7))
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::toHtml([1], ['location' => true])) 📍</a
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>
@@ -30,7 +30,7 @@ class Test
 }
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::toHtml(new Test, ['location' => true])) 📍</a
 ><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
@@ -38,13 +38,13 @@ XX
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
+<pre class="tracy-dump tracy-light"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
 , Dumper::toHtml(new Test, ['location' => false]));
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::toHtml(new Test, ['location' => Dumper::LOCATION_SOURCE])) 📍</a
 ><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
@@ -52,7 +52,7 @@ XX
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-dump-object" title="Declared in file %a% on line %d%&#10;Ctrl-Click to open in editor" data-tracy-href="editor:%a%">Test</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
 , Dumper::toHtml(new Test, ['location' => Dumper::LOCATION_CLASS]));

@@ -32,7 +32,8 @@ class Dumper
 		SNAPSHOT = 'snapshot', // array used for shared snapshot for lazy-loading via JavaScript
 		DEBUGINFO = 'debuginfo', // use magic method __debugInfo if exists (defaults to false)
 		KEYS_TO_HIDE = 'keystohide', // sensitive keys not displayed (defaults to [])
-		SCRUBBER = 'scrubber'; // detects sensitive keys not to be displayed
+		SCRUBBER = 'scrubber', // detects sensitive keys not to be displayed
+		THEME = 'theme'; // color theme (defaults to light)
 
 	public const
 		LOCATION_CLASS = 0b0001, // shows where classes are defined
@@ -152,7 +153,8 @@ class Dumper
 		$nonce = Helpers::getNonce();
 		$nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 		$s = file_get_contents(__DIR__ . '/../Toggle/toggle.css')
-			. file_get_contents(__DIR__ . '/../Dumper/assets/dumper.css');
+			. file_get_contents(__DIR__ . '/assets/dumper-light.css')
+			. file_get_contents(__DIR__ . '/assets/dumper-dark.css');
 		echo "<style{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
 
 		if (!Debugger::isEnabled()) {
@@ -199,6 +201,7 @@ class Dumper
 			: ($options[self::LAZY] ?? $renderer->lazy);
 		$renderer->sourceLocation = !(~$location & self::LOCATION_SOURCE);
 		$renderer->classLocation = !(~$location & self::LOCATION_CLASS);
+		$renderer->theme = $options[self::THEME] ?? $renderer->theme;
 	}
 
 

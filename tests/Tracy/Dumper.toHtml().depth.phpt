@@ -32,7 +32,7 @@ $arr = [
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string">'long'</span> => <span class="tracy-dump-string" title="15000 characters">'Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework <span>…</span>  Framework'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
@@ -50,7 +50,7 @@ XX
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string">'long'</span> => <span class="tracy-dump-string" title="15000 characters">'Nette FrameworkNette FrameworkNette FrameworkNette <span>…</span>  Framework'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
@@ -64,7 +64,7 @@ XX
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-dump-string" title="150 characters">'Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework'</span></pre>
 XX
 , Dumper::toHtml(str_repeat('Nette Framework', 10), [Dumper::TRUNCATE => 50]));
@@ -73,7 +73,7 @@ XX
 $arr = [1, 2, 3, 4];
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-number">2</span>
@@ -85,7 +85,7 @@ XX
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">2</span>
@@ -97,7 +97,7 @@ XX
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>

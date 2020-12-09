@@ -2,7 +2,7 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
-.tracy-dump {
+.tracy-dump.tracy-light {
 	text-align: left;
 	color: #444;
 	background: #fdf9e2;
@@ -13,20 +13,20 @@
 	white-space: pre-wrap;
 }
 
-.tracy-dump div {
+.tracy-dump.tracy-light div {
 	padding-left: 3ex;
 }
 
-.tracy-dump div div {
+.tracy-dump.tracy-light div div {
 	border-left: 1px solid rgba(0, 0, 0, .1);
 	margin-left: .5ex;
 }
 
-.tracy-dump div div:hover {
+.tracy-dump.tracy-light div div:hover {
 	border-left-color: rgba(0, 0, 0, .25);
 }
 
-.tracy-dump-location {
+.tracy-light .tracy-dump-location {
 	color: gray;
 	font-size: 80%;
 	text-decoration: none;
@@ -36,66 +36,66 @@
 	cursor: pointer;
 }
 
-.tracy-dump-location:hover,
-.tracy-dump-location:focus {
+.tracy-light .tracy-dump-location:hover,
+.tracy-light .tracy-dump-location:focus {
 	opacity: 1;
 }
 
-.tracy-dump-array,
-.tracy-dump-object {
+.tracy-light .tracy-dump-array,
+.tracy-light .tracy-dump-object {
 	color: #C22;
 	user-select: text;
 }
 
-.tracy-dump-string {
+.tracy-light .tracy-dump-string {
 	color: #35D;
 }
 
-.tracy-dump-virtual span,
-.tracy-dump-dynamic span,
-.tracy-dump-string span {
+.tracy-light .tracy-dump-virtual span,
+.tracy-light .tracy-dump-dynamic span,
+.tracy-light .tracy-dump-string span {
 	font-size: 80%;
 	color: rgba(0, 0, 0, 0.5);
 }
 
-.tracy-dump-number {
+.tracy-light .tracy-dump-number {
 	color: #090;
 }
 
-.tracy-dump-null,
-.tracy-dump-bool {
+.tracy-light .tracy-dump-null,
+.tracy-light .tracy-dump-bool {
 	color: #850;
 }
 
-.tracy-dump-virtual {
+.tracy-light .tracy-dump-virtual {
 	font-style: italic;
 }
 
-.tracy-dump-public::after {
+.tracy-light .tracy-dump-public::after {
 	content: ' pub';
 }
 
-.tracy-dump-protected::after {
+.tracy-light .tracy-dump-protected::after {
 	content: ' pro';
 }
 
-.tracy-dump-private::after {
+.tracy-light .tracy-dump-private::after {
 	content: ' pri';
 }
 
-.tracy-dump-public::after,
-.tracy-dump-protected::after,
-.tracy-dump-private::after,
-.tracy-dump-hash {
+.tracy-light .tracy-dump-public::after,
+.tracy-light .tracy-dump-protected::after,
+.tracy-light .tracy-dump-private::after,
+.tracy-light .tracy-dump-hash {
 	font-size: 85%;
 	color: rgba(0, 0, 0, 0.5);
 }
 
-.tracy-dump-indent {
+.tracy-light .tracy-dump-indent {
 	display: none;
 }
 
-.tracy-dump-highlight {
+.tracy-light .tracy-dump-highlight {
 	background: #C22;
 	color: white;
 	border-radius: 2px;
@@ -107,7 +107,7 @@ span[data-tracy-href] {
 	border-bottom: 1px dotted rgba(0, 0, 0, .2);
 }
 
-.tracy-dump-flash {
+.tracy-light .tracy-dump-flash {
 	animation: tracy-dump-flash .2s ease;
 }
 

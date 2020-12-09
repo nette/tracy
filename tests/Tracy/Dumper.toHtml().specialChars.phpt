@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Assert::match(<<<XX
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (13)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-string">''</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-string">' '</span>

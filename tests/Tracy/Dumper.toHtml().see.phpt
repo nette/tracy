@@ -40,7 +40,7 @@ $var = [
 ];
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (8)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
@@ -109,7 +109,7 @@ $var = [
 ];
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump" data-tracy-snapshot='{"%d%":{"object":"Test","items":[["a",[[1,[[2,{"array":null,"length":1}]]]],0]]},"%d%":{"object":"Test","items":[["a",[[1,[[2,{"array":null,"length":1}]]]],0]]}}'
+<pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"Test","items":[["a",[[1,[[2,{"array":null,"length":1}]]]],0]]},"%d%":{"object":"Test","items":[["a",[[1,[[2,{"array":null,"length":1}]]]],0]]}}'
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>

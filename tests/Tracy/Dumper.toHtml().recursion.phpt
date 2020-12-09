@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 $arr = [1, 2, 3];
 $arr[] = &$arr;
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-number">2</span>
@@ -33,7 +33,7 @@ XX
 $arr = (object) ['x' => 1, 'y' => 2];
 $arr->z = &$arr;
 Assert::match(<<<'XX'
-<pre class="tracy-dump"
+<pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">x</span>: <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">y</span>: <span class="tracy-dump-number">2</span>

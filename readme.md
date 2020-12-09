@@ -273,6 +273,7 @@ You can also change the nesting depth by `Debugger::$maxDepth` and displayed str
 ```php
 Debugger::$maxDepth = 2; // default: 7
 Debugger::$maxLength = 50; // default: 150
+Debugger::$dumpTheme = 'dark'; // default: light
 ```
 
 The `dump()` function can display useful location information:
