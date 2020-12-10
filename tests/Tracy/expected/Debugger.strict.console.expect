@@ -3,6 +3,6 @@ Stack trace:
 #0 %a%: Tracy\Debugger::errorHandler(8, '%a%', '%a%', %a%)
 #1 %a%: third(Array)
 #2 %a%: second(true, false)
-#3 %a%: first(10, 'any string')
+#3 %a%: first(10, '%a%')
 #4 {main}
 Unable to log error: Logging directory is not specified.
