@@ -75,7 +75,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
-		$initialize = $this->initialization ?? $class->getMethod('initialize');
+		$initialize = $this->initialization ?? new Nette\PhpGenerator\Closure;
 		$initialize->addBody('if (!Tracy\Debugger::isEnabled()) { return; }');
 
 		$builder = $this->getContainerBuilder();
@@ -136,6 +136,10 @@ class TracyExtension extends Nette\DI\CompilerExtension
 				'$this->getService(?)->addPanel(?);',
 				Nette\DI\Helpers::filterArguments([$this->prefix('blueScreen'), $item])
 			));
+		}
+
+		if (empty($this->initialization)) {
+			$class->getMethod('initialize')->addBody("($initialize)();");
 		}
 
 		if (($dir = Tracy\Debugger::$logDirectory) && !is_writable($dir)) {
