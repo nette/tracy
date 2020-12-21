@@ -524,17 +524,25 @@ class Debugger
 	 */
 	public static function dump($var, bool $return = false)
 	{
+		$maxDepth = self::$maxDepth;
+		if (self::$productionMode === true || PHP_SAPI === 'cli') {
+			if ($maxDepth < 3) {
+				$maxDepth = 3;
+			} elseif ($maxDepth < 10) {
+				$maxDepth *= 2;
+			}
+		}
 		if ($return) {
-			return Helpers::capture(function () use ($var) {
+			return Helpers::capture(function () use ($var, $maxDepth) {
 				Dumper::dump($var, [
-					Dumper::DEPTH => self::$maxDepth,
+					Dumper::DEPTH => $maxDepth,
 					Dumper::TRUNCATE => self::$maxLength,
 				]);
 			});
 
 		} elseif (!self::$productionMode) {
 			Dumper::dump($var, [
-				Dumper::DEPTH => self::$maxDepth,
+				Dumper::DEPTH => $maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation,
 				Dumper::THEME => self::$dumpTheme,
