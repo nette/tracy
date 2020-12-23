@@ -271,6 +271,34 @@ bdump([1, 3, 5, 7, 9], 'odd numbers up to ten');
 ![bar dump](https://nette.github.io/tracy/images/tracy-bardump.png)
 
 
+Toggling
+------
+
+Tracy can sometimes overlap bottom of modals where the submit buttons are often located. This can occur e.g. when displaying the developer console, which reduces the height of the window and moves the dialog to the bottom of the page where Tracy has the default position. By enabling `toggleBarPanels` you can minimize Tracy bar instead of closing it what can be handy often.
+
+Configuration example for enable toggling:
+
+```neon
+tracy:
+	toggleBarPanels:
+		show: true
+```
+
+We can add exceptions for hiding panels:
+
+```neon
+tracy:
+	toggleBarPanels:
+		show: true
+		exclude:
+			- Tracy-dumps
+			- Nette-Bridges-DatabaseTracy-ConnectionPanel
+```
+
+Items in exclude array matches part of the `rel` attribute value in the panel.
+E.g. string 'Tracy-dumps' activates an exception for the panel with the `rel` attribute value 'tracy-debug-panel-Tracy-dumps' in the main bar. For the others (ajax, redirect) it matches 'tracy-debug-panel-Tracy-dumps-...'
+
+
 Timing
 ------
 

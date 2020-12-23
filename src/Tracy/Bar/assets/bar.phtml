@@ -32,6 +32,17 @@ namespace Tracy;
 <?php } endforeach ?>
 
 <?php if ($type === 'main'): ?>
+	<?php if (Debugger::$toggleBarPanels && isset(Debugger::$toggleBarPanels['show']) && Debugger::$toggleBarPanels['show']): ?>
+		<li class="tracy-bar-toggler">
+			<a
+				href="#"
+				rel="toggle"
+				data-title-maximize="maximize debug bar"
+				data-title-minimize="minimize debug bar"
+				data-excluded-panels="<?= htmlspecialchars(json_encode(Debugger::$toggleBarPanels['exclude'] ?? [])) ?>"
+			></a>
+		</li>
+	<?php endif ?>
 	<li><a href="#" rel="close" title="close debug bar">&times;</a></li>
 <?php endif ?>
 </ul>

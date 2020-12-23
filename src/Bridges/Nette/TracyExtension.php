@@ -36,6 +36,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		'blueScreen' => [], // of callback
 		'editorMapping' => [],
 		'netteMailer' => true,
+		'toggleBarPanels' => [],
 	];
 
 	/** @var bool */
