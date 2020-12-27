@@ -218,12 +218,17 @@ final class Renderer
 
 		} else {
 			$unit = $str->type === Value::TYPE_STRING_HTML ? 'characters' : 'bytes';
-			if (strpos($str->value, "\n") !== false) {
-				$indent = $depth
-					? '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					: '';
-				return ($depth ? "\n" : '')
-					. "<div class=\"tracy-dump-string\" title=\"{$str->length} $unit\">"
+			$count = substr_count($str->value, "\n");
+			if ($count) {
+				$collapsed = $indent = $toggle = null;
+				if ($depth) {
+					$collapsed = $count >= $this->collapseSub;
+					$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
+					$toggle = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">string</span>' . "\n";
+				}
+				return $toggle
+					. '<div class="tracy-dump-string' . ($collapsed ? ' tracy-collapsed' : '')
+					. '" title="' . $str->length . ' ' . $unit . '">'
 					. $indent
 					. "'"
 					. str_replace("\n", "\n" . $indent . ' ', $str->value)

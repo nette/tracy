@@ -160,14 +160,31 @@ function build(data, repository, collapsed, parentIds, keyType) {
 			]);
 		}
 
+		let count = (s.match(/\n/g) || []).length;
+		if (count) {
+			let collapsed = count >= COLLAPSE_COUNT;
+			return createEl(null, null, [
+				createEl('span', {'class': collapsed ? 'tracy-toggle tracy-collapsed' : 'tracy-toggle'}, ['string']),
+				'\n',
+				createEl(
+					'div',
+					{
+						'class': 'tracy-dump-string' + (collapsed ? ' tracy-collapsed' : ''),
+						'title': data.length + (data.bin ? ' bytes' : ' characters'),
+					},
+					{html: '\'' + s.replace(/\n/g, '\n ') + '\''}
+				),
+			]);
+		}
+
 		return createEl(null, null, [
 			createEl(
-				s.indexOf('\n') < 0 ? 'span' : 'div',
+				'span',
 				{
 					'class': 'tracy-dump-string',
 					'title': data.length + (data.bin ? ' bytes' : ' characters'),
 				},
-				{html: '\'' + s.replace(/\n/g, '\n ') + '\''}
+				{html: '\'' + s + '\''}
 			),
 		]);
 

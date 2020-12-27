@@ -80,11 +80,11 @@ XX
 Assert::match(<<<'XX'
 array (3)
    0 => 'hello'
-   1 =>
+   1 => string
    |  'a\n
    |   b'
    2 => array (1)
-   |  0 =>
+   |  0 => string
    |  |  'a\n
    |  |   b'
 XX

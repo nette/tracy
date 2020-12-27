@@ -64,11 +64,11 @@ Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (3)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-string" title="5 characters">'hello'</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> =>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle">string</span>
 <div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  </span>'a<span>\n</span>
 <span class="tracy-dump-indent">   |  </span> b'
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> =>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle">string</span>
 <div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  |  </span>'a<span>\n</span>
 <span class="tracy-dump-indent">   |  |  </span> b'
 </div></div></div></pre>

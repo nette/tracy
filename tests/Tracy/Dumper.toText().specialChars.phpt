@@ -19,11 +19,11 @@ array (13)
    2 => '\x00'
    3 => '\xFF'
    4 => 'Iñtërnâtiônàlizætiøn'
-   5 =>
+   5 => string
    |  'utf \n
    |   \r\t    \e\x00 Iñtër\n'
    6 => 'utf \n\r\t\xab Iñtër'
-   7 =>
+   7 => string
    |  'binary \n
    |   \r\t    \e\x00 I\xC3\xB1t\xC3\xABr \xA0'
    8 => 'binary \n\r\t\xab I\xC3\xB1t\xC3\xABr \xA0'
