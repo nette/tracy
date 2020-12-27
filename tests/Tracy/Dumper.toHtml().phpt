@@ -40,6 +40,8 @@ Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string
 
 Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string">\'<span>\\x00</span>\'</span></pre>' . "\n", Dumper::toHtml("\x00"));
 
+Assert::same('<pre class="tracy-dump tracy-light"><div class="tracy-dump-string" title="3 characters">\'a<span>\n</span>' . "\n b'</div></pre>\n", Dumper::toHtml("a\nb"));
+
 Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-array">array</span> (0)</pre>' . "\n", Dumper::toHtml([]));
 
 
@@ -55,6 +57,23 @@ Assert::same(str_replace(
 
 XX
 ), Dumper::toHtml([1]));
+
+
+// multiline
+Assert::match(<<<'XX'
+<pre class="tracy-dump tracy-light"
+><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (3)</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-string" title="5 characters">'hello'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> =>
+<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  </span>'a<span>\n</span>
+<span class="tracy-dump-indent">   |  </span> b'
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> =>
+<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  |  </span>'a<span>\n</span>
+<span class="tracy-dump-indent">   |  |  </span> b'
+</div></div></div></pre>
+XX
+, Dumper::toHtml(['hello', "a\nb", ["a\nb"]]));
 
 
 // array (with snapshot)

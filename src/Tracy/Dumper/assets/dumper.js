@@ -162,14 +162,12 @@ function build(data, repository, collapsed, parentIds, keyType) {
 
 		return createEl(null, null, [
 			createEl(
-				'span',
+				s.indexOf('\n') < 0 ? 'span' : 'div',
 				{
 					'class': 'tracy-dump-string',
 					'title': data.length + (data.bin ? ' bytes' : ' characters'),
 				},
-				{html: s.indexOf('\n') < 0
-					? '\'' + s + '\''
-					: '\n   \'' + s.replace(/\n/g, '\n    ') + '\''}
+				{html: '\'' + s.replace(/\n/g, '\n ') + '\''}
 			),
 		]);
 

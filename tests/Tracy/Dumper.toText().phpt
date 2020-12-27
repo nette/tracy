@@ -40,6 +40,8 @@ Assert::same("'0'\n", Dumper::toText('0'));
 
 Assert::same("'\\x00'\n", Dumper::toText("\x00"));
 
+Assert::same("'a\\n\n b'\n", Dumper::toText("a\nb"));
+
 Assert::same('array (0)' . "\n", Dumper::toText([]));
 
 
@@ -72,6 +74,21 @@ array (5)
    |  7 => 7
 XX
 , Dumper::toText([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]));
+
+
+// multiline
+Assert::match(<<<'XX'
+array (3)
+   0 => 'hello'
+   1 =>
+   |  'a\n
+   |   b'
+   2 => array (1)
+   |  0 =>
+   |  |  'a\n
+   |  |   b'
+XX
+, Dumper::toText(['hello', "a\nb", ["a\nb"]]));
 
 
 // object

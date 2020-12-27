@@ -151,7 +151,7 @@ final class Renderer
 				return '<span class="tracy-dump-number">' . self::jsonEncode($value) . '</span>';
 
 			case is_string($value):
-				return $this->renderString($value, $keyType);
+				return $this->renderString($value, $depth, $keyType);
 
 			case is_array($value):
 			case $value->type === Value::TYPE_ARRAY:
@@ -171,7 +171,7 @@ final class Renderer
 
 			case $value->type === Value::TYPE_STRING_HTML:
 			case $value->type === Value::TYPE_BINARY_HTML:
-				return $this->renderString($value, $keyType);
+				return $this->renderString($value, $depth, $keyType);
 
 			case $value->type === Value::TYPE_RESOURCE:
 				return $this->renderResource($value, $depth);
@@ -186,11 +186,12 @@ final class Renderer
 	 * @param  string|Value  $str
 	 * @param  string|int|null  $keyType
 	 */
-	private function renderString($str, $keyType): string
+	private function renderString($str, int $depth, $keyType): string
 	{
 		if ($keyType === self::TYPE_ARRAY_KEY) {
+			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . '</span> ';
 			return '<span class="tracy-dump-string">\''
-				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n ", $str->value))
+				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n" . $indent, $str->value))
 				. "'</span>";
 
 		} elseif ($keyType !== null) {
@@ -200,12 +201,13 @@ final class Renderer
 				Value::PROP_DYNAMIC => 'tracy-dump-dynamic',
 				Value::PROP_VIRTUAL => 'tracy-dump-virtual',
 			];
+			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . '</span> ';
 			$title = is_string($keyType)
 				? ' title="declared in ' . Helpers::escapeHtml($keyType) . '"'
 				: null;
 			return '<span class="'
 				. ($title ? 'tracy-dump-private' : $classes[$keyType]) . '"' . $title . '>'
-				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n ", "'$str->value'"))
+				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n" . $indent, "'$str->value'"))
 				. '</span>';
 
 		} elseif (is_string($str)) {
@@ -216,10 +218,24 @@ final class Renderer
 
 		} else {
 			$unit = $str->type === Value::TYPE_STRING_HTML ? 'characters' : 'bytes';
+			if (strpos($str->value, "\n") !== false) {
+				$indent = $depth
+					? '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
+					: '';
+				return ($depth ? "\n" : '')
+					. "<div class=\"tracy-dump-string\" title=\"{$str->length} $unit\">"
+					. $indent
+					. "'"
+					. str_replace("\n", "\n" . $indent . ' ', $str->value)
+					. "'"
+					. ($depth ? "\n" : '')
+					. '</div>';
+			}
+
 			return '<span class="tracy-dump-string"'
-				. ($str->length > 1 ? " title=\"$str->length $unit\">" : '>')
-				. (strpos($str->value, "\n") === false ? '' : "\n   ") . "'"
-				. str_replace("\n", "\n    ", $str->value)
+				. ($str->length > 1 ? " title=\"{$str->length} $unit\"" : '')
+				. ">'"
+				. $str->value
 				. "'</span>";
 		}
 	}
