@@ -18,6 +18,8 @@ use Tracy\Helpers;
  */
 final class Renderer
 {
+	private const TYPE_ARRAY_KEY = 'array';
+
 	/** @var int|bool */
 	public $collapseTop = 14;
 
@@ -131,6 +133,7 @@ final class Renderer
 
 	/**
 	 * @param  mixed  $value
+	 * @param  string|int|null  $keyType
 	 */
 	private function renderVar($value, int $depth = 0, $keyType = null): string
 	{
@@ -155,7 +158,7 @@ final class Renderer
 				return $this->renderArray($value, $depth);
 
 			case $value->type === Value::TYPE_REF:
-				return $this->renderVar($this->snapshot[$value->value], $depth);
+				return $this->renderVar($this->snapshot[$value->value], $depth, $keyType);
 
 			case $value->type === Value::TYPE_OBJECT:
 				return $this->renderObject($value, $depth);
@@ -181,10 +184,11 @@ final class Renderer
 
 	/**
 	 * @param  string|Value  $str
+	 * @param  string|int|null  $keyType
 	 */
 	private function renderString($str, $keyType): string
 	{
-		if ($keyType === 'array') {
+		if ($keyType === self::TYPE_ARRAY_KEY) {
 			return '<span class="tracy-dump-string">\''
 				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n ", $str->value))
 				. "'</span>";
@@ -274,7 +278,7 @@ final class Renderer
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + [2 => null];
 			$out .= $indent
-				. $this->renderVar($k, $depth + 1, 'array')
+				. $this->renderVar($k, $depth + 1, self::TYPE_ARRAY_KEY)
 				. ' => '
 				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))
