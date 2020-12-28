@@ -12,23 +12,26 @@ use Tracy\Dumper;
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::match(<<<XX
+Assert::match(<<<'XX'
 array (13)
    0 => ''
    1 => ' '
-   2 => '\\x00'
-   3 => '\\xFF'
+   2 => '\x00'
+   3 => '\xFF'
    4 => 'Iñtërnâtiônàlizætiøn'
-   5 =>\n   'utf \\n\n    \\r\\t    \\e\\x00 Iñtër'
-   6 => 'utf \\n\\r\\t\\xab Iñtër'
+   5 =>
+   'utf \n
+    \r\t    \e\x00 Iñtër'
+   6 => 'utf \n\r\t\xab Iñtër'
    7 =>
-   'binary \\n\n    \\r\\t    \\e\\x00 I\\xC3\\xB1t\\xC3\\xABr \\xA0'
-   8 => 'binary \\n\\r\\t\\xab I\\xC3\\xB1t\\xC3\\xABr \\xA0'
-   'utf \\n\\r\\t\\xab Iñtër' => 1
-   'utf \\n
- \\r\\t    \\e\\x00 Iñtër' => 2
-   'utf \\n
- \\r\\t    \\e\\x00 I\\xC3\\xB1t\\xC3\\xABr \\xA0' => 3
+   'binary \n
+    \r\t    \e\x00 I\xC3\xB1t\xC3\xABr \xA0'
+   8 => 'binary \n\r\t\xab I\xC3\xB1t\xC3\xABr \xA0'
+   'utf \n\r\t\xab Iñtër' => 1
+   'utf \n
+ \r\t    \e\x00 Iñtër' => 2
+   'utf \n
+ \r\t    \e\x00 I\xC3\xB1t\xC3\xABr \xA0' => 3
    '<div> &amp;' => '<div> &amp;'
 XX
 , Dumper::toText([
