@@ -114,11 +114,7 @@ final class Renderer
 			$this->parents = $this->snapshot = $this->above = [];
 		}
 
-		if ($colors) {
-			$s = preg_replace_callback('#<span class="tracy-dump-(\w+)"[^>]*>|</span>#', function ($m) use ($colors): string {
-				return "\033[" . (isset($m[1], $colors[$m[1]]) ? $colors[$m[1]] : '0') . 'm';
-			}, $s);
-		}
+		$s = $colors ? self::htmlToAnsi($s, $colors) : $s;
 		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES | ENT_HTML5);
 		$s = str_replace('…', '...', $s);
 		$s .= substr($s, -1) === "\n" ? '' : "\n";
@@ -460,5 +456,25 @@ final class Renderer
 		} finally {
 			@ini_set('serialize_precision', $old); // @ may be disabled
 		}
+	}
+
+
+	private static function htmlToAnsi(string $s, array $colors): string
+	{
+		$stack = ['0'];
+		$s = preg_replace_callback(
+			'#<\w+(?: class="tracy-dump-(\w+)")?[^>]*>|</\w+>#',
+			function ($m) use ($colors, &$stack): string {
+				if ($m[0][1] === '/') {
+					array_pop($stack);
+				} else {
+					$stack[] = isset($m[1], $colors[$m[1]]) ? $colors[$m[1]] : '0';
+				}
+				return "\033[" . end($stack) . 'm';
+			},
+			$s
+		);
+		$s = preg_replace('/\e\[0m(\n*)(?=\e)/', '$1', $s);
+		return $s;
 	}
 }
