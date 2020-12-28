@@ -105,9 +105,8 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">new</span>: <span class="tracy-dump-number">7</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-number">8</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">9</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">&apos;&apos;</span>: <span class="tracy-dump-number">10</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">'a<span>\x00\n</span>
- '</span>: <span class="tracy-dump-number">11</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">''</span>: <span class="tracy-dump-number">10</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">'a<span>\x00\n</span>'</span>: <span class="tracy-dump-number">11</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">'a<span>\xA0</span>'</span>: <span class="tracy-dump-number">12</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Child">y</span>: <span class="tracy-dump-number">2</span>

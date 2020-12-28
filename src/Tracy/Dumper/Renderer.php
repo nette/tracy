@@ -205,7 +205,7 @@ final class Renderer
 				: null;
 			return '<span class="'
 				. ($title ? 'tracy-dump-private' : $classes[$keyType]) . '"' . $title . '>'
-				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n ", $str->value))
+				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n ", "'$str->value'"))
 				. '</span>';
 
 		} elseif (is_string($str)) {

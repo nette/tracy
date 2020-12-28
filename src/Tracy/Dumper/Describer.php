@@ -242,8 +242,13 @@ final class Describer
 	 */
 	public function describeKey(string $key)
 	{
-		$simple = preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^true|false|null$#iD', $key);
-		return $this->describeString($simple ? $key : "'$key'");
+		if (preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^(true|false|null)$#iD', $key)) {
+			return $key;
+		}
+		$value = $this->describeString($key);
+		return is_string($value) // ensure result is Value
+			? new Value(Value::TYPE_STRING_HTML, $key, strlen(utf8_decode($key)))
+			: $value;
 	}
 
 

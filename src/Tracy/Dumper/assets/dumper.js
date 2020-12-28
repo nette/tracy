@@ -137,6 +137,10 @@ function build(data, repository, collapsed, parentIds, keyType) {
 			]);
 
 		} else if (keyType !== undefined) {
+			if (type !== 'string') {
+				s = "'" + s + "'";
+			}
+
 			const classes = [
 				'tracy-dump-public',
 				'tracy-dump-protected',
