@@ -263,7 +263,7 @@ final class Describer
 		$class = $class ?? $value->value;
 		$value->items[] = [
 			$this->describeKey($k),
-			$this->isSensitive($k, $v)
+			$type !== Value::PROP_VIRTUAL && $this->isSensitive($k, $v, $class)
 				? new Value(Value::TYPE_TEXT, self::hideValue($v))
 				: $this->describeVar($v, $value->depth + 1, $refId),
 			$type === Value::PROP_PRIVATE ? $class : $type,
@@ -288,11 +288,11 @@ final class Describer
 	}
 
 
-	private function isSensitive(string $k, $v): bool
+	private function isSensitive(string $key, $val, string $class = null): bool
 	{
 		return
-			($this->scrubber !== null && ($this->scrubber)($k, $v))
-			|| isset($this->keysToHide[strtolower($k)]);
+			($this->scrubber !== null && ($this->scrubber)($key, $val, $class))
+			|| isset($this->keysToHide[strtolower($key)]);
 	}
 
 

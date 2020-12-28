@@ -27,6 +27,7 @@ $obj = (object) [
 $scrubber = function (string $k, $v = null): bool {
 	return strtolower($k) === 'pin' || strtolower($k) === 'foo' || $v === 42;
 };
+
 $expect1 = <<<'XX'
 stdClass #%d%
    a: 456
@@ -62,3 +63,63 @@ stdClass #%d%
    |  'bar' => ***** (integer)
 XX;
 Assert::match($expect2, Dumper::toText($obj, [Dumper::SCRUBBER => $scrubber, Dumper::KEYS_TO_HIDE => ['password']]));
+
+
+// class + property name test
+class ParentClass
+{
+	public $foo;
+	private $bar;
+}
+
+class ChildClass extends ParentClass
+{
+	public $foo2 = ['a' => 'b'];
+	private $bar;
+}
+
+$scrubber = function (string $k, $v, $class) use (&$log): bool {
+	$log[] = [$k, $class];
+	return false; // accept
+};
+$log = [];
+Dumper::toText(new ChildClass, [Dumper::SCRUBBER => $scrubber]);
+Assert::same([
+	['foo2', 'ChildClass'],
+	['a', null],
+	['bar', 'ChildClass'],
+	['foo', 'ParentClass'],
+	['bar', 'ParentClass'],
+], $log);
+
+
+$scrubber = function (string $k, $v, $class) use (&$log): bool {
+	$log[] = [$k, $class];
+	return true; // reject
+};
+$log = [];
+Dumper::toText(new ChildClass, [Dumper::SCRUBBER => $scrubber]);
+Assert::same([
+	['foo2', 'ChildClass'],
+	['bar', 'ChildClass'],
+	['foo', 'ParentClass'],
+	['bar', 'ParentClass'],
+], $log);
+
+
+// ignores special types
+$arr = [
+	'res' => fopen(__FILE__, 'r'),
+	'closure' => function ($a, $b) use ($scrubber) {},
+];
+
+$scrubber = function (string $k, $v, $class) use (&$log): bool {
+	$log[] = [$k, $class];
+	return false; // accept
+};
+$log = [];
+Dumper::toText($arr, [Dumper::SCRUBBER => $scrubber]);
+Assert::same([
+	['res', null],
+	['closure', null],
+], $log);
