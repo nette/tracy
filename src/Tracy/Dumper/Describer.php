@@ -292,7 +292,8 @@ final class Describer
 	{
 		return
 			($this->scrubber !== null && ($this->scrubber)($key, $val, $class))
-			|| isset($this->keysToHide[strtolower($key)]);
+			|| isset($this->keysToHide[strtolower($key)])
+			|| isset($this->keysToHide[strtolower($class . '::$' . $key)]);
 	}
 
 

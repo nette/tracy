@@ -24,7 +24,7 @@ $obj = (object) [
 
 Assert::match(<<<'XX'
 stdClass #%d%
-   a: 456
+   a: ***** (integer)
    password: ***** (string)
    PASSWORD: ***** (string)
    Pin: ***** (string)
@@ -34,7 +34,7 @@ stdClass #%d%
    |  'PASSWORD' => ***** (string)
    |  'Pin' => ***** (string)
 XX
-, Dumper::toText($obj, [Dumper::KEYS_TO_HIDE => ['password', 'PIN']]));
+, Dumper::toText($obj, [Dumper::KEYS_TO_HIDE => ['password', 'PIN', 'stdClass::$a']]));
 
 
 $snapshot = [];
