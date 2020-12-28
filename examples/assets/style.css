@@ -11,10 +11,15 @@ html.arrow {
 	height: 100%;
 }
 
-h1 {
+h1, h2 {
 	font-size: 210%;
 	font-weight: normal;
 	color: #036;
+}
+
+h2 {
+	margin-top: 2em;
+	font-size: 140%;
 }
 
 pre.tracy-dump {
