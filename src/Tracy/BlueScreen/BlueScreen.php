@@ -24,7 +24,7 @@ class BlueScreen
 	public $collapsePaths = [];
 
 	/** @var int  */
-	public $maxDepth = 3;
+	public $maxDepth = 5;
 
 	/** @var int  */
 	public $maxLength = 150;
@@ -33,7 +33,7 @@ class BlueScreen
 	public $scrubber;
 
 	/** @var string[] */
-	public $keysToHide = ['password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin'];
+	public $keysToHide = ['password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin', self::class . '::$snapshot'];
 
 	/** @var bool */
 	public $showEnvironment = true;
