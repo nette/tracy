@@ -28,9 +28,9 @@ final class Value implements \JsonSerializable
 	public const
 		PROP_PUBLIC = 0,
 		PROP_PROTECTED = 1,
+		PROP_PRIVATE = 2,
 		PROP_DYNAMIC = 3,
 		PROP_VIRTUAL = 4;
-	// private is string
 
 	/** @var string */
 	public $type;

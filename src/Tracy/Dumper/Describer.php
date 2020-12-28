@@ -247,16 +247,27 @@ final class Describer
 	}
 
 
-	public function addPropertyTo(Value $value, string $k, $v, $type = Value::PROP_VIRTUAL, int $refId = null)
-	{
+	public function addPropertyTo(
+		Value $value,
+		string $k,
+		$v,
+		$type = Value::PROP_VIRTUAL,
+		int $refId = null,
+		string $class = null
+	) {
 		if ($value->depth && count($value->items ?? []) >= $this->maxItems) {
 			$value->length = ($value->length ?? count($value->items)) + 1;
 			return;
 		}
-		$v = $this->isSensitive($k, $v)
-			? new Value(Value::TYPE_TEXT, self::hideValue($v))
-			: $this->describeVar($v, $value->depth + 1, $refId);
-		$value->items[] = [$this->describeKey($k), $v, $type] + ($refId ? [3 => $refId] : []);
+
+		$class = $class ?? $value->value;
+		$value->items[] = [
+			$this->describeKey($k),
+			$this->isSensitive($k, $v)
+				? new Value(Value::TYPE_TEXT, self::hideValue($v))
+				: $this->describeVar($v, $value->depth + 1, $refId),
+			$type === Value::PROP_PRIVATE ? $class : $type,
+		] + ($refId ? [3 => $refId] : []);
 	}
 
 

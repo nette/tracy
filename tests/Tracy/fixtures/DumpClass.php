@@ -23,3 +23,7 @@ class Child extends Test
 	protected $y2 = 5;
 	private $z2 = 6;
 }
+
+class GrandChild extends Child
+{
+}

@@ -32,17 +32,22 @@ final class Exposer
 			);
 		}
 
-		foreach ($props as $k => [$name, $type]) {
+		foreach ($props as $k => [$name, $class, $type]) {
 			if (array_key_exists($k, $values)) {
 				$describer->addPropertyTo(
 					$value,
 					$name,
 					$values[$k],
 					$type,
-					$describer->getReferenceId($values, $k)
+					$describer->getReferenceId($values, $k),
+					$class
 				);
 			} else {
-				$value->items[] = [$name, new Value(Value::TYPE_TEXT, 'unset'), $type];
+				$value->items[] = [
+					$name,
+					new Value(Value::TYPE_TEXT, 'unset'),
+					$type === Value::PROP_PRIVATE ? $class : $type,
+				];
 			}
 		}
 	}
@@ -60,14 +65,14 @@ final class Exposer
 
 		foreach ($rc->getProperties() as $prop) {
 			$name = $prop->getName();
-			if ($prop->isStatic()) {
+			if ($prop->isStatic() || $prop->getDeclaringClass()->getName() !== $class) {
 				// nothing
 			} elseif ($prop->isPrivate()) {
-				$props["\x00" . $class . "\x00" . $name] = [$name, $class];
+				$props["\x00" . $class . "\x00" . $name] = [$name, $class, Value::PROP_PRIVATE];
 			} elseif ($prop->isProtected()) {
-				$props["\x00*\x00" . $name] = [$name, Value::PROP_PROTECTED];
+				$props["\x00*\x00" . $name] = [$name, $class, Value::PROP_PROTECTED];
 			} else {
-				$props[$name] = [$name, Value::PROP_PUBLIC];
+				$props[$name] = [$name, $class, Value::PROP_PUBLIC];
 				unset($parentProps["\x00*\x00" . $name]);
 			}
 		}
@@ -110,7 +115,7 @@ final class Exposer
 		$obj->setFlags(\ArrayObject::STD_PROP_LIST);
 		self::exposeObject($obj, $value, $describer);
 		$obj->setFlags($flags);
-		$describer->addPropertyTo($value, 'storage', $obj->getArrayCopy(), \ArrayObject::class);
+		$describer->addPropertyTo($value, 'storage', $obj->getArrayCopy(), Value::PROP_PRIVATE, null, \ArrayObject::class);
 	}
 
 
@@ -163,12 +168,14 @@ final class Exposer
 			if (isset($k[0]) && $k[0] === "\x00") {
 				$info = explode("\00", $k);
 				$k = end($info);
-				$type = $info[1] === '*' ? Value::PROP_PROTECTED : $info[1];
+				$type = $info[1] === '*' ? Value::PROP_PROTECTED : Value::PROP_PRIVATE;
+				$decl = $type === Value::PROP_PRIVATE ? $info[1] : null;
 			} else {
 				$type = Value::PROP_PUBLIC;
 				$k = (string) $k;
+				$decl = null;
 			}
-			$describer->addPropertyTo($value, $k, $v, $type, $refId);
+			$describer->addPropertyTo($value, $k, $v, $type, $refId, $decl);
 		}
 		$value->value = $class . ' (Incomplete Class)';
 	}
