@@ -20,6 +20,9 @@ final class Describer
 {
 	public const HIDDEN_VALUE = '*****';
 
+	// Number.MAX_SAFE_INTEGER
+	private const JS_SAFE_INTEGER = 1 << 53 - 1;
+
 	/** @var int */
 	public $maxDepth = 7;
 
@@ -80,15 +83,22 @@ final class Describer
 	 */
 	private function describeVar($var, int $depth = 0, int $refId = null)
 	{
-		switch (true) {
-			case $var === null:
-			case is_bool($var):
-			case is_int($var):
-				return $var;
-			default:
-				$m = 'describe' . explode(' ', gettype($var))[0];
-				return $this->$m($var, $depth, $refId);
+		if ($var === null || is_bool($var)) {
+			return $var;
 		}
+		$m = 'describe' . explode(' ', gettype($var))[0];
+		return $this->$m($var, $depth, $refId);
+	}
+
+
+	/**
+	 * @return Value|int
+	 */
+	private function describeInteger(int $num)
+	{
+		return $num <= self::JS_SAFE_INTEGER && $num >= -self::JS_SAFE_INTEGER
+			? $num
+			: new Value(Value::TYPE_NUMBER, "$num");
 	}
 
 

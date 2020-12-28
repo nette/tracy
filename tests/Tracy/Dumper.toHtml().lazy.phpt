@@ -27,9 +27,16 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</spa
 
 // lazy dump of array
 Assert::match(<<<'XX'
-<pre class="tracy-dump" data-tracy-snapshot='[]' data-tracy-dump='[[0,null],[1,true],[2,false],[3,0],[4,{"number":"0.0"}],[5,"string"],[6,{"string":"\u0027\u0026amp;\"","length":3}],[7,{"string":"<span>\\x00</span>","length":1}],[8,{"number":"INF"}],[9,{"number":"-INF"}],[10,{"number":"NAN"}]]'></pre>
+<pre class="tracy-dump" data-tracy-snapshot='[]' data-tracy-dump='[[0,null],[1,true],[2,false],[3,"string"],[4,{"string":"\u0027\u0026amp;\"","length":3}],[5,{"string":"<span>\\x00</span>","length":1}]]'></pre>
 XX
-, Dumper::toHtml([null, true, false, 0, 0.0, 'string', "'&\"", "\x00", INF, -INF, NAN], $options));
+, Dumper::toHtml([null, true, false, 'string', "'&\"", "\x00"], $options));
+
+
+// lazy dump of numbers
+Assert::match(<<<'XX'
+<pre class="tracy-dump" data-tracy-snapshot='[]' data-tracy-dump='[[0,0],[1,{"number":"0.0"}],[2,1],[3,{"number":"1.0"}],[4,{"number":"9007199254740999"}],[5,{"number":"-9007199254740999"}],[6,{"number":"INF"}],[7,{"number":"-INF"}],[8,{"number":"NAN"}]]'></pre>
+XX
+, Dumper::toHtml([0, 0.0, 1, 1.0, 9007199254740999, -9007199254740999, INF, -INF, NAN], $options));
 
 
 // live dump of object
