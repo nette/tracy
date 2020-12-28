@@ -370,7 +370,9 @@ class Helpers
 				. strtr(self::truncateString($s, -10, $utf), $table)
 			: strtr($s, $table);
 
-		return str_replace('</span><span>', '', $s);
+		$s = str_replace('</span><span>', '', $s);
+		$s = preg_replace('~\n$~D', '', $s);
+		return $s;
 	}
 
 
