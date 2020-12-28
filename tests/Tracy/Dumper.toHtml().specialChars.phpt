@@ -21,16 +21,16 @@ Assert::match(<<<XX
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">3</span> => <span class="tracy-dump-string">'<span>\\xFF</span>'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">4</span> => <span class="tracy-dump-string" title="20 characters">'Iñtërnâtiônàlizætiøn'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">5</span> => <span class="tracy-dump-string" title="15 characters">
-   'utf <span>\\n</span>\n    <span>\\r\\t</span>\t<span>\\e\\x00</span> Iñtër'</span>
+   'utf <span>\\n</span>\n    <span>\\r\\t</span>    <span>\\e\\x00</span> Iñtër'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">6</span> => <span class="tracy-dump-string" title="20 characters">'utf \\n\\r\\t\\xab Iñtër'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">7</span> => <span class="tracy-dump-string" title="22 bytes">
-   'binary <span>\\n</span>\n    <span>\\r\\t</span>\t<span>\\e\\x00</span> I<span>\\xC3\\xB1</span>t<span>\\xC3\\xAB</span>r <span>\\xA0</span>'</span>
+   'binary <span>\\n</span>\n    <span>\\r\\t</span>    <span>\\e\\x00</span> I<span>\\xC3\\xB1</span>t<span>\\xC3\\xAB</span>r <span>\\xA0</span>'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">8</span> => <span class="tracy-dump-string" title="27 bytes">'binary \\n\\r\\t\\xab I<span>\\xC3\\xB1</span>t<span>\\xC3\\xAB</span>r <span>\\xA0</span>'</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-string">'utf \\n\\r\\t\\xab Iñtër'</span> => <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-string">'utf <span>\\n</span>
- <span>\\r\\t</span>	<span>\\e\\x00</span> Iñtër'</span> => <span class="tracy-dump-number">2</span>
+ <span>\\r\\t</span>    <span>\\e\\x00</span> Iñtër'</span> => <span class="tracy-dump-number">2</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-string">'utf <span>\\n</span>
- <span>\\r\\t</span>	<span>\\e\\x00</span> I<span>\\xC3\\xB1</span>t<span>\\xC3\\xAB</span>r <span>\\xA0</span>'</span> => <span class="tracy-dump-number">3</span>
+ <span>\\r\\t</span>    <span>\\e\\x00</span> I<span>\\xC3\\xB1</span>t<span>\\xC3\\xAB</span>r <span>\\xA0</span>'</span> => <span class="tracy-dump-number">3</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-string">'&lt;div> &amp;amp;'</span> => <span class="tracy-dump-string" title="11 characters">'&lt;div> &amp;amp;'</span>
 </div></pre>
 XX

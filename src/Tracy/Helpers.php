@@ -350,7 +350,7 @@ class Helpers
 			$tableB = $tableU = [
 				"\r" => '<span>\r</span>',
 				"\n" => "<span>\\n</span>\n",
-				"\t" => "<span>\\t</span>\t",
+				"\t" => '<span>\\t</span>    ',
 				"\e" => '<span>\e</span>',
 				'<' => '&lt;',
 				'&' => '&amp;',
