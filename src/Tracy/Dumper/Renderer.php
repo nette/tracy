@@ -375,7 +375,7 @@ final class Renderer
 			if ($this->lazy !== false) {
 				$ref = new Value(Value::TYPE_REF, $resource->id);
 				$this->copySnapshot($ref);
-				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . "</span>\n";
+				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
 			}
 			return $out . ' <i>see above</i>';
 
