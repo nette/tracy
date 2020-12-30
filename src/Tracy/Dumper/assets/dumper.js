@@ -210,5 +210,5 @@
 
 
 	let Tracy = window.Tracy = window.Tracy || {};
-	Tracy.Dumper = Dumper;
+	Tracy.Dumper = Tracy.Dumper || Dumper;
 })();

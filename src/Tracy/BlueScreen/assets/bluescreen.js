@@ -71,5 +71,5 @@
 
 
 	let Tracy = window.Tracy = window.Tracy || {};
-	Tracy.BlueScreen = BlueScreen;
+	Tracy.BlueScreen = Tracy.BlueScreen || BlueScreen;
 })();
