@@ -53,11 +53,21 @@
 }
 
 .tracy-dark div.tracy-dump-string {
+	position: relative;
 	padding-left: 3.5ex;
 }
 
 .tracy-dark .tracy-dump-lq {
 	margin-left: -1ex;
+}
+
+.tracy-dark div.tracy-dump-string:before {
+	content: '';
+	position: absolute;
+	left: 3ex;
+	top: 1.5em;
+	bottom: 0;
+	border-left: 1px solid rgba(255, 255, 255, .1);
 }
 
 .tracy-dark .tracy-dump-virtual span,
