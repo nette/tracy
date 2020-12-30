@@ -362,10 +362,10 @@ function UnknownEntityException() {}
 
 
 let Tracy = window.Tracy = window.Tracy || {};
-Tracy.Dumper = Dumper;
+Tracy.Dumper = Tracy.Dumper || Dumper;
 
 function init() {
-	Dumper.init();
+	Tracy.Dumper.init();
 }
 
 if (document.readyState === 'loading') {
