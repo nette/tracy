@@ -46,12 +46,12 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-array">array</span> (1) …
-</div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span>'</span>a<span>'</span></span> => <span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+</div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>a<span>'</span></span> => <span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">b</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-string"><span>'</span>c<span>'</span></span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (5)</span>
+<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>c<span>'</span></span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (5)</span>
 <div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span> <i>see below</i>
 <span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span> …
-<span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-hash">&1</span> <span class="tracy-dump-array">array</span> (1) <i>see below</i>
+<span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-hash">&%d%</span> <span class="tracy-dump-array">array</span> (1) <i>see below</i>
 <span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">3</span> => <span class="tracy-dump-array">array</span> (1) …
 <span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">4</span> => <span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">@%d%</span></span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   |  |  |  |  </span><span class="tracy-dump-virtual">timed_out</span>: <span class="tracy-dump-bool">false</span>
@@ -115,9 +115,9 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-array">array</span> (1) …
-</div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span>'</span>a<span>'</span></span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+</div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>a<span>'</span></span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">b</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-string"><span>'</span>c<span>'</span></span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
+<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>c<span>'</span></span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 </div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>

@@ -189,9 +189,9 @@ final class Renderer
 	private function renderString($str, int $depth, $keyType): string
 	{
 		if ($keyType === self::TYPE_ARRAY_KEY) {
-			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . '</span> ';
+			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . ' </span>';
 			return '<span class="tracy-dump-string">'
-				. "<span>'</span>"
+				. "<span class='tracy-dump-lq'>'</span>"
 				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n" . $indent, $str->value))
 				. "<span>'</span>"
 				. '</span>';
@@ -203,7 +203,7 @@ final class Renderer
 				Value::PROP_DYNAMIC => 'tracy-dump-dynamic',
 				Value::PROP_VIRTUAL => 'tracy-dump-virtual',
 			];
-			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . '</span> ';
+			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . ' </span>';
 			$title = is_string($keyType)
 				? ' title="declared in ' . Helpers::escapeHtml($keyType) . '"'
 				: null;
@@ -211,7 +211,7 @@ final class Renderer
 				. ($title ? 'tracy-dump-private' : $classes[$keyType]) . '"' . $title . '>'
 				. (is_string($str)
 					? Helpers::escapeHtml($str)
-					: "<span>'</span>" . str_replace("\n", "\n" . $indent, $str->value) . "<span>'</span>")
+					: "<span class='tracy-dump-lq'>'</span>" . str_replace("\n", "\n" . $indent, $str->value) . "<span>'</span>")
 				. '</span>';
 
 		} elseif (is_string($str)) {
@@ -228,18 +228,20 @@ final class Renderer
 			$unit = $str->type === Value::TYPE_STRING_HTML ? 'characters' : 'bytes';
 			$count = substr_count($str->value, "\n");
 			if ($count) {
-				$collapsed = $indent = $toggle = null;
+				$collapsed = $indent1 = $toggle = null;
+				$indent = '<span class="tracy-dump-indent"> </span>';
 				if ($depth) {
 					$collapsed = $count >= $this->collapseSub;
-					$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
+					$indent1 = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
+					$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . ' </span>';
 					$toggle = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">string</span>' . "\n";
 				}
 				return $toggle
 					. '<div class="tracy-dump-string' . ($collapsed ? ' tracy-collapsed' : '')
 					. '" title="' . $str->length . ' ' . $unit . '">'
-					. $indent
-					. "<span>'</span>"
-					. str_replace("\n", "\n" . $indent . ' ', $str->value)
+					. $indent1
+					. '<span' . ($count ? ' class="tracy-dump-lq"' : '') . ">'</span>"
+					. str_replace("\n", "\n" . $indent, $str->value)
 					. "<span>'</span>"
 					. ($depth ? "\n" : '')
 					. '</div>';

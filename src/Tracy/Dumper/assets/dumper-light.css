@@ -52,6 +52,14 @@
 	white-space: break-spaces;
 }
 
+.tracy-light div.tracy-dump-string {
+	padding-left: 3.5ex;
+}
+
+.tracy-light .tracy-dump-lq {
+	margin-left: -1ex;
+}
+
 .tracy-light .tracy-dump-virtual span,
 .tracy-light .tracy-dump-dynamic span,
 .tracy-light .tracy-dump-string span {

@@ -132,13 +132,13 @@ function build(data, repository, collapsed, parentIds, keyType) {
 				createEl(
 					'span',
 					{'class': 'tracy-dump-string'},
-					{html: '<span>\'</span>' + s.replace(/\n/g, '\n ') + '<span>\'</span>'}
+					{html: '<span class="tracy-dump-lq">\'</span>' + s + '<span>\'</span>'}
 				),
 			]);
 
 		} else if (keyType !== undefined) {
 			if (type !== 'string') {
-				s = '<span>\'</span>' + s + '<span>\'</span>';
+				s = '<span class="tracy-dump-lq">\'</span>' + s + '<span>\'</span>';
 			}
 
 			const classes = [
@@ -155,7 +155,7 @@ function build(data, repository, collapsed, parentIds, keyType) {
 						'class': classes[typeof keyType === 'string' ? PROP_PRIVATE : keyType],
 						'title': typeof keyType === 'string' ? 'declared in ' + keyType : null,
 					},
-					{html: s.replace(/\n/g, '\n ')}
+					{html: s}
 				),
 			]);
 		}
@@ -172,7 +172,7 @@ function build(data, repository, collapsed, parentIds, keyType) {
 						'class': 'tracy-dump-string' + (collapsed ? ' tracy-collapsed' : ''),
 						'title': data.length + (data.bin ? ' bytes' : ' characters'),
 					},
-					{html: '<span>\'</span>' + s.replace(/\n/g, '\n ') + '<span>\'</span>'}
+					{html: '<span class="tracy-dump-lq">\'</span>' + s + '<span>\'</span>'}
 				),
 			]);
 		}

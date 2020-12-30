@@ -40,7 +40,8 @@ Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string
 
 Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string"><span>\'</span><i>\\x00</i><span>\'</span></span></pre>' . "\n", Dumper::toHtml("\x00"));
 
-Assert::same('<pre class="tracy-dump tracy-light"><div class="tracy-dump-string" title="3 characters"><span>\'</span>a<i>\n</i>' . "\n b<span>'</span></div></pre>\n", Dumper::toHtml("a\nb"));
+Assert::match('<pre class="tracy-dump tracy-light"
+><div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-lq">\'</span>a<i>\n</i>' . "\n<span class=\"tracy-dump-indent\"> </span>b<span>'</span></div></pre>\n", Dumper::toHtml("a\nb"));
 
 Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-array">array</span> (0)</pre>' . "\n", Dumper::toHtml([]));
 
@@ -65,12 +66,12 @@ Assert::match(<<<'XX'
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (3)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle">string</span>
-<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  </span><span>'</span>a<i>\n</i>
-<span class="tracy-dump-indent">   |  </span> b<span>'</span>
+<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-lq">'</span>a<i>\n</i>
+<span class="tracy-dump-indent">   |   </span>b<span>'</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle">string</span>
-<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  |  </span><span>'</span>a<i>\n</i>
-<span class="tracy-dump-indent">   |  |  </span> b<span>'</span>
+<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-lq">'</span>a<i>\n</i>
+<span class="tracy-dump-indent">   |  |   </span>b<span>'</span>
 </div></div></div></pre>
 XX
 , Dumper::toHtml(['hello', "a\nb", ["a\nb"]]));
@@ -124,9 +125,9 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">new</span>: <span class="tracy-dump-number">7</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-number">8</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">9</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic"><span>'</span><span>'</span></span>: <span class="tracy-dump-number">10</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic"><span>'</span>a<i>\x00\n</i><span>'</span></span>: <span class="tracy-dump-number">11</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic"><span>'</span>a<i>\xA0</i><span>'</span></span>: <span class="tracy-dump-number">12</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic"><span class='tracy-dump-lq'>'</span><span>'</span></span>: <span class="tracy-dump-number">10</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic"><span class='tracy-dump-lq'>'</span>a<i>\x00\n</i><span>'</span></span>: <span class="tracy-dump-number">11</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic"><span class='tracy-dump-lq'>'</span>a<i>\xA0</i><span>'</span></span>: <span class="tracy-dump-number">12</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Child">y</span>: <span class="tracy-dump-number">2</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">3</span>
