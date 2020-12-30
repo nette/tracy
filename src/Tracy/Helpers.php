@@ -110,7 +110,9 @@ class Helpers
 	{
 		if (function_exists('xdebug_get_function_stack')) {
 			$stack = [];
-			foreach (array_slice(array_reverse(xdebug_get_function_stack()), 2, -1) as $row) {
+			$trace = @xdebug_get_function_stack(); // @ xdebug compatibility warning
+			$trace = array_slice(array_reverse($trace), 2, -1);
+			foreach ($trace as $row) {
 				$frame = [
 					'file' => $row['file'],
 					'line' => $row['line'],
