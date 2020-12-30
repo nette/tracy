@@ -29,14 +29,14 @@ class Toggle
 
 
 	// changes element visibility
-	static toggle(el, show) {
+	static toggle(el, expand) {
 		let collapsed = el.classList.contains('tracy-collapsed'),
 			ref = el.getAttribute('data-tracy-ref') || el.getAttribute('href', 2),
 			dest = el;
 
-		if (typeof show === 'undefined') {
-			show = collapsed;
-		} else if (!show === collapsed) {
+		if (typeof expand === 'undefined') {
+			expand = collapsed;
+		} else if (!expand === collapsed) {
 			return;
 		}
 
@@ -51,12 +51,12 @@ class Toggle
 		dest = ref[3] ? Toggle.nextElement(dest.nextElementSibling, ref[4]) : dest;
 		dest = ref[5] ? dest.querySelector(ref[5]) : dest;
 
-		el.classList.toggle('tracy-collapsed', !show);
-		dest.classList.toggle('tracy-collapsed', !show);
+		el.classList.toggle('tracy-collapsed', !expand);
+		dest.classList.toggle('tracy-collapsed', !expand);
 
 		el.dispatchEvent(new CustomEvent('tracy-toggle', {
 			bubbles: true,
-			detail: {relatedTarget: dest, collapsed: !show}
+			detail: {relatedTarget: dest, collapsed: !expand}
 		}));
 	}
 
@@ -80,14 +80,14 @@ class Toggle
 					}
 				}
 				if (el.textContent === item.text) {
-					Toggle.toggle(el, item.show);
+					Toggle.toggle(el, item.expand);
 				}
 			});
 		}
 
 		window.addEventListener('unload', () => {
 			toggles = saved.map((el) => {
-				let item = {path: [], text: el.textContent, show: !el.classList.contains('tracy-collapsed')};
+				let item = {path: [], text: el.textContent, expand: !el.classList.contains('tracy-collapsed')};
 				do {
 					item.path.unshift(Array.from(el.parentNode.children).indexOf(el));
 					el = el.parentNode;
