@@ -49,6 +49,7 @@
 
 .tracy-dark .tracy-dump-string {
 	color: #3cdfef;
+	white-space: break-spaces;
 }
 
 .tracy-dark .tracy-dump-virtual span,
