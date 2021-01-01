@@ -34,9 +34,9 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-bool">false</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">3</span> => <span class="tracy-dump-number">0</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">4</span> => <span class="tracy-dump-number">0.0</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">5</span> => <span class="tracy-dump-string" title="6 characters">'string'</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">6</span> => <span class="tracy-dump-string" title="3 characters">''&amp;"'</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">7</span> => <span class="tracy-dump-string">'<span>\x00</span>'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">5</span> => <span class="tracy-dump-string" title="6 characters"><span>'</span>string<span>'</span></span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">6</span> => <span class="tracy-dump-string" title="3 characters"><span>'</span>'&amp;"<span>'</span></span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">7</span> => <span class="tracy-dump-string"><span>'</span><i>\x00</i><span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">8</span> => <span class="tracy-dump-number">INF</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">9</span> => <span class="tracy-dump-number">-INF</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">10</span> => <span class="tracy-dump-number">NAN</span>
@@ -61,7 +61,7 @@ Assert::match(<<<'XX'
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-null">null</span>
-</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters">'hello'</span>
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX
@@ -76,7 +76,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-null">null</span>
-</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters">'hello'</span>
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX

@@ -190,9 +190,11 @@ final class Renderer
 	{
 		if ($keyType === self::TYPE_ARRAY_KEY) {
 			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . '</span> ';
-			return '<span class="tracy-dump-string">\''
+			return '<span class="tracy-dump-string">'
+				. "<span>'</span>"
 				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n" . $indent, $str->value))
-				. "'</span>";
+				. "<span>'</span>"
+				. '</span>';
 
 		} elseif ($keyType !== null) {
 			static $classes = [
@@ -207,14 +209,20 @@ final class Renderer
 				: null;
 			return '<span class="'
 				. ($title ? 'tracy-dump-private' : $classes[$keyType]) . '"' . $title . '>'
-				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n" . $indent, "'$str->value'"))
+				. (is_string($str)
+					? Helpers::escapeHtml($str)
+					: "<span>'</span>" . str_replace("\n", "\n" . $indent, $str->value) . "<span>'</span>")
 				. '</span>';
 
 		} elseif (is_string($str)) {
 			$len = strlen(utf8_decode($str));
 			return '<span class="tracy-dump-string"'
 				. ($len > 1 ? ' title="' . $len . ' characters"' : '')
-				. ">'" . Helpers::escapeHtml($str) . "'</span>";
+				. '>'
+				. "<span>'</span>"
+				. Helpers::escapeHtml($str)
+				. "<span>'</span>"
+				. '</span>';
 
 		} else {
 			$unit = $str->type === Value::TYPE_STRING_HTML ? 'characters' : 'bytes';
@@ -230,18 +238,20 @@ final class Renderer
 					. '<div class="tracy-dump-string' . ($collapsed ? ' tracy-collapsed' : '')
 					. '" title="' . $str->length . ' ' . $unit . '">'
 					. $indent
-					. "'"
+					. "<span>'</span>"
 					. str_replace("\n", "\n" . $indent . ' ', $str->value)
-					. "'"
+					. "<span>'</span>"
 					. ($depth ? "\n" : '')
 					. '</div>';
 			}
 
 			return '<span class="tracy-dump-string"'
 				. ($str->length > 1 ? " title=\"{$str->length} $unit\"" : '')
-				. ">'"
+				. '>'
+				. "<span>'</span>"
 				. $str->value
-				. "'</span>";
+				. "<span>'</span>"
+				. '</span>';
 		}
 	}
 

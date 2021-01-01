@@ -17,7 +17,7 @@ Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light" data-tracy-snapshot='[]'
 ><span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[0,10],[1,null]]'><span class="tracy-dump-array">array</span> (2)</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters">'hello'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX
@@ -27,7 +27,7 @@ Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light" data-tracy-snapshot='[]'
 ><span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[0,10],[1,null]]'><span class="tracy-dump-array">array</span> (2)</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters">'hello'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX

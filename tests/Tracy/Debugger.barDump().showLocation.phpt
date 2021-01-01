@@ -37,7 +37,7 @@ register_shutdown_function(function () {
 
 	<pre class="tracy-dump tracy-light"
 ><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">barDump('value') ð</a
-><span class="tracy-dump-string" title="5 characters">'value'</span></pre>
+><span class="tracy-dump-string" title="5 characters"><span>'</span>value<span>'</span></span></pre>
 </div>
 %A%
 EOD

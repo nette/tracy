@@ -27,7 +27,7 @@ Assert::match('<pre class="tracy-dump"><span class="tracy-dump-array">array</spa
 
 // lazy dump of array
 Assert::match(<<<'XX'
-<pre class="tracy-dump" data-tracy-snapshot='[]' data-tracy-dump='[[0,null],[1,true],[2,false],[3,"string"],[4,{"string":"\u0027\u0026amp;\"","length":3}],[5,{"string":"<span>\\x00</span>","length":1}]]'></pre>
+<pre class="tracy-dump" data-tracy-snapshot='[]' data-tracy-dump='[[0,null],[1,true],[2,false],[3,"string"],[4,{"string":"\u0027\u0026amp;\"","length":3}],[5,{"string":"<i>\\x00</i>","length":1}]]'></pre>
 XX
 , Dumper::toHtml([null, true, false, 'string', "'&\"", "\x00"], $options));
 

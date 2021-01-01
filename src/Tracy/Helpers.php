@@ -345,18 +345,18 @@ class Helpers
 		static $tableU, $tableB;
 		if ($tableU === null) {
 			foreach (range("\x00", "\x1F") as $ch) {
-				$tableU[$ch] = '<span>\x' . str_pad(strtoupper(dechex(ord($ch))), 2, '0', STR_PAD_LEFT) . '</span>';
+				$tableU[$ch] = '<i>\x' . str_pad(strtoupper(dechex(ord($ch))), 2, '0', STR_PAD_LEFT) . '</i>';
 			}
 			$tableB = $tableU = [
-				"\r" => '<span>\r</span>',
-				"\n" => "<span>\\n</span>\n",
-				"\t" => '<span>\\t</span>    ',
-				"\e" => '<span>\e</span>',
+				"\r" => '<i>\r</i>',
+				"\n" => "<i>\\n</i>\n",
+				"\t" => '<i>\\t</i>    ',
+				"\e" => '<i>\e</i>',
 				'<' => '&lt;',
 				'&' => '&amp;',
 			] + $tableU;
 			foreach (range("\x7F", "\xFF") as $ch) {
-				$tableB[$ch] = '<span>\x' . str_pad(strtoupper(dechex(ord($ch))), 2, '0', STR_PAD_LEFT) . '</span>';
+				$tableB[$ch] = '<i>\x' . str_pad(strtoupper(dechex(ord($ch))), 2, '0', STR_PAD_LEFT) . '</i>';
 			}
 		}
 
@@ -370,7 +370,7 @@ class Helpers
 				. strtr(self::truncateString($s, -10, $utf), $table)
 			: strtr($s, $table);
 
-		$s = str_replace('</span><span>', '', $s);
+		$s = str_replace('</i><i>', '', $s);
 		$s = preg_replace('~\n$~D', '', $s);
 		return $s;
 	}

@@ -34,13 +34,13 @@ Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-number
 
 Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-number">NAN</span></pre>' . "\n", Dumper::toHtml(NAN));
 
-Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string">\'\'</span></pre>' . "\n", Dumper::toHtml(''));
+Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string"><span>\'</span><span>\'</span></span></pre>' . "\n", Dumper::toHtml(''));
 
-Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string">\'0\'</span></pre>' . "\n", Dumper::toHtml('0'));
+Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string"><span>\'</span>0<span>\'</span></span></pre>' . "\n", Dumper::toHtml('0'));
 
-Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string">\'<span>\\x00</span>\'</span></pre>' . "\n", Dumper::toHtml("\x00"));
+Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string"><span>\'</span><i>\\x00</i><span>\'</span></span></pre>' . "\n", Dumper::toHtml("\x00"));
 
-Assert::same('<pre class="tracy-dump tracy-light"><div class="tracy-dump-string" title="3 characters">\'a<span>\n</span>' . "\n b'</div></pre>\n", Dumper::toHtml("a\nb"));
+Assert::same('<pre class="tracy-dump tracy-light"><div class="tracy-dump-string" title="3 characters"><span>\'</span>a<i>\n</i>' . "\n b<span>'</span></div></pre>\n", Dumper::toHtml("a\nb"));
 
 Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-array">array</span> (0)</pre>' . "\n", Dumper::toHtml([]));
 
@@ -63,14 +63,14 @@ XX
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (3)</span>
-<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-string" title="5 characters">'hello'</span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle">string</span>
-<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  </span>'a<span>\n</span>
-<span class="tracy-dump-indent">   |  </span> b'
+<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  </span><span>'</span>a<i>\n</i>
+<span class="tracy-dump-indent">   |  </span> b<span>'</span>
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle">string</span>
-<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  |  </span>'a<span>\n</span>
-<span class="tracy-dump-indent">   |  |  </span> b'
+<div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-indent">   |  |  </span><span>'</span>a<i>\n</i>
+<span class="tracy-dump-indent">   |  |  </span> b<span>'</span>
 </div></div></div></pre>
 XX
 , Dumper::toHtml(['hello', "a\nb", ["a\nb"]]));
@@ -81,7 +81,7 @@ Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light" data-tracy-snapshot='[]'
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (5)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-string" title="5 characters">'hello'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-array">array</span> (0)
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">3</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>
@@ -104,7 +104,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">10</span>
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-null">null</span>
-</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters">'hello'</span>
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX
@@ -124,16 +124,16 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">new</span>: <span class="tracy-dump-number">7</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-number">8</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">1</span>: <span class="tracy-dump-number">9</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">''</span>: <span class="tracy-dump-number">10</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">'a<span>\x00\n</span>'</span>: <span class="tracy-dump-number">11</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">'a<span>\xA0</span>'</span>: <span class="tracy-dump-number">12</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic"><span>'</span><span>'</span></span>: <span class="tracy-dump-number">10</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic"><span>'</span>a<i>\x00\n</i><span>'</span></span>: <span class="tracy-dump-number">11</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic"><span>'</span>a<i>\xA0</i><span>'</span></span>: <span class="tracy-dump-number">12</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">1</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Child">y</span>: <span class="tracy-dump-number">2</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">3</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x2</span>: <span class="tracy-dump-number">4</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">y2</span>: <span class="tracy-dump-number">5</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Child">z2</span>: <span class="tracy-dump-number">6</span>
-<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters">'hello'</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 </div></pre>
 XX
 , Dumper::toHtml($obj));

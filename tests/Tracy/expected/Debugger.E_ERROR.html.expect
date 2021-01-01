@@ -137,7 +137,7 @@
 						<table>
 						<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
 </td></tr>
-<tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters">'any string'</span></pre>
+<tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>
 </td></tr>
 						</table>
 						</div>

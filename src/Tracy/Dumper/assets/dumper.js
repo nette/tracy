@@ -132,13 +132,13 @@ function build(data, repository, collapsed, parentIds, keyType) {
 				createEl(
 					'span',
 					{'class': 'tracy-dump-string'},
-					{html: '\'' + s.replace(/\n/g, '\n ') + '\''}
+					{html: '<span>\'</span>' + s.replace(/\n/g, '\n ') + '<span>\'</span>'}
 				),
 			]);
 
 		} else if (keyType !== undefined) {
 			if (type !== 'string') {
-				s = "'" + s + "'";
+				s = '<span>\'</span>' + s + '<span>\'</span>';
 			}
 
 			const classes = [
@@ -172,7 +172,7 @@ function build(data, repository, collapsed, parentIds, keyType) {
 						'class': 'tracy-dump-string' + (collapsed ? ' tracy-collapsed' : ''),
 						'title': data.length + (data.bin ? ' bytes' : ' characters'),
 					},
-					{html: '\'' + s.replace(/\n/g, '\n ') + '\''}
+					{html: '<span>\'</span>' + s.replace(/\n/g, '\n ') + '<span>\'</span>'}
 				),
 			]);
 		}
@@ -184,7 +184,7 @@ function build(data, repository, collapsed, parentIds, keyType) {
 					'class': 'tracy-dump-string',
 					'title': data.length + (data.bin ? ' bytes' : ' characters'),
 				},
-				{html: '\'' + s + '\''}
+				{html: '<span>\'</span>' + s + '<span>\'</span>'}
 			),
 		]);
 

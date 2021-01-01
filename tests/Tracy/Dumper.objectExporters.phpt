@@ -56,7 +56,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">key</span>: <span class="tracy-dump-virtual">hello</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">$x</span>: <span class="tracy-dump-virtual">hello</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">object</span>: <span class="tracy-toggle"><span class="tracy-dump-object">hello</span></span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-dump-string">'b'</span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-dump-string"><span>'</span>b<span>'</span></span>
 </div></div></pre>
 XX
 , Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));

@@ -55,7 +55,14 @@
 .tracy-light .tracy-dump-virtual span,
 .tracy-light .tracy-dump-dynamic span,
 .tracy-light .tracy-dump-string span {
+	color: rgba(0, 0, 0, 0.5);
+}
+
+.tracy-light .tracy-dump-virtual i,
+.tracy-light .tracy-dump-dynamic i,
+.tracy-light .tracy-dump-string i {
 	font-size: 80%;
+	font-style: normal;
 	color: rgba(0, 0, 0, 0.5);
 }
 
