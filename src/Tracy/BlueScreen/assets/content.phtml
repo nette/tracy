@@ -297,7 +297,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
 
 		<div class="tracy-collapsed inner">
-			<h3>URL</h3>
+			<h3><?= Helpers::escapeHtml($_SERVER['REQUEST_METHOD'] ?? 'URL') ?></h3>
 			<p><a href="<?= Helpers::escapeHtml($source) ?>" target="_blank" rel="noreferrer noopener"><?= Helpers::escapeHtml($source) ?></a></p>
 
 			<h3>Headers</h3>
