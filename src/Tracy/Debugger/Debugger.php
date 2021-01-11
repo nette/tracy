@@ -525,12 +525,15 @@ class Debugger
 	public static function dump($var, bool $return = false)
 	{
 		if ($return) {
-			return Helpers::capture(function () use ($var) {
-				Dumper::dump($var, [
-					Dumper::DEPTH => self::$maxDepth,
-					Dumper::TRUNCATE => self::$maxLength,
-				]);
-			});
+			$options = [
+				Dumper::DEPTH => self::$maxDepth,
+				Dumper::TRUNCATE => self::$maxLength,
+			];
+			return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg'
+				? Dumper::toText($var)
+				: Helpers::capture(function () use ($var, $options) {
+					Dumper::dump($var, $options);
+				});
 
 		} elseif (!self::$productionMode) {
 			Dumper::dump($var, [
