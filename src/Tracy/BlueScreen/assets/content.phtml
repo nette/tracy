@@ -132,8 +132,9 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 							$params = [];
 						}
 						foreach ($row['args'] as $k => $v) {
-							echo '<tr><th>', Helpers::escapeHtml(isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</th><td>';
-							echo $dump($v, isset($params[$k]) ? $params[$k]->name : null);
+							$argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k;
+							echo '<tr><th>', Helpers::escapeHtml((is_string($argName) ? '$' : '#') . $argName), '</th><td>';
+							echo $dump($v, (string) $argName);
 							echo "</td></tr>\n";
 						}
 						?>
