@@ -49,7 +49,7 @@
 
 											<i>inner-code</i>:%d%
 
-					trigger_error(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					<b>trigger_error</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
 
@@ -68,7 +68,7 @@
 
 											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%" class="tracy-editor">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-					eval()
+					<b>eval</b> ()
 					</p>
 
 											<div class="tracy-collapsed file">%A%</div>
@@ -79,7 +79,7 @@
 
 											<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%" class="tracy-editor">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
 					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-					first(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					<b>first</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
 					</p>
 
 											<div class="tracy-collapsed file">%A%</div>

@@ -107,9 +107,9 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
 					<?php
 						if (isset($row['object'])) echo "<a data-tracy-ref='^p + .object' class='tracy-toggle tracy-collapsed'>";
-						if (isset($row['class'])) echo Helpers::escapeHtml($row['class'] . $row['type']);
+						if (isset($row['class'])) echo '<b>', Helpers::escapeHtml($row['class'] . $row['type']), '</b>';
 						if (isset($row['object'])) echo '</a>';
-						echo Helpers::escapeHtml($row['function']), '(';
+						echo '<b>', Helpers::escapeHtml($row['function']), '</b> (';
 						if (!empty($row['args'])): ?><a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a><?php endif ?>)
 					</p>
 
