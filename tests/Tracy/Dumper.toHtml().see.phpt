@@ -112,18 +112,12 @@ Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"Test","items":[["a",[[1,[[2,{"array":null,"length":1}]]]],0]]},"%d%":{"object":"Test","items":[["a",[[1,[[2,{"array":null,"length":1}]]]],0]]}}'
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-array">array</span> (1) …
-</div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>a<span>'</span></span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">b</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>c<span>'</span></span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
-</div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-array">array</span> (1) …
-</div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[1,[[2,{"array":null,"length":1}]]]]'><span class="tracy-dump-array">array</span> (1)</span>
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>a<span>'</span></span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">b</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[["c",[[0,{"ref":%d%}]]]]'><span class="tracy-dump-array">array</span> (1)</span>
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[1,[[2,{"array":null,"length":1}]]]]'><span class="tracy-dump-array">array</span> (1)</span>
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 </div></pre>
 XX
 , Dumper::toHtml($var, [Dumper::DEPTH => 4]));

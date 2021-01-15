@@ -280,13 +280,13 @@ function buildStruct(span, ellipsis, items, collapsed, cut, type, repository, pa
 	if (collapsed) {
 		toggle.addEventListener('tracy-toggle', handler = function() {
 			toggle.removeEventListener('tracy-toggle', handler);
-			createItems(div, items, type, repository, parentIds);
+			createItems(div, items, type, repository, parentIds, null);
 			if (cut) {
 				createEl(div, null, ['…\n']);
 			}
 		});
 	} else {
-		createItems(div, items, type, repository, parentIds);
+		createItems(div, items, type, repository, parentIds, true);
 		if (cut) {
 			createEl(div, null, ['…\n']);
 		}
@@ -320,7 +320,7 @@ function createEl(el, attrs, content) {
 }
 
 
-function createItems(el, items, type, repository, parentIds) {
+function createItems(el, items, type, repository, parentIds, collapsed) {
 	let key, val, vis, ref, i, tmp;
 
 	for (i = 0; i < items.length; i++) {
@@ -334,7 +334,7 @@ function createItems(el, items, type, repository, parentIds) {
 			build(key, null, null, null, type === TYPE_ARRAY ? TYPE_ARRAY : vis),
 			type === TYPE_ARRAY ? ' => ' : ': ',
 			...(ref ? [createEl('span', {'class': 'tracy-dump-hash'}, ['&' + ref]), ' '] : []),
-			tmp = build(val, repository, null, parentIds),
+			tmp = build(val, repository, collapsed, parentIds),
 			tmp.lastElementChild.tagName === 'DIV' ? '' : '\n',
 		]);
 	}

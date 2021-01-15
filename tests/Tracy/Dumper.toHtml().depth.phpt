@@ -32,19 +32,15 @@ $arr = [
 
 
 Assert::match(<<<'XX'
-<pre class="tracy-dump tracy-light"
+<pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["0",{"ref":%d%},3]]},"%d%":{"object":"stdClass","items":[["hello","world",3]]}}'
 ><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>long<span>'</span></span> => <span class="tracy-dump-string" title="15000 characters"><span>'</span>Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework <span>…</span>  Framework<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (1)</span>
-<div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>hello<span>'</span></span> => <span class="tracy-dump-string" title="5 characters"><span>'</span>world<span>'</span></span>
-</div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>long2<span>'</span></span> => <span class="tracy-dump-string" title="15000 characters"><span>'</span>Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework <span>…</span>  Framework<span>'</span></span>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">0</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[0,[["hello","world"]]]]'><span class="tracy-dump-array">array</span> (1)</span>
+</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>long2<span>'</span></span> => <span class="tracy-dump-string" title="15000 characters"><span>'</span>Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework <span>…</span>  Framework<span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  |  </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-<div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-dynamic">hello</span>: <span class="tracy-dump-string" title="5 characters"><span>'</span>world<span>'</span></span>
-</div></div></div></div></pre>
+<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+</div></div></pre>
 XX
 , Dumper::toHtml($arr));
 

@@ -24,7 +24,7 @@ class Dumper
 		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
 		ITEMS = 'items', // how many items in array/object display? (defaults to 100)
 		COLLAPSE = 'collapse', // collapse top array/object or how big are collapsed? (defaults to 14)
-		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed? (defaults to 7)
+		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed in non-lazy mode? (defaults to 7)
 		LOCATION = 'location', // show location string? (defaults to 0)
 		OBJECT_EXPORTERS = 'exporters', // custom exporters for objects (defaults to Dumper::$objectexporters)
 		LAZY = 'lazy', // lazy-loading via JavaScript? true=full, false=none, null=collapsed parts (defaults to null/false)

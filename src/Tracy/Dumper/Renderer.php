@@ -289,7 +289,7 @@ final class Renderer
 		}
 
 		$collapsed = $depth
-			? $count >= $this->collapseSub
+			? ($this->lazy === false || $depth === 1 ? $count >= $this->collapseSub : true)
 			: (is_int($this->collapseTop) ? $count >= $this->collapseTop : $this->collapseTop);
 
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
@@ -360,7 +360,7 @@ final class Renderer
 		}
 
 		$collapsed = $object->collapsed ?? ($depth
-			? count($object->items) >= $this->collapseSub
+			? ($this->lazy === false || $depth === 1 ? count($object->items) >= $this->collapseSub : true)
 			: (is_int($this->collapseTop) ? count($object->items) >= $this->collapseTop : $this->collapseTop));
 
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
