@@ -402,12 +402,38 @@ body#tracy-debug .tracy-panel { /* in popup window */
 
 #tracy-debug .tracy-dump-string {
 	color: #35D;
+	white-space: break-spaces;
+}
+
+#tracy-debug div.tracy-dump-string {
+	position: relative;
+	padding-left: 3.5ex;
+}
+
+#tracy-debug .tracy-dump-lq {
+	margin-left: -1ex;
+}
+
+#tracy-debug div.tracy-dump-string:before {
+	content: '';
+	position: absolute;
+	left: 3ex;
+	top: 1.5em;
+	bottom: 0;
+	border-left: 1px solid rgba(0, 0, 0, .1);
 }
 
 #tracy-debug .tracy-dump-virtual span,
 #tracy-debug .tracy-dump-dynamic span,
 #tracy-debug .tracy-dump-string span {
+	color: rgba(0, 0, 0, 0.5);
+}
+
+#tracy-debug .tracy-dump-virtual i,
+#tracy-debug .tracy-dump-dynamic i,
+#tracy-debug .tracy-dump-string i {
 	font-size: 80%;
+	font-style: normal;
 	color: rgba(0, 0, 0, 0.5);
 }
 
@@ -454,6 +480,10 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	border-radius: 2px;
 	padding: 0 2px;
 	margin: 0 -2px;
+}
+
+#tracy-debug span[data-tracy-href] {
+	border-bottom: 1px dotted rgba(0, 0, 0, .2);
 }
 
 
