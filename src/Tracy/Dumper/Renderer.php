@@ -455,7 +455,9 @@ final class Renderer
 		try {
 			return json_encode($snapshot, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 		} finally {
-			@ini_set('serialize_precision', $old); // @ may be disabled
+			if ($old !== false) {
+				ini_set('serialize_precision', $old);
+			}
 		}
 	}
 
