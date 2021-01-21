@@ -56,10 +56,10 @@ XX
 $arr = (object) ['x' => 1, 'y' => 2];
 $arr->z = &$arr;
 Assert::match(<<<XX
-\e[1;31mstdClass\e[0m \e[0m#7
+\e[1;31mstdClass\e[0m \e[0m#%d%
 \e[1;30m   \e[1;37mx\e[0m: \e[1;32m1
 \e[1;30m   \e[1;37my\e[0m: \e[1;32m2
-\e[1;30m   \e[1;37mz\e[0m: \e[0m&1\e[0m \e[1;31mstdClass\e[0m \e[0m#7\e[0m \e[0mRECURSION
+\e[1;30m   \e[1;37mz\e[0m: \e[0m&1\e[0m \e[1;31mstdClass\e[0m \e[0m#%d%\e[0m \e[0mRECURSION
 \e[0m
 XX
 , Dumper::toTerminal($arr));
