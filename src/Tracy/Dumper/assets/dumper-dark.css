@@ -82,6 +82,7 @@
 	font-size: 80%;
 	font-style: normal;
 	color: rgba(255, 255, 255, 0.5);
+	user-select: none;
 }
 
 .tracy-dark .tracy-dump-number {

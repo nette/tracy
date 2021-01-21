@@ -435,6 +435,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	font-size: 80%;
 	font-style: normal;
 	color: rgba(0, 0, 0, 0.5);
+	user-select: none;
 }
 
 #tracy-debug .tracy-dump-number {
