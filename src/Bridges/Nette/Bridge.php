@@ -49,8 +49,11 @@ class Bridge
 			];
 
 		} elseif ($e && strpos($file = $e->getFile(), '.latte--')) {
-			$lines = file($file);
-			if (preg_match('#// source: (\S+\.latte)#', $lines[1], $m) && @is_file($m[1])) { // @ - may trigger error
+			$lines = file($file, FILE_IGNORE_NEW_LINES);
+			if (
+				preg_match('#/(?:/|\*\*) source: (\S+\.latte)#', $lines[1] ?: $lines[4], $m)
+				&& @is_file($m[1]) // @ - may trigger error
+			) {
 				$templateFile = $m[1];
 				$templateLine = $e->getLine() && preg_match('#/\* line (\d+) \*/#', $lines[$e->getLine() - 1], $m) ? (int) $m[1] : 0;
 				return [
@@ -71,7 +74,7 @@ class Bridge
 		if (
 			$e instanceof Latte\CompileException
 			&& @is_file($e->sourceName) // @ - may trigger error
-			&& (preg_match('#Unknown macro (\{\w+)\}, did you mean (\{\w+)\}\?#A', $e->getMessage(), $m)
+			&& (preg_match('#Unknown (?:macro|tag) (\{\w+)\}, did you mean (\{\w+)\}\?#A', $e->getMessage(), $m)
 				|| preg_match('#Unknown attribute (n:\w+), did you mean (n:\w+)\?#A', $e->getMessage(), $m))
 		) {
 			return [
