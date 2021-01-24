@@ -225,7 +225,7 @@ try {
 } catch (Exception $e) {
 	Debugger::log($e); // log exception
 	// or
-	Debugger::log($e, Debugger::ERROR) // also sends an email notification
+	Debugger::log($e, Debugger::ERROR); // also sends an email notification
 }
 ```
 
