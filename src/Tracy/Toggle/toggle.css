@@ -19,6 +19,7 @@
 	content: '';
 	display: inline-block;
 	vertical-align: middle;
+	line-height: 0;
 	border-top: .6ex solid;
 	border-right: .6ex solid transparent;
 	border-left: .6ex solid transparent;
