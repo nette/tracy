@@ -33,7 +33,7 @@ class Bridge
 
 	public static function renderLatteError(?\Throwable $e): ?array
 	{
-		if ($e instanceof Latte\CompileException) {
+		if ($e instanceof Latte\CompileException && $e->sourceName) {
 			return [
 				'tab' => 'Template',
 				'panel' => (preg_match('#\n|\?#', $e->sourceName)
@@ -70,6 +70,7 @@ class Bridge
 	{
 		if (
 			$e instanceof Latte\CompileException
+			&& $e->sourceName
 			&& @is_file($e->sourceName) // @ - may trigger error
 			&& (preg_match('#Unknown macro (\{\w+)\}, did you mean (\{\w+)\}\?#A', $e->getMessage(), $m)
 				|| preg_match('#Unknown attribute (n:\w+), did you mean (n:\w+)\?#A', $e->getMessage(), $m))
