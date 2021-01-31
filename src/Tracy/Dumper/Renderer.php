@@ -429,12 +429,18 @@ final class Renderer
 		if ($this->collectingMode) {
 			return;
 		}
-		settype($this->snapshotSelection, 'array');
+		if ($this->snapshotSelection === null) {
+			$this->snapshotSelection = [];
+		}
+
 		if (is_array($value)) {
 			foreach ($value as [, $v]) {
 				$this->copySnapshot($v);
 			}
 		} elseif ($value instanceof Value && $value->type === Value::TYPE_REF) {
+			if (isset($this->snapshotSelection[$value->value])) {
+				return;
+			}
 			$ref = $this->snapshotSelection[$value->value] = $this->snapshot[$value->value];
 			if (!isset($this->parents[$value->value])) {
 				$this->parents[$value->value] = true;
