@@ -272,7 +272,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 }
 
 #tracy-debug .tracy-panel-redirect h1::after {
-	content: 'redirect';
+	content: ' redirect';
 }
 
 #tracy-debug .tracy-mode-peek,
