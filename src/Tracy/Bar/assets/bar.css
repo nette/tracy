@@ -263,8 +263,8 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	display: none;
 }
 
-#tracy-debug .tracy-panel-ajax > h1::after,
-#tracy-debug .tracy-panel-redirect > h1::after {
+#tracy-debug .tracy-panel-ajax h1::after,
+#tracy-debug .tracy-panel-redirect h1::after {
 	content: 'ajax';
 	float: right;
 	font-size: 65%;
