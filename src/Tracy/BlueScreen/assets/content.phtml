@@ -7,7 +7,6 @@
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  *
  * @param  array $exception
- * @param  string $messageHtml
  * @param  array[] $actions
  * @param  array $info
  * @param  string $title
@@ -32,7 +31,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php if ($exception->getMessage()): ?><p><?= Helpers::encodeString($title . $code, self::MAX_MESSAGE_LENGTH) ?></p><?php endif ?>
 
 
-			<h1><span><?= $messageHtml ?: Helpers::encodeString($title . $code, self::MAX_MESSAGE_LENGTH) ?></span>
+			<h1><span><?= $this->formatMessage($exception) ?></span>
 			<?php foreach ($actions as $item): ?>
 			<a href="<?= Helpers::escapeHtml($item['link']) ?>" class="action"<?= empty($item['external']) ? '' : ' target="_blank" rel="noreferrer noopener"'?>><?= Helpers::escapeHtml($item['label']) ?>&#x25ba;</a>
 			<?php endforeach ?></h1>
@@ -56,7 +55,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 				<div class="panel">
 					<h2><?= Helpers::escapeHtml(Helpers::getClass($ex) . ($ex->getCode() ? ' #' . $ex->getCode() : '')) ?></h2>
 
-					<h2><?= Helpers::escapeHtml($ex->getMessage()) ?></h2>
+					<h2><?= $this->formatMessage($ex) ?></h2>
 				</div>
 			<?php endif ?>
 

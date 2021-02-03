@@ -123,7 +123,6 @@ class BlueScreen
 	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
 	{
 		$showEnvironment = $this->showEnvironment && (strpos($exception->getMessage(), 'Allowed memory size') === false);
-		$messageHtml = $this->formatMessage($exception);
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
 		$title = $exception instanceof \ErrorException
@@ -370,7 +369,7 @@ class BlueScreen
 	}
 
 
-	private function formatMessage(\Throwable $exception): string
+	public function formatMessage(\Throwable $exception): string
 	{
 		$msg = Helpers::encodeString(trim((string) $exception->getMessage()), self::MAX_MESSAGE_LENGTH);
 
