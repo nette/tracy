@@ -26,12 +26,14 @@ If you are meeting Tracy for the first time, believe me, your life starts to be 
 Documentation can be found on the [website](https://tracy.nette.org).
 
 
-Support Project
----------------
+[Support Tracy](https://github.com/sponsors/dg)
+-----------------------------------------------
 
 Do you like Tracy? Are you looking forward to the new features?
 
-[![Donate](https://files.nette.org/icons/donation-1.svg?)](https://nette.org/make-donation?to=tracy)
+[![Buy me a coffee](https://files.nette.org/icons/donation-3.svg)](https://github.com/sponsors/dg)
+
+Thank you!
 
 
 Installation and requirements
