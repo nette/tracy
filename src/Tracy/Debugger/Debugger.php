@@ -209,7 +209,12 @@ class Debugger
 		set_error_handler([self::class, 'errorHandler']);
 
 		foreach (['Bar/Bar', 'Bar/DefaultBarPanel', 'BlueScreen/BlueScreen', 'Dumper/Dumper', 'Logger/Logger', 'Helpers'] as $path) {
-			require_once dirname(__DIR__) . "/$path.php";
+			$filePath = dirname(__DIR__) . '/' . $path . '.php';
+			if (is_file($filePath)) {
+				require_once $filePath;
+			} else {
+				trigger_error('File "' . $path . '" on path "' . $filePath . '" does not exist.');
+			}
 		}
 
 		self::dispatch();
