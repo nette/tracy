@@ -37,7 +37,7 @@ jobs:
             install:
                 - travis_retry composer create-project nette/coding-standard temp/coding-standard ^3 --no-progress
             script:
-                - php temp/coding-standard/ecs check src tests examples tools
+                - php temp/coding-standard/ecs check src tests tools
 
 
         -   name: Code Standard Checker (JS)
