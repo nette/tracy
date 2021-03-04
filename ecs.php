@@ -14,8 +14,18 @@ return function (Symfony\Component\DependencyInjection\Loader\Configurator\Conta
 	$parameters = $containerConfigurator->parameters();
 
 	$parameters->set('skip', [
+		'tmp/*',
+		'fixtures*/*',
+
 		PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer::class => [
 			'src/Tracy/Debugger/Debugger.php',
+		],
+
+		// dump()
+		Drew\DebugStatementsFixers\Dump::class => [
+			'tests/Tracy/dump().cli.phpt',
+			'tests/Tracy/dump().html.phpt',
+			'tests/Tracy/dump().text.phpt',
 		],
 	]);
 };
