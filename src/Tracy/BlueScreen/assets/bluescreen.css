@@ -60,6 +60,12 @@
 	font-size: 13pt;
 }
 
+#tracy-bs-error::selection,
+#tracy-bs-error ::selection {
+	color: black !important;
+	background: #FDF5CE !important;
+}
+
 #tracy-bs-error a {
 	color: #ffefa1 !important;
 }
