@@ -122,4 +122,10 @@ Dumper::toText($arr, [Dumper::SCRUBBER => $scrubber]);
 Assert::same([
 	['res', null],
 	['closure', null],
+	['0', null],
+	['0', null],
+	['1', null],
+	['1', null],
+	['0', null],
+	['1', null],
 ], $log);
