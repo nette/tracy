@@ -411,13 +411,13 @@ body#tracy-debug .tracy-panel { /* in popup window */
 }
 
 #tracy-debug .tracy-dump-lq {
-	margin-left: -1ex;
+	margin-left: calc(-1ex - 1px);
 }
 
 #tracy-debug div.tracy-dump-string:before {
 	content: '';
 	position: absolute;
-	left: 3ex;
+	left: calc(3ex - 1px);
 	top: 1.5em;
 	bottom: 0;
 	border-left: 1px solid rgba(0, 0, 0, .1);
