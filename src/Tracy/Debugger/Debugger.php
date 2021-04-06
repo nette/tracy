@@ -335,7 +335,7 @@ class Debugger
 				}
 				echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
 				if ($file && self::$browser) {
-					exec(self::$browser . ' ' . escapeshellarg($file));
+					exec(self::$browser . ' ' . escapeshellarg(strtr($file, self::$editorMapping)));
 				}
 			} catch (\Throwable $e) {
 				echo "$exception\nUnable to log error: {$e->getMessage()}\n";
