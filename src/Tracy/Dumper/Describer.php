@@ -148,19 +148,19 @@ final class Describer
 			$value = new Value(Value::TYPE_ARRAY);
 			$value->id = $res->value;
 			$value->depth = $depth;
-			if ($depth >= $this->maxDepth) {
+			if ($this->maxDepth && $depth >= $this->maxDepth) {
 				$value->length = count($arr);
 				return $res;
-			} elseif ($depth && count($arr) > $this->maxItems) {
+			} elseif ($depth && $this->maxItems && count($arr) > $this->maxItems) {
 				$value->length = count($arr);
 				$arr = array_slice($arr, 0, $this->maxItems, true);
 			}
 			$items = &$value->items;
 
-		} elseif ($arr && $depth >= $this->maxDepth) {
+		} elseif ($arr && $this->maxDepth && $depth >= $this->maxDepth) {
 			return new Value(Value::TYPE_ARRAY, null, count($arr));
 
-		} elseif ($depth && count($arr) > $this->maxItems) {
+		} elseif ($depth && $this->maxItems && count($arr) > $this->maxItems) {
 			$res = new Value(Value::TYPE_ARRAY, null, count($arr));
 			$res->depth = $depth;
 			$items = &$res->items;
@@ -203,7 +203,7 @@ final class Describer
 			}
 		}
 
-		if ($depth < $this->maxDepth) {
+		if ($this->maxDepth && $depth < $this->maxDepth) {
 			$value->items = [];
 			$props = $this->exposeObject($obj, $value);
 			foreach ($props ?? [] as $k => $v) {
@@ -260,7 +260,7 @@ final class Describer
 		int $refId = null,
 		string $class = null
 	) {
-		if ($value->depth && count($value->items ?? []) >= $this->maxItems) {
+		if ($value->depth && $this->maxItems && count($value->items ?? []) >= $this->maxItems) {
 			$value->length = ($value->length ?? count($value->items)) + 1;
 			return;
 		}
