@@ -171,10 +171,10 @@ class Dumper
 		$location = $location === true ? ~0 : (int) $location;
 
 		$describer = $this->describer = new Describer;
-		$describer->maxDepth = $options[self::DEPTH] ?? $describer->maxDepth;
-		$describer->maxLength = $options[self::TRUNCATE] ?? $describer->maxLength;
-		$describer->maxItems = $options[self::ITEMS] ?? $describer->maxItems;
-		$describer->debugInfo = $options[self::DEBUGINFO] ?? $describer->debugInfo;
+		$describer->maxDepth = (int) ($options[self::DEPTH] ?? $describer->maxDepth);
+		$describer->maxLength = (int) ($options[self::TRUNCATE] ?? $describer->maxLength);
+		$describer->maxItems = (int) ($options[self::ITEMS] ?? $describer->maxItems);
+		$describer->debugInfo = (bool) ($options[self::DEBUGINFO] ?? $describer->debugInfo);
 		$describer->scrubber = $options[self::SCRUBBER] ?? $describer->scrubber;
 		$describer->keysToHide = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE] ?? []));
 		$describer->resourceExposers = ($options['resourceExporters'] ?? []) + self::$resources;
