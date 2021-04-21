@@ -172,7 +172,7 @@ final class Describer
 			$refId = $this->getReferenceId($arr, $k);
 			$items[] = [
 				$this->describeVar($k, $depth + 1),
-				is_string($k) && $this->isSensitive($k, $v)
+				$this->isSensitive((string) $k, $v)
 					? new Value(Value::TYPE_TEXT, self::hideValue($v))
 					: $this->describeVar($v, $depth + 1, $refId),
 			] + ($refId ? [2 => $refId] : []);
