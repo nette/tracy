@@ -124,7 +124,7 @@ class Logger implements ILogger
 		while ($exception) {
 			$data[] = [
 				get_class($exception), $exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(),
-				array_map(function (array $item): array { unset($item['args']); return $item; }, $exception->getTrace()),
+				array_map(function (array $item): array { unset($item['args'], $item['object']); return $item; }, $exception->getTrace()),
 			];
 			$exception = $exception->getPrevious();
 		}
