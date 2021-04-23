@@ -82,7 +82,7 @@ The Debugger Bar is a floating panel. It is displayed in the bottom right corner
 
 [![Debugger-Bar](https://nette.github.io/tracy/images/tracy-bar.png)](https://nette.github.io/tracy/tracy-debug-bar.html)
 
-You can add other useful panels to the Debugger Bar. You can find interesting ones in [addons](https://componette.com) or you can [create your own](https://tracy.nette.org/en/extensions).
+You can add other useful panels to the Debugger Bar. You can find interesting ones in [addons](https://componette.org) or you can [create your own](https://tracy.nette.org/en/extensions).
 
 If you do not want to show Debugger Bar, set:
 
