@@ -31,6 +31,5 @@ Debugger::fireLog('Warn message', Debugger::WARNING);
 Debugger::fireLog('Error message', Debugger::ERROR);
 Debugger::fireLog($arr);
 
-Assert::match('%A%
-FireLogger-de11e-0:%a%
-', implode("\r\n", headers_list()));
+preg_match('#^FireLogger-de11e-0:(.+)#m', implode("\n", headers_list()), $matches);
+Assert::true(isset($matches[1]));
