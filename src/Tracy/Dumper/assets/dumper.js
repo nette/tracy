@@ -27,22 +27,13 @@ class Dumper
 			pre.classList.remove('tracy-collapsed');
 		});
 
-		// lazy
-		(context || document).querySelectorAll('[data-tracy-snapshot]').forEach((pre) => { // <pre>
-			let snapshot = JSON.parse(pre.getAttribute('data-tracy-snapshot'));
-			pre.querySelectorAll('[data-tracy-dump]').forEach((toggler) => { // <span>
-				if (!toggler.nextSibling) {
-					toggler.after(document.createTextNode('\n')); // enforce \n after toggler
-				}
-				toggler.nextSibling.after(buildStruct(JSON.parse(toggler.getAttribute('data-tracy-dump')), snapshot, toggler, true, []));
-				toggler.removeAttribute('data-tracy-dump');
-			});
-		});
-
 		// snapshots
 		(context || document).querySelectorAll('meta[itemprop=tracy-snapshot]').forEach((meta) => {
 			let snapshot = JSON.parse(meta.getAttribute('content'));
 			meta.parentElement.querySelectorAll('[data-tracy-dump]').forEach((pre) => { // <pre>
+				if (pre.closest('[data-tracy-snapshot]')) { // ignore unrelated <span data-tracy-dump>
+					return;
+				}
 				pre.appendChild(build(JSON.parse(pre.getAttribute('data-tracy-dump')), snapshot, pre.classList.contains('tracy-collapsed')));
 				pre.removeAttribute('data-tracy-dump');
 				pre.classList.remove('tracy-collapsed');
@@ -54,12 +45,24 @@ class Dumper
 		}
 		Dumper.inited = true;
 
-		// enables <span data-tracy-href=""> & ctrl key
 		document.documentElement.addEventListener('click', (e) => {
 			let el;
+			// enables <span data-tracy-href=""> & ctrl key
 			if (e.ctrlKey && (el = e.target.closest('[data-tracy-href]'))) {
 				location.href = el.getAttribute('data-tracy-href');
 				return false;
+			}
+
+			// initializes lazy <span data-tracy-dump> inside <pre data-tracy-snapshot>
+			if ((el = e.target.closest('[data-tracy-snapshot]'))) {
+				let snapshot = JSON.parse(el.getAttribute('data-tracy-snapshot'));
+				el.querySelectorAll('[data-tracy-dump]').forEach((toggler) => {
+					if (!toggler.nextSibling) {
+						toggler.after(document.createTextNode('\n')); // enforce \n after toggler
+					}
+					toggler.nextSibling.after(buildStruct(JSON.parse(toggler.getAttribute('data-tracy-dump')), snapshot, toggler, true, []));
+					toggler.removeAttribute('data-tracy-dump');
+				});
 			}
 		});
 
