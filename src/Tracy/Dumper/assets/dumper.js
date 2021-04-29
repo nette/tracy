@@ -38,6 +38,7 @@ class Dumper
 				pre.removeAttribute('data-tracy-dump');
 				pre.classList.remove('tracy-collapsed');
 			});
+			// <meta> must be left for debug bar panel content
 		});
 
 		if (Dumper.inited) {
@@ -56,6 +57,7 @@ class Dumper
 			// initializes lazy <span data-tracy-dump> inside <pre data-tracy-snapshot>
 			if ((el = e.target.closest('[data-tracy-snapshot]'))) {
 				let snapshot = JSON.parse(el.getAttribute('data-tracy-snapshot'));
+				el.removeAttribute('data-tracy-snapshot');
 				el.querySelectorAll('[data-tracy-dump]').forEach((toggler) => {
 					if (!toggler.nextSibling) {
 						toggler.after(document.createTextNode('\n')); // enforce \n after toggler
