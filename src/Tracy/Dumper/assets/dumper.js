@@ -18,31 +18,34 @@ const
 class Dumper
 {
 	static init(context) {
-		(context || document).querySelectorAll('[itemprop=tracy-snapshot], [data-tracy-snapshot]').forEach((el) => {
-			let preList, snapshot = JSON.parse(el.getAttribute('data-tracy-snapshot'));
+		// full lazy
+		(context || document).querySelectorAll('[data-tracy-snapshot][data-tracy-dump]').forEach((pre) => { // <pre>
+			let snapshot = JSON.parse(pre.getAttribute('data-tracy-snapshot'));
+			pre.removeAttribute('data-tracy-snapshot');
+			pre.appendChild(build(JSON.parse(pre.getAttribute('data-tracy-dump')), snapshot, pre.classList.contains('tracy-collapsed')));
+			pre.removeAttribute('data-tracy-dump');
+			pre.classList.remove('tracy-collapsed');
+		});
 
-			if (el.tagName === 'META') { // <meta itemprop=tracy-snapshot>
-				snapshot = JSON.parse(el.getAttribute('content'));
-				preList = el.parentElement.querySelectorAll('[data-tracy-dump]');
-			} else if (el.matches('[data-tracy-dump]')) { // <pre data-tracy-snapshot data-tracy-dump>
-				preList = [el];
-				el.removeAttribute('data-tracy-snapshot');
-			} else { // <span data-tracy-dump>
-				el.querySelectorAll('[data-tracy-dump]').forEach((el) => {
-					if (!el.nextSibling) {
-						el.after(document.createTextNode('\n')); // ensures \n after toggler
-					}
-					el.nextSibling.after(buildStruct(JSON.parse(el.getAttribute('data-tracy-dump')), snapshot, el, true, []));
-					el.removeAttribute('data-tracy-dump');
-				});
-				return;
-			}
+		// lazy
+		(context || document).querySelectorAll('[data-tracy-snapshot]').forEach((pre) => { // <pre>
+			let snapshot = JSON.parse(pre.getAttribute('data-tracy-snapshot'));
+			pre.querySelectorAll('[data-tracy-dump]').forEach((toggler) => { // <span>
+				if (!toggler.nextSibling) {
+					toggler.after(document.createTextNode('\n')); // enforce \n after toggler
+				}
+				toggler.nextSibling.after(buildStruct(JSON.parse(toggler.getAttribute('data-tracy-dump')), snapshot, toggler, true, []));
+				toggler.removeAttribute('data-tracy-dump');
+			});
+		});
 
-			preList.forEach((el) => { // <pre>
-				let built = build(JSON.parse(el.getAttribute('data-tracy-dump')), snapshot, el.classList.contains('tracy-collapsed'));
-				el.appendChild(built);
-				el.classList.remove('tracy-collapsed');
-				el.removeAttribute('data-tracy-dump');
+		// snapshots
+		(context || document).querySelectorAll('meta[itemprop=tracy-snapshot]').forEach((meta) => {
+			let snapshot = JSON.parse(meta.getAttribute('content'));
+			meta.parentElement.querySelectorAll('[data-tracy-dump]').forEach((pre) => { // <pre>
+				pre.appendChild(build(JSON.parse(pre.getAttribute('data-tracy-dump')), snapshot, pre.classList.contains('tracy-collapsed')));
+				pre.removeAttribute('data-tracy-dump');
+				pre.classList.remove('tracy-collapsed');
 			});
 		});
 
