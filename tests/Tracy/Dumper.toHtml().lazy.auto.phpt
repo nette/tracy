@@ -64,6 +64,20 @@ Assert::match(<<<'XX'
 XX
 , Dumper::toHtml($obj));
 
+// recursion fix
+$arr = [new stdClass, 'arr' => [1, 2, 3, 4, 5, 6]];
+$obj = (object) $arr;
+$obj->arr[] = $obj;
+
+Assert::match(<<<'XX'
+<pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["0",{"ref":%d%},3],["arr",[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,{"ref":%d%}]],3]]},"%d%":{"object":"stdClass","items":[]}}'
+><span class="tracy-toggle"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">arr</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,{"ref":%d%}]]'><span class="tracy-dump-array">array</span> (7)</span>
+</div></pre>
+XX
+, Dumper::toHtml($obj));
+
 
 // lazy dump & max items
 $arr = [1, 2, 3, 4, 5, 6, 7, 8];
