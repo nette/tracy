@@ -22,6 +22,7 @@ jobs:
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
+                  extensions: ds
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
@@ -41,6 +42,7 @@ jobs:
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.4
+                  extensions: ds
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
