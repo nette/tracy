@@ -80,6 +80,8 @@ class Dumper
 		\DOMNode::class => [Exposer::class, 'exposeDOMNode'],
 		\DOMNodeList::class => [Exposer::class, 'exposeDOMNodeList'],
 		\DOMNamedNodeMap::class => [Exposer::class, 'exposeDOMNodeList'],
+		\Ds\Collection::class => [Exposer::class, 'exposeDsCollection'],
+		\Ds\Map::class => [Exposer::class, 'exposeDsMap'],
 	];
 
 	/** @var Describer */

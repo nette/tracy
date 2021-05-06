@@ -179,4 +179,27 @@ final class Exposer
 		}
 		$value->value = $class . ' (Incomplete Class)';
 	}
+
+
+	public static function exposeDsCollection(
+		\Ds\Collection $obj,
+		Value $value,
+		Describer $describer
+	): void {
+		foreach ($obj as $objectKey => $objectValue) {
+			$describer->addPropertyTo($value, (string) $objectKey, $objectValue, Value::PROP_PRIVATE);
+		}
+	}
+
+
+	public static function exposeDsMap(
+		\Ds\Map $obj,
+		Value $value,
+		Describer $describer
+	): void {
+		$i = 0;
+		foreach ($obj as $objectKey => $objectValue) {
+			$describer->addPropertyTo($value, (string) $i++, new \Ds\Pair($objectKey, $objectValue), Value::PROP_PRIVATE);
+		}
+	}
 }
