@@ -40,6 +40,9 @@ class Debugger
 	public static $reservedMemorySize = 500000;
 
 	/** @var bool */
+	public static $enableDispatch = true;
+
+	/** @var bool */
 	private static $enabled = false;
 
 	/** @var string|null reserved memory; also prevents double rendering */
@@ -219,7 +222,7 @@ class Debugger
 
 	public static function dispatch(): void
 	{
-		if (self::$productionMode || PHP_SAPI === 'cli') {
+		if (!self::$enableDispatch || self::$productionMode || PHP_SAPI === 'cli') {
 			return;
 
 		} elseif (headers_sent($file, $line) || ob_get_length()) {
