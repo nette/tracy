@@ -50,7 +50,7 @@ class MailSender
 			$mail->addTo(trim($item));
 		}
 		$mail->setSubject('PHP: An error occurred on the server ' . $host);
-		$mail->setBody(Tracy\Logger::formatMessage($message) . "\n\nsource: " . Tracy\Helpers::getSource());
+		$mail->setBody(Tracy\Logger::formatMessage($message) . "\n\nsource: " . Tracy\Helpers::getSource() . Tracy\Helpers::formatMethod());
 
 		$this->mailer->send($mail);
 	}
