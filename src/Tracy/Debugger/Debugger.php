@@ -98,7 +98,7 @@ class Debugger
 
 	/********************* misc ****************d*g**/
 
-	/** @var int timestamp with microseconds of the start of the request */
+	/** @var float timestamp with microseconds of the start of the request */
 	public static $time;
 
 	/** @var string URI pattern mask to open editor */
