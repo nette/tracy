@@ -371,8 +371,7 @@ class BlueScreen
 
 	public function formatMessage(\Throwable $exception): string
 	{
-		$msg = Helpers::encodeString(trim((string) $exception->getMessage()), self::MAX_MESSAGE_LENGTH);
-		$msg = str_replace('<i>\n</i>', '', $msg);
+		$msg = Helpers::encodeString(trim((string) $exception->getMessage()), self::MAX_MESSAGE_LENGTH, false);
 
 		// highlight 'string'
 		$msg = preg_replace(

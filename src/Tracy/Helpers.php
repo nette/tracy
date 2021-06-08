@@ -344,7 +344,7 @@ class Helpers
 
 
 	/** @internal */
-	public static function encodeString(string $s, int $maxLength = null): string
+	public static function encodeString(string $s, int $maxLength = null, bool $showWhitespaces = true): string
 	{
 		static $tableU, $tableB;
 		if ($tableU === null) {
@@ -366,6 +366,9 @@ class Helpers
 
 		$utf = self::isUtf8($s);
 		$table = $utf ? $tableU : $tableB;
+		if (!$showWhitespaces) {
+			unset($table["\r"], $table["\n"], $table["\t"]);
+		}
 
 		$len = $utf ? self::utf8Length($s) : strlen($s);
 		$s = $maxLength && $len > $maxLength + 20
