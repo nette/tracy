@@ -211,7 +211,7 @@ final class Renderer
 				. '</span>';
 
 		} elseif (is_string($str)) {
-			$len = strlen(utf8_decode($str));
+			$len = Helpers::utf8Length($str);
 			return '<span class="tracy-dump-string"'
 				. ($len > 1 ? ' title="' . $len . ' characters"' : '')
 				. '>'

@@ -122,11 +122,11 @@ final class Describer
 	 */
 	private function describeString(string $s, int $depth = 0)
 	{
-		$encoded = Helpers::encodeString($s, $depth ? $this->maxLength : null, $utf);
+		$encoded = Helpers::encodeString($s, $depth ? $this->maxLength : null);
 		if ($encoded === $s) {
 			return $encoded;
-		} elseif ($utf) {
-			return new Value(Value::TYPE_STRING_HTML, $encoded, strlen(utf8_decode($s)));
+		} elseif (Helpers::isUtf8($s)) {
+			return new Value(Value::TYPE_STRING_HTML, $encoded, Helpers::utf8Length($s));
 		} else {
 			return new Value(Value::TYPE_BINARY_HTML, $encoded, strlen($s));
 		}
@@ -247,7 +247,7 @@ final class Describer
 		}
 		$value = $this->describeString($key);
 		return is_string($value) // ensure result is Value
-			? new Value(Value::TYPE_STRING_HTML, $key, strlen(utf8_decode($key)))
+			? new Value(Value::TYPE_STRING_HTML, $key, Helpers::utf8Length($key))
 			: $value;
 	}
 

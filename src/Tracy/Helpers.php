@@ -344,7 +344,7 @@ class Helpers
 
 
 	/** @internal */
-	public static function encodeString(string $s, int $maxLength = null, &$utf = null): string
+	public static function encodeString(string $s, int $maxLength = null): string
 	{
 		static $tableU, $tableB;
 		if ($tableU === null) {
@@ -354,7 +354,7 @@ class Helpers
 			$tableB = $tableU = [
 				"\r" => '<i>\r</i>',
 				"\n" => "<i>\\n</i>\n",
-				"\t" => '<i>\\t</i>    ',
+				"\t" => '<i>\t</i>    ',
 				"\e" => '<i>\e</i>',
 				'<' => '&lt;',
 				'&' => '&amp;',
@@ -364,10 +364,10 @@ class Helpers
 			}
 		}
 
-		[$utf, $table, $len] = preg_match('##u', $s)
-			? [true, $tableU, strlen(utf8_decode($s))]
-			: [false, $tableB, strlen($s)];
+		$utf = self::isUtf8($s);
+		$table = $utf ? $tableU : $tableB;
 
+		$len = $utf ? self::utf8Length($s) : strlen($s);
 		$s = $maxLength && $len > $maxLength + 20
 			? strtr(self::truncateString($s, $maxLength, $utf), $table)
 				. ' <span>…</span> '
@@ -377,6 +377,20 @@ class Helpers
 		$s = str_replace('</i><i>', '', $s);
 		$s = preg_replace('~\n$~D', '', $s);
 		return $s;
+	}
+
+
+	/** @internal */
+	public static function utf8Length(string $s): int
+	{
+		return strlen(utf8_decode($s));
+	}
+
+
+	/** @internal */
+	public static function isUtf8(string $s): bool
+	{
+		return (bool) preg_match('##u', $s);
 	}
 
 
