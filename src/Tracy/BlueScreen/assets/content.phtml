@@ -28,10 +28,10 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div class="tracy-bs-main">
 		<div id="tracy-bs-error" class="panel">
-			<?php if ($exception->getMessage()): ?><p><?= Helpers::encodeString($title . $code, self::MAX_MESSAGE_LENGTH) ?></p><?php endif ?>
+			<?php if ($exception->getMessage()): ?><p><?= Helpers::escapeHtml($title . $code) ?></p><?php endif ?>
 
 
-			<h1><span><?= $this->formatMessage($exception) ?></span>
+			<h1><span><?= $this->formatMessage($exception) ?: Helpers::escapeHtml($title . $code) ?></span>
 			<?php foreach ($actions as $item): ?>
 			<a href="<?= Helpers::escapeHtml($item['link']) ?>" class="action"<?= empty($item['external']) ? '' : ' target="_blank" rel="noreferrer noopener"'?>><?= Helpers::escapeHtml($item['label']) ?>&#x25ba;</a>
 			<?php endforeach ?></h1>
