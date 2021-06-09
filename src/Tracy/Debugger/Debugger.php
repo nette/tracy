@@ -324,12 +324,7 @@ class Debugger
 					. (isset($e)
 						? 'Unable to log error. You may try enable debug mode to inspect the problem.'
 						: 'Check log to see more info.')
-					. (!self::$productionMode
-						? "\n\n"
-						. $exception->getFile() . ':' . $exception->getLine() . "\n"
-						. BlueScreen::highlightPhpCli($exception->getFile(), $exception->getLine())
-						: ''
-					) . "\n");
+					. "\n");
 			}
 
 		} elseif ($firstTime && Helpers::isHtmlMode() || Helpers::isAjax()) {
@@ -343,6 +338,11 @@ class Debugger
 					header("X-Tracy-Error-Log: $file", false);
 				}
 				echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
+				if (!self::$productionMode && PHP_SAPI === 'cli') {
+					echo "\n\n"
+						. $exception->getFile() . ':' . $exception->getLine() . "\n"
+						. BlueScreen::highlightPhpCli($exception->getFile(), $exception->getLine());
+				}
 				if ($file && self::$browser) {
 					exec(self::$browser . ' ' . escapeshellarg(strtr($file, self::$editorMapping)));
 				}
