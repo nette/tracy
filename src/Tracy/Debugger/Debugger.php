@@ -323,10 +323,13 @@ class Debugger
 				@fwrite(STDERR, "ERROR: {$exception->getMessage()}\n"
 					. (isset($e)
 						? 'Unable to log error. You may try enable debug mode to inspect the problem.'
-						: 'Check log to see more info.') . "\n\n"
+						: 'Check log to see more info.')
+					. (self::$productionMode
+						? "\n\n"
 						. $exception->getFile() . ':' . $exception->getLine() . "\n"
 						. BlueScreen::highlightPhpCli($exception->getFile(), $exception->getLine())
-					. "\n");
+						: ''
+					) . "\n");
 			}
 
 		} elseif ($firstTime && Helpers::isHtmlMode() || Helpers::isAjax()) {
