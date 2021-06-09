@@ -324,7 +324,7 @@ class Debugger
 					. (isset($e)
 						? 'Unable to log error. You may try enable debug mode to inspect the problem.'
 						: 'Check log to see more info.')
-					. (self::$productionMode
+					. (!self::$productionMode
 						? "\n\n"
 						. $exception->getFile() . ':' . $exception->getLine() . "\n"
 						. BlueScreen::highlightPhpCli($exception->getFile(), $exception->getLine())
