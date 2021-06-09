@@ -337,6 +337,44 @@ class BlueScreen
 
 
 	/**
+	 * Returns syntax highlighted source code to Terminal.
+	 */
+	public static function highlightPhpCli(string $file, int $line, int $lines = 15): string
+	{
+		$out = '';
+		if (is_file($file) === true) {
+			$content = (string) file_get_contents($file);
+			$source = explode("\n", str_replace(["\r\n", "\r"], "\n", $content));
+
+			$start = max(1, min($line, count($source) - 1) - (int) floor($lines * 2 / 3));
+			for ($i = $start; $i <= $start + $lines; $i++) {
+				if (isset($source[$i]) === false) {
+					break;
+				}
+
+				$currentLine = $i + 1;
+				if ($line === $currentLine) { // highlight line
+					$windowSize = (int) getenv('COLUMNS');
+					$out .= "\e[1;37m\e[41m" . str_pad(' ' . $currentLine . ': ', 6, ' ');
+					$lineC = str_replace("\t", '    ', (string) preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $source[$i]));
+					if ($windowSize > 10) {
+						$out .= str_pad($lineC, $windowSize > 500 ? 500 : $windowSize - 10, ' ');
+					} else {
+						$out .= $lineC;
+					}
+					$out .= "\e[0m\n";
+				} else {
+					$out .= "\e[100m" . str_pad(' ' . $currentLine . ': ', 6, ' ') . "\e[0m";
+					$out .= str_replace("\t", '    ', $source[$i]);
+					$out .= "\n";
+				}
+			}
+		}
+		return $out;
+	}
+
+
+	/**
 	 * Should a file be collapsed in stack trace?
 	 * @internal
 	 */

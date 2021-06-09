@@ -323,7 +323,9 @@ class Debugger
 				@fwrite(STDERR, "ERROR: {$exception->getMessage()}\n"
 					. (isset($e)
 						? 'Unable to log error. You may try enable debug mode to inspect the problem.'
-						: 'Check log to see more info.')
+						: 'Check log to see more info.') . "\n\n"
+					  . $exception->getFile() . ':' . $exception->getLine() . "\n"
+					  . BlueScreen::highlightPhpCli($exception->getFile(), $exception->getLine())
 					. "\n");
 			}
 
