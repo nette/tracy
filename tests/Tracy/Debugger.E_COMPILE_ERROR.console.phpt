@@ -33,14 +33,14 @@ Stack trace:
 #1 %a%: second()
 #2 %a%: first()
 #3 {main}
-Unable to log error: Logging directory is not specified.
+Tracy is unable to log error: Logging directory is not specified.
 ' : '
 Fatal error: Cannot re-assign $this in %a%
 ErrorException: Cannot re-assign $this in %a%
 Stack trace:
 #0 [internal function]: Tracy\\Debugger::shutdownHandler()
 #1 {main}
-Unable to log error: Logging directory is not specified.
+Tracy is unable to log error: Logging directory is not specified.
 ', ob_get_clean());
 	echo 'OK!'; // prevents PHP bug #62725
 });

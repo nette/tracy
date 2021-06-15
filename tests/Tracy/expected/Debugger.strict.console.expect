@@ -5,4 +5,4 @@ Stack trace:
 #2 %a%: second(true, false)
 #3 %a%: first(10, '%a%')
 #4 {main}
-Unable to log error: Logging directory is not specified.
+Tracy is unable to log error: Logging directory is not specified.

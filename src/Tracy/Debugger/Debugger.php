@@ -351,12 +351,12 @@ class Debugger
 				if (Helpers::detectColors()) {
 					echo "\n\n" . BlueScreen::highlightPhpCli($exception->getFile(), $exception->getLine()) . "\n";
 				}
-				echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
+				echo "$exception\n" . ($file ? "\n(stored in $file)\n" : '');
 				if ($file && self::$browser) {
 					exec(self::$browser . ' ' . escapeshellarg(strtr($file, self::$editorMapping)));
 				}
 			} catch (\Throwable $e) {
-				echo "$exception\nUnable to log error: {$e->getMessage()}\n";
+				echo "$exception\nTracy is unable to log error: {$e->getMessage()}\n";
 			}
 		}
 

@@ -32,7 +32,7 @@ Stack trace:
 #1 %a%: second(true, false)
 #2 %a%: first(10, '%a%')
 #3 {main}
-Unable to log error: Logging directory is not specified.
+Tracy is unable to log error: Logging directory is not specified.
 ",
 		ob_get_clean()
 	);
