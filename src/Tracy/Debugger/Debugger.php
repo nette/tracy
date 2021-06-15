@@ -337,6 +337,9 @@ class Debugger
 				if ($file && !headers_sent()) {
 					header("X-Tracy-Error-Log: $file", false);
 				}
+				if (Helpers::detectColors()) {
+					echo "\n\n" . BlueScreen::highlightPhpCli($exception->getFile(), $exception->getLine()) . "\n";
+				}
 				echo "$exception\n" . ($file ? "(stored in $file)\n" : '');
 				if ($file && self::$browser) {
 					exec(self::$browser . ' ' . escapeshellarg(strtr($file, self::$editorMapping)));
