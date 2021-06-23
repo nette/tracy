@@ -152,7 +152,11 @@ class BlueScreen
 		$css = Helpers::minifyCss(implode($css));
 
 		$nonce = $toScreen ? Helpers::getNonce() : null;
-		$actions = $toScreen ? $this->renderActions($exception) : [];
+		try {
+			$actions = $toScreen ? $this->renderActions($exception) : [];
+		} catch (\Throwable $e) {
+			$actions = [];
+		}
 
 		require $template;
 	}
