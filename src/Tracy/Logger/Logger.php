@@ -191,7 +191,9 @@ class Logger implements ILogger
 					'Content-Transfer-Encoding: 8bit',
 				]) . "\n",
 				'subject' => "PHP: An error occurred on the server $host",
-				'body' => static::formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
+				'body' => static::formatMessage($message)
+					. "\n\nsource: " . Helpers::getSource()
+					. "\n\ndate: " . date('[Y-m-d H-i-s]'),
 			]
 		);
 
