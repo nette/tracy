@@ -172,6 +172,13 @@ class Helpers
 
 
 	/** @internal */
+        public static function formatMethod(): string
+        {
+                return isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] !== 'GET' ? (' [' . $_SERVER['REQUEST_METHOD'] . ']') : '';
+        }
+
+
+	/** @internal */
 	public static function improveException(\Throwable $e): void
 	{
 		$message = $e->getMessage();
