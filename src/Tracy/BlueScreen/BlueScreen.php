@@ -212,7 +212,7 @@ class BlueScreen
 		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{3,})+)\1#i', $ex->getMessage(), $m)) {
 			$class = $m[2];
 			if (
-				!class_exists($class) && !interface_exists($class) && !trait_exists($class)
+				!class_exists($class, false) && !interface_exists($class, false) && !trait_exists($class, false)
 				&& ($file = Helpers::guessClassFile($class)) && !is_file($file)
 			) {
 				$actions[] = [
