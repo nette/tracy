@@ -208,7 +208,18 @@ class Debugger
 		});
 		set_error_handler([self::class, 'errorHandler']);
 
-		foreach (['Bar/Bar', 'Bar/DefaultBarPanel', 'BlueScreen/BlueScreen', 'Dumper/Dumper', 'Logger/Logger', 'Helpers'] as $path) {
+		foreach ([
+			'Bar/Bar',
+			'Bar/DefaultBarPanel',
+			'BlueScreen/BlueScreen',
+			'Dumper/Describer',
+			'Dumper/Dumper',
+			'Dumper/Exposer',
+			'Dumper/Renderer',
+			'Dumper/Value',
+			'Logger/Logger',
+			'Helpers',
+		] as $path) {
 			require_once dirname(__DIR__) . "/$path.php";
 		}
 
