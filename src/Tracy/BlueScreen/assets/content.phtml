@@ -280,7 +280,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<div class="outer">
 			<table>
 			<?php
-			foreach ($_SERVER['argv'] as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Helpers::escapeHtml($v), "</td></tr>\n";
+			foreach ($_SERVER['argv'] as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', $dump($v, $k), "</td></tr>\n";
 			?>
 			</table>
 			</div>
@@ -299,7 +299,7 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<div class="outer">
 			<table class="tracy-sortable">
 			<?php
-			foreach ($httpHeaders as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Helpers::escapeHtml($v), "</td></tr>\n";
+			foreach ($httpHeaders as $k => $v) echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', $dump($v, $k), "</td></tr>\n";
 			?>
 			</table>
 			</div>
