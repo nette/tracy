@@ -37,19 +37,18 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			<?php endforeach ?></h1>
 		</div>
 
-		<?php if ($prev = $exception->getPrevious()): ?>
+		<?php if (count($exceptions) > 1): ?>
 		<div class="caused">
-			<a href="#tracyCaused">Caused by <?= Helpers::escapeHtml(Helpers::getClass($prev)) ?></a>
+			<a href="#tracyCaused">Caused by <?= Helpers::escapeHtml(Helpers::getClass($exceptions[1])) ?></a>
 		</div>
 		<?php endif ?>
 
 
-		<?php $ex = $exception; $level = 0; ?>
-		<?php do { ?>
+		<?php foreach ($exceptions as $level => $ex): ?>
 
-			<?php if ($level++): ?>
-			<div class="panel"<?php if ($level === 2) echo ' id="tracyCaused"' ?>>
-			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = $level > 2) ? ' tracy-collapsed' : '' ?>">Caused by</a></h2>
+			<?php if ($level): ?>
+			<div class="panel"<?php if ($level === 1) echo ' id="tracyCaused"' ?>>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = $level > 1) ? ' tracy-collapsed' : '' ?>">Caused by</a></h2>
 
 			<div class="<?= $collapsed ? 'tracy-collapsed ' : '' ?>inner">
 				<div class="panel">
@@ -159,8 +158,8 @@ $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 			</div></div>
 			<?php endif ?>
 
-		<?php } while ($ex = $ex->getPrevious()); ?>
-		<?php while (--$level) echo '</div></div>' ?>
+		<?php endforeach ?>
+		<?php while ($level--) echo '</div></div>' ?>
 
 
 		<?php if (count((array) $exception) > count((array) new \Exception)):?>

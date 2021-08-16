@@ -88,12 +88,11 @@ class Logger implements ILogger
 	public static function formatMessage($message): string
 	{
 		if ($message instanceof \Throwable) {
-			while ($message) {
-				$tmp[] = ($message instanceof \ErrorException
-					? Helpers::errorTypeToString($message->getSeverity()) . ': ' . $message->getMessage()
-					: Helpers::getClass($message) . ': ' . $message->getMessage() . ($message->getCode() ? ' #' . $message->getCode() : '')
-				) . ' in ' . $message->getFile() . ':' . $message->getLine();
-				$message = $message->getPrevious();
+			foreach (Helpers::getExceptionChain($message) as $exception) {
+				$tmp[] = ($exception instanceof \ErrorException
+					? Helpers::errorTypeToString($exception->getSeverity()) . ': ' . $exception->getMessage()
+					: Helpers::getClass($exception) . ': ' . $exception->getMessage() . ($exception->getCode() ? ' #' . $exception->getCode() : '')
+				) . ' in ' . $exception->getFile() . ':' . $exception->getLine();
 			}
 			$message = implode("\ncaused by ", $tmp);
 
@@ -121,12 +120,11 @@ class Logger implements ILogger
 
 	public function getExceptionFile(\Throwable $exception, string $level = self::EXCEPTION): string
 	{
-		while ($exception) {
+		foreach (Helpers::getExceptionChain($exception) as $exception) {
 			$data[] = [
 				get_class($exception), $exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(),
 				array_map(function (array $item): array { unset($item['args']); return $item; }, $exception->getTrace()),
 			];
-			$exception = $exception->getPrevious();
 		}
 		$hash = substr(md5(serialize($data)), 0, 10);
 		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
