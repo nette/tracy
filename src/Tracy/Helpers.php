@@ -512,4 +512,14 @@ XX
 					)
 			);
 	}
+
+
+	public static function getExceptionChain(\Throwable $ex): array
+	{
+		$res = [$ex];
+		while (($ex = $ex->getPrevious()) && !in_array($ex, $res, true)) {
+			$res[] = $ex;
+		}
+		return $res;
+	}
 }
