@@ -23,6 +23,10 @@ namespace Tracy;
 
 $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 
+if (!isset($exceptions)) {
+	$exceptions = Helpers::getExceptionChain($exception);
+}
+
 ?>
 <div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
