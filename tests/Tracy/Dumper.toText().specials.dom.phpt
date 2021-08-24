@@ -132,6 +132,6 @@ XX
 
 
 Assert::match(<<<'XX'
-DOMXPath #%d%
+DOMXPath #%d%%A%
 XX
 , Dumper::toText($xpath, [Dumper::DEPTH => 1]));
