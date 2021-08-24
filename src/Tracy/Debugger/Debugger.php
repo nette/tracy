@@ -70,6 +70,9 @@ class Debugger
 	/** @var bool display location by dump()? */
 	public static $showLocation;
 
+	/** @var string[] sensitive keys not displayed by dump() */
+	public static $keysToHide = [];
+
 	/** @var string theme for dump() */
 	public static $dumpTheme = 'light';
 
@@ -559,6 +562,7 @@ class Debugger
 				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation,
 				Dumper::THEME => self::$dumpTheme,
+				Dumper::KEYS_TO_HIDE => self::$keysToHide,
 			]);
 		}
 
