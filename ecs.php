@@ -16,6 +16,7 @@ return function (Symfony\Component\DependencyInjection\Loader\Configurator\Conta
 	$parameters->set('skip', [
 		'tmp/*',
 		'fixtures*/*',
+		'tests/Tracy/Dumper.toText().specials.enum.phpt', // enum
 
 		PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer::class => [
 			'src/Tracy/Debugger/Debugger.php',

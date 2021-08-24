@@ -73,6 +73,7 @@ class Dumper
 	/** @var array */
 	public static $objectExporters = [
 		\Closure::class => [Exposer::class, 'exposeClosure'],
+		\UnitEnum::class => [Exposer::class, 'exposeEnum'],
 		\ArrayObject::class => [Exposer::class, 'exposeArrayObject'],
 		\SplFileInfo::class => [Exposer::class, 'exposeSplFileInfo'],
 		\SplObjectStorage::class => [Exposer::class, 'exposeSplObjectStorage'],

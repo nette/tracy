@@ -109,6 +109,16 @@ final class Exposer
 	}
 
 
+	public static function exposeEnum(\UnitEnum $enum, Value $value, Describer $describer): void
+	{
+		$value->value = get_class($enum) . '::' . $enum->name;
+		if ($enum instanceof \BackedEnum) {
+			$describer->addPropertyTo($value, 'value', $enum->value);
+			$value->collapsed = true;
+		}
+	}
+
+
 	public static function exposeArrayObject(\ArrayObject $obj, Value $value, Describer $describer): void
 	{
 		$flags = $obj->getFlags();
