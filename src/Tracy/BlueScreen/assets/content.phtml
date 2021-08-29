@@ -142,7 +142,7 @@ $exceptions = $exceptions ?? Helpers::getExceptionChain($exception);
 			<?php endif ?>
 
 
-			<?php if ($ex instanceof \ErrorException && isset($ex->context) && is_array($ex->context)):?>
+			<?php if ($ex instanceof \ErrorException && !empty($ex->context) && is_array($ex->context)):?>
 			<div class="panel">
 			<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Variables</a></h2>
 
