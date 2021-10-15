@@ -220,6 +220,7 @@ class Debugger
 			'Dumper/Exposer',
 			'Dumper/Renderer',
 			'Dumper/Value',
+			'Logger/FireLogger',
 			'Logger/Logger',
 			'Helpers',
 		] as $path) {
