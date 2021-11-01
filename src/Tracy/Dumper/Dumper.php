@@ -33,7 +33,8 @@ class Dumper
 		DEBUGINFO = 'debuginfo', // use magic method __debugInfo if exists (defaults to false)
 		KEYS_TO_HIDE = 'keystohide', // sensitive keys not displayed (defaults to [])
 		SCRUBBER = 'scrubber', // detects sensitive keys not to be displayed
-		THEME = 'theme'; // color theme (defaults to light)
+		THEME = 'theme', // color theme (defaults to light)
+		HASH = 'hash'; // show object and reference hashes (defaults to true)
 
 	public const
 		LOCATION_CLASS = 0b0001, // shows where classes are defined
@@ -205,6 +206,7 @@ class Dumper
 		$renderer->sourceLocation = !(~$location & self::LOCATION_SOURCE);
 		$renderer->classLocation = !(~$location & self::LOCATION_CLASS);
 		$renderer->theme = $options[self::THEME] ?? $renderer->theme;
+		$renderer->hash = $options[self::HASH] ?? true;
 	}
 
 

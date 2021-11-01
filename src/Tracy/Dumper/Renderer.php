@@ -35,6 +35,9 @@ final class Renderer
 	/** @var bool|null  lazy-loading via JavaScript? true=full, false=none, null=collapsed parts */
 	public $lazy;
 
+	/** @var bool */
+	public $hash = true;
+
 	/** @var string */
 	public $theme = 'light';
 
@@ -309,7 +312,7 @@ final class Renderer
 			$out .= $indent
 				. $this->renderVar($k, $depth + 1, self::TYPE_ARRAY_KEY)
 				. ' => '
-				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
+				. ($ref && $this->hash ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))
 				. (substr($tmp, -6) === '</div>' ? '' : "\n");
 		}
@@ -339,7 +342,7 @@ final class Renderer
 		$out = '<span class="tracy-dump-object"' . $editorAttributes . '>'
 			. Helpers::escapeHtml($object->value)
 			. '</span>'
-			. ($object->id ? ' <span class="tracy-dump-hash">#' . $object->id . '</span>' : '');
+			. ($object->id && $this->hash ? ' <span class="tracy-dump-hash">#' . $object->id . '</span>' : '');
 
 		if ($object->items === null) {
 			return $out . ' …';
@@ -380,7 +383,7 @@ final class Renderer
 			$out .= $indent
 				. $this->renderVar($k, $depth + 1, $type)
 				. ': '
-				. ($ref ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
+				. ($ref && $this->hash ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))
 				. (substr($tmp, -6) === '</div>' ? '' : "\n");
 		}
@@ -396,7 +399,7 @@ final class Renderer
 	private function renderResource(Value $resource, int $depth): string
 	{
 		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($resource->value) . '</span> '
-			. '<span class="tracy-dump-hash">@' . substr($resource->id, 1) . '</span>';
+			. ($this->hash ? '<span class="tracy-dump-hash">@' . substr($resource->id, 1) . '</span>' : '');
 
 		if (!$resource->items) {
 			return $out;
