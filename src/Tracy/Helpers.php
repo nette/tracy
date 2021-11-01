@@ -346,40 +346,64 @@ class Helpers
 	/** @internal */
 	public static function encodeString(string $s, int $maxLength = null, bool $showWhitespaces = true): string
 	{
-		static $tableU, $tableB;
-		if ($tableU === null) {
-			foreach (range("\x00", "\x1F") as $ch) {
-				$tableU[$ch] = '<i>\x' . str_pad(strtoupper(dechex(ord($ch))), 2, '0', STR_PAD_LEFT) . '</i>';
-			}
-			$tableB = $tableU = [
+		$utf8 = self::isUtf8($s);
+		$len = $utf8 ? self::utf8Length($s) : strlen($s);
+		return $maxLength && $len > $maxLength + 20
+			? self::doEncodeString(self::truncateString($s, $maxLength, $utf8), $utf8, $showWhitespaces)
+				. ' <span>…</span> '
+				. self::doEncodeString(self::truncateString($s, -10, $utf8), $utf8, $showWhitespaces)
+			: self::doEncodeString($s, $utf8, $showWhitespaces);
+	}
+
+
+	private static function doEncodeString(string $s, bool $utf8, bool $showWhitespaces): string
+	{
+		static $specials = [
+			true => [
 				"\r" => '<i>\r</i>',
 				"\n" => "<i>\\n</i>\n",
 				"\t" => '<i>\t</i>    ',
 				"\e" => '<i>\e</i>',
 				'<' => '&lt;',
 				'&' => '&amp;',
-			] + $tableU;
-			foreach (range("\x7F", "\xFF") as $ch) {
-				$tableB[$ch] = '<i>\x' . str_pad(strtoupper(dechex(ord($ch))), 2, '0', STR_PAD_LEFT) . '</i>';
-			}
-		}
-
-		$utf = self::isUtf8($s);
-		$table = $utf ? $tableU : $tableB;
-		if (!$showWhitespaces) {
-			unset($table["\r"], $table["\n"], $table["\t"]);
-		}
-
-		$len = $utf ? self::utf8Length($s) : strlen($s);
-		$s = $maxLength && $len > $maxLength + 20
-			? strtr(self::truncateString($s, $maxLength, $utf), $table)
-				. ' <span>…</span> '
-				. strtr(self::truncateString($s, -10, $utf), $table)
-			: strtr($s, $table);
-
+			],
+			false => [
+				"\r" => "\r",
+				"\n" => "\n",
+				"\t" => "\t",
+				"\e" => '<i>\e</i>',
+				'<' => '&lt;',
+				'&' => '&amp;',
+			],
+		];
+		$special = $specials[$showWhitespaces];
+		$s = preg_replace_callback(
+			$utf8 ? '#[\p{C}<&]#u' : '#[\x00-\x1F\x7F-\xFF<&]#',
+			function ($m) use ($special) {
+				return $special[$m[0]] ?? (strlen($m[0]) === 1
+					? '<i>\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT) . '</i>'
+					: '<i>\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}</i>');
+			},
+			$s
+		);
 		$s = str_replace('</i><i>', '', $s);
 		$s = preg_replace('~\n$~D', '', $s);
 		return $s;
+	}
+
+
+	private static function utf8Ord(string $c): int
+	{
+		$ord0 = ord($c[0]);
+		if ($ord0 < 0x80) {
+			return $ord0;
+		} elseif ($ord0 < 0xE0) {
+			return ($ord0 << 6) + ord($c[1]) - 0x3080;
+		} elseif ($ord0 < 0xF0) {
+			return ($ord0 << 12) + (ord($c[1]) << 6) + ord($c[2]) - 0xE2080;
+		} else {
+			return ($ord0 << 18) + (ord($c[1]) << 12) + (ord($c[2]) << 6) + ord($c[3]) - 0x3C82080;
+		}
 	}
 
 

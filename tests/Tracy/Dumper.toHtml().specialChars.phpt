@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
-><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (13)</span>
+><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (14)</span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-string"><span>'</span><span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-string"><span>'</span> <span>'</span></span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-string"><span>'</span><i>\x00</i><span>'</span></span>
@@ -34,6 +34,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>utf <i>\n</i>
 <span class="tracy-dump-indent">    </span><i>\r\t</i>    <i>\e\x00</i> I<i>\xC3\xB1</i>t<i>\xC3\xAB</i>r <i>\xA0</i><span>'</span></span> => <span class="tracy-dump-number">3</span>
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>&lt;div> &amp;amp;<span>'</span></span> => <span class="tracy-dump-string" title="11 characters"><span>'</span>&lt;div> &amp;amp;<span>'</span></span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">9</span> => <span class="tracy-dump-string"><span>'</span><i>\u{FEFF}</i><span>'</span></span>
 </div></pre>
 XX
 , Dumper::toHtml([
@@ -50,4 +51,5 @@ XX
 	"utf \n\r\t\e\x00 Iñtër" => 2, // utf + control chars in key
 	"utf \n\r\t\e\x00 Iñtër \xA0" => 3, // binary + control chars in key,
 	'<div> &amp;' => '<div> &amp;', // HTML
-]));
+	"\xEF\xBB\xBF", // BOM
+], [Dumper::COLLAPSE => false]));

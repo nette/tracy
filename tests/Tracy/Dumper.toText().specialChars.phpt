@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Assert::match(<<<'XX'
-array (13)
+array (14)
    0 => ''
    1 => ' '
    2 => '\x00'
@@ -33,6 +33,7 @@ array (13)
    'utf \n
     \r\t    \e\x00 I\xC3\xB1t\xC3\xABr \xA0' => 3
    '<div> &amp;' => '<div> &amp;'
+   9 => '\u{FEFF}'
 XX
 , Dumper::toText([
 	'',
@@ -48,4 +49,5 @@ XX
 	"utf \n\r\t\e\x00 Iñtër" => 2, // utf + control chars in key
 	"utf \n\r\t\e\x00 Iñtër \xA0" => 3, // binary + control chars in key
 	'<div> &amp;' => '<div> &amp;', // HTML
+	"\xEF\xBB\xBF", // BOM
 ]));
