@@ -99,7 +99,7 @@ class Dumper
 	 */
 	public static function dump($var, array $options = [])
 	{
-		if (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg') {
+		if (Helpers::isCli()) {
 			$useColors = self::$terminalColors && Helpers::detectColors();
 			$dumper = new self($options);
 			fwrite(STDOUT, $dumper->asTerminal($var, $useColors ? self::$terminalColors : []));

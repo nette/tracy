@@ -31,23 +31,23 @@ test('', function () {
 test('', function () {
 	$logger = new Logger(getTempDir());
 	$logger->log(new ErrorException('Msg', 0, E_ERROR, __FILE__, __LINE__), 'c');
-	Assert::match('[%a%] Fatal Error: Msg in %a%Logger.log().phpt:%d%  @  CLI (PID: %d%): %a%  @@  c-%a%.html', file_get_contents($logger->directory . '/c.log'));
+	Assert::match('[%a%] Fatal Error: Msg in %a%Logger.log().phpt:%d%  @  %a%  @@  c-%a%.html', file_get_contents($logger->directory . '/c.log'));
 });
 
 test('', function () {
 	$logger = new Logger(getTempDir());
 	$logger->log(new ErrorException('Msg', 0, E_WARNING, __FILE__, __LINE__), 'd');
-	Assert::match('[%a%] Warning: Msg in %a%Logger.log().phpt:%d%  @  CLI (PID: %d%): %a%  @@  d-%a%.html', file_get_contents($logger->directory . '/d.log'));
+	Assert::match('[%a%] Warning: Msg in %a%Logger.log().phpt:%d%  @  %a%  @@  d-%a%.html', file_get_contents($logger->directory . '/d.log'));
 });
 
 test('', function () {
 	$logger = new Logger(getTempDir());
 	$logger->log(new ErrorException('Msg', 0, E_COMPILE_ERROR, __FILE__, __LINE__), 'e');
-	Assert::match('[%a%] Compile Error: Msg in %a%Logger.log().phpt:%d%  @  CLI (PID: %d%): %a%  @@  e-%a%.html', file_get_contents($logger->directory . '/e.log'));
+	Assert::match('[%a%] Compile Error: Msg in %a%Logger.log().phpt:%d%  @  %a%  @@  e-%a%.html', file_get_contents($logger->directory . '/e.log'));
 });
 
 test('', function () {
 	$logger = new Logger(getTempDir());
 	$logger->log(new ErrorException('Msg', 0, E_NOTICE, __FILE__, __LINE__), 'f');
-	Assert::match('[%a%] Notice: Msg in %a%Logger.log().phpt:%d%  @  CLI (PID: %d%): %a%  @@  f-%a%.html', file_get_contents($logger->directory . '/f.log'));
+	Assert::match('[%a%] Notice: Msg in %a%Logger.log().phpt:%d%  @  %a%  @@  f-%a%.html', file_get_contents($logger->directory . '/f.log'));
 });

@@ -62,17 +62,19 @@ Assert::with($blueScreen, function () {
 		$this->renderActions($e)
 	);
 
-	$e->skippable = true;
-	Assert::same(
-		[
-			$search,
+	if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
+		$e->skippable = true;
+		Assert::same(
 			[
-				'link' => 'http://localhost/?_tracy_skip_error',
-				'label' => 'skip error',
+				$search,
+				[
+					'link' => 'http://localhost/?_tracy_skip_error',
+					'label' => 'skip error',
+				],
 			],
-		],
-		$this->renderActions($e)
-	);
+			$this->renderActions($e)
+		);
+	}
 });
 
 

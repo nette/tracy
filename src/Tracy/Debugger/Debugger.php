@@ -234,7 +234,7 @@ class Debugger
 
 	public static function dispatch(): void
 	{
-		if (self::$productionMode || PHP_SAPI === 'cli') {
+		if (self::$productionMode || Helpers::isCli()) {
 			return;
 
 		} elseif (headers_sent($file, $line) || ob_get_length()) {
@@ -333,7 +333,7 @@ class Debugger
 				(function ($logged) use ($exception) {
 					require self::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml';
 				})(empty($e));
-			} elseif (PHP_SAPI === 'cli') {
+			} elseif (Helpers::isCli()) {
 				// @ triggers E_NOTICE when strerr is closed since PHP 7.4
 				@fwrite(STDERR, "ERROR: {$exception->getMessage()}\n"
 					. (isset($e)
@@ -551,7 +551,7 @@ class Debugger
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
 			];
-			return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg'
+			return Helpers::isCli()
 				? Dumper::toText($var)
 				: Helpers::capture(function () use ($var, $options) {
 					Dumper::dump($var, $options);

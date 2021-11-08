@@ -268,7 +268,7 @@ $exceptions = $exceptions ?? Helpers::getExceptionChain($exception);
 		<?php endif ?>
 
 
-		<?php if (PHP_SAPI === 'cli'): ?>
+		<?php if (Helpers::isCli()): ?>
 		<div class="panel">
 		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">CLI request</a></h2>
 

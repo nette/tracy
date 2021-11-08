@@ -160,13 +160,17 @@ class Helpers
 	/** @internal */
 	public static function getSource(): string
 	{
-		if (isset($_SERVER['REQUEST_URI'])) {
+		if (self::isCli()) {
+			return 'CLI (PID: ' . getmypid() . ')'
+				. (isset($_SERVER['argv']) ? ': ' . implode(' ', array_map([self::class, 'escapeArg'], $_SERVER['argv'])) : '');
+
+		} elseif (isset($_SERVER['REQUEST_URI'])) {
 			return (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
 				. ($_SERVER['HTTP_HOST'] ?? '')
 				. $_SERVER['REQUEST_URI'];
+
 		} else {
-			return 'CLI (PID: ' . getmypid() . ')'
-				. (isset($_SERVER['argv']) ? ': ' . implode(' ', array_map([self::class, 'escapeArg'], $_SERVER['argv'])) : '');
+			return PHP_SAPI;
 		}
 	}
 
@@ -290,8 +294,9 @@ class Helpers
 	/** @internal */
 	public static function isHtmlMode(): bool
 	{
-		return empty($_SERVER['HTTP_X_REQUESTED_WITH']) && empty($_SERVER['HTTP_X_TRACY_AJAX'])
-			&& PHP_SAPI !== 'cli'
+		return empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+			&& empty($_SERVER['HTTP_X_TRACY_AJAX'])
+			&& !self::isCli()
 			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
 	}
 
@@ -300,6 +305,13 @@ class Helpers
 	public static function isAjax(): bool
 	{
 		return isset($_SERVER['HTTP_X_TRACY_AJAX']) && preg_match('#^\w{10,15}$#D', $_SERVER['HTTP_X_TRACY_AJAX']);
+	}
+
+
+	/** @internal */
+	public static function isCli(): bool
+	{
+		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
 	}
 
 
@@ -523,7 +535,7 @@ XX
 
 	public static function detectColors(): bool
 	{
-		return (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg')
+		return (self::isCli())
 			&& getenv('NO_COLOR') === false // https://no-color.org
 			&& (getenv('FORCE_COLOR')
 				|| @stream_isatty(STDOUT) // @ may trigger error 'cannot cast a filtered stream on this system'
