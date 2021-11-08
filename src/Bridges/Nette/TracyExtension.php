@@ -38,6 +38,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		return Expect::structure([
 			'email' => Expect::anyOf(Expect::email(), Expect::listOf('email'))->dynamic(),
 			'fromEmail' => Expect::email()->dynamic(),
+			'emailSnooze' => Expect::string()->dynamic(),
 			'logSeverity' => Expect::anyOf(Expect::scalar(), Expect::listOf('scalar')),
 			'editor' => Expect::string()->dynamic(),
 			'browser' => Expect::string()->dynamic(),
@@ -95,6 +96,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 				static $tbl = [
 					'keysToHide' => 'array_push(Tracy\Debugger::getBlueScreen()->keysToHide, ... ?)',
 					'fromEmail' => 'Tracy\Debugger::getLogger()->fromEmail = ?',
+					'emailSnooze' => 'Tracy\Debugger::getLogger()->emailSnooze = ?',
 				];
 				$initialize->addBody($builder->formatPhp(
 					($tbl[$key] ?? 'Tracy\Debugger::$' . $key . ' = ?') . ';',
