@@ -339,7 +339,7 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code to Terminal.
 	 */
-	public static function highlightPhpCli(string $file, int $line, int $lines = 15): string
+	public static function highlightPhpCli(string $file, int $line, int $lines = 15): ?string
 	{
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source === false) {
