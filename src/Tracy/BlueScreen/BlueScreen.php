@@ -188,16 +188,14 @@ class BlueScreen
 	}
 
 
-	/**
-	 * @return array[]
-	 */
+	/** @return BlueScreen\Action[] */
 	private function renderActions(\Throwable $ex): array
 	{
 		$actions = [];
 		foreach ($this->actions as $callback) {
 			$action = $callback($ex);
 			if (!empty($action['link']) && !empty($action['label'])) {
-				$actions[] = $action;
+				$actions[] = new BlueScreen\Action($action['label'], $action['link']);
 			}
 		}
 
@@ -206,7 +204,7 @@ class BlueScreen
 			&& !empty($ex->tracyAction['link'])
 			&& !empty($ex->tracyAction['label'])
 		) {
-			$actions[] = $ex->tracyAction;
+			$actions[] = new BlueScreen\Action($ex->tracyAction['label'], $ex->tracyAction['link']);
 		}
 
 		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{3,})+)\1#i', $ex->getMessage(), $m)) {
@@ -215,38 +213,39 @@ class BlueScreen
 				!class_exists($class, false) && !interface_exists($class, false) && !trait_exists($class, false)
 				&& ($file = Helpers::guessClassFile($class)) && !is_file($file)
 			) {
-				$actions[] = [
-					'link' => Helpers::editorUri($file, 1, 'create'),
-					'label' => 'create class',
-				];
+				$actions[] = new BlueScreen\Action(
+					'create class',
+					Helpers::editorUri($file, 1, 'create')
+				);
 			}
 		}
 
 		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\1#i', $ex->getMessage(), $m)) {
 			$file = $m[2];
-			$actions[] = [
-				'link' => Helpers::editorUri($file, 1, $label = is_file($file) ? 'open' : 'create'),
-				'label' => $label . ' file',
-			];
+			$label = is_file($file) ? 'open' : 'create';
+			$actions[] = new BlueScreen\Action(
+				$label . ' file',
+				Helpers::editorUri($file, 1, $label)
+			);
 		}
 
 		$query = ($ex instanceof \ErrorException ? '' : Helpers::getClass($ex) . ' ')
 			. preg_replace('#\'.*\'|".*"#Us', '', $ex->getMessage());
-		$actions[] = [
-			'link' => 'https://www.google.com/search?sourceid=tracy&q=' . urlencode($query),
-			'label' => 'search',
-			'external' => true,
-		];
+		$actions[] = new BlueScreen\Action(
+			'search',
+			'https://www.google.com/search?sourceid=tracy&q=' . urlencode($query),
+			true
+		);
 
 		if (
 			$ex instanceof \ErrorException
 			&& !empty($ex->skippable)
 			&& preg_match('#^https?://#', $source = Helpers::getSource())
 		) {
-			$actions[] = [
-				'link' => $source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error',
-				'label' => 'skip error',
-			];
+			$actions[] = new BlueScreen\Action(
+				'skip error',
+				$source . (strpos($source, '?') ? '&' : '?') . '_tracy_skip_error'
+			);
 		}
 		return $actions;
 	}

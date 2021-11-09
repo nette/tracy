@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Tester\Assert;
+use Tracy\BlueScreen\Action;
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -11,35 +12,35 @@ $blueScreen = new Tracy\BlueScreen;
 
 // search
 Assert::with($blueScreen, function () {
-	Assert::same(
+	Assert::equal(
 		[
-			[
-				'link' => 'https://www.google.com/search?sourceid=tracy&q=Exception+',
-				'label' => 'search',
-				'external' => true,
-			],
+			new Action(
+				'search',
+				'https://www.google.com/search?sourceid=tracy&q=Exception+',
+				true
+			),
 		],
 		$this->renderActions(new Exception)
 	);
 
-	Assert::same(
+	Assert::equal(
 		[
-			[
-				'link' => 'https://www.google.com/search?sourceid=tracy&q=Exception+The+%3D+message',
-				'label' => 'search',
-				'external' => true,
-			],
+			new Action(
+				'search',
+				'https://www.google.com/search?sourceid=tracy&q=Exception+The+%3D+message',
+				true
+			),
 		],
 		$this->renderActions(new Exception('The = message', 123))
 	);
 
-	Assert::same(
+	Assert::equal(
 		[
-			[
-				'link' => 'https://www.google.com/search?sourceid=tracy&q=Message',
-				'label' => 'search',
-				'external' => true,
-			],
+			new Action(
+				'search',
+				'https://www.google.com/search?sourceid=tracy&q=Message',
+				true
+			),
 		],
 		$this->renderActions(new ErrorException('Message', 123, E_USER_WARNING))
 	);
@@ -51,26 +52,26 @@ Assert::with($blueScreen, function () {
 	$e = new ErrorException;
 	$_SERVER['REQUEST_URI'] = '/';
 	$_SERVER['HTTP_HOST'] = 'localhost';
-	$search = [
-		'link' => 'https://www.google.com/search?sourceid=tracy&q=',
-		'label' => 'search',
-		'external' => true,
-	];
+	$search = new Action(
+		'search',
+		'https://www.google.com/search?sourceid=tracy&q=',
+		true
+	);
 
-	Assert::same(
+	Assert::equal(
 		[$search],
 		$this->renderActions($e)
 	);
 
 	if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
 		$e->skippable = true;
-		Assert::same(
+		Assert::equal(
 			[
 				$search,
-				[
-					'link' => 'http://localhost/?_tracy_skip_error',
-					'label' => 'skip error',
-				],
+				new Action(
+					'skip error',
+					'http://localhost/?_tracy_skip_error'
+				),
 			],
 			$this->renderActions($e)
 		);
@@ -80,44 +81,44 @@ Assert::with($blueScreen, function () {
 
 // action 'open file'
 Assert::with($blueScreen, function () {
-	Assert::same(
-		[
-			'link' => 'editor://open/?file=' . urlencode(__FILE__) . '&line=1&search=&replace=',
-			'label' => 'open file',
-		],
+	Assert::equal(
+		new Action(
+			'open file',
+			'editor://open/?file=' . urlencode(__FILE__) . '&line=1&search=&replace='
+		),
 		$this->renderActions(new Exception(" '" . __FILE__ . "'"))[0]
 	);
 
-	Assert::same(
-		[
-			'link' => 'editor://open/?file=' . urlencode(__FILE__) . '&line=1&search=&replace=',
-			'label' => 'open file',
-		],
+	Assert::equal(
+		new Action(
+			'open file',
+			'editor://open/?file=' . urlencode(__FILE__) . '&line=1&search=&replace='
+		),
 		$this->renderActions(new Exception(' "' . __FILE__ . '"'))[0]
 	);
 
 	$ds = urlencode(DIRECTORY_SEPARATOR);
-	Assert::same(
-		[
-			'link' => 'editor://create/?file=' . $ds . 'notexists.txt&line=1&search=&replace=',
-			'label' => 'create file',
-		],
+	Assert::equal(
+		new Action(
+			'create file',
+			'editor://create/?file=' . $ds . 'notexists.txt&line=1&search=&replace='
+		),
 		$this->renderActions(new Exception(' "/notexists.txt"'))[0]
 	);
 
-	Assert::same(
-		[
-			'link' => 'editor://create/?file=c%3A%5Cnotexists.txt&line=1&search=&replace=',
-			'label' => 'create file',
-		],
+	Assert::equal(
+		new Action(
+			'create file',
+			'editor://create/?file=c%3A%5Cnotexists.txt&line=1&search=&replace='
+		),
 		$this->renderActions(new Exception(' "c:\notexists.txt"'))[0]
 	);
 
-	Assert::same(
-		[
-			'link' => 'editor://create/?file=c%3A' . $ds . 'notexists.txt&line=1&search=&replace=',
-			'label' => 'create file',
-		],
+	Assert::equal(
+		new Action(
+			'create file',
+			'editor://create/?file=c%3A' . $ds . 'notexists.txt&line=1&search=&replace='
+		),
 		$this->renderActions(new Exception(' "c:/notexists.txt"'))[0]
 	);
 
@@ -133,9 +134,9 @@ Assert::with($blueScreen, function () {
 	Assert::count(1, $this->renderActions($e));
 
 	$e = new Exception;
-	$e->tracyAction = ['link' => 'a', 'label' => 'b'];
-	Assert::same(
-		['link' => 'a', 'label' => 'b'],
+	$e->tracyAction = ['label' => 'b', 'link' => 'a'];
+	Assert::equal(
+		new Action('b', 'a'),
 		$this->renderActions($e)[0]
 	);
 });
@@ -147,19 +148,19 @@ $blueScreen->addAction(function (Exception $e) {
 });
 
 $blueScreen->addAction(function (Exception $e) {
-	return ['link' => 'a', 'label' => 'b'];
+	return ['label' => 'a', 'link' => 'b'];
 });
 
 Assert::with($blueScreen, function () {
 	$e = new Exception;
-	Assert::same(
+	Assert::equal(
 		[
-			['link' => 'a', 'label' => 'b'],
-			[
-				'link' => 'https://www.google.com/search?sourceid=tracy&q=Exception+',
-				'label' => 'search',
-				'external' => true,
-			],
+			new Action('a', 'b'),
+			new Action(
+				'search',
+				'https://www.google.com/search?sourceid=tracy&q=Exception+',
+				true
+			),
 		],
 		$this->renderActions($e)
 	);

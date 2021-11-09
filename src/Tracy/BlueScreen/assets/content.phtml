@@ -13,7 +13,7 @@ namespace Tracy;
 
 /**
  * @var \Throwable $exception
- * @var array[] $actions
+ * @var BlueScreen\Action[] $actions
  * @var string[] $info
  * @var string $title
  * @var string $source
@@ -38,7 +38,7 @@ $exceptions = $exceptions ?? Helpers::getExceptionChain($exception);
 
 			<h1><span><?= $this->formatMessage($exception) ?: Helpers::escapeHtml($title . $code) ?></span>
 			<?php foreach ($actions as $item): ?>
-			<a href="<?= Helpers::escapeHtml($item['link']) ?>" class="action"<?= empty($item['external']) ? '' : ' target="_blank" rel="noreferrer noopener"'?>><?= Helpers::escapeHtml($item['label']) ?>&#x25ba;</a>
+			<a href="<?= Helpers::escapeHtml($item->url) ?>" class="action"<?= $item->newWindow ? ' target="_blank" rel="noreferrer noopener"' : ''?>><?= Helpers::escapeHtml($item->label) ?>&#x25ba;</a>
 			<?php endforeach ?></h1>
 		</div>
 

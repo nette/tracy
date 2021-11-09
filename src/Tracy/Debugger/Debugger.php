@@ -215,6 +215,7 @@ class Debugger
 			'Bar/Bar',
 			'Bar/DefaultBarPanel',
 			'BlueScreen/BlueScreen',
+			'BlueScreen/Action',
 			'Dumper/Describer',
 			'Dumper/Dumper',
 			'Dumper/Exposer',

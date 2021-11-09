@@ -12,6 +12,7 @@ require __DIR__ . '/Tracy/Bar/IBarPanel.php';
 require __DIR__ . '/Tracy/Bar/Bar.php';
 require __DIR__ . '/Tracy/Bar/DefaultBarPanel.php';
 require __DIR__ . '/Tracy/BlueScreen/BlueScreen.php';
+require __DIR__ . '/Tracy/BlueScreen/Action.php';
 require __DIR__ . '/Tracy/Dumper/Value.php';
 require __DIR__ . '/Tracy/Dumper/Describer.php';
 require __DIR__ . '/Tracy/Dumper/Dumper.php';
