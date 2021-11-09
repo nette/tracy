@@ -114,6 +114,7 @@
 		<div class="tracy-collapsed inner">
 
 		<h3>Warning: hex2bin(): Hexadecimal input string must have an even length</h3>
+		<p><i>Note: the last muted error may have nothing to do with the thrown exception.</i></p>
 					<p><a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
 			<div>%A%</div>
 
