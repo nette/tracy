@@ -119,20 +119,20 @@ class Bar
 
 	private function renderHtml(string $type, string $suffix = ''): array
 	{
-		$panels = $this->renderPanels($suffix);
-
+		$panels = $this->renderPanels();
 		return [
-			'bar' => Helpers::capture(function () use ($type, $panels) {
+			'bar' => Helpers::capture(function () use ($type, $panels, $suffix) {
 				require __DIR__ . '/assets/bar.phtml';
 			}),
-			'panels' => Helpers::capture(function () use ($type, $panels) {
+			'panels' => Helpers::capture(function () use ($type, $panels, $suffix) {
 				require __DIR__ . '/assets/panels.phtml';
 			}),
 		];
 	}
 
 
-	private function renderPanels(string $suffix = ''): array
+	/** @return Bar\Panel[] */
+	private function renderPanels(): array
 	{
 		set_error_handler(function (int $severity, string $message, string $file, int $line) {
 			if (error_reporting() & $severity) {
@@ -144,21 +144,21 @@ class Bar
 		$panels = [];
 
 		foreach ($this->panels as $id => $panel) {
-			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
 			try {
 				$tab = (string) $panel->getTab();
 				$panelHtml = $tab ? $panel->getPanel() : null;
+				$panels[] = new Bar\Panel($tab, $panelHtml, $id);
 
 			} catch (\Throwable $e) {
 				while (ob_get_level() > $obLevel) { // restore ob-level if broken
 					ob_end_clean();
 				}
-				$idHtml = "error-$idHtml";
-				$tab = "Error in $id";
-				$panelHtml = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(Helpers::escapeHtml($e)) . '</div>';
-				unset($e);
+				$panels[] = new Bar\Panel(
+					'Error in ' . $id,
+					"<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(Helpers::escapeHtml($e)) . '</div>',
+					'error-' . $id
+				);
 			}
-			$panels[] = (object) ['id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml];
 		}
 
 		restore_error_handler();

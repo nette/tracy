@@ -13,7 +13,8 @@ namespace Tracy;
 
 /**
  * @var string $type
- * @var \stdClass[] $panels
+ * @var Bar\Panel[] $panels
+ * @var ?string $suffix
  */
 ?>
 
@@ -28,8 +29,8 @@ namespace Tracy;
 	<li>AJAX</li>
 <?php endif ?>
 
-<?php foreach ($panels as $panel): if ($panel->tab) { ?>
-	<li><?php if ($panel->panel): ?><a href="#" rel="tracy-debug-panel-<?= $panel->id ?>"><?= trim($panel->tab) ?></a><?php else: echo '<span>', trim($panel->tab), '</span>'; endif ?></li>
+<?php foreach ($panels as $panel): if ($panel->labelHtml) { ?>
+	<li><?php if ($panel->panelHtml): ?><a href="#" rel="tracy-debug-panel-<?= preg_replace('#[^\w]+#i', '-', $panel->id) . $suffix ?>"><?= trim($panel->labelHtml) ?></a><?php else: echo '<span>', trim($panel->labelHtml), '</span>'; endif ?></li>
 <?php } endforeach ?>
 
 <?php if ($type === 'main'): ?>

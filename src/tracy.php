@@ -11,6 +11,7 @@ declare(strict_types=1);
 require __DIR__ . '/Tracy/Bar/IBarPanel.php';
 require __DIR__ . '/Tracy/Bar/Bar.php';
 require __DIR__ . '/Tracy/Bar/DefaultBarPanel.php';
+require __DIR__ . '/Tracy/Bar/Panel.php';
 require __DIR__ . '/Tracy/BlueScreen/BlueScreen.php';
 require __DIR__ . '/Tracy/BlueScreen/Action.php';
 require __DIR__ . '/Tracy/BlueScreen/Panel.php';

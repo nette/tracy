@@ -15,7 +15,8 @@ use Tracy\Helpers;
 
 /**
  * @var string $type
- * @var \stdClass[] $panels
+ * @var Bar\Panel[] $panels
+ * @var ?string $suffix
  */
 
 $icons = '
@@ -28,9 +29,9 @@ $icons = '
 echo '<div itemscope>';
 
 foreach ($panels as $panel) {
-	$content = $panel->panel ? ($panel->panel . "\n" . $icons) : '';
+	$content = $panel->panelHtml ? ($panel->panelHtml . "\n" . $icons) : '';
 	$class = 'tracy-panel ' . ($type === 'ajax' ? '' : 'tracy-panel-persist') . ' tracy-panel-' . $type; ?>
-	<div class="<?= $class ?>" id="tracy-debug-panel-<?= $panel->id ?>" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>'></div><?php
+	<div class="<?= $class ?>" id="tracy-debug-panel-<?= preg_replace('#[^\w]+#i', '-', $panel->id) . $suffix ?>" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>'></div><?php
 }
 
 echo '<meta itemprop=tracy-snapshot content=', Dumper::formatSnapshotAttribute(Dumper::$liveSnapshot), '>';
