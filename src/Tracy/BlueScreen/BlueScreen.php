@@ -41,6 +41,9 @@ class BlueScreen
 	/** @var callable[] */
 	private $panels = [];
 
+	/** @var BlueScreen\Panel */
+	private $bottomPanels = [];
+
 	/** @var callable[] functions that returns action for exceptions */
 	private $actions = [];
 
@@ -158,33 +161,38 @@ class BlueScreen
 	}
 
 
-	/**
-	 * @return \stdClass[]
-	 */
-	private function renderPanels(?\Throwable $ex): array
+	/** @return BlueScreen\Panel[] */
+	private function renderPanels(\Throwable $ex, string $pos): array
 	{
+		if ($pos === 'bottom') {
+			return $this->bottomPanels;
+		}
 		$obLevel = ob_get_level();
-		$res = [];
+		$this->bottomPanels = $panels = [];
+
 		foreach ($this->panels as $callback) {
 			try {
-				$panel = $callback($ex);
+				$panel = $callback($pos === 'top' ? $ex : null);
 				if (empty($panel['tab']) || empty($panel['panel'])) {
 					continue;
+				} elseif (empty($panel['bottom'])) {
+					$panels[] = new BlueScreen\Panel($panel['tab'], $panel['panel']);
+				} else {
+					$this->bottomPanels[] = new BlueScreen\Panel($panel['tab'], $panel['panel']);
 				}
-				$res[] = (object) $panel;
-				continue;
+
 			} catch (\Throwable $e) {
+				while (ob_get_level() > $obLevel) { // restore ob-level if broken
+					ob_end_clean();
+				}
+				is_callable($callback, true, $name);
+				$panels[] = new BlueScreen\Panel(
+					"Error in panel $name",
+					nl2br(Helpers::escapeHtml($e))
+				);
 			}
-			while (ob_get_level() > $obLevel) { // restore ob-level if broken
-				ob_end_clean();
-			}
-			is_callable($callback, true, $name);
-			$res[] = (object) [
-				'tab' => "Error in panel $name",
-				'panel' => nl2br(Helpers::escapeHtml($e)),
-			];
 		}
-		return $res;
+		return $panels;
 	}
 
 

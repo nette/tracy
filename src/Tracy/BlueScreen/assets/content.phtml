@@ -64,12 +64,13 @@ $exceptions = $exceptions ?? Helpers::getExceptionChain($exception);
 			<?php endif ?>
 
 
-			<?php foreach ($this->renderPanels($ex) as $panel): ?>
+			<?php foreach ($this->renderPanels($ex, 'top') as $panel): ?>
+			<?php $collapsedClass = $panel->collapsed ? ' tracy-collapsed' : ''; ?>
 			<div class="panel">
-				<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
+				<h2><a data-tracy-ref="^+" class="tracy-toggle<?= $collapsedClass ?>"><?= Helpers::escapeHtml($panel->label) ?></a></h2>
 
-				<div class="inner">
-				<?= $panel->panel ?>
+				<div class="inner<?= $collapsedClass ?>">
+				<?= $panel->panelHtml ?>
 			</div></div>
 			<?php endforeach ?>
 
@@ -194,15 +195,13 @@ $exceptions = $exceptions ?? Helpers::getExceptionChain($exception);
 		<?php endif ?>
 
 
-		<?php $bottomPanels = [] ?>
-		<?php foreach ($this->renderPanels(null) as $panel): ?>
-		<?php if (!empty($panel->bottom)) { $bottomPanels[] = $panel; continue; } ?>
-		<?php $collapsedClass = !isset($panel->collapsed) || $panel->collapsed ? ' tracy-collapsed' : ''; ?>
+		<?php foreach ($this->renderPanels($exception, 'middle') as $panel): ?>
+		<?php $collapsedClass = $panel->collapsed ? ' tracy-collapsed' : ''; ?>
 		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= $collapsedClass ?>"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= $collapsedClass ?>"><?= Helpers::escapeHtml($panel->label) ?></a></h2>
 
 			<div class="inner<?= $collapsedClass ?>">
-			<?= $panel->panel ?>
+			<?= $panel->panelHtml ?>
 		</div></div>
 		<?php endforeach ?>
 
@@ -347,13 +346,14 @@ $exceptions = $exceptions ?? Helpers::getExceptionChain($exception);
 		<?php endif ?>
 
 
-		<?php foreach ($bottomPanels as $panel): ?>
+		<?php foreach ($this->renderPanels($exception, 'bottom') as $panel): ?>
+		<?php $collapsedClass = $panel->collapsed ? ' tracy-collapsed' : ''; ?>
 		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
+			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= $collapsedClass ?>"><?= Helpers::escapeHtml($panel->label) ?></a></h2>
 
-			<div class="inner">
-			<?= $panel->panel ?>
-		</div></div>
+			<div class="inner<?= $collapsedClass ?>">
+				<?= $panel->panelHtml ?>
+			</div></div>
 		<?php endforeach ?>
 
 		<footer>
