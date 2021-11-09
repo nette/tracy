@@ -38,14 +38,8 @@ class BlueScreen
 	/** @var bool */
 	public $showEnvironment = true;
 
-	/** @var callable[] */
-	private $panels = [];
-
-	/** @var BlueScreen\Panel */
-	private $bottomPanels = [];
-
-	/** @var callable[] functions that returns action for exceptions */
-	private $actions = [];
+	/** @var BlueScreen\Extension[] */
+	private $extensions = [];
 
 	/** @var array */
 	private $snapshot;
@@ -59,27 +53,28 @@ class BlueScreen
 	}
 
 
-	/**
-	 * Add custom panel as function (?\Throwable $e): ?array
-	 * @return static
-	 */
-	public function addPanel(callable $panel): self
+	public function addExtension(BlueScreen\Extension $extension): self
 	{
-		if (!in_array($panel, $this->panels, true)) {
-			$this->panels[] = $panel;
-		}
+		$this->extensions[] = $extension;
 		return $this;
 	}
 
 
 	/**
+	 * Add custom panel as function (?\Throwable $e): ?array
+	 */
+	public function addPanel(callable $panel): self
+	{
+		return $this->addExtension(new BlueScreen\ExtensionAdapter($panel, true));
+	}
+
+
+	/**
 	 * Add action.
-	 * @return static
 	 */
 	public function addAction(callable $action): self
 	{
-		$this->actions[] = $action;
-		return $this;
+		return $this->addExtension(new BlueScreen\ExtensionAdapter($action, false));
 	}
 
 
@@ -164,30 +159,20 @@ class BlueScreen
 	/** @return BlueScreen\Panel[] */
 	private function renderPanels(\Throwable $ex, string $pos): array
 	{
-		if ($pos === 'bottom') {
-			return $this->bottomPanels;
-		}
 		$obLevel = ob_get_level();
-		$this->bottomPanels = $panels = [];
+		$panels = [];
 
-		foreach ($this->panels as $callback) {
+		foreach ($this->extensions as $extension) {
 			try {
-				$panel = $callback($pos === 'top' ? $ex : null);
-				if (empty($panel['tab']) || empty($panel['panel'])) {
-					continue;
-				} elseif (empty($panel['bottom'])) {
-					$panels[] = new BlueScreen\Panel($panel['tab'], $panel['panel']);
-				} else {
-					$this->bottomPanels[] = new BlueScreen\Panel($panel['tab'], $panel['panel']);
+				if ($panel = $extension->{"get{$pos}Panel"}($ex)) {
+					$panels[] = $panel;
 				}
-
 			} catch (\Throwable $e) {
 				while (ob_get_level() > $obLevel) { // restore ob-level if broken
 					ob_end_clean();
 				}
-				is_callable($callback, true, $name);
 				$panels[] = new BlueScreen\Panel(
-					"Error in panel $name",
+					'Error in panel ' . $extension->getId(),
 					nl2br(Helpers::escapeHtml($e))
 				);
 			}
@@ -200,10 +185,9 @@ class BlueScreen
 	private function renderActions(\Throwable $ex): array
 	{
 		$actions = [];
-		foreach ($this->actions as $callback) {
-			$action = $callback($ex);
-			if (!empty($action['link']) && !empty($action['label'])) {
-				$actions[] = new BlueScreen\Action($action['label'], $action['link']);
+		foreach ($this->extensions as $extension) {
+			if ($action = $extension->getAction($ex)) {
+				$actions[] = $action;
 			}
 		}
 
