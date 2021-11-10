@@ -139,6 +139,9 @@ class Debugger
 	/** @var ILogger */
 	private static $fireLogger;
 
+	/** @var Bar\ErrorsExtension */
+	private static $errorsExtension;
+
 
 	/**
 	 * Static class - cannot be instantiated.
@@ -213,7 +216,8 @@ class Debugger
 
 		foreach ([
 			'Bar/Bar',
-			'Bar/DefaultBarPanel',
+			'Bar/InfoExtension',
+			'Bar/ErrorsExtension',
 			'BlueScreen/BlueScreen',
 			'BlueScreen/Action',
 			'Dumper/Describer',
@@ -448,7 +452,7 @@ class Debugger
 
 		} else {
 			$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context);
-			$count = &self::getBar()->getPanel('Tracy:errors')->data["$file|$line|$message"];
+			$count = &self::$errorsExtension->data["$file|$line|$message"];
 
 			if ($count++) { // repeated error
 				return null;
@@ -501,9 +505,9 @@ class Debugger
 	{
 		if (!self::$bar) {
 			self::$bar = new Bar;
-			self::$bar->addPanel($info = new DefaultBarPanel('info'), 'Tracy:info');
+			self::$bar->addExtension($info = new Bar\InfoExtension);
 			$info->cpuUsage = self::$cpuUsage;
-			self::$bar->addPanel(new DefaultBarPanel('errors'), 'Tracy:errors'); // filled by errorHandler()
+			self::$bar->addExtension(self::$errorsExtension = new Bar\ErrorsExtension); // filled by errorHandler()
 		}
 		return self::$bar;
 	}
@@ -597,9 +601,9 @@ class Debugger
 		if (!self::$productionMode) {
 			static $panel;
 			if (!$panel) {
-				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'), 'Tracy:dumps');
+				self::getBar()->addExtension($extension = new Bar\DumpsExtension);
 			}
-			$panel->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, $options + [
+			$extension->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, $options + [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation ?: Dumper::LOCATION_CLASS | Dumper::LOCATION_SOURCE,

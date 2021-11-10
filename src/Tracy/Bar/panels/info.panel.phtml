@@ -11,14 +11,17 @@ declare(strict_types=1);
 
 namespace Tracy;
 
-/** @var DefaultBarPanel $this */
+/**
+ * @var array $cpuUsage
+ * @var float $time
+ */
 
-if (isset($this->cpuUsage) && $this->time) {
+if (isset($cpuUsage) && $time) {
 	foreach (getrusage() as $key => $val) {
-		$this->cpuUsage[$key] -= $val;
+		$cpuUsage[$key] -= $val;
 	}
-	$userUsage = -round(($this->cpuUsage['ru_utime.tv_sec'] * 1e6 + $this->cpuUsage['ru_utime.tv_usec']) / $this->time / 10000);
-	$systemUsage = -round(($this->cpuUsage['ru_stime.tv_sec'] * 1e6 + $this->cpuUsage['ru_stime.tv_usec']) / $this->time / 10000);
+	$userUsage = -round(($cpuUsage['ru_utime.tv_sec'] * 1e6 + $cpuUsage['ru_utime.tv_usec']) / $time / 10000);
+	$systemUsage = -round(($cpuUsage['ru_stime.tv_sec'] * 1e6 + $cpuUsage['ru_stime.tv_usec']) / $time / 10000);
 }
 
 $countClasses = function (array $list): int {
@@ -39,7 +42,7 @@ $cachedFiles = isset($opcache['scripts']) ? array_intersect(array_keys($opcache[
 $jit = $opcache['jit'] ?? null;
 
 $info = [
-	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
+	'Execution time' => number_format($time * 1000, 1, '.', ' ') . ' ms',
 	'CPU usage user + system' => isset($userUsage) ? (int) $userUsage . ' % + ' . (int) $systemUsage . ' %' : null,
 	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ') . ' MB',
 	'Included files' => count(get_included_files()),
@@ -56,7 +59,7 @@ $info = [
 	'Server' => $_SERVER['SERVER_SOFTWARE'] ?? null,
 ];
 
-$info = array_map('strval', array_filter($info + (array) $this->data));
+$info = array_map('strval', array_filter($info + (array) $data));
 
 $packages = $devPackages = [];
 if (class_exists('Composer\Autoload\ClassLoader', false)) {
