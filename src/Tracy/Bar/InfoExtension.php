@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Tracy\Bar;
 
 use Tracy\Debugger;
-use Tracy\Helpers;
 
 
 /**
@@ -31,15 +30,15 @@ final class InfoExtension extends Extension
 	public function getPanel(): ?Panel
 	{
 		$time = microtime(true) - Debugger::$time;
-		return new Panel(
-			Helpers::capture(function () use ($time) {
+		return Panel::capture(
+			function () use ($time) {
 				require __DIR__ . '/panels/info.tab.phtml';
-			}),
-			Helpers::capture(function () use ($time) {
+			},
+			function () use ($time) {
 				$cpuUsage = $this->cpuUsage;
 				$data = $this->data;
 				require __DIR__ . '/panels/info.panel.phtml';
-			}),
+			},
 			$this->getId()
 		);
 	}

@@ -21,17 +21,16 @@ final class DumpsExtension extends Extension
 
 	public function getPanel(): ?Panel
 	{
-		if (!$this->data) {
-			return null;
-		}
-		return new Panel(
-			Helpers::capture(function () { require __DIR__ . '/panels/dumps.tab.phtml'; }),
-			Helpers::capture(function () {
-				$data = $this->data;
-				require __DIR__ . '/panels/dumps.panel.phtml';
-			}),
-			$this->getId()
-		);
+		return $this->data
+			? Panel::capture(
+				function () { require __DIR__ . '/panels/dumps.tab.phtml'; },
+				function () {
+					$data = $this->data;
+					require __DIR__ . '/panels/dumps.panel.phtml';
+				},
+				$this->getId()
+			)
+			: null;
 	}
 
 

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Tracy\Bar;
 
+use Tracy\Helpers;
+
 
 final class Panel
 {
@@ -27,5 +29,11 @@ final class Panel
 		$this->labelHtml = $labelHtml;
 		$this->panelHtml = $panelHtml;
 		$this->id = $id;
+	}
+
+
+	public static function capture(callable $label, callable $panel, string $id)
+	{
+		return new self(Helpers::capture($label), Helpers::capture($panel), $id);
 	}
 }

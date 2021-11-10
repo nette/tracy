@@ -21,20 +21,19 @@ final class ErrorsExtension extends Extension
 
 	public function getPanel(): ?Panel
 	{
-		if (!$this->data) {
-			return null;
-		}
-		return new Panel(
-			Helpers::capture(function () {
-				$sum = array_sum($this->data);
-				require __DIR__ . '/panels/errors.tab.phtml';
-			}),
-			Helpers::capture(function () {
-				$data = $this->data;
-				require __DIR__ . '/panels/errors.panel.phtml';
-			}),
-			$this->getId()
-		);
+		return $this->data
+			? Panel::capture(
+				function () {
+					$sum = array_sum($this->data);
+					require __DIR__ . '/panels/errors.tab.phtml';
+				},
+				function () {
+					$data = $this->data;
+					require __DIR__ . '/panels/errors.panel.phtml';
+				},
+				$this->getId()
+			)
+			: null;
 	}
 
 
