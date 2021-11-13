@@ -41,6 +41,9 @@ class BlueScreen
 	/** @internal */
 	public $mappers = [];
 
+	/** @internal */
+	public $fileGenerators = [];
+
 	/** @var callable[] */
 	private $panels = [];
 
@@ -56,6 +59,7 @@ class BlueScreen
 		$this->collapsePaths = preg_match('#(.+/vendor)/tracy/tracy/src/Tracy/BlueScreen$#', strtr(__DIR__, '\\', '/'), $m)
 			? [$m[1] . '/tracy', $m[1] . '/nette', $m[1] . '/latte']
 			: [dirname(__DIR__)];
+		$this->fileGenerators['php'] = [self::class, 'generateNewPhpFileContents'];
 	}
 
 
@@ -221,8 +225,9 @@ class BlueScreen
 				!class_exists($class, false) && !interface_exists($class, false) && !trait_exists($class, false)
 				&& ($file = Helpers::guessClassFile($class)) && !is_file($file)
 			) {
+				[$content, $line] = $this->generateNewFileContents($file, $class);
 				$actions[] = [
-					'link' => Helpers::editorUri($file, 1, 'create'),
+					'link' => Helpers::editorUri($file, $line, 'create', '', $content),
 					'label' => 'create class',
 				];
 			}
@@ -230,8 +235,17 @@ class BlueScreen
 
 		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\1#i', $ex->getMessage(), $m)) {
 			$file = $m[2];
+			if (is_file($file)) {
+				$label = 'open';
+				$content = '';
+				$line = 1;
+			} else {
+				$label = 'create';
+				[$content, $line] = $this->generateNewFileContents($file);
+			}
+
 			$actions[] = [
-				'link' => Helpers::editorUri($file, 1, $label = is_file($file) ? 'open' : 'create'),
+				'link' => Helpers::editorUri($file, $line, $label, '', $content),
 				'label' => $label . ' file',
 			];
 		}
@@ -483,5 +497,50 @@ class BlueScreen
 			}
 		}
 		return null;
+	}
+
+
+	/** @internal */
+	private function generateNewFileContents(string $file, ...$args): array
+	{
+		$generator = $this->fileGenerators[strtolower(pathinfo($file, PATHINFO_EXTENSION))] ?? null;
+		if (!$generator) {
+			return ['', 1];
+		}
+
+		$content = $generator($file, ...$args);
+		$line = 1;
+		$pos = strpos($content, '$END$');
+		if ($pos !== false) {
+			$content = substr_replace($content, '', $pos, 5);
+			$line = substr_count($content, "\n", 0, $pos) + 1;
+		}
+		return [$content, $line];
+	}
+
+
+	/** @internal */
+	public static function generateNewPhpFileContents(string $file, string $class = null): string
+	{
+		$res = "<?php\n\ndeclare(strict_types=1);\n\n";
+		if (!$class) {
+			return $res . '$END$';
+		}
+
+		$parent = substr($class, -9) === 'Presenter'
+			? 'Nette\Application\UI\Presenter'
+			: null;
+
+		if ($pos = strrpos($class, '\\')) {
+			$res .= 'namespace ' . substr($class, 0, $pos) . ";\n\n";
+			$class = substr($class, $pos + 1);
+		}
+		if ($parent) {
+			$res .= 'use ' . explode('\\', $parent)[0] . ";\n\n";
+			$res .= "class $class extends $parent";
+		} else {
+			$res .= "class $class";
+		}
+		return $res . "\n{\n\$END\$\n}\n";
 	}
 }
