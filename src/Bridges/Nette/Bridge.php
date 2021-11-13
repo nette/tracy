@@ -27,6 +27,11 @@ class Bridge
 		if (!class_exists(Latte\Bridges\Tracy\BlueScreenPanel::class)) {
 			$blueScreen->addPanel([self::class, 'renderLatteError']);
 			$blueScreen->addAction([self::class, 'renderLatteUnknownMacro']);
+			$blueScreen->addFileGenerator(function (string $file) {
+				return substr($file, -6) === '.latte'
+					? "{block content}\n\$END\$"
+					: null;
+			});
 			Tracy\Debugger::addSourceMapper([self::class, 'mapLatteSourceCode']);
 		}
 

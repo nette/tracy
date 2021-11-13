@@ -44,6 +44,9 @@ class BlueScreen
 	/** @var callable[] functions that returns action for exceptions */
 	private $actions = [];
 
+	/** @var callable[] */
+	private $fileGenerators = [];
+
 	/** @var array */
 	private $snapshot;
 
@@ -53,6 +56,7 @@ class BlueScreen
 		$this->collapsePaths = preg_match('#(.+/vendor)/tracy/tracy/src/Tracy/BlueScreen$#', strtr(__DIR__, '\\', '/'), $m)
 			? [$m[1] . '/tracy', $m[1] . '/nette', $m[1] . '/latte']
 			: [dirname(__DIR__)];
+		$this->fileGenerators[] = [self::class, 'generateNewPhpFileContents'];
 	}
 
 
@@ -77,6 +81,18 @@ class BlueScreen
 	public function addAction(callable $action): self
 	{
 		$this->actions[] = $action;
+		return $this;
+	}
+
+
+	/**
+	 * Add new file generator.
+	 * @param  callable(string): ?string  $generator
+	 * @return static
+	 */
+	public function addFileGenerator(callable $generator): self
+	{
+		$this->fileGenerators[] = $generator;
 		return $this;
 	}
 
@@ -225,8 +241,9 @@ class BlueScreen
 				!class_exists($class, false) && !interface_exists($class, false) && !trait_exists($class, false)
 				&& ($file = Helpers::guessClassFile($class)) && !is_file($file)
 			) {
+				[$content, $line] = $this->generateNewFileContents($file, $class);
 				$actions[] = [
-					'link' => Helpers::editorUri($file, 1, 'create'),
+					'link' => Helpers::editorUri($file, $line, 'create', '', $content),
 					'label' => 'create class',
 				];
 			}
@@ -234,8 +251,17 @@ class BlueScreen
 
 		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\1#i', $ex->getMessage(), $m)) {
 			$file = $m[2];
+			if (is_file($file)) {
+				$label = 'open';
+				$content = '';
+				$line = 1;
+			} else {
+				$label = 'create';
+				[$content, $line] = $this->generateNewFileContents($file);
+			}
+
 			$actions[] = [
-				'link' => Helpers::editorUri($file, 1, $label = is_file($file) ? 'open' : 'create'),
+				'link' => Helpers::editorUri($file, $line, $label, '', $content),
 				'label' => $label . ' file',
 			];
 		}
@@ -489,5 +515,47 @@ class BlueScreen
 			$info = str_replace('<table', '<table class="tracy-sortable"', $info);
 			echo preg_replace('#^.+<body>|</body>.+\z|<hr />|<h1>Configuration</h1>#s', '', $info);
 		}
+	}
+
+
+	/** @internal */
+	private function generateNewFileContents(string $file, ?string $class = null): array
+	{
+		foreach (array_reverse($this->fileGenerators) as $generator) {
+			$content = $generator($file, $class);
+			if ($content !== null) {
+				$line = 1;
+				$pos = strpos($content, '$END$');
+				if ($pos !== false) {
+					$content = substr_replace($content, '', $pos, 5);
+					$line = substr_count($content, "\n", 0, $pos) + 1;
+				}
+
+				return [$content, $line];
+			}
+		}
+
+		return ['', 1];
+	}
+
+
+	/** @internal */
+	public static function generateNewPhpFileContents(string $file, ?string $class = null): ?string
+	{
+		if (substr($file, -4) !== '.php') {
+			return null;
+		}
+
+		$res = "<?php\n\ndeclare(strict_types=1);\n\n";
+		if (!$class) {
+			return $res . '$END$';
+		}
+
+		if ($pos = strrpos($class, '\\')) {
+			$res .= 'namespace ' . substr($class, 0, $pos) . ";\n\n";
+			$class = substr($class, $pos + 1);
+		}
+
+		return $res . "class $class\n{\n\$END\$\n}\n";
 	}
 }
