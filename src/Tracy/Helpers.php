@@ -60,6 +60,8 @@ class Helpers
 		if (Debugger::$editor && $file && ($action === 'create' || is_file($file))) {
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 			$file = strtr($file, Debugger::$editorMapping);
+			$search = str_replace("\n", PHP_EOL, $search);
+			$replace = str_replace("\n", PHP_EOL, $replace);
 			return strtr(Debugger::$editor, [
 				'%action' => $action,
 				'%file' => rawurlencode($file),
