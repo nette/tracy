@@ -136,7 +136,13 @@
 			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
 			<div class="outer tracy-collapsed">
 			%A%</div>
-		</div></div>
+
+
+						<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Output buffers status</a></h3>
+			<div class="outer tracy-collapsed">
+				<pre %A%></pre>
+			</div>
+					</div></div>
 
 
 				<div class="panel">

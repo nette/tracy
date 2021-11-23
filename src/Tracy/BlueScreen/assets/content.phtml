@@ -26,6 +26,7 @@ namespace Tracy;
  * @var bool $headersSent
  * @var ?string $headersFile
  * @var ?int $headersLine
+ * @var ?array $obStatus
  */
 
 $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
@@ -272,6 +273,14 @@ $exceptions = $exceptions ?? Helpers::getExceptionChain($exception);
 			<div class="outer tracy-collapsed">
 			<?php $this->renderPhpInfo() ?>
 			</div>
+
+
+			<?php if ($obStatus): ?>
+			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Output buffers status</a></h3>
+			<div class="outer tracy-collapsed">
+				<?php echo $dump($obStatus) ?>
+			</div>
+			<?php endif ?>
 		</div></div>
 		<?php endif ?>
 

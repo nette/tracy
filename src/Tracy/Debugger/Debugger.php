@@ -48,6 +48,9 @@ class Debugger
 	/** @var int initial output buffer level */
 	private static $obLevel;
 
+	/** @var ?array output buffer status @internal */
+	public static $obStatus;
+
 	/********************* errors and exceptions reporting ****************d*g**/
 
 	/** @var bool|int determines whether any error will cause immediate death in development mode; if integer that it's matched against error severity */
@@ -310,6 +313,7 @@ class Debugger
 	{
 		$firstTime = (bool) self::$reserved;
 		self::$reserved = null;
+		self::$obStatus = ob_get_status(true);
 
 		if (!headers_sent()) {
 			http_response_code(isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== false ? 503 : 500);
