@@ -122,6 +122,7 @@ class BlueScreen
 
 	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
 	{
+		$headersSent = headers_sent($headersFile, $headersLine);
 		$showEnvironment = $this->showEnvironment && (strpos($exception->getMessage(), 'Allowed memory size') === false);
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();

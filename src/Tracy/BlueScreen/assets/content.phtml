@@ -23,6 +23,9 @@ namespace Tracy;
  * @var array $snapshot
  * @var bool $showEnvironment
  * @var BlueScreen $this
+ * @var bool $headersSent
+ * @var ?string $headersFile
+ * @var ?int $headersLine
  */
 
 $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
@@ -342,6 +345,16 @@ $exceptions = $exceptions ?? Helpers::getExceptionChain($exception);
 			</div>
 			<?php else: ?>
 			<p><i>no headers</i></p>
+			<?php endif ?>
+
+
+			<?php if ($headersSent && $headersFile && @is_file($headersFile)): ?>
+			<p>Headers have been sent, output started at <?= Helpers::editorLink($headersFile, $headersLine) ?> <a data-tracy-ref="^p + div" class="tracy-toggle tracy-collapsed">source</a></p>
+			<div class="tracy-collapsed"><?= BlueScreen::highlightFile($headersFile, $headersLine) ?></div>
+			<?php elseif ($headersSent): ?>
+			<p>Headers have been sent</p>
+			<?php else: ?>
+			<p>Headers were not sent at the time of the exception</p>
 			<?php endif ?>
 		</div></div>
 		<?php endif ?>

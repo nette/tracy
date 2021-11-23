@@ -203,6 +203,9 @@
 		<div class="tracy-collapsed inner">
 			<h3>Headers</h3>
 						<div class="outer">%A%</div>
+
+
+						<p>Headers were not sent at the time of the exception</p>
 					</div></div>
 
 
