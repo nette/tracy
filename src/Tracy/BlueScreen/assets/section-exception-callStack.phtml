@@ -1,0 +1,71 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tracy;
+
+/**
+ * @var \Throwable $ex
+ * @var callable $dump
+ * @var int $expanded
+ * @var array $stack
+ */
+
+if (!$stack) {
+	return;
+}
+?>
+<div class="panel">
+	<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+
+	<div class="inner">
+	<ol>
+<?php foreach ($stack as $key => $row): ?>
+		<li>
+			<p>
+<?php	if (isset($row['file']) && is_file($row['file'])): ?>
+			<?= Helpers::editorLink($row['file'], $row['line']) ?>
+<?php	else: ?>
+			<i>inner-code</i><?php if (isset($row['line'])) echo ':', $row['line'] ?>
+<?php	endif ?>
+
+			<?php if (isset($row['file']) && is_file($row['file'])): ?><a data-tracy-ref="^p + .file" class="tracy-toggle<?php if ($expanded !== $key) echo ' tracy-collapsed' ?>">source</a>&nbsp; <?php endif ?>
+
+<?php
+			if (isset($row['class'])) echo '<b>', Helpers::escapeHtml($row['class'] . $row['type']), '</b>';
+			echo '<b>', Helpers::escapeHtml($row['function']), '</b> (';
+			if (!empty($row['args'])): ?><a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a><?php endif ?>)
+			</p>
+
+<?php	if (isset($row['file']) && is_file($row['file'])): ?>
+			<div class="<?php if ($expanded !== $key) echo 'tracy-collapsed ' ?>file"><?= BlueScreen::highlightFile($row['file'], $row['line']) ?></div>
+<?php	endif ?>
+
+
+<?php	if (!empty($row['args'])): ?>
+			<div class="tracy-collapsed outer args">
+				<table>
+<?php
+			try {
+				$r = isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']);
+				$params = $r->getParameters();
+			} catch (\Exception $e) {
+				$params = [];
+			}
+			foreach ($row['args'] as $k => $v) {
+				$argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k;
+				echo '<tr><th>', Helpers::escapeHtml((is_string($argName) ? '$' : '#') . $argName), '</th><td>';
+				echo $dump($v, (string) $argName);
+				echo "</td></tr>\n";
+			}
+?>
+				</table>
+			</div>
+<?php	endif ?>
+
+		</li>
+<?php endforeach ?>
+
+	</ol>
+	</div>
+</div>
