@@ -24,8 +24,10 @@ class Bridge
 	public static function initialize(): void
 	{
 		$blueScreen = Tracy\Debugger::getBlueScreen();
-		$blueScreen->addPanel([self::class, 'renderLatteError']);
-		$blueScreen->addAction([self::class, 'renderLatteUnknownMacro']);
+		if (!class_exists(Latte\Bridges\Tracy\BlueScreenPanel::class)) {
+			$blueScreen->addPanel([self::class, 'renderLatteError']);
+			$blueScreen->addAction([self::class, 'renderLatteUnknownMacro']);
+		}
 		$blueScreen->addAction([self::class, 'renderMemberAccessException']);
 		$blueScreen->addPanel([self::class, 'renderNeonError']);
 	}
