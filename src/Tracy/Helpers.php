@@ -22,11 +22,14 @@ class Helpers
 	{
 		$file = strtr($origFile = $file, Debugger::$editorMapping);
 		if ($editor = self::editorUri($origFile, $line)) {
-			$file = strtr($file, '\\', '/');
-			if (preg_match('#(^[a-z]:)?/.{1,40}$#i', $file, $m) && strlen($file) > strlen($m[0])) {
-				$file = '...' . $m[0];
+			$parts = explode('/', strtr($file, '\\', '/'));
+			$file = array_pop($parts);
+			while ($parts && strlen($file) < 42) {
+				$file = array_pop($parts) . '/' . $file;
 			}
+			$file = ($parts ? '.../' : '') . $file;
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
+
 			return self::formatHtml(
 				'<a href="%" title="%" class="tracy-editor">%<b>%</b>%</a>',
 				$editor,
