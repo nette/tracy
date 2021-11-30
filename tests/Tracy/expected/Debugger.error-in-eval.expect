@@ -39,65 +39,63 @@
 	<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
 
 	<div class="inner">
-	<ol>
-		<li>
-			<p>
-			<i>inner-code</i>:%d%
+	<div class="callstack">
 
-<b>trigger_error</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
-			</p>
+		<div class="callstack-file">
+			<i>inner-code</i>:1
+		</div>
+
+		<div class="callstack-callee">
+			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>trigger_error</b> (...)</a>
+		</div>
+
+		<div class="callstack-additional tracy-collapsed">
 
 
-
-			<div class="tracy-collapsed outer args">
-				<table>
+			<table class="args">
 <tr><th>$message</th><td><pre class="tracy-dump tracy-light"
-><span class="tracy-dump-string" title="%d% characters"><span>'</span>The my error<span>'</span></span></pre>
+><span class="tracy-dump-string" title="12 characters"><span>'</span>The my error<span>'</span></span></pre>
 </td></tr>
-<tr><th>$error_%a%</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">256</span></pre>
+<tr><th>$error%a%</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">256</span></pre>
 </td></tr>
-				</table>
-			</div>
+			</table>
+		</div>
 
-		</li>
-		<li>
-			<p>
+		<div class="callstack-file">
 			<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%" class="tracy-editor">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
-			<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-<b>eval</b> ()
-			</p>
+		</div>
 
-			<div class="tracy-collapsed file">%A%</div>
+		<div class="callstack-callee">
+			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>eval</b> ()</a>
+		</div>
 
+		<div class="callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" %A%</pre>
 
+		</div>
 
-		</li>
-		<li>
-			<p>
+		<div class="callstack-file">
 			<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%" class="tracy-editor">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
-			<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-<b>first</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
-			</p>
+		</div>
 
-			<div class="tracy-collapsed file">%A%</div>
+		<div class="callstack-callee">
+			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>first</b> (...)</a>
+		</div>
 
+		<div class="callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-			<div class="tracy-collapsed outer args">
-				<table>
+			<table class="args">
 <tr><th>$user</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="4 characters"><span>'</span>root<span>'</span></span></pre>
 </td></tr>
 <tr><th>$pass</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='{"text":"***** (string)"}'></pre>
 </td></tr>
-				</table>
-			</div>
-
-		</li>
-
-	</ol>
+			</table>
+		</div>
+	</div>
 	</div>
 </div>
 %A%
-
 <div class="panel">
 	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
 	<div class="tracy-collapsed inner">

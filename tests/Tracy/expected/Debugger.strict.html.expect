@@ -39,71 +39,66 @@
 	<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
 
 	<div class="inner">
-	<ol>
-		<li>
-			<p>
+	<div class="callstack">
+
+		<div class="callstack-file">
 			<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
-			<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-<b>third</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
-			</p>
+		</div>
 
-			<div class="tracy-collapsed file">%A%</div>
+		<div class="callstack-callee">
+			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>third</b> (...)</a>
+		</div>
 
+		<div class="callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-			<div class="tracy-collapsed outer args">
-				<table>
+			<table class="args">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>
-				</table>
-			</div>
+			</table>
+		</div>
 
-		</li>
-		<li>
-			<p>
+		<div class="callstack-file">
 			<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
-			<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-<b>second</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
-			</p>
+		</div>
 
-			<div class="tracy-collapsed file">%A%</div>
+		<div class="callstack-callee">
+			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>second</b> (...)</a>
+		</div>
 
+		<div class="callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-			<div class="tracy-collapsed outer args">
-				<table>
+			<table class="args">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
 </td></tr>
 <tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">false</span></pre>
 </td></tr>
-				</table>
-			</div>
+			</table>
+		</div>
 
-		</li>
-		<li>
-			<p>
+		<div class="callstack-file">
 			<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
-			<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-<b>first</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
-			</p>
+		</div>
 
-			<div class="tracy-collapsed file">%A%</div>
+		<div class="callstack-callee">
+			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>first</b> (...)</a>
+		</div>
 
+		<div class="callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-			<div class="tracy-collapsed outer args">
-				<table>
-<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
+			<table class="args">
+<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">%d%</span></pre>
 </td></tr>
 <tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>
 </td></tr>
-				</table>
-			</div>
-
-		</li>
-
-	</ol>
+			</table>
+		</div>
+	</div>
 	</div>
 </div>
 %A%
-
 <div class="panel">
 	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
 	<div class="tracy-collapsed inner">

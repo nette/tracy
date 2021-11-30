@@ -19,32 +19,36 @@ if (!$stack) {
 	<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
 
 	<div class="inner">
-	<ol>
+	<div class="callstack">
 <?php foreach ($stack as $key => $row): ?>
-		<li>
-			<p>
+<?php	$clickable = !empty($row['args']) || (isset($row['file']) && is_file($row['file'])) ?>
+
+		<div class="callstack-file">
 <?php	if (isset($row['file']) && is_file($row['file'])): ?>
 			<?= Helpers::editorLink($row['file'], $row['line']) ?>
 <?php	else: ?>
 			<i>inner-code</i><?php if (isset($row['line'])) echo ':', $row['line'] ?>
 <?php	endif ?>
 
-			<?php if (isset($row['file']) && is_file($row['file'])): ?><a data-tracy-ref="^p + .file" class="tracy-toggle<?php if ($expanded !== $key) echo ' tracy-collapsed' ?>">source</a>&nbsp; <?php endif ?>
+		</div>
 
-<?php
-			if (isset($row['class'])) echo '<b>', Helpers::escapeHtml($row['class'] . $row['type']), '</b>';
-			echo '<b>', Helpers::escapeHtml($row['function']), '</b> (';
-			if (!empty($row['args'])): ?><a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a><?php endif ?>)
-			</p>
+		<div class="callstack-callee">
+<?php if ($clickable): ?>
+			<a data-tracy-ref="^div + div" class="tracy-toggle<?php if ($expanded !== $key) echo ' tracy-collapsed' ?>"><?php endif ?>
+<?php if (isset($row['class'])) echo Helpers::escapeHtml($row['class']), '::' ?><b><?= Helpers::escapeHtml($row['function']) ?></b> <?= empty($row['args']) ? '()' : '(...)' ?>
+<?php if ($clickable): ?></a><?php endif ?>
 
-<?php	if (isset($row['file']) && is_file($row['file'])): ?>
-			<div class="<?php if ($expanded !== $key) echo 'tracy-collapsed ' ?>file"><?= BlueScreen::highlightFile($row['file'], $row['line']) ?></div>
-<?php	endif ?>
+		</div>
+
+<?php	if ($clickable): ?>
+		<div class="callstack-additional<?php if ($expanded !== $key) echo ' tracy-collapsed' ?>">
+<?php		if (isset($row['file']) && is_file($row['file'])): ?>
+			<?= BlueScreen::highlightFile($row['file'], $row['line']) ?>
+<?php		endif ?>
 
 
-<?php	if (!empty($row['args'])): ?>
-			<div class="tracy-collapsed outer args">
-				<table>
+<?php		if (!empty($row['args'])): ?>
+			<table class="args">
 <?php
 			try {
 				$r = isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']);
@@ -59,13 +63,11 @@ if (!$stack) {
 				echo "</td></tr>\n";
 			}
 ?>
-				</table>
-			</div>
+			</table>
+<?php		endif ?>
+		</div>
 <?php	endif ?>
-
-		</li>
 <?php endforeach ?>
-
-	</ol>
+	</div>
 	</div>
 </div>

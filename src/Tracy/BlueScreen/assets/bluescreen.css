@@ -183,11 +183,6 @@
 	background-color: #F7F0CB;
 }
 
-#tracy-bs ol {
-	margin: 0 0 var(--tracy-space);
-	padding-left: var(--tracy-space);
-}
-
 #tracy-bs footer ul {
 	font-size: 7pt;
 	padding: var(--tracy-space);
@@ -291,6 +286,29 @@
 
 #tracy-bs .caused a {
 	color: white;
+}
+
+#tracy-bs .callstack {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	margin-bottom: calc(.5 * var(--tracy-space));
+}
+
+#tracy-bs .callstack-file {
+	text-align: right;
+	padding-right: var(--tracy-space);
+	white-space: nowrap;
+	height: calc(1.5 * var(--tracy-space));
+}
+
+#tracy-bs .callstack-callee {
+	white-space: nowrap;
+	height: calc(1.5 * var(--tracy-space));
+}
+
+#tracy-bs .callstack-additional {
+	grid-column-start: 1;
+	grid-column-end: 3;
 }
 
 #tracy-bs .args tr:first-child > * {
