@@ -218,6 +218,7 @@
 	background: #F4F3F1;
 	padding: .1em 1em 1em;
 	border-radius: 8px;
+	overflow: hidden;
 }
 
 #tracy-bs .outer {
