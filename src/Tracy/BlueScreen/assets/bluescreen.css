@@ -60,6 +60,10 @@
 	font-size: 13pt;
 }
 
+#tracy-bs-error h1 {
+	color: white;
+}
+
 #tracy-bs-error a {
 	color: #ffefa1 !important;
 }
