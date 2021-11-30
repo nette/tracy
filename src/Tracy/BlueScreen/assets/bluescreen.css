@@ -54,6 +54,13 @@
 	flex: 1;
 }
 
+#tracy-bs-error * {
+	font: inherit;
+	color: inherit;
+	margin: 0;
+	padding: 0;
+}
+
 #tracy-bs-error {
 	background: #CD1818;
 	color: white;
