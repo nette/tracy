@@ -47,6 +47,12 @@ class BlueScreen
 			}
 		});
 
+		blueScreen.addEventListener('tracy-toggle', (e) => {
+			if (!e.target.matches('.tracy-dump *') && e.detail.originalEvent) {
+				e.detail.relatedTarget.classList.toggle('panel-fadein', !e.detail.collapsed);
+			}
+		});
+
 		Tracy.TableSort.init();
 	}
 
