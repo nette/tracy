@@ -303,3 +303,13 @@
 	content: 'may not be true';
 	opacity: .4;
 }
+
+#tracy-bs .panel-fadein {
+	animation: panel-fadein .12s ease;
+}
+
+@keyframes panel-fadein {
+	0% {
+		opacity: 0;
+	}
+}
