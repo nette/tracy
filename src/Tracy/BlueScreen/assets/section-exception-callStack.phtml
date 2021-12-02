@@ -15,10 +15,10 @@ if (!$stack) {
 	return;
 }
 ?>
-<div class="panel">
-	<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+<section class="section">
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
 
-	<div class="inner">
+	<div class="section-panel">
 	<div class="callstack">
 <?php foreach ($stack as $key => $row): ?>
 <?php	$clickable = !empty($row['args']) || (isset($row['file']) && is_file($row['file'])) ?>
@@ -70,4 +70,4 @@ if (!$stack) {
 <?php endforeach ?>
 	</div>
 	</div>
-</div>
+</section>
