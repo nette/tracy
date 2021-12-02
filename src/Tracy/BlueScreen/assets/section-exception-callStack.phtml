@@ -42,9 +42,28 @@ if (!$stack) {
 
 <?php	if ($clickable): ?>
 		<div class="callstack-additional<?php if ($expanded !== $key) echo ' tracy-collapsed' ?>">
-<?php		if (isset($row['file']) && is_file($row['file'])): ?>
-			<?= BlueScreen::highlightFile($row['file'], $row['line']) ?>
-<?php		endif ?>
+<?php $sourceOriginal = isset($row['file']) && is_file($row['file']) ? [$row['file'], $row['line']] : null ?>
+<?php $sourceMapped = $sourceOriginal ? Debugger::mapSource(...$sourceOriginal) : null ?>
+<?php if ($sourceOriginal && $sourceMapped): ?>
+			<div class="tracy-tabs">
+				<ul class="tabs-bar">
+					<li class="tracy-tab-label<?= $sourceMapped['active'] ? '' : ' tracy-active' ?>"><a href="#">PHP</a></li>
+					<li class="tracy-tab-label<?= $sourceMapped['active'] ? ' tracy-active' : '' ?>"><a href="#"><?= Helpers::escapeHtml($sourceMapped['label']) ?></a></li>
+				</ul>
+
+				<div>
+					<div class="tracy-tab-panel<?= $sourceMapped['active'] ? '' : ' tracy-active' ?>">
+						<?= BlueScreen::highlightFile(...$sourceOriginal) ?>
+					</div>
+
+					<div class="tracy-tab-panel<?= $sourceMapped['active'] ? ' tracy-active' : '' ?>">
+						<?= BlueScreen::highlightFile($sourceMapped['file'], $sourceMapped['line'], 15, false) ?>
+					</div>
+				</div>
+			</div>
+<?php elseif ($sourceOriginal): ?>
+			<?= BlueScreen::highlightFile(...$sourceOriginal) ?>
+<?php endif ?>
 
 
 <?php		if (!empty($row['args'])): ?>

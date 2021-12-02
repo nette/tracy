@@ -125,6 +125,9 @@ class Debugger
 	/** @var string[] */
 	public static $customJsFiles = [];
 
+	/** @var callable[] */
+	private static $sourceMappers = [];
+
 	/** @var array|null */
 	private static $cpuUsage;
 
@@ -645,6 +648,26 @@ class Debugger
 		return !self::$productionMode && self::$showFireLogger
 			? self::getFireLogger()->log($message)
 			: false;
+	}
+
+
+	/** @internal */
+	public static function addSourceMapper(callable $mapper): void
+	{
+		self::$sourceMappers[] = $mapper;
+	}
+
+
+	/** @return array{file: string, line: int, label: string, active: bool} */
+	public static function mapSource(string $file, int $line): ?array
+	{
+		foreach (self::$sourceMappers as $mapper) {
+			if ($res = $mapper($file, $line)) {
+				return $res;
+			}
+		}
+
+		return null;
 	}
 
 
