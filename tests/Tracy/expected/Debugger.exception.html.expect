@@ -16,7 +16,7 @@
 <div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div class="tracy-bs-main">
-<section id="tracy-bs-error" class="section">
+<section class="section section--error">
 	<p>Exception #123</p>
 
 	<h1><span>The my exception</span>

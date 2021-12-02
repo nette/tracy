@@ -30,7 +30,7 @@ class BlueScreen
 
 		if (!ajax) {
 			document.body.appendChild(blueScreen);
-			let id = location.href + document.getElementById('tracy-bs-error').textContent;
+			let id = location.href + document.querySelector('.section--error').textContent;
 			Tracy.Toggle.persist(blueScreen, sessionStorage.getItem('tracy-toggles-bskey') === id);
 			sessionStorage.setItem('tracy-toggles-bskey', id);
 		}

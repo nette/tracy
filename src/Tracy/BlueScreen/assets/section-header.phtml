@@ -17,7 +17,7 @@ $title = $ex instanceof \ErrorException
 $code = $ex->getCode() ? ' #' . $ex->getCode() : '';
 
 ?>
-<section id="tracy-bs-error" class="section">
+<section class="section section--error">
 	<?php if ($ex->getMessage()): ?><p><?= Helpers::escapeHtml($title . $code) ?></p><?php endif ?>
 
 
