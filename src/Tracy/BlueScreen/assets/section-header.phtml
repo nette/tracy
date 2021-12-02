@@ -30,6 +30,6 @@ $code = $ex->getCode() ? ' #' . $ex->getCode() : '';
 
 <?php if ($ex->getPrevious()): ?>
 <div class="caused">
-	<a href="#tracyCaused">Caused by <?= Helpers::escapeHtml(Helpers::getClass($ex->getPrevious())) ?></a>
+	<a href="#tracyCaused<?= count($exceptions) + 1 ?>">Caused by <?= Helpers::escapeHtml(Helpers::getClass($ex->getPrevious())) ?></a>
 </div>
 <?php endif ?>

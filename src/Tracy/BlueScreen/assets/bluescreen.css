@@ -334,3 +334,16 @@
 		opacity: 0;
 	}
 }
+
+#tracy-bs .section--causedby {
+	flex-direction: column;
+	padding: 0;
+}
+
+#tracy-bs .section--causedby:not(.tracy-collapsed) {
+	display: flex;
+}
+
+#tracy-bs .section--causedby .section--error {
+	background: #cd1818a6;
+}
