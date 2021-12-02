@@ -16,29 +16,29 @@
 <div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div class="tracy-bs-main">
-<div id="tracy-bs-error" class="panel">
+<section id="tracy-bs-error" class="section">
 	<p>User Error</p>
 
 	<h1><span>The my error</span>
 	<a href="%a%" class="action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
 	</h1>
-</div>
+</section>
 
 
 
-<div class="panel">
-	<h2><a data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
+<section class="section">
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
 
-	<div class="inner">
+	<div class="section-panel">
 		<p><b>File:</b> <span>%a% : eval()&apos;d code:1</span></p>
 
 	</div>
-</div>
+</section>
 
-<div class="panel">
-	<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+<section class="section">
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
 
-	<div class="inner">
+	<div class="section-panel">
 	<div class="callstack">
 
 		<div class="callstack-file">
@@ -94,57 +94,57 @@
 		</div>
 	</div>
 	</div>
-</div>
+</section>
 %A%
-<div class="panel">
-	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
-	<div class="tracy-collapsed inner">
+<section class="section">
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
+	<div class="section-panel tracy-collapsed">
 		<pre class="tracy-dump tracy-light" data-tracy-dump='{"ref":%d%}'></pre>
 	</div>
-</div>
+</section>
 
 
 
 
-<div class="panel">
-	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
+<section class="section">
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
-	<div class="tracy-collapsed inner">
+	<div class="section-panel tracy-collapsed">
 		<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
-		<div class="outer">
+		<div class="pane">
 			<table class="tracy-sortable">%A%</table>
 		</div>
 
 
 		<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SESSION</a></h3>
-		<div class="outer">%A%</div>
+		<div class="pane">%A%</div>
 
 
 
 
 		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
-		<div class="outer tracy-collapsed">
+		<div class="pane tracy-collapsed">
 			<table class="tracy-sortable">%A%</table>
 		</div>
 
 
 		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
-		<div class="outer tracy-collapsed">
+		<div class="pane tracy-collapsed">
 			%A%</div>
 
 
 		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Output buffers status</a></h3>
-		<div class="outer tracy-collapsed">
+		<div class="pane tracy-collapsed">
 			<pre %A%></pre>
 		</div>
 	</div>
-</div>
+</section>
 
 
-<div class="panel">
-	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
+<section class="section">
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
 
-	<div class="tracy-collapsed inner">
+	<div class="section-panel tracy-collapsed">
 %A%
 		<h3>$_GET</h3>
 		<p><i>empty</i></p>
@@ -153,19 +153,19 @@
 		<h3>$_COOKIE</h3>
 		<p><i>empty</i></p>
 	</div>
-</div>
+</section>
 
-<div class="panel">
-	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
+<section class="section">
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
 
-	<div class="tracy-collapsed inner">
+	<div class="section-panel tracy-collapsed">
 		<h3>Headers</h3>
-		<div class="outer">%A%</div>
+		<div class="pane">%A%</div>
 
 
 		<p>Headers were not sent at the time of the exception</p>
 	</div>
-</div>
+</section>
 
 
 		<footer>

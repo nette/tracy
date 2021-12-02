@@ -34,13 +34,13 @@ if (isset($stack[0]['class']) && $stack[0]['class'] === 'Tracy\Debugger' && ($st
 <?php require __DIR__ . '/section-header.phtml' ?>
 
 <?php foreach ($this->renderPanels($ex) as $panel): ?>
-<div class="panel">
-	<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($section->tab) ?></a></h2>
+<section class="section">
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
 
-	<div class="inner">
-		<?= $section->panel ?>
+	<div class="section-panel">
+		<?= $panel->panel ?>
 	</div>
-</div>
+</section>
 <?php endforeach ?>
 
 <?php require __DIR__ . '/section-exception-sourceFile.phtml' ?>

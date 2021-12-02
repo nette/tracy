@@ -19,11 +19,11 @@ if (!$ex || in_array($ex, $exceptions, true)) {
 $exceptions[] = $ex;
 ?>
 
-<div class="panel"<?php if (count($exceptions) === 1) echo ' id="tracyCaused"' ?>>
-	<h2><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = count($exceptions) > 1) ? ' tracy-collapsed' : '' ?>">Caused by</a></h2>
+<section class="section"<?php if (count($exceptions) === 1) echo ' id="tracyCaused"' ?>>
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = count($exceptions) > 1) ? ' tracy-collapsed' : '' ?>">Caused by</a></h2>
 
-	<div class="<?= $collapsed ? 'tracy-collapsed ' : '' ?>inner">
+	<div class="section-panel<?= $collapsed ? ' tracy-collapsed' : '' ?>">
 <?php require __DIR__ . '/section-exception.phtml' ?>
 
 	</div>
-</div>
+</section>

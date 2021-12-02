@@ -54,7 +54,7 @@
 	display: none;
 }
 
-#tracy-bs div.panel:last-of-type {
+#tracy-bs .section:last-of-type {
 	flex: 1;
 }
 
@@ -212,12 +212,12 @@
 }
 
 
-#tracy-bs div.panel {
+#tracy-bs .section {
 	padding-left: calc(1.5 * var(--tracy-space));
 	padding-right: calc(1.5 * var(--tracy-space));
 }
 
-#tracy-bs div.inner {
+#tracy-bs .section-panel {
 	background: #F4F3F1;
 	padding: var(--tracy-space) var(--tracy-space) 0;
 	margin: 0 0 var(--tracy-space);
@@ -226,11 +226,12 @@
 	overflow: hidden;
 }
 
-#tracy-bs .outer {
+#tracy-bs .outer, /* deprecated */
+#tracy-bs .pane {
 	overflow: auto;
 }
 
-#tracy-bs.mac .outer {
+#tracy-bs.mac .pane {
 	padding-bottom: 12px;
 }
 

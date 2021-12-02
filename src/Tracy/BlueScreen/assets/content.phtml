@@ -31,15 +31,15 @@ namespace Tracy;
 
 <?php $bottomPanels = [] ?>
 <?php foreach ($this->renderPanels(null) as $panel): ?>
-<?php if (!empty($section->bottom)) { $bottomPanels[] = $panel; continue; } ?>
-<?php $collapsedClass = !isset($section->collapsed) || $section->collapsed ? ' tracy-collapsed' : ''; ?>
-		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle<?= $collapsedClass ?>"><?= Helpers::escapeHtml($section->tab) ?></a></h2>
+<?php if (!empty($panel->bottom)) { $bottomPanels[] = $panel; continue; } ?>
+<?php $collapsedClass = !isset($panel->collapsed) || $panel->collapsed ? ' tracy-collapsed' : ''; ?>
+		<section class="section">
+			<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle<?= $collapsedClass ?>"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
 
-			<div class="inner<?= $collapsedClass ?>">
-			<?= $section->panel ?>
+			<div class="section-panel<?= $collapsedClass ?>">
+			<?= $panel->panel ?>
 			</div>
-		</div>
+		</section>
 <?php endforeach ?>
 
 <?php require __DIR__ . '/section-environment.phtml' ?>
@@ -49,13 +49,13 @@ namespace Tracy;
 <?php require __DIR__ . '/section-http.phtml' ?>
 
 <?php foreach ($bottomPanels as $panel): ?>
-		<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($section->tab) ?></a></h2>
+		<section class="section">
+			<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
 
-			<div class="inner">
-			<?= $section->panel ?>
+			<div class="section-panel">
+			<?= $panel->panel ?>
 			</div>
-		</div>
+		</section>
 <?php endforeach ?>
 
 		<footer>
