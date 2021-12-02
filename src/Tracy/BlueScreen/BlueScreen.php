@@ -38,6 +38,9 @@ class BlueScreen
 	/** @var bool */
 	public $showEnvironment = true;
 
+	/** @internal */
+	public $mappers = [];
+
 	/** @var callable[] */
 	private $panels = [];
 
@@ -469,5 +472,16 @@ class BlueScreen
 			$info = str_replace('<table', '<table class="tracy-sortable"', $info);
 			echo preg_replace('#^.+<body>|</body>.+\z|<hr />|<h1>Configuration</h1>#s', '', $info);
 		}
+	}
+
+
+	public function getSourceMapping(string $file, int $line): ?array
+	{
+		foreach ($this->mappers as $mapper) {
+			if ($res = $mapper($file, $line)) {
+				return $res;
+			}
+		}
+		return null;
 	}
 }

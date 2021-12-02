@@ -28,6 +28,7 @@ class Bridge
 			$blueScreen->addPanel([self::class, 'renderLatteError']);
 			$blueScreen->addAction([self::class, 'renderLatteUnknownMacro']);
 		}
+		$blueScreen->mappers[] = [self::class, 'mapLatteSourceCode'];
 		$blueScreen->addAction([self::class, 'renderMemberAccessException']);
 		$blueScreen->addPanel([self::class, 'renderNeonError']);
 	}
@@ -49,20 +50,6 @@ class Bridge
 					. BlueScreen::highlightLine(htmlspecialchars($e->sourceCode, ENT_IGNORE, 'UTF-8'), $e->sourceLine)
 					. '</div></pre>',
 			];
-
-		} elseif ($e && strpos($file = $e->getFile(), '.latte--')) {
-			$lines = file($file);
-			if (preg_match('#// source: (\S+\.latte)#', $lines[1], $m) && @is_file($m[1])) { // @ - may trigger error
-				$templateFile = $m[1];
-				$templateLine = $e->getLine() && preg_match('#/\* line (\d+) \*/#', $lines[$e->getLine() - 1], $m) ? (int) $m[1] : 0;
-				return [
-					'tab' => 'Template',
-					'panel' => '<p><b>File:</b> ' . Helpers::editorLink($templateFile, $templateLine) . '</p>'
-						. ($templateLine === null
-							? ''
-							: BlueScreen::highlightFile($templateFile, $templateLine)),
-				];
-			}
 		}
 		return null;
 	}
@@ -83,6 +70,26 @@ class Bridge
 			];
 		}
 		return null;
+	}
+
+
+	public static function mapLatteSourceCode(string $file, int $line): ?array
+	{
+		if (!strpos($file, '.latte--')) {
+			return null;
+		}
+
+		$lines = file($file);
+		if (
+			!preg_match('#/\*\* source: (\S+\.latte)#', $lines[4], $m)
+			|| !@is_file($m[1]) // @ - may trigger error
+		) {
+			return null;
+		}
+
+		$file = $m[1];
+		$line = $line && preg_match('#/\* line (\d+) \*/#', $lines[$line - 1], $m) ? (int) $m[1] : 0;
+		return ['file' => $file, 'line' => $line, 'label' => 'Latte', 'active' => true];
 	}
 
 
