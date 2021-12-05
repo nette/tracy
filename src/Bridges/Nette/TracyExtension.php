@@ -11,6 +11,7 @@ namespace Tracy\Bridges\Nette;
 
 use Nette;
 use Nette\Schema\Expect;
+use Nette\Utils\Strings;
 use Tracy;
 
 
@@ -19,6 +20,9 @@ use Tracy;
  */
 class TracyExtension extends Nette\DI\CompilerExtension
 {
+	private const ERROR_SEVERITY_CONSTANT_PATTERN = 'E_(?:ALL|PARSE|STRICT|RECOVERABLE_ERROR|(?:CORE|COMPILE)_(?:ERROR|WARNING)|(?:USER_)?(?:ERROR|WARNING|NOTICE|DEPRECATED))';
+	private const ERROR_SEVERITY_EXPRESSION_PATTERN = '~?\s*' . self::ERROR_SEVERITY_CONSTANT_PATTERN . '(?:\s*[&|]\s*~?\s*' . self::ERROR_SEVERITY_CONSTANT_PATTERN . ')*';
+
 	/** @var bool */
 	private $debugMode;
 
@@ -35,22 +39,24 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
+		$errorSeverity = Expect::anyOf(Expect::int(), Expect::string()->pattern(self::ERROR_SEVERITY_EXPRESSION_PATTERN));
+
 		return Expect::structure([
 			'email' => Expect::anyOf(Expect::email(), Expect::listOf('email'))->dynamic(),
 			'fromEmail' => Expect::email()->dynamic(),
 			'emailSnooze' => Expect::string()->dynamic(),
-			'logSeverity' => Expect::anyOf(Expect::scalar(), Expect::listOf('scalar')),
+			'logSeverity' => Expect::anyOf($errorSeverity, Expect::listOf($errorSeverity)),
 			'editor' => Expect::string()->dynamic(),
 			'browser' => Expect::string()->dynamic(),
 			'errorTemplate' => Expect::string()->dynamic(),
-			'strictMode' => Expect::bool()->dynamic(),
+			'strictMode' => Expect::anyOf(Expect::bool()->dynamic(), $errorSeverity, Expect::listOf($errorSeverity)),
 			'showBar' => Expect::bool()->dynamic(),
 			'maxLength' => Expect::int()->dynamic(),
 			'maxDepth' => Expect::int()->dynamic(),
 			'keysToHide' => Expect::array(null)->dynamic(),
 			'dumpTheme' => Expect::string()->dynamic(),
 			'showLocation' => Expect::bool()->dynamic(),
-			'scream' => Expect::bool()->dynamic(),
+			'scream' => Expect::anyOf(Expect::bool()->dynamic(), $errorSeverity, Expect::listOf($errorSeverity)),
 			'bar' => Expect::listOf('string|Nette\DI\Definitions\Statement'),
 			'blueScreen' => Expect::listOf('callable'),
 			'editorMapping' => Expect::arrayOf('string')->dynamic()->default(null),
@@ -85,11 +91,13 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$options = (array) $this->config;
 		unset($options['bar'], $options['blueScreen'], $options['netteMailer']);
 		if (isset($options['logSeverity'])) {
-			$res = 0;
-			foreach ((array) $options['logSeverity'] as $level) {
-				$res |= is_int($level) ? $level : constant($level);
-			}
-			$options['logSeverity'] = $res;
+			$options['logSeverity'] = $this->normalizeErrorSeverity($options['logSeverity']);
+		}
+		if (isset($options['strictMode']) && !is_bool($options['strictMode'])) {
+			$options['strictMode'] = $this->normalizeErrorSeverity($options['strictMode']);
+		}
+		if (isset($options['scream']) && !is_bool($options['scream'])) {
+			$options['scream'] = $this->normalizeErrorSeverity($options['scream']);
 		}
 		foreach ($options as $key => $value) {
 			if ($value !== null) {
@@ -151,5 +159,42 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		if (($dir = Tracy\Debugger::$logDirectory) && !is_writable($dir)) {
 			throw new Nette\InvalidStateException("Make directory '$dir' writable.");
 		}
+	}
+
+
+	/**
+	 * @param int|string|array<int|string> $levels
+	 * @return int
+	 */
+	private function normalizeErrorSeverity($levels): int
+	{
+		$result = 0;
+		foreach ((array) $levels as $level) {
+			$result |= is_int($level)
+				? $level
+				: $this->parseErrorSeverityExpression($level);
+		}
+		return $result;
+	}
+
+
+	private function parseErrorSeverityExpression(string $severityExpression): int
+	{
+		$orParts = Strings::split($severityExpression, '#\s*\|\s*#');
+		if (count($orParts) !== 1) {
+			return $this->normalizeErrorSeverity($orParts);
+		}
+
+		$result = null;
+		foreach (Strings::split($orParts[0], '#\s*&\s*#') as $part) {
+			[, $not, $constantName] = Strings::match($part, '#^(\s*~)?\s*(' . self::ERROR_SEVERITY_CONSTANT_PATTERN . ')$#');
+			$value = constant($constantName);
+			if ($not) {
+				$value = ~$value;
+			}
+			$result = ($result ?? $value) & $value;
+		}
+
+		return $result;
 	}
 }
