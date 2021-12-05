@@ -1,0 +1,4 @@
+
+Warning: E_USER_WARNING that should be reported in %a% on line %d%
+
+Deprecated: Muted E_USER_DEPRECATED that should be reported in %a% on line %d%
