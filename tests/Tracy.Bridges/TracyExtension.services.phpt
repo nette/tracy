@@ -23,7 +23,9 @@ $compiler->setClassName('Container');
 $compiler->addExtension('tracy', new TracyExtension);
 $compiler->addConfig([
 	'tracy' => [
-		'logSeverity' => 'E_USER_WARNING',
+		'logSeverity' => E_USER_NOTICE,
+		'strictMode' => 'E_ALL & ~(E_STRICT|E_NOTICE)',
+		'scream' => ['E_DEPRECATED', 'E_USER_DEPRECATED'],
 		'keysToHide' => ['abc'],
 	],
 	'services' => [
@@ -46,6 +48,8 @@ Assert::same(Tracy\Debugger::getLogger(), $container->getService('tracy.logger')
 Assert::same(Tracy\Debugger::getBlueScreen(), $container->getService('tracy.blueScreen'));
 Assert::same(Tracy\Debugger::getBar(), $container->getService('tracy.bar'));
 
-Assert::same(E_USER_WARNING, Tracy\Debugger::$logSeverity);
+Assert::same(E_USER_NOTICE, Tracy\Debugger::$logSeverity);
+Assert::same(E_ALL & ~(E_STRICT | E_NOTICE), Tracy\Debugger::$strictMode);
+Assert::same(E_DEPRECATED | E_USER_DEPRECATED, Tracy\Debugger::$scream);
 Assert::contains('password', Tracy\Debugger::getBlueScreen()->keysToHide);
 Assert::contains('abc', Tracy\Debugger::getBlueScreen()->keysToHide);
