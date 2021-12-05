@@ -56,7 +56,7 @@ class Debugger
 	/** @var bool|int determines whether any error will cause immediate death in development mode; if integer that it's matched against error severity */
 	public static $strictMode = false;
 
-	/** @var bool disables the @ (shut-up) operator so that notices and warnings are no longer hidden */
+	/** @var bool|int disables the @ (shut-up) operator so that notices and warnings are no longer hidden; if integer than it's matched against error severity */
 	public static $scream = false;
 
 	/** @var callable[] functions that are automatically called after fatal error */
@@ -370,7 +370,10 @@ class Debugger
 			$e->context = $context;
 			throw $e;
 
-		} elseif (($severity & error_reporting()) || self::$scream) {
+		} elseif (
+			($severity & error_reporting())
+			|| (is_int(self::$scream) ? $severity & self::$scream : self::$scream)
+		) {
 			self::getStrategy()->handleError($severity, $message, $file, $line, $context);
 		}
 
