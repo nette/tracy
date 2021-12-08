@@ -235,6 +235,7 @@ class Debugger
 		}
 
 		if (self::getBar()->dispatchAssets()) {
+			self::$showBar = false;
 			exit;
 		}
 	}
