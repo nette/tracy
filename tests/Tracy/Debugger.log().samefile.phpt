@@ -27,7 +27,7 @@ for ($i = 0; $i < 3; $i++) {
 	try {
 		$files[] = $file = fopen(getTempDir() . "/$i", 'w');
 		foo($file);
-	} catch (Exception $e) {
+	} catch (Throwable $e) {
 		$name[] = Debugger::log($e);
 	}
 }

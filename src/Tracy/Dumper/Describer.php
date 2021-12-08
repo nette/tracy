@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Tracy\Dumper;
 
+use Tracy;
 use Tracy\Helpers;
 
 
@@ -295,8 +296,7 @@ final class Describer
 
 	private function isSensitive(string $key, $val, string $class = null): bool
 	{
-		return
-			($this->scrubber !== null && ($this->scrubber)($key, $val, $class))
+		return ($this->scrubber !== null && ($this->scrubber)($key, $val, $class))
 			|| isset($this->keysToHide[strtolower($key)])
 			|| isset($this->keysToHide[strtolower($class . '::$' . $key)]);
 	}
@@ -343,7 +343,7 @@ final class Describer
 	private static function findLocation(): ?array
 	{
 		foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $item) {
-			if (isset($item['class']) && ($item['class'] === self::class || $item['class'] === \Tracy\Dumper::class)) {
+			if (isset($item['class']) && ($item['class'] === self::class || $item['class'] === Tracy\Dumper::class)) {
 				$location = $item;
 				continue;
 			} elseif (isset($item['function'])) {

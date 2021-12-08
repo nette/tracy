@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use Ds;
 use Tracy\Dumper\Describer;
 use Tracy\Dumper\Exposer;
 use Tracy\Dumper\Renderer;
@@ -82,8 +83,8 @@ class Dumper
 		\DOMNode::class => [Exposer::class, 'exposeDOMNode'],
 		\DOMNodeList::class => [Exposer::class, 'exposeDOMNodeList'],
 		\DOMNamedNodeMap::class => [Exposer::class, 'exposeDOMNodeList'],
-		\Ds\Collection::class => [Exposer::class, 'exposeDsCollection'],
-		\Ds\Map::class => [Exposer::class, 'exposeDsMap'],
+		Ds\Collection::class => [Exposer::class, 'exposeDsCollection'],
+		Ds\Map::class => [Exposer::class, 'exposeDsMap'],
 	];
 
 	/** @var Describer */

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use Nette;
+
 
 /**
  * Rendering helpers for Debugger.
@@ -184,7 +186,7 @@ class Helpers
 		$message = $e->getMessage();
 		if (
 			(!$e instanceof \Error && !$e instanceof \ErrorException)
-			|| $e instanceof \Nette\MemberAccessException
+			|| $e instanceof Nette\MemberAccessException
 			|| strpos($e->getMessage(), 'did you mean')
 		) {
 			// do nothing

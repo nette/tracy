@@ -15,7 +15,7 @@ namespace Tracy;
  */
 interface ILogger
 {
-	const
+	public const
 		DEBUG = 'debug',
 		INFO = 'info',
 		WARNING = 'warning',

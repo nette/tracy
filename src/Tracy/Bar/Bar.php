@@ -224,13 +224,12 @@ class Bar
 			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
 		], Debugger::$customCssFiles));
 
-		echo
-"'use strict';
+		echo "'use strict';
 (function(){
 	var el = document.createElement('style');
 	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
 	el.className='tracy-debug';
-	el.textContent=" . json_encode(Helpers::minifyCss(implode($css))) . ";
+	el.textContent=" . json_encode(Helpers::minifyCss(implode('', $css))) . ";
 	document.head.appendChild(el);})
 ();\n";
 

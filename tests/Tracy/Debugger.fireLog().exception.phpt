@@ -43,7 +43,7 @@ function third($arg1)
 try {
 	first(10, 'any string');
 
-} catch (Exception $e) {
+} catch (Throwable $e) {
 	Debugger::fireLog($e);
 }
 

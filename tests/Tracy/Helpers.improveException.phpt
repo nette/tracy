@@ -53,7 +53,7 @@ $obj = new TestClass;
 test('calling', function () {
 	try {
 		trimx();
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::same('Call to undefined function trimx(), did you mean trim()?', $e->getMessage());
@@ -64,7 +64,7 @@ test('calling', function () {
 test('', function () {
 	try {
 		abc\trimx();
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::same('Call to undefined function trimx(), did you mean trim()?', $e->getMessage());
@@ -75,7 +75,7 @@ test('', function () {
 test('', function () {
 	try {
 		myFunctionx();
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::same('Call to undefined function myFunctionx(), did you mean myfunction()?', $e->getMessage());
@@ -86,7 +86,7 @@ test('', function () {
 test('', function () {
 	try {
 		TestClass::publicMethodX();
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodX(), did you mean publicMethod()?', $e->getMessage());
@@ -97,7 +97,7 @@ test('', function () {
 test('', function () use ($obj) {
 	try {
 		$obj->publicMethodX();
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodX(), did you mean publicMethod()?', $e->getMessage());
@@ -108,7 +108,7 @@ test('', function () use ($obj) {
 test('suggest static method', function () use ($obj) {
 	try {
 		$obj->publicMethodStaticX();
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodStaticX(), did you mean publicMethodStatic()?', $e->getMessage());
@@ -119,7 +119,7 @@ test('suggest static method', function () use ($obj) {
 test('suggest only public method', function () use ($obj) {
 	try {
 		$obj->protectedMethodX();
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::same('Call to undefined method TestClass::protectedMethodX()', $e->getMessage());
@@ -131,7 +131,7 @@ test('do not suggest anything when accessing anonymous class', function () {
 		$obj = new class {
 		};
 		$obj->method();
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::same('Call to undefined method class@anonymous::method()', $e->getMessage());
@@ -167,7 +167,7 @@ test('suggest only public property', function () use ($obj) {
 test('suggest only static property', function () use ($obj) {
 	try {
 		$val = TestClass::$publicStaticX;
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::match('Access to undeclared static property%a?% TestClass::$publicStaticX, did you mean $publicStatic?', $e->getMessage());
@@ -178,7 +178,7 @@ test('suggest only static property', function () use ($obj) {
 test('suggest only public static property', function () use ($obj) {
 	try {
 		$val = TestClass::$protectedMethodX;
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	Helpers::improveException($e);
 	Assert::match('Access to undeclared static property%a?% TestClass::$protectedMethodX', $e->getMessage());
@@ -200,7 +200,7 @@ test('do not suggest anything when accessing anonymous class', function () {
 		$obj = new class {
 		};
 		@$val = $obj::$property;
-	} catch (\Error $e) {
+	} catch (Error $e) {
 	}
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
 	Helpers::improveException($e);

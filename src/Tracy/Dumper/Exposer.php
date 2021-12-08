@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 namespace Tracy\Dumper;
+use Ds;
 
 
 /**
@@ -192,7 +193,7 @@ final class Exposer
 
 
 	public static function exposeDsCollection(
-		\Ds\Collection $obj,
+		Ds\Collection $obj,
 		Value $value,
 		Describer $describer
 	): void {
@@ -203,13 +204,13 @@ final class Exposer
 
 
 	public static function exposeDsMap(
-		\Ds\Map $obj,
+		Ds\Map $obj,
 		Value $value,
 		Describer $describer
 	): void {
 		$i = 0;
 		foreach ($obj as $k => $v) {
-			$describer->addPropertyTo($value, (string) $i++, new \Ds\Pair($k, $v), Value::PROP_VIRTUAL);
+			$describer->addPropertyTo($value, (string) $i++, new Ds\Pair($k, $v), Value::PROP_VIRTUAL);
 		}
 	}
 }

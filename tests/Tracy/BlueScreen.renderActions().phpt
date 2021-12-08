@@ -142,11 +142,11 @@ Assert::with($blueScreen, function () {
 
 
 // addAction
-$blueScreen->addAction(function (Exception $e) {
+$blueScreen->addAction(function (Throwable $e) {
 	return [];
 });
 
-$blueScreen->addAction(function (Exception $e) {
+$blueScreen->addAction(function (Throwable $e) {
 	return ['link' => 'a', 'label' => 'b'];
 });
 

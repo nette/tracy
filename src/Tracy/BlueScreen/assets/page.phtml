@@ -31,7 +31,9 @@ $exceptions = Helpers::getExceptionChain($exception);
 	<title><?= Helpers::escapeHtml($title . ': ' . $exception->getMessage() . $code) ?></title>
 	<!-- in <?= str_replace('--', '- ', Helpers::escapeHtml($exception->getFile() . ':' . $exception->getLine())) ?> -->
 	<?php if (count($exceptions) > 1): ?>
-<!--<?php foreach (array_slice($exceptions, 1) as $ex) { echo str_replace('--', '- ', Helpers::escapeHtml("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''))); } ?> -->
+<!--<?php foreach (array_slice($exceptions, 1) as $ex) {
+		echo str_replace('--', '- ', Helpers::escapeHtml("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : '')));
+} ?> -->
 	<?php endif ?>
 
 	<style class="tracy-debug">

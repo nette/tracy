@@ -28,7 +28,7 @@ class DummyTracyLogger implements ILogger
 
 $tracyLogger = new DummyTracyLogger;
 $psrLogger = new TracyToPsrLoggerAdapter($tracyLogger);
-$exception = new \Exception('Something went wrong');
+$exception = new Exception('Something went wrong');
 
 $psrLogger->info('info');
 $psrLogger->warning('warning');

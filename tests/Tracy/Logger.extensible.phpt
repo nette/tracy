@@ -20,7 +20,7 @@ class CustomLogger extends Logger
 
 	public function log($value, $priority = self::INFO): ?string
 	{
-		$exceptionFile = $value instanceof \Exception
+		$exceptionFile = $value instanceof Exception
 			? $this->logException($value)
 			: null;
 
