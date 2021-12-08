@@ -40,7 +40,7 @@ function getTempDir(): string
 }
 
 
-function test(\Closure $function): void
+function test(Closure $function): void
 {
 	$function();
 }

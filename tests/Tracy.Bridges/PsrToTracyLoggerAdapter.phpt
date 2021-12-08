@@ -28,7 +28,7 @@ class DummyPsrLogger extends Psr\Log\AbstractLogger
 
 $psrLogger = new DummyPsrLogger;
 $tracyLogger = new PsrToTracyLoggerAdapter($psrLogger);
-$exception = new \Exception('Something went wrong', 123);
+$exception = new Exception('Something went wrong', 123);
 
 $tracyLogger->log('info');
 $tracyLogger->log('warning', ILogger::WARNING);
