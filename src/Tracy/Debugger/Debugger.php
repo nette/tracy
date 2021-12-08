@@ -429,10 +429,10 @@ class Debugger
 			$e->context = $context;
 			throw $e;
 
-		} elseif (($severity & error_reporting()) !== $severity) { // muted errors
+		} elseif (!($severity & error_reporting())) { // muted errors
 
 		} elseif (self::$productionMode) {
-			if (($severity & self::$logSeverity) === $severity) {
+			if ($severity & self::$logSeverity) {
 				$e = new ErrorException($message, 0, $severity, $file, $line);
 				$e->context = $context;
 				Helpers::improveException($e);
@@ -445,7 +445,7 @@ class Debugger
 			} catch (\Throwable $foo) {
 			}
 		} elseif (
-			(is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity)) // $strictMode
+			(is_bool(self::$strictMode) ? self::$strictMode : (self::$strictMode & $severity)) // $strictMode
 			&& !isset($_GET['_tracy_skip_error'])
 		) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);

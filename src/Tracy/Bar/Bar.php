@@ -62,7 +62,7 @@ class Bar
 			throw new \LogicException('Start session before Tracy is enabled.');
 		}
 
-		$contentId = $this->contentId = $this->contentId ?: substr(md5(uniqid('', true)), 0, 10);
+		$contentId = $this->contentId = $this->contentId ?: Helpers::createId();
 		$nonce = Helpers::getNonce();
 		$async = true;
 		require __DIR__ . '/assets/loader.phtml';
@@ -88,14 +88,14 @@ class Bar
 		if (Helpers::isAjax()) {
 			if ($useSession) {
 				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'];
-				$_SESSION['_tracy']['bar'][$contentId] = ['content' => $this->renderHtml('ajax', '-ajax:' . $contentId), 'time' => time()];
+				$_SESSION['_tracy']['bar'][$contentId] = ['content' => $this->renderPartial('ajax', '-ajax:' . $contentId), 'time' => time()];
 			}
-		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
+		} elseif (Helpers::isRedirect()) {
 			if ($useSession) {
-				$redirectQueue[] = ['content' => $this->renderHtml('redirect', '-r' . count($redirectQueue)), 'time' => time()];
+				$redirectQueue[] = ['content' => $this->renderPartial('redirect', '-r' . count($redirectQueue)), 'time' => time()];
 			}
 		} elseif (Helpers::isHtmlMode()) {
-			$content = $this->renderHtml('main');
+			$content = $this->renderPartial('main');
 
 			foreach (array_reverse((array) $redirectQueue) as $item) {
 				$content['bar'] .= $item['content']['bar'];
@@ -109,7 +109,7 @@ class Bar
 			if ($this->contentId) {
 				$_SESSION['_tracy']['bar'][$this->contentId] = ['content' => $content, 'time' => time()];
 			} else {
-				$contentId = substr(md5(uniqid('', true)), 0, 10);
+				$contentId = Helpers::createId();
 				$nonce = Helpers::getNonce();
 				$async = false;
 				require __DIR__ . '/assets/loader.phtml';
@@ -118,7 +118,7 @@ class Bar
 	}
 
 
-	private function renderHtml(string $type, string $suffix = ''): array
+	private function renderPartial(string $type, string $suffix = ''): array
 	{
 		$panels = $this->renderPanels($suffix);
 
@@ -186,33 +186,37 @@ class Bar
 		}
 
 		$this->useSession = session_status() === PHP_SESSION_ACTIVE;
-
-		if ($this->useSession && Helpers::isAjax()) {
-			header('X-Tracy-Ajax: 1'); // session must be already locked
+		if (!$this->useSession) {
+			return false;
 		}
 
-		if ($this->useSession && is_string($asset) && preg_match('#^content(-ajax)?\.(\w+)$#', $asset, $m)) {
-			$session = &$_SESSION['_tracy']['bar'][$m[2]];
+		if (is_string($asset) && preg_match('#^content(-ajax)?\.(\w+)$#', $asset, $m)) {
+			[, $ajax, $requestId] = $m;
 			header('Content-Type: application/javascript; charset=UTF-8');
 			header('Cache-Control: max-age=60');
 			header_remove('Set-Cookie');
-			if (!$m[1]) {
+			if (!$ajax) {
 				$this->renderAssets();
 			}
 
+			$session = &$_SESSION['_tracy']['bar'][$requestId];
 			if ($session) {
-				$method = $m[1] ? 'loadAjax' : 'init';
+				$method = $ajax ? 'loadAjax' : 'init';
 				echo "Tracy.Debug.$method(", json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), ');';
 				$session = null;
 			}
 
-			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];
+			$session = &$_SESSION['_tracy']['bluescreen'][$requestId];
 			if ($session) {
 				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), ');';
 				$session = null;
 			}
 
 			return true;
+		}
+
+		if (Helpers::isAjax()) {
+			header('X-Tracy-Ajax: 1'); // session must be already locked
 		}
 
 		return false;

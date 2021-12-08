@@ -26,7 +26,7 @@ class Helpers
 		if ($editor = self::editorUri($origFile, $line)) {
 			$parts = explode('/', strtr($file, '\\', '/'));
 			$file = array_pop($parts);
-			while ($parts && strlen($file) < 42) {
+			while ($parts && strlen($file) < 50) {
 				$file = array_pop($parts) . '/' . $file;
 			}
 
@@ -320,6 +320,20 @@ class Helpers
 	public static function isAjax(): bool
 	{
 		return isset($_SERVER['HTTP_X_TRACY_AJAX']) && preg_match('#^\w{10,15}$#D', $_SERVER['HTTP_X_TRACY_AJAX']);
+	}
+
+
+	/** @internal */
+	public static function isRedirect(): bool
+	{
+		return (bool) preg_match('#^Location:#im', implode("\n", headers_list()));
+	}
+
+
+	/** @internal */
+	public static function createId(): string
+	{
+		return bin2hex(random_bytes(5));
 	}
 
 
