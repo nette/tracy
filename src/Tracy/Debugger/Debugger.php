@@ -259,6 +259,7 @@ class Debugger
 		}
 
 		if (self::getBar()->dispatchAssets()) {
+			self::$showBar = false;
 			exit;
 		}
 	}
@@ -297,7 +298,7 @@ class Debugger
 
 		self::$reserved = null;
 
-		if (self::$showBar && !self::$productionMode) {
+		if (self::$showBar && !self::$productionMode && !Helpers::isCli()) {
 			self::removeOutputBuffers(false);
 			try {
 				self::getBar()->render();
