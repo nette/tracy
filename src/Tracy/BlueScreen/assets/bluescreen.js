@@ -54,6 +54,7 @@ class BlueScreen
 		});
 
 		Tracy.TableSort.init();
+		Tracy.Tabs.init();
 	}
 
 
