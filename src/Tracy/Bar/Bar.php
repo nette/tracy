@@ -227,8 +227,8 @@ class Bar
 	{
 		$css = array_map('file_get_contents', array_merge([
 			__DIR__ . '/assets/bar.css',
-			__DIR__ . '/../Toggle/toggle.css',
-			__DIR__ . '/../TableSort/table-sort.css',
+			__DIR__ . '/../assets/toggle.css',
+			__DIR__ . '/../assets/table-sort.css',
 			__DIR__ . '/../Dumper/assets/dumper-light.css',
 			__DIR__ . '/../Dumper/assets/dumper-dark.css',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
@@ -245,8 +245,8 @@ class Bar
 
 		array_map(function ($file) { echo '(function() {', file_get_contents($file), '})();'; }, [
 			__DIR__ . '/assets/bar.js',
-			__DIR__ . '/../Toggle/toggle.js',
-			__DIR__ . '/../TableSort/table-sort.js',
+			__DIR__ . '/../assets/toggle.js',
+			__DIR__ . '/../assets/table-sort.js',
 			__DIR__ . '/../Dumper/assets/dumper.js',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.js',
 		]);
