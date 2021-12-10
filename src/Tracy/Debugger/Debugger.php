@@ -362,16 +362,6 @@ class Debugger
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
-			if (Helpers::findTrace(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), '*::__toString')) { // workaround for PHP < 7.4
-				$previous = isset($context['e']) && $context['e'] instanceof \Throwable
-					? $context['e']
-					: null;
-				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
-				@$e->context = $context; // dynamic properties are deprecated since PHP 8.2
-				self::exceptionHandler($e);
-				exit(255);
-			}
-
 			$e = new ErrorException($message, 0, $severity, $file, $line);
 			@$e->context = $context; // dynamic properties are deprecated since PHP 8.2
 			throw $e;
