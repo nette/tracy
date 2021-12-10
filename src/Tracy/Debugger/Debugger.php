@@ -17,7 +17,7 @@ use const PHP_VERSION;
  */
 class Debugger
 {
-	public const Version = '2.13-dev';
+	public const Version = '3.0-dev';
 
 	/** server modes for Debugger::enable() */
 	public const
@@ -139,8 +139,11 @@ class Debugger
 	/** @var string[] */
 	public static array $customJsFiles = [];
 
-	/** @var array<\Closure(string, int): ?array{file: string, label: string, line?: int, column?: int, active?: bool}> */
+	/** @var array<\Closure(string, int): ?array{file: string, line: int, column?: int}> */
 	private static array $sourceMappers = [];
+
+	/** @var ?array<string, int> */
+	private static ?array $cpuUsage = null;
 
 	/********************* services ****************d*g**/
 
@@ -183,6 +186,8 @@ class Debugger
 		self::$reserved ??= str_repeat('t', self::$reservedMemorySize);
 		self::$time ??= $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(as_float: true);
 		self::$obLevel ??= ob_get_level();
+		self::$cpuUsage ??= !self::$productionMode && function_exists('getrusage') ? (getrusage() ?: null) : null;
+
 		// logging configuration
 		self::$email = $email ?? self::$email;
 		self::$logDirectory = $logDirectory ?? self::$logDirectory;
@@ -251,7 +256,13 @@ class Debugger
 	 */
 	public static function dispatch(): void
 	{
-		self::getStrategy()->dispatch();
+		if (
+			!Helpers::isCli()
+			&& self::getStrategy()->sendAssets()
+		) {
+			self::$showBar = false;
+			exit;
+		}
 	}
 
 
@@ -291,7 +302,7 @@ class Debugger
 
 		self::$reserved = null;
 
-		if (self::$showBar) {
+		if (self::$showBar && !Helpers::isCli()) {
 			try {
 				self::getStrategy()->renderBar();
 			} catch (\Throwable $e) {
@@ -311,7 +322,8 @@ class Debugger
 		self::$reserved = null;
 		self::$obStatus = ob_get_status(full_status: true);
 
-		@http_response_code(500);
+		@http_response_code(isset($_SERVER['HTTP_USER_AGENT']) && str_contains($_SERVER['HTTP_USER_AGENT'], 'MSIE ') ? 503 : 500); // may not have an effect
+
 		Helpers::improveException($exception);
 		self::removeOutputBuffers(errorOccurred: true);
 
@@ -329,6 +341,7 @@ class Debugger
 
 	/**
 	 * Handles PHP warnings and notices; converts recoverable errors to exceptions.
+	 * @return false
 	 * @throws ErrorException
 	 * @internal
 	 */
@@ -401,7 +414,8 @@ class Debugger
 	{
 		if (empty(self::$bar)) {
 			self::$bar = new Bar;
-			self::$bar->addPanel(new DefaultBarPanel('info'), 'Tracy:info');
+			self::$bar->addPanel($info = new DefaultBarPanel('info'), 'Tracy:info');
+			$info->cpuUsage = self::$cpuUsage;
 			self::$bar->addPanel(new DefaultBarPanel('warnings'), 'Tracy:warnings'); // filled by errorHandler()
 		}
 
@@ -458,7 +472,7 @@ class Debugger
 			self::$sessionStorage = @is_dir($dir = (string) session_save_path())
 				|| @is_dir($dir = (string) ini_get('upload_tmp_dir'))
 				|| @is_dir($dir = sys_get_temp_dir())
-				|| ($dir = (string) self::$logDirectory)
+				|| ($dir = self::$logDirectory)
 				? new FileSession($dir)
 				: new NativeSession;
 		}
@@ -586,7 +600,7 @@ class Debugger
 
 
 	/**
-	 * @param  callable(string, int): ?array{file: string, label: string, line?: int, column?: int, active?: bool}  $mapper
+	 * @param  callable(string, int): ?array{file: string, line: int, column?: int}  $mapper
 	 * @internal
 	 */
 	public static function addSourceMapper(callable $mapper): void
@@ -595,12 +609,12 @@ class Debugger
 	}
 
 
-	/** @return ?array{file: string, label: string, line: int, column: int, active: bool} */
+	/** @return ?array{file: string, line: int, column?: int} */
 	public static function mapSource(string $file, int $line): ?array
 	{
 		foreach (self::$sourceMappers as $mapper) {
 			if ($res = $mapper($file, $line)) {
-				return $res + ['line' => 0, 'column' => 0, 'active' => true];
+				return $res;
 			}
 		}
 
