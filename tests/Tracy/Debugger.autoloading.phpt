@@ -20,4 +20,4 @@ Debugger::enable();
 
 
 // in this case autoloading is not triggered
-include __DIR__ . '/fixtures/E_STRICT.php';
+include __DIR__ . '/fixtures/FATAL.php';
