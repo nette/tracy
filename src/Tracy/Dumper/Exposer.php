@@ -19,8 +19,7 @@ final class Exposer
 {
 	public static function exposeObject(object $obj, Value $value, Describer $describer): void
 	{
-		$tmp = (array) $obj;
-		$values = $tmp; // bug #79477, PHP < 7.4.6
+		$values = (array) $obj;
 		$props = self::getProperties(get_class($obj));
 
 		foreach (array_diff_key($values, $props) as $k => $v) {
