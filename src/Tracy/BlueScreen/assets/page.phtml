@@ -13,7 +13,7 @@ namespace Tracy;
 
 $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
 $nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
-$exceptions = Helpers::getExceptionChain($exception);
+$chain = Helpers::getExceptionChain($exception);
 ?><!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table>
 <html>
 <head>
@@ -23,11 +23,11 @@ $exceptions = Helpers::getExceptionChain($exception);
 
 	<title><?= Helpers::escapeHtml($title . ': ' . $exception->getMessage() . $code) ?></title>
 	<!-- in <?= str_replace('--', '- ', Helpers::escapeHtml($exception->getFile() . ':' . $exception->getLine())) ?> -->
-	<?php if (count($exceptions) > 1): ?>
-<!--<?php foreach (array_slice($exceptions, 1) as $ex) {
-		echo str_replace('--', '- ', Helpers::escapeHtml("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : '')));
+<?php if (count($chain) > 1): ?>
+<!--<?php foreach (array_slice($chain, 1) as $ex) {
+	echo str_replace('--', '- ', Helpers::escapeHtml("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : '')));
 } ?> -->
-	<?php endif ?>
+<?php endif ?>
 
 	<style class="tracy-debug">
 	<?= str_replace('</', '<\/', $css) ?>

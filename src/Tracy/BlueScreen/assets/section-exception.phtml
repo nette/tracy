@@ -1,0 +1,54 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tracy;
+
+/**
+ * @var \Throwable $ex
+ * @var \Throwable[] $exceptions
+ * @var array[] $actions
+ * @var callable $dump
+ * @var BlueScreen $this
+ */
+
+$stack = $ex->getTrace();
+$expanded = null;
+if (
+	(!$ex instanceof \ErrorException
+		|| in_array($ex->getSeverity(), [E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED], true))
+	&& $this->isCollapsed($ex->getFile())
+) {
+	foreach ($stack as $key => $row) {
+		if (isset($row['file']) && !$this->isCollapsed($row['file'])) {
+			$expanded = $key;
+			break;
+		}
+	}
+}
+
+if (isset($stack[0]['class']) && $stack[0]['class'] === 'Tracy\Debugger' && ($stack[0]['function'] === 'shutdownHandler' || $stack[0]['function'] === 'errorHandler')) {
+	unset($stack[0]);
+}
+?>
+<?php require __DIR__ . '/section-header.phtml' ?>
+
+<?php foreach ($this->renderPanels($ex) as $panel): ?>
+<div class="panel">
+	<h2><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($section->tab) ?></a></h2>
+
+	<div class="inner">
+		<?= $section->panel ?>
+	</div>
+</div>
+<?php endforeach ?>
+
+<?php require __DIR__ . '/section-exception-sourceFile.phtml' ?>
+
+<?php require __DIR__ . '/section-exception-callStack.phtml' ?>
+
+<?php require __DIR__ . '/section-exception-variables.phtml' ?>
+
+<?php require __DIR__ . '/section-exception-exception.phtml' ?>
+
+<?php require __DIR__ . '/section-exception-causedBy.phtml' ?>

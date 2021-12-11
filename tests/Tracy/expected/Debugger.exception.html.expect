@@ -16,172 +16,169 @@
 <div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div class="tracy-bs-main">
-		<div id="tracy-bs-error" class="panel">
-			<p>Exception #123</p>
+<div id="tracy-bs-error" class="panel">
+	<p>Exception #123</p>
 
-			<h1><span>The my exception</span>
-						<a href="%a%" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
-			</h1>
-		</div>
-
-
+	<h1><span>The my exception</span>
+	<a href="%a%" class="action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
+	</h1>
+</div>
 
 
 
+<div class="panel">
+	<h2><a data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
+
+	<div class="inner">
+		<p><b>File:</b> %a%</p>
+		<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='code'>%A%</pre>
+	</div>
+</div>
+
+<div class="panel">
+	<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+
+	<div class="inner">
+	<ol>
+		<li>
+			<p>
+			<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
+			<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
+<b>third</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+			</p>
+
+			<div class="tracy-collapsed file">%A%</div>
 
 
-
-
-			<div class="panel">
-			<h2><a data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
-
-			<div class="inner">
-				<p><b>File:</b> %a%</p>
-				<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='code'>%A%</pre>			</div></div>
-
-
-									<div class="panel">
-				<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
-
-				<div class="inner">
-				<ol>
-										<li><p>
-
-											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
-					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-					<b>third</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
-					</p>
-
-											<div class="tracy-collapsed file">%A%</div>
-
-
-											<div class="tracy-collapsed outer args">
-						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
+			<div class="tracy-collapsed outer args">
+				<table>
+<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>
-						</table>
-						</div>
-										</li>
-										<li><p>
+				</table>
+			</div>
 
-											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
-					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-					<b>second</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
-					</p>
+		</li>
+		<li>
+			<p>
+			<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
+			<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
+<b>second</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+			</p>
 
-											<div class="tracy-collapsed file">%A%</div>
+			<div class="tracy-collapsed file">%A%</div>
 
 
-											<div class="tracy-collapsed outer args">
-						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
+			<div class="tracy-collapsed outer args">
+				<table>
+<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
 </td></tr>
 <tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">false</span></pre>
 </td></tr>
-						</table>
-						</div>
-										</li>
-										<li><p>
+				</table>
+			</div>
 
-											<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
-					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
-					<b>first</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
-					</p>
+		</li>
+		<li>
+			<p>
+			<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
+			<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp;
+<b>first</b> (<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+			</p>
 
-											<div class="tracy-collapsed file">%A%</div>
+			<div class="tracy-collapsed file">%A%</div>
 
 
-											<div class="tracy-collapsed outer args">
-						<table>
-						<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
+			<div class="tracy-collapsed outer args">
+				<table>
+<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
 </td></tr>
 <tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>
 </td></tr>
-						</table>
-						</div>
-										</li>
-									</ol>
-			</div></div>
-
-
-
-
-
-
-
-				<div class="panel">
-		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last muted error</a></h2>
-		<div class="tracy-collapsed inner">
-
-		<h3>Warning: hex2bin(): Hexadecimal input string must have an even length</h3>
-		<p><i>Note: the last muted error may have nothing to do with the thrown exception.</i></p>
-					<p><a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
-			<div>%A%</div>
-
-		</div></div>
-
-
-
-
-				<div class="panel">
-		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
-
-		<div class="tracy-collapsed inner">
-			<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
-			<div class="outer">
-			<table class="tracy-sortable">%A%</table>
+				</table>
 			</div>
 
+		</li>
 
-			<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SESSION</a></h3>
-			<div class="outer">%A%</div>
+	</ol>
+	</div>
+</div>
 
 
 
 
-						<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
-			<div class="outer tracy-collapsed">
+<div class="panel">
+	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last muted error</a></h2>
+	<div class="tracy-collapsed inner">
+
+	<h3>Warning: hex2bin(): Hexadecimal input string must have an even length</h3>
+	<p><i>Note: the last muted error may have nothing to do with the thrown exception.</i></p>
+
+	<p><a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
+	<div>%A%</div>
+	</div>
+</div>
+
+
+<div class="panel">
+	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
+
+	<div class="tracy-collapsed inner">
+		<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
+		<div class="outer">
 			<table class="tracy-sortable">%A%</table>
-			</div>
+		</div>
 
 
-			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
-			<div class="outer tracy-collapsed">
+		<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SESSION</a></h3>
+		<div class="outer">%A%</div>
+
+
+
+
+		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
+		<div class="outer tracy-collapsed">
+			<table class="tracy-sortable">%A%</table>
+		</div>
+
+
+		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
+		<div class="outer tracy-collapsed">
 			%A%</div>
 
 
-						<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Output buffers status</a></h3>
-			<div class="outer tracy-collapsed">
-				<pre %A%></pre>
-			</div>
-					</div></div>
+		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Output buffers status</a></h3>
+		<div class="outer tracy-collapsed">
+			<pre %A%></pre>
+		</div>
+	</div>
+</div>
 
 
-				<div class="panel">
-		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
+<div class="panel">
+	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
 
-		<div class="tracy-collapsed inner">
+	<div class="tracy-collapsed inner">
 %A%
-						<h3>$_GET</h3>
-						<p><i>empty</i></p>
-									<h3>$_POST</h3>
-						<p><i>empty</i></p>
-									<h3>$_COOKIE</h3>
-						<p><i>empty</i></p>
-								</div></div>
+		<h3>$_GET</h3>
+		<p><i>empty</i></p>
+		<h3>$_POST</h3>
+		<p><i>empty</i></p>
+		<h3>$_COOKIE</h3>
+		<p><i>empty</i></p>
+	</div>
+</div>
+
+<div class="panel">
+	<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
+
+	<div class="tracy-collapsed inner">
+		<h3>Headers</h3>
+		<div class="outer">%A%</div>
 
 
-		<div class="panel">
-		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
-
-		<div class="tracy-collapsed inner">
-			<h3>Headers</h3>
-						<div class="outer">%A%</div>
-
-
-						<p>Headers were not sent at the time of the exception</p>
-					</div></div>
-
+		<p>Headers were not sent at the time of the exception</p>
+	</div>
+</div>
 
 
 		<footer>
