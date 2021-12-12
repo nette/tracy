@@ -110,12 +110,6 @@ class Helpers
 	}
 
 
-	public static function getClass(object $obj): string
-	{
-		return explode("\x00", $obj::class)[0];
-	}
-
-
 	/** @internal */
 	public static function fixStack(\Throwable $exception): \Throwable
 	{

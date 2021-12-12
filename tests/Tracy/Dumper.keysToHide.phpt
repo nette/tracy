@@ -25,7 +25,7 @@ $obj = (object) [
 Assert::match(
 	<<<'XX'
 		stdClass #%d%
-		   a: ***** (integer)
+		   a: ***** (int)
 		   password: ***** (string)
 		   PASSWORD: ***** (string)
 		   Pin: ***** (string)

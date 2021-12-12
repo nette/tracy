@@ -15,6 +15,6 @@ Assert::match(
 );
 
 Assert::match(
-	'<pre class="tracy-dump tracy-light"><span class="tracy-dump-virtual">***** (integer)</span></pre>',
+	'<pre class="tracy-dump tracy-light"><span class="tracy-dump-virtual">***** (int)</span></pre>',
 	Dumper::toHtml(123, [Dumper::KEYS_TO_HIDE => ['password', 'pin']], 'password'),
 );
