@@ -60,7 +60,7 @@ final class Value implements \JsonSerializable
 	public $collapsed;
 
 
-	public function __construct(string $type, $value = null, int $length = null)
+	public function __construct(string $type, $value = null, ?int $length = null)
 	{
 		$this->type = $type;
 		$this->value = $value;

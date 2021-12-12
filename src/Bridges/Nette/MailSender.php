@@ -27,7 +27,7 @@ class MailSender
 	private $fromEmail;
 
 
-	public function __construct(Nette\Mail\IMailer $mailer, string $fromEmail = null)
+	public function __construct(Nette\Mail\IMailer $mailer, ?string $fromEmail = null)
 	{
 		$this->mailer = $mailer;
 		$this->fromEmail = $fromEmail;

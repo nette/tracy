@@ -20,7 +20,7 @@ class Helpers
 	/**
 	 * Returns HTML link to editor.
 	 */
-	public static function editorLink(string $file, int $line = null): string
+	public static function editorLink(string $file, ?int $line = null): string
 	{
 		$file = strtr($origFile = $file, Debugger::$editorMapping);
 		if ($editor = self::editorUri($origFile, $line)) {
@@ -52,7 +52,7 @@ class Helpers
 	 */
 	public static function editorUri(
 		string $file,
-		int $line = null,
+		?int $line = null,
 		string $action = 'open',
 		string $search = '',
 		string $replace = ''
@@ -88,7 +88,7 @@ class Helpers
 	}
 
 
-	public static function findTrace(array $trace, $method, int &$index = null): ?array
+	public static function findTrace(array $trace, $method, ?int &$index = null): ?array
 	{
 		$m = is_array($method) ? $method : explode('::', $method);
 		foreach ($trace as $i => $item) {
@@ -385,7 +385,7 @@ class Helpers
 
 
 	/** @internal */
-	public static function encodeString(string $s, int $maxLength = null, bool $showWhitespaces = true): string
+	public static function encodeString(string $s, ?int $maxLength = null, bool $showWhitespaces = true): string
 	{
 		$utf8 = self::isUtf8($s);
 		$len = $utf8 ? self::utf8Length($s) : strlen($s);

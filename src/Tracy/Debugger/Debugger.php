@@ -158,7 +158,7 @@ class Debugger
 	 * @param  string  $logDirectory  error log directory
 	 * @param  string|array  $email  administrator email; enables email sending in production mode
 	 */
-	public static function enable($mode = null, string $logDirectory = null, $email = null): void
+	public static function enable($mode = null, ?string $logDirectory = null, $email = null): void
 	{
 		if ($mode !== null || self::$productionMode === null) {
 			self::$productionMode = is_bool($mode)
@@ -398,7 +398,7 @@ class Debugger
 		string $message,
 		string $file,
 		int $line,
-		array $context = null
+		?array $context = null
 	): ?bool {
 		$error = error_get_last();
 		if (($error['type'] ?? null) === E_COMPILE_WARNING) {
@@ -589,7 +589,7 @@ class Debugger
 	 * Starts/stops stopwatch.
 	 * @return float   elapsed seconds
 	 */
-	public static function timer(string $name = null): float
+	public static function timer(?string $name = null): float
 	{
 		static $time = [];
 		$now = microtime(true);
@@ -605,7 +605,7 @@ class Debugger
 	 * @param  mixed  $var
 	 * @return mixed  variable itself
 	 */
-	public static function barDump($var, string $title = null, array $options = [])
+	public static function barDump($var, ?string $title = null, array $options = [])
 	{
 		if (!self::$productionMode) {
 			static $panel;

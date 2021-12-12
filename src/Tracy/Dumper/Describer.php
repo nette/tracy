@@ -82,7 +82,7 @@ final class Describer
 	/**
 	 * @return mixed
 	 */
-	private function describeVar($var, int $depth = 0, int $refId = null)
+	private function describeVar($var, int $depth = 0, ?int $refId = null)
 	{
 		if ($var === null || is_bool($var)) {
 			return $var;
@@ -139,7 +139,7 @@ final class Describer
 	/**
 	 * @return Value|array
 	 */
-	private function describeArray(array $arr, int $depth = 0, int $refId = null)
+	private function describeArray(array $arr, int $depth = 0, ?int $refId = null)
 	{
 		if ($refId) {
 			$res = new Value(Value::TYPE_REF, 'p' . $refId);
@@ -264,8 +264,8 @@ final class Describer
 		string $k,
 		$v,
 		$type = Value::PROP_VIRTUAL,
-		int $refId = null,
-		string $class = null
+		?int $refId = null,
+		?string $class = null
 	) {
 		if ($value->depth && $this->maxItems && count($value->items ?? []) >= $this->maxItems) {
 			$value->length = ($value->length ?? count($value->items)) + 1;
@@ -300,7 +300,7 @@ final class Describer
 	}
 
 
-	private function isSensitive(string $key, $val, string $class = null): bool
+	private function isSensitive(string $key, $val, ?string $class = null): bool
 	{
 		return ($this->scrubber !== null && ($this->scrubber)($key, $val, $class))
 			|| isset($this->keysToHide[strtolower($key)])

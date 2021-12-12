@@ -29,7 +29,7 @@ class Bar
 	 * Add custom panel.
 	 * @return static
 	 */
-	public function addPanel(IBarPanel $panel, string $id = null): self
+	public function addPanel(IBarPanel $panel, ?string $id = null): self
 	{
 		if ($id === null) {
 			$c = 0;

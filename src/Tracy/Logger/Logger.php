@@ -37,7 +37,7 @@ class Logger implements ILogger
 	/**
 	 * @param  string|array|null  $email
 	 */
-	public function __construct(?string $directory, $email = null, BlueScreen $blueScreen = null)
+	public function __construct(?string $directory, $email = null, ?BlueScreen $blueScreen = null)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
@@ -108,7 +108,7 @@ class Logger implements ILogger
 	/**
 	 * @param  mixed  $message
 	 */
-	public static function formatLogLine($message, string $exceptionFile = null): string
+	public static function formatLogLine($message, ?string $exceptionFile = null): string
 	{
 		return implode(' ', [
 			date('[Y-m-d H-i-s]'),
@@ -144,7 +144,7 @@ class Logger implements ILogger
 	 * Logs exception to the file if file doesn't exist.
 	 * @return string logged error filename
 	 */
-	protected function logException(\Throwable $exception, string $file = null): string
+	protected function logException(\Throwable $exception, ?string $file = null): string
 	{
 		$file = $file ?: $this->getExceptionFile($exception);
 		$bs = $this->blueScreen ?: new BlueScreen;
