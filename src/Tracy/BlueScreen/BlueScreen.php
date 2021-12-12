@@ -159,7 +159,7 @@ class BlueScreen
 		[$generators, $fibers] = $this->findGeneratorsAndFibers($exception);
 		$headersSent = headers_sent($headersFile, $headersLine);
 		$obStatus = Debugger::$obStatus;
-		$showEnvironment = $this->showEnvironment && (strpos($exception->getMessage(), 'Allowed memory size') === false);
+		$showEnvironment = $this->showEnvironment && (!str_contains($exception->getMessage(), 'Allowed memory size'));
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
 		$title = $exception instanceof \ErrorException
@@ -538,7 +538,7 @@ class BlueScreen
 		@phpinfo(INFO_CONFIGURATION | INFO_MODULES); // @ phpinfo may be disabled
 		$info = ob_get_clean();
 
-		if (strpos($license, '<body') === false) {
+		if (!str_contains($license, '<body')) {
 			echo '<pre class="tracy-dump tracy-light">', Helpers::escapeHtml($info), '</pre>';
 		} else {
 			$info = str_replace('<table', '<table class="tracy-sortable"', $info);
