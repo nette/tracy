@@ -33,13 +33,13 @@ $expect1 = <<<'XX'
 	   PASSWORD: 'secret2'
 	   Pin: ***** (string)
 	   foo: ***** (string)
-	   q: ***** (integer)
+	   q: ***** (int)
 	   inner: array (5)
 	   |  'a' => 123
 	   |  'password' => 'secret4'
 	   |  'PASSWORD' => 'secret5'
 	   |  'Pin' => ***** (string)
-	   |  'bar' => ***** (integer)
+	   |  'bar' => ***** (int)
 	XX;
 
 Assert::match($expect1, Dumper::toText($obj, [Dumper::SCRUBBER => $scrubber]));
@@ -52,13 +52,13 @@ $expect2 = <<<'XX'
 	   PASSWORD: ***** (string)
 	   Pin: ***** (string)
 	   foo: ***** (string)
-	   q: ***** (integer)
+	   q: ***** (int)
 	   inner: array (5)
 	   |  'a' => 123
 	   |  'password' => ***** (string)
 	   |  'PASSWORD' => ***** (string)
 	   |  'Pin' => ***** (string)
-	   |  'bar' => ***** (integer)
+	   |  'bar' => ***** (int)
 	XX;
 Assert::match($expect2, Dumper::toText($obj, [Dumper::SCRUBBER => $scrubber, Dumper::KEYS_TO_HIDE => ['password']]));
 

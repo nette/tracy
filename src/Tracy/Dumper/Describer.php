@@ -167,7 +167,7 @@ final class Describer
 			return new Value(Value::TypeRef, $id);
 		}
 
-		$value = new Value(Value::TypeObject, Helpers::getClass($obj));
+		$value = new Value(Value::TypeObject, get_debug_type($obj));
 		$value->id = $id;
 		$value->depth = $depth;
 		$value->holder = $obj; // to be not released by garbage collector in collecting mode
@@ -286,7 +286,7 @@ final class Describer
 			$val = $val->getValue();
 		}
 
-		return self::HiddenValue . ' (' . (is_object($val) ? Helpers::getClass($val) : gettype($val)) . ')';
+		return self::HiddenValue . ' (' . get_debug_type($val) . ')';
 	}
 
 

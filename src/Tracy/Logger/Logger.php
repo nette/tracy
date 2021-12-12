@@ -87,7 +87,7 @@ class Logger implements ILogger
 			foreach (Helpers::getExceptionChain($message) as $exception) {
 				$tmp[] = ($exception instanceof \ErrorException
 					? Helpers::errorTypeToString($exception->getSeverity()) . ': ' . $exception->getMessage()
-					: Helpers::getClass($exception) . ': ' . $exception->getMessage() . ($exception->getCode() ? ' #' . $exception->getCode() : '')
+					: get_debug_type($exception) . ': ' . $exception->getMessage() . ($exception->getCode() ? ' #' . $exception->getCode() : '')
 				) . ' in ' . $exception->getFile() . ':' . $exception->getLine();
 			}
 

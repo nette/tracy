@@ -25,7 +25,7 @@ $chain = Helpers::getExceptionChain($exception);
 	<!-- in <?= str_replace('--', '- ', Helpers::escapeHtml($exception->getFile() . ':' . $exception->getLine())) ?> -->
 <?php if (count($chain) > 1): ?>
 <!--<?php foreach (array_slice($chain, 1) as $ex) {
-	echo str_replace('--', '- ', Helpers::escapeHtml("\n\tcaused by " . Helpers::getClass($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : '')));
+	echo str_replace('--', '- ', Helpers::escapeHtml("\n\tcaused by " . get_debug_type($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : '')));
 } ?> -->
 <?php endif ?>
 
