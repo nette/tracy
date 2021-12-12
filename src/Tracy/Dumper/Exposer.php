@@ -19,7 +19,7 @@ final class Exposer
 {
 	public static function exposeObject(object $obj, Value $value, Describer $describer): void
 	{
-		$values = (array) $obj;
+		$values = get_mangled_object_vars($obj);
 		$props = self::getProperties($obj::class);
 
 		foreach (array_diff_key($values, $props) as $k => $v) {
@@ -174,7 +174,7 @@ final class Exposer
 		Value $value,
 		Describer $describer,
 	): void {
-		$values = (array) $obj;
+		$values = get_mangled_object_vars($obj);
 		$class = $values['__PHP_Incomplete_Class_Name'];
 		unset($values['__PHP_Incomplete_Class_Name']);
 		foreach ($values as $k => $v) {
