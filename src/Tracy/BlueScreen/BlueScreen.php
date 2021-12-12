@@ -65,6 +65,7 @@ class BlueScreen
 		if (!in_array($panel, $this->panels, true)) {
 			$this->panels[] = $panel;
 		}
+
 		return $this;
 	}
 
@@ -97,6 +98,7 @@ class BlueScreen
 			if (!headers_sent()) {
 				header('Content-Type: text/html; charset=UTF-8');
 			}
+
 			$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml');
 		}
 	}
@@ -116,6 +118,7 @@ class BlueScreen
 			fclose($handle);
 			return true;
 		}
+
 		return false;
 	}
 
@@ -173,19 +176,23 @@ class BlueScreen
 				if (empty($panel['tab']) || empty($panel['panel'])) {
 					continue;
 				}
+
 				$res[] = (object) $panel;
 				continue;
 			} catch (\Throwable $e) {
 			}
+
 			while (ob_get_level() > $obLevel) { // restore ob-level if broken
 				ob_end_clean();
 			}
+
 			is_callable($callback, true, $name);
 			$res[] = (object) [
 				'tab' => "Error in panel $name",
 				'panel' => nl2br(Helpers::escapeHtml($e)),
 			];
 		}
+
 		return $res;
 	}
 
@@ -250,6 +257,7 @@ class BlueScreen
 				'label' => 'skip error',
 			];
 		}
+
 		return $actions;
 	}
 
@@ -263,10 +271,12 @@ class BlueScreen
 		if ($source === false) {
 			return null;
 		}
+
 		$source = static::highlightPhp($source, $line, $lines);
 		if ($editor = Helpers::editorUri($file, $line)) {
 			$source = substr_replace($source, ' title="Ctrl-Click to open in editor" data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
 		}
+
 		return $source;
 	}
 
@@ -310,6 +320,7 @@ class BlueScreen
 					$spans++;
 					$out .= $m[1];
 				}
+
 				break;
 			}
 		}
@@ -333,6 +344,7 @@ class BlueScreen
 				$out .= sprintf("<span class='line'>%{$numWidth}s:</span>    %s\n", $n, $s);
 			}
 		}
+
 		$out .= str_repeat('</span>', $spans) . '</code>';
 		return $out;
 	}
@@ -347,6 +359,7 @@ class BlueScreen
 		if ($source === false) {
 			return null;
 		}
+
 		$s = self::highlightPhp($source, $line, $lines);
 
 		$colors = [
@@ -368,6 +381,7 @@ class BlueScreen
 				} else {
 					$stack[] = isset($m[2], $colors[$m[2]]) ? $colors[$m[2]] : '0';
 				}
+
 				return "\e[0m\e[" . end($stack) . 'm';
 			},
 			$s
@@ -390,6 +404,7 @@ class BlueScreen
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -430,9 +445,11 @@ class BlueScreen
 				} elseif (class_exists($m[1], false) || interface_exists($m[1], false)) {
 					$r = new \ReflectionClass($m[1]);
 				}
+
 				if (empty($r) || !$r->getFileName()) {
 					return $m[0];
 				}
+
 				return '<a href="' . Helpers::escapeHtml(Helpers::editorUri($r->getFileName(), $r->getStartLine())) . '" class="tracy-editor">' . $m[0] . '</a>';
 			},
 			$msg

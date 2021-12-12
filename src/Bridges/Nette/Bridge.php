@@ -28,6 +28,7 @@ class Bridge
 			$blueScreen->addPanel([self::class, 'renderLatteError']);
 			$blueScreen->addAction([self::class, 'renderLatteUnknownMacro']);
 		}
+
 		$blueScreen->addAction([self::class, 'renderMemberAccessException']);
 		$blueScreen->addPanel([self::class, 'renderNeonError']);
 	}
@@ -64,6 +65,7 @@ class Bridge
 				];
 			}
 		}
+
 		return null;
 	}
 
@@ -82,6 +84,7 @@ class Bridge
 				'label' => 'fix it',
 			];
 		}
+
 		return null;
 	}
 
@@ -91,6 +94,7 @@ class Bridge
 		if (!$e instanceof Nette\MemberAccessException && !$e instanceof \LogicException) {
 			return null;
 		}
+
 		$loc = $e->getTrace()[$e instanceof Nette\MemberAccessException ? 1 : 0];
 		if (preg_match('#Cannot (?:read|write to) an undeclared property .+::\$(\w+), did you mean \$(\w+)\?#A', $e->getMessage(), $m)) {
 			return [
@@ -104,6 +108,7 @@ class Bridge
 				'label' => 'fix it',
 			];
 		}
+
 		return null;
 	}
 

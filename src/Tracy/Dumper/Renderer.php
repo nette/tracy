@@ -235,6 +235,7 @@ final class Renderer
 					$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . ' </span>';
 					$toggle = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '">string</span>' . "\n";
 				}
+
 				return $toggle
 					. '<div class="tracy-dump-string' . ($collapsed ? ' tracy-collapsed' : '')
 					. '" title="' . $str->length . ' ' . $unit . '">'
@@ -283,6 +284,7 @@ final class Renderer
 					$this->copySnapshot($ref);
 					return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
 				}
+
 				return $out . (isset($this->above[$array->id]) ? ' <i>see above</i>' : ' <i>see below</i>');
 			}
 		}
@@ -320,6 +322,7 @@ final class Renderer
 		if ($count > count($items)) {
 			$out .= $indent . "…\n";
 		}
+
 		unset($this->parents[$array->id ?? null]);
 		return $out . '</div>';
 	}
@@ -359,6 +362,7 @@ final class Renderer
 				$this->copySnapshot($ref);
 				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
 			}
+
 			return $out . (isset($this->above[$object->id]) ? ' <i>see above</i>' : ' <i>see below</i>');
 		}
 
@@ -391,6 +395,7 @@ final class Renderer
 		if ($object->length > count($object->items)) {
 			$out .= $indent . "…\n";
 		}
+
 		unset($this->parents[$object->id]);
 		return $out . '</div>';
 	}
@@ -410,6 +415,7 @@ final class Renderer
 				$this->copySnapshot($ref);
 				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
 			}
+
 			return $out . ' <i>see above</i>';
 
 		} else {
@@ -422,6 +428,7 @@ final class Renderer
 					. ($tmp = $this->renderVar($v, $depth + 1))
 					. (substr($tmp, -6) === '</div>' ? '' : "\n");
 			}
+
 			return $out . '</div>';
 		}
 	}
@@ -432,6 +439,7 @@ final class Renderer
 		if ($this->collectingMode) {
 			return;
 		}
+
 		if ($this->snapshotSelection === null) {
 			$this->snapshotSelection = [];
 		}
@@ -477,6 +485,7 @@ final class Renderer
 				} else {
 					$stack[] = isset($m[1], $colors[$m[1]]) ? $colors[$m[1]] : '0';
 				}
+
 				return "\033[" . end($stack) . 'm';
 			},
 			$s

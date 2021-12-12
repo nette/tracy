@@ -52,6 +52,7 @@ test('', function () {
 		TestClass::publicMethodX();
 	} catch (Nette\MemberAccessException $e) {
 	}
+
 	$action = Bridge::renderMemberAccessException($e);
 	Assert::same('Call to undefined static method TestClass::publicMethodX().', $e->getMessage());
 	Assert::null($action);
@@ -62,6 +63,7 @@ test('', function () use ($obj) {
 		$obj->publicMethodX();
 	} catch (Nette\MemberAccessException $e) {
 	}
+
 	$action = Bridge::renderMemberAccessException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodX(), did you mean publicMethod()?', $e->getMessage());
 	Assert::match('editor://fix/?file=%a%Helpers.improveException.smartobject.phpt&line=%d%&search=-%3EpublicMethodX%28&replace=-%3EpublicMethod%28', $action['link']);
@@ -73,6 +75,7 @@ test('suggest static method', function () use ($obj) {
 		$obj->publicMethodStaticX();
 	} catch (Nette\MemberAccessException $e) {
 	}
+
 	$action = Bridge::renderMemberAccessException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodStaticX(), did you mean publicMethodStatic()?', $e->getMessage());
 	Assert::match('editor://fix/?file=%a%Helpers.improveException.smartobject.phpt&line=%d%&search=-%3EpublicMethodStaticX%28&replace=-%3EpublicMethodStatic%28', $action['link']);
@@ -84,6 +87,7 @@ test('', function () use ($obj) {
 		$val = $obj->publicX;
 	} catch (Nette\MemberAccessException $e) {
 	}
+
 	$action = Bridge::renderMemberAccessException($e);
 	Assert::same('Cannot read an undeclared property TestClass::$publicX, did you mean $public?', $e->getMessage());
 	Assert::match('editor://fix/?file=%a%Helpers.improveException.smartobject.phpt&line=%d%&search=-%3EpublicX&replace=-%3Epublic', $action['link']);

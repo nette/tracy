@@ -89,8 +89,10 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			foreach ((array) $options['logSeverity'] as $level) {
 				$res |= is_int($level) ? $level : constant($level);
 			}
+
 			$options['logSeverity'] = $res;
 		}
+
 		foreach ($options as $key => $value) {
 			if ($value !== null) {
 				static $tbl = [
@@ -112,6 +114,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::setLogger(?);', [$logger]));
 		}
+
 		if ($this->config->netteMailer && $builder->getByType(Nette\Mail\IMailer::class)) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::getLogger()->mailer = ?;', [
 				[new Nette\DI\Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config->fromEmail]), 'send'],
@@ -125,6 +128,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 				} elseif (is_string($item)) {
 					$item = new Nette\DI\Statement($item);
 				}
+
 				$initialize->addBody($builder->formatPhp(
 					'$this->getService(?)->addPanel(?);',
 					Nette\DI\Helpers::filterArguments([$this->prefix('bar'), $item])

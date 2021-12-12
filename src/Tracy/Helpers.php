@@ -29,6 +29,7 @@ class Helpers
 			while ($parts && strlen($file) < 42) {
 				$file = array_pop($parts) . '/' . $file;
 			}
+
 			$file = ($parts ? '.../' : '') . $file;
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 
@@ -67,6 +68,7 @@ class Helpers
 				'%replace' => rawurlencode($replace),
 			]);
 		}
+
 		return null;
 	}
 
@@ -100,6 +102,7 @@ class Helpers
 				return $item;
 			}
 		}
+
 		return null;
 	}
 
@@ -128,12 +131,15 @@ class Helpers
 					$frame['type'] = isset($row['type']) && $row['type'] === 'dynamic' ? '->' : '::';
 					$frame['class'] = $row['class'];
 				}
+
 				$stack[] = $frame;
 			}
+
 			$ref = new \ReflectionProperty('Exception', 'trace');
 			$ref->setAccessible(true);
 			$ref->setValue($exception, $stack);
 		}
+
 		return $exception;
 	}
 
@@ -248,6 +254,7 @@ class Helpers
 			$hint = self::getSuggestion($items, $m[2]);
 			return $hint ? $message . ", did you mean $$hint?" : $message;
 		}
+
 		return $message;
 	}
 
@@ -265,12 +272,14 @@ class Helpers
 					break;
 				}
 			}
+
 			if ($i > $max && $i < count($segments) && ($file = (new \ReflectionClass($class))->getFileName())) {
 				$max = $i;
 				$res = array_merge(array_slice(explode(DIRECTORY_SEPARATOR, $file), 0, $i - count($parts)), array_slice($segments, $i));
 				$res = implode(DIRECTORY_SEPARATOR, $res) . '.php';
 			}
 		}
+
 		return $res;
 	}
 
@@ -292,6 +301,7 @@ class Helpers
 				$best = $item;
 			}
 		}
+
 		return $best;
 	}
 
@@ -491,8 +501,10 @@ XX
 					if ($regexp) {
 						$result = $context . ($context === '/' ? ' ' : '') . $regexp;
 					}
+
 					$last = '';
 				}
+
 				return $result;
 			},
 			$s . "\n"
@@ -522,6 +534,7 @@ XX
 					$result = $result === '}' ? '}' : ';' . $result;
 					$last = '';
 				}
+
 				if ($word !== '') {
 					$result = ($last === 'word' ? ' ' : '') . $result;
 					$last = 'word';
@@ -531,6 +544,7 @@ XX
 				} else {
 					$last = '';
 				}
+
 				return $result;
 			},
 			$s . "\n"
@@ -561,6 +575,7 @@ XX
 		while (($ex = $ex->getPrevious()) && !in_array($ex, $res, true)) {
 			$res[] = $ex;
 		}
+
 		return $res;
 	}
 }

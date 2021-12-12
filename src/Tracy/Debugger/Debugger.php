@@ -175,9 +175,11 @@ class Debugger
 		if ($email !== null) {
 			self::$email = $email;
 		}
+
 		if ($logDirectory !== null) {
 			self::$logDirectory = $logDirectory;
 		}
+
 		if (self::$logDirectory) {
 			if (!preg_match('#([a-z]+:)?[/\\\\]#Ai', self::$logDirectory)) {
 				self::exceptionHandler(new \RuntimeException('Logging directory must be absolute path.'));
@@ -201,6 +203,7 @@ class Debugger
 		) {
 			self::exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
 		}
+
 		error_reporting(E_ALL);
 
 		if (self::$enabled) {
@@ -334,6 +337,7 @@ class Debugger
 				if (!headers_sent()) {
 					header('Content-Type: text/html; charset=UTF-8');
 				}
+
 				(function ($logged) use ($exception) {
 					require self::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml';
 				})(empty($e));
@@ -345,7 +349,6 @@ class Debugger
 						: 'Check log to see more info.')
 					. "\n");
 			}
-
 		} elseif ($firstTime && Helpers::isHtmlMode() || Helpers::isAjax()) {
 			self::getBlueScreen()->render($exception);
 
@@ -356,9 +359,11 @@ class Debugger
 				if ($file && !headers_sent()) {
 					header("X-Tracy-Error-Log: $file", false);
 				}
+
 				if (Helpers::detectColors()) {
 					echo "\n\n" . BlueScreen::highlightPhpCli($exception->getFile(), $exception->getLine()) . "\n";
 				}
+
 				echo "$exception\n" . ($file ? "\n(stored in $file)\n" : '');
 				if ($file && self::$browser) {
 					exec(self::$browser . ' ' . escapeshellarg(strtr($file, self::$editorMapping)));
@@ -438,7 +443,6 @@ class Debugger
 				self::log($e, self::ERROR);
 			} catch (\Throwable $foo) {
 			}
-
 		} elseif (
 			(is_bool(self::$strictMode) ? self::$strictMode : ((self::$strictMode & $severity) === $severity)) // $strictMode
 			&& !isset($_GET['_tracy_skip_error'])
@@ -473,6 +477,7 @@ class Debugger
 			if (in_array($status['name'], ['ob_gzhandler', 'zlib output compression'], true)) {
 				break;
 			}
+
 			$fnc = $status['chunk_size'] || !$errorOccurred
 				? 'ob_end_flush'
 				: 'ob_end_clean';
@@ -496,6 +501,7 @@ class Debugger
 				'Tracy ' . self::VERSION,
 			];
 		}
+
 		return self::$blueScreen;
 	}
 
@@ -508,6 +514,7 @@ class Debugger
 			$info->cpuUsage = self::$cpuUsage;
 			self::$bar->addPanel(new DefaultBarPanel('errors'), 'Tracy:errors'); // filled by errorHandler()
 		}
+
 		return self::$bar;
 	}
 
@@ -525,6 +532,7 @@ class Debugger
 			self::$logger->directory = &self::$logDirectory; // back compatiblity
 			self::$logger->email = &self::$email;
 		}
+
 		return self::$logger;
 	}
 
@@ -534,6 +542,7 @@ class Debugger
 		if (!self::$fireLogger) {
 			self::$fireLogger = new FireLogger;
 		}
+
 		return self::$fireLogger;
 	}
 
@@ -602,6 +611,7 @@ class Debugger
 			if (!$panel) {
 				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'), 'Tracy:dumps');
 			}
+
 			$panel->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, $options + [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
@@ -609,6 +619,7 @@ class Debugger
 				Dumper::LAZY => true,
 			])];
 		}
+
 		return $var;
 	}
 
@@ -654,6 +665,7 @@ class Debugger
 			$list[] = '::1';
 			$list[] = '[::1]'; // workaround for PHP < 7.3.4
 		}
+
 		return in_array($addr, $list, true) || in_array("$secret@$addr", $list, true);
 	}
 }

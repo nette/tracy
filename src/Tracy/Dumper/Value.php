@@ -76,6 +76,7 @@ final class Value implements \JsonSerializable
 				$res[$k] = $this->$k;
 			}
 		}
+
 		return $res;
 	}
 }

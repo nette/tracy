@@ -87,6 +87,7 @@ final class Describer
 		if ($var === null || is_bool($var)) {
 			return $var;
 		}
+
 		$m = 'describe' . explode(' ', gettype($var))[0];
 		return $this->$m($var, $depth, $refId);
 	}
@@ -111,6 +112,7 @@ final class Describer
 		if (!is_finite($num)) {
 			return new Value(Value::TYPE_NUMBER, (string) $num);
 		}
+
 		$js = json_encode($num);
 		return strpos($js, '.')
 			? $num
@@ -156,6 +158,7 @@ final class Describer
 				$value->length = count($arr);
 				$arr = array_slice($arr, 0, $this->maxItems, true);
 			}
+
 			$items = &$value->items;
 
 		} elseif ($arr && $this->maxDepth && $depth >= $this->maxDepth) {
@@ -211,6 +214,7 @@ final class Describer
 				$this->addPropertyTo($value, (string) $k, $v, Value::PROP_VIRTUAL, $this->getReferenceId($props, $k));
 			}
 		}
+
 		return new Value(Value::TYPE_REF, $id);
 	}
 
@@ -234,6 +238,7 @@ final class Describer
 				}
 			}
 		}
+
 		return new Value(Value::TYPE_REF, $id);
 	}
 
@@ -246,6 +251,7 @@ final class Describer
 		if (preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^(true|false|null)$#iD', $key)) {
 			return $key;
 		}
+
 		$value = $this->describeString($key);
 		return is_string($value) // ensure result is Value
 			? new Value(Value::TYPE_STRING_HTML, $key, Helpers::utf8Length($key))
@@ -314,12 +320,15 @@ final class Describer
 			if ((!$rr = \ReflectionReference::fromArrayElement($arr, $key))) {
 				return null;
 			}
+
 			$tmp = &$this->references[$rr->getId()];
 			if ($tmp === null) {
 				return $tmp = count($this->references);
 			}
+
 			return $tmp;
 		}
+
 		$uniq = new \stdClass;
 		$copy = $arr;
 		$orig = $copy[$key];
@@ -327,12 +336,14 @@ final class Describer
 		if ($arr[$key] !== $uniq) {
 			return null;
 		}
+
 		$res = array_search($uniq, $this->references, true);
 		$copy[$key] = $orig;
 		if ($res === false) {
 			$this->references[] = &$arr[$key];
 			return count($this->references);
 		}
+
 		return $res + 1;
 	}
 
@@ -361,6 +372,7 @@ final class Describer
 				} catch (\ReflectionException $e) {
 				}
 			}
+
 			break;
 		}
 
@@ -373,6 +385,7 @@ final class Describer
 				trim(preg_match('#\w*dump(er::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line),
 			];
 		}
+
 		return null;
 	}
 }

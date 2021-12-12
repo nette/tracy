@@ -113,6 +113,7 @@ class Dumper
 			self::renderAssets();
 			echo self::toHtml($var, $options);
 		}
+
 		return $var;
 	}
 
@@ -153,6 +154,7 @@ class Dumper
 		if (Debugger::$productionMode === true || $sent) {
 			return;
 		}
+
 		$sent = true;
 
 		$nonce = Helpers::getNonce();
@@ -190,6 +192,7 @@ class Dumper
 		} elseif (isset($options[self::SNAPSHOT])) {
 			$tmp = &$options[self::SNAPSHOT];
 		}
+
 		if (isset($tmp)) {
 			$tmp[0] = $tmp[0] ?? [];
 			$tmp[1] = $tmp[1] ?? [];
@@ -222,6 +225,7 @@ class Dumper
 			$model = $this->describer->describe([$key => $var]);
 			$model->value = $model->value[0][1];
 		}
+
 		return $this->renderer->renderAsHtml($model);
 	}
 

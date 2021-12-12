@@ -111,6 +111,7 @@ class FireLogger implements ILogger
 		foreach (str_split(base64_encode(json_encode($this->payload, JSON_INVALID_UTF8_SUBSTITUTE)), 4990) as $k => $v) {
 			header("FireLogger-de11e-$k: $v");
 		}
+
 		return true;
 	}
 
@@ -134,6 +135,7 @@ class FireLogger implements ILogger
 			if ($marker === null) {
 				$marker = uniqid("\x00", true);
 			}
+
 			if (isset($var[$marker])) {
 				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
 
@@ -145,13 +147,13 @@ class FireLogger implements ILogger
 						$res[$this->jsonDump($k)] = $this->jsonDump($v, $level + 1);
 					}
 				}
+
 				unset($var[$marker]);
 				return $res;
 
 			} else {
 				return " \xE2\x80\xA6 ";
 			}
-
 		} elseif (is_object($var)) {
 			$arr = (array) $var;
 			static $list = [];
@@ -165,15 +167,16 @@ class FireLogger implements ILogger
 					if (isset($k[0]) && $k[0] === "\x00") {
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
+
 					$res[$this->jsonDump($k)] = $this->jsonDump($v, $level + 1);
 				}
+
 				array_pop($list);
 				return $res;
 
 			} else {
 				return " \xE2\x80\xA6 ";
 			}
-
 		} elseif (is_resource($var)) {
 			return 'resource ' . get_resource_type($var);
 

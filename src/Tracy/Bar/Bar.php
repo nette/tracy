@@ -37,6 +37,7 @@ class Bar
 				$id = get_class($panel) . ($c++ ? "-$c" : '');
 			} while (isset($this->panels[$id]));
 		}
+
 		$this->panels[$id] = $panel;
 		return $this;
 	}
@@ -60,6 +61,7 @@ class Bar
 		if (!$this->useSession) {
 			throw new \LogicException('Start session before Tracy is enabled.');
 		}
+
 		$contentId = $this->contentId = $this->contentId ?: substr(md5(uniqid('', true)), 0, 10);
 		$nonce = Helpers::getNonce();
 		$async = true;
@@ -88,12 +90,10 @@ class Bar
 				$contentId = $_SERVER['HTTP_X_TRACY_AJAX'];
 				$_SESSION['_tracy']['bar'][$contentId] = ['content' => $this->renderHtml('ajax', '-ajax:' . $contentId), 'time' => time()];
 			}
-
 		} elseif (preg_match('#^Location:#im', implode("\n", headers_list()))) { // redirect
 			if ($useSession) {
 				$redirectQueue[] = ['content' => $this->renderHtml('redirect', '-r' . count($redirectQueue)), 'time' => time()];
 			}
-
 		} elseif (Helpers::isHtmlMode()) {
 			$content = $this->renderHtml('main');
 
@@ -101,6 +101,7 @@ class Bar
 				$content['bar'] .= $item['content']['bar'];
 				$content['panels'] .= $item['content']['panels'];
 			}
+
 			$redirectQueue = null;
 
 			$content = '<div id=tracy-debug-bar>' . $content['bar'] . '</div>' . $content['panels'];
@@ -153,11 +154,13 @@ class Bar
 				while (ob_get_level() > $obLevel) { // restore ob-level if broken
 					ob_end_clean();
 				}
+
 				$idHtml = "error-$idHtml";
 				$tab = "Error in $id";
 				$panelHtml = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(Helpers::escapeHtml($e)) . '</div>';
 				unset($e);
 			}
+
 			$panels[] = (object) ['id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml];
 		}
 
@@ -196,16 +199,19 @@ class Bar
 			if (!$m[1]) {
 				$this->renderAssets();
 			}
+
 			if ($session) {
 				$method = $m[1] ? 'loadAjax' : 'init';
 				echo "Tracy.Debug.$method(", json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), ');';
 				$session = null;
 			}
+
 			$session = &$_SESSION['_tracy']['bluescreen'][$m[2]];
 			if ($session) {
 				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), ');';
 				$session = null;
 			}
+
 			return true;
 		}
 

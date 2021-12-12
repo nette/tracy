@@ -60,6 +60,7 @@ final class Exposer
 		if (isset($cache[$class])) {
 			return $cache[$class];
 		}
+
 		$rc = new \ReflectionClass($class);
 		$parentProps = $rc->getParentClass() ? self::getProperties($rc->getParentClass()->getName()) : [];
 		$props = [];
@@ -93,6 +94,7 @@ final class Exposer
 		foreach ($rc->getParameters() as $param) {
 			$params[] = '$' . $param->getName();
 		}
+
 		$value->value .= '(' . implode(', ', $params) . ')';
 
 		$uses = [];
@@ -102,6 +104,7 @@ final class Exposer
 			$uses[] = '$' . $name;
 			$describer->addPropertyTo($useValue, '$' . $name, $v);
 		}
+
 		if ($uses) {
 			$useValue->value = implode(', ', $uses);
 			$useValue->collapsed = true;
@@ -162,6 +165,7 @@ final class Exposer
 		foreach (clone $obj as $item) {
 			$res[] = ['object' => $item, 'data' => $obj[$item]];
 		}
+
 		return $res;
 	}
 
@@ -186,8 +190,10 @@ final class Exposer
 				$k = (string) $k;
 				$decl = null;
 			}
+
 			$describer->addPropertyTo($value, $k, $v, $type, $refId, $decl);
 		}
+
 		$value->value = $class . ' (Incomplete Class)';
 	}
 

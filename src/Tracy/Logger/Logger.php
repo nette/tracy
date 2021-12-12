@@ -94,6 +94,7 @@ class Logger implements ILogger
 					: Helpers::getClass($exception) . ': ' . $exception->getMessage() . ($exception->getCode() ? ' #' . $exception->getCode() : '')
 				) . ' in ' . $exception->getFile() . ':' . $exception->getLine();
 			}
+
 			$message = implode("\ncaused by ", $tmp);
 
 		} elseif (!is_string($message)) {
@@ -126,6 +127,7 @@ class Logger implements ILogger
 				array_map(function (array $item): array { unset($item['args']); return $item; }, $exception->getTrace()),
 			];
 		}
+
 		$hash = substr(md5(serialize($data)), 0, 10);
 		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		foreach (new \DirectoryIterator($this->directory) as $file) {
@@ -133,6 +135,7 @@ class Logger implements ILogger
 				return $dir . $file;
 			}
 		}
+
 		return $dir . $level . '--' . date('Y-m-d--H-i') . "--$hash.html";
 	}
 
