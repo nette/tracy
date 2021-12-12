@@ -155,7 +155,7 @@ class FireLogger implements ILogger
 				return " \xE2\x80\xA6 ";
 			}
 		} elseif (is_object($var)) {
-			$arr = (array) $var;
+			$arr = get_mangled_object_vars($var);
 			static $list = [];
 			if (in_array($var, $list, true)) {
 				return "\xE2\x80\xA6RECURSION\xE2\x80\xA6";
