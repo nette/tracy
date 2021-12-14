@@ -14,72 +14,90 @@ namespace Tracy;
 if (!$showEnvironment) {
 	return;
 }
+
+$constants = get_defined_constants(true)['user'] ?? [];
 ?>
 <section class="section">
 	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
 	<div class="section-panel tracy-collapsed">
-		<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
-		<div class="pane">
-			<table class="tracy-sortable">
+
+	<div class="tracy-tabs">
+		<ul class="tabs-bar">
+			<li class="tracy-tab-label tracy-active"><a href="#">$_SERVER</a></li>
+<?php if ($_SESSION ?? null): ?>
+			<li class="tracy-tab-label"><a href="#">$_SESSION</a></li>
+<?php endif ?>
+<?php if ($constants): ?>
+			<li class="tracy-tab-label"><a href="#">Constants</a></li>
+<?php endif ?>
+			<li class="tracy-tab-label"><a href="#">Configuration</a></li>
+<?php if ($obStatus): ?>
+			<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
+<?php endif ?>
+
+		</ul>
+
+
+		<div>
+			<div class="tracy-tab-panel pane tracy-active">
+				<table class="tracy-sortable">
 <?php foreach ($_SERVER as $k => $v): ?>
 				<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
 <?php endforeach ?>
-			</table>
-		</div>
+				</table>
+			</div>
 
 
-		<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SESSION</a></h3>
-		<div class="pane">
-<?php if (empty($_SESSION)):?>
-			<p><i>empty</i></p>
-<?php else: ?>
-			<table class="tracy-sortable">
+<?php if ($_SESSION ?? null): ?>
+			<div class="tracy-tab-panel tabs-panel">
+				<div class="pane">
+					<table class="tracy-sortable">
 <?php	foreach ($_SESSION as $k => $v): ?>
-				<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $k === '__NF' ? '<i>Nette Session</i>' : $dump($v, $k) ?></td></tr>
+						<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $k === '__NF' ? '<i>Nette Session</i>' : $dump($v, $k) ?></td></tr>
 <?php	endforeach ?>
-			</table>
-<?php endif ?>
-		</div>
+					</table>
+				</div>
 
 
 <?php if (!empty($_SESSION['__NF']['DATA'])):?>
-		<h3><a data-tracy-ref="^+" class="tracy-toggle">Nette Session</a></h3>
-		<div class="pane">
-			<table class="tracy-sortable">
+				<h3>Nette Session</h3>
+				<div class="pane">
+					<table class="tracy-sortable">
 <?php	foreach ($_SESSION['__NF']['DATA'] as $k => $v): ?>
-				<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
+						<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
 <?php	endforeach ?>
-			</table>
-		</div>
+					</table>
+				</div>
+<?php endif ?>
+			</div>
 <?php endif ?>
 
 
-<?php
-$list = get_defined_constants(true);
-if (!empty($list['user'])):?>
-		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
-		<div class="pane tracy-collapsed">
-			<table class="tracy-sortable">
-<?php	foreach ($list['user'] as $k => $v): ?>
-				<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
+
+<?php if ($constants): ?>
+			<div class="tracy-tab-panel pane">
+				<table class="tracy-sortable">
+<?php	foreach ($constants as $k => $v): ?>
+					<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
 <?php	endforeach ?>
-			</table>
-		</div>
+				</table>
+			</div>
 <?php endif ?>
 
 
-		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
-		<div class="pane tracy-collapsed">
-			<?php $this->renderPhpInfo() ?>
-		</div>
+			<div class="tracy-tab-panel tabs-panel">
+				<?php $this->renderPhpInfo() ?>
+
+			</div>
 
 
 <?php if ($obStatus): ?>
-		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Output buffers status</a></h3>
-		<div class="pane tracy-collapsed">
-			<?php echo $dump($obStatus) ?>
-		</div>
+			<div class="tracy-tab-panel pane">
+				<?= Dumper::toHtml($obStatus, [Dumper::COLLAPSE_COUNT => 10]) ?>
+			</div>
 <?php endif ?>
+		</div>
+	</div>
 	</div>
 </section>

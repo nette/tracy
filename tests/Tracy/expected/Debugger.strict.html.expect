@@ -113,60 +113,87 @@
 	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
 	<div class="section-panel tracy-collapsed">
-		<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
-		<div class="pane">
-			<table class="tracy-sortable">%A%</table>
+
+	<div class="tracy-tabs">
+		<ul class="tabs-bar">
+			<li class="tracy-tab-label tracy-active"><a href="#">$_SERVER</a></li>
+			<li class="tracy-tab-label"><a href="#">Constants</a></li>
+			<li class="tracy-tab-label"><a href="#">Configuration</a></li>
+			<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
+
+		</ul>
+
+
+		<div>
+			<div class="tracy-tab-panel pane tracy-active">
+				<table class="tracy-sortable">
+				%A%
+				</table>
+			</div>
+
+
+
+
+
+			<div class="tracy-tab-panel pane">
+				<table class="tracy-sortable">
+				%A%
+				</table>
+			</div>
+
+
+			<div class="tracy-tab-panel tabs-panel">
+%A%<table class="tracy-sortable">%A%
+			</div>
+
+
+			<div class="tracy-tab-panel pane">
+				<pre class="tracy-dump tracy-light"%A%</pre>
+			</div>
 		</div>
-
-
-		<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SESSION</a></h3>
-		<div class="pane">%A%</div>
-
-
-
-
-		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Constants</a></h3>
-		<div class="pane tracy-collapsed">
-			<table class="tracy-sortable">%A%</table>
-		</div>
-
-
-		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
-		<div class="pane tracy-collapsed">
-			%A%</div>
-
-
-		<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Output buffers status</a></h3>
-		<div class="pane tracy-collapsed">
-			<pre %A%></pre>
-		</div>
+	</div>
 	</div>
 </section>
 
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
+	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP</a></h2>
 
 	<div class="section-panel tracy-collapsed">
-%A?%
-		<h3>$_GET</h3>
-		<p><i>empty</i></p>
-		<h3>$_POST</h3>
-		<p><i>empty</i></p>
-		<h3>$_COOKIE</h3>
-		<p><i>empty</i></p>
+
+	<div class="tracy-tabs">
+		<ul class="tabs-bar">
+			<li class="tracy-tab-label tracy-active"><a href="#">Request</a></li>
+			<li class="tracy-tab-label"><a href="#">Response</a></li>
+		</ul>
+
+		<div>
+
+			<div class="tracy-tab-panel tabs-panel tracy-active">
+			<h3>URL <a href="%a%" target="_blank" rel="noreferrer noopener" style="font-weight: normal">%a%</a></h3>
+
+
+
+			<h3>$_GET</h3>
+			<p><i>empty</i></p>
+			<h3>$_POST</h3>
+			<p><i>empty</i></p>
+			<h3>$_COOKIE</h3>
+			<p><i>empty</i></p>
+			</div>
+
+
+			<div class="tracy-tab-panel tabs-panel">
+			<h3>Code: %d%</h3>
+			<div class="pane">
+				<table class="tracy-sortable">%A%</table>
+			</div>
+
+
+			<p>Headers were not sent at the time the exception was thrown</p>
+			</div>
+		</div>
 	</div>
-</section>
-
-<section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
-
-	<div class="section-panel tracy-collapsed">
-		<h3>Headers</h3>
-		<div class="pane">%A%</div>
-
-
-		<p>Headers were not sent at the time of the exception</p>
 	</div>
 </section>
 

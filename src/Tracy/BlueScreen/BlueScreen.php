@@ -484,7 +484,7 @@ class BlueScreen
 			echo '<pre class="tracy-dump tracy-light">', Helpers::escapeHtml($info), '</pre>';
 		} else {
 			$info = str_replace('<table', '<table class="tracy-sortable"', $info);
-			echo preg_replace('#^.+<body>|</body>.+\z#s', '', $info);
+			echo preg_replace('#^.+<body>|</body>.+\z|<hr />|<h1>Configuration</h1>#s', '', $info);
 		}
 	}
 }

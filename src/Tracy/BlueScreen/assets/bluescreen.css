@@ -347,3 +347,39 @@
 #tracy-bs .section--causedby .section--error {
 	background: #cd1818a6;
 }
+
+
+/* tabs */
+#tracy-bs .tabs-bar {
+	display: flex;
+	list-style: none;
+	padding-left: 0;
+	margin: 0;
+	width: 100%;
+	font-size: 110%;
+}
+
+#tracy-bs .tabs-bar > *:not(:first-child) {
+	margin-left: var(--tracy-space);
+}
+
+#tracy-bs .tabs-bar a {
+	display: block;
+	padding: calc(.5 * var(--tracy-space)) var(--tracy-space);
+	margin: 0;
+	height: 100%;
+	box-sizing: border-box;
+	border-radius: 5px 5px 0 0;
+	text-decoration: none;
+	transition: all 0.1s;
+}
+
+#tracy-bs .tabs-bar > .tracy-active a {
+	background: white;
+}
+
+#tracy-bs .tabs-panel {
+	border-top: 2px solid white;
+	padding-top: var(--tracy-space);
+	overflow: auto;
+}
