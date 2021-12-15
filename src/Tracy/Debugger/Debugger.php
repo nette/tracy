@@ -39,9 +39,6 @@ class Debugger
 	/** @var bool whether to display debug bar in development mode */
 	public static $showBar = true;
 
-	/** @var bool whether to send data to FireLogger in development mode */
-	public static $showFireLogger = true;
-
 	/** @var int size of reserved memory */
 	public static $reservedMemorySize = 500000;
 
@@ -102,7 +99,7 @@ class Debugger
 	/** @var string|array email(s) to which send error notifications */
 	public static $email;
 
-	/** for Debugger::log() and Debugger::fireLog() */
+	/** for Debugger::log() */
 	public const
 		DEBUG = ILogger::DEBUG,
 		INFO = ILogger::INFO,
@@ -150,9 +147,6 @@ class Debugger
 
 	/** @var ILogger */
 	private static $logger;
-
-	/** @var ILogger */
-	private static $fireLogger;
 
 	/** @var array{DevelopmentStrategy, ProductionStrategy} */
 	private static $strategy;
@@ -242,7 +236,6 @@ class Debugger
 			'Dumper/Exposer',
 			'Dumper/Renderer',
 			'Dumper/Value',
-			'Logger/FireLogger',
 			'Logger/Logger',
 			'Session/SessionStorage',
 			'Session/FileSession',
@@ -442,16 +435,6 @@ class Debugger
 	}
 
 
-	public static function getFireLogger(): ILogger
-	{
-		if (!self::$fireLogger) {
-			self::$fireLogger = new FireLogger;
-		}
-
-		return self::$fireLogger;
-	}
-
-
 	/** @return ProductionStrategy|DevelopmentStrategy @internal */
 	public static function getStrategy()
 	{
@@ -581,18 +564,6 @@ class Debugger
 	public static function log($message, string $level = ILogger::INFO)
 	{
 		return self::getLogger()->log($message, $level);
-	}
-
-
-	/**
-	 * Sends message to FireLogger console.
-	 * @param  mixed  $message
-	 */
-	public static function fireLog($message): bool
-	{
-		return !self::$productionMode && self::$showFireLogger
-			? self::getFireLogger()->log($message)
-			: false;
 	}
 
 
