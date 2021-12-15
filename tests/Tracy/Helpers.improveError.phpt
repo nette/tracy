@@ -70,11 +70,3 @@ test('do not suggest anything when accessing anonymous class', function () {
 	$message = Helpers::improveError(error_get_last()['message']);
 	Assert::same('Undefined property: class@anonymous::$property', $message);
 });
-
-
-test('variables', function () use ($obj) {
-	$abcd = 1;
-	@$val = $abc;
-	$message = Helpers::improveError(error_get_last()['message'], get_defined_vars());
-	Assert::same('Undefined variable $abc, did you mean $abcd?', $message);
-});

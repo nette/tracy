@@ -84,7 +84,6 @@ final class DevelopmentStrategy
 		string $message,
 		string $file,
 		int $line,
-		array $context = null
 	): void {
 		if (function_exists('ini_set')) {
 			$oldDisplay = ini_set('display_errors', '1');
@@ -95,13 +94,12 @@ final class DevelopmentStrategy
 			&& !isset($_GET['_tracy_skip_error'])
 		) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
-			$e->context = $context;
 			$e->skippable = true;
 			Debugger::exceptionHandler($e);
 			exit(255);
 		}
 
-		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context);
+		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message);
 		$count = &$this->bar->getPanel('Tracy:errors')->data["$file|$line|$message"];
 
 		if (!$count++) { // not repeated error
