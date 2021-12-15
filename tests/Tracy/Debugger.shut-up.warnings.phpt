@@ -2,7 +2,7 @@
 
 /**
  * Test: Tracy\Debugger notices and warnings and shut-up operator.
- * @outputMatch
+ * @outputMatch %A%PHP Compile Warning: Unsupported declare 'foo' in %a% on line %d%
  */
 
 declare(strict_types=1);

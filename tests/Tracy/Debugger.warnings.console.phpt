@@ -43,11 +43,11 @@ function third($arg1)
 register_shutdown_function(function () {
 	Assert::match(<<<'XX'
 
-Notice: Only variables should be assigned by reference in %a% on line %d%
+PHP Notice: Only variables should be assigned by reference in %a% on line %d%
 
-Warning: hex2bin(): Hexadecimal input string must have an even length in %a% on line %d%
+PHP Warning: hex2bin(): Hexadecimal input string must have an even length in %a% on line %d%
 
-Warning: Unsupported declare 'foo' in %a% on line %d%
+PHP Compile Warning: Unsupported declare 'foo' in %a% on line %d%
 XX
 	, ob_get_clean());
 });

@@ -195,7 +195,7 @@ class Debugger
 
 		// php configuration
 		if (function_exists('ini_set')) {
-			ini_set('display_errors', self::$productionMode ? '0' : '1'); // or 'stderr'
+			ini_set('display_errors', '0'); // or 'stderr'
 			ini_set('html_errors', '0');
 			ini_set('log_errors', '0');
 			ini_set('zend.exception_ignore_args', '0');
@@ -294,6 +294,9 @@ class Debugger
 
 		if (self::$showBar && !self::$productionMode && !Helpers::isCli()) {
 			self::removeOutputBuffers(false);
+			if (!self::$productionMode && function_exists('ini_set')) {
+				ini_set('display_errors', '1');
+			}
 			try {
 				self::getBar()->render();
 			} catch (\Throwable $e) {
@@ -393,7 +396,11 @@ class Debugger
 		string $file,
 		int $line,
 		?array $context = null
-	): ?bool {
+	): bool {
+		if (!self::$productionMode && function_exists('ini_set')) {
+			$oldDisplay = ini_set('display_errors', '1');
+		}
+
 		$error = error_get_last();
 		if (($error['type'] ?? null) === E_COMPILE_WARNING) {
 			error_clear_last();
@@ -452,13 +459,16 @@ class Debugger
 			$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context);
 			$count = &self::getBar()->getPanel('Tracy:errors')->data["$file|$line|$message"];
 
-			if ($count++) { // repeated error
-				return null;
-
-			} else {
+			if (!$count++) { // not repeated error
 				self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
-				return Helpers::isHtmlMode() || Helpers::isAjax() ? null : false; // false calls normal error handler
+				if (!Helpers::isHtmlMode() && !Helpers::isAjax()) {
+					echo "\n$message in $file on line $line\n";
+				}
 			}
+		}
+
+		if (function_exists('ini_set')) {
+			ini_set('display_errors', $oldDisplay);
 		}
 
 		return false; // calls normal error handler to fill-in error_get_last()
