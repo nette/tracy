@@ -17,7 +17,7 @@ Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
 if (empty($_GET['redirect'])) {
 	bdump('before redirect ' . date('H:i:s'));
 
-	header('Location: ' . (isset($_GET['ajax']) ? 'ajax.php' : 'redirect.php?&redirect=1'));
+	header('Location: ' . (isset($_GET['ajax']) ? 'ajax-fetch.php' : 'redirect.php?&redirect=1'));
 	exit;
 }
 
