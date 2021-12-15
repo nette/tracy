@@ -343,35 +343,6 @@ echo Debugger::timer(); // elapsed time in seconds
 ```
 
 
-FireLogger
-----------
-
-You cannot always send debugging information to the browser window. This applies to AJAX requests or generating XML files to output. In such cases, you can send the messages by a separate channel into FireLogger. Error, Notice and Warning levels are sent to FireLogger window automatically. It is also possible to log suppressed exceptions in running application when attention to them is important.
-
-How to do it?
-
-- install extension [FireLogger for Chrome](https://chrome.google.com/webstore/detail/firelogger-for-chrome/hmagilfopmdjkeomnjpchokglfdfjfeh)
-- turn on Chrome DevTools (using Ctrl-Shift-I key) and open Console
-
-Navigate to the [demo page](https://examples.nette.org/tracy/) and you will see messages sent from PHP.
-
-Because Tracy\Debugger communicates with FireLogger via HTTP headers, you must call the logging function before the PHP script sends anything to output. It is also possible to enable output buffering and delay the output.
-
-```php
-use Tracy\Debugger;
-
-Debugger::fireLog('Hello World'); // send string into FireLogger console
-
-Debugger::fireLog($_SERVER); // or even arrays and objects
-
-Debugger::fireLog(new Exception('Test Exception')); // or exceptions
-```
-
-The result looks like this:
-
-![FireLogger](https://nette.github.io/tracy/images/tracy-firelogger.png)
-
-
 Custom Logger
 -------------
 
