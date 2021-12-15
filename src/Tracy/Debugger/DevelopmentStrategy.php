@@ -49,7 +49,6 @@ final class DevelopmentStrategy
 			$this->blueScreen->render($exception);
 
 		} else {
-			Debugger::fireLog($exception);
 			$this->renderExceptionCli($exception);
 		}
 	}
@@ -103,11 +102,8 @@ final class DevelopmentStrategy
 		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message);
 		$count = &$this->bar->getPanel('Tracy:errors')->data["$file|$line|$message"];
 
-		if (!$count++) { // not repeated error
-			Debugger::fireLog(new ErrorException($message, 0, $severity, $file, $line));
-			if (!Helpers::isHtmlMode() && !Helpers::isAjax()) {
-				echo "\n$message in $file on line $line\n";
-			}
+		if (!$count++ && !Helpers::isHtmlMode() && !Helpers::isAjax()) {
+			echo "\n$message in $file on line $line\n";
 		}
 
 		if (function_exists('ini_set')) {
