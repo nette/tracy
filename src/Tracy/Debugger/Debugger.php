@@ -407,10 +407,6 @@ class Debugger
 			self::errorHandler($error['type'], $error['message'], $error['file'], $error['line']);
 		}
 
-		if (self::$scream) {
-			error_reporting(E_ALL);
-		}
-
 		if ($context) {
 			$context = (array) (object) $context; // workaround for PHP bug #80234
 		}
@@ -430,7 +426,7 @@ class Debugger
 			$e->context = $context;
 			throw $e;
 
-		} elseif (!($severity & error_reporting())) { // muted errors
+		} elseif (!($severity & error_reporting()) && !self::$scream) { // muted errors
 
 		} elseif (self::$productionMode) {
 			if ($severity & self::$logSeverity) {
