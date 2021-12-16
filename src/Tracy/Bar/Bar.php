@@ -112,6 +112,7 @@ class Bar
 				$contentId = Helpers::createId();
 				$nonce = Helpers::getNonce();
 				$async = false;
+				Debugger::removeOutputBuffers(false);
 				require __DIR__ . '/assets/loader.phtml';
 			}
 		}

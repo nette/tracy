@@ -145,6 +145,9 @@ class Debugger
 	/** @var ILogger */
 	private static $fireLogger;
 
+	/** @var array{DevelopmentStrategy, ProductionStrategy} */
+	private static $strategy;
+
 
 	/**
 	 * Static class - cannot be instantiated.
@@ -199,15 +202,12 @@ class Debugger
 			ini_set('html_errors', '0');
 			ini_set('log_errors', '0');
 			ini_set('zend.exception_ignore_args', '0');
-
-		} elseif (
-			ini_get('display_errors') != !self::$productionMode // intentionally ==
-			&& ini_get('display_errors') !== (self::$productionMode ? 'stderr' : 'stdout')
-		) {
-			self::exceptionHandler(new \RuntimeException("Unable to set 'display_errors' because function ini_set() is disabled."));
 		}
 
 		error_reporting(E_ALL);
+
+		$strategy = self::getStrategy();
+		$strategy->initialize();
 
 		if (self::$enabled) {
 			return;
@@ -243,16 +243,15 @@ class Debugger
 
 	public static function dispatch(): void
 	{
-		if (self::$productionMode || Helpers::isCli()) {
-			return;
-
-		} elseif (headers_sent($file, $line) || ob_get_length()) {
+		if (headers_sent($file, $line) || ob_get_length()) {
 			throw new \LogicException(
 				__METHOD__ . '() called after some output has been sent. '
 				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.')
 			);
-
-		} elseif (self::getBar()->dispatchAssets()) {
+		} elseif (
+			!Helpers::isCli()
+			&& self::getStrategy()->sendAssets()
+		) {
 			self::$showBar = false;
 			exit;
 		}
@@ -264,9 +263,7 @@ class Debugger
 	 */
 	public static function renderLoader(): void
 	{
-		if (!self::$productionMode) {
-			self::getBar()->renderLoader();
-		}
+		self::getStrategy()->renderLoader();
 	}
 
 
@@ -292,13 +289,9 @@ class Debugger
 
 		self::$reserved = null;
 
-		if (self::$showBar && !self::$productionMode && !Helpers::isCli()) {
-			self::removeOutputBuffers(false);
-			if (!self::$productionMode && function_exists('ini_set')) {
-				ini_set('display_errors', '1');
-			}
+		if (self::$showBar && !Helpers::isCli()) {
 			try {
-				self::getBar()->render();
+				self::getStrategy()->renderBar();
 			} catch (\Throwable $e) {
 				self::exceptionHandler($e);
 			}
@@ -323,53 +316,7 @@ class Debugger
 		Helpers::improveException($exception);
 		self::removeOutputBuffers(true);
 
-		if (self::$productionMode || connection_aborted()) {
-			try {
-				self::log($exception, self::EXCEPTION);
-			} catch (\Throwable $e) {
-			}
-
-			if (!$firstTime) {
-				// nothing
-			} elseif (Helpers::isHtmlMode()) {
-				if (!headers_sent()) {
-					header('Content-Type: text/html; charset=UTF-8');
-				}
-
-				(function ($logged) use ($exception) {
-					require self::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml';
-				})(empty($e));
-			} elseif (Helpers::isCli()) {
-				// @ triggers E_NOTICE when strerr is closed since PHP 7.4
-				@fwrite(STDERR, "ERROR: {$exception->getMessage()}\n"
-					. (isset($e)
-						? 'Unable to log error. You may try enable debug mode to inspect the problem.'
-						: 'Check log to see more info.')
-					. "\n");
-			}
-		} elseif ($firstTime && Helpers::isHtmlMode() || Helpers::isAjax()) {
-			self::getBlueScreen()->render($exception);
-
-		} else {
-			self::fireLog($exception);
-			try {
-				$file = self::log($exception, self::EXCEPTION);
-				if ($file && !headers_sent()) {
-					header("X-Tracy-Error-Log: $file", false);
-				}
-
-				if (Helpers::detectColors()) {
-					echo "\n\n" . BlueScreen::highlightPhpCli($exception->getFile(), $exception->getLine()) . "\n";
-				}
-
-				echo "$exception\n" . ($file ? "\n(stored in $file)\n" : '');
-				if ($file && self::$browser) {
-					exec(self::$browser . ' ' . escapeshellarg(strtr($file, self::$editorMapping)));
-				}
-			} catch (\Throwable $e) {
-				echo "$exception\nTracy is unable to log error: {$e->getMessage()}\n";
-			}
-		}
+		self::getStrategy()->handleException($exception, $firstTime);
 
 		try {
 			foreach ($firstTime ? self::$onFatalError : [] as $handler) {
@@ -397,10 +344,6 @@ class Debugger
 		int $line,
 		?array $context = null
 	): bool {
-		if (!self::$productionMode && function_exists('ini_set')) {
-			$oldDisplay = ini_set('display_errors', '1');
-		}
-
 		$error = error_get_last();
 		if (($error['type'] ?? null) === E_COMPILE_WARNING) {
 			error_clear_last();
@@ -426,52 +369,16 @@ class Debugger
 			$e->context = $context;
 			throw $e;
 
-		} elseif (!($severity & error_reporting()) && !self::$scream) { // muted errors
-
-		} elseif (self::$productionMode) {
-			if ($severity & self::$logSeverity) {
-				$e = new ErrorException($message, 0, $severity, $file, $line);
-				$e->context = $context;
-				Helpers::improveException($e);
-			} else {
-				$e = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context) . " in $file:$line";
-			}
-
-			try {
-				self::log($e, self::ERROR);
-			} catch (\Throwable $foo) {
-			}
-		} elseif (
-			(is_bool(self::$strictMode) ? self::$strictMode : (self::$strictMode & $severity)) // $strictMode
-			&& !isset($_GET['_tracy_skip_error'])
-		) {
-			$e = new ErrorException($message, 0, $severity, $file, $line);
-			$e->context = $context;
-			$e->skippable = true;
-			self::exceptionHandler($e);
-			exit(255);
-
-		} else {
-			$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context);
-			$count = &self::getBar()->getPanel('Tracy:errors')->data["$file|$line|$message"];
-
-			if (!$count++) { // not repeated error
-				self::fireLog(new ErrorException($message, 0, $severity, $file, $line));
-				if (!Helpers::isHtmlMode() && !Helpers::isAjax()) {
-					echo "\n$message in $file on line $line\n";
-				}
-			}
-		}
-
-		if (function_exists('ini_set')) {
-			ini_set('display_errors', $oldDisplay);
+		} elseif (($severity & error_reporting()) || self::$scream) {
+			self::getStrategy()->handleError($severity, $message, $file, $line, $context);
 		}
 
 		return false; // calls normal error handler to fill-in error_get_last()
 	}
 
 
-	private static function removeOutputBuffers(bool $errorOccurred): void
+	/** @internal */
+	public static function removeOutputBuffers(bool $errorOccurred): void
 	{
 		while (ob_get_level() > self::$obLevel) {
 			$status = ob_get_status();
@@ -545,6 +452,19 @@ class Debugger
 		}
 
 		return self::$fireLogger;
+	}
+
+
+	/** @return ProductionStrategy|DevelopmentStrategy @internal */
+	public static function getStrategy()
+	{
+		if (empty(self::$strategy[self::$productionMode])) {
+			self::$strategy[self::$productionMode] = self::$productionMode
+				? new ProductionStrategy
+				: new DevelopmentStrategy(self::getBar(), self::getBlueScreen());
+		}
+
+		return self::$strategy[self::$productionMode];
 	}
 
 

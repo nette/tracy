@@ -27,8 +27,11 @@ if (
 	}
 }
 
-if (isset($stack[0]['class']) && $stack[0]['class'] === 'Tracy\Debugger' && ($stack[0]['function'] === 'shutdownHandler' || $stack[0]['function'] === 'errorHandler')) {
-	unset($stack[0]);
+if (in_array($stack[0]['class'] ?? null, [DevelopmentStrategy::class, ProductionStrategy::class], true)) {
+	array_shift($stack);
+}
+if (($stack[0]['class'] ?? null) === Debugger::class && in_array($stack[0]['function'], ['shutdownHandler', 'errorHandler'], true)) {
+	array_shift($stack);
 }
 ?>
 <?php require __DIR__ . '/section-header.phtml' ?>

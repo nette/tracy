@@ -1,8 +1,9 @@
 ErrorException: Only variables should be assigned by reference in %a%
 Stack trace:
-#0 %a%: Tracy\Debugger::errorHandler(8, '%a%', '%a%', %a%)
-#1 %a%: third(Array)
-#2 %a%: second(true, false)
-#3 %a%: first(10, '%a%')
-#4 {main}
+#0 %a%: Tracy\DevelopmentStrategy->handleError(8, '%a%', '%a%', %a%)
+#1 %a%: Tracy\Debugger::errorHandler(8, '%a%', '%a%', %a%)
+#2 %a%: third(Array)
+#3 %a%: second(true, false)
+#4 %a%: first(10, '%a%')
+#5 {main}
 Tracy is unable to log error: Logging directory is not specified.
