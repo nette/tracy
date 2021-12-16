@@ -34,10 +34,7 @@ class Logger implements ILogger
 	private $blueScreen;
 
 
-	/**
-	 * @param  string|array|null  $email
-	 */
-	public function __construct(?string $directory, $email = null, ?BlueScreen $blueScreen = null)
+	public function __construct(?string $directory, string|array|null $email = null, ?BlueScreen $blueScreen = null)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
@@ -48,11 +45,10 @@ class Logger implements ILogger
 
 	/**
 	 * Logs message or exception to file and sends email notification.
-	 * @param  mixed  $message
-	 * @param  string  $level  one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
+	 * For levels ERROR, EXCEPTION and CRITICAL it sends email.
 	 * @return string|null logged error filename
 	 */
-	public function log($message, $level = self::INFO)
+	public function log(mixed $message, string $level = self::INFO)
 	{
 		if (!$this->directory) {
 			throw new \LogicException('Logging directory is not specified.');

@@ -53,7 +53,7 @@ final class Exposer
 	}
 
 
-	private static function getProperties($class): array
+	private static function getProperties(string $class): array
 	{
 		static $cache;
 		if (isset($cache[$class])) {
@@ -142,10 +142,11 @@ final class Exposer
 	}
 
 
-	/**
-	 * @param  \DOMNodeList|\DOMNamedNodeMap  $obj
-	 */
-	public static function exposeDOMNodeList($obj, Value $value, Describer $describer): void
+	public static function exposeDOMNodeList(
+		\DOMNodeList|\DOMNamedNodeMap $obj,
+		Value $value,
+		Describer $describer,
+	): void
 	{
 		$describer->addPropertyTo($value, 'length', $obj->length, Value::PropertyPublic);
 		$describer->addPropertyTo($value, 'items', iterator_to_array($obj));
