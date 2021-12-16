@@ -168,7 +168,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	/**
 	 * @param  string|string[]  $value
 	 */
-	private function parseErrorSeverity($value): int
+	private function parseErrorSeverity(string|array $value): int
 	{
 		$value = implode('|', (array) $value);
 		$res = (int) @parse_ini_string('e = ' . $value)['e']; // @ may fail

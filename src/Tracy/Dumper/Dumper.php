@@ -94,7 +94,7 @@ class Dumper
 	 * Dumps variable to the output.
 	 * @return mixed  variable
 	 */
-	public static function dump($var, array $options = [])
+	public static function dump($var, array $options = []): mixed
 	{
 		if (Helpers::isCli()) {
 			$useColors = self::$terminalColors && Helpers::detectColors();
