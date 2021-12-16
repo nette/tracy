@@ -60,7 +60,7 @@ class Bar
 		}
 
 		$this->loaderRendered = true;
-		$contentId = $defer->getRequestId();
+		$requestId = $defer->getRequestId();
 		$nonce = Helpers::getNonce();
 		$async = true;
 		require __DIR__ . '/assets/loader.phtml';
@@ -73,11 +73,11 @@ class Bar
 	public function render(DeferredContent $defer): void
 	{
 		$redirectQueue = &$defer->getItems('redirect');
-		$contentId = $defer->getRequestId();
+		$requestId = $defer->getRequestId();
 
 		if (Helpers::isAjax()) {
 			if ($defer->isAvailable()) {
-				$defer->addSetup('Tracy.Debug.loadAjax', $this->renderPartial('ajax', '-ajax:' . $contentId));
+				$defer->addSetup('Tracy.Debug.loadAjax', $this->renderPartial('ajax', '-ajax:' . $requestId));
 			}
 		} elseif (Helpers::isRedirect()) {
 			if ($defer->isAvailable()) {
