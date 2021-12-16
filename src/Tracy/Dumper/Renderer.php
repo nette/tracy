@@ -113,11 +113,7 @@ final class Renderer
 	}
 
 
-	/**
-	 * @param  mixed  $value
-	 * @param  string|int|null  $keyType
-	 */
-	private function renderVar($value, int $depth = 0, $keyType = null): string
+	private function renderVar(mixed $value, int $depth = 0, string|int|null $keyType = null): string
 	{
 		switch (true) {
 			case $value === null:
@@ -164,11 +160,7 @@ final class Renderer
 	}
 
 
-	/**
-	 * @param  string|Value  $str
-	 * @param  string|int|null  $keyType
-	 */
-	private function renderString($str, int $depth, $keyType): string
+	private function renderString(string|Value $str, int $depth, string|int|null $keyType): string
 	{
 		if ($keyType === self::TYPE_ARRAY_KEY) {
 			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . ' </span>';
@@ -241,10 +233,7 @@ final class Renderer
 	}
 
 
-	/**
-	 * @param  array|Value  $array
-	 */
-	private function renderArray($array, int $depth): string
+	private function renderArray(array|Value $array, int $depth): string
 	{
 		$out = '<span class="tracy-dump-array">array</span> (';
 

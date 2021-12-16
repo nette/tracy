@@ -67,10 +67,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return mixed
-	 */
-	private function describeVar($var, int $depth = 0, ?int $refId = null)
+	private function describeVar($var, int $depth = 0, ?int $refId = null): mixed
 	{
 		if ($var === null || is_bool($var)) {
 			return $var;
@@ -81,10 +78,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|int
-	 */
-	private function describeInteger(int $num)
+	private function describeInteger(int $num): Value|int
 	{
 		return $num <= self::JS_SAFE_INTEGER && $num >= -self::JS_SAFE_INTEGER
 			? $num
@@ -92,10 +86,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|float
-	 */
-	private function describeDouble(float $num)
+	private function describeDouble(float $num): Value|float
 	{
 		if (!is_finite($num)) {
 			return new Value(Value::TYPE_NUMBER, (string) $num);
@@ -108,10 +99,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|string
-	 */
-	private function describeString(string $s, int $depth = 0)
+	private function describeString(string $s, int $depth = 0): Value|string
 	{
 		$encoded = Helpers::encodeString($s, $depth ? $this->maxLength : null);
 		if ($encoded === $s) {
@@ -124,10 +112,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|array
-	 */
-	private function describeArray(array $arr, int $depth = 0, ?int $refId = null)
+	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): Value|array
 	{
 		if ($refId) {
 			$res = new Value(Value::TYPE_REF, 'p' . $refId);
@@ -231,10 +216,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|string
-	 */
-	public function describeKey(string $key)
+	public function describeKey(string $key): Value|string
 	{
 		if (preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^(true|false|null)$#iD', $key)) {
 			return $key;
@@ -254,7 +236,7 @@ final class Describer
 		$type = Value::PROP_VIRTUAL,
 		?int $refId = null,
 		?string $class = null,
-	) {
+	): void {
 		if ($value->depth && $this->maxItems && count($value->items ?? []) >= $this->maxItems) {
 			$value->length = ($value->length ?? count($value->items)) + 1;
 			return;

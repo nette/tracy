@@ -142,10 +142,11 @@ final class Exposer
 	}
 
 
-	/**
-	 * @param  \DOMNodeList|\DOMNamedNodeMap  $obj
-	 */
-	public static function exposeDOMNodeList($obj, Value $value, Describer $describer): void
+	public static function exposeDOMNodeList(
+		\DOMNodeList|\DOMNamedNodeMap $obj,
+		Value $value,
+		Describer $describer,
+	): void
 	{
 		$describer->addPropertyTo($value, 'length', $obj->length, Value::PROP_PUBLIC);
 		$describer->addPropertyTo($value, 'items', iterator_to_array($obj));
