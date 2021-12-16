@@ -15,6 +15,9 @@ namespace Tracy;
  */
 final class DeferredContent
 {
+	/** @var SessionStorage */
+	private $sessionStorage;
+
 	/** @var string */
 	private $requestId;
 
@@ -22,15 +25,16 @@ final class DeferredContent
 	private $useSession = false;
 
 
-	public function __construct()
+	public function __construct(SessionStorage $sessionStorage)
 	{
+		$this->sessionStorage = $sessionStorage;
 		$this->requestId = $_SERVER['HTTP_X_TRACY_AJAX'] ?? Helpers::createId();
 	}
 
 
 	public function isAvailable(): bool
 	{
-		return $this->useSession && session_status() === PHP_SESSION_ACTIVE;
+		return $this->useSession && $this->sessionStorage->isAvailable();
 	}
 
 
@@ -42,7 +46,7 @@ final class DeferredContent
 
 	public function &getItems(string $key): array
 	{
-		$items = &$_SESSION['_tracy'][$key];
+		$items = &$this->sessionStorage->getData()[$key];
 		$items = (array) $items;
 		return $items;
 	}
@@ -76,7 +80,7 @@ final class DeferredContent
 			return true;
 		}
 
-		$this->useSession = session_status() === PHP_SESSION_ACTIVE;
+		$this->useSession = $this->sessionStorage->isAvailable();
 		if (!$this->useSession) {
 			return false;
 		}
@@ -142,13 +146,11 @@ final class DeferredContent
 
 	public function clean(): void
 	{
-		if (isset($_SESSION['_tracy'])) {
-			foreach ($_SESSION['_tracy'] as &$items) {
-				$items = array_slice((array) $items, -10, null, true);
-				$items = array_filter($items, function ($item) {
-					return isset($item['time']) && $item['time'] > time() - 60;
-				});
-			}
+		foreach ($this->sessionStorage->getData() as &$items) {
+			$items = array_slice((array) $items, -10, null, true);
+			$items = array_filter($items, function ($item) {
+				return isset($item['time']) && $item['time'] > time() - 60;
+			});
 		}
 	}
 }

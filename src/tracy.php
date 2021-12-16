@@ -25,5 +25,7 @@ require __DIR__ . '/Tracy/Debugger/DeferredContent.php';
 require __DIR__ . '/Tracy/Debugger/DevelopmentStrategy.php';
 require __DIR__ . '/Tracy/Debugger/ProductionStrategy.php';
 require __DIR__ . '/Tracy/OutputDebugger/OutputDebugger.php';
+require __DIR__ . '/Tracy/Session/SessionStorage.php';
+require __DIR__ . '/Tracy/Session/NativeSession.php';
 require __DIR__ . '/Tracy/Helpers.php';
 require __DIR__ . '/Tracy/functions.php';

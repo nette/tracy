@@ -148,6 +148,9 @@ class Debugger
 	/** @var array{DevelopmentStrategy, ProductionStrategy} */
 	private static $strategy;
 
+	/** @var SessionStorage */
+	private static $sessionStorage;
+
 
 	/**
 	 * Static class - cannot be instantiated.
@@ -231,6 +234,8 @@ class Debugger
 			'Dumper/Value',
 			'Logger/FireLogger',
 			'Logger/Logger',
+			'Session/SessionStorage',
+			'Session/NativeSession',
 			'Helpers',
 		] as $path) {
 			require_once dirname(__DIR__) . "/$path.php";
@@ -456,10 +461,31 @@ class Debugger
 		if (empty(self::$strategy[self::$productionMode])) {
 			self::$strategy[self::$productionMode] = self::$productionMode
 				? new ProductionStrategy
-				: new DevelopmentStrategy(self::getBar(), self::getBlueScreen(), new DeferredContent);
+				: new DevelopmentStrategy(self::getBar(), self::getBlueScreen(), new DeferredContent(self::getSessionStorage()));
 		}
 
 		return self::$strategy[self::$productionMode];
+	}
+
+
+	public static function setSessionStorage(SessionStorage $storage): void
+	{
+		if (self::$sessionStorage) {
+			throw new \Exception('Storage is already set.');
+		}
+
+		self::$sessionStorage = $storage;
+	}
+
+
+	/** @internal */
+	public static function getSessionStorage(): SessionStorage
+	{
+		if (!self::$sessionStorage) {
+			self::$sessionStorage = new NativeSession;
+		}
+
+		return self::$sessionStorage;
 	}
 
 
