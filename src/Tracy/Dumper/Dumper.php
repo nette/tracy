@@ -21,18 +21,18 @@ use Tracy\Dumper\Renderer;
 class Dumper
 {
 	public const
-		DEPTH = 'depth', // how many nested levels of array/object properties display (defaults to 7)
-		TRUNCATE = 'truncate', // how truncate long strings? (defaults to 150)
-		ITEMS = 'items', // how many items in array/object display? (defaults to 100)
-		COLLAPSE = 'collapse', // collapse top array/object or how big are collapsed? (defaults to 14)
-		COLLAPSE_COUNT = 'collapsecount', // how big array/object are collapsed in non-lazy mode? (defaults to 7)
+		DEPTH = 'maxDepth', // how many nested levels of array/object properties display (defaults to 7)
+		TRUNCATE = 'maxLength', // how truncate long strings? (defaults to 150)
+		ITEMS = 'maxItems', // how many items in array/object display? (defaults to 100)
+		COLLAPSE = 'collapseTop', // collapse top array/object or how big are collapsed? (defaults to 14)
+		COLLAPSE_COUNT = 'collapseSub', // how big array/object are collapsed in non-lazy mode? (defaults to 7)
 		LOCATION = 'location', // show location string? (defaults to 0)
-		OBJECT_EXPORTERS = 'exporters', // custom exporters for objects (defaults to Dumper::$objectexporters)
+		OBJECT_EXPORTERS = 'objectExposers', // custom exporters for objects (defaults to Dumper::$objectexporters)
 		LAZY = 'lazy', // lazy-loading via JavaScript? true=full, false=none, null=collapsed parts (defaults to null/false)
 		LIVE = 'live', // use static $liveSnapshot (used by Bar)
 		SNAPSHOT = 'snapshot', // array used for shared snapshot for lazy-loading via JavaScript
-		DEBUGINFO = 'debuginfo', // use magic method __debugInfo if exists (defaults to false)
-		KEYS_TO_HIDE = 'keystohide', // sensitive keys not displayed (defaults to [])
+		DEBUGINFO = 'debugInfo', // use magic method __debugInfo if exists (defaults to false)
+		KEYS_TO_HIDE = 'keysToHide', // sensitive keys not displayed (defaults to [])
 		SCRUBBER = 'scrubber', // detects sensitive keys not to be displayed
 		THEME = 'theme', // color theme (defaults to light)
 		HASH = 'hash'; // show object and reference hashes (defaults to true)
@@ -166,25 +166,49 @@ class Dumper
 	}
 
 
-	private function __construct(array $options = [])
-	{
-		$location = $options[self::LOCATION] ?? 0;
-		$location = $location === true ? ~0 : (int) $location;
+	private function __construct(
+		array $options = [],
+		int $maxDepth = 7,
+		int $maxLength = 150,
+		int $maxItems = 100,
+		int|bool $collapseTop = 14,
+		int $collapseSub = 7,
+		bool $classLocation = false,
+		bool $sourceLocation = false,
+		array $objectExposers = [],
+		array $resourceExposers = [],
+		?bool $lazy = null,
+		bool $live = false,
+		?array &$snapshot = null,
+		bool $debugInfo = false,
+		array $keysToHide = [],
+		?callable $scrubber = null,
+		string|false|null $theme = 'light',
+		bool $hash = true,
+	) {
+		if ($options) {
+			$location = $options[self::LOCATION] ?? 0;
+			unset($options['location']);
+			$location = $location === true ? ~0 : (int) $location;
+			$options['sourceLocation'] = !(~$location & self::LOCATION_SOURCE);
+			$options['classLocation'] = !(~$location & self::LOCATION_CLASS);
+			return $this->__construct(...$options);
+		}
 
 		$describer = $this->describer = new Describer;
-		$describer->maxDepth = (int) ($options[self::DEPTH] ?? $describer->maxDepth);
-		$describer->maxLength = (int) ($options[self::TRUNCATE] ?? $describer->maxLength);
-		$describer->maxItems = (int) ($options[self::ITEMS] ?? $describer->maxItems);
-		$describer->debugInfo = (bool) ($options[self::DEBUGINFO] ?? $describer->debugInfo);
-		$describer->scrubber = $options[self::SCRUBBER] ?? $describer->scrubber;
-		$describer->keysToHide = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE] ?? []));
-		$describer->resourceExposers = ($options['resourceExporters'] ?? []) + self::$resources;
-		$describer->objectExposers = ($options[self::OBJECT_EXPORTERS] ?? []) + self::$objectExporters;
-		$describer->location = (bool) $location;
-		if ($options[self::LIVE] ?? false) {
+		$describer->maxDepth = $maxDepth ?? $describer->maxDepth;
+		$describer->maxLength = $maxLength ?? $describer->maxLength;
+		$describer->maxItems = $maxItems ?? $describer->maxItems;
+		$describer->debugInfo = $debugInfo ?? $describer->debugInfo;
+		$describer->scrubber = $scrubber ?? $describer->scrubber;
+		$describer->keysToHide = array_flip(array_map('strtolower', $keysToHide));
+		$describer->resourceExposers = $resourceExposers + self::$resources;
+		$describer->objectExposers = $objectExposers + self::$objectExporters;
+		$describer->location = $classLocation || $sourceLocation; // asi neni ekvivalentni
+		if ($live) {
 			$tmp = &self::$liveSnapshot;
-		} elseif (isset($options[self::SNAPSHOT])) {
-			$tmp = &$options[self::SNAPSHOT];
+		} elseif (isset($snapshot)) {
+			$tmp = &$snapshot;
 		}
 
 		if (isset($tmp)) {
@@ -195,16 +219,16 @@ class Dumper
 		}
 
 		$renderer = $this->renderer = new Renderer;
-		$renderer->collapseTop = $options[self::COLLAPSE] ?? $renderer->collapseTop;
-		$renderer->collapseSub = $options[self::COLLAPSE_COUNT] ?? $renderer->collapseSub;
-		$renderer->collectingMode = isset($options[self::SNAPSHOT]) || !empty($options[self::LIVE]);
+		$renderer->collapseTop = $collapseTop ?? $renderer->collapseTop;
+		$renderer->collapseSub = $collapseSub ?? $renderer->collapseSub;
+		$renderer->collectingMode = isset($snapshot) || $live;
 		$renderer->lazy = $renderer->collectingMode
 			? true
-			: ($options[self::LAZY] ?? $renderer->lazy);
-		$renderer->sourceLocation = !(~$location & self::LOCATION_SOURCE);
-		$renderer->classLocation = !(~$location & self::LOCATION_CLASS);
-		$renderer->theme = ($options[self::THEME] ?? $renderer->theme) ?: null;
-		$renderer->hash = $options[self::HASH] ?? true;
+			: ($lazy ?? $renderer->lazy);
+		$renderer->sourceLocation = $sourceLocation;
+		$renderer->classLocation = $classLocation;
+		$renderer->theme = ($theme ?? $renderer->theme) ?: null;
+		$renderer->hash = $hash;
 	}
 
 
