@@ -33,10 +33,7 @@ class MailSender
 	}
 
 
-	/**
-	 * @param  mixed  $message
-	 */
-	public function send($message, string $email): void
+	public function send(mixed $message, string $email): void
 	{
 		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 

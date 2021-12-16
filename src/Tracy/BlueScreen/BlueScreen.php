@@ -98,11 +98,7 @@ class BlueScreen
 	}
 
 
-	/**
-	 * @param \Fiber|\Generator $fiber
-	 * @return static
-	 */
-	public function addFiber($fiber): self
+	public function addFiber(\Fiber|\Generator $fiber): static
 	{
 		$this->fibers[$fiber] = true;
 		return $this;
