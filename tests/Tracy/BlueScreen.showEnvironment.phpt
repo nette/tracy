@@ -21,7 +21,7 @@ $render = function ($exception) use ($blueScreen) {
 
 $exception = new Exception('foo');
 
-$lookFor = '<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>';
+$lookFor = '<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>';
 
 // sanity test: The environment section is present in the rendered string
 $c = $render($exception);

@@ -20,7 +20,7 @@ $exceptions[] = $ex;
 ?>
 
 <section class="section" id="tracyCaused<?= count($exceptions) ?>">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = count($exceptions) > 1) ? ' tracy-collapsed' : '' ?>">Caused by</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = count($exceptions) > 1) ? ' tracy-collapsed' : '' ?>">Caused by</a></h2>
 
 	<div class="section-panel section--causedby<?= $collapsed ? ' tracy-collapsed' : '' ?>">
 <?php require __DIR__ . '/section-exception.phtml' ?>

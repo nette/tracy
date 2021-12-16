@@ -16,7 +16,7 @@ if (!$stack) {
 }
 ?>
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
 
 	<div class="section-panel">
 	<div class="callstack">
@@ -34,7 +34,7 @@ if (!$stack) {
 
 		<div class="callstack-callee">
 <?php if ($clickable): ?>
-			<a data-tracy-ref="^div + div" class="tracy-toggle<?php if ($expanded !== $key) echo ' tracy-collapsed' ?>"><?php endif ?>
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle<?php if ($expanded !== $key) echo ' tracy-collapsed' ?>"><?php endif ?>
 <?php if (isset($row['class'])) echo Helpers::escapeHtml($row['class']), '::' ?><b><?= Helpers::escapeHtml($row['function']) ?></b> <?= empty($row['args']) ? '()' : '(...)' ?>
 <?php if ($clickable): ?></a><?php endif ?>
 

@@ -13,7 +13,7 @@ if (!$lastError) {
 }
 ?>
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last muted error</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last muted error</a></h2>
 	<div class="section-panel tracy-collapsed">
 
 	<h3><?= Helpers::errorTypeToString($lastError['type']) ?>: <?= Helpers::escapeHtml($lastError['message']) ?></h3>

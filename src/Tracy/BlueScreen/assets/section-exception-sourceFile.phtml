@@ -11,7 +11,7 @@ namespace Tracy;
 
 ?>
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = $expanded !== null) ? ' tracy-collapsed' : '' ?>">Source file</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle<?= ($collapsed = $expanded !== null) ? ' tracy-collapsed' : '' ?>">Source file</a></h2>
 
 	<div class="section-panel<?= $collapsed ? ' tracy-collapsed' : '' ?>">
 		<p><b>File:</b> <?= Helpers::editorLink($ex->getFile(), $ex->getLine()) ?></p>

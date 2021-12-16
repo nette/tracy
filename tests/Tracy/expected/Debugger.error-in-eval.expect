@@ -27,7 +27,7 @@
 
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
 
 	<div class="section-panel">
 		<p><b>File:</b> <span>%a% : eval()&apos;d code:1</span></p>
@@ -36,7 +36,7 @@
 </section>
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
 
 	<div class="section-panel">
 	<div class="callstack">
@@ -46,7 +46,7 @@
 		</div>
 
 		<div class="callstack-callee">
-			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>trigger_error</b> (...)</a>
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>trigger_error</b> (...)</a>
 		</div>
 
 		<div class="callstack-additional tracy-collapsed">
@@ -66,7 +66,7 @@
 		</div>
 
 		<div class="callstack-callee">
-			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>eval</b> ()</a>
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>eval</b> ()</a>
 		</div>
 
 		<div class="callstack-additional tracy-collapsed">
@@ -79,7 +79,7 @@
 		</div>
 
 		<div class="callstack-callee">
-			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>first</b> (...)</a>
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>first</b> (...)</a>
 		</div>
 
 		<div class="callstack-additional tracy-collapsed">
@@ -97,7 +97,7 @@
 </section>
 %A%
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
 	<div class="section-panel tracy-collapsed">
 		<pre class="tracy-dump tracy-light" data-tracy-dump='{"ref":%d%}'></pre>
 	</div>
@@ -107,7 +107,7 @@
 
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
 	<div class="section-panel tracy-collapsed">
 
@@ -154,7 +154,7 @@
 
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP</a></h2>
 
 	<div class="section-panel tracy-collapsed">
 

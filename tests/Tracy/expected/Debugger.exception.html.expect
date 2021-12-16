@@ -27,7 +27,7 @@
 
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
 
 	<div class="section-panel">
 		<p><b>File:</b> %a%</p>
@@ -36,7 +36,7 @@
 </section>
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
 
 	<div class="section-panel">
 	<div class="callstack">
@@ -46,7 +46,7 @@
 		</div>
 
 		<div class="callstack-callee">
-			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>third</b> (...)</a>
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>third</b> (...)</a>
 		</div>
 
 		<div class="callstack-additional tracy-collapsed">
@@ -63,7 +63,7 @@
 		</div>
 
 		<div class="callstack-callee">
-			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>second</b> (...)</a>
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>second</b> (...)</a>
 		</div>
 
 		<div class="callstack-additional tracy-collapsed">
@@ -82,7 +82,7 @@
 		</div>
 
 		<div class="callstack-callee">
-			<a data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>first</b> (...)</a>
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>first</b> (...)</a>
 		</div>
 
 		<div class="callstack-additional tracy-collapsed">
@@ -103,7 +103,7 @@
 
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last muted error</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last muted error</a></h2>
 	<div class="section-panel tracy-collapsed">
 
 	<h3>Warning: hex2bin(): Hexadecimal input string must have an even length</h3>
@@ -116,7 +116,7 @@
 
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
 
 	<div class="section-panel tracy-collapsed">
 
@@ -163,7 +163,7 @@
 
 
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP</a></h2>
 
 	<div class="section-panel tracy-collapsed">
 

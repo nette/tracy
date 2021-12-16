@@ -18,7 +18,7 @@ if (Helpers::isCli()) {
 }
 ?>
 <section class="section">
-	<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP</a></h2>
+	<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP</a></h2>
 
 	<div class="section-panel tracy-collapsed">
 
@@ -77,7 +77,7 @@ if (Helpers::isCli()) {
 
 
 <?php if ($headersSent && $headersFile && @is_file($headersFile)): ?>
-			<p>Headers have been sent, output started at <?= Helpers::editorLink($headersFile, $headersLine) ?> <a data-tracy-ref="^p + div" class="tracy-toggle tracy-collapsed">source</a></p>
+			<p>Headers have been sent, output started at <?= Helpers::editorLink($headersFile, $headersLine) ?> <a href="#" data-tracy-ref="^p + div" class="tracy-toggle tracy-collapsed">source</a></p>
 			<div class="tracy-collapsed"><?= BlueScreen::highlightFile($headersFile, $headersLine) ?></div>
 <?php elseif ($headersSent): ?>
 			<p>Headers have been sent</p>

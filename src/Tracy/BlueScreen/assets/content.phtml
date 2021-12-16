@@ -34,7 +34,7 @@ namespace Tracy;
 <?php if (!empty($panel->bottom)) { $bottomPanels[] = $panel; continue; } ?>
 <?php $collapsedClass = !isset($panel->collapsed) || $panel->collapsed ? ' tracy-collapsed' : ''; ?>
 		<section class="section">
-			<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle<?= $collapsedClass ?>"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
+			<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle<?= $collapsedClass ?>"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
 
 			<div class="section-panel<?= $collapsedClass ?>">
 			<?= $panel->panel ?>
@@ -50,7 +50,7 @@ namespace Tracy;
 
 <?php foreach ($bottomPanels as $panel): ?>
 		<section class="section">
-			<h2 class="section-label"><a data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
+			<h2 class="section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle"><?= Helpers::escapeHtml($panel->tab) ?></a></h2>
 
 			<div class="section-panel">
 			<?= $panel->panel ?>
