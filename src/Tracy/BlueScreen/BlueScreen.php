@@ -97,11 +97,7 @@ class BlueScreen
 	}
 
 
-	/**
-	 * @param \Fiber|\Generator $fiber
-	 * @return static
-	 */
-	public function addFiber($fiber): self
+	public function addFiber(\Fiber|\Generator $fiber): static
 	{
 		$this->fibers[$fiber] = true;
 		return $this;
@@ -147,7 +143,7 @@ class BlueScreen
 	}
 
 
-	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
+	private function renderTemplate(\Throwable $exception, string $template, bool $toScreen = true): void
 	{
 		[$generators, $fibers] = $this->findGeneratorsAndFibers($exception);
 		$headersSent = headers_sent($headersFile, $headersLine);

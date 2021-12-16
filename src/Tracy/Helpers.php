@@ -85,13 +85,13 @@ class Helpers
 	}
 
 
-	public static function escapeHtml($s): string
+	public static function escapeHtml(mixed $s): string
 	{
 		return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
 	}
 
 
-	public static function findTrace(array $trace, $method, ?int &$index = null): ?array
+	public static function findTrace(array $trace, array|string $method, ?int &$index = null): ?array
 	{
 		$m = is_array($method) ? $method : explode('::', $method);
 		foreach ($trace as $i => $item) {
@@ -110,7 +110,7 @@ class Helpers
 	}
 
 
-	public static function getClass($obj): string
+	public static function getClass(object $obj): string
 	{
 		return explode("\x00", $obj::class)[0];
 	}
@@ -579,7 +579,7 @@ class Helpers
 	}
 
 
-	public static function traverseValue($val, callable $callback, array &$skip = [], ?string $refId = null): void
+	public static function traverseValue(mixed $val, callable $callback, array &$skip = [], ?string $refId = null): void
 	{
 		if (is_object($val)) {
 			$id = spl_object_id($val);

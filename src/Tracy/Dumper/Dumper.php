@@ -91,9 +91,8 @@ class Dumper
 
 	/**
 	 * Dumps variable to the output.
-	 * @return mixed  variable
 	 */
-	public static function dump($var, array $options = [])
+	public static function dump(mixed $var, array $options = []): mixed
 	{
 		if (Helpers::isCli()) {
 			$useColors = self::$terminalColors && Helpers::detectColors();
@@ -116,7 +115,7 @@ class Dumper
 	/**
 	 * Dumps variable to HTML.
 	 */
-	public static function toHtml($var, array $options = [], $key = null): string
+	public static function toHtml(mixed $var, array $options = [], mixed $key = null): string
 	{
 		return (new self($options))->asHtml($var, $key);
 	}
@@ -125,7 +124,7 @@ class Dumper
 	/**
 	 * Dumps variable to plain text.
 	 */
-	public static function toText($var, array $options = []): string
+	public static function toText(mixed $var, array $options = []): string
 	{
 		return (new self($options))->asTerminal($var);
 	}
@@ -134,7 +133,7 @@ class Dumper
 	/**
 	 * Dumps variable to x-terminal.
 	 */
-	public static function toTerminal($var, array $options = []): string
+	public static function toTerminal(mixed $var, array $options = []): string
 	{
 		return (new self($options))->asTerminal($var, self::$terminalColors);
 	}
@@ -212,7 +211,7 @@ class Dumper
 	/**
 	 * Dumps variable to HTML.
 	 */
-	private function asHtml($var, $key = null): string
+	private function asHtml(mixed $var, mixed $key = null): string
 	{
 		if ($key === null) {
 			$model = $this->describer->describe($var);
@@ -228,7 +227,7 @@ class Dumper
 	/**
 	 * Dumps variable to x-terminal.
 	 */
-	private function asTerminal($var, array $colors = []): string
+	private function asTerminal(mixed $var, array $colors = []): string
 	{
 		$model = $this->describer->describe($var);
 		return $this->renderer->renderAsText($model, $colors);

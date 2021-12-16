@@ -113,11 +113,7 @@ final class Renderer
 	}
 
 
-	/**
-	 * @param  mixed  $value
-	 * @param  string|int|null  $keyType
-	 */
-	private function renderVar($value, int $depth = 0, $keyType = null): string
+	private function renderVar(mixed $value, int $depth = 0, string|int|null $keyType = null): string
 	{
 		switch (true) {
 			case $value === null:
@@ -164,11 +160,7 @@ final class Renderer
 	}
 
 
-	/**
-	 * @param  string|Value  $str
-	 * @param  string|int|null  $keyType
-	 */
-	private function renderString($str, int $depth, $keyType): string
+	private function renderString(string|Value $str, int $depth, string|int|null $keyType): string
 	{
 		if ($keyType === self::TypeArrayKey) {
 			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . ' </span>';
@@ -241,10 +233,7 @@ final class Renderer
 	}
 
 
-	/**
-	 * @param  array|Value  $array
-	 */
-	private function renderArray($array, int $depth): string
+	private function renderArray(array|Value $array, int $depth): string
 	{
 		$out = '<span class="tracy-dump-array">array</span> (';
 
@@ -422,7 +411,7 @@ final class Renderer
 	}
 
 
-	private function copySnapshot($value): void
+	private function copySnapshot(mixed $value): void
 	{
 		if ($this->collectingMode) {
 			return;
@@ -449,11 +438,11 @@ final class Renderer
 	}
 
 
-	public static function jsonEncode($snapshot): string
+	public static function jsonEncode(mixed $value): string
 	{
 		$old = @ini_set('serialize_precision', '-1'); // @ may be disabled
 		try {
-			return json_encode($snapshot, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+			return json_encode($value, JSON_HEX_APOS | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 		} finally {
 			if ($old !== false) {
 				ini_set('serialize_precision', $old);

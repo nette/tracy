@@ -48,7 +48,7 @@ final class Describer
 	public array $references = [];
 
 
-	public function describe($var): \stdClass
+	public function describe(mixed $var): \stdClass
 	{
 		uksort($this->objectExposers, fn($a, $b): int => $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1);
 
@@ -67,10 +67,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return mixed
-	 */
-	private function describeVar($var, int $depth = 0, ?int $refId = null)
+	private function describeVar(mixed $var, int $depth = 0, ?int $refId = null): mixed
 	{
 		if ($var === null || is_bool($var)) {
 			return $var;
@@ -81,10 +78,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|int
-	 */
-	private function describeInteger(int $num)
+	private function describeInteger(int $num): Value|int
 	{
 		return $num <= self::JsSafeInteger && $num >= -self::JsSafeInteger
 			? $num
@@ -92,10 +86,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|float
-	 */
-	private function describeDouble(float $num)
+	private function describeDouble(float $num): Value|float
 	{
 		if (!is_finite($num)) {
 			return new Value(Value::TypeNumber, (string) $num);
@@ -108,10 +99,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|string
-	 */
-	private function describeString(string $s, int $depth = 0)
+	private function describeString(string $s, int $depth = 0): Value|string
 	{
 		$encoded = Helpers::encodeString($s, $depth ? $this->maxLength : null);
 		if ($encoded === $s) {
@@ -124,10 +112,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|array
-	 */
-	private function describeArray(array $arr, int $depth = 0, ?int $refId = null)
+	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): Value|array
 	{
 		if ($refId) {
 			$res = new Value(Value::TypeRef, 'p' . $refId);
@@ -231,10 +216,7 @@ final class Describer
 	}
 
 
-	/**
-	 * @return Value|string
-	 */
-	public function describeKey(string $key)
+	public function describeKey(string $key): Value|string
 	{
 		if (preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^(true|false|null)$#iD', $key)) {
 			return $key;
@@ -250,11 +232,12 @@ final class Describer
 	public function addPropertyTo(
 		Value $value,
 		string $k,
-		$v,
-		$type = Value::PropertyVirtual,
+		mixed $v,
+		int $type = Value::PropertyVirtual,
 		?int $refId = null,
 		?string $class = null,
-	) {
+	): void
+	{
 		if ($value->depth && $this->maxItems && count($value->items ?? []) >= $this->maxItems) {
 			$value->length = ($value->length ?? count($value->items)) + 1;
 			return;
@@ -288,7 +271,7 @@ final class Describer
 	}
 
 
-	private function isSensitive(string $key, $val, ?string $class = null): bool
+	private function isSensitive(string $key, mixed $val, ?string $class = null): bool
 	{
 		return $val instanceof \SensitiveParameterValue
 			|| ($this->scrubber !== null && ($this->scrubber)($key, $val, $class))
@@ -297,7 +280,7 @@ final class Describer
 	}
 
 
-	private static function hideValue($val): string
+	private static function hideValue(mixed $val): string
 	{
 		if ($val instanceof \SensitiveParameterValue) {
 			$val = $val->getValue();
@@ -307,7 +290,7 @@ final class Describer
 	}
 
 
-	public function getReferenceId($arr, $key): ?int
+	public function getReferenceId(array $arr, string|int $key): ?int
 	{
 		return ($rr = \ReflectionReference::fromArrayElement($arr, $key))
 			? ($this->references[$rr->getId()] ??= count($this->references) + 1)
