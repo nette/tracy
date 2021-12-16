@@ -48,6 +48,15 @@ final class DeferredContent
 	}
 
 
+	public function addSetup(string $method, $argument): void
+	{
+		$argument = json_encode($argument, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+		$item = &$this->getItems('setup')[$this->requestId];
+		$item['code'] = ($item['code'] ?? '') . "$method($argument);\n";
+		$item['time'] = time();
+	}
+
+
 	public function sendAssets(): bool
 	{
 		if (headers_sent($file, $line) || ob_get_length()) {
@@ -83,18 +92,9 @@ final class DeferredContent
 				$this->sendJsCss();
 			}
 
-			$session = &$_SESSION['_tracy']['bar'][$requestId];
-			if ($session) {
-				$method = $ajax ? 'loadAjax' : 'init';
-				echo "Tracy.Debug.$method(", json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), ');';
-				$session = null;
-			}
-
-			$session = &$_SESSION['_tracy']['bluescreen'][$requestId];
-			if ($session) {
-				echo 'Tracy.BlueScreen.loadAjax(', json_encode($session['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), ');';
-				$session = null;
-			}
+			$data = &$this->getItems('setup');
+			echo $data[$requestId]['code'] ?? '';
+			unset($data[$requestId]);
 
 			return true;
 		}

@@ -77,7 +77,7 @@ class Bar
 
 		if (Helpers::isAjax()) {
 			if ($defer->isAvailable()) {
-				$defer->getItems('bar')[$contentId] = ['content' => $this->renderPartial('ajax', '-ajax:' . $contentId), 'time' => time()];
+				$defer->addSetup('Tracy.Debug.loadAjax', $this->renderPartial('ajax', '-ajax:' . $contentId));
 			}
 		} elseif (Helpers::isRedirect()) {
 			if ($defer->isAvailable()) {
@@ -96,7 +96,7 @@ class Bar
 			$content = '<div id=tracy-debug-bar>' . $content['bar'] . '</div>' . $content['panels'];
 
 			if ($this->loaderRendered) {
-				$defer->getItems('bar')[$contentId] = ['content' => $content, 'time' => time()];
+				$defer->addSetup('Tracy.Debug.init', $content);
 
 			} else {
 				$nonce = Helpers::getNonce();
