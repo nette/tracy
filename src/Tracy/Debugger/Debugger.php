@@ -158,8 +158,11 @@ class Debugger
 	 * @param  string  $logDirectory  error log directory
 	 * @param  string|array  $email  administrator email; enables email sending in production mode
 	 */
-	public static function enable($mode = null, ?string $logDirectory = null, $email = null): void
-	{
+	public static function enable(
+		bool|string|array|null $mode = null,
+		?string $logDirectory = null,
+		string|array|null $email = null,
+	): void {
 		if ($mode !== null || self::$productionMode === null) {
 			self::$productionMode = is_bool($mode)
 				? $mode
@@ -422,8 +425,8 @@ class Debugger
 	}
 
 
-	/** @return ProductionStrategy|DevelopmentStrategy @internal */
-	public static function getStrategy()
+	/** @internal */
+	public static function getStrategy(): ProductionStrategy|DevelopmentStrategy
 	{
 		if (empty(self::$strategy[self::$productionMode])) {
 			self::$strategy[self::$productionMode] = self::$productionMode
@@ -471,7 +474,7 @@ class Debugger
 	 * @param  bool   $return  return output instead of printing it? (bypasses $productionMode)
 	 * @return mixed  variable itself or dump
 	 */
-	public static function dump($var, bool $return = false)
+	public static function dump(mixed $var, bool $return = false): mixed
 	{
 		if ($return) {
 			$options = [
@@ -518,10 +521,9 @@ class Debugger
 	/**
 	 * Dumps information about a variable in Tracy Debug Bar.
 	 * @tracySkipLocation
-	 * @param  mixed  $var
 	 * @return mixed  variable itself
 	 */
-	public static function barDump($var, ?string $title = null, array $options = [])
+	public static function barDump(mixed $var, ?string $title = null, array $options = []): mixed
 	{
 		if (!self::$productionMode) {
 			static $panel;
@@ -543,10 +545,8 @@ class Debugger
 
 	/**
 	 * Logs message or exception.
-	 * @param  mixed  $message
-	 * @return mixed
 	 */
-	public static function log($message, string $level = ILogger::INFO)
+	public static function log(mixed $message, string $level = ILogger::INFO): mixed
 	{
 		return self::getLogger()->log($message, $level);
 	}
@@ -576,7 +576,7 @@ class Debugger
 	 * Detects debug mode by IP address.
 	 * @param  string|array  $list  IP addresses or computer names whitelist detection
 	 */
-	public static function detectDebugMode($list = null): bool
+	public static function detectDebugMode(string|array|null $list = null): bool
 	{
 		$addr = $_SERVER['REMOTE_ADDR'] ?? php_uname('n');
 		$secret = isset($_COOKIE[self::COOKIE_SECRET]) && is_string($_COOKIE[self::COOKIE_SECRET])
