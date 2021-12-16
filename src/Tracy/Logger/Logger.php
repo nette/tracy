@@ -15,23 +15,22 @@ namespace Tracy;
  */
 class Logger implements ILogger
 {
-	/** @var string|null name of the directory where errors should be logged */
-	public $directory;
+	/** name of the directory where errors should be logged */
+	public ?string $directory = null;
 
-	/** @var string|array|null email or emails to which send error notifications */
-	public $email;
+	/** email or emails to which send error notifications */
+	public string|array|null $email = null;
 
-	/** @var string|null sender of email notifications */
-	public $fromEmail;
+	/** sender of email notifications */
+	public ?string $fromEmail = null;
 
-	/** @var mixed interval for sending email is 2 days */
-	public $emailSnooze = '2 days';
+	/** interval for sending email is 2 days */
+	public mixed $emailSnooze = '2 days';
 
 	/** @var callable handler for sending emails */
 	public $mailer;
 
-	/** @var BlueScreen|null */
-	private $blueScreen;
+	private ?BlueScreen $blueScreen = null;
 
 
 	/**
