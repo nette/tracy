@@ -20,14 +20,16 @@ test('html mode', function () {
 	header('Content-Type: text/html');
 	ob_start();
 	dump(123);
-	Assert::match(<<<'XX'
-<style>%a%</style>
-<script>%a%</script>
-<pre class="tracy-dump tracy-light"
-><a href="editor://%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">dump(123) 📍</a
-><span class="tracy-dump-number">123</span></pre>
-XX
-, ob_get_clean());
+	Assert::match(
+		<<<'XX'
+			<style>%a%</style>
+			<script>%a%</script>
+			<pre class="tracy-dump tracy-light"
+			><a href="editor://%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">dump(123) 📍</a
+			><span class="tracy-dump-number">123</span></pre>
+			XX,
+		ob_get_clean(),
+	);
 });
 
 
@@ -36,12 +38,14 @@ test('dark theme', function () {
 
 	ob_start();
 	dump(123);
-	Assert::match(<<<'XX'
-<pre class="tracy-dump tracy-dark"
-><a href="editor://%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">dump(123) 📍</a
-><span class="tracy-dump-number">123</span></pre>
-XX
-, ob_get_clean());
+	Assert::match(
+		<<<'XX'
+			<pre class="tracy-dump tracy-dark"
+			><a href="editor://%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">dump(123) 📍</a
+			><span class="tracy-dump-number">123</span></pre>
+			XX,
+		ob_get_clean(),
+	);
 });
 
 

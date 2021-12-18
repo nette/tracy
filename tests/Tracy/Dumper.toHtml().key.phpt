@@ -11,10 +11,10 @@ require __DIR__ . '/../bootstrap.php';
 
 Assert::match(
 	'<pre class="tracy-dump tracy-light"><span class="tracy-dump-number">123</span></pre>',
-	Dumper::toHtml(123, [Dumper::KEYS_TO_HIDE => ['password', 'pin']], 'pass')
+	Dumper::toHtml(123, [Dumper::KEYS_TO_HIDE => ['password', 'pin']], 'pass'),
 );
 
 Assert::match(
 	'<pre class="tracy-dump tracy-light"><span class="tracy-dump-virtual">***** (integer)</span></pre>',
-	Dumper::toHtml(123, [Dumper::KEYS_TO_HIDE => ['password', 'pin']], 'password')
+	Dumper::toHtml(123, [Dumper::KEYS_TO_HIDE => ['password', 'pin']], 'password'),
 );

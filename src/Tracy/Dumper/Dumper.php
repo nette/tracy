@@ -109,7 +109,7 @@ class Dumper
 			echo self::toText($var, $options);
 
 		} else { // html
-			$options[self::LOCATION] = $options[self::LOCATION] ?? true;
+			$options[self::LOCATION] ??= true;
 			self::renderAssets();
 			echo self::toHtml($var, $options);
 		}
@@ -194,8 +194,8 @@ class Dumper
 		}
 
 		if (isset($tmp)) {
-			$tmp[0] = $tmp[0] ?? [];
-			$tmp[1] = $tmp[1] ?? [];
+			$tmp[0] ??= [];
+			$tmp[1] ??= [];
 			$describer->snapshot = &$tmp[0];
 			$describer->references = &$tmp[1];
 		}

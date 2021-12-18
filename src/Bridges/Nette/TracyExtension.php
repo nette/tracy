@@ -105,7 +105,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 				];
 				$initialize->addBody($builder->formatPhp(
 					($tbl[$key] ?? 'Tracy\Debugger::$' . $key . ' = ?') . ';',
-					Nette\DI\Helpers::filterArguments([$value])
+					Nette\DI\Helpers::filterArguments([$value]),
 				));
 			}
 		}
@@ -134,7 +134,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 				$initialize->addBody($builder->formatPhp(
 					'$this->getService(?)->addPanel(?);',
-					Nette\DI\Helpers::filterArguments([$this->prefix('bar'), $item])
+					Nette\DI\Helpers::filterArguments([$this->prefix('bar'), $item]),
 				));
 			}
 
@@ -151,7 +151,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		foreach ($this->config->blueScreen as $item) {
 			$initialize->addBody($builder->formatPhp(
 				'$this->getService(?)->addPanel(?);',
-				Nette\DI\Helpers::filterArguments([$this->prefix('blueScreen'), $item])
+				Nette\DI\Helpers::filterArguments([$this->prefix('blueScreen'), $item]),
 			));
 		}
 

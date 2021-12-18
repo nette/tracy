@@ -500,9 +500,7 @@ class Debugger
 			];
 			return Helpers::isCli()
 				? Dumper::toText($var)
-				: Helpers::capture(function () use ($var, $options) {
-					Dumper::dump($var, $options);
-				});
+				: Helpers::capture(fn() => Dumper::dump($var, $options));
 
 		} elseif (!self::$productionMode) {
 			Dumper::dump($var, [
