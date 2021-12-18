@@ -20,7 +20,7 @@ final class Exposer
 	public static function exposeObject(object $obj, Value $value, Describer $describer): void
 	{
 		$values = (array) $obj;
-		$props = self::getProperties(get_class($obj));
+		$props = self::getProperties($obj::class);
 
 		foreach (array_diff_key($values, $props) as $k => $v) {
 			$describer->addPropertyTo(
@@ -28,7 +28,7 @@ final class Exposer
 				(string) $k,
 				$v,
 				Value::PROP_DYNAMIC,
-				$describer->getReferenceId($values, $k)
+				$describer->getReferenceId($values, $k),
 			);
 		}
 
@@ -40,7 +40,7 @@ final class Exposer
 					$values[$k],
 					$type,
 					$describer->getReferenceId($values, $k),
-					$class
+					$class,
 				);
 			} else {
 				$value->items[] = [
@@ -114,7 +114,7 @@ final class Exposer
 
 	public static function exposeEnum(\UnitEnum $enum, Value $value, Describer $describer): void
 	{
-		$value->value = get_class($enum) . '::' . $enum->name;
+		$value->value = $enum::class . '::' . $enum->name;
 		if ($enum instanceof \BackedEnum) {
 			$describer->addPropertyTo($value, 'value', $enum->value);
 			$value->collapsed = true;
@@ -172,7 +172,7 @@ final class Exposer
 	public static function exposePhpIncompleteClass(
 		\__PHP_Incomplete_Class $obj,
 		Value $value,
-		Describer $describer
+		Describer $describer,
 	): void {
 		$values = (array) $obj;
 		$class = $values['__PHP_Incomplete_Class_Name'];
@@ -200,7 +200,7 @@ final class Exposer
 	public static function exposeDsCollection(
 		Ds\Collection $obj,
 		Value $value,
-		Describer $describer
+		Describer $describer,
 	): void {
 		foreach ($obj as $k => $v) {
 			$describer->addPropertyTo($value, (string) $k, $v, Value::PROP_VIRTUAL);
@@ -211,7 +211,7 @@ final class Exposer
 	public static function exposeDsMap(
 		Ds\Map $obj,
 		Value $value,
-		Describer $describer
+		Describer $describer,
 	): void {
 		$i = 0;
 		foreach ($obj as $k => $v) {

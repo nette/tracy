@@ -40,9 +40,7 @@ final class ProductionStrategy
 				header('Content-Type: text/html; charset=UTF-8');
 			}
 
-			(function ($logged) use ($exception) {
-				require Debugger::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml';
-			})(empty($e));
+			(fn($logged) => require Debugger::$errorTemplate ?: __DIR__ . '/assets/error.500.phtml')(empty($e));
 
 		} elseif (Helpers::isCli()) {
 			// @ triggers E_NOTICE when strerr is closed since PHP 7.4

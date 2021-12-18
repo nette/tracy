@@ -116,9 +116,7 @@ class BlueScreen
 	/** @internal */
 	public function renderToAjax(\Throwable $exception, DeferredContent $defer): void
 	{
-		$defer->addSetup('Tracy.BlueScreen.loadAjax', Helpers::capture(function () use ($exception) {
-			$this->renderTemplate($exception, __DIR__ . '/assets/content.phtml');
-		}));
+		$defer->addSetup('Tracy.BlueScreen.loadAjax', Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/assets/content.phtml')));
 	}
 
 
@@ -158,8 +156,8 @@ class BlueScreen
 		if (function_exists('apache_request_headers')) {
 			$httpHeaders = apache_request_headers();
 		} else {
-			$httpHeaders = array_filter($_SERVER, function ($k) { return strncmp($k, 'HTTP_', 5) === 0; }, ARRAY_FILTER_USE_KEY);
-			$httpHeaders = array_combine(array_map(function ($k) { return strtolower(strtr(substr($k, 5), '_', '-')); }, array_keys($httpHeaders)), $httpHeaders);
+			$httpHeaders = array_filter($_SERVER, fn($k) => strncmp($k, 'HTTP_', 5) === 0, ARRAY_FILTER_USE_KEY);
+			$httpHeaders = array_combine(array_map(fn($k) => strtolower(strtr(substr($k, 5), '_', '-')), array_keys($httpHeaders)), $httpHeaders);
 		}
 
 		$snapshot = &$this->snapshot;
@@ -371,7 +369,7 @@ class BlueScreen
 					"<span class='tracy-line-highlight'>%{$numWidth}s:    %s\n</span>%s",
 					$n,
 					strip_tags($s),
-					implode('', $tags[0])
+					implode('', $tags[0]),
 				);
 			} else {
 				$out .= sprintf("<span class='tracy-line'>%{$numWidth}s:</span>    %s\n", $n, $s);
@@ -417,7 +415,7 @@ class BlueScreen
 
 				return "\e[0m\e[" . end($stack) . 'm';
 			},
-			$s
+			$s,
 		);
 		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES | ENT_HTML5);
 		return $s;
@@ -445,17 +443,15 @@ class BlueScreen
 	/** @internal */
 	public function getDumper(): \Closure
 	{
-		return function ($v, $k = null): string {
-			return Dumper::toHtml($v, [
-				Dumper::DEPTH => $this->maxDepth,
-				Dumper::TRUNCATE => $this->maxLength,
-				Dumper::ITEMS => $this->maxItems,
-				Dumper::SNAPSHOT => &$this->snapshot,
-				Dumper::LOCATION => Dumper::LOCATION_CLASS,
-				Dumper::SCRUBBER => $this->scrubber,
-				Dumper::KEYS_TO_HIDE => $this->keysToHide,
-			], $k);
-		};
+		return fn($v, $k = null): string => Dumper::toHtml($v, [
+			Dumper::DEPTH => $this->maxDepth,
+			Dumper::TRUNCATE => $this->maxLength,
+			Dumper::ITEMS => $this->maxItems,
+			Dumper::SNAPSHOT => &$this->snapshot,
+			Dumper::LOCATION => Dumper::LOCATION_CLASS,
+			Dumper::SCRUBBER => $this->scrubber,
+			Dumper::KEYS_TO_HIDE => $this->keysToHide,
+		], $k);
 	}
 
 
@@ -467,7 +463,7 @@ class BlueScreen
 		$msg = preg_replace(
 			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
 			'<i>$0</i>',
-			$msg
+			$msg,
 		);
 
 		// clickable class & methods
@@ -486,18 +482,16 @@ class BlueScreen
 
 				return '<a href="' . Helpers::escapeHtml(Helpers::editorUri($r->getFileName(), $r->getStartLine())) . '" class="tracy-editor">' . $m[0] . '</a>';
 			},
-			$msg
+			$msg,
 		);
 
 		// clickable file name
 		$msg = preg_replace_callback(
 			'#([\w\\\\/.:-]+\.(?:php|phpt|phtml|latte|neon))(?|:(\d+)| on line (\d+))?#',
-			function ($m) {
-				return @is_file($m[1])
+			fn($m) => @is_file($m[1])
 				? '<a href="' . Helpers::escapeHtml(Helpers::editorUri($m[1], isset($m[2]) ? (int) $m[2] : null)) . '" class="tracy-editor">' . $m[0] . '</a>'
-				: $m[0];
-			},
-			$msg
+				: $m[0],
+			$msg,
 		);
 
 		return $msg;
