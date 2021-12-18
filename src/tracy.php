@@ -21,6 +21,7 @@ require __DIR__ . '/Tracy/Logger/ILogger.php';
 require __DIR__ . '/Tracy/Logger/FireLogger.php';
 require __DIR__ . '/Tracy/Logger/Logger.php';
 require __DIR__ . '/Tracy/Debugger/Debugger.php';
+require __DIR__ . '/Tracy/Debugger/DeferredContent.php';
 require __DIR__ . '/Tracy/Debugger/DevelopmentStrategy.php';
 require __DIR__ . '/Tracy/Debugger/ProductionStrategy.php';
 require __DIR__ . '/Tracy/OutputDebugger/OutputDebugger.php';

@@ -23,11 +23,15 @@ final class DevelopmentStrategy
 	/** @var BlueScreen */
 	private $blueScreen;
 
+	/** @var DeferredContent */
+	private $defer;
 
-	public function __construct(Bar $bar, BlueScreen $blueScreen)
+
+	public function __construct(Bar $bar, BlueScreen $blueScreen, DeferredContent $defer)
 	{
 		$this->bar = $bar;
 		$this->blueScreen = $blueScreen;
+		$this->defer = $defer;
 	}
 
 
@@ -38,7 +42,10 @@ final class DevelopmentStrategy
 
 	public function handleException(\Throwable $exception, bool $firstTime): void
 	{
-		if ($firstTime && Helpers::isHtmlMode() || Helpers::isAjax()) {
+		if (Helpers::isAjax() && $this->defer->isAvailable()) {
+			$this->blueScreen->renderToAjax($exception, $this->defer);
+
+		} elseif ($firstTime && Helpers::isHtmlMode()) {
 			$this->blueScreen->render($exception);
 
 		} else {
@@ -112,13 +119,13 @@ final class DevelopmentStrategy
 
 	public function sendAssets(): bool
 	{
-		return $this->bar->dispatchAssets();
+		return $this->defer->sendAssets();
 	}
 
 
 	public function renderLoader(): void
 	{
-		$this->bar->renderLoader();
+		$this->bar->renderLoader($this->defer);
 	}
 
 
@@ -128,6 +135,6 @@ final class DevelopmentStrategy
 			ini_set('display_errors', '1');
 		}
 
-		$this->bar->render();
+		$this->bar->render($this->defer);
 	}
 }

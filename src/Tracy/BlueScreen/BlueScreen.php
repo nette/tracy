@@ -102,21 +102,23 @@ class BlueScreen
 	 */
 	public function render(\Throwable $exception): void
 	{
-		if (Helpers::isAjax() && session_status() === PHP_SESSION_ACTIVE) {
-			$_SESSION['_tracy']['bluescreen'][$_SERVER['HTTP_X_TRACY_AJAX']] = [
-				'content' => Helpers::capture(function () use ($exception) {
-					$this->renderTemplate($exception, __DIR__ . '/assets/content.phtml');
-				}),
-				'time' => time(),
-			];
-
-		} else {
-			if (!headers_sent()) {
-				header('Content-Type: text/html; charset=UTF-8');
-			}
-
-			$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml');
+		if (!headers_sent()) {
+			header('Content-Type: text/html; charset=UTF-8');
 		}
+
+		$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml');
+	}
+
+
+	/** @internal */
+	public function renderToAjax(\Throwable $exception, DeferredContent $defer): void
+	{
+		$defer->getItems('bluescreen')[$defer->getRequestId()] = [
+			'content' => Helpers::capture(function () use ($exception) {
+				$this->renderTemplate($exception, __DIR__ . '/assets/content.phtml');
+			}),
+			'time' => time(),
+		];
 	}
 
 

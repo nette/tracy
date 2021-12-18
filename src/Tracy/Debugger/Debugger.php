@@ -243,12 +243,7 @@ class Debugger
 
 	public static function dispatch(): void
 	{
-		if (headers_sent($file, $line) || ob_get_length()) {
-			throw new \LogicException(
-				__METHOD__ . '() called after some output has been sent. '
-				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.')
-			);
-		} elseif (
+		if (
 			!Helpers::isCli()
 			&& self::getStrategy()->sendAssets()
 		) {
@@ -461,7 +456,7 @@ class Debugger
 		if (empty(self::$strategy[self::$productionMode])) {
 			self::$strategy[self::$productionMode] = self::$productionMode
 				? new ProductionStrategy
-				: new DevelopmentStrategy(self::getBar(), self::getBlueScreen());
+				: new DevelopmentStrategy(self::getBar(), self::getBlueScreen(), new DeferredContent);
 		}
 
 		return self::$strategy[self::$productionMode];

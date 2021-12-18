@@ -18,10 +18,10 @@ $output = ob_get_clean();
 Assert::contains('custom-asset{}', $output);
 
 
-$bar = new Tracy\Bar;
+$handler = Tracy\Debugger::getStrategy();
 ob_start();
 $_GET['_tracy_bar'] = 'js';
-$bar->dispatchAssets();
+$handler->sendAssets();
 $output = ob_get_clean();
 
 Assert::contains('custom-asset{}', $output);
