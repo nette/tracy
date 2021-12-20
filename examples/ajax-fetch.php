@@ -61,8 +61,8 @@ document.querySelectorAll('button').forEach((button) => {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-Requested-With': 'XMLHttpRequest'
-					// 'X-Tracy-Ajax': Tracy.getAjaxHeader()}, // use when auto-refresh is disabled via window.TracyAutoRefresh = false;
+					'X-Requested-With': 'XMLHttpRequest',
+					//'X-Tracy-Ajax': Tracy.getAjaxHeader(), // use when auto-refresh is disabled via window.TracyAutoRefresh = false;
 				}
 			}
 		)

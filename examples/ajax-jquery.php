@@ -62,8 +62,7 @@ $('button').click(function() {
 	jqxhr = $.ajax({
 		data: {error: $(this).hasClass('error') * 1},
 		dataType: 'json',
-		jsonp: false,
-		// headers: {'X-Tracy-Ajax': Tracy.getAjaxHeader()}, // use when auto-refresh is disabled via window.TracyAutoRefresh = false;
+		jsonp: false
 	}).done(function(data) {
 		$('#result').text('loaded: ' + data);
 
