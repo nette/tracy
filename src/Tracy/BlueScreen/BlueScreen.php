@@ -266,14 +266,17 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code.
 	 */
-	public static function highlightFile(string $file, int $line, int $lines = 15): ?string
+	public static function highlightFile(string $file, int $line, int $lines = 15, bool $php = true): ?string
 	{
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source === false) {
 			return null;
 		}
 
-		$source = static::highlightPhp($source, $line, $lines);
+		$source = $php
+			? static::highlightPhp($source, $line, $lines)
+			: '<pre class=code><div>' . static::highlightLine(htmlspecialchars($source, ENT_IGNORE, 'UTF-8'), $line, $lines) . '</div></pre>';
+
 		if ($editor = Helpers::editorUri($file, $line)) {
 			$source = substr_replace($source, ' title="Ctrl-Click to open in editor" data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
 		}
