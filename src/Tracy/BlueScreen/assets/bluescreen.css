@@ -47,15 +47,11 @@
 .tracy-bs-main {
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
+	padding-bottom: 80vh;
 }
 
 .tracy-bs-main.tracy-collapsed {
 	display: none;
-}
-
-#tracy-bs .section:last-of-type {
-	flex: 1;
 }
 
 #tracy-bs p,
@@ -136,6 +132,12 @@
 	background-color: #F7F0CB;
 }
 
+#tracy-bs .footer--sticky {
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+}
+
 #tracy-bs footer ul {
 	font-size: 7pt;
 	padding: var(--tracy-space);
@@ -144,6 +146,10 @@
 	background: #F6F5F3;
 	border-top: 1px solid #DDD;
 	list-style: none;
+}
+
+#tracy-bs .footer-logo {
+	position: relative;
 }
 
 #tracy-bs .footer-logo a {
