@@ -55,6 +55,10 @@ class BlueScreen
 
 		Tracy.TableSort.init();
 		Tracy.Tabs.init();
+
+		// sticky footer
+		window.addEventListener('scroll', stickyFooter);
+		(new ResizeObserver(stickyFooter)).observe(blueScreen);
 	}
 
 
@@ -71,8 +75,13 @@ class BlueScreen
 	}
 }
 
-let inited;
+function stickyFooter() {
+	let footer = document.querySelector('#tracy-bs footer');
+	footer.classList.toggle('footer--sticky', false); // to measure footer.offsetTop
+	footer.classList.toggle('footer--sticky', footer.offsetHeight + footer.offsetTop - window.innerHeight - document.documentElement.scrollTop < 0);
+}
 
+let inited;
 
 let Tracy = window.Tracy = window.Tracy || {};
 Tracy.BlueScreen = Tracy.BlueScreen || BlueScreen;
