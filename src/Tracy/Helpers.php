@@ -44,7 +44,7 @@ class Helpers
 	 * Returns link to editor.
 	 * @return string|null
 	 */
-	public static function editorUri($file, $line = null, $action = 'open', $search = null, $replace = null)
+	public static function editorUri($file, $line = null, $action = 'open', $search = '', $replace = '')
 	{
 		if (Debugger::$editor && $file && ($action === 'create' || is_file($file))) {
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
