@@ -516,10 +516,10 @@ class Debugger
 	public static function timer(?string $name = null): float
 	{
 		static $time = [];
-		$now = microtime(true);
+		$now = hrtime(true);
 		$delta = isset($time[$name]) ? $now - $time[$name] : 0;
 		$time[$name] = $now;
-		return $delta;
+		return $delta / 1e9;
 	}
 
 
