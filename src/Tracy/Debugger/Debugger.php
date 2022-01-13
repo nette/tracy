@@ -449,9 +449,9 @@ class Debugger
 	public static function getSessionStorage(): SessionStorage
 	{
 		if (empty(self::$sessionStorage)) {
-			self::$sessionStorage = @is_dir($dir = session_save_path())
-				|| @is_dir($dir = ini_get('upload_tmp_dir'))
-				|| @is_dir($dir = sys_get_temp_dir())
+			self::$sessionStorage = (realpath(session_save_path()) && @is_dir($dir = session_save_path()))
+				|| (realpath(ini_get('upload_tmp_dir')) && @is_dir($dir = ini_get('upload_tmp_dir')))
+				|| (realpath(sys_get_temp_dir()) && @is_dir($dir = sys_get_temp_dir()))
 				|| ($dir = self::$logDirectory)
 				? new FileSession($dir)
 				: new NativeSession;
