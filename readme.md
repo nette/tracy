@@ -256,6 +256,28 @@ If you use the Nette Framework, you can set this and others in the configuration
 
 To protect your e-mail box from flood, Tracy sends **only one message** and creates a file `email-sent`. When a developer receives the e-mail notification, he checks the log, corrects his application and deletes the `email-sent` monitoring file. This activates the e-mail sending again.
 
+### Using the PSR-3 Adapter
+This package provides a PSR-3 adapter, allowing for integration of [monolog/monolog](https://github.com/Seldaek/monolog).
+
+```php
+use Tracy\ILogger;
+use Tracy\Debugger;
+use Tracy\Bridges\Psr\PsrToTracyLoggerAdapter;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+require_once "vendor/autoload.php";
+
+$monolog = new Logger('main-channel');
+$monolog->pushHandler(new StreamHandler($logfile_path, Logger::DEBUG));
+
+$tracyLogger = new PsrToTracyLoggerAdapter($monolog);
+Debugger::setLogger($tracyLogger);
+Debugger::enable();
+
+Debugger::log("info"); // writes: [2022-01-17T21:29:20.240714+00:00] main-channel.INFO: info [] []
+Debugger::log('warning', ILogger::WARNING); // writes: [2022-01-17T21:29:20.242560+00:00] main-channel.WARNING: warning [] []
+```
 
 Variable dumping
 ----------------
