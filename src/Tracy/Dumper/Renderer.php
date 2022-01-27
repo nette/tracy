@@ -342,8 +342,11 @@ final class Renderer
 			);
 		}
 
+		$pos = strrpos($object->value, '\\');
 		$out = '<span class="tracy-dump-object"' . $editorAttributes . '>'
-			. Helpers::escapeHtml($object->value)
+			. ($pos
+				? Helpers::escapeHtml(substr($object->value, 0, $pos + 1)) . '<b>' . Helpers::escapeHtml(substr($object->value, $pos + 1)) . '</b>'
+				: Helpers::escapeHtml($object->value))
 			. '</span>'
 			. ($object->id && $this->hash ? ' <span class="tracy-dump-hash">#' . $object->id . '</span>' : '');
 

@@ -239,6 +239,11 @@ function build(data, repository, collapsed, parentIds, keyType) {
 		]);
 
 	} else { // object || resource || array
+		let pos, nameEl;
+		nameEl = data.object && (pos = data.object.lastIndexOf('\\')) > 0
+			? [data.object.substr(0, pos + 1), createEl('b', null, [data.object.substr(pos + 1)])]
+			: [data.object || data.resource];
+
 		let span = data.array !== undefined
 			? [
 				createEl('span', {'class': 'tracy-dump-array'}, ['array']),
@@ -249,7 +254,7 @@ function build(data, repository, collapsed, parentIds, keyType) {
 					'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
 					title: data.editor ? 'Declared in file ' + data.editor.file + ' on line ' + data.editor.line + (data.editor.url ? '\n' + HINT_CTRL : '') + '\n' + HINT_ALT : null,
 					'data-tracy-href': data.editor ? data.editor.url : null
-				}, [data.object || data.resource]),
+				}, nameEl),
 				...(id ? [' ', createEl('span', {'class': 'tracy-dump-hash'}, [data.resource ? '@' + id.substr(1) : '#' + id])] : [])
 			];
 
