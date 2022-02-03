@@ -16,10 +16,8 @@ namespace Tracy;
 class Bar
 {
 	/** @var IBarPanel[] */
-	private $panels = [];
-
-	/** @var bool */
-	private $loaderRendered = false;
+	private array $panels = [];
+	private bool $loaderRendered = false;
 
 
 	/**

@@ -17,14 +17,9 @@ use ErrorException;
  */
 final class DevelopmentStrategy
 {
-	/** @var Bar */
-	private $bar;
-
-	/** @var BlueScreen */
-	private $blueScreen;
-
-	/** @var DeferredContent */
-	private $defer;
+	private Bar $bar;
+	private BlueScreen $blueScreen;
+	private DeferredContent $defer;
 
 
 	public function __construct(Bar $bar, BlueScreen $blueScreen, DeferredContent $defer)
