@@ -327,13 +327,9 @@ function createEl(el, attrs, content) {
 		el.innerHTML = content.html;
 		return el;
 	}
+
 	content = content || [];
-	for (let id = 0; id < content.length; id++) {
-		let child = content[id];
-		if (child !== null) {
-			el.appendChild(child instanceof Node ? child : document.createTextNode(child));
-		}
-	}
+	el.append(...content.filter((child) => (child !== null)));
 	return el;
 }
 
