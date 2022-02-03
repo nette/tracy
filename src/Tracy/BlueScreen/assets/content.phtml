@@ -21,7 +21,7 @@ namespace Tracy;
  * @var ?array $obStatus
  */
 ?>
-<div id="tracy-bs" itemscope>
+<tracy-div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
 	<div class="tracy-bs-main">
 <?php $ex = $exception; $exceptions = []; ?>
@@ -68,4 +68,4 @@ namespace Tracy;
 		</footer>
 	</div>
 	<meta itemprop=tracy-snapshot content=<?= Dumper::formatSnapshotAttribute($snapshot) ?>>
-</div>
+</tracy-div>

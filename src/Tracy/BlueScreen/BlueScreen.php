@@ -167,6 +167,7 @@ class BlueScreen
 		$dump = $this->getDumper();
 
 		$css = array_map('file_get_contents', array_merge([
+			__DIR__ . '/../assets/reset.css',
 			__DIR__ . '/assets/bluescreen.css',
 			__DIR__ . '/../assets/toggle.css',
 			__DIR__ . '/../assets/table-sort.css',
