@@ -20,11 +20,10 @@ class MailSender
 {
 	use Nette\SmartObject;
 
-	/** @var Nette\Mail\IMailer */
-	private $mailer;
+	private Nette\Mail\IMailer $mailer;
 
 	/** @var string|null sender of email notifications */
-	private $fromEmail;
+	private ?string $fromEmail = null;
 
 
 	public function __construct(Nette\Mail\IMailer $mailer, ?string $fromEmail = null)
