@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 class DummyTracyLogger implements ILogger
 {
 	/** @var array */
-	public $entries = [];
+	public array $entries = [];
 
 
 	public function log($value, $priority = self::INFO)

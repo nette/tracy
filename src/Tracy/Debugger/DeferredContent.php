@@ -15,14 +15,9 @@ namespace Tracy;
  */
 final class DeferredContent
 {
-	/** @var SessionStorage */
-	private $sessionStorage;
-
-	/** @var string */
-	private $requestId;
-
-	/** @var bool */
-	private $useSession = false;
+	private SessionStorage $sessionStorage;
+	private string $requestId;
+	private bool $useSession = false;
 
 
 	public function __construct(SessionStorage $sessionStorage)
