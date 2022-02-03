@@ -18,7 +18,7 @@ final class OutputDebugger
 	private const BOM = "\xEF\xBB\xBF";
 
 	/** @var array of [file, line, output, stack] */
-	private $list = [];
+	private array $list = [];
 
 
 	public static function enable(): void
