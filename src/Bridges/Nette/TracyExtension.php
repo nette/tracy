@@ -52,6 +52,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			'showBar' => Expect::bool()->dynamic(),
 			'maxLength' => Expect::int()->dynamic(),
 			'maxDepth' => Expect::int()->dynamic(),
+			'maxItems' => Expect::int()->dynamic(),
 			'keysToHide' => Expect::array(null)->dynamic(),
 			'dumpTheme' => Expect::string()->dynamic(),
 			'showLocation' => Expect::bool()->dynamic(),

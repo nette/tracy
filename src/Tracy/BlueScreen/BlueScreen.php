@@ -29,6 +29,9 @@ class BlueScreen
 	/** @var int  */
 	public $maxLength = 150;
 
+	/** @var int */
+	public $maxItems = 100;
+
 	/** @var callable|null  a callable returning true for sensitive data; fn(string $key, mixed $val): bool */
 	public $scrubber;
 
@@ -445,6 +448,7 @@ class BlueScreen
 			return Dumper::toHtml($v, [
 				Dumper::DEPTH => $this->maxDepth,
 				Dumper::TRUNCATE => $this->maxLength,
+				Dumper::ITEMS => $this->maxItems,
 				Dumper::SNAPSHOT => &$this->snapshot,
 				Dumper::LOCATION => Dumper::LOCATION_CLASS,
 				Dumper::SCRUBBER => $this->scrubber,

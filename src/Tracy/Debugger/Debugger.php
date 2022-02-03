@@ -70,6 +70,9 @@ class Debugger
 	/** @var int  how long strings display by dump() */
 	public static $maxLength = 150;
 
+	/** @var int  how many items in array/object display by dump() */
+	public static $maxItems = 100;
+
 	/** @var bool display location by dump()? */
 	public static $showLocation;
 
@@ -514,6 +517,7 @@ class Debugger
 			$options = [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
+				Dumper::ITEMS => self::$maxItems,
 			];
 			return Helpers::isCli()
 				? Dumper::toText($var)
@@ -525,6 +529,7 @@ class Debugger
 			Dumper::dump($var, [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
+				Dumper::ITEMS => self::$maxItems,
 				Dumper::LOCATION => self::$showLocation,
 				Dumper::THEME => self::$dumpTheme,
 				Dumper::KEYS_TO_HIDE => self::$keysToHide,
