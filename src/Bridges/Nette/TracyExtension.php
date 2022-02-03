@@ -129,7 +129,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			}
 
 			$initialize->addBody($builder->formatPhp('if ($logger instanceof Tracy\Logger) $logger->mailer = ?;', [
-				[new Statement(Tracy\Bridges\Nette\MailSender::class, $params), 'send'],
+				[new Statement(Tracy\Bridges\Nette\MailSender::class, $params), 'send'], // TODO: nette/di must be able to create closures
 			]));
 		}
 
