@@ -32,32 +32,15 @@ final class Value implements \JsonSerializable
 		PropertyDynamic = 3,
 		PropertyVirtual = 4;
 
-	/** @var string */
-	public $type;
-
-	/** @var string|int */
-	public $value;
-
-	/** @var ?int */
-	public $length;
-
-	/** @var ?int */
-	public $depth;
-
-	/** @var int|string */
-	public $id;
-
-	/** @var object */
-	public $holder;
-
-	/** @var ?array */
-	public $items;
-
-	/** @var ?\stdClass */
-	public $editor;
-
-	/** @var ?bool */
-	public $collapsed;
+	public string $type;
+	public string|int|null $value;
+	public ?int $length;
+	public ?int $depth = null;
+	public int|string|null $id = null;
+	public object $holder;
+	public ?array $items = null;
+	public ?\stdClass $editor = null;
+	public ?bool $collapsed = null;
 
 
 	public function __construct(string $type, $value = null, ?int $length = null)

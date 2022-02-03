@@ -128,7 +128,7 @@ Assert::match(
 		   length: null
 		   depth: null
 		   id: null
-		   holder: null
+		   holder: unset
 		   items: null
 		   editor: null
 		   collapsed: null
