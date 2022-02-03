@@ -24,38 +24,28 @@ final class Describer
 	// Number.MAX_SAFE_INTEGER
 	private const JsSafeInteger = 1 << 53 - 1;
 
-	/** @var int */
-	public $maxDepth = 7;
-
-	/** @var int */
-	public $maxLength = 150;
-
-	/** @var int */
-	public $maxItems = 100;
+	public int $maxDepth = 7;
+	public int $maxLength = 150;
+	public int $maxItems = 100;
 
 	/** @var Value[] */
-	public $snapshot = [];
+	public array $snapshot = [];
+	public bool $debugInfo = false;
+	public array $keysToHide = [];
 
-	/** @var bool */
-	public $debugInfo = false;
-
-	/** @var array */
-	public $keysToHide = [];
-
-	/** @var callable|null  fn(string $key, mixed $val): bool */
+	/** @var (callable(string, mixed): bool)|null */
 	public $scrubber;
 
-	/** @var bool */
-	public $location = false;
+	public bool $location = false;
 
 	/** @var callable[] */
-	public $resourceExposers;
+	public array $resourceExposers = [];
 
 	/** @var array<string,callable> */
-	public $objectExposers;
+	public array $objectExposers = [];
 
 	/** @var (int|\stdClass)[] */
-	public $references = [];
+	public array $references = [];
 
 
 	public function describe($var): \stdClass

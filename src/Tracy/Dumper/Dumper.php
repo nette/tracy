@@ -45,10 +45,9 @@ class Dumper
 	public const HIDDEN_VALUE = Describer::HiddenValue;
 
 	/** @var Dumper\Value[] */
-	public static $liveSnapshot = [];
+	public static array $liveSnapshot = [];
 
-	/** @var array */
-	public static $terminalColors = [
+	public static ?array $terminalColors = [
 		'bool' => '1;33',
 		'null' => '1;33',
 		'number' => '1;32',
@@ -64,15 +63,13 @@ class Dumper
 		'indent' => '1;30',
 	];
 
-	/** @var array */
-	public static $resources = [
+	public static array $resources = [
 		'stream' => 'stream_get_meta_data',
 		'stream-context' => 'stream_context_get_options',
 		'curl' => 'curl_getinfo',
 	];
 
-	/** @var array */
-	public static $objectExporters = [
+	public static array $objectExporters = [
 		\Closure::class => [Exposer::class, 'exposeClosure'],
 		\UnitEnum::class => [Exposer::class, 'exposeEnum'],
 		\ArrayObject::class => [Exposer::class, 'exposeArrayObject'],
@@ -88,11 +85,8 @@ class Dumper
 		Ds\Map::class => [Exposer::class, 'exposeDsMap'],
 	];
 
-	/** @var Describer */
-	private $describer;
-
-	/** @var Renderer */
-	private $renderer;
+	private Describer $describer;
+	private Renderer $renderer;
 
 
 	/**
@@ -210,7 +204,7 @@ class Dumper
 			: ($options[self::LAZY] ?? $renderer->lazy);
 		$renderer->sourceLocation = !(~$location & self::LOCATION_SOURCE);
 		$renderer->classLocation = !(~$location & self::LOCATION_CLASS);
-		$renderer->theme = $options[self::THEME] ?? $renderer->theme;
+		$renderer->theme = ($options[self::THEME] ?? $renderer->theme) ?: null;
 		$renderer->hash = $options[self::HASH] ?? true;
 	}
 

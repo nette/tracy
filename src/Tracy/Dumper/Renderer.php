@@ -20,41 +20,24 @@ final class Renderer
 {
 	private const TypeArrayKey = 'array';
 
-	/** @var int|bool */
-	public $collapseTop = 14;
+	public int|bool $collapseTop = 14;
+	public int $collapseSub = 7;
+	public bool $classLocation = false;
+	public bool $sourceLocation = false;
 
-	/** @var int */
-	public $collapseSub = 7;
-
-	/** @var bool */
-	public $classLocation = false;
-
-	/** @var bool */
-	public $sourceLocation = false;
-
-	/** @var bool|null  lazy-loading via JavaScript? true=full, false=none, null=collapsed parts */
-	public $lazy;
-
-	/** @var bool */
-	public $hash = true;
-
-	/** @var string */
-	public $theme = 'light';
-
-	/** @var bool */
-	public $collectingMode = false;
+	/** lazy-loading via JavaScript? true=full, false=none, null=collapsed parts */
+	public ?bool $lazy = null;
+	public bool $hash = true;
+	public ?string $theme = 'light';
+	public bool $collectingMode = false;
 
 	/** @var Value[] */
-	private $snapshot = [];
+	private array $snapshot = [];
 
 	/** @var Value[]|null */
-	private $snapshotSelection;
-
-	/** @var array */
-	private $parents = [];
-
-	/** @var array */
-	private $above = [];
+	private ?array $snapshotSelection = null;
+	private array $parents = [];
+	private array $above = [];
 
 
 	public function renderAsHtml(\stdClass $model): string

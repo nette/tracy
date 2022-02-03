@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 class DummyPsrLogger extends Psr\Log\AbstractLogger
 {
 	/** @var array */
-	public $entries = [];
+	public array $entries = [];
 
 
 	public function log($level, $message, array $context = []): void

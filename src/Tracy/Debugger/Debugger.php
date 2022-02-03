@@ -33,71 +33,70 @@ class Debugger
 	public const CookieSecret = 'tracy-debug';
 	public const COOKIE_SECRET = self::CookieSecret;
 
-	/** @var bool in production mode is suppressed any debugging output */
-	public static $productionMode = self::Detect;
+	/** in production mode is suppressed any debugging output */
+	public static ?bool $productionMode = self::DETECT;
 
-	/** @var bool whether to display debug bar in development mode */
-	public static $showBar = true;
+	/** whether to display debug bar in development mode */
+	public static bool $showBar = true;
 
-	/** @var int size of reserved memory */
-	public static $reservedMemorySize = 500_000;
+	/** size of reserved memory */
+	public static int $reservedMemorySize = 500_000;
 
-	/** @var bool */
-	private static $enabled = false;
+	private static bool $enabled = false;
 
-	/** @var string|null reserved memory; also prevents double rendering */
-	private static $reserved;
+	/** reserved memory; also prevents double rendering */
+	private static ?string $reserved = null;
 
-	/** @var int initial output buffer level */
-	private static $obLevel;
+	/** initial output buffer level */
+	private static int $obLevel;
 
-	/** @var ?array output buffer status @internal */
-	public static $obStatus;
+	/** output buffer status @internal */
+	public static ?array $obStatus = null;
 
 	/********************* errors and exceptions reporting ****************d*g**/
 
-	/** @var bool|int determines whether any error will cause immediate death in development mode; if integer that it's matched against error severity */
-	public static $strictMode = false;
+	/** determines whether any error will cause immediate death in development mode; if integer that it's matched against error severity */
+	public static bool|int $strictMode = false;
 
-	/** @var bool|int disables the @ (shut-up) operator so that notices and warnings are no longer hidden; if integer than it's matched against error severity */
-	public static $scream = false;
+	/** disables the @ (shut-up) operator so that notices and warnings are no longer hidden; if integer than it's matched against error severity */
+	public static bool|int $scream = false;
 
 	/** @var callable[] functions that are automatically called after fatal error */
-	public static $onFatalError = [];
+	public static array $onFatalError = [];
 
 	/********************* Debugger::dump() ****************d*g**/
 
-	/** @var int  how many nested levels of array/object properties display by dump() */
-	public static $maxDepth = 15;
+	/** how many nested levels of array/object properties display by dump() */
+	public static int $maxDepth = 15;
 
-	/** @var int  how long strings display by dump() */
-	public static $maxLength = 150;
+	/** how long strings display by dump() */
+	public static int $maxLength = 150;
 
-	/** @var int  how many items in array/object display by dump() */
-	public static $maxItems = 100;
+	/** how many items in array/object display by dump() */
+	public static int $maxItems = 100;
 
-	/** @var bool display location by dump()? */
-	public static $showLocation;
+	/** display location by dump()? */
+	public static ?bool $showLocation = null;
 
 	/** @var string[] sensitive keys not displayed by dump() */
-	public static $keysToHide = [];
+	public static array $keysToHide = [];
 
-	/** @var string theme for dump() */
-	public static $dumpTheme = 'light';
+	/** theme for dump() */
+	public static string $dumpTheme = 'light';
 
 	/** @deprecated */
 	public static $maxLen;
 
 	/********************* logging ****************d*g**/
 
-	/** @var string|null name of the directory where errors should be logged */
-	public static $logDirectory;
+	/** name of the directory where errors should be logged */
+	public static ?string $logDirectory = null;
 
-	/** @var int  log bluescreen in production mode for this error severity */
-	public static $logSeverity = 0;
+	/** log bluescreen in production mode for this error severity */
+	public static int $logSeverity = 0;
 
-	/** @var string|array email(s) to which send error notifications */
-	public static $email;
+	/** email(s) to which send error notifications */
+	public static string|array|null $email = null;
 
 	/** for Debugger::log() */
 	public const
@@ -110,49 +109,41 @@ class Debugger
 
 	/********************* misc ****************d*g**/
 
-	/** @var float timestamp with microseconds of the start of the request */
-	public static $time;
+	/** timestamp with microseconds of the start of the request */
+	public static float $time;
 
-	/** @var string URI pattern mask to open editor */
-	public static $editor = 'editor://%action/?file=%file&line=%line&search=%search&replace=%replace';
+	/** URI pattern mask to open editor */
+	public static ?string $editor = 'editor://%action/?file=%file&line=%line&search=%search&replace=%replace';
 
-	/** @var array replacements in path */
-	public static $editorMapping = [];
+	/** replacements in path */
+	public static array $editorMapping = [];
 
-	/** @var string command to open browser (use 'start ""' in Windows) */
-	public static $browser;
+	/** command to open browser (use 'start ""' in Windows) */
+	public static ?string $browser = null;
 
-	/** @var string custom static error template */
-	public static $errorTemplate;
-
-	/** @var string[] */
-	public static $customCssFiles = [];
+	/** custom static error template */
+	public static ?string $errorTemplate = null;
 
 	/** @var string[] */
-	public static $customJsFiles = [];
+	public static array $customCssFiles = [];
+
+	/** @var string[] */
+	public static array $customJsFiles = [];
 
 	/** @var callable[] */
 	private static $sourceMappers = [];
 
-	/** @var array|null */
-	private static $cpuUsage;
+	private static ?array $cpuUsage = null;
 
 	/********************* services ****************d*g**/
 
-	/** @var BlueScreen */
-	private static $blueScreen;
-
-	/** @var Bar */
-	private static $bar;
-
-	/** @var ILogger */
-	private static $logger;
+	private static BlueScreen $blueScreen;
+	private static Bar $bar;
+	private static ILogger $logger;
 
 	/** @var array{DevelopmentStrategy, ProductionStrategy} */
-	private static $strategy;
-
-	/** @var SessionStorage */
-	private static $sessionStorage;
+	private static array $strategy;
+	private static SessionStorage $sessionStorage;
 
 
 	/**
@@ -391,7 +382,7 @@ class Debugger
 
 	public static function getBlueScreen(): BlueScreen
 	{
-		if (!self::$blueScreen) {
+		if (empty(self::$blueScreen)) {
 			self::$blueScreen = new BlueScreen;
 			self::$blueScreen->info = [
 				'PHP ' . PHP_VERSION,
@@ -406,7 +397,7 @@ class Debugger
 
 	public static function getBar(): Bar
 	{
-		if (!self::$bar) {
+		if (empty(self::$bar)) {
 			self::$bar = new Bar;
 			self::$bar->addPanel($info = new DefaultBarPanel('info'), 'Tracy:info');
 			$info->cpuUsage = self::$cpuUsage;
@@ -425,7 +416,7 @@ class Debugger
 
 	public static function getLogger(): ILogger
 	{
-		if (!self::$logger) {
+		if (empty(self::$logger)) {
 			self::$logger = new Logger(self::$logDirectory, self::$email, self::getBlueScreen());
 			self::$logger->directory = &self::$logDirectory; // back compatiblity
 			self::$logger->email = &self::$email;
@@ -450,7 +441,7 @@ class Debugger
 
 	public static function setSessionStorage(SessionStorage $storage): void
 	{
-		if (self::$sessionStorage) {
+		if (isset(self::$sessionStorage)) {
 			throw new \Exception('Storage is already set.');
 		}
 
@@ -461,7 +452,7 @@ class Debugger
 	/** @internal */
 	public static function getSessionStorage(): SessionStorage
 	{
-		if (!self::$sessionStorage) {
+		if (empty(self::$sessionStorage)) {
 			self::$sessionStorage = @is_dir($dir = session_save_path())
 				|| @is_dir($dir = ini_get('upload_tmp_dir'))
 				|| @is_dir($dir = sys_get_temp_dir())
