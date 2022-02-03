@@ -18,43 +18,37 @@ class BlueScreen
 	private const MaxMessageLength = 2000;
 
 	/** @var string[] */
-	public $info = [];
+	public array $info = [];
 
 	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
-	public $collapsePaths = [];
+	public array $collapsePaths = [];
 
-	/** @var int  */
-	public $maxDepth = 5;
+	public int $maxDepth = 5;
 
-	/** @var int  */
-	public $maxLength = 150;
+	public int $maxLength = 150;
 
-	/** @var int */
-	public $maxItems = 100;
+	public int $maxItems = 100;
 
 	/** @var callable|null  a callable returning true for sensitive data; fn(string $key, mixed $val): bool */
 	public $scrubber;
 
 	/** @var string[] */
-	public $keysToHide = ['password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin', self::class . '::$snapshot'];
+	public array $keysToHide = ['password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin', self::class . '::$snapshot'];
 
-	/** @var bool */
-	public $showEnvironment = true;
+	public bool $showEnvironment = true;
 
 	/** @var callable[] */
-	private $panels = [];
+	private array $panels = [];
 
 	/** @var callable[] functions that returns action for exceptions */
-	private $actions = [];
+	private array $actions = [];
 
-	/** @var callable[] */
-	private $fileGenerators = [];
+	private array $fileGenerators = [];
 
-	/** @var array */
-	private $snapshot;
+	private ?array $snapshot = null;
 
 	/** @var \WeakMap<\Fiber|\Generator> */
-	private $fibers;
+	private \WeakMap $fibers;
 
 
 	public function __construct()
