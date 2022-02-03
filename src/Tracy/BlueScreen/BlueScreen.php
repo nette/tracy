@@ -303,7 +303,7 @@ class BlueScreen
 
 		$source = $php
 			? static::highlightPhp($source, $line, $lines)
-			: '<pre class=code><div>' . static::highlightLine(htmlspecialchars($source, ENT_IGNORE, 'UTF-8'), $line, $lines) . '</div></pre>';
+			: '<pre class=tracy-code><div>' . static::highlightLine(htmlspecialchars($source, ENT_IGNORE, 'UTF-8'), $line, $lines) . '</div></pre>';
 
 		if ($editor = Helpers::editorUri($file, $line)) {
 			$source = substr_replace($source, ' title="Ctrl-Click to open in editor" data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
@@ -333,7 +333,7 @@ class BlueScreen
 		$source = str_replace('<br />', "\n", $source[1]);
 		$out .= static::highlightLine($source, $line, $lines);
 		$out = str_replace('&nbsp;', ' ', $out);
-		return "<pre class='code'><div>$out</div></pre>";
+		return "<pre class='tracy-code'><div>$out</div></pre>";
 	}
 
 
@@ -367,13 +367,13 @@ class BlueScreen
 			preg_match_all('#<[^>]+>#', $s, $tags);
 			if ($n == $line) {
 				$out .= sprintf(
-					"<span class='highlight'>%{$numWidth}s:    %s\n</span>%s",
+					"<span class='tracy-line-highlight'>%{$numWidth}s:    %s\n</span>%s",
 					$n,
 					strip_tags($s),
 					implode('', $tags[0])
 				);
 			} else {
-				$out .= sprintf("<span class='line'>%{$numWidth}s:</span>    %s\n", $n, $s);
+				$out .= sprintf("<span class='tracy-line'>%{$numWidth}s:</span>    %s\n", $n, $s);
 			}
 		}
 

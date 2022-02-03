@@ -18,7 +18,7 @@ class BlueScreen
 		}
 
 		if (navigator.platform.indexOf('Mac') > -1) {
-			blueScreen.classList.add('mac');
+			blueScreen.classList.add('tracy-mac');
 		}
 
 		document.getElementById('tracy-bs-toggle').addEventListener('tracy-toggle', function() {
@@ -30,7 +30,7 @@ class BlueScreen
 
 		if (!ajax) {
 			document.body.appendChild(blueScreen);
-			let id = location.href + document.querySelector('.section--error').textContent;
+			let id = location.href + document.querySelector('.tracy-section--error').textContent;
 			Tracy.Toggle.persist(blueScreen, sessionStorage.getItem('tracy-toggles-bskey') === id);
 			sessionStorage.setItem('tracy-toggles-bskey', id);
 		}
@@ -49,7 +49,7 @@ class BlueScreen
 
 		blueScreen.addEventListener('tracy-toggle', (e) => {
 			if (!e.target.matches('.tracy-dump *') && e.detail.originalEvent) {
-				e.detail.relatedTarget.classList.toggle('panel-fadein', !e.detail.collapsed);
+				e.detail.relatedTarget.classList.toggle('tracy-panel-fadein', !e.detail.collapsed);
 			}
 		});
 
@@ -77,8 +77,8 @@ class BlueScreen
 
 function stickyFooter() {
 	let footer = document.querySelector('#tracy-bs footer');
-	footer.classList.toggle('footer--sticky', false); // to measure footer.offsetTop
-	footer.classList.toggle('footer--sticky', footer.offsetHeight + footer.offsetTop - window.innerHeight - document.documentElement.scrollTop < 0);
+	footer.classList.toggle('tracy-footer--sticky', false); // to measure footer.offsetTop
+	footer.classList.toggle('tracy-footer--sticky', footer.offsetHeight + footer.offsetTop - window.innerHeight - document.documentElement.scrollTop < 0);
 }
 
 let inited;
