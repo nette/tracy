@@ -16,23 +16,22 @@ use const DIRECTORY_SEPARATOR, FILE_APPEND, LOCK_EX, PHP_EOL;
  */
 class Logger implements ILogger
 {
-	/** @var ?string name of the directory where errors should be logged */
-	public $directory;
+	/** name of the directory where errors should be logged */
+	public ?string $directory = null;
 
-	/** @var string|string[]|null email or emails to which send error notifications */
-	public $email;
+	/** @var string|string[]|null  email or emails to which send error notifications */
+	public string|array|null $email = null;
 
-	/** @var ?string sender of email notifications */
-	public $fromEmail;
+	/** sender of email notifications */
+	public ?string $fromEmail = null;
 
-	/** @var string|int  interval for sending email is 2 days */
-	public $emailSnooze = '2 days';
+	/** interval for sending email is 2 days */
+	public string|int $emailSnooze = '2 days';
 
-	/** @var callable(mixed $message, string $email): void  handler for sending emails */
-	public $mailer;
+	/** @var \Closure(mixed $message, string $email): void  handler for sending emails */
+	public ?\Closure $mailer = null;
 
-	/** @var ?BlueScreen */
-	private $blueScreen;
+	private ?BlueScreen $blueScreen = null;
 
 
 	/**
@@ -52,7 +51,7 @@ class Logger implements ILogger
 	 * For levels ERROR, EXCEPTION and CRITICAL it sends email.
 	 * @return ?string  logged error filename
 	 */
-	public function log(mixed $message, string $level = self::INFO)
+	public function log(mixed $message, string $level = self::INFO): ?string
 	{
 		if (!$this->directory) {
 			throw new \LogicException('Logging directory is not specified.');
@@ -82,10 +81,7 @@ class Logger implements ILogger
 	}
 
 
-	/**
-	 * @param  mixed  $message
-	 */
-	public static function formatMessage($message): string
+	public static function formatMessage(mixed $message): string
 	{
 		if ($message instanceof \Throwable) {
 			$tmp = [];
@@ -106,10 +102,7 @@ class Logger implements ILogger
 	}
 
 
-	/**
-	 * @param  mixed  $message
-	 */
-	public static function formatLogLine($message, ?string $exceptionFile = null): string
+	public static function formatLogLine(mixed $message, ?string $exceptionFile = null): string
 	{
 		return implode(' ', [
 			date('[Y-m-d H-i-s]'),
@@ -159,10 +152,7 @@ class Logger implements ILogger
 	}
 
 
-	/**
-	 * @param  mixed  $message
-	 */
-	protected function sendEmail($message): void
+	protected function sendEmail(mixed $message): void
 	{
 		$snooze = is_numeric($this->emailSnooze)
 			? $this->emailSnooze
@@ -179,12 +169,7 @@ class Logger implements ILogger
 	}
 
 
-	/**
-	 * Default mailer.
-	 * @param  mixed  $message
-	 * @internal
-	 */
-	public function defaultMailer($message, string $email): void
+	private function defaultMailer(mixed $message, string $email): void
 	{
 		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 		mail(
