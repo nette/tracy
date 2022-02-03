@@ -15,23 +15,22 @@ namespace Tracy;
  */
 class Logger implements ILogger
 {
-	/** @var string|null name of the directory where errors should be logged */
-	public $directory;
+	/** name of the directory where errors should be logged */
+	public ?string $directory = null;
 
-	/** @var string|array|null email or emails to which send error notifications */
-	public $email;
+	/** email or emails to which send error notifications */
+	public string|array|null $email = null;
 
-	/** @var string|null sender of email notifications */
-	public $fromEmail;
+	/** sender of email notifications */
+	public ?string $fromEmail = null;
 
-	/** @var mixed interval for sending email is 2 days */
-	public $emailSnooze = '2 days';
+	/** interval for sending email is 2 days */
+	public mixed $emailSnooze = '2 days';
 
 	/** @var callable handler for sending emails */
 	public $mailer;
 
-	/** @var BlueScreen|null */
-	private $blueScreen;
+	private ?BlueScreen $blueScreen = null;
 
 
 	public function __construct(?string $directory, string|array|null $email = null, ?BlueScreen $blueScreen = null)
@@ -78,10 +77,7 @@ class Logger implements ILogger
 	}
 
 
-	/**
-	 * @param  mixed  $message
-	 */
-	public static function formatMessage($message): string
+	public static function formatMessage(mixed $message): string
 	{
 		if ($message instanceof \Throwable) {
 			foreach (Helpers::getExceptionChain($message) as $exception) {
@@ -101,10 +97,7 @@ class Logger implements ILogger
 	}
 
 
-	/**
-	 * @param  mixed  $message
-	 */
-	public static function formatLogLine($message, ?string $exceptionFile = null): string
+	public static function formatLogLine(mixed $message, ?string $exceptionFile = null): string
 	{
 		return implode(' ', [
 			date('[Y-m-d H-i-s]'),
@@ -152,10 +145,7 @@ class Logger implements ILogger
 	}
 
 
-	/**
-	 * @param  mixed  $message
-	 */
-	protected function sendEmail($message): void
+	protected function sendEmail(mixed $message): void
 	{
 		$snooze = is_numeric($this->emailSnooze)
 			? $this->emailSnooze
@@ -174,10 +164,9 @@ class Logger implements ILogger
 
 	/**
 	 * Default mailer.
-	 * @param  mixed  $message
 	 * @internal
 	 */
-	public function defaultMailer($message, string $email): void
+	public function defaultMailer(mixed $message, string $email): void
 	{
 		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 		mail(
