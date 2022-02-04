@@ -214,6 +214,7 @@ class Debugger
 
 		$strategy = self::getStrategy();
 		$strategy->initialize();
+		self::dispatch();
 
 		if (self::$enabled) {
 			return;
@@ -245,7 +246,6 @@ class Debugger
 			require_once dirname(__DIR__) . "/$path.php";
 		}
 
-		self::dispatch();
 		self::$enabled = true;
 	}
 
