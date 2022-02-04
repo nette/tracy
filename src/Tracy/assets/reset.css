@@ -55,13 +55,58 @@ tracy-div em {
 	font-style: italic;
 }
 
+tracy-div big {
+	font-size: larger;
+}
+
+tracy-div small,
+tracy-div sub,
+tracy-div sup {
+	font-size: smaller;
+}
+
+tracy-div ins {
+	text-decoration: underline;
+}
+
+tracy-div del {
+	text-decoration: line-through;
+}
+
 tracy-div table {
 	border-collapse: collapse;
 }
 
 tracy-div pre {
+	font-family: monospace;
 	white-space: pre;
 }
+
+tracy-div code,
+tracy-div kbd,
+tracy-div samp {
+	font-family: monospace;
+}
+
+tracy-div input {
+	background-color: white;
+	padding: 1px;
+	border: 1px solid;
+}
+
+tracy-div textarea {
+	background-color: white;
+	border: 1px solid;
+	padding: 2px;
+	white-space: pre-wrap;
+}
+
+tracy-div select {
+	border: 1px solid;
+	white-space: pre;
+}
+
+
 
 
 /* TableSort */
