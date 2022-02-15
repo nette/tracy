@@ -232,7 +232,6 @@ body#tracy-debug { /* in popup window */
 	margin: 0 .2em 0 .5em;
 }
 
-
 /* panels */
 #tracy-debug .tracy-panel {
 	display: none;
