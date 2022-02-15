@@ -44,6 +44,10 @@
 	padding: 3px;
 }
 
+#tracy-bs-toggle.tracy-collapsed {
+	position: fixed;
+}
+
 .tracy-bs-main {
 	display: flex;
 	flex-direction: column;
