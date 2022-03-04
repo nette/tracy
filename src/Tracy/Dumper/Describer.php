@@ -25,7 +25,7 @@ final class Describer
 	private const JS_SAFE_INTEGER = 1 << 53 - 1;
 
 	/** @var int */
-	public $maxDepth = 15;
+	public $maxDepth = 7;
 
 	/** @var int */
 	public $maxLength = 150;
