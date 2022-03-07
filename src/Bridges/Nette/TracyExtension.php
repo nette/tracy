@@ -19,7 +19,7 @@ use Tracy;
  */
 class TracyExtension extends Nette\DI\CompilerExtension
 {
-	private const ERROR_SEVERITY_PATTERN = 'E_(?:ALL|PARSE|STRICT|RECOVERABLE_ERROR|(?:CORE|COMPILE)_(?:ERROR|WARNING)|(?:USER_)?(?:ERROR|WARNING|NOTICE|DEPRECATED))';
+	private const ErrorSeverityPattern = 'E_(?:ALL|PARSE|STRICT|RECOVERABLE_ERROR|(?:CORE|COMPILE)_(?:ERROR|WARNING)|(?:USER_)?(?:ERROR|WARNING|NOTICE|DEPRECATED))';
 
 	/** @var bool */
 	private $debugMode;
@@ -37,8 +37,8 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
-		$errorSeverity = Expect::string()->pattern(self::ERROR_SEVERITY_PATTERN);
-		$errorSeverityExpr = Expect::string()->pattern('(' . self::ERROR_SEVERITY_PATTERN . '|[ &|~()])+');
+		$errorSeverity = Expect::string()->pattern(self::ErrorSeverityPattern);
+		$errorSeverityExpr = Expect::string()->pattern('(' . self::ErrorSeverityPattern . '|[ &|~()])+');
 
 		return Expect::structure([
 			'email' => Expect::anyOf(Expect::email(), Expect::listOf('email'))->dynamic(),

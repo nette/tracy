@@ -15,7 +15,7 @@ namespace Tracy;
  */
 class BlueScreen
 {
-	private const MAX_MESSAGE_LENGTH = 2000;
+	private const MaxMessageLength = 2000;
 
 	/** @var string[] */
 	public $info = [];
@@ -461,7 +461,7 @@ class BlueScreen
 
 	public function formatMessage(\Throwable $exception): string
 	{
-		$msg = Helpers::encodeString(trim((string) $exception->getMessage()), self::MAX_MESSAGE_LENGTH, false);
+		$msg = Helpers::encodeString(trim((string) $exception->getMessage()), self::MaxMessageLength, false);
 
 		// highlight 'string'
 		$msg = preg_replace(

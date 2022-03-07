@@ -18,7 +18,7 @@ use Tracy\Helpers;
  */
 final class Renderer
 {
-	private const TYPE_ARRAY_KEY = 'array';
+	private const TypeArrayKey = 'array';
 
 	/** @var int|bool */
 	public $collapseTop = 14;
@@ -187,7 +187,7 @@ final class Renderer
 	 */
 	private function renderString($str, int $depth, $keyType): string
 	{
-		if ($keyType === self::TYPE_ARRAY_KEY) {
+		if ($keyType === self::TypeArrayKey) {
 			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . ' </span>';
 			return '<span class="tracy-dump-string">'
 				. "<span class='tracy-dump-lq'>'</span>"
@@ -312,7 +312,7 @@ final class Renderer
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + [2 => null];
 			$out .= $indent
-				. $this->renderVar($k, $depth + 1, self::TYPE_ARRAY_KEY)
+				. $this->renderVar($k, $depth + 1, self::TypeArrayKey)
 				. ' => '
 				. ($ref && $this->hash ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))
