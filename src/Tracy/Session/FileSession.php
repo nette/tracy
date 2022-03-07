@@ -12,8 +12,8 @@ namespace Tracy;
 
 class FileSession implements SessionStorage
 {
-	private const FILE_PREFIX = 'tracy-';
-	private const COOKIE_LIFETIME = 31557600;
+	private const FilePrefix = 'tracy-';
+	private const CookieLifetime = 31557600;
 
 	/** @var string */
 	public $cookieName = 'tracy-session';
@@ -53,12 +53,12 @@ class FileSession implements SessionStorage
 		if (
 			!is_string($id)
 			|| !preg_match('#^\w{10}\z#i', $id)
-			|| !($file = @fopen($path = $this->dir . '/' . self::FILE_PREFIX . $id, 'r+')) // intentionally @
+			|| !($file = @fopen($path = $this->dir . '/' . self::FilePrefix . $id, 'r+')) // intentionally @
 		) {
 			$id = Helpers::createId();
-			setcookie($this->cookieName, $id, time() + self::COOKIE_LIFETIME, '/', '', false, true);
+			setcookie($this->cookieName, $id, time() + self::CookieLifetime, '/', '', false, true);
 
-			$file = @fopen($path = $this->dir . '/' . self::FILE_PREFIX . $id, 'c+'); // intentionally @
+			$file = @fopen($path = $this->dir . '/' . self::FilePrefix . $id, 'c+'); // intentionally @
 			if ($file === false) {
 				throw new \RuntimeException("Unable to create file '$path'. " . error_get_last()['message']);
 			}
@@ -86,7 +86,7 @@ class FileSession implements SessionStorage
 	public function clean(): void
 	{
 		$old = strtotime('-1 week');
-		foreach (glob($this->dir . '/' . self::FILE_PREFIX . '*') as $file) {
+		foreach (glob($this->dir . '/' . self::FilePrefix . '*') as $file) {
 			if (filemtime($file) < $old) {
 				unlink($file);
 			}
