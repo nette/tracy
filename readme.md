@@ -330,6 +330,24 @@ services:
 ```
 
 
+Monolog Integration
+-------------------
+
+This package provides a PSR-3 adapter, allowing for integration of [monolog/monolog](https://github.com/Seldaek/monolog).
+
+```php
+$monolog = new Monolog\Logger('main-channel');
+$monolog->pushHandler(new Monolog\Handler\StreamHandler($logFilePath, Monolog\Logger::DEBUG));
+
+$tracyLogger = new Tracy\Bridges\Psr\PsrToTracyLoggerAdapter($monolog);
+Debugger::setLogger($tracyLogger);
+Debugger::enable();
+
+Debugger::log('info'); // writes: [<TIMESTAMP>] main-channel.INFO: info [] []
+Debugger::log('warning', Debugger::WARNING); // writes: [<TIMESTAMP>] main-channel.WARNING: warning [] []
+```
+
+
 Faster Loading
 --------------
 
