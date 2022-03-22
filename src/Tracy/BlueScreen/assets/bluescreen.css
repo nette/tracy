@@ -261,8 +261,15 @@
 	font-weight: bold;
 	font-style: normal;
 	display: block;
-	padding: 0 .4em;
-	margin: 0 -.4em;
+	padding: 0 1ch;
+	margin: 0 -1ch;
+}
+
+#tracy-bs .tracy-column-highlight {
+	display: inline-block;
+	backdrop-filter: grayscale(1);
+	margin: 0 -1px;
+	padding: 0 1px;
 }
 
 #tracy-bs .tracy-line {

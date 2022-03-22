@@ -295,16 +295,21 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code.
 	 */
-	public static function highlightFile(string $file, int $line, int $lines = 15, bool $php = true): ?string
-	{
+	public static function highlightFile(
+		string $file,
+		int $line,
+		int $lines = 15,
+		bool $php = true,
+		int $column = 0
+	): ?string {
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source === false) {
 			return null;
 		}
 
 		$source = $php
-			? static::highlightPhp($source, $line, $lines)
-			: '<pre class=tracy-code><div>' . static::highlightLine(htmlspecialchars($source, ENT_IGNORE, 'UTF-8'), $line, $lines) . '</div></pre>';
+			? static::highlightPhp($source, $line, $lines, $column)
+			: '<pre class=tracy-code><div>' . static::highlightLine(htmlspecialchars($source, ENT_IGNORE, 'UTF-8'), $line, $lines, $column) . '</div></pre>';
 
 		if ($editor = Helpers::editorUri($file, $line)) {
 			$source = substr_replace($source, ' title="Ctrl-Click to open in editor" data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
@@ -317,7 +322,7 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code.
 	 */
-	public static function highlightPhp(string $source, int $line, int $lines = 15): string
+	public static function highlightPhp(string $source, int $line, int $lines = 15, int $column = 0): string
 	{
 		if (function_exists('ini_set')) {
 			ini_set('highlight.comment', '#998; font-style: italic');
@@ -332,7 +337,7 @@ class BlueScreen
 		$source = explode("\n", highlight_string($source, true));
 		$out = $source[0]; // <code><span color=highlight.html>
 		$source = str_replace('<br />', "\n", $source[1]);
-		$out .= static::highlightLine($source, $line, $lines);
+		$out .= static::highlightLine($source, $line, $lines, $column);
 		$out = str_replace('&nbsp;', ' ', $out);
 		return "<pre class='tracy-code'><div>$out</div></pre>";
 	}
@@ -341,7 +346,7 @@ class BlueScreen
 	/**
 	 * Returns highlighted line in HTML code.
 	 */
-	public static function highlightLine(string $html, int $line, int $lines = 15): string
+	public static function highlightLine(string $html, int $line, int $lines = 15, int $column = 0): string
 	{
 		$source = explode("\n", "\n" . str_replace("\r\n", "\n", $html));
 		$out = '';
@@ -367,10 +372,19 @@ class BlueScreen
 			$s = str_replace(["\r", "\n"], ['', ''], $s);
 			preg_match_all('#<[^>]+>#', $s, $tags);
 			if ($n == $line) {
+				$s = strip_tags($s);
+				if ($column) {
+					$s = preg_replace(
+						'#((?:&.*?;|[^&]){' . ($column - 1) . '})(&.*?;|.)#u',
+						'\1<span class="tracy-column-highlight">\2</span>',
+						$s . ' ',
+						1
+					);
+				}
 				$out .= sprintf(
 					"<span class='tracy-line-highlight'>%{$numWidth}s:    %s\n</span>%s",
 					$n,
-					strip_tags($s),
+					$s,
 					implode('', $tags[0])
 				);
 			} else {
@@ -386,7 +400,7 @@ class BlueScreen
 	/**
 	 * Returns syntax highlighted source code to Terminal.
 	 */
-	public static function highlightPhpCli(string $file, int $line, int $lines = 15): ?string
+	public static function highlightPhpCli(string $file, int $line, int $lines = 15, int $column = 0): ?string
 	{
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source === false) {
