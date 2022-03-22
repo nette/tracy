@@ -196,7 +196,7 @@ final class Renderer
 				. '</span>';
 
 		} elseif ($keyType !== null) {
-			static $classes = [
+			$classes = [
 				Value::PROP_PUBLIC => 'tracy-dump-public',
 				Value::PROP_PROTECTED => 'tracy-dump-protected',
 				Value::PROP_DYNAMIC => 'tracy-dump-dynamic',

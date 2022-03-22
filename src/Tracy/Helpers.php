@@ -402,7 +402,7 @@ class Helpers
 
 	private static function doEncodeString(string $s, bool $utf8, bool $showWhitespaces): string
 	{
-		static $specials = [
+		$specials = [
 			true => [
 				"\r" => '<i>\r</i>',
 				"\n" => "<i>\\n</i>\n",

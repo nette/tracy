@@ -13,14 +13,16 @@ use Tracy\Dumper;
 require __DIR__ . '/../bootstrap.php';
 
 
-enum Suit {
+enum Suit
+{
 	case Clubs;
 	case Diamonds;
 	case Hearts;
 	case Spades;
 }
 
-enum Methods: string {
+enum Methods: string
+{
 	case GET = 'get';
 	case POST = 'post';
 }
