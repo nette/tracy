@@ -76,7 +76,10 @@ final class DeferredContent
 			header('Cache-Control: max-age=864000');
 			header_remove('Pragma');
 			header_remove('Set-Cookie');
-			$this->sendJsCss();
+			$str = $this->buildJsCss();
+			header('Content-Length: ' . strlen($str));
+			echo $str;
+			flush();
 			return true;
 		}
 
@@ -92,14 +95,13 @@ final class DeferredContent
 			header('Content-Type: application/javascript; charset=UTF-8');
 			header('Cache-Control: max-age=60');
 			header_remove('Set-Cookie');
-			if (!$ajax) {
-				$this->sendJsCss();
-			}
-
+			$str = $ajax ? '' : $this->buildJsCss();
 			$data = &$this->getItems('setup');
-			echo $data[$requestId]['code'] ?? '';
+			$str .= $data[$requestId]['code'] ?? '';
 			unset($data[$requestId]);
-
+			header('Content-Length: ' . strlen($str));
+			echo $str;
+			flush();
 			return true;
 		}
 
@@ -111,7 +113,7 @@ final class DeferredContent
 	}
 
 
-	private function sendJsCss(): void
+	private function buildJsCss(): string
 	{
 		$css = array_map('file_get_contents', array_merge([
 			__DIR__ . '/../assets/reset.css',
@@ -124,16 +126,7 @@ final class DeferredContent
 			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
 		], Debugger::$customCssFiles));
 
-		echo "'use strict';
-(function(){
-	var el = document.createElement('style');
-	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
-	el.className='tracy-debug';
-	el.textContent=" . json_encode(Helpers::minifyCss(implode('', $css))) . ";
-	document.head.appendChild(el);})
-();\n";
-
-		array_map(function ($file) { echo '(function() {', file_get_contents($file), '})();'; }, [
+		$js1 = array_map(function ($file) { return '(function() {' . file_get_contents($file) . '})();'; }, [
 			__DIR__ . '/../Bar/assets/bar.js',
 			__DIR__ . '/../assets/toggle.js',
 			__DIR__ . '/../assets/table-sort.js',
@@ -141,7 +134,18 @@ final class DeferredContent
 			__DIR__ . '/../Dumper/assets/dumper.js',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.js',
 		]);
-		array_map('readfile', Debugger::$customJsFiles);
+		$js2 = array_map('file_get_contents', Debugger::$customJsFiles);
+
+		$str = "'use strict';
+(function(){
+	var el = document.createElement('style');
+	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
+	el.className='tracy-debug';
+	el.textContent=" . json_encode(Helpers::minifyCss(implode('', $css))) . ";
+	document.head.appendChild(el);})
+();\n" . implode('', $js1) . implode('', $js2);
+
+		return $str;
 	}
 
 
