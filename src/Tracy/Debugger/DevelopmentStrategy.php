@@ -135,6 +135,10 @@ final class DevelopmentStrategy
 			ini_set('display_errors', '1');
 		}
 
+		if (preg_match('#^Content-Length:#im', implode("\n", headers_list()))) {
+			Debugger::log(new \LogicException('Tracy cannot display the Bar because the Content-Length header is being sent'), Debugger::EXCEPTION);
+		}
+
 		$this->bar->render($this->defer);
 	}
 }
