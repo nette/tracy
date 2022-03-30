@@ -291,7 +291,7 @@
 
 #tracy-bs .tracy-caused {
 	float: right;
-	padding: .3em .6em;
+	padding: .3em calc(1.5 * var(--tracy-space));
 	background: #df8075;
 	border-radius: 0 0 0 8px;
 	white-space: nowrap;
