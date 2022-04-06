@@ -15,8 +15,6 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Debugger::$productionMode = true;
-header('Content-Type: text/plain');
-
 Debugger::enable();
 
 throw new Exception('The my exception', 123);

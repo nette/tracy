@@ -314,8 +314,9 @@ class Helpers
 	{
 		return empty($_SERVER['HTTP_X_REQUESTED_WITH'])
 			&& empty($_SERVER['HTTP_X_TRACY_AJAX'])
+			&& isset($_SERVER['HTTP_HOST'])
 			&& !self::isCli()
-			&& !preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()));
+			&& !preg_match('#^Content-Type: *+(?!text/html)#im', implode("\n", headers_list()));
 	}
 
 

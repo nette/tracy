@@ -17,7 +17,7 @@ if (PHP_SAPI === 'cli') {
 
 
 test('html mode', function () {
-	header('Content-Type: text/html');
+	setHtmlMode();
 	ob_start();
 	dump(123);
 	Assert::match(<<<'XX'
