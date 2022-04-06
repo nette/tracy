@@ -14,8 +14,6 @@ require __DIR__ . '/../bootstrap.php';
 
 Debugger::$productionMode = false;
 Debugger::$scream = true;
-header('Content-Type: text/plain; charset=utf-8');
-
 Debugger::enable();
 
 @$x = &pi(); // E_NOTICE

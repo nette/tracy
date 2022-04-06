@@ -105,13 +105,13 @@ class Dumper
 			$dumper = new self($options);
 			fwrite(STDOUT, $dumper->asTerminal($var, $useColors ? self::$terminalColors : []));
 
-		} elseif (preg_match('#^Content-Type: (?!text/html)#im', implode("\n", headers_list()))) { // non-html
-			echo self::toText($var, $options);
-
-		} else { // html
+		} elseif (Helpers::isHtmlMode()) {
 			$options[self::LOCATION] = $options[self::LOCATION] ?? true;
 			self::renderAssets();
 			echo self::toHtml($var, $options);
+
+		} else {
+			echo self::toText($var, $options);
 		}
 
 		return $var;

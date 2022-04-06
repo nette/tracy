@@ -17,4 +17,5 @@ if (PHP_SAPI === 'cli') {
 	Tester\Environment::skip('HTML is not rendered in CLI mode');
 }
 
+setHtmlMode();
 Debugger::enable(Debugger::DEVELOPMENT, 'relative');

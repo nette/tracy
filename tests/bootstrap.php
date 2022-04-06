@@ -44,3 +44,10 @@ function test(string $title, Closure $function): void
 {
 	$function();
 }
+
+
+function setHtmlMode(): void
+{
+	header('Content-Type: text/html');
+	$_SERVER['HTTP_HOST'] = '';
+}

@@ -16,7 +16,6 @@ if (PHP_SAPI === 'cli') {
 }
 
 
-header('Content-Type: text/plain');
 Tracy\Dumper::$terminalColors = null;
 
 

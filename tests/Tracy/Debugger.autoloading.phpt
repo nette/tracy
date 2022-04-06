@@ -14,8 +14,6 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Debugger::$productionMode = false;
-header('Content-Type: text/plain');
-
 Debugger::enable();
 
 

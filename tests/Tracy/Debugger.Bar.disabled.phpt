@@ -18,6 +18,6 @@ if (PHP_SAPI === 'cli') {
 
 Debugger::$productionMode = false;
 Debugger::$showBar = false;
-header('Content-Type: text/html');
+setHtmlMode();
 
 Debugger::enable();

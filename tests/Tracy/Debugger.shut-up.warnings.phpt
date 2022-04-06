@@ -13,8 +13,6 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Debugger::$productionMode = false;
-header('Content-Type: text/plain; charset=utf-8');
-
 Debugger::enable();
 
 @$x = &pi(); // E_NOTICE

@@ -13,6 +13,6 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Debugger::$productionMode = true;
-header('Content-Type: text/html');
+setHtmlMode();
 
 Debugger::enable();
