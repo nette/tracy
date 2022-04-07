@@ -17,7 +17,7 @@ Assert::match("\e[1;33mnull\e[0m", Dumper::toTerminal(null));
 
 
 Assert::match(
-	<<<XX
+	<<<'XX'
 		\e[1;31marray\e[0m (4)
 		\e[1;30m   \e[1;32m0\e[0m => \e[1;32m1
 		\e[1;30m   \e[1;32m1\e[0m => \e[1;36m\e[0m'\e[1;36mhello\e[0m'\e[1;36m
@@ -38,7 +38,7 @@ $obj->{1} = 9;
 $obj->{''} = 10;
 
 Assert::match(
-	<<<XX
+	<<<'XX'
 		\e[1;31mChild\e[0m \e[0m#%d%
 		\e[1;30m   \e[1;37mnew\e[0m: \e[1;32m7
 		\e[1;30m   \e[1;37m0\e[0m: \e[1;32m8
@@ -60,7 +60,7 @@ Assert::match(
 $arr = (object) ['x' => 1, 'y' => 2];
 $arr->z = &$arr;
 Assert::match(
-	<<<XX
+	<<<'XX'
 		\e[1;31mstdClass\e[0m \e[0m#%d%
 		\e[1;30m   \e[1;37mx\e[0m: \e[1;32m1
 		\e[1;30m   \e[1;37my\e[0m: \e[1;32m2
