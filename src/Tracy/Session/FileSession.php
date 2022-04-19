@@ -103,6 +103,7 @@ class FileSession implements SessionStorage
 		ftruncate($this->file, 0);
 		fseek($this->file, 0);
 		fwrite($this->file, serialize($this->data));
+		flock($this->file, LOCK_UN);
 		fclose($this->file);
 		$this->file = null;
 	}
