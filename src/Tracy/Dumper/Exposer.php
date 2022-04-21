@@ -153,6 +153,32 @@ final class Exposer
 	}
 
 
+	public static function exposeGenerator(\Generator $gen, Value $value, Describer $describer): void
+	{
+		try {
+			$r = new \ReflectionGenerator($gen);
+			$describer->addPropertyTo($value, 'file', $r->getExecutingFile() . ':' . $r->getExecutingLine());
+			$describer->addPropertyTo($value, 'this', $r->getThis());
+		} catch (\ReflectionException $e) {
+			$value->value = get_class($gen) . ' (terminated)';
+		}
+	}
+
+
+	public static function exposeFiber(\Fiber $fiber, Value $value, Describer $describer): void
+	{
+		if ($fiber->isTerminated()) {
+			$value->value = get_class($fiber) . ' (terminated)';
+		} elseif (!$fiber->isStarted()) {
+			$value->value = get_class($fiber) . ' (not started)';
+		} else {
+			$r = new \ReflectionFiber($fiber);
+			$describer->addPropertyTo($value, 'file', $r->getExecutingFile() . ':' . $r->getExecutingLine());
+			$describer->addPropertyTo($value, 'callable', $r->getCallable());
+		}
+	}
+
+
 	public static function exposeSplFileInfo(\SplFileInfo $obj): array
 	{
 		return ['path' => $obj->getPathname()];
