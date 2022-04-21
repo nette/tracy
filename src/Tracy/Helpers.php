@@ -591,4 +591,30 @@ XX
 
 		return $res;
 	}
+
+
+	public static function traverseValue($val, callable $callback, array &$skip = [], ?string $refId = null): void
+	{
+		if (is_object($val)) {
+			$id = spl_object_id($val);
+			if (!isset($skip[$id])) {
+				$skip[$id] = true;
+				$callback($val);
+				self::traverseValue((array) $val, $callback, $skip);
+			}
+
+		} elseif (is_array($val)) {
+			if ($refId) {
+				if (isset($skip[$refId])) {
+					return;
+				}
+				$skip[$refId] = true;
+			}
+
+			foreach ($val as $k => $v) {
+				$refId = ($r = \ReflectionReference::fromArrayElement($val, $k)) ? $r->getId() : null;
+				self::traverseValue($v, $callback, $skip, $refId);
+			}
+		}
+	}
 }

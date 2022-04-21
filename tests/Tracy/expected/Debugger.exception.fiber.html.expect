@@ -1,0 +1,189 @@
+<!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table></p></code>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex">
+	<meta name="generator" content="Tracy by Nette Framework">
+
+	<title>Exception: The my exception #123</title>
+	<!-- in %a%:%d% -->
+
+	%A%
+</head>
+
+
+<body>
+<tracy-div id="tracy-bs" itemscope>
+	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
+	<div class="tracy-bs-main">
+<section class="tracy-section tracy-section--error">
+	<p>Exception #123</p>
+
+	<h1><span>The my exception</span>
+	<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
+	</h1>
+</section>
+
+
+
+<section class="tracy-section tracy-section--stack">
+	<div class="tracy-section-panel">
+		<div class="tracy-tabs">
+			<ul class="tracy-tab-bar">
+				<li class="tracy-tab-label tracy-active"><a href="#">Main thread</a></li>
+
+
+									<li class="tracy-tab-label"><a href="#">Fiber #%d%</a></li>
+							</ul>
+
+			<div>
+				<div class="tracy-tab-panel tracy-active">
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
+
+	<div class="tracy-section-panel">
+		<p><b>File:</b> %a%</p>
+		<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'>%A%</pre>
+	</div>
+</section>
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+
+	<div class="tracy-section-panel">
+	<div class="tracy-callstack">
+
+		<div class="tracy-callstack-file">
+			<a href="editor:%a%" title="%a%:%d%" class="tracy-editor">%a%<b>Debugger.exception.fiber.html.phpt</b>:%d%</a>
+		</div>
+
+		<div class="tracy-callstack-callee">
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>third</b> (...)</a>
+		</div>
+
+		<div class="tracy-callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" %A%</pre>
+
+			<table class="tracy-callstack-args">
+<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
+</td></tr>
+			</table>
+		</div>
+
+		<div class="tracy-callstack-file">
+			<a href="editor:%a%" title="%a%Debugger.exception.fiber.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.fiber.html.phpt</b>:%d%</a>
+		</div>
+
+		<div class="tracy-callstack-callee">
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>second</b> (...)</a>
+		</div>
+
+		<div class="tracy-callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" %A%</pre>
+
+			<table class="tracy-callstack-args">
+<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
+</td></tr>
+<tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">false</span></pre>
+</td></tr>
+			</table>
+		</div>
+
+		<div class="tracy-callstack-file">
+			<a href="editor:%a%" title="%a%Debugger.exception.fiber.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.fiber.html.phpt</b>:%d%</a>
+		</div>
+
+		<div class="tracy-callstack-callee">
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>first</b> (...)</a>
+		</div>
+
+		<div class="tracy-callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" %A%</pre>
+
+			<table class="tracy-callstack-args">
+<tr><th>$arg1</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='{"ref":%d%}'></pre>
+</td></tr>
+<tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>
+</td></tr>
+			</table>
+		</div>
+	</div>
+	</div>
+</section>
+				</div>
+
+
+									<div class="tracy-tab-panel">
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+
+	<div class="tracy-section-panel">
+	<div class="tracy-callstack">
+
+		<div class="tracy-callstack-file">
+			<a href="%a%" class="tracy-editor">%a%</a>
+		</div>
+
+		<div class="tracy-callstack-callee">
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle">Fiber::<b>suspend</b> (...)</a>
+		</div>
+
+		<div class="tracy-callstack-additional">
+			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'>%A%</pre>
+
+			<table class="tracy-callstack-args">
+<tr><th>$value</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">123</span></pre>
+</td></tr>
+			</table>
+		</div>
+
+		<div class="tracy-callstack-file">
+			<a href="%a%" class="tracy-editor">%a%</a>
+		</div>
+
+		<div class="tracy-callstack-callee">
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>gen2</b> (...)</a>
+		</div>
+
+		<div class="tracy-callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'>%A%</pre>
+
+			<table class="tracy-callstack-args">
+<tr><th>$a</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">123</span></pre>
+</td></tr>
+			</table>
+		</div>
+
+		<div class="tracy-callstack-file">
+			<a href="%a%" class="tracy-editor">%a%</a>
+		</div>
+
+		<div class="tracy-callstack-callee">
+			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>gen1</b> ()</a>
+		</div>
+
+		<div class="tracy-callstack-additional tracy-collapsed">
+			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'>%A%</pre>
+
+		</div>
+
+		<div class="tracy-callstack-file">
+			<i>inner-code</i>
+		</div>
+
+		<div class="tracy-callstack-callee">
+<b>{closure}</b> ()
+		</div>
+
+	</div>
+	</div>
+</section>
+					</div>
+							</div>
+		</div>
+	</div>
+</section>
+
+%A%

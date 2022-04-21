@@ -365,6 +365,10 @@
 	background: #cd1818a6;
 }
 
+#tracy-bs .tracy-section--error + .tracy-section--stack {
+	margin-top: calc(1.5 * var(--tracy-space));
+}
+
 
 /* tabs */
 #tracy-bs .tracy-tab-bar {

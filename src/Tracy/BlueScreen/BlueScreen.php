@@ -53,6 +53,9 @@ class BlueScreen
 	/** @var array */
 	private $snapshot;
 
+	/** @var \WeakMap<\Fiber|\Generator> */
+	private $fibers;
+
 
 	public function __construct()
 	{
@@ -60,6 +63,7 @@ class BlueScreen
 			? [$m[1] . '/tracy', $m[1] . '/nette', $m[1] . '/latte']
 			: [dirname(__DIR__)];
 		$this->fileGenerators[] = [self::class, 'generateNewPhpFileContents'];
+		$this->fibers = PHP_VERSION_ID < 80000 ? new \SplObjectStorage : new \WeakMap;
 	}
 
 
@@ -96,6 +100,17 @@ class BlueScreen
 	public function addFileGenerator(callable $generator): self
 	{
 		$this->fileGenerators[] = $generator;
+		return $this;
+	}
+
+
+	/**
+	 * @param \Fiber|\Generator $fiber
+	 * @return static
+	 */
+	public function addFiber($fiber): self
+	{
+		$this->fibers[$fiber] = true;
 		return $this;
 	}
 
@@ -143,6 +158,7 @@ class BlueScreen
 
 	private function renderTemplate(\Throwable $exception, string $template, $toScreen = true): void
 	{
+		[$generators, $fibers] = $this->findGeneratorsAndFibers($exception);
 		$headersSent = headers_sent($headersFile, $headersLine);
 		$obStatus = Debugger::$obStatus;
 		$showEnvironment = $this->showEnvironment && (strpos($exception->getMessage(), 'Allowed memory size') === false);
@@ -575,5 +591,32 @@ class BlueScreen
 		}
 
 		return $res . "class $class\n{\n\$END\$\n}\n";
+	}
+
+
+	private function findGeneratorsAndFibers(object $object): array
+	{
+		$generators = $fibers = [];
+		$add = function ($obj) use (&$generators, &$fibers) {
+			if ($obj instanceof \Generator) {
+				try {
+					new \ReflectionGenerator($obj);
+					$generators[spl_object_id($obj)] = $obj;
+				} catch (\ReflectionException $e) {
+				}
+			} elseif ($obj instanceof \Fiber && $obj->isStarted() && !$obj->isTerminated()) {
+				$fibers[spl_object_id($obj)] = $obj;
+			}
+		};
+
+		foreach ($this->fibers as $obj => $foo) {
+			$add($obj);
+		}
+
+		if (PHP_VERSION_ID >= 80000) {
+			Helpers::traverseValue($object, $add);
+		}
+
+		return [$generators, $fibers];
 	}
 }
