@@ -218,15 +218,3 @@ test('do not suggest anything when accessing anonymous class', function () {
 	Assert::same('Undefined property: class@anonymous::$property', $e->getMessage());
 	Assert::false(isset($e->tracyAction));
 });
-
-
-test('variables', function () use ($obj) {
-	$abcd = 1;
-	@$val = $abc;
-	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
-	@$e->context = get_defined_vars(); // deprecated since PHP 8.2
-	Helpers::improveException($e);
-	Assert::same('Undefined variable $abc, did you mean $abcd?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=%24abc&replace=%24abcd', $e->tracyAction['link']);
-	Assert::same('fix it', $e->tracyAction['label']);
-});
