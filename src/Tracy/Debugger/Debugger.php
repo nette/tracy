@@ -352,7 +352,6 @@ class Debugger
 		string $message,
 		string $file,
 		int $line,
-		?array $context = null
 	): bool
 	{
 		$error = error_get_last();
@@ -362,15 +361,13 @@ class Debugger
 		}
 
 		if ($severity === E_RECOVERABLE_ERROR || $severity === E_USER_ERROR) {
-			$e = new ErrorException($message, 0, $severity, $file, $line);
-			@$e->context = $context; // dynamic properties are deprecated since PHP 8.2
-			throw $e;
+			throw new ErrorException($message, 0, $severity, $file, $line);
 
 		} elseif (
 			($severity & error_reporting())
 			|| (is_int(self::$scream) ? $severity & self::$scream : self::$scream)
 		) {
-			self::getStrategy()->handleError($severity, $message, $file, $line, $context);
+			self::getStrategy()->handleError($severity, $message, $file, $line);
 		}
 
 		return false; // calls normal error handler to fill-in error_get_last()
