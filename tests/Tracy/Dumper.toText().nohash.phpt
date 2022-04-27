@@ -37,3 +37,16 @@ stdClass
    z: stdClass RECURSION
 XX
 , Dumper::toText($arr, [Dumper::HASH => false]));
+
+
+$obj = (object) ['a' => 1];
+Assert::match(<<<'XX'
+array (3)
+   0 => stdClass
+   |  a: 1
+   1 => stdClass
+   |  a: 1
+   2 => stdClass
+   |  a: 1
+XX
+, Dumper::toText([$obj, $obj, $obj], [Dumper::HASH => false]));
