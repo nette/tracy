@@ -25,13 +25,13 @@ $lookFor = '<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" clas
 
 // sanity test: The environment section is present in the rendered string
 $c = $render($exception);
-Assert::true(strpos($c, $lookFor) !== false);
+Assert::true(str_contains($c, $lookFor));
 
 // on memory failures, it's hidden by default:
 $c = $render($hohoh = new ErrorException('Fatal Error: Allowed memory size of 134217728 bytes exhausted'));
-Assert::true(strpos($c, $lookFor) === false);
+Assert::true(!str_contains($c, $lookFor));
 
 // this time the section is absent:
 $blueScreen->showEnvironment = false;
 $c = $render($exception);
-Assert::true(strpos($c, $lookFor) === false);
+Assert::true(!str_contains($c, $lookFor));
