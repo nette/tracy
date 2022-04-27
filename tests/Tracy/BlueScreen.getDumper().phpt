@@ -18,9 +18,7 @@ test('dumper with default keysToHide scrubbing', function () {
 
 test('dumper with custom scrubbing', function () {
 	$blueScreen = new Tracy\BlueScreen;
-	$blueScreen->scrubber = function (string $k, $v = null): bool {
-		return strtolower($k) === 'pin' || strtolower($k) === 'foo' || $v === 42;
-	};
+	$blueScreen->scrubber = fn(string $k, $v = null): bool => strtolower($k) === 'pin' || strtolower($k) === 'foo' || $v === 42;
 	$dumper = $blueScreen->getDumper();
 	Assert::contains('foo', $dumper('foo', 'bar'));
 	Assert::notContains('secret', $dumper('secret', 'password')); // default keysToHide
@@ -31,9 +29,7 @@ test('dumper with custom scrubbing', function () {
 
 test('dumper with regexp scrubbing', function () {
 	$blueScreen = new Tracy\BlueScreen;
-	$blueScreen->scrubber = function (string $k): bool {
-		return (bool) preg_match('#password#i', $k);
-	};
+	$blueScreen->scrubber = fn(string $k): bool => (bool) preg_match('#password#i', $k);
 	$dumper = $blueScreen->getDumper();
 	Assert::contains('foo', $dumper('foo', 'bar'));
 	Assert::notContains('secret', $dumper('secret', 'super_password'));
