@@ -84,6 +84,10 @@ class Bar
 				$redirectQueue[] = ['content' => $this->renderPartial('redirect', '-r' . count($redirectQueue)), 'time' => time()];
 			}
 		} elseif (Helpers::isHtmlMode()) {
+			if (preg_match('#^Content-Length:#im', implode("\n", headers_list()))) {
+				Debugger::log(new \LogicException('Tracy cannot display the Bar because the Content-Length header is being sent'), Debugger::EXCEPTION);
+			}
+
 			$content = $this->renderPartial('main');
 
 			foreach (array_reverse($redirectQueue) as $item) {
