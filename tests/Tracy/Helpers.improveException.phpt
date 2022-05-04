@@ -58,7 +58,7 @@ test('calling', function () {
 
 	Helpers::improveException($e);
 	Assert::same('Call to undefined function trimx(), did you mean trim()?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=trimx%28&replace=trim%28', $e->tracyAction['link']);
+	Assert::match('editor://fix?file=%a%Helpers.improveException.phpt&line=%d%&search=trimx%28&replace=trim%28', $e->tracyAction['link']);
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
@@ -70,7 +70,7 @@ test('', function () {
 
 	Helpers::improveException($e);
 	Assert::same('Call to undefined function trimx(), did you mean trim()?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=trimx%28&replace=trim%28', $e->tracyAction['link']);
+	Assert::match('editor://fix?file=%a%Helpers.improveException.phpt&line=%d%&search=trimx%28&replace=trim%28', $e->tracyAction['link']);
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
@@ -82,7 +82,7 @@ test('', function () {
 
 	Helpers::improveException($e);
 	Assert::same('Call to undefined function myFunctionx(), did you mean myfunction()?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=myFunctionx%28&replace=myfunction%28', $e->tracyAction['link']);
+	Assert::match('editor://fix?file=%a%Helpers.improveException.phpt&line=%d%&search=myFunctionx%28&replace=myfunction%28', $e->tracyAction['link']);
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
@@ -94,7 +94,7 @@ test('', function () {
 
 	Helpers::improveException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodX(), did you mean publicMethod()?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=publicMethodX%28&replace=publicMethod%28', $e->tracyAction['link']);
+	Assert::match('editor://fix?file=%a%Helpers.improveException.phpt&line=%d%&search=publicMethodX%28&replace=publicMethod%28', $e->tracyAction['link']);
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
@@ -106,7 +106,7 @@ test('', function () use ($obj) {
 
 	Helpers::improveException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodX(), did you mean publicMethod()?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=publicMethodX%28&replace=publicMethod%28', $e->tracyAction['link']);
+	Assert::match('editor://fix?file=%a%Helpers.improveException.phpt&line=%d%&search=publicMethodX%28&replace=publicMethod%28', $e->tracyAction['link']);
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
@@ -118,7 +118,7 @@ test('suggest static method', function () use ($obj) {
 
 	Helpers::improveException($e);
 	Assert::same('Call to undefined method TestClass::publicMethodStaticX(), did you mean publicMethodStatic()?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=publicMethodStaticX%28&replace=publicMethodStatic%28', $e->tracyAction['link']);
+	Assert::match('editor://fix?file=%a%Helpers.improveException.phpt&line=%d%&search=publicMethodStaticX%28&replace=publicMethodStatic%28', $e->tracyAction['link']);
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
@@ -152,7 +152,7 @@ test('reading', function () use ($obj) {
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
 	Helpers::improveException($e);
 	Assert::same('Undefined property: TestClass::$publicX, did you mean $public?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=-%3EpublicX&replace=-%3Epublic', $e->tracyAction['link']);
+	Assert::match('editor://fix?file=%a%Helpers.improveException.phpt&line=%d%&search=-%3EpublicX&replace=-%3Epublic', $e->tracyAction['link']);
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 
@@ -180,7 +180,7 @@ test('suggest only static property', function () use ($obj) {
 
 	Helpers::improveException($e);
 	Assert::match('Access to undeclared static property%a?% TestClass::$publicStaticX, did you mean $publicStatic?', $e->getMessage());
-	Assert::match('editor://fix/?file=%a%Helpers.improveException.phpt&line=%d%&search=%3A%3A%24publicStaticX&replace=%3A%3A%24publicStatic', $e->tracyAction['link']);
+	Assert::match('editor://fix?file=%a%Helpers.improveException.phpt&line=%d%&search=%3A%3A%24publicStaticX&replace=%3A%3A%24publicStatic', $e->tracyAction['link']);
 	Assert::same('fix it', $e->tracyAction['label']);
 });
 

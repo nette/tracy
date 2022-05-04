@@ -102,7 +102,7 @@ Dumper::$liveSnapshot = [];
 Assert::match(
 	<<<'XX'
 		<pre class="tracy-dump" data-tracy-dump='{"ref":%d%}'
-		><a href="editor://open/?file=%a%&amp;line=%d%&amp;search=&amp;replace=" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::toHtml(new Test, $options + ['location' => <span>…</span> ON_CLASS]) 📍</a
+		><a href="editor://open?file=%a%&amp;line=%d%&amp;search=&amp;replace=" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::toHtml(new Test, $options + ['location' => <span>…</span> ON_CLASS]) 📍</a
 		></pre>
 		XX,
 	Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_CLASS]),

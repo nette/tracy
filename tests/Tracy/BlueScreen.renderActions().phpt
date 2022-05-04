@@ -82,7 +82,7 @@ Assert::with($blueScreen, function () {
 Assert::with($blueScreen, function () {
 	Assert::same(
 		[
-			'link' => 'editor://open/?file=' . urlencode(__FILE__) . '&line=1&search=&replace=',
+			'link' => 'editor://open?file=' . urlencode(__FILE__) . '&line=1&search=&replace=',
 			'label' => 'open file',
 		],
 		$this->renderActions(new Exception(" '" . __FILE__ . "'"))[0],
@@ -90,7 +90,7 @@ Assert::with($blueScreen, function () {
 
 	Assert::same(
 		[
-			'link' => 'editor://open/?file=' . urlencode(__FILE__) . '&line=1&search=&replace=',
+			'link' => 'editor://open?file=' . urlencode(__FILE__) . '&line=1&search=&replace=',
 			'label' => 'open file',
 		],
 		$this->renderActions(new Exception(' "' . __FILE__ . '"'))[0],
@@ -99,7 +99,7 @@ Assert::with($blueScreen, function () {
 	$ds = urlencode(DIRECTORY_SEPARATOR);
 	Assert::same(
 		[
-			'link' => 'editor://create/?file=' . $ds . 'notexists.txt&line=1&search=&replace=',
+			'link' => 'editor://create?file=' . $ds . 'notexists.txt&line=1&search=&replace=',
 			'label' => 'create file',
 		],
 		$this->renderActions(new Exception(' "/notexists.txt"'))[0],
@@ -107,7 +107,7 @@ Assert::with($blueScreen, function () {
 
 	Assert::same(
 		[
-			'link' => 'editor://create/?file=c%3A%5Cnotexists.txt&line=1&search=&replace=',
+			'link' => 'editor://create?file=c%3A%5Cnotexists.txt&line=1&search=&replace=',
 			'label' => 'create file',
 		],
 		$this->renderActions(new Exception(' "c:\notexists.txt"'))[0],
@@ -115,7 +115,7 @@ Assert::with($blueScreen, function () {
 
 	Assert::same(
 		[
-			'link' => 'editor://create/?file=c%3A' . $ds . 'notexists.txt&line=1&search=&replace=',
+			'link' => 'editor://create?file=c%3A' . $ds . 'notexists.txt&line=1&search=&replace=',
 			'label' => 'create file',
 		],
 		$this->renderActions(new Exception(' "c:/notexists.txt"'))[0],
