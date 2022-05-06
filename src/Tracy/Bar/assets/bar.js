@@ -25,7 +25,7 @@ class Panel
 		let elem = this.elem;
 
 		this.init = function() {};
-		elem.innerHTML = addNonces(elem.dataset.tracyContent);
+		elem.innerHTML = elem.dataset.tracyContent;
 		Tracy.Dumper.init(Debug.layer);
 		delete elem.dataset.tracyContent;
 		evalScripts(elem);
@@ -382,7 +382,7 @@ class Debug
 		Debug.panels = {};
 		Debug.layer = document.createElement('tracy-div');
 		Debug.layer.setAttribute('id', 'tracy-debug');
-		Debug.layer.innerHTML = addNonces(content);
+		Debug.layer.innerHTML = content;
 		(document.body || document.documentElement).appendChild(Debug.layer);
 		evalScripts(Debug.layer);
 		Debug.layer.style.display = 'block';
@@ -669,16 +669,6 @@ function getPosition(elem) {
 		width: elem.offsetWidth,
 		height: elem.offsetHeight
 	};
-}
-
-
-function addNonces(html) {
-	let el = document.createElement('div');
-	el.innerHTML = html;
-	el.querySelectorAll('style').forEach((style) => {
-		style.setAttribute('nonce', nonce);
-	});
-	return el.innerHTML;
 }
 
 
