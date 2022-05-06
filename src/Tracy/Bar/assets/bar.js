@@ -2,8 +2,7 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
-let nonce = document.currentScript.getAttribute('nonce') || document.currentScript.nonce,
-	requestId = document.currentScript.dataset.id,
+let requestId = document.currentScript.dataset.id,
 	ajaxCounter = 1,
 	baseUrl = location.href.split('#')[0];
 
@@ -525,7 +524,6 @@ class Debug
 		}
 		Debug.scriptElem = document.createElement('script');
 		Debug.scriptElem.src = url;
-		Debug.scriptElem.setAttribute('nonce', nonce);
 		(document.body || document.documentElement).appendChild(Debug.scriptElem);
 	}
 }
@@ -537,7 +535,6 @@ function evalScripts(elem) {
 			let document = script.ownerDocument;
 			let dolly = document.createElement('script');
 			dolly.textContent = script.textContent;
-			dolly.setAttribute('nonce', nonce);
 			(document.body || document.documentElement).appendChild(dolly);
 			script.tracyEvaluated = true;
 		}
