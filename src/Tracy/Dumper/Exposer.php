@@ -132,6 +132,12 @@ final class Exposer
 	}
 
 
+	public static function exposeArrayIterator(\ArrayIterator $obj, Value $value, Describer $describer): void
+	{
+		self::exposeObject((object) $obj->getArrayCopy(), $value, $describer);
+	}
+
+
 	public static function exposeDOMNode(\DOMNode $obj, Value $value, Describer $describer): void
 	{
 		$props = preg_match_all('#^\s*\[([^\]]+)\] =>#m', print_r($obj, true), $tmp) ? $tmp[1] : [];
