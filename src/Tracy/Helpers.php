@@ -57,12 +57,20 @@ class Helpers
 		string $search = '',
 		string $replace = '',
 	): ?string {
-		if (Debugger::$editor && $file && ($action === 'create' || is_file($file))) {
+		$editor = Debugger::$editor;
+		if (
+			str_starts_with($editor, 'editor://')
+			&& !str_contains(PHP_OS, 'WIN')
+			&& is_file('/usr/local/bin/phpstorm')
+		) {
+			$editor = 'phpstorm://%action?file=%file&line=%line';
+		}
+		if ($editor && $file && ($action === 'create' || is_file($file))) {
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 			$file = strtr($file, Debugger::$editorMapping);
 			$search = str_replace("\n", PHP_EOL, $search);
 			$replace = str_replace("\n", PHP_EOL, $replace);
-			return strtr(Debugger::$editor, [
+			return strtr($editor, [
 				'%action' => $action,
 				'%file' => rawurlencode($file),
 				'%line' => $line ?: 1,
