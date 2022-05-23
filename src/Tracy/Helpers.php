@@ -63,7 +63,7 @@ class Helpers
 			&& !str_contains(PHP_OS, 'WIN')
 			&& is_file('/usr/local/bin/phpstorm')
 		) {
-			$editor = 'phpstorm://%action?file=%file&line=%line';
+			$editor = 'phpstorm://%action?file=%file&line=%line&search=%search&replace=%replace';
 		}
 		if ($editor && $file && ($action === 'create' || is_file($file))) {
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
