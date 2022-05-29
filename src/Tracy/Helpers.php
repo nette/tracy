@@ -59,11 +59,12 @@ class Helpers
 	): ?string {
 		$editor = Debugger::$editor;
 		if (
-			str_starts_with($editor, 'editor://')
+			$action === 'open'
+			&& str_starts_with($editor, 'editor://')
 			&& !str_contains(PHP_OS, 'WIN')
 			&& is_file('/usr/local/bin/phpstorm')
 		) {
-			$editor = 'phpstorm://%action?file=%file&line=%line&search=%search&replace=%replace';
+			$editor = 'phpstorm://%action?file=%file&line=%line';
 		}
 		if ($editor && $file && ($action === 'create' || is_file($file))) {
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
