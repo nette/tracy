@@ -431,8 +431,8 @@ class BlueScreen
 			'color: ' . ini_get('highlight.html') => '1;35',
 			'color: ' . ini_get('highlight.keyword') => '1;37',
 			'color: ' . ini_get('highlight.string') => '1;32',
-			'line' => '1;30',
-			'highlight' => "1;37m\e[41",
+			'tracy-line' => '1;30',
+			'tracy-line-highlight' => "1;37m\e[41",
 		];
 
 		$stack = ['0'];
