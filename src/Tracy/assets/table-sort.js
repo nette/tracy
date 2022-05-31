@@ -7,8 +7,9 @@ class TableSort
 {
 	static init() {
 		document.documentElement.addEventListener('click', (e) => {
-			if (e.target.matches('.tracy-sortable > :first-child > tr:first-child *')) {
-				TableSort.sort(e.target.closest('td,th'));
+	  		let target = e.composedPath()[0];
+			if (target.matches('.tracy-sortable > :first-child > tr:first-child *')) {
+				TableSort.sort(target.closest('td,th'));
 			}
 		});
 

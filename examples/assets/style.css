@@ -22,10 +22,8 @@ h2 {
 	font-size: 140%;
 }
 
-pre.tracy-dump {
+tracy-dump {
 	border: 1px solid silver;
-	padding: 1em;
-	margin: 1em 0;
 }
 
 a {

@@ -32,10 +32,11 @@ class BlueScreen
 		});
 
 		blueScreen.addEventListener('tracy-toggle', (e) => {
-			if (e.target.matches('#tracy-bs-toggle')) { // blue screen toggle
+	  		let target = e.composedPath()[0];
+			if (target.matches('#tracy-bs-toggle')) { // blue screen toggle
 				document.documentElement.classList.toggle('tracy-bs-visible', !e.detail.collapsed);
 
-			} else if (!e.target.matches('.tracy-dump *') && e.detail.originalEvent) { // panel toggle
+			} else if (!target.matches('.tracy-dump *') && e.detail.originalEvent) { // panel toggle
 				e.detail.relatedTarget.classList.toggle('tracy-panel-fadein', !e.detail.collapsed);
 			}
 		});
