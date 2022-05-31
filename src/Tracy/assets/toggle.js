@@ -14,10 +14,10 @@ class Toggle
 		});
 
 		document.documentElement.addEventListener('click', (e) => {
-			let el;
+	  		let target = e.composedPath()[0];
+			let el = target.closest('.tracy-toggle');
 			if (
-				!e.shiftKey && !e.ctrlKey && !e.metaKey
-				&& (el = e.target.closest('.tracy-toggle'))
+				el && !e.shiftKey && !e.ctrlKey && !e.metaKey
 				&& Math.pow(start[0] - e.clientX, 2) + Math.pow(start[1] - e.clientY, 2) < MOVE_THRESHOLD
 			) {
 				Toggle.toggle(el, undefined, e);
@@ -69,8 +69,9 @@ class Toggle
 	static persist(baseEl, restore) {
 		let saved = [];
 		baseEl.addEventListener('tracy-toggle', (e) => {
-			if (saved.indexOf(e.target) < 0) {
-				saved.push(e.target);
+	  		let target = e.composedPath()[0];
+			if (saved.indexOf(target) < 0) {
+				saved.push(target);
 			}
 		});
 
