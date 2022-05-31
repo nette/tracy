@@ -48,8 +48,9 @@ class Dumper
 
 		document.documentElement.addEventListener('click', (e) => {
 			let el;
+	  		let target = e.composedPath()[0];
 			// enables <span data-tracy-href=""> & ctrl key
-			if (e.ctrlKey && (el = e.target.closest('[data-tracy-href]'))) {
+			if (e.ctrlKey && (el = target.closest('[data-tracy-href]'))) {
 				location.href = el.getAttribute('data-tracy-href');
 				return false;
 			}
@@ -59,7 +60,7 @@ class Dumper
 		document.documentElement.addEventListener('tracy-beforetoggle', (e) => {
 			let el;
 			// initializes lazy <span data-tracy-dump> inside <pre data-tracy-snapshot>
-			if ((el = e.target.closest('[data-tracy-snapshot]'))) {
+			if ((el = target.closest('[data-tracy-snapshot]'))) {
 				let snapshot = JSON.parse(el.getAttribute('data-tracy-snapshot'));
 				el.removeAttribute('data-tracy-snapshot');
 				el.querySelectorAll('[data-tracy-dump]').forEach((toggler) => {
@@ -73,7 +74,8 @@ class Dumper
 		});
 
 		document.documentElement.addEventListener('tracy-toggle', (e) => {
-			if (!e.target.matches('.tracy-dump *')) {
+	  		let target = e.composedPath()[0];
+			if (!target.matches('.tracy-dump *')) {
 				return;
 			}
 
@@ -86,12 +88,12 @@ class Dumper
 
 			} else if (origE && origE.altKey && cont.querySelector('.tracy-toggle')) { // triggered by alt key
 				if (e.detail.collapsed) { // reopen
-					e.target.classList.toggle('tracy-collapsed', false);
+					target.classList.toggle('tracy-collapsed', false);
 					cont.classList.toggle('tracy-collapsed', false);
 					e.detail.collapsed = false;
 				}
 
-				let expand = e.target.tracyAltExpand = !e.target.tracyAltExpand;
+				let expand = target.tracyAltExpand = !target.tracyAltExpand;
 				toggleChildren(cont, expand ? {} : false);
 			}
 
@@ -100,33 +102,36 @@ class Dumper
 
 		document.documentElement.addEventListener('animationend', (e) => {
 			if (e.animationName === 'tracy-dump-flash') {
-				e.target.classList.toggle('tracy-dump-flash', false);
+		  		let target = e.composedPath()[0];
+				target.classList.toggle('tracy-dump-flash', false);
 			}
 		});
 
 		document.addEventListener('mouseover', (e) => {
-			if (!e.target.matches('.tracy-dump *')) {
+	  		let target = e.composedPath()[0];
+			if (!target.matches('.tracy-dump *')) {
 				return;
 			}
 
 			let el;
 
-			if (e.target.matches('.tracy-dump-hash') && (el = e.target.closest('.tracy-dump'))) {
+			if (target.matches('.tracy-dump-hash') && (el = target.closest('.tracy-dump'))) {
 				el.querySelectorAll('.tracy-dump-hash').forEach((el) => {
-					if (el.textContent === e.target.textContent) {
+					if (el.textContent === target.textContent) {
 						el.classList.add('tracy-dump-highlight');
 					}
 				});
 				return;
 			}
 
-			if ((el = e.target.closest('.tracy-toggle')) && !el.title) {
+			if ((el = target.closest('.tracy-toggle')) && !el.title) {
 				el.title = HINT_ALT;
 			}
 		});
 
 		document.addEventListener('mouseout', (e) => {
-			if (e.target.matches('.tracy-dump-hash')) {
+	  		let target = e.composedPath()[0];
+			if (target.matches('.tracy-dump-hash')) {
 				document.querySelectorAll('.tracy-dump-hash.tracy-dump-highlight').forEach((el) => {
 					el.classList.remove('tracy-dump-highlight');
 				});
@@ -377,6 +382,26 @@ function toggleChildren(cont, usedIds) {
 
 
 function UnknownEntityException() {}
+
+
+class TracyDumpElement extends HTMLElement {
+	constructor() {
+		super();
+		let templateContent = document.querySelector('.tracy-dump-template').content;
+		this.attachShadow({mode: 'open'});
+		this.shadowRoot.appendChild(templateContent.cloneNode(true));
+	}
+
+	connectedCallback() {
+		setTimeout(() => {
+			while (this.firstElementChild) {
+				this.shadowRoot.appendChild(this.firstElementChild);
+			}
+		});
+	}
+}
+
+window.customElements.define('tracy-dump', TracyDumpElement);
 
 
 let Tracy = window.Tracy = window.Tracy || {};

@@ -103,7 +103,6 @@ class Dumper
 
 		} elseif (Helpers::isHtmlMode()) {
 			$options[self::LOCATION] ??= true;
-			self::renderAssets();
 			echo self::toHtml($var, $options);
 
 		} else {
@@ -153,18 +152,18 @@ class Dumper
 
 		$sent = true;
 
+		echo '<template class=tracy-dump-template>';
 		$nonce = Helpers::getNonce();
 		$nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 		$s = file_get_contents(__DIR__ . '/../assets/toggle.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-light.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-dark.css');
 		echo "<style{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
+		echo "</template>\n";
 
-		if (!Debugger::isEnabled()) {
-			$s = '(function(){' . file_get_contents(__DIR__ . '/../assets/toggle.js') . '})();'
-				. '(function(){' . file_get_contents(__DIR__ . '/../Dumper/assets/dumper.js') . '})();';
-			echo "<script{$nonceAttr}>", str_replace(['<!--', '</s'], ['<\!--', '<\/s'], Helpers::minifyJs($s)), "</script>\n";
-		}
+		$s = '(function(){' . file_get_contents(__DIR__ . '/../assets/toggle.js') . '})();'
+			. '(function(){' . file_get_contents(__DIR__ . '/../Dumper/assets/dumper.js') . '})();';
+		echo "<script{$nonceAttr}>", str_replace(['<!--', '</s'], ['<\!--', '<\/s'], Helpers::minifyJs($s)), "</script>\n";
 	}
 
 
