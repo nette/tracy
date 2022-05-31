@@ -2,13 +2,18 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+:host {
+	display: block;
+	margin: 1em 0;
+	border-radius: 4px;
+}
+
 .tracy-dump.tracy-light {
 	text-align: left;
 	color: #444;
 	background: #fdf9e2;
-	border-radius: 4px;
+	margin: 0;
 	padding: 1em;
-	margin: 1em 0;
 	word-break: break-all;
 	white-space: pre-wrap;
 }
