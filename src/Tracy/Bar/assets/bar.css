@@ -12,63 +12,64 @@ body#tracy-debug { /* in popup window */
 	display: block;
 }
 
-#tracy-debug:not(body) {
+:host {
 	position: absolute;
 	left: 0;
 	top: 0;
+	margin: 0;
 }
 
-#tracy-debug a {
+a {
 	color: #125EAE;
 	text-decoration: none;
 }
 
-#tracy-debug a:hover,
-#tracy-debug a:focus {
+a:hover,
+a:focus {
 	background-color: #125EAE;
 	color: white;
 }
 
-#tracy-debug h2,
-#tracy-debug h3,
-#tracy-debug p {
+h2,
+h3,
+p {
 	margin: .4em 0;
 }
 
-#tracy-debug table {
+table {
 	background: #FDF5CE;
 	width: 100%;
 }
 
-#tracy-debug tr:nth-child(2n) td {
+tr:nth-child(2n) td {
 	background: rgba(0, 0, 0, 0.02);
 }
 
-#tracy-debug td,
-#tracy-debug th {
+td,
+th {
 	border: 1px solid #E6DFBF;
 	padding: 2px 5px;
 	vertical-align: top;
 	text-align: left;
 }
 
-#tracy-debug th {
+th {
 	background: #F4F3F1;
 	color: #655E5E;
 	font-size: 90%;
 	font-weight: bold;
 }
 
-#tracy-debug pre,
-#tracy-debug code {
+pre,
+code {
 	font: 9pt/1.5 Consolas, monospace;
 }
 
-#tracy-debug table .tracy-right {
+table .tracy-right {
 	text-align: right;
 }
 
-#tracy-debug svg {
+svg {
 	display: inline;
 }
 
@@ -163,7 +164,7 @@ body#tracy-debug { /* in popup window */
 
 
 /* panels */
-#tracy-debug .tracy-panel {
+.tracy-panel {
 	display: none;
 	font: normal normal 12px/1.5 sans-serif;
 	background: white;
@@ -171,11 +172,11 @@ body#tracy-debug { /* in popup window */
 	text-align: left;
 }
 
-body#tracy-debug .tracy-panel { /* in popup window */
+body.tracy-panel { /* in popup window */
 	display: block;
 }
 
-#tracy-debug h1 {
+h1 {
 	font: normal normal 23px/1.4 Tahoma, sans-serif;
 	color: #575753;
 	margin: -5px -5px 5px;
@@ -183,29 +184,29 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	word-wrap: break-word;
 }
 
-#tracy-debug .tracy-inner {
+.tracy-inner {
 	overflow: auto;
 	flex: 1;
 }
 
-#tracy-debug .tracy-panel .tracy-icons {
+.tracy-panel .tracy-icons {
 	display: none;
 }
 
-#tracy-debug .tracy-panel-ajax h1::after,
-#tracy-debug .tracy-panel-redirect h1::after {
+.tracy-panel-ajax h1::after,
+.tracy-panel-redirect h1::after {
 	content: 'ajax';
 	float: right;
 	font-size: 65%;
 	margin: 0 .3em;
 }
 
-#tracy-debug .tracy-panel-redirect h1::after {
+.tracy-panel-redirect h1::after {
 	content: 'redirect';
 }
 
-#tracy-debug .tracy-mode-peek,
-#tracy-debug .tracy-mode-float {
+.tracy-mode-peek,
+.tracy-mode-float {
 	position: fixed;
 	flex-direction: column;
 	padding: 10px;
@@ -216,24 +217,24 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-#tracy-debug .tracy-mode-peek,
-#tracy-debug .tracy-mode-float:not(.tracy-panel-resized) {
+.tracy-mode-peek,
+.tracy-mode-float:not(.tracy-panel-resized) {
 	max-width: 700px;
 	max-height: 500px;
 }
 
 @media (max-height: 555px) {
-	#tracy-debug .tracy-mode-peek,
-	#tracy-debug .tracy-mode-float:not(.tracy-panel-resized) {
+	.tracy-mode-peek,
+	.tracy-mode-float:not(.tracy-panel-resized) {
 		max-height: 100vh;
 	}
 }
 
-#tracy-debug .tracy-mode-peek h1 {
+.tracy-mode-peek h1 {
 	cursor: move;
 }
 
-#tracy-debug .tracy-mode-float {
+.tracy-mode-float {
 	display: flex;
 	opacity: .95;
 	transition: opacity 0.2s;
@@ -242,18 +243,18 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	resize: both;
 }
 
-#tracy-debug .tracy-focused {
+.tracy-focused {
 	display: flex;
 	opacity: 1;
 	transition: opacity 0.1s;
 }
 
-#tracy-debug .tracy-mode-float h1 {
+.tracy-mode-float h1 {
 	cursor: move;
 	padding-right: 25px;
 }
 
-#tracy-debug .tracy-mode-float .tracy-icons {
+.tracy-mode-float .tracy-icons {
 	display: block;
 	position: absolute;
 	top: 0;
@@ -261,26 +262,26 @@ body#tracy-debug .tracy-panel { /* in popup window */
 	font-size: 18px;
 }
 
-#tracy-debug .tracy-mode-window {
+.tracy-mode-window {
 	padding: 10px;
 }
 
-#tracy-debug .tracy-icons a {
+.tracy-icons a {
 	color: #575753;
 }
 
-#tracy-debug .tracy-icons a:hover {
+.tracy-icons a:hover {
 	color: white;
 }
 
 
-#tracy-debug .tracy-inner-container {
+.tracy-inner-container {
 	min-width: 100%;
 	float: left;
 }
 
 @media print {
-	#tracy-debug * {
+	* {
 		display: none;
 	}
 }
