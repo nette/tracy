@@ -46,7 +46,7 @@ class BlueScreen
 
 		// sticky footer
 		window.addEventListener('scroll', stickyFooter);
-		(new ResizeObserver(stickyFooter)).observe(blueScreen);
+//		(new ResizeObserver(stickyFooter)).observe(blueScreen);
 	}
 
 
@@ -73,3 +73,4 @@ let inited;
 
 let Tracy = window.Tracy = window.Tracy || {};
 Tracy.BlueScreen = Tracy.BlueScreen || BlueScreen;
+
