@@ -4,7 +4,8 @@
 
 let requestId = document.currentScript.dataset.id,
 	ajaxCounter = 1,
-	baseUrl = location.href.split('#')[0];
+	baseUrl = location.href.split('#')[0],
+	root;
 
 baseUrl += (baseUrl.indexOf('?') < 0 ? '?' : '&');
 
@@ -24,7 +25,7 @@ class Panel
 {
 	constructor(id) {
 		this.id = id;
-		this.elem = document.getElementById(this.id);
+		this.elem = root.getElementById(this.id);
 		this.elem.Tracy = this.elem.Tracy || {};
 	}
 
@@ -34,7 +35,7 @@ class Panel
 
 		this.init = function() {};
 		elem.innerHTML = elem.dataset.tracyContent;
-		Tracy.Dumper.init(Debug.layer);
+		Tracy.Dumper.init(root);
 		evalScripts(elem);
 
 		draggable(elem, {
@@ -248,7 +249,7 @@ class Bar
 {
 	init() {
 		this.id = 'tracy-debug-bar';
-		this.elem = document.getElementById(this.id);
+		this.elem = root.getElementById(this.id);
 
 		draggable(this.elem, {
 			handles: this.elem.querySelectorAll('li:first-child'),
@@ -352,7 +353,7 @@ class Bar
 
 
 	close() {
-		document.getElementById('tracy-debug').style.display = 'none';
+		root.getElementById('tracy-debug').style.display = 'none';
 	}
 
 
@@ -392,15 +393,16 @@ class Debug
 	static init(content) {
 		Debug.bar = new Bar;
 		Debug.panels = {};
-		Debug.layer = document.createElement('tracy-div');
-		Debug.layer.setAttribute('id', 'tracy-debug');
-		Debug.layer.innerHTML = content;
+		Debug.layer = document.createElement('tracy-debug');
+		root = Debug.layer.shadowRoot;
+		root.innerHTML = content;
+		root.appendChild(document.querySelector('style.tracy-debug'));
 		(document.body || document.documentElement).appendChild(Debug.layer);
-		evalScripts(Debug.layer);
+		evalScripts(root);
 		Debug.layer.style.display = 'block';
 		Debug.bar.init();
 
-		Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
+		root.querySelectorAll('.tracy-panel').forEach((panel) => {
 			Debug.panels[panel.id] = new Panel(panel.id);
 			Debug.panels[panel.id].restorePosition();
 		});
@@ -437,12 +439,12 @@ class Debug
 			});
 		}
 
-		Debug.layer.insertAdjacentHTML('beforeend', content.panels);
-		evalScripts(Debug.layer);
+		root.insertAdjacentHTML('beforeend', content.panels);
+		evalScripts(root);
 		Debug.bar.elem.insertAdjacentHTML('beforeend', content.bar);
 		let ajaxBar = Debug.bar.elem.querySelector('.tracy-row:last-child');
 
-		Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
+		root.querySelectorAll('.tracy-panel').forEach((panel) => {
 			if (!Debug.panels[panel.id]) {
 				Debug.panels[panel.id] = new Panel(panel.id);
 				Debug.panels[panel.id].restorePosition();
@@ -673,6 +675,16 @@ function getPosition(elem) {
 		height: elem.offsetHeight
 	};
 }
+
+
+class TracyDebugElement extends HTMLElement {
+	constructor() {
+		super();
+		this.attachShadow({mode: 'open'});
+	}
+}
+
+window.customElements.define('tracy-debug', TracyDebugElement);
 
 
 let Tracy = window.Tracy = window.Tracy || {};
