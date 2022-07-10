@@ -6,9 +6,10 @@
 	--tracy-space: 16px;
 }
 
-html, body {
+html.tracy-bs-visible,
+html.tracy-bs-visible body {
 	display: block;
-	overflow: visible;
+	overflow: auto;
 }
 
 #tracy-bs {
