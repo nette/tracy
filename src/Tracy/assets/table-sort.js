@@ -26,7 +26,9 @@ class TableSort
 			.slice(preserveFirst ? 1 : 0)
 			.sort((a, b) => {
 				return function(v1, v2) {
-					return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2);
+					return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
+						? v1 - v2
+						: v1.toString().localeCompare(v2, undefined, {numeric: true, sensitivity: 'base'});
 				}(getText((asc ? a : b).children[tcell.cellIndex]), getText((asc ? b : a).children[tcell.cellIndex]));
 			})
 			.forEach((tr) => { tbody.appendChild(tr); });
