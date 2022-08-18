@@ -374,6 +374,28 @@ services:
 ```
 
 
+Custom Scrubber
+-------------
+
+"Scrubber" is a mechanism that prevents leaking sensitive data by selectively filtering and anonymizing the output.
+
+Any filtering logic can be put into the scrubber. The scrubber filters key-value pairs.
+
+```php
+// Return TRUE to anonymize the given value.
+Tracy\Debugger::getBlueScreen()->scrubber = function(string $key, $val = null): bool {
+    return
+        # matches `password`, `password_repeat`, `check_password`, `DATABASE_PASSWORD`, ....
+        preg_match('#password#i', $key) ||
+        # matches DSN defined connections for services etc.
+        ( is_string($val) && preg_match('#^https://#i', $val) )
+    ;
+}
+```
+
+Note that only the values are anonymized, the keys are preserved.
+
+
 nginx
 -----
 
