@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+#[\AllowDynamicProperties]
 class Test74
 {
 	public int $x = 1;

@@ -364,13 +364,13 @@ class Debugger
 					? $context['e']
 					: null;
 				$e = new ErrorException($message, 0, $severity, $file, $line, $previous);
-				$e->context = $context;
+				@$e->context = $context; // dynamic properties are deprecated since PHP 8.2
 				self::exceptionHandler($e);
 				exit(255);
 			}
 
 			$e = new ErrorException($message, 0, $severity, $file, $line);
-			$e->context = $context;
+			@$e->context = $context; // dynamic properties are deprecated since PHP 8.2
 			throw $e;
 
 		} elseif (

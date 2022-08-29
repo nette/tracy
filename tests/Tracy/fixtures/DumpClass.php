@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+#[\AllowDynamicProperties]
 class Test
 {
 	public static $pubs = 1;

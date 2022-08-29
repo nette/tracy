@@ -44,6 +44,7 @@ class ParentClass
 	private $baz = 'parent';
 }
 
+#[\AllowDynamicProperties]
 class ChildClass extends ParentClass
 {
 	private $baz = 'child';

@@ -64,7 +64,7 @@ final class ProductionStrategy
 	): void {
 		if ($severity & Debugger::$logSeverity) {
 			$err = new ErrorException($message, 0, $severity, $file, $line);
-			$err->context = $context;
+			@$err->context = $context; // dynamic properties are deprecated since PHP 8.2
 			Helpers::improveException($err);
 		} else {
 			$err = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message, (array) $context) . " in $file:$line";

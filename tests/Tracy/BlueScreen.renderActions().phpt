@@ -63,7 +63,7 @@ Assert::with($blueScreen, function () {
 	);
 
 	if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
-		$e->skippable = true;
+		@$e->skippable = true; // deprecated since PHP 8.2
 		Assert::same(
 			[
 				$search,
@@ -129,11 +129,11 @@ Assert::with($blueScreen, function () {
 // $e->tracyAction
 Assert::with($blueScreen, function () {
 	$e = new Exception;
-	$e->tracyAction = [];
+	@$e->tracyAction = []; // deprecated since PHP 8.2
 	Assert::count(1, $this->renderActions($e));
 
 	$e = new Exception;
-	$e->tracyAction = ['link' => 'a', 'label' => 'b'];
+	@$e->tracyAction = ['link' => 'a', 'label' => 'b']; // deprecated since PHP 8.2
 	Assert::same(
 		['link' => 'a', 'label' => 'b'],
 		$this->renderActions($e)[0]

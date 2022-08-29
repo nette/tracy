@@ -234,7 +234,7 @@ class Helpers
 			$ref = new \ReflectionProperty($e, 'message');
 			$ref->setAccessible(true);
 			$ref->setValue($e, $message);
-			$e->tracyAction = [
+			@$e->tracyAction = [ // dynamic properties are deprecated since PHP 8.2
 				'link' => self::editorUri($loc['file'], $loc['line'], 'fix', $replace[0], $replace[1]),
 				'label' => 'fix it',
 			];
@@ -455,7 +455,9 @@ class Helpers
 	/** @internal */
 	public static function utf8Length(string $s): int
 	{
-		return strlen(utf8_decode($s));
+		return function_exists('mb_strlen')
+			? mb_strlen($s, 'UTF-8')
+			: strlen(utf8_decode($s));
 	}
 
 

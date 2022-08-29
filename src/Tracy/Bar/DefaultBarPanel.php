@@ -14,6 +14,7 @@ namespace Tracy;
  * IBarPanel implementation helper.
  * @internal
  */
+#[\AllowDynamicProperties]
 class DefaultBarPanel implements IBarPanel
 {
 	public $data;

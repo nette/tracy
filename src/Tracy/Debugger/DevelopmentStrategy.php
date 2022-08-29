@@ -95,8 +95,8 @@ final class DevelopmentStrategy
 			&& !isset($_GET['_tracy_skip_error'])
 		) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
-			$e->context = $context;
-			$e->skippable = true;
+			@$e->context = $context; // dynamic properties are deprecated since PHP 8.2
+			@$e->skippable = true;
 			Debugger::exceptionHandler($e);
 			exit(255);
 		}
