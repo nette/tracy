@@ -74,7 +74,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   |  |   </span>b<span>'</span>
 </div></div></div></pre>
 XX
-, Dumper::toHtml(['hello', "a\nb", ["a\nb"]]));
+	, Dumper::toHtml(['hello', "a\nb", ["a\nb"]]));
 
 
 // array (with snapshot)
@@ -90,14 +90,14 @@ Assert::match(<<<'XX'
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">4</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7]]'><span class="tracy-dump-array">array</span> (7)</span>
 </div></pre>
 XX
-, Dumper::toHtml([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]));
+	, Dumper::toHtml([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]));
 
 
 // object
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
-, Dumper::toHtml(new stdClass));
+	, Dumper::toHtml(new stdClass));
 
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
@@ -109,7 +109,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX
-, Dumper::toHtml(new Test));
+	, Dumper::toHtml(new Test));
 
 $obj = new Child;
 $obj->new = 7;
@@ -137,7 +137,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test">y</span>: <span class="tracy-dump-string" title="5 characters"><span>'</span>hello<span>'</span></span>
 </div></pre>
 XX
-, Dumper::toHtml($obj));
+	, Dumper::toHtml($obj));
 
 
 if (PHP_VERSION_ID >= 70400) {
@@ -151,7 +151,7 @@ if (PHP_VERSION_ID >= 70400) {
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-virtual">unset</span>
 </div></pre>
 XX
-	, Dumper::toHtml(new Test74));
+		, Dumper::toHtml(new Test74));
 
 
 	$obj = new Child74;
@@ -171,5 +171,5 @@ XX
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test74">y</span>: <span class="tracy-dump-virtual">unset</span>
 </div></pre>
 XX
-	, Dumper::toHtml($obj));
+		, Dumper::toHtml($obj));
 }

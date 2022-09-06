@@ -41,7 +41,7 @@ register_shutdown_function(function () {
 </div>
 %A%
 EOD
-, $panelContent);
+		, $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

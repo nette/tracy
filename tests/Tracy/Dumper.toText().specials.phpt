@@ -24,7 +24,7 @@ Assert::match('closed resource @%d%', Dumper::toText($f));
 Assert::match(<<<'XX'
 Closure() #%d%
 XX
-, Dumper::toText(function () {}));
+	, Dumper::toText(function () {}));
 
 
 Assert::match(<<<'XX'
@@ -33,7 +33,7 @@ Closure($x, $y) #%d%
    use: $use
    |  $use: null
 XX
-, Dumper::toText(function ($x, int $y = 1) use (&$use) {}, [Dumper::LOCATION => Dumper::LOCATION_CLASS]));
+	, Dumper::toText(function ($x, int $y = 1) use (&$use) {}, [Dumper::LOCATION => Dumper::LOCATION_CLASS]));
 
 
 // new class
@@ -67,7 +67,7 @@ SplObjectStorage #%d%
    |  |  foo: 'bar'
    |  'data' => 'o2'
 XX
-, Dumper::toText($objStorage));
+	, Dumper::toText($objStorage));
 
 Assert::same($key, $objStorage->key());
 
@@ -80,7 +80,7 @@ ArrayObject #%d%
    |  'a' => 1
    |  'b' => 2
 XX
-, Dumper::toText($obj));
+	, Dumper::toText($obj));
 
 class ArrayObjectChild extends ArrayObject
 {
@@ -95,4 +95,4 @@ ArrayObjectChild #%d%
    |  'a' => 1
    |  'b' => 2
 XX
-, Dumper::toText($obj));
+	, Dumper::toText($obj));

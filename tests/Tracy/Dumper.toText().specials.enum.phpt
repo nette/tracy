@@ -34,4 +34,4 @@ array (3)
    |  value: 'get'
    2 => Methods::GET #6 see above
 XX
-, Dumper::toText([Suit::Clubs, Methods::GET, Methods::GET]));
+	, Dumper::toText([Suit::Clubs, Methods::GET, Methods::GET]));

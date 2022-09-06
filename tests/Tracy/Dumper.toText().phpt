@@ -73,7 +73,7 @@ array (5)
    |  6 => 6
    |  7 => 7
 XX
-, Dumper::toText([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]));
+	, Dumper::toText([1, 'hello', [], [1, 2], [1 => 1, 2, 3, 4, 5, 6, 7]]));
 
 
 // multiline
@@ -88,7 +88,7 @@ array (3)
    |  |  'a\n
    |  |   b'
 XX
-, Dumper::toText(['hello', "a\nb", ["a\nb"]]));
+	, Dumper::toText(['hello', "a\nb", ["a\nb"]]));
 
 
 // object
@@ -98,7 +98,7 @@ Assert::match(<<<'XX'
 stdClass #%d%
    '': 'foo'
 XX
-, Dumper::toText((object) ['' => 'foo']));
+	, Dumper::toText((object) ['' => 'foo']));
 
 Assert::match(<<<'XX'
 Test #%d%
@@ -108,7 +108,7 @@ Test #%d%
    y: 'hello'
    z: 30.0
 XX
-, Dumper::toText(new Test));
+	, Dumper::toText(new Test));
 
 
 $obj = new Child;
@@ -131,7 +131,7 @@ Child #%d%
    z2: 6
    y: 'hello'
 XX
-, Dumper::toText($obj));
+	, Dumper::toText($obj));
 
 
 if (PHP_VERSION_ID >= 70400) {
@@ -143,7 +143,7 @@ Test74 #%d%
    y: unset
    z: unset
 XX
-	, Dumper::toText(new Test74));
+		, Dumper::toText(new Test74));
 
 
 	$obj = new Child74;
@@ -161,5 +161,5 @@ Child74 #%d%
    unset2: unset
    y: unset
 XX
-, Dumper::toText($obj));
+		, Dumper::toText($obj));
 }

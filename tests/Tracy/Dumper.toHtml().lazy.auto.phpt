@@ -24,7 +24,7 @@ Assert::match(<<<'XX'
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-number">3</span>
 </div></pre>
 XX
-, Dumper::toHtml($arr, [Dumper::DEPTH => 4]));
+	, Dumper::toHtml($arr, [Dumper::DEPTH => 4]));
 
 $obj = new stdClass;
 $obj->items = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -37,7 +37,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">items</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],["x",{"ref":%d%}]]'><span class="tracy-dump-array">array</span> (9)</span>
 </div></pre>
 XX
-, Dumper::toHtml($obj, [Dumper::DEPTH => 4]));
+	, Dumper::toHtml($obj, [Dumper::DEPTH => 4]));
 
 
 // recursion
@@ -52,7 +52,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">3</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"ref":"p1"},1]]'><span class="tracy-dump-array">array</span> (9)</span>
 </div></pre>
 XX
-, Dumper::toHtml($arr));
+	, Dumper::toHtml($arr));
 
 $obj = new stdClass;
 $obj->items = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', $obj];
@@ -62,7 +62,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">items</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"ref":%d%}]]'><span class="tracy-dump-array">array</span> (9)</span>
 </div></pre>
 XX
-, Dumper::toHtml($obj));
+	, Dumper::toHtml($obj));
 
 // recursion fix
 $arr = [new stdClass, 'arr' => [1, 2, 3, 4, 5, 6]];
@@ -76,7 +76,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">arr</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,{"ref":%d%}]]'><span class="tracy-dump-array">array</span> (7)</span>
 </div></pre>
 XX
-, Dumper::toHtml($obj));
+	, Dumper::toHtml($obj));
 
 
 // lazy dump & max items
@@ -94,7 +94,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   |  </span>…
 </div></div></pre>
 XX
-, Dumper::toHtml([$arr, (object) $arr], [Dumper::ITEMS => 5]));
+	, Dumper::toHtml([$arr, (object) $arr], [Dumper::ITEMS => 5]));
 
 
 // lazy dump & max items & reference
@@ -105,4 +105,4 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-hash">&1</span> <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":"p1"}'><span class="tracy-dump-array">array</span> (8)</span>
 </div></pre>
 XX
-, Dumper::toHtml([&$arr], [Dumper::ITEMS => 5]));
+	, Dumper::toHtml([&$arr], [Dumper::ITEMS => 5]));

@@ -37,19 +37,19 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">9</span> => <span class="tracy-dump-string"><span>'</span><i>\u{FEFF}</i><span>'</span></span>
 </div></pre>
 XX
-, Dumper::toHtml([
-	'',
-	' ',
-	"\x00",
-	"\xFF",
-	"I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n", // Iñtërnâtiônàlizætiøn,
-	"utf \n\r\t\e\x00 Iñtër\n", // utf + control chars
-	'utf \n\r\t\xab Iñtër', // slashes
-	"binary \n\r\t\e\x00 Iñtër \xA0", // binary + control chars
-	'binary \n\r\t\xab Iñtër ' . "\xA0", // binary + slashes
-	'utf \n\r\t\xab Iñtër' => 1, // slashes in key
-	"utf \n\r\t\e\x00 Iñtër" => 2, // utf + control chars in key
-	"utf \n\r\t\e\x00 Iñtër \xA0" => 3, // binary + control chars in key,
-	'<div> &amp;' => '<div> &amp;', // HTML
-	"\xEF\xBB\xBF", // BOM
-], [Dumper::COLLAPSE => false]));
+	, Dumper::toHtml([
+		'',
+		' ',
+		"\x00",
+		"\xFF",
+		"I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n", // Iñtërnâtiônàlizætiøn,
+		"utf \n\r\t\e\x00 Iñtër\n", // utf + control chars
+		'utf \n\r\t\xab Iñtër', // slashes
+		"binary \n\r\t\e\x00 Iñtër \xA0", // binary + control chars
+		'binary \n\r\t\xab Iñtër ' . "\xA0", // binary + slashes
+		'utf \n\r\t\xab Iñtër' => 1, // slashes in key
+		"utf \n\r\t\e\x00 Iñtër" => 2, // utf + control chars in key
+		"utf \n\r\t\e\x00 Iñtër \xA0" => 3, // binary + control chars in key,
+		'<div> &amp;' => '<div> &amp;', // HTML
+		"\xEF\xBB\xBF", // BOM
+	], [Dumper::COLLAPSE => false]));

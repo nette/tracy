@@ -26,7 +26,7 @@ Assert::match(<<<XX
 \e[1;30m   |  \e[1;32m1\e[0m => \e[1;33mnull
 \e[0m
 XX
-, Dumper::toTerminal([1, 'hello', [], [true, null]]));
+	, Dumper::toTerminal([1, 'hello', [], [true, null]]));
 
 
 $obj = new Child;
@@ -50,7 +50,7 @@ Assert::match(<<<XX
 \e[1;30m   \e[1;37my\e[0m: \e[1;36m\e[0m'\e[1;36mhello\e[0m'\e[1;36m
 \e[0m
 XX
-, Dumper::toTerminal($obj));
+	, Dumper::toTerminal($obj));
 
 
 $arr = (object) ['x' => 1, 'y' => 2];
@@ -62,4 +62,4 @@ Assert::match(<<<XX
 \e[1;30m   \e[1;37mz\e[0m: \e[0m&1\e[0m \e[1;31mstdClass\e[0m \e[0m#%d%\e[0m \e[0mRECURSION
 \e[0m
 XX
-, Dumper::toTerminal($arr));
+	, Dumper::toTerminal($arr));

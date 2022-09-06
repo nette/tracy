@@ -28,7 +28,7 @@ test('html mode', function () {
 ><span class="tracy-dump-number">123</span></pre>
 </tracy-div>
 XX
-, ob_get_clean());
+		, ob_get_clean());
 });
 
 
@@ -43,7 +43,7 @@ test('dark theme', function () {
 ><span class="tracy-dump-number">123</span></pre>
 </tracy-div>
 XX
-, ob_get_clean());
+		, ob_get_clean());
 });
 
 

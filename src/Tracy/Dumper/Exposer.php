@@ -200,7 +200,8 @@ final class Exposer
 		\__PHP_Incomplete_Class $obj,
 		Value $value,
 		Describer $describer
-	): void {
+	): void
+	{
 		$values = (array) $obj;
 		$class = $values['__PHP_Incomplete_Class_Name'];
 		unset($values['__PHP_Incomplete_Class_Name']);
@@ -228,7 +229,8 @@ final class Exposer
 		Ds\Collection $obj,
 		Value $value,
 		Describer $describer
-	): void {
+	): void
+	{
 		foreach ($obj as $k => $v) {
 			$describer->addPropertyTo($value, (string) $k, $v, Value::PROP_VIRTUAL);
 		}
@@ -239,7 +241,8 @@ final class Exposer
 		Ds\Map $obj,
 		Value $value,
 		Describer $describer
-	): void {
+	): void
+	{
 		$i = 0;
 		foreach ($obj as $k => $v) {
 			$describer->addPropertyTo($value, (string) $i++, new Ds\Pair($k, $v), Value::PROP_VIRTUAL);

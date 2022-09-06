@@ -19,4 +19,4 @@ array (1)
    |  |  0 => array (1)
    |  |  |  0 => &1 array (1) RECURSION
 XX
-, Dumper::toText($a));
+	, Dumper::toText($a));

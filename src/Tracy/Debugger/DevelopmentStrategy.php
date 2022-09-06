@@ -85,7 +85,8 @@ final class DevelopmentStrategy
 		string $file,
 		int $line,
 		array $context = null
-	): void {
+	): void
+	{
 		if (function_exists('ini_set')) {
 			$oldDisplay = ini_set('display_errors', '1');
 		}

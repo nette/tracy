@@ -56,7 +56,8 @@ class Helpers
 		string $action = 'open',
 		string $search = '',
 		string $replace = ''
-	): ?string {
+	): ?string
+	{
 		if (Debugger::$editor && $file && ($action === 'create' || is_file($file))) {
 			$file = strtr($file, '/', DIRECTORY_SEPARATOR);
 			$file = strtr($file, Debugger::$editorMapping);
@@ -508,7 +509,7 @@ class Helpers
 				)(?:\s|//[^\n]*+\n|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
 			())sx
 XX
-,
+			,
 			function ($match) use (&$last) {
 				[, $context, $regexp, $result, $word, $operator] = $match;
 				if ($word !== '') {
@@ -547,7 +548,7 @@ XX
 				)(?:\s|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
 			())sx
 XX
-,
+			,
 			function ($match) use (&$last) {
 				[, $result, $word] = $match;
 				if ($last === ';') {

@@ -40,7 +40,7 @@ array (%i%)
    'NULL' => 0
    '<a> &amp;' => 0
 XX
-, Dumper::toText($keys));
+	, Dumper::toText($keys));
 
 Assert::match(<<<'XX'
 stdClass #%d%
@@ -58,7 +58,7 @@ stdClass #%d%
    'NULL': 0
    '<a> &amp;': 0
 XX
-, Dumper::toText((object) $keys));
+	, Dumper::toText((object) $keys));
 
 
 $snapshot = [];

@@ -18,7 +18,7 @@ Assert::match(<<<'XX'
 Ds\Vector #%d%
    0: 'value'
 XX
-, Dumper::toText($collection));
+	, Dumper::toText($collection));
 
 
 $map = new Ds\Map;
@@ -29,4 +29,4 @@ Ds\Map #%d%
    |  key: 'key'
    |  value: 'value'
 XX
-, Dumper::toText($map));
+	, Dumper::toText($map));

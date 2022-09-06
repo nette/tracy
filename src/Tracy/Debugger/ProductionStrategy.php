@@ -61,7 +61,8 @@ final class ProductionStrategy
 		string $file,
 		int $line,
 		array $context = null
-	): void {
+	): void
+	{
 		if ($severity & Debugger::$logSeverity) {
 			$err = new ErrorException($message, 0, $severity, $file, $line);
 			@$err->context = $context; // dynamic properties are deprecated since PHP 8.2

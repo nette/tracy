@@ -21,7 +21,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX
-, Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1]));
+	, Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1]));
 
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light" data-tracy-snapshot='[]'
@@ -31,16 +31,16 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX
-, Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1, Dumper::COLLAPSE => false]));
+	, Dumper::toHtml(new Test, [Dumper::COLLAPSE_COUNT => 1, Dumper::COLLAPSE => false]));
 
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"Test","items":[["x",[[0,10],[1,null]],0],["y","hello","Test"],["z",{"number":"30.0"},1]]}}'
 ><span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span></pre>
 XX
-, Dumper::toHtml(new Test, [Dumper::COLLAPSE => true]));
+	, Dumper::toHtml(new Test, [Dumper::COLLAPSE => true]));
 
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"Test","items":[["x",[[0,10],[1,null]],0],["y","hello","Test"],["z",{"number":"30.0"},1]]}}'
 ><span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span></pre>
 XX
-, Dumper::toHtml(new Test, [Dumper::COLLAPSE => 3]));
+	, Dumper::toHtml(new Test, [Dumper::COLLAPSE => 3]));

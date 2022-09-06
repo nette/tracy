@@ -347,7 +347,8 @@ class Debugger
 		string $file,
 		int $line,
 		?array $context = null
-	): bool {
+	): bool
+	{
 		$error = error_get_last();
 		if (($error['type'] ?? null) === E_COMPILE_WARNING) {
 			error_clear_last();

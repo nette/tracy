@@ -25,7 +25,7 @@ Fiber #%d%
    file: '%a%:%d%'
    callable: Closure() #%d%
 XX
-, Dumper::toText($fiber));
+	, Dumper::toText($fiber));
 
 $fiber->resume();
 Assert::match('Fiber (terminated) #%d%', Dumper::toText($fiber));

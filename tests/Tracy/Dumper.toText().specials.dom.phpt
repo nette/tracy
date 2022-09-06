@@ -76,7 +76,7 @@ DOMDocument #%d%
    xmlStandalone: true
    xmlVersion: null
 XX
-, Dumper::toText($dom, [Dumper::DEPTH => 2]));
+	, Dumper::toText($dom, [Dumper::DEPTH => 2]));
 
 
 Assert::match(<<<'XX'
@@ -85,7 +85,7 @@ DOMNodeList #%d%
    items: array (1)
    |  0 => DOMElement #%d% ...
 XX
-, Dumper::toText($nodeList, [Dumper::DEPTH => 2]));
+	, Dumper::toText($nodeList, [Dumper::DEPTH => 2]));
 
 
 Assert::match(<<<'XX'
@@ -115,7 +115,7 @@ DOMNamedNodeMap #%d%
    |  |  textContent: 'a'
    |  |  value: 'a'
 XX
-, Dumper::toText($namedNodeMap, [Dumper::DEPTH => 3]));
+	, Dumper::toText($namedNodeMap, [Dumper::DEPTH => 3]));
 
 
 Assert::match(<<<'XX'
@@ -128,10 +128,10 @@ DOMElement #%d%
    tagName: 'li'
    textContent: 'Ahoj'
 XX
-, Dumper::toText($element, [Dumper::DEPTH => 1]));
+	, Dumper::toText($element, [Dumper::DEPTH => 1]));
 
 
 Assert::match(<<<'XX'
 DOMXPath #%d%%A%
 XX
-, Dumper::toText($xpath, [Dumper::DEPTH => 1]));
+	, Dumper::toText($xpath, [Dumper::DEPTH => 1]));

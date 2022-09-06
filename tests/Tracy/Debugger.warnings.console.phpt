@@ -47,7 +47,7 @@ PHP Warning: hex2bin(): Hexadecimal input string must have an even length in %a%
 
 PHP Compile Warning: Unsupported declare 'foo' in %a% on line %d%
 XX
-	, ob_get_clean());
+		, ob_get_clean());
 });
 
 

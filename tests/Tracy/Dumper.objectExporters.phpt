@@ -59,7 +59,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-public">a</span>: <span class="tracy-dump-string"><span>'</span>b<span>'</span></span>
 </div></div></pre>
 XX
-, Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));
+	, Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 
 // custom exposer & collapsed
@@ -73,7 +73,7 @@ Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["x","y",0]],"collapsed":true}}'
 ><span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span></pre>
 XX
-, Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));
+	, Dumper::toHtml($obj, [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 
 // PHP incomplete class
@@ -89,7 +89,7 @@ Y (Incomplete Class) #%d%
    i: 'bar'
    i: 'foo'
 XX
-, Dumper::toText($obj));
+	, Dumper::toText($obj));
 
 
 
@@ -109,34 +109,34 @@ Assert::match(<<<'XX'
 SplFileInfo #%d%
    type: 'SplFileInfo'
 XX
-, Dumper::toText(new SplFileInfo(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters]));
+	, Dumper::toText(new SplFileInfo(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 Assert::match(<<<'XX'
 SplFileObject #%d%
    type: 'SplFileObject'
 XX
-, Dumper::toText(new SplFileObject(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters]));
+	, Dumper::toText(new SplFileObject(__FILE__), [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 Assert::match(<<<'XX'
 ArrayIterator #%d%
    type: 'Iterator'
 XX
-, Dumper::toText(new ArrayIterator([]), [Dumper::OBJECT_EXPORTERS => $exporters]));
+	, Dumper::toText(new ArrayIterator([]), [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 Assert::match(<<<'XX'
 stdClass #%d%
    type: 'NULL'
 XX
-, Dumper::toText(new stdClass, [Dumper::OBJECT_EXPORTERS => $exporters]));
+	, Dumper::toText(new stdClass, [Dumper::OBJECT_EXPORTERS => $exporters]));
 
 Assert::match(<<<'XX'
 ArrayIterator #%d%
    type: 'Default Iterator'
 XX
-, Dumper::toText(new ArrayIterator([])));
+	, Dumper::toText(new ArrayIterator([])));
 
 Assert::match(<<<'XX'
 stdClass #%d%
    type: 'NULL'
 XX
-, Dumper::toText(new stdClass));
+	, Dumper::toText(new stdClass));

@@ -33,4 +33,4 @@ stdClass #%d%
    |  0 => &2 2
    |  1 => &1 1
 XX
-, Dumper::toText($obj));
+	, Dumper::toText($obj));

@@ -27,7 +27,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">3</span> => <span class="tracy-dump-hash">&1</span> <span class="tracy-dump-array">array</span> (4) <i>RECURSION</i>
 </div></div></pre>
 XX
-, Dumper::toHtml($arr));
+	, Dumper::toHtml($arr));
 
 
 $arr = (object) ['x' => 1, 'y' => 2];
@@ -40,4 +40,4 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">z</span>: <span class="tracy-dump-hash">&1</span> <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> <i>RECURSION</i>
 </div></pre>
 XX
-, Dumper::toHtml($arr));
+	, Dumper::toHtml($arr));

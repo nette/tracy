@@ -35,4 +35,4 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-hash">&1</span> <span class="tracy-dump-number">1</span>
 </div></div></pre>
 XX
-, Dumper::toHtml($obj));
+	, Dumper::toHtml($obj));

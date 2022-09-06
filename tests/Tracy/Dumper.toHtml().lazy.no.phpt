@@ -42,7 +42,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">10</span> => <span class="tracy-dump-number">NAN</span>
 </div></pre>
 XX
-, Dumper::toHtml([null, true, false, 0, 0.0, 'string', "'&\"", "\x00", INF, -INF, NAN], $options));
+	, Dumper::toHtml([null, true, false, 0, 0.0, 'string', "'&\"", "\x00", INF, -INF, NAN], $options));
 
 
 // no lazy dump and resource
@@ -51,7 +51,7 @@ Assert::match(<<<'XX'
 ><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">@%d%</span></span>
 <div class="tracy-collapsed">%A%
 XX
-, Dumper::toHtml(fopen(__FILE__, 'r'), $options));
+	, Dumper::toHtml(fopen(__FILE__, 'r'), $options));
 
 
 // no lazy dump and collapse
@@ -65,7 +65,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX
-, Dumper::toHtml(new Test, $options + [Dumper::COLLAPSE => true]));
+	, Dumper::toHtml(new Test, $options + [Dumper::COLLAPSE => true]));
 
 
 // no lazy dump & location
@@ -80,7 +80,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-number">30.0</span>
 </div></pre>
 XX
-, Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_CLASS]));
+	, Dumper::toHtml(new Test, $options + ['location' => Dumper::LOCATION_SOURCE | Dumper::LOCATION_CLASS]));
 
 
 // recursion
@@ -99,7 +99,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-number">3</span> => <span class="tracy-dump-hash">&1</span> <span class="tracy-dump-array">array</span> (4) <i>RECURSION</i>
 </div></div></pre>
 XX
-, Dumper::toHtml($arr, $options));
+	, Dumper::toHtml($arr, $options));
 
 $obj = new stdClass;
 $obj->x = $obj;
@@ -109,7 +109,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">x</span>: <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> <i>RECURSION</i>
 </div></pre>
 XX
-, Dumper::toHtml($obj, $options));
+	, Dumper::toHtml($obj, $options));
 
 
 // max depth
@@ -128,7 +128,7 @@ Assert::match(<<<'XX'
 </div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-dump-number">3</span>
 </div></pre>
 XX
-, Dumper::toHtml($arr, $options + [Dumper::DEPTH => 4]));
+	, Dumper::toHtml($arr, $options + [Dumper::DEPTH => 4]));
 
 $obj = new stdClass;
 $obj->a = new stdClass;
@@ -145,4 +145,4 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   |  |  |  </span><span class="tracy-dump-dynamic">d</span>: <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> …
 </div></div></div></div></pre>
 XX
-, Dumper::toHtml($obj, $options + [Dumper::DEPTH => 4]));
+	, Dumper::toHtml($obj, $options + [Dumper::DEPTH => 4]));

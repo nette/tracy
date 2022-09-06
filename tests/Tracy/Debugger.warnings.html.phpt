@@ -47,7 +47,7 @@ register_shutdown_function(function () {
 </table>
 </div>%A%
 XX
-, $panelContent);
+		, $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

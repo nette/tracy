@@ -25,7 +25,7 @@ array (4)
    |  2 => 3
    |  3 => array (4) RECURSION
 XX
-, Dumper::toText($arr, [Dumper::HASH => false]));
+	, Dumper::toText($arr, [Dumper::HASH => false]));
 
 
 $arr = (object) ['x' => 1, 'y' => 2];
@@ -36,7 +36,7 @@ stdClass
    y: 2
    z: stdClass RECURSION
 XX
-, Dumper::toText($arr, [Dumper::HASH => false]));
+	, Dumper::toText($arr, [Dumper::HASH => false]));
 
 
 $obj = (object) ['a' => 1];
@@ -49,4 +49,4 @@ array (3)
    2 => stdClass
    |  a: 1
 XX
-, Dumper::toText([$obj, $obj, $obj], [Dumper::HASH => false]));
+	, Dumper::toText([$obj, $obj, $obj], [Dumper::HASH => false]));

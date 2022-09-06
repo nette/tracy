@@ -92,4 +92,4 @@ array (8)
    |  |  |  3 => 'item'
    6 => stream resource @%d% see above
 XX
-, Dumper::toText($var, [Dumper::DEPTH => 4]));
+	, Dumper::toText($var, [Dumper::DEPTH => 4]));

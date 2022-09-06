@@ -317,7 +317,8 @@ class BlueScreen
 		int $lines = 15,
 		bool $php = true,
 		int $column = 0
-	): ?string {
+	): ?string
+	{
 		$source = @file_get_contents($file); // @ file may not exist
 		if ($source === false) {
 			return null;

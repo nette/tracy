@@ -25,7 +25,7 @@ Generator #%d%
    file: '%a%:%d%'
    this: null
 XX
-, Dumper::toText($gen));
+	, Dumper::toText($gen));
 
 $gen->next();
 Assert::match('Generator (terminated) #%d%', Dumper::toText($gen));
@@ -45,4 +45,4 @@ Generator #%d%
    file: '%a%:%d%'
    this: null
 XX
-, Dumper::toText($gen));
+	, Dumper::toText($gen));

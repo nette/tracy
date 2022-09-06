@@ -21,4 +21,4 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-number">10.3</span>
 </div></pre>
 XX
-, Dumper::toHtml([-10.0, 10.3]));
+	, Dumper::toHtml([-10.0, 10.3]));

@@ -19,20 +19,20 @@ Assert::match(<<<'XX'
 ><span class="tracy-toggle tracy-collapsed"><span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">@%d%</span></span>
 <div class="tracy-collapsed"><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">%a%</span>: <span class="tracy-dump-bool">%a%</span>%A%
 XX
-, Dumper::toHtml($f));
+	, Dumper::toHtml($f));
 
 fclose($f);
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"><span class="tracy-dump-resource">closed resource</span> <span class="tracy-dump-hash">@%d%</span></pre>
 XX
-, Dumper::toHtml($f));
+	, Dumper::toHtml($f));
 
 
 // closure
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"><span class="tracy-dump-object">Closure()</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
-, Dumper::toHtml(function () {}));
+	, Dumper::toHtml(function () {}));
 
 
 Assert::match(<<<'XX'
@@ -41,7 +41,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">file</span>: <span class="tracy-dump-string" title="%d% characters"><span>'</span>%a%:%d%<span>'</span></span>
 </div></pre>
 XX
-, Dumper::toHtml(function () {}, [Dumper::LOCATION => Dumper::LOCATION_CLASS]));
+	, Dumper::toHtml(function () {}, [Dumper::LOCATION => Dumper::LOCATION_CLASS]));
 
 
 Assert::match(<<<'XX'
@@ -50,15 +50,15 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">use</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"object":"$use","items":[["$use",null,4]],"collapsed":true}'><span class="tracy-dump-object">$use</span></span>
 </div></pre>
 XX
-, Dumper::toHtml(function ($x, int $y = 1) use (&$use) {}));
+	, Dumper::toHtml(function ($x, int $y = 1) use (&$use) {}));
 
 
 // new class
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"><span class="tracy-dump-object">class@anonymous</span> <span class="tracy-dump-hash">#%d%</span></pre>
 XX
-, Dumper::toHtml(new class {
-}));
+	, Dumper::toHtml(new class {
+	}));
 
 
 // SplFileInfo
@@ -68,7 +68,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">path</span>: <span class="tracy-dump-string" title="%d% characters"><span>'</span>%a%<span>'</span></span>
 </div></pre>
 XX
-, Dumper::toHtml(new SplFileInfo(__FILE__)));
+	, Dumper::toHtml(new SplFileInfo(__FILE__)));
 
 
 // SplObjectStorage
@@ -92,7 +92,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>data<span>'</span></span> => <span class="tracy-dump-string" title="2 characters"><span>'</span>o2<span>'</span></span>
 </div></div></pre>
 XX
-, Dumper::toHtml($objStorage));
+	, Dumper::toHtml($objStorage));
 
 Assert::same($key, $objStorage->key());
 
@@ -107,7 +107,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>b<span>'</span></span> => <span class="tracy-dump-number">2</span>
 </div></div></pre>
 XX
-, Dumper::toHtml($obj));
+	, Dumper::toHtml($obj));
 
 class ArrayObjectChild extends ArrayObject
 {
@@ -124,4 +124,4 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>b<span>'</span></span> => <span class="tracy-dump-number">2</span>
 </div></div></pre>
 XX
-, Dumper::toHtml($obj));
+	, Dumper::toHtml($obj));

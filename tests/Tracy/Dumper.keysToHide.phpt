@@ -34,7 +34,7 @@ stdClass #%d%
    |  'PASSWORD' => ***** (string)
    |  'Pin' => ***** (string)
 XX
-, Dumper::toText($obj, [Dumper::KEYS_TO_HIDE => ['password', 'PIN', 'stdClass::$a']]));
+	, Dumper::toText($obj, [Dumper::KEYS_TO_HIDE => ['password', 'PIN', 'stdClass::$a']]));
 
 
 $snapshot = [];

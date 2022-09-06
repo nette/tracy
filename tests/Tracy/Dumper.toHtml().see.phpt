@@ -93,7 +93,7 @@ Assert::match(<<<'XX'
 </div></div></div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">6</span> => <span class="tracy-dump-resource">stream resource</span> <span class="tracy-dump-hash">@%d%</span> <i>see above</i>
 </div></pre>
 XX
-, Dumper::toHtml($var, [Dumper::DEPTH => 4, Dumper::LAZY => false]));
+	, Dumper::toHtml($var, [Dumper::DEPTH => 4, Dumper::LAZY => false]));
 
 
 // no above or below in lazy mode
@@ -120,4 +120,4 @@ Assert::match(<<<'XX'
 </div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">2</span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">Test</span> <span class="tracy-dump-hash">#%d%</span></span>
 </div></pre>
 XX
-, Dumper::toHtml($var, [Dumper::DEPTH => 4]));
+	, Dumper::toHtml($var, [Dumper::DEPTH => 4]));

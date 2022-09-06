@@ -42,7 +42,7 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
 </div></div></pre>
 XX
-, Dumper::toHtml($arr));
+	, Dumper::toHtml($arr));
 
 
 Assert::match(<<<'XX'
@@ -55,7 +55,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> …
 </div></pre>
 XX
-, Dumper::toHtml($arr, [Dumper::DEPTH => 0, Dumper::TRUNCATE => 0]));
+	, Dumper::toHtml($arr, [Dumper::DEPTH => 0, Dumper::TRUNCATE => 0]));
 
 
 Assert::match(<<<'XX'
@@ -69,14 +69,14 @@ Assert::match(<<<'XX'
 <div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-dynamic">0</span>: <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span> …
 </div></div></pre>
 XX
-, Dumper::toHtml($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
+	, Dumper::toHtml($arr, [Dumper::DEPTH => 2, Dumper::TRUNCATE => 50]));
 
 
 Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
 ><span class="tracy-dump-string" title="150 characters"><span>'</span>Nette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette FrameworkNette Framework<span>'</span></span></pre>
 XX
-, Dumper::toHtml(str_repeat('Nette Framework', 10), [Dumper::TRUNCATE => 50]));
+	, Dumper::toHtml(str_repeat('Nette Framework', 10), [Dumper::TRUNCATE => 50]));
 
 
 $arr = [1, 2, 3, 4];
@@ -90,7 +90,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">3</span> => <span class="tracy-dump-number">4</span>
 </div></pre>
 XX
-, Dumper::toHtml($arr, [Dumper::ITEMS => 0]));
+	, Dumper::toHtml($arr, [Dumper::ITEMS => 0]));
 
 
 Assert::match(<<<'XX'
@@ -102,7 +102,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-number">3</span> => <span class="tracy-dump-number">4</span>
 </div></pre>
 XX
-, Dumper::toHtml($arr, [Dumper::ITEMS => 2]));
+	, Dumper::toHtml($arr, [Dumper::ITEMS => 2]));
 
 
 Assert::match(<<<'XX'
@@ -114,7 +114,7 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">3</span>: <span class="tracy-dump-number">4</span>
 </div></pre>
 XX
-, Dumper::toHtml((object) $arr, [Dumper::ITEMS => 2]));
+	, Dumper::toHtml((object) $arr, [Dumper::ITEMS => 2]));
 
 
 Assert::match(<<<'XX'
@@ -130,4 +130,4 @@ Assert::match(<<<'XX'
 <span class="tracy-dump-indent">   |  </span>…
 </div></div></pre>
 XX
-, Dumper::toHtml([$arr, (object) $arr], [Dumper::ITEMS => 2]));
+	, Dumper::toHtml([$arr, (object) $arr], [Dumper::ITEMS => 2]));
