@@ -66,7 +66,7 @@ class BlueScreen
 			? [$m[1] . '/tracy', $m[1] . '/nette', $m[1] . '/latte']
 			: [dirname(__DIR__)];
 		$this->fileGenerators[] = [self::class, 'generateNewPhpFileContents'];
-		$this->fibers = PHP_VERSION_ID < 80000 ? new \SplObjectStorage : new \WeakMap;
+		$this->fibers = new \WeakMap;
 	}
 
 

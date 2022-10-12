@@ -321,35 +321,9 @@ final class Describer
 
 	public function getReferenceId($arr, $key): ?int
 	{
-		if (PHP_VERSION_ID >= 70400) {
-			if ((!$rr = \ReflectionReference::fromArrayElement($arr, $key))) {
-				return null;
-			}
-
-			$tmp = &$this->references[$rr->getId()];
-			if ($tmp === null) {
-				return $tmp = count($this->references);
-			}
-
-			return $tmp;
-		}
-
-		$uniq = new \stdClass;
-		$copy = $arr;
-		$orig = $copy[$key];
-		$copy[$key] = $uniq;
-		if ($arr[$key] !== $uniq) {
-			return null;
-		}
-
-		$res = array_search($uniq, $this->references, true);
-		$copy[$key] = $orig;
-		if ($res === false) {
-			$this->references[] = &$arr[$key];
-			return count($this->references);
-		}
-
-		return $res + 1;
+		return ($rr = \ReflectionReference::fromArrayElement($arr, $key))
+			? ($this->references[$rr->getId()] ??= count($this->references) + 1)
+			: null;
 	}
 
 
