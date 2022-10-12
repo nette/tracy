@@ -140,10 +140,8 @@ XX
 	, Dumper::toHtml($obj));
 
 
-if (PHP_VERSION_ID >= 70400) {
-	require __DIR__ . '/fixtures/DumpClass.74.php';
-
-	Assert::match(<<<'XX'
+// PHP 7.4 features
+Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-object">Test74</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">x</span>: <span class="tracy-dump-number">1</span>
@@ -151,15 +149,15 @@ if (PHP_VERSION_ID >= 70400) {
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-protected">z</span>: <span class="tracy-dump-virtual">unset</span>
 </div></pre>
 XX
-		, Dumper::toHtml(new Test74));
+, Dumper::toHtml(new Test74));
 
 
-	$obj = new Child74;
-	$obj->new = 7;
-	unset($obj->unset1, $obj->unset2);
+$obj = new Child74;
+$obj->new = 7;
+unset($obj->unset1, $obj->unset2);
 
 
-	Assert::match(<<<'XX'
+Assert::match(<<<'XX'
 <pre class="tracy-dump tracy-light"
 ><span class="tracy-toggle"><span class="tracy-dump-object">Child74</span> <span class="tracy-dump-hash">#%d%</span></span>
 <div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">new</span>: <span class="tracy-dump-number">7</span>
@@ -171,5 +169,4 @@ XX
 <span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in Test74">y</span>: <span class="tracy-dump-virtual">unset</span>
 </div></pre>
 XX
-		, Dumper::toHtml($obj));
-}
+, Dumper::toHtml($obj));
