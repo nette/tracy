@@ -134,24 +134,22 @@ XX
 	, Dumper::toText($obj));
 
 
-if (PHP_VERSION_ID >= 70400) {
-	require __DIR__ . '/fixtures/DumpClass.74.php';
-
-	Assert::match(<<<'XX'
+// PHP 7.4 features
+Assert::match(<<<'XX'
 Test74 #%d%
    x: 1
    y: unset
    z: unset
 XX
-		, Dumper::toText(new Test74));
+, Dumper::toText(new Test74));
 
 
-	$obj = new Child74;
-	$obj->new = 7;
-	unset($obj->unset1, $obj->unset2);
+$obj = new Child74;
+$obj->new = 7;
+unset($obj->unset1, $obj->unset2);
 
 
-	Assert::match(<<<'XX'
+Assert::match(<<<'XX'
 Child74 #%d%
    new: 7
    x: 2
@@ -162,4 +160,3 @@ Child74 #%d%
    y: unset
 XX
 		, Dumper::toText($obj));
-}
