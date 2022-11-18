@@ -14,7 +14,7 @@
 
 <body>
 <tracy-div id="tracy-bs" itemscope>
-	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
+	<a id="tracy-bs-toggle" href="#" class="tracy-toggle">&#xfeff;</a>
 	<div class="tracy-bs-main">
 <section class="tracy-section tracy-section--error">
 	<p>Exception #123</p>
