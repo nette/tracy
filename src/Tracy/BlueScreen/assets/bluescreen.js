@@ -31,7 +31,7 @@ class BlueScreen
 			sessionStorage.setItem('tracy-toggles-bskey', id);
 		}
 
-		(new ResizeObserver(stickyFooter)).observe(blueScreen);
+		//(new ResizeObserver(stickyFooter)).observe(blueScreen);
 
 		if (document.documentElement.classList.contains('tracy-bs-visible')) {
 			window.scrollTo(0, 0);
@@ -76,3 +76,4 @@ function stickyFooter() {
 
 let Tracy = window.Tracy = window.Tracy || {};
 Tracy.BlueScreen = Tracy.BlueScreen || BlueScreen;
+

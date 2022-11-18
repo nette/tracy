@@ -23,7 +23,11 @@ namespace Tracy;
  * @var \Fiber[] $fibers
  */
 ?>
-<tracy-div id="tracy-bs" itemscope>
+<tracy-bs id="tracy-bs" itemscope>
+	<style class="tracy-debug">
+	<?= str_replace('</', '<\/', $css) ?>
+	</style>
+
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle">&#xfeff;</a>
 	<div class="tracy-bs-main">
 <?php $ex = $exception; $exceptions = []; ?>
@@ -70,4 +74,4 @@ namespace Tracy;
 		</footer>
 	</div>
 	<meta itemprop=tracy-snapshot content=<?= Dumper::formatSnapshotAttribute($snapshot) ?>>
-</tracy-div>
+</tracy-bs>
