@@ -31,13 +31,29 @@ $chain = Helpers::getExceptionChain($exception);
 <?php endif ?>
 	<!-- <?= Helpers::escapeHtml($source) ?> -->
 
-	<style class="tracy-debug">
-	<?= str_replace('</', '<\/', $css) ?>
-	</style>
 </head>
 
 
 <body>
+<script>
+class TracyBsElement extends HTMLElement {
+	constructor() {
+		super();
+		this.attachShadow({mode: 'open'});
+	}
+
+	connectedCallback() {
+		setTimeout(() => {
+			while (this.firstElementChild) {
+				this.shadowRoot.appendChild(this.firstElementChild);
+			}
+		});
+	}
+}
+
+window.customElements.define('tracy-bs', TracyBsElement);
+</script>
+
 <?php require __DIR__ . '/content.phtml' ?>
 
 <script<?= $nonceAttr ?>>
