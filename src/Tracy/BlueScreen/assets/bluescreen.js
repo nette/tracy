@@ -31,6 +31,10 @@ class BlueScreen
 		}
 
 		(new ResizeObserver(stickyFooter)).observe(blueScreen);
+
+		if (document.documentElement.classList.contains('tracy-bs-visible')) {
+			window.scrollTo(0, 0);
+		}
 	}
 
 
@@ -60,7 +64,6 @@ class BlueScreen
 		ajaxBs = document.getElementById('tracy-bs');
 		Tracy.Dumper.init(ajaxBs);
 		BlueScreen.init(true);
-		window.scrollTo(0, 0);
 	}
 }
 
