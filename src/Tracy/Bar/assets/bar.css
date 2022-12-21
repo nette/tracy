@@ -72,6 +72,11 @@ body#tracy-debug { /* in popup window */
 	display: inline;
 }
 
+#tracy-debug .tracy-dump {
+	margin: 0;
+	padding: 2px 5px;
+}
+
 
 /* bar */
 #tracy-debug-bar {
