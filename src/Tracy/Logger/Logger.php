@@ -13,7 +13,7 @@ namespace Tracy;
 /**
  * Logger.
  */
-class Logger implements ILogger
+class Logger implements ILogger, IMailLogger
 {
 	/** @var string|null name of the directory where errors should be logged */
 	public $directory;
@@ -201,4 +201,12 @@ class Logger implements ILogger
 
 		mail($email, $parts['subject'], $parts['body'], $parts['headers']);
 	}
+
+    /**
+     * @param callable $mailer
+     */
+    public function setMailer($mailer): void
+    {
+        $this->mailer = $mailer;
+    }
 }
