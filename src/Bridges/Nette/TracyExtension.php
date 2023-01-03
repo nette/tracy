@@ -89,6 +89,15 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 		$builder = $this->getContainerBuilder();
 
+		$logger = $builder->getDefinition($this->prefix('logger'));
+		$initialize->addBody($builder->formatPhp('$logger = ?;', [$logger]));
+		if (
+			!$logger instanceof Nette\DI\Definitions\ServiceDefinition
+			|| $logger->getFactory()->getEntity() !== [Tracy\Debugger::class, 'getLogger']
+		) {
+			$initialize->addBody('Tracy\Debugger::setLogger($logger);');
+		}
+
 		$options = (array) $this->config;
 		unset($options['bar'], $options['blueScreen'], $options['netteMailer']);
 
@@ -102,8 +111,8 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			if ($value !== null) {
 				$tbl = [
 					'keysToHide' => 'array_push(Tracy\Debugger::getBlueScreen()->keysToHide, ... ?)',
-					'fromEmail' => 'Tracy\Debugger::getLogger()->fromEmail = ?',
-					'emailSnooze' => 'Tracy\Debugger::getLogger()->emailSnooze = ?',
+					'fromEmail' => 'if ($logger instanceof Tracy\Logger) $logger->fromEmail = ?',
+					'emailSnooze' => 'if ($logger instanceof Tracy\Logger) $logger->emailSnooze = ?',
 				];
 				$initialize->addBody($builder->formatPhp(
 					($tbl[$key] ?? 'Tracy\Debugger::$' . $key . ' = ?') . ';',
@@ -112,16 +121,8 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		$logger = $builder->getDefinition($this->prefix('logger'));
-		if (
-			!$logger instanceof Nette\DI\Definitions\ServiceDefinition
-			|| $logger->getFactory()->getEntity() !== [Tracy\Debugger::class, 'getLogger']
-		) {
-			$initialize->addBody($builder->formatPhp('Tracy\Debugger::setLogger(?);', [$logger]));
-		}
-
 		if ($this->config->netteMailer && $builder->getByType(Nette\Mail\IMailer::class)) {
-			$initialize->addBody($builder->formatPhp('Tracy\Debugger::getLogger()->mailer = ?;', [
+			$initialize->addBody($builder->formatPhp('if ($logger instanceof Tracy\Logger) $logger->mailer = ?;', [
 				[new Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config->fromEmail]), 'send'],
 			]));
 		}
