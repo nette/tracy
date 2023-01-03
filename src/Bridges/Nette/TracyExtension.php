@@ -120,7 +120,8 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		}
 
 		if ($this->config->netteMailer && $builder->getByType(Nette\Mail\IMailer::class)) {
-			$initialize->addBody($builder->formatPhp('if (($logger = Tracy\Debugger::getLogger()) instanceof Tracy\Logger) $logger->mailer = ?;', [
+			$initialize->addBody($builder->formatPhp('if (($logger = ?) instanceof Tracy\Logger) $logger->mailer = ?;', [
+				$logger,
 				[new Nette\DI\Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config->fromEmail]), 'send'],
 			]));
 		}
