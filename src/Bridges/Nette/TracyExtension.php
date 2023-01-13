@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Tracy\Bridges\Nette;
 
 use Nette;
+use Nette\DI\Definitions\Statement;
 use Nette\Schema\Expect;
 use Tracy;
 
@@ -113,7 +114,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 		$logger = $builder->getDefinition($this->prefix('logger'));
 		if (
-			!$logger instanceof Nette\DI\ServiceDefinition
+			!$logger instanceof Nette\DI\Definitions\ServiceDefinition
 			|| $logger->getFactory()->getEntity() !== [Tracy\Debugger::class, 'getLogger']
 		) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::setLogger(?);', [$logger]));
@@ -121,16 +122,16 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 		if ($this->config->netteMailer && $builder->getByType(Nette\Mail\IMailer::class)) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::getLogger()->mailer = ?;', [
-				[new Nette\DI\Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config->fromEmail]), 'send'],
+				[new Statement(Tracy\Bridges\Nette\MailSender::class, ['fromEmail' => $this->config->fromEmail]), 'send'],
 			]));
 		}
 
 		if ($this->debugMode) {
 			foreach ($this->config->bar as $item) {
 				if (is_string($item) && substr($item, 0, 1) === '@') {
-					$item = new Nette\DI\Statement(['@' . $builder::THIS_CONTAINER, 'getService'], [substr($item, 1)]);
+					$item = new Statement(['@' . $builder::THIS_CONTAINER, 'getService'], [substr($item, 1)]);
 				} elseif (is_string($item)) {
-					$item = new Nette\DI\Statement($item);
+					$item = new Statement($item);
 				}
 
 				$initialize->addBody($builder->formatPhp(
