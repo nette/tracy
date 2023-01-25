@@ -54,6 +54,10 @@ class Dumper
 				return false;
 			}
 
+		});
+
+		document.documentElement.addEventListener('tracy-beforetoggle', (e) => {
+			let el;
 			// initializes lazy <span data-tracy-dump> inside <pre data-tracy-snapshot>
 			if ((el = e.target.closest('[data-tracy-snapshot]'))) {
 				let snapshot = JSON.parse(el.getAttribute('data-tracy-snapshot'));
