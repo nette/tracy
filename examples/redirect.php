@@ -7,8 +7,8 @@ require __DIR__ . '/../src/tracy.php';
 use Tracy\Debugger;
 
 // For security reasons, Tracy is visible only on localhost.
-// You may force Tracy to run in development mode by passing the Debugger::DEVELOPMENT instead of Debugger::DETECT.
-Debugger::enable(Debugger::DETECT, __DIR__ . '/log');
+// You may force Tracy to run in development mode by passing the Debugger::Development instead of Debugger::Detect.
+Debugger::enable(Debugger::Detect, __DIR__ . '/log');
 
 
 if (empty($_GET['redirect'])) {

@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
-Debugger::enable(Debugger::PRODUCTION, getTempDir());
+Debugger::enable(Debugger::Production, getTempDir());
 Debugger::$logSeverity = E_NOTICE;
 
 $variable = &pi();

@@ -21,14 +21,20 @@ class Debugger
 
 	/** server modes for Debugger::enable() */
 	public const
-		DEVELOPMENT = false,
-		PRODUCTION = true,
-		DETECT = null;
+		Development = false,
+		Production = true,
+		Detect = null;
 
-	public const COOKIE_SECRET = 'tracy-debug';
+	public const
+		DEVELOPMENT = self::Development,
+		PRODUCTION = self::Production,
+		DETECT = self::Detect;
+
+	public const CookieSecret = 'tracy-debug';
+	public const COOKIE_SECRET = self::CookieSecret;
 
 	/** @var bool in production mode is suppressed any debugging output */
-	public static $productionMode = self::DETECT;
+	public static $productionMode = self::Detect;
 
 	/** @var bool whether to display debug bar in development mode */
 	public static $showBar = true;
@@ -166,7 +172,7 @@ class Debugger
 
 	/**
 	 * Enables displaying or logging errors and exceptions.
-	 * @param  bool|string|string[]  $mode  use constant Debugger::PRODUCTION, DEVELOPMENT, DETECT (autodetection) or IP address(es) whitelist.
+	 * @param  bool|string|string[]  $mode  use constant Debugger::Production, Development, Detect (autodetection) or IP address(es) whitelist.
 	 * @param  string  $logDirectory  error log directory
 	 * @param  string|array  $email  administrator email; enables email sending in production mode
 	 */
@@ -634,8 +640,8 @@ class Debugger
 	public static function detectDebugMode($list = null): bool
 	{
 		$addr = $_SERVER['REMOTE_ADDR'] ?? php_uname('n');
-		$secret = isset($_COOKIE[self::COOKIE_SECRET]) && is_string($_COOKIE[self::COOKIE_SECRET])
-			? $_COOKIE[self::COOKIE_SECRET]
+		$secret = isset($_COOKIE[self::CookieSecret]) && is_string($_COOKIE[self::CookieSecret])
+			? $_COOKIE[self::CookieSecret]
 			: null;
 		$list = is_string($list)
 			? preg_split('#[,\s]+#', $list)

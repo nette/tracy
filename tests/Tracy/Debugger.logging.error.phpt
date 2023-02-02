@@ -23,7 +23,7 @@ Debugger::$logDirectory = getTempDir();
 Debugger::getLogger()->mailer = function () {};
 
 ob_start();
-Debugger::enable(Debugger::PRODUCTION, null, 'admin@example.com');
+Debugger::enable(Debugger::Production, null, 'admin@example.com');
 
 
 register_shutdown_function(function () {

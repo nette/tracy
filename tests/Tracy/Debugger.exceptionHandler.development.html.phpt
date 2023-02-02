@@ -18,6 +18,6 @@ if (PHP_SAPI === 'cli') {
 }
 
 setHtmlMode();
-Debugger::enable(Debugger::DEVELOPMENT);
+Debugger::enable(Debugger::Development);
 Debugger::$logDirectory = 'unknown';
 throw new Exception;

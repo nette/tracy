@@ -19,7 +19,7 @@ $logDirectory = getTempDir();
 
 Debugger::getLogger()->mailer = function () {};
 
-Debugger::enable(Debugger::PRODUCTION, $logDirectory, 'admin@example.com');
+Debugger::enable(Debugger::Production, $logDirectory, 'admin@example.com');
 
 
 // throw error
