@@ -42,7 +42,7 @@ class Dumper
 		LOCATION_SOURCE = 0b0011, // additionally shows where dump was called
 		LOCATION_LINK = self::LOCATION_SOURCE; // deprecated
 
-	public const HIDDEN_VALUE = Describer::HIDDEN_VALUE;
+	public const HIDDEN_VALUE = Describer::HiddenValue;
 
 	/** @var Dumper\Value[] */
 	public static $liveSnapshot = [];

@@ -41,11 +41,11 @@ Assert::match(
 // custom exposer & new way
 $exporters = [
 	'stdClass' => function ($var, Value $value, Dumper\Describer $describer) {
-		$describer->addPropertyTo($value, 'x', $var->a + 2, Value::PROP_PUBLIC);
-		$value->items[] = [$describer->describeKey('key'), new Value(Value::TYPE_TEXT, 'hello')];
-		$value->items[] = [new Value(Value::TYPE_TEXT, '$x'), new Value(Value::TYPE_TEXT, 'hello')];
-		$inner = new Value(Value::TYPE_OBJECT, 'hello');
-		$describer->addPropertyTo($inner, 'a', 'b', Value::PROP_PUBLIC);
+		$describer->addPropertyTo($value, 'x', $var->a + 2, Value::PropertyPublic);
+		$value->items[] = [$describer->describeKey('key'), new Value(Value::TypeText, 'hello')];
+		$value->items[] = [new Value(Value::TypeText, '$x'), new Value(Value::TypeText, 'hello')];
+		$inner = new Value(Value::TypeObject, 'hello');
+		$describer->addPropertyTo($inner, 'a', 'b', Value::PropertyPublic);
 		$value->items[] = ['object', $inner];
 	},
 ];
@@ -65,7 +65,7 @@ XX
 // custom exposer & collapsed
 $exporters = [
 	'stdClass' => function ($var, Value $value, Dumper\Describer $describer) {
-		$describer->addPropertyTo($value, 'x', 'y', Value::PROP_PUBLIC);
+		$describer->addPropertyTo($value, 'x', 'y', Value::PropertyPublic);
 		$value->collapsed = true;
 	},
 ];
