@@ -60,9 +60,7 @@ final class Describer
 
 	public function describe($var): \stdClass
 	{
-		uksort($this->objectExposers, function ($a, $b): int {
-			return $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1;
-		});
+		uksort($this->objectExposers, fn($a, $b): int => $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1);
 
 		try {
 			return (object) [
@@ -265,14 +263,14 @@ final class Describer
 		$v,
 		$type = Value::PropertyVirtual,
 		?int $refId = null,
-		?string $class = null
+		?string $class = null,
 	) {
 		if ($value->depth && $this->maxItems && count($value->items ?? []) >= $this->maxItems) {
 			$value->length = ($value->length ?? count($value->items)) + 1;
 			return;
 		}
 
-		$class = $class ?? $value->value;
+		$class ??= $value->value;
 		$value->items[] = [
 			$this->describeKey($k),
 			$type !== Value::PropertyVirtual && $this->isSensitive($k, $v, $class)

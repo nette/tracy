@@ -33,7 +33,7 @@ Stack trace:
 #3 {main}
 Tracy is unable to log error: Logging directory is not specified.
 ",
-		ob_get_clean()
+		ob_get_clean(),
 	);
 	echo 'OK!'; // prevents PHP bug #62725
 });

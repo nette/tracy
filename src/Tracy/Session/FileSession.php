@@ -13,7 +13,7 @@ namespace Tracy;
 class FileSession implements SessionStorage
 {
 	private const FilePrefix = 'tracy-';
-	private const CookieLifetime = 31557600;
+	private const CookieLifetime = 31_557_600;
 
 	/** @var string */
 	public $cookieName = 'tracy-session';

@@ -19,7 +19,7 @@ Assert::with($blueScreen, function () {
 				'external' => true,
 			],
 		],
-		$this->renderActions(new Exception)
+		$this->renderActions(new Exception),
 	);
 
 	Assert::same(
@@ -30,7 +30,7 @@ Assert::with($blueScreen, function () {
 				'external' => true,
 			],
 		],
-		$this->renderActions(new Exception('The = message', 123))
+		$this->renderActions(new Exception('The = message', 123)),
 	);
 
 	Assert::same(
@@ -41,7 +41,7 @@ Assert::with($blueScreen, function () {
 				'external' => true,
 			],
 		],
-		$this->renderActions(new ErrorException('Message', 123, E_USER_WARNING))
+		$this->renderActions(new ErrorException('Message', 123, E_USER_WARNING)),
 	);
 });
 
@@ -59,7 +59,7 @@ Assert::with($blueScreen, function () {
 
 	Assert::same(
 		[$search],
-		$this->renderActions($e)
+		$this->renderActions($e),
 	);
 
 	if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
@@ -72,7 +72,7 @@ Assert::with($blueScreen, function () {
 					'label' => 'skip error',
 				],
 			],
-			$this->renderActions($e)
+			$this->renderActions($e),
 		);
 	}
 });
@@ -85,7 +85,7 @@ Assert::with($blueScreen, function () {
 			'link' => 'editor://open/?file=' . urlencode(__FILE__) . '&line=1&search=&replace=',
 			'label' => 'open file',
 		],
-		$this->renderActions(new Exception(" '" . __FILE__ . "'"))[0]
+		$this->renderActions(new Exception(" '" . __FILE__ . "'"))[0],
 	);
 
 	Assert::same(
@@ -93,7 +93,7 @@ Assert::with($blueScreen, function () {
 			'link' => 'editor://open/?file=' . urlencode(__FILE__) . '&line=1&search=&replace=',
 			'label' => 'open file',
 		],
-		$this->renderActions(new Exception(' "' . __FILE__ . '"'))[0]
+		$this->renderActions(new Exception(' "' . __FILE__ . '"'))[0],
 	);
 
 	$ds = urlencode(DIRECTORY_SEPARATOR);
@@ -102,7 +102,7 @@ Assert::with($blueScreen, function () {
 			'link' => 'editor://create/?file=' . $ds . 'notexists.txt&line=1&search=&replace=',
 			'label' => 'create file',
 		],
-		$this->renderActions(new Exception(' "/notexists.txt"'))[0]
+		$this->renderActions(new Exception(' "/notexists.txt"'))[0],
 	);
 
 	Assert::same(
@@ -110,7 +110,7 @@ Assert::with($blueScreen, function () {
 			'link' => 'editor://create/?file=c%3A%5Cnotexists.txt&line=1&search=&replace=',
 			'label' => 'create file',
 		],
-		$this->renderActions(new Exception(' "c:\notexists.txt"'))[0]
+		$this->renderActions(new Exception(' "c:\notexists.txt"'))[0],
 	);
 
 	Assert::same(
@@ -118,7 +118,7 @@ Assert::with($blueScreen, function () {
 			'link' => 'editor://create/?file=c%3A' . $ds . 'notexists.txt&line=1&search=&replace=',
 			'label' => 'create file',
 		],
-		$this->renderActions(new Exception(' "c:/notexists.txt"'))[0]
+		$this->renderActions(new Exception(' "c:/notexists.txt"'))[0],
 	);
 
 	Assert::count(1, $this->renderActions(new Exception(' "/notfile"')));
@@ -136,19 +136,15 @@ Assert::with($blueScreen, function () {
 	@$e->tracyAction = ['link' => 'a', 'label' => 'b']; // deprecated since PHP 8.2
 	Assert::same(
 		['link' => 'a', 'label' => 'b'],
-		$this->renderActions($e)[0]
+		$this->renderActions($e)[0],
 	);
 });
 
 
 // addAction
-$blueScreen->addAction(function (Throwable $e) {
-	return [];
-});
+$blueScreen->addAction(fn(Throwable $e) => []);
 
-$blueScreen->addAction(function (Throwable $e) {
-	return ['link' => 'a', 'label' => 'b'];
-});
+$blueScreen->addAction(fn(Throwable $e) => ['link' => 'a', 'label' => 'b']);
 
 Assert::with($blueScreen, function () {
 	$e = new Exception;
@@ -161,7 +157,7 @@ Assert::with($blueScreen, function () {
 				'external' => true,
 			],
 		],
-		$this->renderActions($e)
+		$this->renderActions($e),
 	);
 });
 

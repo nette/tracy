@@ -12,30 +12,31 @@ use Tracy\Dumper;
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::match(<<<'XX'
-array (14)
-   0 => ''
-   1 => ' '
-   2 => '\x00'
-   3 => '\xFF'
-   4 => 'Iñtërnâtiônàlizætiøn'
-   5 => string
-   |  'utf \n
-   |   \r\t    \e\x00 Iñtër\n'
-   6 => 'utf \n\r\t\xab Iñtër'
-   7 => string
-   |  'binary \n
-   |   \r\t    \e\x00 I\xC3\xB1t\xC3\xABr \xA0'
-   8 => 'binary \n\r\t\xab I\xC3\xB1t\xC3\xABr \xA0'
-   'utf \n\r\t\xab Iñtër' => 1
-   'utf \n
-    \r\t    \e\x00 Iñtër' => 2
-   'utf \n
-    \r\t    \e\x00 I\xC3\xB1t\xC3\xABr \xA0' => 3
-   '<div> &amp;' => '<div> &amp;'
-   9 => '\u{FEFF}'
-XX
-	, Dumper::toText([
+Assert::match(
+	<<<'XX'
+		array (14)
+		   0 => ''
+		   1 => ' '
+		   2 => '\x00'
+		   3 => '\xFF'
+		   4 => 'Iñtërnâtiônàlizætiøn'
+		   5 => string
+		   |  'utf \n
+		   |   \r\t    \e\x00 Iñtër\n'
+		   6 => 'utf \n\r\t\xab Iñtër'
+		   7 => string
+		   |  'binary \n
+		   |   \r\t    \e\x00 I\xC3\xB1t\xC3\xABr \xA0'
+		   8 => 'binary \n\r\t\xab I\xC3\xB1t\xC3\xABr \xA0'
+		   'utf \n\r\t\xab Iñtër' => 1
+		   'utf \n
+		    \r\t    \e\x00 Iñtër' => 2
+		   'utf \n
+		    \r\t    \e\x00 I\xC3\xB1t\xC3\xABr \xA0' => 3
+		   '<div> &amp;' => '<div> &amp;'
+		   9 => '\u{FEFF}'
+		XX,
+	Dumper::toText([
 		'',
 		' ',
 		"\x00",
@@ -50,4 +51,5 @@ XX
 		"utf \n\r\t\e\x00 Iñtër \xA0" => 3, // binary + control chars in key
 		'<div> &amp;' => '<div> &amp;', // HTML
 		"\xEF\xBB\xBF", // BOM
-	]));
+	]),
+);

@@ -123,7 +123,7 @@ class Logger implements ILogger
 	{
 		foreach (Helpers::getExceptionChain($exception) as $exception) {
 			$data[] = [
-				get_class($exception), $exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(),
+				$exception::class, $exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(),
 				array_map(function (array $item): array {
 					unset($item['args']);
 					return $item;
@@ -196,7 +196,7 @@ class Logger implements ILogger
 				]) . "\n",
 				'subject' => "PHP: An error occurred on the server $host",
 				'body' => static::formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
-			]
+			],
 		);
 
 		mail($email, $parts['subject'], $parts['body'], $parts['headers']);

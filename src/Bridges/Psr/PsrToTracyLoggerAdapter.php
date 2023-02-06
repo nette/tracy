@@ -56,7 +56,7 @@ class PsrToTracyLoggerAdapter implements Tracy\ILogger
 		$this->psrLogger->log(
 			self::LevelMap[$level] ?? Psr\Log\LogLevel::ERROR,
 			$message,
-			$context
+			$context,
 		);
 	}
 }
