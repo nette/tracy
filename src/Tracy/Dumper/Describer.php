@@ -302,15 +302,20 @@ final class Describer
 
 	private function isSensitive(string $key, $val, ?string $class = null): bool
 	{
-		return ($this->scrubber !== null && ($this->scrubber)($key, $val, $class))
+		return $val instanceof \SensitiveParameterValue
+			|| ($this->scrubber !== null && ($this->scrubber)($key, $val, $class))
 			|| isset($this->keysToHide[strtolower($key)])
 			|| isset($this->keysToHide[strtolower($class . '::$' . $key)]);
 	}
 
 
-	private static function hideValue($var): string
+	private static function hideValue($val): string
 	{
-		return self::HiddenValue . ' (' . (is_object($var) ? Helpers::getClass($var) : gettype($var)) . ')';
+		if ($val instanceof \SensitiveParameterValue) {
+			$val = $val->getValue();
+		}
+
+		return self::HiddenValue . ' (' . (is_object($val) ? Helpers::getClass($val) : gettype($val)) . ')';
 	}
 
 
