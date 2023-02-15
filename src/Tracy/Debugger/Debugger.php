@@ -36,6 +36,9 @@ class Debugger
 	/** in production mode is suppressed any debugging output */
 	public static ?bool $productionMode = self::DETECT;
 
+	/** barDumps can be disabled or enabled on demand */
+	public static bool $barDumpOn = true;
+
 	/** whether to display debug bar in development mode */
 	public static bool $showBar = true;
 
@@ -535,7 +538,7 @@ class Debugger
 	 */
 	public static function barDump(mixed $var, ?string $title = null, array $options = []): mixed
 	{
-		if (!self::$productionMode) {
+		if (!self::$productionMode && self::$barDumpOn) {
 			static $panel;
 			if (!$panel) {
 				self::getBar()->addPanel($panel = new DefaultBarPanel('dumps'), 'Tracy:dumps');
