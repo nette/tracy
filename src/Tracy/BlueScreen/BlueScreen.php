@@ -338,6 +338,7 @@ class BlueScreen
 
 		$source = preg_replace('#(__halt_compiler\s*\(\)\s*;).*#is', '$1', $source);
 		$source = str_replace(["\r\n", "\r"], "\n", $source);
+		$source = preg_replace('#/\*sensitive\{\*/.*?/\*\}\*/#s', Dumper\Describer::HiddenValue, $source);
 		$source = explode("\n", highlight_string($source, true));
 		$out = $source[0]; // <code><span color=highlight.html>
 		$source = str_replace('<br />', "\n", $source[1]);
