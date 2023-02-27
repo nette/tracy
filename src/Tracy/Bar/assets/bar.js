@@ -17,7 +17,8 @@ let defaults = {
 
 function getOption(key)
 {
-	return window['Tracy' + key] || defaults[key];
+	let global = window['Tracy' + key];
+	return global === undefined ? defaults[key] : global;
 }
 
 class Panel
