@@ -36,7 +36,10 @@ class BlueScreen
 	public $scrubber;
 
 	/** @var string[] */
-	public $keysToHide = ['password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin', self::class . '::$snapshot'];
+	public $keysToHide = [
+		'password', 'passwd', 'pass', 'pwd', 'creditcard', 'credit card', 'cc', 'pin', 'authorization',
+		self::class . '::$snapshot',
+	];
 
 	/** @var bool */
 	public $showEnvironment = true;
