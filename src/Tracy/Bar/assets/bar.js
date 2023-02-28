@@ -36,7 +36,6 @@ class Panel
 		this.init = function() {};
 		elem.innerHTML = elem.dataset.tracyContent;
 		Tracy.Dumper.init(Debug.layer);
-		delete elem.dataset.tracyContent;
 		evalScripts(elem);
 
 		draggable(elem, {
@@ -157,7 +156,12 @@ class Panel
 		+ '<script src="' + (baseUrl.replace(/&/g, '&amp;').replace(/"/g, '&quot;')) + '_tracy_bar=js&amp;XDEBUG_SESSION_STOP=1" onload="Tracy.Dumper.init()" async></script>'
 		+ '<body id="tracy-debug">'
 		);
-		doc.body.innerHTML = '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.innerHTML + '</div>';
+
+		let meta = this.elem.parentElement.lastElementChild;
+		doc.body.innerHTML = '<tracy-div itemscope>'
+			+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.dataset.tracyContent + '</div>'
+			+ meta.outerHTML
+			+ '</tracy-div>';
 		evalScripts(doc.body);
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').textContent;
