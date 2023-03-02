@@ -28,12 +28,10 @@ class PsrToTracyLoggerAdapter implements Tracy\ILogger
 		Tracy\ILogger::CRITICAL => Psr\Log\LogLevel::CRITICAL,
 	];
 
-	private Psr\Log\LoggerInterface $psrLogger;
 
-
-	public function __construct(Psr\Log\LoggerInterface $psrLogger)
-	{
-		$this->psrLogger = $psrLogger;
+	public function __construct(
+		private Psr\Log\LoggerInterface $psrLogger,
+	) {
 	}
 
 
