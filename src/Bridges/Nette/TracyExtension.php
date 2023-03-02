@@ -22,14 +22,11 @@ class TracyExtension extends Nette\DI\CompilerExtension
 {
 	private const ErrorSeverityPattern = 'E_(?:ALL|PARSE|STRICT|RECOVERABLE_ERROR|(?:CORE|COMPILE)_(?:ERROR|WARNING)|(?:USER_)?(?:ERROR|WARNING|NOTICE|DEPRECATED))';
 
-	private bool $debugMode;
-	private bool $cliMode;
 
-
-	public function __construct(bool $debugMode = false, bool $cliMode = false)
-	{
-		$this->debugMode = $debugMode;
-		$this->cliMode = $cliMode;
+	public function __construct(
+		private bool $debugMode = false,
+		private bool $cliMode = false,
+	) {
 	}
 
 

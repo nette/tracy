@@ -17,16 +17,11 @@ use ErrorException;
  */
 final class DevelopmentStrategy
 {
-	private Bar $bar;
-	private BlueScreen $blueScreen;
-	private DeferredContent $defer;
-
-
-	public function __construct(Bar $bar, BlueScreen $blueScreen, DeferredContent $defer)
-	{
-		$this->bar = $bar;
-		$this->blueScreen = $blueScreen;
-		$this->defer = $defer;
+	public function __construct(
+		private Bar $bar,
+		private BlueScreen $blueScreen,
+		private DeferredContent $defer,
+	) {
 	}
 
 
