@@ -597,4 +597,29 @@ class Helpers
 			}
 		}
 	}
+
+
+	/** @internal */
+	public static function decomposeFlags(int $flags, bool $set, array $constants): ?array
+	{
+		$res = null;
+		foreach ($constants as $constant) {
+			if (defined($constant)) {
+				$v = constant($constant);
+				if ($set) {
+					if ($v && ($flags & $v) === $v) {
+						$res[] = $constant;
+						$flags &= ~$v;
+					}
+				} elseif ($flags === $v) {
+					return [$constant];
+				}
+			}
+		}
+
+		if ($flags && $res && $set) {
+			$res[] = (string) $flags;
+		}
+		return $res;
+	}
 }
