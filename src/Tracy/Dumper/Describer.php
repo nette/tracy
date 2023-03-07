@@ -236,6 +236,7 @@ final class Describer
 		int $type = Value::PropertyVirtual,
 		?int $refId = null,
 		?string $class = null,
+		?Value $described = null,
 	): void
 	{
 		if ($value->depth && $this->maxItems && count($value->items ?? []) >= $this->maxItems) {
@@ -248,7 +249,7 @@ final class Describer
 			$this->describeKey($k),
 			$type !== Value::PropertyVirtual && $this->isSensitive($k, $v, $class)
 				? new Value(Value::TypeText, self::hideValue($v))
-				: $this->describeVar($v, $value->depth + 1, $refId),
+				: ($described ?? $this->describeVar($v, $value->depth + 1, $refId)),
 			$type === Value::PropertyPrivate ? $class : $type,
 		] + ($refId ? [3 => $refId] : []);
 	}
