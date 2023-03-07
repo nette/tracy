@@ -43,11 +43,14 @@ final class Exposer
 					$class,
 				);
 			} else {
-				$value->items[] = [
+				$describer->addPropertyTo(
+					$value,
 					$name,
-					new Value(Value::TypeText, 'unset'),
-					$type === Value::PropertyPrivate ? $class : $type,
-				];
+					null,
+					$type,
+					class: $class,
+					described: new Value(Value::TypeText, 'unset'),
+				);
 			}
 		}
 	}
@@ -107,7 +110,7 @@ final class Exposer
 		if ($uses) {
 			$useValue->value = implode(', ', $uses);
 			$useValue->collapsed = true;
-			$value->items[] = ['use', $useValue];
+			$describer->addPropertyTo($value, 'use', null, described: $useValue);
 		}
 	}
 
