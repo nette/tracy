@@ -44,6 +44,9 @@ final class Describer
 	/** @var array<string,callable> */
 	public array $objectExposers = [];
 
+	/** @var array<string, array{bool, string[]}> */
+	public array $enumProperties = [];
+
 	/** @var (int|\stdClass)[] */
 	public array $references = [];
 
@@ -288,6 +291,21 @@ final class Describer
 		}
 
 		return self::HiddenValue . ' (' . get_debug_type($val) . ')';
+	}
+
+
+	public function describeEnumProperty(string $class, string $property, mixed $value): ?Value
+	{
+		[$set, $constants] = $this->enumProperties["$class::$property"] ?? null;
+		if (!is_int($value)
+			|| !$constants
+			|| !($constants = Helpers::decomposeFlags($value, $set, $constants))
+		) {
+			return null;
+		}
+
+		$constants = array_map(fn(string $const): string => str_replace("$class::", 'self::', $const), $constants);
+		return new Value(Value::TypeNumber, implode(' | ', $constants) . " ($value)");
 	}
 
 

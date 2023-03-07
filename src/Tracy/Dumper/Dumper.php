@@ -86,6 +86,9 @@ class Dumper
 		Ds\Map::class => [Exposer::class, 'exposeDsMap'],
 	];
 
+	/** @var array<string, array{bool, string[]}> */
+	private static array $enumProperties = [];
+
 	private Describer $describer;
 	private Renderer $renderer;
 
@@ -181,6 +184,7 @@ class Dumper
 		$describer->keysToHide = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE] ?? []));
 		$describer->resourceExposers = ($options['resourceExporters'] ?? []) + self::$resources;
 		$describer->objectExposers = ($options[self::OBJECT_EXPORTERS] ?? []) + self::$objectExporters;
+		$describer->enumProperties = self::$enumProperties;
 		$describer->location = (bool) $location;
 		if ($options[self::LIVE] ?? false) {
 			$tmp = &self::$liveSnapshot;
@@ -240,5 +244,11 @@ class Dumper
 		$res = "'" . Renderer::jsonEncode($snapshot[0] ?? []) . "'";
 		$snapshot = [];
 		return $res;
+	}
+
+
+	public static function addEnumProperty(string $class, string $property, array $constants, bool $set = false): void
+	{
+		self::$enumProperties["$class::$property"] = [$set, $constants];
 	}
 }

@@ -41,6 +41,7 @@ final class Exposer
 					$type,
 					$describer->getReferenceId($values, $k),
 					$class,
+					$describer->describeEnumProperty($class, $name, $values[$k]),
 				);
 			} else {
 				$describer->addPropertyTo(
@@ -241,7 +242,7 @@ final class Exposer
 	): void
 	{
 		foreach ($obj as $k => $v) {
-			$describer->addPropertyTo($value, (string) $k, $v, Value::PropertyVirtual);
+			$describer->addPropertyTo($value, (string) $k, $v);
 		}
 	}
 
@@ -254,7 +255,7 @@ final class Exposer
 	{
 		$i = 0;
 		foreach ($obj as $k => $v) {
-			$describer->addPropertyTo($value, (string) $i++, new Ds\Pair($k, $v), Value::PropertyVirtual);
+			$describer->addPropertyTo($value, (string) $i++, new Ds\Pair($k, $v));
 		}
 	}
 }
