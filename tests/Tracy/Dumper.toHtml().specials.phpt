@@ -125,3 +125,47 @@ Assert::match(<<<'XX'
 </div></div></pre>
 XX
 	, Dumper::toHtml($obj));
+
+
+// ArrayIterator
+$obj = new ArrayIterator(['a' => 1, 'b' => 2]);
+Assert::match(<<<'XX'
+<pre class="tracy-dump tracy-light"
+><span class="tracy-toggle"><span class="tracy-dump-object">ArrayIterator</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">a</span>: <span class="tracy-dump-number">1</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">b</span>: <span class="tracy-dump-number">2</span>
+</div></pre>
+XX
+	, Dumper::toHtml($obj));
+
+
+// DateTime
+$obj = new DateTime('1978-01-23');
+Assert::match(<<<'XX'
+<pre class="tracy-dump tracy-light"
+><span class="tracy-toggle"><span class="tracy-dump-object">DateTime</span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">date</span>: <span class="tracy-dump-string" title="26 characters"><span>'</span>1978-01-23 00:00:00.000000<span>'</span></span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">timezone_type</span>: <span class="tracy-dump-number">3</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-dynamic">timezone</span>: <span class="tracy-dump-string" title="%d% characters"><span>'</span>%a%<span>'</span></span>
+</div></pre>
+XX
+	, Dumper::toHtml($obj));
+
+
+// Tracy\Dumper\Value
+$obj = new Tracy\Dumper\Value(Tracy\Dumper\Value::TypeText, 'ahoj');
+Assert::match(<<<'XX'
+<pre class="tracy-dump tracy-light"
+><span class="tracy-toggle"><span class="tracy-dump-object">Tracy\Dumper\<b>Value</b></span> <span class="tracy-dump-hash">#%d%</span></span>
+<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">type</span>: <span class="tracy-dump-string" title="4 characters"><span>'</span>text<span>'</span></span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">value</span>: <span class="tracy-dump-string" title="4 characters"><span>'</span>ahoj<span>'</span></span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">length</span>: <span class="tracy-dump-null">null</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">depth</span>: <span class="tracy-dump-null">null</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">id</span>: <span class="tracy-dump-null">null</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">holder</span>: <span class="tracy-dump-null">null</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">items</span>: <span class="tracy-dump-null">null</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">editor</span>: <span class="tracy-dump-null">null</span>
+<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">collapsed</span>: <span class="tracy-dump-null">null</span>
+</div></pre>
+XX
+	, Dumper::toHtml($obj));

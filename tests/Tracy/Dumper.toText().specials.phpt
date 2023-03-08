@@ -96,3 +96,41 @@ ArrayObjectChild #%d%
    |  'b' => 2
 XX
 	, Dumper::toText($obj));
+
+
+// ArrayIterator
+$obj = new ArrayIterator(['a' => 1, 'b' => 2]);
+Assert::match(<<<'XX'
+ArrayIterator #%d%
+   a: 1
+   b: 2
+XX
+	, Dumper::toText($obj));
+
+
+// DateTime
+$obj = new DateTime('1978-01-23');
+Assert::match(<<<'XX'
+DateTime #%d%
+   date: '1978-01-23 00:00:00.000000'
+   timezone_type: %d%
+   timezone: '%a%'
+XX
+	, Dumper::toText($obj));
+
+
+// Tracy\Dumper\Value
+$obj = new Tracy\Dumper\Value(Tracy\Dumper\Value::TypeText, 'ahoj');
+Assert::match(<<<'XX'
+Tracy\Dumper\Value #%d%
+   type: 'text'
+   value: 'ahoj'
+   length: null
+   depth: null
+   id: null
+   holder: null
+   items: null
+   editor: null
+   collapsed: null
+XX
+	, Dumper::toText($obj));
