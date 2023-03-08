@@ -12,11 +12,13 @@ require __DIR__ . '/../bootstrap.php';
 
 $a[] = [&$a];
 
-Assert::match(<<<'XX'
-array (1)
-   0 => array (1)
-   |  0 => &1 array (1)
-   |  |  0 => array (1)
-   |  |  |  0 => &1 array (1) RECURSION
-XX
-	, Dumper::toText($a));
+Assert::match(
+	<<<'XX'
+		array (1)
+		   0 => array (1)
+		   |  0 => &1 array (1)
+		   |  |  0 => array (1)
+		   |  |  |  0 => &1 array (1) RECURSION
+		XX,
+	Dumper::toText($a),
+);

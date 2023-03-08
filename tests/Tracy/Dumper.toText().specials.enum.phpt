@@ -27,11 +27,13 @@ enum Methods: string
 	case POST = 'post';
 }
 
-Assert::match(<<<'XX'
-array (3)
-   0 => Suit::Clubs #%d%
-   1 => Methods::GET #%d%
-   |  value: 'get'
-   2 => Methods::GET #%d% see above
-XX
-	, Dumper::toText([Suit::Clubs, Methods::GET, Methods::GET]));
+Assert::match(
+	<<<'XX'
+		array (3)
+		   0 => Suit::Clubs #%d%
+		   1 => Methods::GET #%d%
+		   |  value: 'get'
+		   2 => Methods::GET #%d% see above
+		XX,
+	Dumper::toText([Suit::Clubs, Methods::GET, Methods::GET]),
+);

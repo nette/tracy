@@ -22,25 +22,27 @@ $obj = (object) [
 ];
 
 
-Assert::match(<<<'XX'
-stdClass #%d%
-   a: ***** (integer)
-   password: ***** (string)
-   PASSWORD: ***** (string)
-   Pin: ***** (string)
-   inner: array (4)
-   |  'a' => 123
-   |  'password' => ***** (string)
-   |  'PASSWORD' => ***** (string)
-   |  'Pin' => ***** (string)
-XX
-	, Dumper::toText($obj, [Dumper::KEYS_TO_HIDE => ['password', 'PIN', 'stdClass::$a']]));
+Assert::match(
+	<<<'XX'
+		stdClass #%d%
+		   a: ***** (integer)
+		   password: ***** (string)
+		   PASSWORD: ***** (string)
+		   Pin: ***** (string)
+		   inner: array (4)
+		   |  'a' => 123
+		   |  'password' => ***** (string)
+		   |  'PASSWORD' => ***** (string)
+		   |  'Pin' => ***** (string)
+		XX,
+	Dumper::toText($obj, [Dumper::KEYS_TO_HIDE => ['password', 'PIN', 'stdClass::$a']]),
+);
 
 
 $snapshot = [];
 Assert::match(
 	'<pre class="tracy-dump tracy-light" data-tracy-dump=\'{"ref":%d%}\'></pre>',
-	Dumper::toHtml($obj, [Dumper::KEYS_TO_HIDE => ['password', 'pin'], Dumper::SNAPSHOT => &$snapshot])
+	Dumper::toHtml($obj, [Dumper::KEYS_TO_HIDE => ['password', 'pin'], Dumper::SNAPSHOT => &$snapshot]),
 );
 
 Assert::equal([

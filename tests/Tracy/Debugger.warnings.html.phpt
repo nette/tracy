@@ -30,24 +30,23 @@ register_shutdown_function(function () {
 	$rawContent = json_decode($m[1]);
 	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-errors')[0]['data-tracy-content'];
 	Assert::match(<<<'XX'
-%A%<table class="tracy-sortable">
-<tr><th>Count</th><th>Error</th></tr>
-<tr>
-	<td class="tracy-right">1%a%</td>
-	<td><pre>PHP Notice: Only variables should be assigned by reference in %a%:%d%</a></pre></td>
-</tr>
-<tr>
-	<td class="tracy-right">1%a%</td>
-	<td><pre>PHP Warning: hex2bin(): Hexadecimal input string must have an even length in %a%:%d%</a></pre></td>
-</tr>
-<tr>
-	<td class="tracy-right">1%a%</td>
-	<td><pre>PHP Compile Warning: Unsupported declare &apos;foo&apos; in %a%:%d%</a></pre></td>
-</tr>
-</table>
-</div>%A%
-XX
-		, $panelContent);
+		%A%<table class="tracy-sortable">
+		<tr><th>Count</th><th>Error</th></tr>
+		<tr>
+			<td class="tracy-right">1%a%</td>
+			<td><pre>PHP Notice: Only variables should be assigned by reference in %a%:%d%</a></pre></td>
+		</tr>
+		<tr>
+			<td class="tracy-right">1%a%</td>
+			<td><pre>PHP Warning: hex2bin(): Hexadecimal input string must have an even length in %a%:%d%</a></pre></td>
+		</tr>
+		<tr>
+			<td class="tracy-right">1%a%</td>
+			<td><pre>PHP Compile Warning: Unsupported declare &apos;foo&apos; in %a%:%d%</a></pre></td>
+		</tr>
+		</table>
+		</div>%A%
+		XX, $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

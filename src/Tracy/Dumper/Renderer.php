@@ -91,7 +91,7 @@ final class Renderer
 				$uri ?? '#',
 				$file,
 				$line,
-				$uri ? "\nClick to open in editor" : ''
+				$uri ? "\nClick to open in editor" : '',
 			) . Helpers::encodeString($code, 50) . " 📍</a\n>";
 		}
 
@@ -339,7 +339,7 @@ final class Renderer
 				$object->editor->line,
 				$object->editor->url ? "\nCtrl-Click to open in editor" : '',
 				"\nAlt-Click to expand/collapse all child nodes",
-				$object->editor->url
+				$object->editor->url,
 			);
 		}
 
@@ -493,7 +493,7 @@ final class Renderer
 
 				return "\033[" . end($stack) . 'm';
 			},
-			$s
+			$s,
 		);
 		$s = preg_replace('/\e\[0m(\n*)(?=\e)/', '$1', $s);
 		return $s;

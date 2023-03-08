@@ -14,19 +14,23 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $collection = new Ds\Vector(['value']);
-Assert::match(<<<'XX'
-Ds\Vector #%d%
-   0: 'value'
-XX
-	, Dumper::toText($collection));
+Assert::match(
+	<<<'XX'
+		Ds\Vector #%d%
+		   0: 'value'
+		XX,
+	Dumper::toText($collection),
+);
 
 
 $map = new Ds\Map;
 $map->put('key', 'value');
-Assert::match(<<<'XX'
-Ds\Map #%d%
-   0: Ds\Pair #%d%
-   |  key: 'key'
-   |  value: 'value'
-XX
-	, Dumper::toText($map));
+Assert::match(
+	<<<'XX'
+		Ds\Map #%d%
+		   0: Ds\Pair #%d%
+		   |  key: 'key'
+		   |  value: 'value'
+		XX,
+	Dumper::toText($map),
+);
