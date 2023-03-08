@@ -40,7 +40,7 @@ class Debugger
 	public static $showBar = true;
 
 	/** @var int size of reserved memory */
-	public static $reservedMemorySize = 500000;
+	public static $reservedMemorySize = 500_000;
 
 	/** @var bool */
 	private static $enabled = false;
@@ -494,9 +494,7 @@ class Debugger
 			];
 			return Helpers::isCli()
 				? Dumper::toText($var)
-				: Helpers::capture(function () use ($var, $options) {
-					Dumper::dump($var, $options);
-				});
+				: Helpers::capture(fn() => Dumper::dump($var, $options));
 
 		} elseif (!self::$productionMode) {
 			$html = Helpers::isHtmlMode();

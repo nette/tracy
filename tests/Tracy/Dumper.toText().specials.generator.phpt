@@ -20,12 +20,14 @@ function gen()
 
 $gen = gen();
 
-Assert::match(<<<'XX'
-Generator #%d%
-   file: '%a%:%d%'
-   this: null
-XX
-	, Dumper::toText($gen));
+Assert::match(
+	<<<'XX'
+		Generator #%d%
+		   file: '%a%:%d%'
+		   this: null
+		XX,
+	Dumper::toText($gen),
+);
 
 $gen->next();
 Assert::match('Generator (terminated) #%d%', Dumper::toText($gen));
@@ -40,9 +42,11 @@ function gen2()
 
 
 $gen = gen2();
-Assert::match(<<<'XX'
-Generator #%d%
-   file: '%a%:%d%'
-   this: null
-XX
-	, Dumper::toText($gen));
+Assert::match(
+	<<<'XX'
+		Generator #%d%
+		   file: '%a%:%d%'
+		   this: null
+		XX,
+	Dumper::toText($gen),
+);

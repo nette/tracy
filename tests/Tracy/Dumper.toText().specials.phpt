@@ -21,19 +21,23 @@ Assert::match('closed resource @%d%', Dumper::toText($f));
 
 
 // closure
-Assert::match(<<<'XX'
-Closure() #%d%
-XX
-	, Dumper::toText(function () {}));
+Assert::match(
+	<<<'XX'
+		Closure() #%d%
+		XX,
+	Dumper::toText(function () {}),
+);
 
 
-Assert::match(<<<'XX'
-Closure($x, $y) #%d%
-   file: '%a%:%d%'
-   use: $use
-   |  $use: null
-XX
-	, Dumper::toText(function ($x, int $y = 1) use (&$use) {}, [Dumper::LOCATION => Dumper::LOCATION_CLASS]));
+Assert::match(
+	<<<'XX'
+		Closure($x, $y) #%d%
+		   file: '%a%:%d%'
+		   use: $use
+		   |  $use: null
+		XX,
+	Dumper::toText(function ($x, int $y = 1) use (&$use) {}, [Dumper::LOCATION => Dumper::LOCATION_CLASS]),
+);
 
 
 // new class
@@ -57,30 +61,34 @@ $objStorage[$o2] = 'o2';
 $objStorage->next();
 $key = $objStorage->key();
 
-Assert::match(<<<'XX'
-SplObjectStorage #%d%
-   0: array (2)
-   |  'object' => stdClass #%d%
-   |  'data' => 'o1'
-   1: array (2)
-   |  'object' => stdClass #%d%
-   |  |  foo: 'bar'
-   |  'data' => 'o2'
-XX
-	, Dumper::toText($objStorage));
+Assert::match(
+	<<<'XX'
+		SplObjectStorage #%d%
+		   0: array (2)
+		   |  'object' => stdClass #%d%
+		   |  'data' => 'o1'
+		   1: array (2)
+		   |  'object' => stdClass #%d%
+		   |  |  foo: 'bar'
+		   |  'data' => 'o2'
+		XX,
+	Dumper::toText($objStorage),
+);
 
 Assert::same($key, $objStorage->key());
 
 
 // ArrayObject
 $obj = new ArrayObject(['a' => 1, 'b' => 2]);
-Assert::match(<<<'XX'
-ArrayObject #%d%
-   storage: array (2)
-   |  'a' => 1
-   |  'b' => 2
-XX
-	, Dumper::toText($obj));
+Assert::match(
+	<<<'XX'
+		ArrayObject #%d%
+		   storage: array (2)
+		   |  'a' => 1
+		   |  'b' => 2
+		XX,
+	Dumper::toText($obj),
+);
 
 class ArrayObjectChild extends ArrayObject
 {
@@ -89,37 +97,41 @@ class ArrayObjectChild extends ArrayObject
 
 $obj = new ArrayObjectChild(['a' => 1, 'b' => 2]);
 Assert::match(<<<'XX'
-ArrayObjectChild #%d%
-   prop: 123
-   storage: array (2)
-   |  'a' => 1
-   |  'b' => 2
-XX
+	ArrayObjectChild #%d%
+	   prop: 123
+	   storage: array (2)
+	   |  'a' => 1
+	   |  'b' => 2
+	XX
 	, Dumper::toText($obj));
 
 
 // ArrayIterator
 $obj = new ArrayIterator(['a' => 1, 'b' => 2]);
-Assert::match(<<<'XX'
-ArrayIterator #%d%
-   a: 1
-   b: 2
-XX
-	, Dumper::toText($obj));
+Assert::match(
+	<<<'XX'
+		ArrayIterator #%d%
+		   a: 1
+		   b: 2
+		XX,
+	Dumper::toText($obj),
+);
 
 
 // Tracy\Dumper\Value
 $obj = new Tracy\Dumper\Value(Tracy\Dumper\Value::TypeText, 'ahoj');
-Assert::match(<<<'XX'
-Tracy\Dumper\Value #%d%
-   type: 'text'
-   value: 'ahoj'
-   length: null
-   depth: null
-   id: null
-   holder: null
-   items: null
-   editor: null
-   collapsed: null
-XX
-	, Dumper::toText($obj));
+Assert::match(
+	<<<'XX'
+		Tracy\Dumper\Value #%d%
+		   type: 'text'
+		   value: 'ahoj'
+		   length: null
+		   depth: null
+		   id: null
+		   holder: null
+		   items: null
+		   editor: null
+		   collapsed: null
+		XX,
+	Dumper::toText($obj),
+);

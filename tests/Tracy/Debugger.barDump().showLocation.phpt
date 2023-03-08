@@ -30,18 +30,17 @@ register_shutdown_function(function () {
 	preg_match('#Tracy\.Debug\.init\((".*[^\\\\]")\)#', $output, $m);
 	$rawContent = json_decode($m[1]);
 	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-dumps')[0]['data-tracy-content'];
-	Assert::match(<<<'EOD'
-%A%<h1>Dumps</h1>
+	Assert::match(<<<'XX'
+		%A%<h1>Dumps</h1>
 
-<div class="tracy-inner tracy-DumpPanel">
+		<div class="tracy-inner tracy-DumpPanel">
 
-	<pre class="tracy-dump tracy-light"
-><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">barDump('value') ð</a
-><span class="tracy-dump-string" title="5 characters"><span>'</span>value<span>'</span></span></pre>
-</div>
-%A%
-EOD
-		, $panelContent);
+			<pre class="tracy-dump tracy-light"
+		><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">barDump('value') ð</a
+		><span class="tracy-dump-string" title="5 characters"><span>'</span>value<span>'</span></span></pre>
+		</div>
+		%A%
+		XX, $panelContent);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

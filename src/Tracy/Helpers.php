@@ -39,7 +39,7 @@ class Helpers
 				$origFile . ($line ? ":$line" : ''),
 				rtrim(dirname($file), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR,
 				basename($file),
-				$line ? ":$line" : ''
+				$line ? ":$line" : '',
 			);
 		} else {
 			return self::formatHtml('<span>%</span>', $file . ($line ? ":$line" : ''));
@@ -55,7 +55,7 @@ class Helpers
 		?int $line = null,
 		string $action = 'open',
 		string $search = '',
-		string $replace = ''
+		string $replace = '',
 	): ?string
 	{
 		if (Debugger::$editor && $file && ($action === 'create' || is_file($file))) {
@@ -112,7 +112,7 @@ class Helpers
 
 	public static function getClass($obj): string
 	{
-		return explode("\x00", get_class($obj))[0];
+		return explode("\x00", $obj::class)[0];
 	}
 
 
@@ -212,14 +212,14 @@ class Helpers
 
 		} elseif (preg_match('#^Undefined property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
-			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), function ($prop) { return !$prop->isStatic(); });
+			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), fn($prop) => !$prop->isStatic());
 			$hint = self::getSuggestion($items, $m[2]);
 			$message .= ", did you mean $$hint?";
 			$replace = ["->$m[2]", "->$hint"];
 
 		} elseif (preg_match('#^Access to undeclared static property:? ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
-			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_STATIC), function ($prop) { return $prop->isPublic(); });
+			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_STATIC), fn($prop) => $prop->isPublic());
 			$hint = self::getSuggestion($items, $m[2]);
 			$message .= ", did you mean $$hint?";
 			$replace = ["::$$m[2]", "::$$hint"];
@@ -243,7 +243,7 @@ class Helpers
 	{
 		if (preg_match('#^Undefined property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
-			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), function ($prop) { return !$prop->isStatic(); });
+			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), fn($prop) => !$prop->isStatic());
 			$hint = self::getSuggestion($items, $m[2]);
 			return $hint ? $message . ", did you mean $$hint?" : $message;
 		}
@@ -285,9 +285,7 @@ class Helpers
 	{
 		$best = null;
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
-		$items = array_map(function ($item) {
-			return $item instanceof \Reflector ? $item->getName() : (string) $item;
-		}, $items);
+		$items = array_map(fn($item) => $item instanceof \Reflector ? $item->getName() : (string) $item, $items);
 		foreach (array_unique($items) as $item) {
 			if (($len = levenshtein($item, $value, 10, 11, 10)) > 0 && $len < $min) {
 				$min = $len;
@@ -367,7 +365,7 @@ class Helpers
 	 */
 	public static function capture(callable $func): string
 	{
-		ob_start(function () {});
+		ob_start(fn() => null);
 		try {
 			$func();
 			return ob_get_clean();
@@ -414,12 +412,10 @@ class Helpers
 		$special = $specials[$showWhitespaces];
 		$s = preg_replace_callback(
 			$utf8 ? '#[\p{C}<&]#u' : '#[\x00-\x1F\x7F-\xFF<&]#',
-			function ($m) use ($special) {
-				return $special[$m[0]] ?? (strlen($m[0]) === 1
+			fn($m) => $special[$m[0]] ?? (strlen($m[0]) === 1
 					? '<i>\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT) . '</i>'
-					: '<i>\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}</i>');
-			},
-			$s
+					: '<i>\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}</i>'),
+			$s,
 		);
 		$s = str_replace('</i><i>', '', $s);
 		$s = preg_replace('~\n$~D', '', $s);
@@ -483,22 +479,21 @@ class Helpers
 		$last = '';
 		return preg_replace_callback(
 			<<<'XX'
-			(
-				(?:
-					(^|[-+\([{}=,:;!%^&*|?~]|/(?![/*])|return|throw) # context before regexp
-					(?:\s|//[^\n]*+\n|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
-					(/(?![/*])(?:\\[^\n]|[^[\n/\\]|\[(?:\\[^\n]|[^]])++)+/) # regexp
-					|(^
-						|'(?:\\.|[^\n'\\])*'
-						|"(?:\\.|[^\n"\\])*"
-						|([0-9A-Za-z_$]+)
-						|([-+]+)
-						|.
-					)
-				)(?:\s|//[^\n]*+\n|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
-			())sx
-XX
-			,
+				(
+					(?:
+						(^|[-+\([{}=,:;!%^&*|?~]|/(?![/*])|return|throw) # context before regexp
+						(?:\s|//[^\n]*+\n|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
+						(/(?![/*])(?:\\[^\n]|[^[\n/\\]|\[(?:\\[^\n]|[^]])++)+/) # regexp
+						|(^
+							|'(?:\\.|[^\n'\\])*'
+							|"(?:\\.|[^\n"\\])*"
+							|([0-9A-Za-z_$]+)
+							|([-+]+)
+							|.
+						)
+					)(?:\s|//[^\n]*+\n|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
+				())sx
+				XX,
 			function ($match) use (&$last) {
 				[, $context, $regexp, $result, $word, $operator] = $match;
 				if ($word !== '') {
@@ -517,7 +512,7 @@ XX
 
 				return $result;
 			},
-			$s . "\n"
+			$s . "\n",
 		);
 	}
 
@@ -528,16 +523,15 @@ XX
 		$last = '';
 		return preg_replace_callback(
 			<<<'XX'
-			(
-				(^
-					|'(?:\\.|[^\n'\\])*'
-					|"(?:\\.|[^\n"\\])*"
-					|([0-9A-Za-z_*#.%:()[\]-]+)
-					|.
-				)(?:\s|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
-			())sx
-XX
-			,
+				(
+					(^
+						|'(?:\\.|[^\n'\\])*'
+						|"(?:\\.|[^\n"\\])*"
+						|([0-9A-Za-z_*#.%:()[\]-]+)
+						|.
+					)(?:\s|/\*(?:[^*]|\*(?!/))*+\*/)* # optional space
+				())sx
+				XX,
 			function ($match) use (&$last) {
 				[, $result, $word] = $match;
 				if ($last === ';') {
@@ -557,7 +551,7 @@ XX
 
 				return $result;
 			},
-			$s . "\n"
+			$s . "\n",
 		);
 	}
 
@@ -604,7 +598,7 @@ XX
 			}
 
 			foreach ($val as $k => $v) {
-				$refId = ($r = \ReflectionReference::fromArrayElement($val, $k)) ? $r->getId() : null;
+				$refId = \ReflectionReference::fromArrayElement($val, $k)?->getId();
 				self::traverseValue($v, $callback, $skip, $refId);
 			}
 		}
