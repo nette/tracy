@@ -9,6 +9,7 @@ namespace Tracy;
  * @var string $title
  * @var ?string $nonce
  * @var string $css
+ * @var string $source
  */
 
 $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
@@ -28,6 +29,7 @@ $chain = Helpers::getExceptionChain($exception);
 	echo Helpers::escapeHtml("\n\tcaused by " . get_debug_type($ex) . ': ' . $ex->getMessage() . ($ex->getCode() ? ' #' . $ex->getCode() : ''));
 } ?> -->
 <?php endif ?>
+	<!-- <?= Helpers::escapeHtml($source) ?> -->
 
 	<style class="tracy-debug">
 	<?= str_replace('</', '<\/', $css) ?>
