@@ -19,8 +19,12 @@ final class Exposer
 {
 	public static function exposeObject(object $obj, Value $value, Describer $describer): void
 	{
-		$values = (array) $obj;
+		$values = get_mangled_object_vars($obj);
 		$props = self::getProperties($obj::class);
+
+		foreach (array_diff_key((array) $obj, $values) as $k => $v) {
+			$describer->addPropertyTo($value, (string) $k, $v);
+		}
 
 		foreach (array_diff_key($values, $props) as $k => $v) {
 			$describer->addPropertyTo(
