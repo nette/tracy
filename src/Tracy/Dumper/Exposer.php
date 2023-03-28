@@ -19,7 +19,7 @@ final class Exposer
 {
 	public static function exposeObject(object $obj, Value $value, Describer $describer): void
 	{
-		$values = get_mangled_object_vars($obj);
+		$values = (array) $obj;
 		$props = self::getProperties($obj::class);
 
 		foreach (array_diff_key($values, $props) as $k => $v) {
@@ -133,12 +133,6 @@ final class Exposer
 		self::exposeObject($obj, $value, $describer);
 		$obj->setFlags($flags);
 		$describer->addPropertyTo($value, 'storage', $obj->getArrayCopy(), Value::PropertyPrivate, null, \ArrayObject::class);
-	}
-
-
-	public static function exposeArrayIterator(\ArrayIterator $obj, Value $value, Describer $describer): void
-	{
-		self::exposeObject((object) $obj->getArrayCopy(), $value, $describer);
 	}
 
 

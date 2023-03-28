@@ -73,7 +73,6 @@ class Dumper
 		\Closure::class => [Exposer::class, 'exposeClosure'],
 		\UnitEnum::class => [Exposer::class, 'exposeEnum'],
 		\ArrayObject::class => [Exposer::class, 'exposeArrayObject'],
-		\ArrayIterator::class => [Exposer::class, 'exposeArrayIterator'],
 		\SplFileInfo::class => [Exposer::class, 'exposeSplFileInfo'],
 		\SplObjectStorage::class => [Exposer::class, 'exposeSplObjectStorage'],
 		\__PHP_Incomplete_Class::class => [Exposer::class, 'exposePhpIncompleteClass'],
