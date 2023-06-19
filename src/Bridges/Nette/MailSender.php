@@ -23,6 +23,7 @@ class MailSender
 
 	/** @var string|null sender of email notifications */
 	private ?string $fromEmail = null;
+
 	/** @var string|null actual host on which notification occurred - visible in subject */
 	private ?string $host = null;
 
