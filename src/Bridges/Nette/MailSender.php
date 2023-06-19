@@ -12,7 +12,6 @@ namespace Tracy\Bridges\Nette;
 use Nette;
 use Tracy;
 
-
 /**
  * Tracy logger bridge for Nette Mail.
  */
@@ -21,23 +20,24 @@ class MailSender
 	use Nette\SmartObject;
 
 	private Nette\Mail\IMailer $mailer;
-	private ?Nette\Http\Request $request;
 
 	/** @var string|null sender of email notifications */
 	private ?string $fromEmail = null;
+	/** @var string|null actual host on which notification occurred - visible in subject */
+	private ?string $host = null;
 
 
-	public function __construct(Nette\Mail\IMailer $mailer, ?string $fromEmail = null, ?Nette\Http\Request $request = null)
+	public function __construct(Nette\Mail\IMailer $mailer, ?string $fromEmail = null, ?string $host = null)
 	{
 		$this->mailer = $mailer;
 		$this->fromEmail = $fromEmail;
-		$this->request = $request;
+		$this->host = $host;
 	}
 
 
 	public function send(mixed $message, string $email): void
 	{
-		$host = preg_replace('#[^\w.-]+#', '', $this->getHost());
+		$host = preg_replace('#[^\w.-]+#', '', $this->host ?? $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 
 		$mail = new Nette\Mail\Message;
 		$mail->setHeader('X-Mailer', 'Tracy');
@@ -53,13 +53,5 @@ class MailSender
 		$mail->setBody(Tracy\Logger::formatMessage($message) . "\n\nsource: " . Tracy\Helpers::getSource());
 
 		$this->mailer->send($mail);
-	}
-
-	private function getHost(): string
-	{
-		if ($this->request !== null) {
-			return $this->request->getUrl()->getHost();
-		}
-		return $_SERVER['SERVER_NAME'] ?? php_uname('n');
 	}
 }
