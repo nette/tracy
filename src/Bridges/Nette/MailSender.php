@@ -31,7 +31,7 @@ class MailSender
 	{
 		$this->mailer = $mailer;
 		$this->fromEmail = $fromEmail;
-        $this->request = $request;
+		$this->request = $request;
 	}
 
 
@@ -56,7 +56,7 @@ class MailSender
 	}
 
 	private function getHost(): string
-    {
+	{
 		if ($this->request !== null) {
 			return $this->request->getUrl()->getHost();
 		}
