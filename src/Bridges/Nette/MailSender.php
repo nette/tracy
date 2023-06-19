@@ -21,21 +21,23 @@ class MailSender
 	use Nette\SmartObject;
 
 	private Nette\Mail\IMailer $mailer;
+    private ?Nette\Http\Request $request;
 
 	/** @var string|null sender of email notifications */
 	private ?string $fromEmail = null;
 
 
-	public function __construct(Nette\Mail\IMailer $mailer, ?string $fromEmail = null)
+	public function __construct(Nette\Mail\IMailer $mailer, ?string $fromEmail = null, ?Nette\Http\Request $request = null)
 	{
 		$this->mailer = $mailer;
 		$this->fromEmail = $fromEmail;
+        $this->request = $request;
 	}
 
 
 	public function send(mixed $message, string $email): void
 	{
-		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
+		$host = preg_replace('#[^\w.-]+#', '', $this->getHost());
 
 		$mail = new Nette\Mail\Message;
 		$mail->setHeader('X-Mailer', 'Tracy');
@@ -52,4 +54,12 @@ class MailSender
 
 		$this->mailer->send($mail);
 	}
+
+    private function getHost(): string
+    {
+        if ($this->request !== null) {
+            return $this->request->getUrl()->getHost();
+        }
+        return $_SERVER['SERVER_NAME'] ?? php_uname('n');
+    }
 }
