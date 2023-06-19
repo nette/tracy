@@ -44,7 +44,7 @@ final class ProductionStrategy
 
 		} elseif (Helpers::isCli()) {
 			if (is_resource(STDERR)) {
-				@fwrite(STDERR, "ERROR: {$exception->getMessage()}\n"
+				fwrite(STDERR, "ERROR: {$exception->getMessage()}\n"
 					. (isset($e)
 						? 'Unable to log error. You may try enable debug mode to inspect the problem.'
 						: 'Check log to see more info.')
