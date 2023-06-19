@@ -21,7 +21,7 @@ class MailSender
 	use Nette\SmartObject;
 
 	private Nette\Mail\IMailer $mailer;
-    private ?Nette\Http\Request $request;
+	private ?Nette\Http\Request $request;
 
 	/** @var string|null sender of email notifications */
 	private ?string $fromEmail = null;
@@ -55,11 +55,11 @@ class MailSender
 		$this->mailer->send($mail);
 	}
 
-    private function getHost(): string
+	private function getHost(): string
     {
-        if ($this->request !== null) {
-            return $this->request->getUrl()->getHost();
-        }
-        return $_SERVER['SERVER_NAME'] ?? php_uname('n');
-    }
+		if ($this->request !== null) {
+			return $this->request->getUrl()->getHost();
+		}
+		return $_SERVER['SERVER_NAME'] ?? php_uname('n');
+	}
 }
