@@ -22,20 +22,24 @@ class MailSender
 
 	private Nette\Mail\IMailer $mailer;
 
-	/** @var string|null sender of email notifications */
+	/** sender of email notifications */
 	private ?string $fromEmail = null;
 
+	/** actual host on which notification occurred */
+	private ?string $host = null;
 
-	public function __construct(Nette\Mail\IMailer $mailer, ?string $fromEmail = null)
+
+	public function __construct(Nette\Mail\IMailer $mailer, ?string $fromEmail = null, ?string $host = null)
 	{
 		$this->mailer = $mailer;
 		$this->fromEmail = $fromEmail;
+		$this->host = $host;
 	}
 
 
 	public function send(mixed $message, string $email): void
 	{
-		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
+		$host = preg_replace('#[^\w.-]+#', '', $this->host ?? $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 
 		$mail = new Nette\Mail\Message;
 		$mail->setHeader('X-Mailer', 'Tracy');

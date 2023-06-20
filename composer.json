@@ -22,6 +22,7 @@
 	"require-dev": {
 		"nette/utils": "^3.0",
 		"nette/di": "^3.0",
+		"nette/http": "^3.0",
 		"nette/mail": "^3.0",
 		"nette/tester": "^2.2",
 		"latte/latte": "^2.5",
