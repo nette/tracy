@@ -538,6 +538,7 @@ class Debugger
 
 			$panel->data[] = ['title' => $title, 'dump' => Dumper::toHtml($var, $options + [
 				Dumper::DEPTH => self::$maxDepth,
+				Dumper::ITEMS => self::$maxItems,
 				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation ?: Dumper::LOCATION_CLASS | Dumper::LOCATION_SOURCE,
 				Dumper::LAZY => true,
