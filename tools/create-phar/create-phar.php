@@ -49,6 +49,7 @@ foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterato
 	$s = file_get_contents($file->getPathname());
 	if (strpos($s, '@tracySkipLocation') === false) {
 		$s = php_strip_whitespace($file->getPathname());
+		$s = preg_replace('~#\[.*?\]~', "$0\n", $s); // so that attributes are not treated as comments in PHP 7
 	}
 
 	if ($file->getExtension() === 'js') {
