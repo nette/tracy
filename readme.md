@@ -50,7 +50,7 @@ Alternatively, you can download the whole package or [tracy.phar](https://github
 
 | Tracy     | compatible with PHP | compatible with browsers
 |-----------|---------------|----------
-| Tracy 2.10| PHP 8.0 – 8.2 | Chrome 64+, Firefox 69+, Safari 15.4+ and iOS Safari 15.4+
+| Tracy 2.10| PHP 8.0 – 8.3 | Chrome 64+, Firefox 69+, Safari 15.4+ and iOS Safari 15.4+
 | Tracy 2.9 | PHP 7.2 – 8.2 | Chrome 64+, Firefox 69+, Safari 13.1+ and iOS Safari 13.4+
 
 
