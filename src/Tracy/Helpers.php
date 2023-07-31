@@ -437,7 +437,7 @@ class Helpers
 	{
 		return function_exists('mb_strlen')
 			? mb_strlen($s, 'UTF-8')
-			: strlen(utf8_decode($s));
+			: strlen(iconv('UTF-8', 'UTF-8//IGNORE', $s));
 	}
 
 
