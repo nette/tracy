@@ -45,7 +45,7 @@ $info = [
 	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,
 	'PHP' => PHP_VERSION,
 	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : null,
-	'Tracy' => Debugger::VERSION,
+	'Tracy' => Debugger::Version,
 	'Server' => $_SERVER['SERVER_SOFTWARE'] ?? null,
 ];
 

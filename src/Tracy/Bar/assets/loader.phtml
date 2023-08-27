@@ -23,7 +23,7 @@ $asyncAttr = $async ? ' async' : '';
 
 
 <!-- Tracy Debug Bar -->
-<script src="<?= Helpers::escapeHtml($baseUrl) ?>_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($requestId) ?>"<?= $nonceAttr ?>></script>
+<script src="<?= Helpers::escapeHtml($baseUrl) ?>_tracy_bar=js&amp;v=<?= urlencode(Debugger::Version) ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($requestId) ?>"<?= $nonceAttr ?>></script>
 <script<?= $nonceAttr ?>>
 Tracy.Debug.init(<?= str_replace(['<!--', '</s'], ['<\!--', '<\/s'], json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE)) ?>);
 </script>

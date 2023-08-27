@@ -17,7 +17,7 @@ use ErrorException;
  */
 class Debugger
 {
-	public const VERSION = '2.10.3';
+	public const Version = '2.10.3';
 
 	/** server modes for Debugger::enable() */
 	public const
@@ -25,16 +25,25 @@ class Debugger
 		Production = true,
 		Detect = null;
 
-	public const
-		DEVELOPMENT = self::Development,
-		PRODUCTION = self::Production,
-		DETECT = self::Detect;
-
 	public const CookieSecret = 'tracy-debug';
+
+	/** @deprecated use Debugger::Version */
+	public const VERSION = self::Version;
+
+	/** @deprecated use Debugger::Development */
+	public const DEVELOPMENT = self::Development;
+
+	/** @deprecated use Debugger::Production */
+	public const PRODUCTION = self::Production;
+
+	/** @deprecated use Debugger::Detect */
+	public const DETECT = self::Detect;
+
+	/** @deprecated use Debugger::CookieSecret */
 	public const COOKIE_SECRET = self::CookieSecret;
 
 	/** in production mode is suppressed any debugging output */
-	public static ?bool $productionMode = self::DETECT;
+	public static ?bool $productionMode = self::Detect;
 
 	/** whether to display debug bar in development mode */
 	public static bool $showBar = true;
@@ -391,7 +400,7 @@ class Debugger
 			self::$blueScreen->info = [
 				'PHP ' . PHP_VERSION,
 				$_SERVER['SERVER_SOFTWARE'] ?? null,
-				'Tracy ' . self::VERSION,
+				'Tracy ' . self::Version,
 			];
 		}
 
