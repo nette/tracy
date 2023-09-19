@@ -10,7 +10,7 @@ namespace Tracy;
  * @var int $expanded
  */
 
-$sourceOriginal = $file && is_file($file) ? [$file, $line] : null;
+$sourceOriginal = $file && @is_file($file) ? [$file, $line] : null; // @ - may trigger error
 $sourceMapped = $sourceOriginal ? Debugger::mapSource($file, $line) : null;
 ?>
 

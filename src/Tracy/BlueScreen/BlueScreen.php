@@ -245,7 +245,7 @@ class BlueScreen
 			$class = $m[2];
 			if (
 				!class_exists($class, false) && !interface_exists($class, false) && !trait_exists($class, false)
-				&& ($file = Helpers::guessClassFile($class)) && !is_file($file)
+				&& ($file = Helpers::guessClassFile($class)) && !@is_file($file) // @ - may trigger error
 			) {
 				[$content, $line] = $this->generateNewFileContents($file, $class);
 				$actions[] = [
@@ -257,7 +257,7 @@ class BlueScreen
 
 		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\1#i', $ex->getMessage(), $m)) {
 			$file = $m[2];
-			if (is_file($file)) {
+			if (@is_file($file)) { // @ - may trigger error
 				$label = 'open';
 				$content = '';
 				$line = 1;
@@ -509,7 +509,7 @@ class BlueScreen
 		// clickable file name
 		$msg = preg_replace_callback(
 			'#([\w\\\\/.:-]+\.(?:php|phpt|phtml|latte|neon))(?|:(\d+)| on line (\d+))?#',
-			fn($m) => @is_file($m[1])
+			fn($m) => @is_file($m[1]) // @ - may trigger error
 				? '<a href="' . Helpers::escapeHtml(Helpers::editorUri($m[1], isset($m[2]) ? (int) $m[2] : null)) . '" class="tracy-editor">' . $m[0] . '</a>'
 				: $m[0],
 			$msg,

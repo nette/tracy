@@ -345,7 +345,7 @@ final class Describer
 			break;
 		}
 
-		if (isset($location['file'], $location['line']) && is_file($location['file'])) {
+		if (isset($location['file'], $location['line']) && @is_file($location['file'])) { // @ - may trigger error
 			$lines = file($location['file']);
 			$line = $lines[$location['line'] - 1];
 			return [
