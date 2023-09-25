@@ -332,7 +332,7 @@ class Debugger
 		} catch (\Throwable $e) {
 			try {
 				self::log($e, self::EXCEPTION);
-			} catch (\Throwable $e) {
+			} catch (\Throwable) {
 			}
 		}
 	}

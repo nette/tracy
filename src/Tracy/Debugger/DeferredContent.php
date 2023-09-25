@@ -147,7 +147,7 @@ final class DeferredContent
 	public function clean(): void
 	{
 		foreach ($this->sessionStorage->getData() as &$items) {
-			$items = array_slice((array) $items, -10, null, true);
+			$items = array_slice((array) $items, -10, null, preserve_keys: true);
 			$items = array_filter($items, fn($item) => isset($item['time']) && $item['time'] > time() - 60);
 		}
 	}

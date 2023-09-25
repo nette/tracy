@@ -52,7 +52,7 @@ $info = [
 $info = array_map('strval', array_filter($info + (array) $this->data));
 
 $packages = $devPackages = [];
-if (class_exists('Composer\Autoload\ClassLoader', false)) {
+if (class_exists('Composer\Autoload\ClassLoader', autoload: false)) {
 	$baseDir = (function () {
 		@include dirname((new \ReflectionClass('Composer\Autoload\ClassLoader'))->getFileName()) . '/autoload_psr4.php'; // @ may not exist
 		return $baseDir;

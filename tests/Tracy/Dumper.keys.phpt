@@ -90,4 +90,4 @@ Assert::equal([
 			[['string' => '&lt;a> &amp;amp;', 'length' => 9], 0, 3],
 		],
 	],
-], array_values(json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true)));
+], array_values(json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], associative: true)));

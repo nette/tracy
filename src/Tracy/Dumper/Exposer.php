@@ -142,7 +142,7 @@ final class Exposer
 
 	public static function exposeDOMNode(\DOMNode $obj, Value $value, Describer $describer): void
 	{
-		$props = preg_match_all('#^\s*\[([^\]]+)\] =>#m', print_r($obj, true), $tmp) ? $tmp[1] : [];
+		$props = preg_match_all('#^\s*\[([^\]]+)\] =>#m', print_r($obj, return: true), $tmp) ? $tmp[1] : [];
 		sort($props);
 		foreach ($props as $p) {
 			$describer->addPropertyTo($value, $p, $obj->$p, Value::PropertyPublic);
@@ -167,7 +167,7 @@ final class Exposer
 			$r = new \ReflectionGenerator($gen);
 			$describer->addPropertyTo($value, 'file', $r->getExecutingFile() . ':' . $r->getExecutingLine());
 			$describer->addPropertyTo($value, 'this', $r->getThis());
-		} catch (\ReflectionException $e) {
+		} catch (\ReflectionException) {
 			$value->value = $gen::class . ' (terminated)';
 		}
 	}

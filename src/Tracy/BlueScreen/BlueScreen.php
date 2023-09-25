@@ -132,7 +132,7 @@ class BlueScreen
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
 			ob_start(function ($buffer) use ($handle): void { fwrite($handle, $buffer); }, 4096);
-			$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml', false);
+			$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml', toScreen: false);
 			ob_end_flush();
 			ob_end_clean();
 			fclose($handle);
@@ -478,7 +478,7 @@ class BlueScreen
 
 	public function formatMessage(\Throwable $exception): string
 	{
-		$msg = Helpers::encodeString(trim((string) $exception->getMessage()), self::MaxMessageLength, false);
+		$msg = Helpers::encodeString(trim((string) $exception->getMessage()), self::MaxMessageLength, showWhitespaces: false);
 
 		// highlight 'string'
 		$msg = preg_replace(
@@ -587,7 +587,7 @@ class BlueScreen
 				try {
 					new \ReflectionGenerator($obj);
 					$generators[spl_object_id($obj)] = $obj;
-				} catch (\ReflectionException $e) {
+				} catch (\ReflectionException) {
 				}
 			} elseif ($obj instanceof \Fiber && $obj->isStarted() && !$obj->isTerminated()) {
 				$fibers[spl_object_id($obj)] = $obj;

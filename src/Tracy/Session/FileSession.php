@@ -51,7 +51,7 @@ class FileSession implements SessionStorage
 			|| !($file = @fopen($path = $this->dir . '/' . self::FilePrefix . $id, 'r+')) // intentionally @
 		) {
 			$id = Helpers::createId();
-			setcookie($this->cookieName, $id, time() + self::CookieLifetime, '/', '', false, true);
+			setcookie($this->cookieName, $id, time() + self::CookieLifetime, '/', '', secure: false, httponly: true);
 
 			$file = @fopen($path = $this->dir . '/' . self::FilePrefix . $id, 'c+'); // intentionally @
 			if ($file === false) {

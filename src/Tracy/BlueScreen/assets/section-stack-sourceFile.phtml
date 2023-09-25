@@ -33,7 +33,7 @@ $sourceMapped = $sourceOriginal ? Debugger::mapSource($file, $line) : null;
 
 				<div class="tracy-tab-panel<?= $sourceMapped['active'] ? ' tracy-active' : '' ?>">
 					<p><b>File:</b> <?= Helpers::editorLink($sourceMapped['file'], $sourceMapped['line']) ?></p>
-					<?= BlueScreen::highlightFile($sourceMapped['file'], $sourceMapped['line'], 15, false) ?>
+					<?= BlueScreen::highlightFile($sourceMapped['file'], $sourceMapped['line'], php: false) ?>
 				</div>
 			</div>
 		</div>

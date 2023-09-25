@@ -57,7 +57,7 @@ if (!$stack) {
 					</div>
 
 					<div class="tracy-tab-panel<?= $sourceMapped['active'] ? ' tracy-active' : '' ?>">
-						<?= BlueScreen::highlightFile($sourceMapped['file'], $sourceMapped['line'], 15, false) ?>
+						<?= BlueScreen::highlightFile($sourceMapped['file'], $sourceMapped['line'], php: false) ?>
 					</div>
 				</div>
 			</div>

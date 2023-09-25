@@ -54,7 +54,7 @@ final class DevelopmentStrategy
 		}
 
 		if ($logFile && !headers_sent()) {
-			header("X-Tracy-Error-Log: $logFile", false);
+			header("X-Tracy-Error-Log: $logFile", replace: false);
 		}
 
 		if (Helpers::detectColors()) {

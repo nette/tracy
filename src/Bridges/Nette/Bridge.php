@@ -50,7 +50,7 @@ class Bridge
 								? '<b>File:</b> ' . Helpers::editorLink($e->sourceName, $e->sourceLine)
 								: '<b>' . htmlspecialchars($e->sourceName . ($e->sourceLine ? ':' . $e->sourceLine : '')) . '</b>')
 							. '</p>')
-					. BlueScreen::highlightFile($e->sourceCode, $e->sourceLine, 15, false),
+					. BlueScreen::highlightFile($e->sourceCode, $e->sourceLine, php: false),
 			];
 		}
 
