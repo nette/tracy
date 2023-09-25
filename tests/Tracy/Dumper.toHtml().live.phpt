@@ -16,7 +16,7 @@ require __DIR__ . '/fixtures/DumpClass.php';
 
 function formatSnapshot(): array
 {
-	return json_decode(explode("'", Dumper::formatSnapshotAttribute(Dumper::$liveSnapshot))[1], true);
+	return json_decode(explode("'", Dumper::formatSnapshotAttribute(Dumper::$liveSnapshot))[1], associative: true);
 }
 
 

@@ -65,4 +65,4 @@ Assert::equal([
 			],
 		],
 	],
-], array_values(json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], true)));
+], array_values(json_decode(explode("'", Dumper::formatSnapshotAttribute($snapshot))[1], associative: true)));

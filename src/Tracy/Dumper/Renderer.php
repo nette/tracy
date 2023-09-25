@@ -115,48 +115,21 @@ final class Renderer
 
 	private function renderVar(mixed $value, int $depth = 0, string|int|null $keyType = null): string
 	{
-		switch (true) {
-			case $value === null:
-				return '<span class="tracy-dump-null">null</span>';
-
-			case is_bool($value):
-				return '<span class="tracy-dump-bool">' . ($value ? 'true' : 'false') . '</span>';
-
-			case is_int($value):
-				return '<span class="tracy-dump-number">' . $value . '</span>';
-
-			case is_float($value):
-				return '<span class="tracy-dump-number">' . self::jsonEncode($value) . '</span>';
-
-			case is_string($value):
-				return $this->renderString($value, $depth, $keyType);
-
-			case is_array($value):
-			case $value->type === Value::TypeArray:
-				return $this->renderArray($value, $depth);
-
-			case $value->type === Value::TypeRef:
-				return $this->renderVar($this->snapshot[$value->value], $depth, $keyType);
-
-			case $value->type === Value::TypeObject:
-				return $this->renderObject($value, $depth);
-
-			case $value->type === Value::TypeNumber:
-				return '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . '</span>';
-
-			case $value->type === Value::TypeText:
-				return '<span class="tracy-dump-virtual">' . Helpers::escapeHtml($value->value) . '</span>';
-
-			case $value->type === Value::TypeStringHtml:
-			case $value->type === Value::TypeBinaryHtml:
-				return $this->renderString($value, $depth, $keyType);
-
-			case $value->type === Value::TypeResource:
-				return $this->renderResource($value, $depth);
-
-			default:
-				throw new \Exception('Unknown type');
-		}
+		return match (true) {
+			$value === null => '<span class="tracy-dump-null">null</span>',
+			is_bool($value) => '<span class="tracy-dump-bool">' . ($value ? 'true' : 'false') . '</span>',
+			is_int($value) => '<span class="tracy-dump-number">' . $value . '</span>',
+			is_float($value) => '<span class="tracy-dump-number">' . self::jsonEncode($value) . '</span>',
+			is_string($value) => $this->renderString($value, $depth, $keyType),
+			is_array($value), $value->type === Value::TypeArray => $this->renderArray($value, $depth),
+			$value->type === Value::TypeRef => $this->renderVar($this->snapshot[$value->value], $depth, $keyType),
+			$value->type === Value::TypeObject => $this->renderObject($value, $depth),
+			$value->type === Value::TypeNumber => '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . '</span>',
+			$value->type === Value::TypeText => '<span class="tracy-dump-virtual">' . Helpers::escapeHtml($value->value) . '</span>',
+			$value->type === Value::TypeStringHtml, $value->type === Value::TypeBinaryHtml => $this->renderString($value, $depth, $keyType),
+			$value->type === Value::TypeResource => $this->renderResource($value, $depth),
+			default => throw new \Exception('Unknown type'),
+		};
 	}
 
 

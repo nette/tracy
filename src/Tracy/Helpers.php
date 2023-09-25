@@ -451,9 +451,9 @@ class Helpers
 
 
 	/** @internal */
-	public static function truncateString(string $s, int $len, bool $utf): string
+	public static function truncateString(string $s, int $len, bool $utf8): string
 	{
-		if (!$utf) {
+		if (!$utf8) {
 			return $len < 0 ? substr($s, $len) : substr($s, 0, $len);
 		} elseif (function_exists('mb_substr')) {
 			return $len < 0
