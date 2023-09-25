@@ -73,23 +73,48 @@ final class CodeHighlighter
 	 */
 	public static function highlightPhp(string $code, int $line, int $column = 0): string
 	{
-		if (function_exists('ini_set')) {
-			ini_set('highlight.comment', '#998; font-style: italic');
-			ini_set('highlight.default', '#000');
-			ini_set('highlight.html', '#06B');
-			ini_set('highlight.keyword', '#D24; font-weight: bold');
-			ini_set('highlight.string', '#080');
-		}
+		$html = self::highlightPhpCode($code);
+		$html = self::highlightLine($html, $line, $column);
+		return "<pre class='tracy-code'><div><code>$html</code></div></pre>";
+	}
 
-		$source = preg_replace('#(__halt_compiler\s*\(\)\s*;).*#is', '$1', $code);
-		$source = str_replace(["\r\n", "\r"], "\n", $source);
-		$source = preg_replace('#/\*sensitive\{\*/.*?/\*\}\*/#s', Dumper\Describer::HiddenValue, $source);
-		$source = explode("\n", highlight_string($source, true));
-		$out = $source[0]; // <code><span color=highlight.html>
-		$tmp = str_replace('<br />', "\n", $source[1]);
-		$out .= self::highlightLine($tmp, $line, $column);
-		$out = str_replace('&nbsp;', ' ', $out) . $source[2] . @$source[3];
-		return "<pre class='tracy-code'><div>$out</div></pre>";
+
+	private static function highlightPhpCode(string $code): string
+	{
+		$code = str_replace("\r\n", "\n", $code);
+		$code = preg_replace('#(__halt_compiler\s*\(\)\s*;).*#is', '$1', $code);
+		$code = rtrim($code);
+		$code = preg_replace('#/\*sensitive\{\*/.*?/\*\}\*/#s', Dumper\Describer::HiddenValue, $code);
+
+		$last = $out = '';
+		foreach (\PhpToken::tokenize($code) as $token) {
+			$next = match ($token->id) {
+				T_COMMENT, T_DOC_COMMENT, T_INLINE_HTML => 'tracy-code-comment',
+				T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_LINE, T_FILE, T_DIR, T_TRAIT_C, T_METHOD_C, T_FUNC_C, T_NS_C, T_CLASS_C,
+				T_STRING, T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_NAME_RELATIVE => '',
+				T_LNUMBER, T_DNUMBER => 'tracy-dump-number',
+				T_VARIABLE => 'tracy-code-var',
+				T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING => 'tracy-dump-string',
+				T_WHITESPACE => $last,
+				default => 'tracy-code-keyword',
+			};
+
+			if ($last !== $next) {
+				if ($last !== '') {
+					$out .= '</span>';
+				}
+				$last = $next;
+				if ($last !== '') {
+					$out .= "<span class='$last'>";
+				}
+			}
+
+			$out .= strtr($token->text, ['<' => '&lt;', '>' => '&gt;', '&' => '&amp;', "\t" => '    ']);
+		}
+		if ($last !== '') {
+			$out .= '</span>';
+		}
+		return $out;
 	}
 
 
@@ -101,13 +126,13 @@ final class CodeHighlighter
 		return Helpers::htmlToAnsi(
 			self::highlightPhp($code, $line, $column),
 			[
-				'color: ' . ini_get('highlight.comment') => '1;30',
-				'color: ' . ini_get('highlight.default') => '1;36',
-				'color: ' . ini_get('highlight.html') => '1;35',
-				'color: ' . ini_get('highlight.keyword') => '1;37',
-				'color: ' . ini_get('highlight.string') => '1;32',
-				'tracy-line' => '1;30',
-				'tracy-line-highlight' => "1;37m\e[41",
+				'string' => '1;32',
+				'number' => '1;32',
+				'code-comment' => '1;30',
+				'code-keyword' => '1;37',
+				'code-var' => '1;36',
+				'line' => '1;30',
+				'line-highlight' => "1;37m\e[41",
 			],
 		);
 	}

@@ -479,17 +479,18 @@ class Helpers
 	{
 		$stack = ['0'];
 		$s = preg_replace_callback(
-			'#<\w+(?: (?:style|class)=["\'](?:tracy-dump-)?(.*?)["\'])?[^>]*>|</\w+>#',
+			'#<\w+(?: class=["\']tracy-(?:dump-)?([\w-]+)["\'])?[^>]*>|</\w+>#',
 			function ($m) use ($colors, &$stack): string {
 				if ($m[0][1] === '/') {
 					array_pop($stack);
 				} else {
 					$stack[] = isset($m[1], $colors[$m[1]]) ? $colors[$m[1]] : '0';
 				}
-				return "\e[0m\e[" . end($stack) . 'm';
+				return "\e[" . end($stack) . 'm';
 			},
 			$s,
 		);
+		$s = preg_replace('/\e\[0m( *)(?=\e)/', '$1', $s);
 		$s = self::htmlToText($s);
 		return $s;
 	}
