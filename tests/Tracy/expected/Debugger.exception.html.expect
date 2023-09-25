@@ -43,8 +43,8 @@
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
 <span class='tracy-line'>%d%:</span>    {
-<span class='tracy-line-highlight'>%d%:        throw new Exception('The my exception', 123);</span>
-</span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    }
+</span><span class='tracy-line-highlight'>%d%:        throw new Exception('The my exception', 123);</span>
+<span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    }
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    </span><span style="color: #000">define</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'MY_CONST'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">123</span><span style="color: #D24; font-weight: bold">);
@@ -77,8 +77,8 @@
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='tracy-line'>%d%:</span>    {
-<span class='tracy-line-highlight'>%d%:        third([1, 2, 3]);</span>
-</span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    }
+</span><span class='tracy-line-highlight'>%d%:        third([1, 2, 3]);</span>
+<span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    }
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
@@ -109,8 +109,8 @@
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
 <span class='tracy-line'>%d%:</span>    {
-<span class='tracy-line-highlight'>%d%:        second(true, false);</span>
-</span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    }
+</span><span class='tracy-line-highlight'>%d%:        second(true, false);</span>
+<span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    }
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
@@ -143,8 +143,8 @@
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    </span><span style="color: #000">define</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'MY_CONST'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">123</span><span style="color: #D24; font-weight: bold">);
 <span class='tracy-line'>%d%:</span>    @</span><span style="color: #000">hex2bin</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'a'</span><span style="color: #D24; font-weight: bold">); </span><span style="color: #998; font-style: italic">// E_WARNING
-<span class='tracy-line-highlight'>%d%:    first(10, 'any string');</span>
-</span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    </span>
+</span><span class='tracy-line-highlight'>%d%:    first(10, 'any string');</span>
+<span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    </span>
 </span></code></div></pre>
 
 			<table class="tracy-callstack-args">
