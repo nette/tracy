@@ -267,6 +267,20 @@ html.tracy-bs-visible body {
 	white-space: pre;
 }
 
+#tracy-bs .tracy-code-comment {
+	color: rgba(0, 0, 0, 0.5);
+	font-style: italic;
+}
+
+#tracy-bs .tracy-code-keyword {
+	color: #D24;
+	font-weight: bold;
+}
+
+#tracy-bs .tracy-code-var {
+	font-weight: bold;
+}
+
 #tracy-bs .tracy-line-highlight {
 	background: #CD1818;
 	color: white;

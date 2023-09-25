@@ -101,7 +101,6 @@ final class Renderer
 		}
 
 		$s = $colors ? Helpers::htmlToAnsi($s, $colors) : Helpers::htmlToText($s);
-		$s = preg_replace('/\e\[0m( *)(?=\e)/', '$1', $s);
 		$s = str_replace('…', '...', $s);
 		$s .= substr($s, -1) === "\n" ? '' : "\n";
 
