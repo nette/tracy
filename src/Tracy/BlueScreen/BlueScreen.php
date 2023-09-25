@@ -358,7 +358,7 @@ class BlueScreen
 		$out = $source[0]; // <code><span color=highlight.html>
 		$source = str_replace('<br />', "\n", $source[1]);
 		$out .= static::highlightLine($source, $line, $lines, $column);
-		$out = str_replace('&nbsp;', ' ', $out);
+		$out = str_replace('&nbsp;', ' ', $out) . '</code>';
 		return "<pre class='tracy-code'><div>$out</div></pre>";
 	}
 
@@ -412,7 +412,7 @@ class BlueScreen
 			}
 		}
 
-		$out .= str_repeat('</span>', $spans) . '</code>';
+		$out .= str_repeat('</span>', $spans);
 		return $out;
 	}
 
