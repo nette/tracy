@@ -33,7 +33,22 @@
 
 	<div class="tracy-section-panel">
 		<p><b>File:</b> %a%</p>
-		<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'>%A%</pre>
+		<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='tracy-line'>%d%:</span>    {
+<span class='tracy-line'>%d%:</span>        </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">([</span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">]);
+<span class='tracy-line'>%d%:</span>    }
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+<span class='tracy-line'>%d%:</span>    {
+<span class='tracy-line-highlight'>%d%:        throw new Exception('The my exception', 123);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    }
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    </span><span style="color: #000">define</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'MY_CONST'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">123</span><span style="color: #D24; font-weight: bold">);
+</span></span></code></div></pre>
 	</div>
 </section>
 
@@ -52,7 +67,22 @@
 		</div>
 
 		<div class="tracy-callstack-additional tracy-collapsed">
-			<pre title="Ctrl-Click to open in editor" %A%</pre>
+			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='tracy-line'>%d%:</span>    {
+<span class='tracy-line'>%d%:</span>        </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">true</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">false</span><span style="color: #D24; font-weight: bold">);
+<span class='tracy-line'>%d%:</span>    }
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='tracy-line'>%d%:</span>    {
+<span class='tracy-line-highlight'>%d%:        third([1, 2, 3]);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    }
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+</span></span></code></div></pre>
 
 			<table class="tracy-callstack-args">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
@@ -69,7 +99,22 @@
 		</div>
 
 		<div class="tracy-callstack-additional tracy-collapsed">
-			<pre title="Ctrl-Click to open in editor" %A%</pre>
+			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='tracy-line'>19:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    </span><span style="color: #000">Debugger</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">$productionMode </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">false</span><span style="color: #D24; font-weight: bold">;
+<span class='tracy-line'>%d%:</span>    </span><span style="color: #000">setHtmlMode</span><span style="color: #D24; font-weight: bold">();
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    </span><span style="color: #000">Debugger</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">enable</span><span style="color: #D24; font-weight: bold">();
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">first</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+<span class='tracy-line'>%d%:</span>    {
+<span class='tracy-line-highlight'>%d%:        second(true, false);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    }
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">second</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$arg2</span><span style="color: #D24; font-weight: bold">)
+</span></span></code></div></pre>
 
 			<table class="tracy-callstack-args">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
@@ -88,7 +133,19 @@
 		</div>
 
 		<div class="tracy-callstack-additional tracy-collapsed">
-			<pre title="Ctrl-Click to open in editor" %A%</pre>
+			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    function </span><span style="color: #000">third</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$arg1</span><span style="color: #D24; font-weight: bold">)
+<span class='tracy-line'>%d%:</span>    {
+<span class='tracy-line'>%d%:</span>        throw new </span><span style="color: #000">Exception</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'The my exception'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">123</span><span style="color: #D24; font-weight: bold">);
+<span class='tracy-line'>%d%:</span>    }
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>
+<span class='tracy-line'>%d%:</span>    </span><span style="color: #000">define</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'MY_CONST'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">123</span><span style="color: #D24; font-weight: bold">);
+<span class='tracy-line'>%d%:</span>    @</span><span style="color: #000">hex2bin</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'a'</span><span style="color: #D24; font-weight: bold">); </span><span style="color: #998; font-style: italic">// E_WARNING
+<span class='tracy-line-highlight'>%d%:    first(10, 'any string');
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #D24; font-weight: bold"><span class='tracy-line'>%d%:</span>    </span>
+</span></code></div></pre>
 
 			<table class="tracy-callstack-args">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
