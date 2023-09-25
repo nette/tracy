@@ -21,31 +21,34 @@ final class CodeHighlighter
 	 */
 	public static function highlightLine(string $html, int $line, int $column = 0): string
 	{
-		$source = explode("\n", "\n" . str_replace("\r\n", "\n", $html));
+		$html = str_replace("\r\n", "\n", $html);
+		$lines = explode("\n", "\n" . $html);
+		$startLine = max(1, min($line, count($lines) - 1) - (int) floor(self::DisplayLines * 2 / 3));
+		$endLine = min($startLine + self::DisplayLines - 1, count($lines) - 1);
+		$numWidth = strlen((string) $endLine);
+		$openTags = $closeTags = [];
 		$out = '';
-		$spans = 1;
-		$start = $i = max(1, min($line, count($source) - 1) - (int) floor(self::DisplayLines * 2 / 3));
-		while (--$i >= 1) { // find last highlighted block
-			if (preg_match('#.*(</?span[^>]*>)#', $source[$i], $m)) {
-				if ($m[1] !== '</span>') {
-					$spans++;
-					$out .= $m[1];
-				}
 
-				break;
+		for ($n = 1; $n <= $endLine; $n++) {
+			if ($n === $startLine) {
+				$out = implode('', $openTags);
 			}
-		}
+			if ($n === $line) {
+				$out .= implode('', $closeTags);
+			}
 
-		$source = array_slice($source, $start, self::DisplayLines, true);
-		end($source);
-		$numWidth = strlen((string) key($source));
+			preg_replace_callback('#</?(\w+)[^>]*>#', function ($m) use (&$openTags, &$closeTags) {
+				if ($m[0][1] === '/') {
+					array_pop($openTags);
+					array_shift($closeTags);
+				} else {
+					$openTags[] = $m[0];
+					array_unshift($closeTags, "</$m[1]>");
+				}
+			}, $lines[$n]);
 
-		foreach ($source as $n => $s) {
-			$spans += substr_count($s, '<span') - substr_count($s, '</span');
-			$s = str_replace(["\r", "\n"], ['', ''], $s);
-			preg_match_all('#<[^>]+>#', $s, $tags);
-			if ($n == $line) {
-				$s = strip_tags($s);
+			if ($n === $line) {
+				$s = strip_tags($lines[$n]);
 				if ($column) {
 					$s = preg_replace(
 						'#((?:&.*?;|[^&]){' . ($column - 1) . '})(&.*?;|.)#u',
@@ -54,18 +57,13 @@ final class CodeHighlighter
 						1,
 					);
 				}
-				$out .= sprintf(
-					"<span class='tracy-line-highlight'>%{$numWidth}s:    %s</span>\n%s",
-					$n,
-					$s,
-					implode('', $tags[0]),
-				);
+				$out .= sprintf("<span class='tracy-line-highlight'>%{$numWidth}s:    %s</span>\n%s", $n, $s, implode('', $openTags));
 			} else {
-				$out .= sprintf("<span class='tracy-line'>%{$numWidth}s:</span>    %s\n", $n, $s);
+				$out .= sprintf("<span class='tracy-line'>%{$numWidth}s:</span>    %s\n", $n, $lines[$n]);
 			}
 		}
 
-		$out .= str_repeat('</span>', $spans) . '</code>';
+		$out .= implode('', $closeTags);
 		return $out;
 	}
 
@@ -88,9 +86,9 @@ final class CodeHighlighter
 		$source = preg_replace('#/\*sensitive\{\*/.*?/\*\}\*/#s', Dumper\Describer::HiddenValue, $source);
 		$source = explode("\n", highlight_string($source, true));
 		$out = $source[0]; // <code><span color=highlight.html>
-		$source = str_replace('<br />', "\n", $source[1]);
-		$out .= self::highlightLine($source, $line, $column);
-		$out = str_replace('&nbsp;', ' ', $out);
+		$tmp = str_replace('<br />', "\n", $source[1]);
+		$out .= self::highlightLine($tmp, $line, $column);
+		$out = str_replace('&nbsp;', ' ', $out) . $source[2] . @$source[3];
 		return "<pre class='tracy-code'><div>$out</div></pre>";
 	}
 
