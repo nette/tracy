@@ -387,7 +387,7 @@ class BlueScreen
 					);
 				}
 				$out .= sprintf(
-					"<span class='tracy-line-highlight'>%{$numWidth}s:    %s\n</span>%s",
+					"<span class='tracy-line-highlight'>%{$numWidth}s:    %s</span>\n%s",
 					$n,
 					$s,
 					implode('', $tags[0]),

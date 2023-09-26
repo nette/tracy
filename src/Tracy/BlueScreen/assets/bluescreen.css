@@ -274,7 +274,7 @@ html.tracy-bs-visible body {
 	font-style: normal;
 	display: block;
 	padding: 0 1ch;
-	margin: 0 -1ch;
+	margin: 0 -1ch -1lh;
 }
 
 #tracy-bs .tracy-column-highlight {
