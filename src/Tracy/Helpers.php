@@ -91,6 +91,12 @@ class Helpers
 	}
 
 
+	public static function htmlToText(string $s): string
+	{
+		return htmlspecialchars_decode(strip_tags($s), ENT_QUOTES | ENT_HTML5);
+	}
+
+
 	public static function findTrace(array $trace, array|string $method, ?int &$index = null): ?array
 	{
 		$m = is_array($method) ? $method : explode('::', $method);
@@ -465,6 +471,27 @@ class Helpers
 				: preg_match("#^.{0,$len}#us", $s, $m);
 			return $m[0];
 		}
+	}
+
+
+	/** @internal */
+	public static function htmlToAnsi(string $s, array $colors): string
+	{
+		$stack = ['0'];
+		$s = preg_replace_callback(
+			'#<\w+(?: (?:style|class)=["\'](?:tracy-dump-)?(.*?)["\'])?[^>]*>|</\w+>#',
+			function ($m) use ($colors, &$stack): string {
+				if ($m[0][1] === '/') {
+					array_pop($stack);
+				} else {
+					$stack[] = isset($m[1], $colors[$m[1]]) ? $colors[$m[1]] : '0';
+				}
+				return "\e[0m\e[" . end($stack) . 'm';
+			},
+			$s,
+		);
+		$s = self::htmlToText($s);
+		return $s;
 	}
 
 

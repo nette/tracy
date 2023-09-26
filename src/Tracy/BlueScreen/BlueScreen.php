@@ -412,34 +412,18 @@ class BlueScreen
 			return null;
 		}
 
-		$s = self::highlightPhp($source, $line, $lines);
-
-		$colors = [
-			'color: ' . ini_get('highlight.comment') => '1;30',
-			'color: ' . ini_get('highlight.default') => '1;36',
-			'color: ' . ini_get('highlight.html') => '1;35',
-			'color: ' . ini_get('highlight.keyword') => '1;37',
-			'color: ' . ini_get('highlight.string') => '1;32',
-			'tracy-line' => '1;30',
-			'tracy-line-highlight' => "1;37m\e[41",
-		];
-
-		$stack = ['0'];
-		$s = preg_replace_callback(
-			'#<\w+(?: (class|style)=["\'](.*?)["\'])?[^>]*>|</\w+>#',
-			function ($m) use ($colors, &$stack): string {
-				if ($m[0][1] === '/') {
-					array_pop($stack);
-				} else {
-					$stack[] = isset($m[2], $colors[$m[2]]) ? $colors[$m[2]] : '0';
-				}
-
-				return "\e[0m\e[" . end($stack) . 'm';
-			},
-			$s,
+		return Helpers::htmlToAnsi(
+			self::highlightPhp($source, $line, $lines),
+			[
+				'color: ' . ini_get('highlight.comment') => '1;30',
+				'color: ' . ini_get('highlight.default') => '1;36',
+				'color: ' . ini_get('highlight.html') => '1;35',
+				'color: ' . ini_get('highlight.keyword') => '1;37',
+				'color: ' . ini_get('highlight.string') => '1;32',
+				'tracy-line' => '1;30',
+				'tracy-line-highlight' => "1;37m\e[41",
+			],
 		);
-		$s = htmlspecialchars_decode(strip_tags($s), ENT_QUOTES | ENT_HTML5);
-		return $s;
 	}
 
 
