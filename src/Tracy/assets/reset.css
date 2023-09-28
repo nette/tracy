@@ -46,6 +46,15 @@ tracy-div:not(a b) *:after {
 	all: unset;
 }
 
+tracy-div:not(a b) :is(
+	h1, h2, h3, h4, h5, h6,
+	p,
+	ol, ul, dl,
+	pre, table, hr,
+):where(:not(:last-child)) {
+	margin-bottom: var(--tracy-space);
+}
+
 tracy-div:not(a b) b,
 tracy-div:not(a b) strong {
 	font-weight: bold;

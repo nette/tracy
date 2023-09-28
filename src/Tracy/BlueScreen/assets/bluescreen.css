@@ -67,15 +67,6 @@ html.tracy-bs-visible body {
 	display: none;
 }
 
-#tracy-bs p,
-#tracy-bs table,
-#tracy-bs pre,
-#tracy-bs h1,
-#tracy-bs h2,
-#tracy-bs h3 {
-	margin: 0 0 var(--tracy-space);
-}
-
 #tracy-bs h1 {
 	font-size: 15pt;
 	font-weight: normal;
@@ -189,8 +180,7 @@ html.tracy-bs-visible body {
 
 #tracy-bs .tracy-section-panel {
 	background: #F4F3F1;
-	padding: var(--tracy-space) var(--tracy-space) 0;
-	margin: 0 0 var(--tracy-space);
+	padding: var(--tracy-space);
 	border-radius: 8px;
 	box-shadow: inset 1px 1px 0px 0 #00000005;
 	overflow: hidden;
@@ -199,6 +189,10 @@ html.tracy-bs-visible body {
 #tracy-bs .outer, /* deprecated */
 #tracy-bs .tracy-pane {
 	overflow: auto;
+}
+
+#tracy-bs .tracy-pane:not(:last-child) {
+	margin-bottom: var(--tracy-space);
 }
 
 #tracy-bs.tracy-mac .tracy-pane {
@@ -215,7 +209,6 @@ html.tracy-bs-visible body {
 
 #tracy-bs .tracy-section--error h1 {
 	color: white;
-	margin: 0;
 }
 
 #tracy-bs .tracy-section--error::selection,
@@ -349,6 +342,10 @@ html.tracy-bs-visible body {
 #tracy-bs .tracy-callstack-additional {
 	grid-column-start: 1;
 	grid-column-end: 3;
+}
+
+#tracy-bs .tracy-callstack-additional:not(:last-child) {
+	margin-bottom: var(--tracy-space);
 }
 
 #tracy-bs .tracy-callstack-args tr:first-child > * {
