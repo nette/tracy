@@ -538,6 +538,7 @@ class Helpers
 	/** @internal */
 	public static function minifyCss(string $s): string
 	{
+		return $s;
 		$last = '';
 		return preg_replace_callback(
 			<<<'XX'
