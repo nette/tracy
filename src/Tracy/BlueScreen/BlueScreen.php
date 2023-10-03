@@ -595,13 +595,10 @@ class BlueScreen
 		};
 
 		foreach ($this->fibers as $k => $v) {
-			$add($this->fibers instanceof \WeakMap ? $k : $v);
+			$add($k);
 		}
 
-		if (PHP_VERSION_ID >= 80000) {
-			Helpers::traverseValue($object, $add);
-		}
-
+		Helpers::traverseValue($object, $add);
 		return [$generators, $fibers];
 	}
 }
