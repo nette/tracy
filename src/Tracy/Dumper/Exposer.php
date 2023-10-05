@@ -137,6 +137,7 @@ final class Exposer
 		self::exposeObject($obj, $value, $describer);
 		$obj->setFlags($flags);
 		$describer->addPropertyTo($value, 'storage', $obj->getArrayCopy(), Value::PropertyPrivate, null, \ArrayObject::class);
+		$value->value .= ' (' . count($obj) . ')';
 	}
 
 
@@ -193,14 +194,17 @@ final class Exposer
 	}
 
 
-	public static function exposeSplObjectStorage(\SplObjectStorage $obj): array
+	public static function exposeSplObjectStorage(\SplObjectStorage $obj, Value $value, Describer $describer): void
 	{
-		$res = [];
-		foreach (clone $obj as $item) {
-			$res[] = ['object' => $item, 'data' => $obj[$item]];
+		$value->value .= ' (' . count($obj) . ')';
+		foreach (clone $obj as $v) {
+			$pair = new Value(Value::TypeObject, '');
+			$pair->depth = $value->depth + 1;
+			$describer->addPropertyTo($pair, 'key', $v);
+			$describer->addPropertyTo($pair, 'value', $obj[$v]);
+			$describer->addPropertyTo($value, '', null, described: $pair);
+			$value->items[array_key_last($value->items)][0] = '';
 		}
-
-		return $res;
 	}
 
 

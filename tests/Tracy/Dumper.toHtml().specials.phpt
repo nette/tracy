@@ -98,13 +98,13 @@ $key = $objStorage->key();
 Assert::match(
 	<<<'XX'
 		<pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["foo","bar",3]]}}'
-		><span class="tracy-toggle"><span class="tracy-dump-object">SplObjectStorage</span> <span class="tracy-dump-hash">#%d%</span></span>
-		<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">0</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
-		<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>object<span>'</span></span> => <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span>
-		<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>data<span>'</span></span> => <span class="tracy-dump-string" title="2 characters"><span>'</span>o1<span>'</span></span>
-		</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual">1</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
-		<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>object<span>'</span></span> => <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
-		<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>data<span>'</span></span> => <span class="tracy-dump-string" title="2 characters"><span>'</span>o2<span>'</span></span>
+		><span class="tracy-toggle"><span class="tracy-dump-object">SplObjectStorage (2)</span> <span class="tracy-dump-hash">#%d%</span></span>
+		<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual"></span>: <span class="tracy-toggle"><span class="tracy-dump-object"></span></span>
+		<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-virtual">key</span>: <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span>
+		<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-virtual">value</span>: <span class="tracy-dump-string" title="2 characters"><span>'</span>o1<span>'</span></span>
+		</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual"></span>: <span class="tracy-toggle"><span class="tracy-dump-object"></span></span>
+		<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-virtual">key</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+		<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-virtual">value</span>: <span class="tracy-dump-string" title="2 characters"><span>'</span>o2<span>'</span></span>
 		</div></div></pre>
 		XX,
 	Dumper::toHtml($objStorage),
@@ -118,7 +118,7 @@ $obj = new ArrayObject(['a' => 1, 'b' => 2]);
 Assert::match(
 	<<<'XX'
 		<pre class="tracy-dump tracy-light"
-		><span class="tracy-toggle"><span class="tracy-dump-object">ArrayObject</span> <span class="tracy-dump-hash">#%d%</span></span>
+		><span class="tracy-toggle"><span class="tracy-dump-object">ArrayObject (2)</span> <span class="tracy-dump-hash">#%d%</span></span>
 		<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in ArrayObject">storage</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 		<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>a<span>'</span></span> => <span class="tracy-dump-number">1</span>
 		<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>b<span>'</span></span> => <span class="tracy-dump-number">2</span>
@@ -136,7 +136,7 @@ $obj = new ArrayObjectChild(['a' => 1, 'b' => 2]);
 Assert::match(
 	<<<'XX'
 		<pre class="tracy-dump tracy-light"
-		><span class="tracy-toggle"><span class="tracy-dump-object">ArrayObjectChild</span> <span class="tracy-dump-hash">#%d%</span></span>
+		><span class="tracy-toggle"><span class="tracy-dump-object">ArrayObjectChild (2)</span> <span class="tracy-dump-hash">#%d%</span></span>
 		<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">prop</span>: <span class="tracy-dump-number">123</span>
 		<span class="tracy-dump-indent">   </span><span class="tracy-dump-private" title="declared in ArrayObject">storage</span>: <span class="tracy-toggle"><span class="tracy-dump-array">array</span> (2)</span>
 		<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-string"><span class='tracy-dump-lq'>'</span>a<span>'</span></span> => <span class="tracy-dump-number">1</span>
