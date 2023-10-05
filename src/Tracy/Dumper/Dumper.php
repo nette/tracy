@@ -83,6 +83,7 @@ class Dumper
 		\DOMNamedNodeMap::class => [Exposer::class, 'exposeDOMNodeList'],
 		Ds\Collection::class => [Exposer::class, 'exposeDsCollection'],
 		Ds\Map::class => [Exposer::class, 'exposeDsMap'],
+		\WeakMap::class => [Exposer::class, 'exposeWeakMap'],
 	];
 
 	/** @var array<string, array{bool, string[]}> */

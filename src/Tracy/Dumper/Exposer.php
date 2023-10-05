@@ -208,6 +208,20 @@ final class Exposer
 	}
 
 
+	public static function exposeWeakMap(\WeakMap $obj, Value $value, Describer $describer): void
+	{
+		$value->value .= ' (' . count($obj) . ')';
+		foreach ($obj as $k => $v) {
+			$pair = new Value(Value::TypeObject, '');
+			$pair->depth = $value->depth + 1;
+			$describer->addPropertyTo($pair, 'key', $k);
+			$describer->addPropertyTo($pair, 'value', $v);
+			$describer->addPropertyTo($value, '', null, described: $pair);
+			$value->items[array_key_last($value->items)][0] = '';
+		}
+	}
+
+
 	public static function exposePhpIncompleteClass(
 		\__PHP_Incomplete_Class $obj,
 		Value $value,

@@ -113,6 +113,27 @@ Assert::match(
 Assert::same($key, $objStorage->key());
 
 
+// WeakMap
+$weakmap = new WeakMap;
+$weakmap[$o1] = 'o1';
+$weakmap[$o2] = 'o2';
+
+Assert::match(
+	<<<'XX'
+		<pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["foo","bar",3]]}}'
+		><span class="tracy-toggle"><span class="tracy-dump-object">WeakMap (2)</span> <span class="tracy-dump-hash">#%d%</span></span>
+		<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual"></span>: <span class="tracy-toggle"><span class="tracy-dump-object"></span></span>
+		<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-virtual">key</span>: <span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span>
+		<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-virtual">value</span>: <span class="tracy-dump-string" title="2 characters"><span>'</span>o1<span>'</span></span>
+		</div><span class="tracy-dump-indent">   </span><span class="tracy-dump-virtual"></span>: <span class="tracy-toggle"><span class="tracy-dump-object"></span></span>
+		<div><span class="tracy-dump-indent">   |  </span><span class="tracy-dump-virtual">key</span>: <span class="tracy-toggle tracy-collapsed" data-tracy-dump='{"ref":%d%}'><span class="tracy-dump-object">stdClass</span> <span class="tracy-dump-hash">#%d%</span></span>
+		<span class="tracy-dump-indent">   |  </span><span class="tracy-dump-virtual">value</span>: <span class="tracy-dump-string" title="2 characters"><span>'</span>o2<span>'</span></span>
+		</div></div></pre>
+		XX,
+	Dumper::toHtml($weakmap),
+);
+
+
 // ArrayObject
 $obj = new ArrayObject(['a' => 1, 'b' => 2]);
 Assert::match(

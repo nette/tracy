@@ -78,6 +78,26 @@ Assert::match(
 Assert::same($key, $objStorage->key());
 
 
+// WeakMap
+$weakmap = new WeakMap;
+$weakmap[$o1] = 'o1';
+$weakmap[$o2] = 'o2';
+
+Assert::match(
+	<<<'XX'
+		WeakMap (2) #%d%
+		   :
+		   |  key: stdClass #%d%
+		   |  value: 'o1'
+		   :
+		   |  key: stdClass #%d%
+		   |  |  foo: 'bar'
+		   |  value: 'o2'
+		XX,
+	Dumper::toText($weakmap),
+);
+
+
 // ArrayObject
 $obj = new ArrayObject(['a' => 1, 'b' => 2]);
 Assert::match(
