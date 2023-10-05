@@ -26,10 +26,10 @@ $code = $ex->getCode() ? ' #' . $ex->getCode() : '';
 	<a href="<?= Helpers::escapeHtml($item['link']) ?>" class="tracy-action"<?= empty($item['external']) ? '' : ' target="_blank" rel="noreferrer noopener"'?>><?= Helpers::escapeHtml($item['label']) ?>&#x25ba;</a>
 <?php endforeach ?>
 	</h1>
-</section>
 
-<?php if ($ex->getPrevious()): ?>
-<div class="tracy-caused">
-	<a href="#tracyCaused<?= count($exceptions) + 1 ?>">Caused by <?= Helpers::escapeHtml(get_debug_type($ex->getPrevious())) ?></a>
-</div>
-<?php endif ?>
+	<?php if ($ex->getPrevious()): ?>
+	<div class="tracy-caused">
+		<a href="#tracyCaused<?= count($exceptions) + 1 ?>">Caused by <?= Helpers::escapeHtml(get_debug_type($ex->getPrevious())) ?></a>
+	</div>
+	<?php endif ?>
+</section>

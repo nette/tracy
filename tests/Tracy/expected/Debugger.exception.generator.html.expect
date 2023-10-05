@@ -23,8 +23,8 @@
 	<h1><span>The my exception</span>
 	<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
 	</h1>
-</section>
 
+	</section>
 
 
 <section class="tracy-section tracy-section--stack">

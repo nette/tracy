@@ -193,7 +193,7 @@ html.tracy-bs-visible body {
 }
 
 #tracy-bs .tracy-section-panel {
-	background: #F4F3F1;
+	background: #5040200E;
 	padding: var(--tracy-space) var(--tracy-space) 0;
 	margin: 0 0 var(--tracy-space);
 	border-radius: 8px;
@@ -215,11 +215,12 @@ html.tracy-bs-visible body {
 #tracy-bs .tracy-section--error {
 	background: #CD1818;
 	color: white;
-	font-size: 13pt;
 	padding-top: var(--tracy-space);
 }
 
+#tracy-bs .tracy-section--error p,
 #tracy-bs .tracy-section--error h1 {
+	font-size: 13pt;
 	color: white;
 }
 
@@ -229,7 +230,7 @@ html.tracy-bs-visible body {
 	background: #FDF5CE !important;
 }
 
-#tracy-bs .tracy-section--error a {
+#tracy-bs .tracy-section--error h1 a {
 	color: #ffefa1 !important;
 }
 
@@ -258,6 +259,23 @@ html.tracy-bs-visible body {
 	color: #ffefa1;
 	font-style: normal;
 }
+
+#tracy-bs .tracy-section--error:has(.tracy-caused) {
+	border-radius: 0 0 0 8px;
+	overflow: hidden;
+}
+
+#tracy-bs .tracy-caused {
+	margin: 0 calc(-1.5 * var(--tracy-space));
+	padding: .3em calc(1.5 * var(--tracy-space));
+	background: #df8075;
+	white-space: nowrap;
+}
+
+#tracy-bs .tracy-caused a {
+	color: white;
+}
+
 
 
 /* source code */
@@ -320,18 +338,6 @@ html.tracy-bs-visible body {
 
 #tracy-bs .tracy-dump-whitespace {
 	color: #0003;
-}
-
-#tracy-bs .tracy-caused {
-	float: right;
-	padding: .3em calc(1.5 * var(--tracy-space));
-	background: #df8075;
-	border-radius: 0 0 0 8px;
-	white-space: nowrap;
-}
-
-#tracy-bs .tracy-caused a {
-	color: white;
 }
 
 #tracy-bs .tracy-callstack {
