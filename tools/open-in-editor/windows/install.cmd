@@ -7,3 +7,8 @@ if defined PROCESSOR_ARCHITEW6432 (set reg="%systemroot%\sysnative\reg.exe") els
 %reg% ADD HKCR\editor /v "URL Protocol" /d "" /f
 %reg% ADD HKCR\editor\shell\open\command /ve /d "wscript \"%~dp0open-editor.js\" \"%%1\"" /f
 %reg% ADD HKLM\SOFTWARE\Policies\Google\Chrome\URLWhitelist /v "123" /d "editor://*" /f
+
+:: Vivaldi - tested
+%reg% ADD HKLM\SOFTWARE\Policies\Vivaldi /v "AutoLaunchProtocolsFromOrigins" /d "[{\"allowed_origins\": [\"*\"],\"protocol\": \"editor\"}]" /t REG_SZ /f
+:: Chrome - should
+%reg% ADD HKLM\SOFTWARE\Policies\Google\Chrome /v "AutoLaunchProtocolsFromOrigins" /d "[{\"allowed_origins\": [\"*\"],\"protocol\": \"editor\"}]" /t REG_SZ /f
