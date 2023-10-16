@@ -7,8 +7,8 @@
 	color: #444;
 	background: #fdf9e2;
 	border-radius: 4px;
-	padding: 1em;
-	margin: 1em 0;
+	padding: var(--tracy-space);
+	margin: var(--tracy-space) 0;
 	word-break: break-all;
 	white-space: pre-wrap;
 }

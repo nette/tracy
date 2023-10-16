@@ -2,16 +2,6 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
-:root {
-	--tracy-space: 16px;
-}
-
-@media (max-width: 600px) {
-	:root {
-		--tracy-space: 8px;
-	}
-}
-
 html.tracy-bs-visible,
 html.tracy-bs-visible body {
 	display: block;
@@ -70,13 +60,15 @@ html.tracy-bs-visible body {
 	display: none;
 }
 
-#tracy-bs p,
-#tracy-bs table,
-#tracy-bs pre,
-#tracy-bs h1,
-#tracy-bs h2,
-#tracy-bs h3 {
-	margin: 0 0 var(--tracy-space);
+#tracy-bs :where(:is(
+	h1, h2, h3, h4, h5, h6,
+	p,
+	ol, ul, dl,
+	pre, table, hr,
+	.tracy-section-panel,
+	.tracy-pane
+):not(:first-child)) {
+	margin-top: var(--tracy-space);
 }
 
 #tracy-bs h1 {
@@ -92,7 +84,6 @@ html.tracy-bs-visible body {
 #tracy-bs h2 {
 	font-size: 14pt;
 	font-weight: normal;
-	margin-top: var(--tracy-space);
 }
 
 #tracy-bs h3 {
@@ -188,14 +179,12 @@ html.tracy-bs-visible body {
 
 
 #tracy-bs .tracy-section {
-	padding-left: calc(1.5 * var(--tracy-space));
-	padding-right: calc(1.5 * var(--tracy-space));
+	padding: var(--tracy-space);
 }
 
 #tracy-bs .tracy-section-panel {
 	background: #5040200E;
-	padding: var(--tracy-space) var(--tracy-space) 0;
-	margin: 0 0 var(--tracy-space);
+	padding: var(--tracy-space);
 	border-radius: 8px;
 	box-shadow: inset 1px 1px 0px 0 #00000005;
 	overflow: hidden;
@@ -215,7 +204,6 @@ html.tracy-bs-visible body {
 #tracy-bs .tracy-section--error {
 	background: #CD1818;
 	color: white;
-	padding-top: var(--tracy-space);
 }
 
 #tracy-bs .tracy-section--error p,
@@ -266,8 +254,8 @@ html.tracy-bs-visible body {
 }
 
 #tracy-bs .tracy-caused {
-	margin: 0 calc(-1.5 * var(--tracy-space));
-	padding: .3em calc(1.5 * var(--tracy-space));
+	margin: var(--tracy-space) calc(-1 * var(--tracy-space)) calc(-1 * var(--tracy-space));
+	padding: .3em var(--tracy-space);
 	background: #df8075;
 	white-space: nowrap;
 }
@@ -342,20 +330,19 @@ html.tracy-bs-visible body {
 
 #tracy-bs .tracy-callstack {
 	display: grid;
+	overflow: auto;
 	grid-template-columns: max-content 1fr;
-	margin-bottom: calc(.5 * var(--tracy-space));
+	row-gap: calc(.5 * var(--tracy-space));
 }
 
 #tracy-bs .tracy-callstack-file {
 	text-align: right;
 	padding-right: var(--tracy-space);
 	white-space: nowrap;
-	height: calc(1.5 * var(--tracy-space));
 }
 
 #tracy-bs .tracy-callstack-callee {
 	white-space: nowrap;
-	height: calc(1.5 * var(--tracy-space));
 }
 
 #tracy-bs .tracy-callstack-additional {
@@ -410,10 +397,7 @@ html.tracy-bs-visible body {
 	margin: 0;
 	width: 100%;
 	font-size: 110%;
-}
-
-#tracy-bs .tracy-tab-bar > *:not(:first-child) {
-	margin-left: var(--tracy-space);
+	column-gap: var(--tracy-space);
 }
 
 #tracy-bs .tracy-tab-bar a {

@@ -2,6 +2,16 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+:root {
+	--tracy-space: 16px;
+}
+
+@media (max-width: 600px) {
+	:root {
+		--tracy-space: 8px;
+	}
+}
+
 tracy-div:not(a b),
 tracy-div:not(a b) * {
 	font: inherit;
