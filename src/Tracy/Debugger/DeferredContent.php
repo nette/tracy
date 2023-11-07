@@ -10,6 +10,9 @@ declare(strict_types=1);
 namespace Tracy;
 
 
+use Kernel\Http\HttpResponse;
+use Kernel\Http\Request;
+
 /**
  * @internal
  */
@@ -66,7 +69,7 @@ final class DeferredContent
 			);
 		}
 
-		$asset = $request->getQuery('_tracy_bar');
+		$asset = $request->getQueryParams()['_tracy_bar'] ?? "";
 		if ($asset === 'js') {
 			$str = $this->buildJsCss();
 			return new HttpResponse(200, [
