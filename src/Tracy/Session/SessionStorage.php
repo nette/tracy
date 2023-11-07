@@ -15,4 +15,6 @@ interface SessionStorage
 	function isAvailable(): bool;
 
 	function &getData(): array;
+
+	function getSessionId(): string;
 }

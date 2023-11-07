@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Tracy;
 
 use ErrorException;
+use Kernel\Http\HttpResponse;
+use Kernel\Http\Request;
 
 
 /**
@@ -20,7 +22,7 @@ final class DevelopmentStrategy
 	public function __construct(
 		private Bar $bar,
 		private BlueScreen $blueScreen,
-		private DeferredContent $defer,
+		public DeferredContent $defer,
 	) {
 	}
 
@@ -102,15 +104,15 @@ final class DevelopmentStrategy
 	}
 
 
-	public function sendAssets(): bool
+	public function sendAssets(Request $request): ?HttpResponse
 	{
-		return $this->defer->sendAssets();
+		return $this->defer->sendAssets($request);
 	}
 
 
 	public function renderLoader(): void
 	{
-		$this->bar->renderLoader($this->defer);
+		$this->bar()->renderLoader($this->defer);
 	}
 
 
@@ -120,6 +122,11 @@ final class DevelopmentStrategy
 			ini_set('display_errors', '1');
 		}
 
-		$this->bar->render($this->defer);
+		$out = $this->bar()->render($this->defer);
+	}
+
+	public function bar(): Bar
+	{
+		return Debugger::getBar();
 	}
 }

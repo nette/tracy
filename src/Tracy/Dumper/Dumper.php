@@ -148,12 +148,11 @@ class Dumper
 	 */
 	public static function renderAssets(): void
 	{
-		static $sent;
-		if (Debugger::$productionMode === true || $sent) {
+		if (Debugger::$productionMode === true || (http()->request()->payload['assents_sent'] ?? false)) {
 			return;
 		}
 
-		$sent = true;
+		http()->request()->payload['assents_sent'] = true;
 
 		$nonce = Helpers::getNonce();
 		$nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';

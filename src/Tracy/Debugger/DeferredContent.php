@@ -49,6 +49,7 @@ final class DeferredContent
 
 	public function addSetup(string $method, mixed $argument): void
 	{
+		$this->requestId = $_SERVER['HTTP_X_TRACY_AJAX'];
 		$argument = json_encode($argument, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
 		$item = &$this->getItems('setup')[$this->requestId];
 		$item['code'] = ($item['code'] ?? '') . "$method($argument);\n";
@@ -56,7 +57,7 @@ final class DeferredContent
 	}
 
 
-	public function sendAssets(): bool
+	public function sendAssets(Request $request): ?HttpResponse
 	{
 		if (headers_sent($file, $line) || ob_get_length()) {
 			throw new \LogicException(
@@ -65,46 +66,40 @@ final class DeferredContent
 			);
 		}
 
-		$asset = $_GET['_tracy_bar'] ?? null;
+		$asset = $request->getQuery('_tracy_bar');
 		if ($asset === 'js') {
-			header('Content-Type: application/javascript; charset=UTF-8');
-			header('Cache-Control: max-age=864000');
-			header_remove('Pragma');
-			header_remove('Set-Cookie');
 			$str = $this->buildJsCss();
-			header('Content-Length: ' . strlen($str));
-			echo $str;
-			flush();
-			return true;
+			return new HttpResponse(200, [
+				'Content-Type' => 'application/javascript; charset=UTF-8',
+				'Cache-Control' => 'max-age=864000',
+				'Content-Length'  => strlen($str)
+			], $str);
 		}
 
 		$this->useSession = $this->sessionStorage->isAvailable();
 		if (!$this->useSession) {
-			return false;
+			return null;
 		}
 
 		$this->clean();
 
 		if (is_string($asset) && preg_match('#^content(-ajax)?\.(\w+)$#', $asset, $m)) {
 			[, $ajax, $requestId] = $m;
-			header('Content-Type: application/javascript; charset=UTF-8');
-			header('Cache-Control: max-age=60');
-			header_remove('Set-Cookie');
 			$str = $ajax ? '' : $this->buildJsCss();
 			$data = &$this->getItems('setup');
 			$str .= $data[$requestId]['code'] ?? '';
 			unset($data[$requestId]);
-			header('Content-Length: ' . strlen($str));
-			echo $str;
-			flush();
-			return true;
+
+			return new HttpResponse(200, [
+				'Content-Type' => 'application/javascript; charset=UTF-8',
+				'Cache-Control' => 'max-age=60',
+				'Content-Length'  => strlen($str)
+			], $str);
 		}
 
-		if (Helpers::isAjax()) {
-			header('X-Tracy-Ajax: 1'); // session must be already locked
-		}
+		header('X-Tracy-Ajax: 1'); // session
 
-		return false;
+		return null;
 	}
 
 

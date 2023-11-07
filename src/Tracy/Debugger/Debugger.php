@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Tracy;
 
 use ErrorException;
+use Kernel\Http\HttpResponse;
 
 
 /**
@@ -54,7 +55,7 @@ class Debugger
 	private static bool $enabled = false;
 
 	/** reserved memory; also prevents double rendering */
-	private static ?string $reserved = null;
+	protected static ?string $reserved = null;
 
 	/** initial output buffer level */
 	private static int $obLevel;
@@ -147,7 +148,7 @@ class Debugger
 	/********************* services ****************d*g**/
 
 	private static BlueScreen $blueScreen;
-	private static Bar $bar;
+	protected static ?Bar $bar;
 	private static ILogger $logger;
 
 	/** @var array{DevelopmentStrategy, ProductionStrategy} */
@@ -218,7 +219,7 @@ class Debugger
 
 		$strategy = self::getStrategy();
 		$strategy->initialize();
-		self::dispatch();
+//		static::dispatch();
 
 		if (self::$enabled) {
 			return;
@@ -254,15 +255,17 @@ class Debugger
 	}
 
 
-	public static function dispatch(): void
+	public static function dispatch(\Kernel\Http\Request $request): ?HttpResponse
 	{
 		if (
 			!Helpers::isCli()
-			&& self::getStrategy()->sendAssets()
+			&& ($response = self::getStrategy()->sendAssets($request))
 		) {
 			self::$showBar = false;
-			exit;
+			return $response;
 		}
+
+		return null;
 	}
 
 
@@ -299,7 +302,7 @@ class Debugger
 
 		if (self::$showBar && !Helpers::isCli()) {
 			try {
-				self::getStrategy()->renderBar();
+//				self::getStrategy()->renderBar();
 			} catch (\Throwable $e) {
 				self::exceptionHandler($e);
 			}
@@ -322,7 +325,7 @@ class Debugger
 		}
 
 		Helpers::improveException($exception);
-		self::removeOutputBuffers(true);
+		static::removeOutputBuffers(true);
 
 		self::getStrategy()->handleException($exception, $firstTime);
 
@@ -375,7 +378,7 @@ class Debugger
 	/** @internal */
 	public static function removeOutputBuffers(bool $errorOccurred): void
 	{
-		while (ob_get_level() > self::$obLevel) {
+		while (ob_get_level() > (self::$obLevel ?? 0)) {
 			$status = ob_get_status();
 			if (in_array($status['name'], ['ob_gzhandler', 'zlib output compression'], true)) {
 				break;
@@ -411,7 +414,7 @@ class Debugger
 
 	public static function getBar(): Bar
 	{
-		if (empty(self::$bar)) {
+		if (!isset(self::$bar)) {
 			self::$bar = new Bar;
 			self::$bar->addPanel($info = new DefaultBarPanel('info'), 'Tracy:info');
 			$info->cpuUsage = self::$cpuUsage;

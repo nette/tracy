@@ -25,6 +25,8 @@ class FileSession implements SessionStorage
 	private $file;
 	private array $data = [];
 
+	private string $sessionId = "";
+
 
 	public function __construct(string $dir)
 	{
@@ -44,6 +46,7 @@ class FileSession implements SessionStorage
 
 	private function open(): void
 	{
+		$id = &$this->sessionId;
 		$id = $_COOKIE[$this->cookieName] ?? null;
 		if (
 			!is_string($id)
@@ -71,6 +74,11 @@ class FileSession implements SessionStorage
 		}
 	}
 
+	function getSessionId(): string
+	{
+		return $this->sessionId;
+	}
+
 
 	public function &getData(): array
 	{
@@ -89,7 +97,7 @@ class FileSession implements SessionStorage
 	}
 
 
-	public function __destruct()
+	public function write()
 	{
 		if (!$this->file) {
 			return;
@@ -101,5 +109,10 @@ class FileSession implements SessionStorage
 		flock($this->file, LOCK_UN);
 		fclose($this->file);
 		$this->file = null;
+	}
+
+	public function __destruct()
+	{
+		$this->write();
 	}
 }

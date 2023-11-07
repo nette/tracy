@@ -6,7 +6,7 @@ namespace Tracy;
 
 /** @var DefaultBarPanel $this */
 
-$this->time = microtime(true) - Debugger::$time;
+$this->time = microtime(true) - http()->request()->time;
 
 ?>
 <span title="Execution time">

@@ -300,6 +300,9 @@ class Helpers
 	/** @internal */
 	public static function isHtmlMode(): bool
 	{
+		if (!empty($_SERVER['RR_MODE'])) {
+			return true;
+		}
 		return empty($_SERVER['HTTP_X_REQUESTED_WITH'])
 			&& empty($_SERVER['HTTP_X_TRACY_AJAX'])
 			&& isset($_SERVER['HTTP_HOST'])
@@ -332,7 +335,7 @@ class Helpers
 	/** @internal */
 	public static function isCli(): bool
 	{
-		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
+		return empty($_SERVER['RR_MODE']) && (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg');
 	}
 
 

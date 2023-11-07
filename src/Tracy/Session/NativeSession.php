@@ -17,6 +17,11 @@ class NativeSession implements SessionStorage
 		return session_status() === PHP_SESSION_ACTIVE;
 	}
 
+	function getSessionId(): string
+	{
+		return "";
+	}
+
 
 	public function &getData(): array
 	{
