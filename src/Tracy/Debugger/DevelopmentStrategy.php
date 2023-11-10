@@ -37,7 +37,7 @@ final class DevelopmentStrategy
 		if (Helpers::isAjax() && $this->defer->isAvailable()) {
 			$this->blueScreen->renderToAjax($exception, $this->defer);
 
-		} elseif ($firstTime && Helpers::isHtmlMode()) {
+		} elseif (/*$firstTime && */Helpers::isHtmlMode()) {
 			$this->blueScreen->render($exception);
 
 		} else {
