@@ -76,7 +76,7 @@ class FileSession implements SessionStorage
 
 	function getSessionId(): string
 	{
-		return $this->sessionId;
+		return $this->sessionId ?? "";
 	}
 
 

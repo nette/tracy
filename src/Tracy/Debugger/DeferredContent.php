@@ -63,10 +63,10 @@ final class DeferredContent
 	public function sendAssets(Request $request): ?HttpResponse
 	{
 		if (headers_sent($file, $line) || ob_get_length()) {
-			throw new \LogicException(
-				__METHOD__ . '() called after some output has been sent. '
-				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.'),
-			);
+//			throw new \LogicException(
+//				__METHOD__ . '() called after some output has been sent. '
+//				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.'),
+//			);
 		}
 
 		$asset = $request->getQueryParams()['_tracy_bar'] ?? "";
