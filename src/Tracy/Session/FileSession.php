@@ -47,7 +47,7 @@ class FileSession implements SessionStorage
 	private function open(): void
 	{
 		$id = &$this->sessionId;
-		$id = $_COOKIE[$this->cookieName] ?? null;
+		$id = $_COOKIE[$this->cookieName] ?? "";
 		if (
 			!is_string($id)
 			|| !preg_match('#^\w{10}\z#i', $id)
