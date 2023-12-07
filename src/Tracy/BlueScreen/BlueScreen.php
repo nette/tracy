@@ -499,4 +499,18 @@ class BlueScreen
 		Helpers::traverseValue($object, $add);
 		return [$generators, $fibers];
 	}
+
+
+	public function getRealArgsAndVariables(\Throwable $exception): array
+	{
+		$args = $variables = [];
+		if (function_exists('xdebug_get_function_stack') && version_compare(phpversion('xdebug'), '3.3.0', '>=')) {
+			$stack = xdebug_get_function_stack(['from_exception' => $exception]);
+			foreach (array_reverse($stack) as $k => $row) {
+				$args[$k] = $row['params'] ?? [];
+				$variables[$k - 1] = $row['variables'] ?? [];
+			}
+		}
+		return [$args, $variables];
+	}
 }

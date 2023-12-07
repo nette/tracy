@@ -326,19 +326,19 @@ final class Describer
 			if (isset($item['class']) && ($item['class'] === self::class || $item['class'] === Tracy\Dumper::class)) {
 				$location = $item;
 				continue;
-			} elseif (isset($item['function'])) {
-				try {
-					$reflection = isset($item['class'])
-						? new \ReflectionMethod($item['class'], $item['function'])
-						: new \ReflectionFunction($item['function']);
-					if (
-						$reflection->isInternal()
-						|| preg_match('#\s@tracySkipLocation\s#', (string) $reflection->getDocComment())
-					) {
-						$location = $item;
-						continue;
-					}
-				} catch (\ReflectionException) {
+			} elseif (
+				isset($item['function'])
+				&& (isset($item['class']) ? method_exists($item['class'], $item['function']) : function_exists($item['function']))
+			) {
+				$reflection = isset($item['class'])
+					? new \ReflectionMethod($item['class'], $item['function'])
+					: new \ReflectionFunction($item['function']);
+				if (
+					$reflection->isInternal()
+					|| preg_match('#\s@tracySkipLocation\s#', (string) $reflection->getDocComment())
+				) {
+					$location = $item;
+					continue;
 				}
 			}
 

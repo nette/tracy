@@ -33,6 +33,8 @@ if (($stack[0]['class'] ?? null) === Debugger::class && in_array($stack[0]['func
 }
 $file = $ex->getFile();
 $line = $ex->getLine();
+[$realArgs, $variables] = $this->getRealArgsAndVariables($ex);
 
 require __DIR__ . '/section-stack-sourceFile.phtml';
+require __DIR__ . '/section-stack-variables.phtml';
 require __DIR__ . '/section-stack-callStack.phtml';

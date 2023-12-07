@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tracy;
+
+/**
+ * @var ?array $variables
+ */
+
+if (empty($variables[-1])) {
+	return;
+}
+?>
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Local variables</a></h2>
+
+	<div class="tracy-section-panel tracy-collapsed">
+		<table class="tracy-callstack-args">
+<?php
+	foreach ($variables[-1] as $k => $v) {
+		echo '<tr><th>$', Helpers::escapeHtml($k), '</th><td>';
+		echo $dump($v, $k);
+		echo "</td></tr>\n";
+	}
+?>
+		</table>
+	</div>
+</section>

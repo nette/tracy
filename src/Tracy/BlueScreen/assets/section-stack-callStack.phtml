@@ -8,6 +8,8 @@ namespace Tracy;
  * @var callable $dump
  * @var int $expanded
  * @var array $stack
+ * @var ?array $realArgs
+ * @var ?array $variables
  */
 
 if (!$stack) {
@@ -66,19 +68,45 @@ if (!$stack) {
 <?php endif ?>
 
 
-<?php		if (!empty($row['args'])): ?>
+<?php		if (!empty($realArgs[$key])): ?>
 			<table class="tracy-callstack-args">
 <?php
-			try {
+			foreach ($realArgs[$key] as $argName => $v) {
+				echo '<tr><th>', Helpers::escapeHtml((is_string($argName) ? '$' : '#') . $argName), '</th><td>';
+				echo $dump($v, $argName);
+				echo "</td></tr>\n";
+			}
+?>
+			</table>
+
+<?php		elseif (!empty($row['args'])): ?>
+			<table class="tracy-callstack-args tracy-callstack-args-warning">
+<?php
+			if (isset($row['class']) ? method_exists($row['class'], $row['function']) : function_exists($row['function'])) {
 				$r = isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']);
 				$params = $r->getParameters();
-			} catch (\Exception) {
+			} else {
 				$params = [];
 			}
+
 			foreach ($row['args'] as $k => $v) {
 				$argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k;
 				echo '<tr><th>', Helpers::escapeHtml((is_string($argName) ? '$' : '#') . $argName), '</th><td>';
 				echo $dump($v, (string) $argName);
+				echo "</td></tr>\n";
+			}
+?>
+			</table>
+<?php		endif ?>
+
+<?php		if (!empty($variables[$key])): ?>
+			<h3>Local Variables</h3>
+
+			<table class="tracy-callstack-args">
+<?php
+			foreach ($variables[$key] as $k => $v) {
+				echo '<tr><th>$', Helpers::escapeHtml($k), '</th><td>';
+				echo $dump($v, $k);
 				echo "</td></tr>\n";
 			}
 ?>
