@@ -209,7 +209,7 @@ class Debugger
 		// php configuration
 		if (function_exists('ini_set')) {
 			ini_set('display_errors', '0'); // or 'stderr'
-			ini_set('html_errors', '0');
+			ini_set('html_errors', '0'); // additionally turns off stack trace displaing by xdebug
 			ini_set('log_errors', '0');
 			ini_set('zend.exception_ignore_args', '0');
 		}
@@ -354,6 +354,7 @@ class Debugger
 	{
 		$error = error_get_last();
 		if (($error['type'] ?? null) === E_COMPILE_WARNING) {
+			// compile-warning does not trigger the handler, so we are testing it now
 			error_clear_last();
 			self::errorHandler($error['type'], $error['message'], $error['file'], $error['line']);
 		}

@@ -60,7 +60,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
 
@@ -76,7 +76,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function afterCompile(Nette\PhpGenerator\ClassType $class)
+	public function afterCompile(Nette\PhpGenerator\ClassType $class): void
 	{
 		$initialize = $this->initialization ?? new Nette\PhpGenerator\Closure;
 		$initialize->addBody('if (!Tracy\Debugger::isEnabled()) { return; }');
