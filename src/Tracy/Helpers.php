@@ -115,37 +115,6 @@ class Helpers
 
 
 	/** @internal */
-	public static function fixStack(\Throwable $exception): \Throwable
-	{
-		if (function_exists('xdebug_get_function_stack')) {
-			$stack = [];
-			$trace = @xdebug_get_function_stack(); // @ xdebug compatibility warning
-			$trace = array_slice(array_reverse($trace), 2, -1);
-			foreach ($trace as $row) {
-				$frame = [
-					'file' => $row['file'],
-					'line' => $row['line'],
-					'function' => $row['function'] ?? '*unknown*',
-					'args' => [],
-				];
-				if (!empty($row['class'])) {
-					$frame['type'] = isset($row['type']) && $row['type'] === 'dynamic' ? '->' : '::';
-					$frame['class'] = $row['class'];
-				}
-
-				$stack[] = $frame;
-			}
-
-			$ref = new \ReflectionProperty('Exception', 'trace');
-			$ref->setAccessible(true);
-			$ref->setValue($exception, $stack);
-		}
-
-		return $exception;
-	}
-
-
-	/** @internal */
 	public static function errorTypeToString(int $type): string
 	{
 		$types = [
