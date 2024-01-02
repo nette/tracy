@@ -24,16 +24,7 @@ $onFatalErrorCalled = false;
 
 register_shutdown_function(function () use (&$onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
-	Assert::match(extension_loaded('xdebug') ?
-'ErrorException: Cannot re-assign $this in %a%
-Stack trace:
-#0 %a%: third()
-#1 %a%: second()
-#2 %a%: first()
-#3 {main}
-Tracy is unable to log error: Logging directory is not specified.
-' :
-'ErrorException: Cannot re-assign $this in %a%
+	Assert::match('ErrorException: Cannot re-assign $this in %a%
 Stack trace:
 #0 [internal function]: Tracy\\Debugger::shutdownHandler()
 #1 {main}
