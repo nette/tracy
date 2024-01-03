@@ -218,3 +218,64 @@ test('do not suggest anything when accessing anonymous class', function () {
 	Assert::same('Undefined property: class@anonymous::$property', $e->getMessage());
 	Assert::false(isset($e->tracyAction));
 });
+
+
+test('callable error: ignore syntax mismatch', function () {
+	try {
+		(fn(callable $a) => null)(null);
+	} catch (Error $e) {
+	}
+
+	Helpers::improveException($e);
+	Assert::match('{closure}(): Argument #1 ($a) must be of type callable, null given, called in %a%', $e->getMessage());
+});
+
+test('callable error: typo in class name', function () {
+	try {
+		(fn(callable $a) => null)([PhpTokn::class, 'tokenize']);
+	} catch (Error $e) {
+	}
+
+	Helpers::improveException($e);
+	Assert::match("{closure}(): Argument #1 (\$a) must be of type callable, but class 'PhpTokn' does not exist, called in %a%", $e->getMessage());
+});
+
+test('callable error: typo in class name', function () {
+	try {
+		(fn(callable $a) => null)('PhpTokn::tokenize');
+	} catch (Error $e) {
+	}
+
+	Helpers::improveException($e);
+	Assert::match("{closure}(): Argument #1 (\$a) must be of type callable, but class 'PhpTokn' does not exist, called in %a%", $e->getMessage());
+});
+
+test('callable error: typo in method name', function () {
+	try {
+		(fn(callable $a) => null)([PhpToken::class, 'tokenze']);
+	} catch (Error $e) {
+	}
+
+	Helpers::improveException($e);
+	Assert::match('{closure}(): Argument #1 ($a) must be of type callable, but method PhpToken::tokenze() does not exist (did you mean tokenize?), called in %a%', $e->getMessage());
+});
+
+test('callable error: typo in method name', function () {
+	try {
+		(fn(callable $a) => null)('PhpToken::tokenze');
+	} catch (Error $e) {
+	}
+
+	Helpers::improveException($e);
+	Assert::match('{closure}(): Argument #1 ($a) must be of type callable, but method PhpToken::tokenze() does not exist (did you mean tokenize?), called in %a%', $e->getMessage());
+});
+
+test('callable error: typo in function name', function () {
+	try {
+		(fn(callable $a) => null)('trm');
+	} catch (Error $e) {
+	}
+
+	Helpers::improveException($e);
+	Assert::match("{closure}(): Argument #1 (\$a) must be of type callable, but function 'trm' does not exist (did you mean trim?), called in %a%", $e->getMessage());
+});

@@ -196,6 +196,25 @@ class Helpers
 			|| str_contains($e->getMessage(), 'did you mean')
 		) {
 			// do nothing
+		} elseif (preg_match('~Argument #(\d+)(?: \(\$\w+\))? must be of type callable, (.+ given)~', $message, $m)) {
+			$arg = $e->getTrace()[0]['args'][$m[1] - 1] ?? null;
+			if (is_string($arg) && str_contains($arg, '::')) {
+				$arg = explode('::', $arg, 2);
+			}
+			if (!is_callable($arg, syntax_only: true)) {
+				// do nothing
+			} elseif (is_array($arg) && is_string($arg[0]) && !class_exists($arg[0]) && !trait_exists($arg[0])) {
+				$message = str_replace($m[2], "but class '$arg[0]' does not exist", $message);
+			} elseif (is_array($arg) && !method_exists($arg[0], $arg[1])) {
+				$hint = self::getSuggestion(get_class_methods($arg[0]) ?: [], $arg[1]);
+				$class = is_object($arg[0]) ? get_class($arg[0]) : $arg[0];
+				$message = str_replace($m[2], "but method $class::$arg[1]() does not exist" . ($hint ? " (did you mean $hint?)" : ''), $message);
+			} elseif (is_string($arg) && !function_exists($arg)) {
+				$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
+				$hint = self::getSuggestion($funcs, $arg);
+				$message = str_replace($m[2], "but function '$arg' does not exist" . ($hint ? " (did you mean $hint?)" : ''), $message);
+			}
+
 		} elseif (preg_match('#^Call to undefined function (\S+\\\\)?(\w+)\(#', $message, $m)) {
 			$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
 			if ($hint = self::getSuggestion($funcs, $m[1] . $m[2]) ?: self::getSuggestion($funcs, $m[2])) {
