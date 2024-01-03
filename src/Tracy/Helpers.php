@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Tracy;
 
-use Nette;
-
 
 /**
  * Rendering helpers for Debugger.
@@ -194,42 +192,48 @@ class Helpers
 	{
 		$message = $e->getMessage();
 		if (
-			(!$e instanceof \Error && !$e instanceof \ErrorException)
-			|| $e instanceof Nette\MemberAccessException
-			|| strpos($e->getMessage(), 'did you mean')
+			!($e instanceof \Error || $e instanceof \ErrorException)
+			|| str_contains($e->getMessage(), 'did you mean')
 		) {
 			// do nothing
 		} elseif (preg_match('#^Call to undefined function (\S+\\\\)?(\w+)\(#', $message, $m)) {
 			$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
-			$hint = self::getSuggestion($funcs, $m[1] . $m[2]) ?: self::getSuggestion($funcs, $m[2]);
-			$message = "Call to undefined function $m[2](), did you mean $hint()?";
-			$replace = ["$m[2](", "$hint("];
+			if ($hint = self::getSuggestion($funcs, $m[1] . $m[2]) ?: self::getSuggestion($funcs, $m[2])) {
+				$message = "Call to undefined function $m[2](), did you mean $hint()?";
+				$replace = ["$m[2](", "$hint("];
+			}
 
 		} elseif (preg_match('#^Call to undefined method ([\w\\\\]+)::(\w+)#', $message, $m)) {
-			$hint = self::getSuggestion(get_class_methods($m[1]) ?: [], $m[2]);
-			$message .= ", did you mean $hint()?";
-			$replace = ["$m[2](", "$hint("];
+			if ($hint = self::getSuggestion(get_class_methods($m[1]) ?: [], $m[2])) {
+				$message .= ", did you mean $hint()?";
+				$replace = ["$m[2](", "$hint("];
+			}
 
 		} elseif (preg_match('#^Undefined property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), fn($prop) => !$prop->isStatic());
-			$hint = self::getSuggestion($items, $m[2]);
-			$message .= ", did you mean $$hint?";
-			$replace = ["->$m[2]", "->$hint"];
+			if ($hint = self::getSuggestion($items, $m[2])) {
+				$message .= ", did you mean $$hint?";
+				$replace = ["->$m[2]", "->$hint"];
+			}
 
 		} elseif (preg_match('#^Access to undeclared static property:? ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_STATIC), fn($prop) => $prop->isPublic());
-			$hint = self::getSuggestion($items, $m[2]);
-			$message .= ", did you mean $$hint?";
-			$replace = ["::$$m[2]", "::$$hint"];
+			if ($hint = self::getSuggestion($items, $m[2])) {
+				$message .= ", did you mean $$hint?";
+				$replace = ["::$$m[2]", "::$$hint"];
+			}
 		}
 
-		if (isset($hint)) {
-			$loc = Debugger::mapSource($e->getFile(), $e->getLine()) ?? ['file' => $e->getFile(), 'line' => $e->getLine()];
+		if ($message !== $e->getMessage()) {
 			$ref = new \ReflectionProperty($e, 'message');
 			$ref->setAccessible(true);
 			$ref->setValue($e, $message);
+		}
+
+		if (isset($replace)) {
+			$loc = Debugger::mapSource($e->getFile(), $e->getLine()) ?? ['file' => $e->getFile(), 'line' => $e->getLine()];
 			@$e->tracyAction = [ // dynamic properties are deprecated since PHP 8.2
 				'link' => self::editorUri($loc['file'], $loc['line'], 'fix', $replace[0], $replace[1]),
 				'label' => 'fix it',
