@@ -89,7 +89,7 @@ class Toggle
 			});
 		}
 
-		window.addEventListener('unload', () => {
+		window.addEventListener('pagehide', () => {
 			toggles = saved.map((el) => {
 				let item = {path: [], text: el.textContent, expand: !el.classList.contains('tracy-collapsed')};
 				do {
