@@ -6,11 +6,10 @@ namespace Tracy;
 
 /** @var int[] $data */
 ?>
-<h1>Errors</h1>
+<h1>Warnings</h1>
 
 <div class="tracy-inner">
 <table class="tracy-sortable">
-<tr><th>Count</th><th>Error</th></tr>
 <?php foreach ($data as $item => $count): [$file, $line, $message] = explode('|', $item, 3) ?>
 <tr>
 	<td class="tracy-right"><?= $count ? "$count\xC3\x97" : '' ?></td>

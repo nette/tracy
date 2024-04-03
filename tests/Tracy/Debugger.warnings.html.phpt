@@ -31,7 +31,6 @@ register_shutdown_function(function () {
 	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-errors')[0]['data-tracy-content'];
 	Assert::match(<<<'XX'
 		%A%<table class="tracy-sortable">
-		<tr><th>Count</th><th>Error</th></tr>
 		<tr>
 			<td class="tracy-right">1%a%</td>
 			<td><pre>PHP Notice: Only variables should be assigned by reference in %a%:%d%</a></pre></td>
