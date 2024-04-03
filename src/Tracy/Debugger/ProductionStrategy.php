@@ -67,7 +67,7 @@ final class ProductionStrategy
 		}
 
 		try {
-			Debugger::log($err, Debugger::ERROR);
+			Debugger::log($err, Debugger::WARNING);
 		} catch (\Throwable $e) {
 		}
 	}
