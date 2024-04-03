@@ -65,7 +65,7 @@ final class ProductionStrategy
 			$err = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message) . " in $file:$line";
 		}
 
-		Debugger::tryLog($err, Debugger::ERROR);
+		Debugger::tryLog($err, Debugger::WARNING);
 	}
 
 
