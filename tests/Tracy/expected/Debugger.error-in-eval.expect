@@ -175,8 +175,9 @@
 
 			<h3>$_GET</h3>
 			<p><i>empty</i></p>
-			<h3>$_POST</h3>
-			<p><i>empty</i></p>
+
+
+
 			<h3>$_COOKIE</h3>
 			<p><i>empty</i></p>
 			</div>

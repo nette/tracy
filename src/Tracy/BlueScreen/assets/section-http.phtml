@@ -44,20 +44,53 @@ if (Helpers::isCli()) {
 <?php endif ?>
 
 
-<?php foreach (['_GET', '_POST', '_COOKIE'] as $name): ?>
-			<h3>$<?= Helpers::escapeHtml($name) ?></h3>
-<?php	if (empty($GLOBALS[$name])):?>
+			<h3>$_GET</h3>
+<?php	if (empty($_GET)):?>
 			<p><i>empty</i></p>
 <?php	else: ?>
 			<div class="tracy-pane">
 				<table class="tracy-sortable">
-<?php	foreach ($GLOBALS[$name] as $k => $v): ?>
+<?php	foreach ($_GET as $k => $v): ?>
 					<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
 <?php	endforeach ?>
 				</table>
 			</div>
 <?php	endif ?>
-<?php endforeach ?>
+
+
+<?php	if ($_SERVER['REQUEST_METHOD'] ?? null === 'POST'):?>
+<?php	if (empty($_POST)):?>
+<?php		if (($post = file_get_contents('php://input', length: 2000)) === ''): ?>
+				<h3>$_POST</h3>
+				<p><i>empty</i></p>
+<?php		else: ?>
+				<h3>POST (preview)</h3>
+				<?= $dump($post) ?>
+<?php		endif ?>
+<?php	else: ?>
+			<h3>$_POST</h3>
+			<div class="tracy-pane">
+				<table class="tracy-sortable">
+<?php	foreach ($_POST as $k => $v): ?>
+					<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
+<?php	endforeach ?>
+				</table>
+			</div>
+<?php	endif ?>
+<?php	endif ?>
+
+			<h3>$_COOKIE</h3>
+<?php	if (empty($_COOKIE)):?>
+			<p><i>empty</i></p>
+<?php	else: ?>
+			<div class="tracy-pane">
+				<table class="tracy-sortable">
+<?php	foreach ($_COOKIE as $k => $v): ?>
+					<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
+<?php	endforeach ?>
+				</table>
+			</div>
+<?php	endif ?>
 			</div>
 
 
