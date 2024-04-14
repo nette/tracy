@@ -241,7 +241,7 @@ class BlueScreen
 			$actions[] = $ex->tracyAction;
 		}
 
-		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{3,})+)\1#i', $ex->getMessage(), $m)) {
+		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{2,})+)\1#i', $ex->getMessage(), $m)) {
 			$class = $m[2];
 			if (
 				!class_exists($class, false) && !interface_exists($class, false) && !trait_exists($class, false)
