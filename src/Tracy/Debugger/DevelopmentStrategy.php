@@ -89,7 +89,7 @@ final class DevelopmentStrategy
 			exit(255);
 		}
 
-		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message);
+		$message = Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message);
 		$count = &$this->bar->getPanel('Tracy:errors')->data["$file|$line|$message"];
 
 		if (!$count++ && !Helpers::isHtmlMode() && !Helpers::isAjax()) {
