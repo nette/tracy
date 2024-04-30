@@ -409,6 +409,7 @@ class Debug
 		Debug.captureAjax();
 
 		Tracy.TableSort.init();
+		Tracy.Tabs.init();
 	}
 
 
