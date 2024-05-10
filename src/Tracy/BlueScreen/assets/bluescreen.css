@@ -350,11 +350,15 @@ html.tracy-bs-visible body {
 	grid-column-end: 3;
 }
 
-#tracy-bs .tracy-callstack-args tr:first-child > * {
+#tracy-bs .tracy-callstack-args tr > :first-child {
+	width: 10em;
+}
+
+#tracy-bs .tracy-callstack-args-warning tr:first-child > * {
 	position: relative;
 }
 
-#tracy-bs .tracy-callstack-args tr:first-child td:before {
+#tracy-bs .tracy-callstack-args-warning tr:first-child td:before {
 	position: absolute;
 	right: .3em;
 	content: 'may not be true';

@@ -15,9 +15,12 @@ namespace Tracy;
  */
 class Bar
 {
-	/** @var IBarPanel[] */
+	/** @var array<string, IBarPanel> */
 	private array $panels = [];
 	private bool $loaderRendered = false;
+
+    /** @var ?callable(string, string): int  */
+    private $panelSorter;
 
 
 	/**
@@ -37,6 +40,13 @@ class Bar
 		return $this;
 	}
 
+    /**
+     * @param callable(string, string): int $sorter
+     */
+    public function replacePanelSorter(callable $sorter): void
+    {
+        $this->panelSorter = $sorter;
+    }
 
 	/**
 	 * Returns panel with given id
@@ -135,6 +145,10 @@ class Bar
 
 		$obLevel = ob_get_level();
 		$panels = [];
+
+        if($this->panelSorter !== null) {
+            uksort($this->panels, $this->panelSorter);
+        }
 
 		foreach ($this->panels as $id => $panel) {
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
