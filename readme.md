@@ -1,5 +1,4 @@
-[Tracy](https://tracy.nette.org) - PHP debugger
-==============================================
+[![Tracy](https://github.com/nette/tracy/assets/194960/f36323d8-486c-4a5e-b3f1-f97cd7c082ca)](https://tracy.nette.org)
 
 [![Downloads this Month](https://img.shields.io/packagist/dm/tracy/tracy.svg)](https://packagist.org/packages/tracy/tracy)
 [![Tests](https://github.com/nette/tracy/workflows/Tests/badge.svg?branch=master)](https://github.com/nette/tracy/actions)
@@ -7,17 +6,16 @@
 [![Latest Stable Version](https://poser.pugx.org/tracy/tracy/v/stable)](https://github.com/nette/tracy/releases)
 [![License](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://github.com/nette/tracy/blob/master/license.md)
 
+ <!---->
 
 Introduction
 ------------
 
 Tracy library is a useful helper for everyday PHP programmers. It helps you to:
 
-- quickly detect and correct errors
-- log errors
-- dump variables
-- measure execution time of scripts/queries
-- see memory consumption
+✅ designed to facilitate debugging PHP code<br>
+✅ hints and corrects you just like a good friend watching your back<br>
+✅ damn cool visualization of errors
 
 
 PHP is a perfect language for making hardly detectable errors because it gives great flexibility to programmers. Tracy\Debugger is more valuable because of that. It is an ultimate tool among the diagnostic ones.
@@ -26,6 +24,7 @@ If you are meeting Tracy for the first time, believe me, your life starts to be 
 
 Documentation can be found on the [website](https://tracy.nette.org).
 
+ <!---->
 
 [Support Tracy](https://github.com/sponsors/dg)
 -----------------------------------------------
@@ -36,6 +35,7 @@ Do you like Tracy? Are you looking forward to the new features?
 
 Thank you!
 
+ <!---->
 
 Installation and Requirements
 -----------------------------
@@ -48,11 +48,9 @@ composer require tracy/tracy
 
 Alternatively, you can download the whole package or [tracy.phar](https://github.com/nette/tracy/releases) file.
 
-| Tracy     | compatible with PHP | compatible with browsers
-|-----------|---------------|----------
-| Tracy 2.10| PHP 8.0 – 8.3 | Chrome 64+, Firefox 69+, Safari 15.4+ and iOS Safari 15.4+
-| Tracy 2.9 | PHP 7.2 – 8.2 | Chrome 64+, Firefox 69+, Safari 13.1+ and iOS Safari 13.4+
+Tracy is compatible with PHP 8.0 to 8.3.
 
+ <!---->
 
 Usage
 -----
@@ -70,6 +68,7 @@ Debugger::enable();
 The first thing you'll notice on the page is the Tracy Bar in the bottom right corner. If you don't see it, it may mean that Tracy is running in production mode.
 This is because Tracy is only visible on localhost for security reasons. To test if it works, you can temporarily put it into development mode using the `Debugger::enable(Debugger::Development)` parameter.
 
+ <!---->
 
 Tracy Bar
 ---------
@@ -86,6 +85,7 @@ If you do not want to show Tracy Bar, set:
 Debugger::$showBar = false;
 ```
 
+ <!---->
 
 Visualization of Errors and Exceptions
 --------------------------------------
@@ -134,6 +134,7 @@ Debugger::$strictMode = E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED; // all error
 
 Note: Tracy when activated changes the error reporting level to E_ALL. If you want to change this, do so after calling `enable()`.
 
+ <!---->
 
 Development vs Production Mode
 ------------------------------
@@ -162,6 +163,7 @@ You can also directly set the development/production mode using the `Debugger::D
 
 (If you use the Nette Framework, take a look at how to set the mode for it, and it will then also be used for Tracy.)
 
+ <!---->
 
 Error Logging
 -------------
@@ -204,12 +206,14 @@ Debugger::$email = 'admin@example.com';
 
 To protect your e-mail box from flood, Tracy sends **only one message** and creates a file `email-sent`. When a developer receives the e-mail notification, he checks the log, corrects his application and deletes the `email-sent` monitoring file. This activates the e-mail sending again.
 
+ <!---->
 
 Opening Files in the Editor
 ---------------------------
 
 When the error page is displayed, you can click on file names and they will open in your editor with the cursor on the corresponding line. Files can also be created (action `create file`) or bug fixed in them (action `fix it`). In order to do this, you need to [configure the browser and the system](https://tracy.nette.org/cs/open-files-in-ide).
 
+ <!---->
 
 Variable Dumping
 ----------------
@@ -261,6 +265,7 @@ bdump([1, 3, 5, 7, 9], 'odd numbers up to ten');
 
 ![bar dump](https://nette.github.io/tracy/images/bardump-en.webp)
 
+ <!---->
 
 Stopwatch
 ---------
@@ -298,6 +303,7 @@ Debugger::timer(); // runs the timer
 echo Debugger::timer(); // elapsed time in seconds
 ```
 
+ <!---->
 
 Custom Logger
 -------------
@@ -329,6 +335,7 @@ services:
 	tracy.logger: SlackLogger
 ```
 
+ <!---->
 
 Monolog Integration
 -------------------
@@ -347,6 +354,7 @@ Debugger::log('info'); // writes: [<TIMESTAMP>] main-channel.INFO: info [] []
 Debugger::log('warning', Debugger::WARNING); // writes: [<TIMESTAMP>] main-channel.WARNING: warning [] []
 ```
 
+ <!---->
 
 Faster Loading
 --------------
@@ -365,6 +373,7 @@ The solution is to place `<?php Tracy\Debugger::renderLoader() ?>` into your tem
 </head>
 ```
 
+ <!---->
 
 AJAX and Redirected Requests
 ----------------------------
@@ -394,6 +403,7 @@ Debugger::dispatch();
 
 The `setSessionStorage()` function has existed since version 2.9, before that Tracy always used the native PHP session.
 
+ <!---->
 
 Content Security Policy
 -----------------------
@@ -432,6 +442,7 @@ change it to
 try_files $uri $uri/ /index.php$is_args$args;
 ```
 
+ <!---->
 
 Integrations
 ------------
