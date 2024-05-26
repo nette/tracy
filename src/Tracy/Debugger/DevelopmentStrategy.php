@@ -12,6 +12,7 @@ namespace Tracy;
 use ErrorException;
 use Kernel\Http\HttpResponse;
 use Kernel\Http\Request;
+use Kernel\Kernel\AsyncDebugger;
 
 
 /**
@@ -86,9 +87,8 @@ final class DevelopmentStrategy
 			&& !isset($_GET['_tracy_skip_error'])
 		) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
-			@$e->skippable = true; // dynamic properties are deprecated since PHP 8.2
-			Debugger::exceptionHandler($e);
-			exit(255);
+			AsyncDebugger::exceptionHandler($e);
+			return ;
 		}
 
 		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message);
