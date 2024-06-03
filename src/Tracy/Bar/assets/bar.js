@@ -14,14 +14,12 @@ let defaults = {
 	AutoRefresh: true,
 };
 
-function getOption(key)
-{
+function getOption(key) {
 	let global = window['Tracy' + key];
 	return global === undefined ? defaults[key] : global;
 }
 
-class Panel
-{
+class Panel {
 	constructor(id) {
 		this.id = id;
 		this.elem = document.getElementById(this.id);
@@ -32,7 +30,7 @@ class Panel
 	init() {
 		let elem = this.elem;
 
-		this.init = function() {};
+		this.init = function () {};
 		elem.innerHTML = elem.dataset.tracyContent;
 		Tracy.Dumper.init(Debug.layer);
 		evalScripts(elem);
@@ -45,7 +43,7 @@ class Panel
 				}
 				this.focus();
 				this.peekPosition = false;
-			}
+			},
 		});
 
 		elem.addEventListener('mousedown', () => {
@@ -145,7 +143,7 @@ class Panel
 		offset.top += typeof window.screenTop === 'number' ? window.screenTop : (window.screenY + 50);
 
 		let win = window.open('', this.id.replace(/-/g, '_'), 'left=' + offset.left + ',top=' + offset.top
-		+ ',width=' + this.elem.offsetWidth + ',height=' + this.elem.offsetHeight + ',resizable=yes,scrollbars=yes');
+			+ ',width=' + this.elem.offsetWidth + ',height=' + this.elem.offsetHeight + ',resizable=yes,scrollbars=yes');
 		if (!win) {
 			return false;
 		}
@@ -153,14 +151,14 @@ class Panel
 		let doc = win.document;
 		doc.write('<!DOCTYPE html><meta charset="utf-8">'
 		+ '<script src="' + (baseUrl.replace(/&/g, '&amp;').replace(/"/g, '&quot;')) + '_tracy_bar=js&amp;XDEBUG_SESSION_STOP=1" onload="Tracy.Dumper.init()" async></script>'
-		+ '<body id="tracy-debug">'
+		+ '<body id="tracy-debug">',
 		);
 
 		let meta = this.elem.parentElement.lastElementChild;
 		doc.body.innerHTML = '<tracy-div itemscope>'
-			+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.dataset.tracyContent + '</div>'
-			+ meta.outerHTML
-			+ '</tracy-div>';
+		+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.dataset.tracyContent + '</div>'
+		+ meta.outerHTML
+		+ '</tracy-div>';
 		evalScripts(doc.body);
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').textContent;
@@ -190,7 +188,7 @@ class Panel
 	reposition(deltaX, deltaY) {
 		let pos = getPosition(this.elem);
 		if (pos.width) { // is visible?
-			setPosition(this.elem, {left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0)});
+			setPosition(this.elem, { left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0) });
 			if (this.is(Panel.RESIZED)) {
 				let size = getWindowSize();
 				this.elem.style.width = Math.min(size.width, pos.width) + 'px';
@@ -204,9 +202,9 @@ class Panel
 		let key = this.id.split(':')[0]; // remove :requestId part
 		let pos = getPosition(this.elem);
 		if (this.is(Panel.WINDOW)) {
-			localStorage.setItem(key, JSON.stringify({window: true}));
+			localStorage.setItem(key, JSON.stringify({ window: true }));
 		} else if (pos.width) { // is visible?
-			localStorage.setItem(key, JSON.stringify({right: pos.right, bottom: pos.bottom, width: pos.width, height: pos.height, zIndex: this.elem.style.zIndex - getOption('PanelZIndex'), resized: this.is(Panel.RESIZED)}));
+			localStorage.setItem(key, JSON.stringify({ right: pos.right, bottom: pos.bottom, width: pos.width, height: pos.height, zIndex: this.elem.style.zIndex - getOption('PanelZIndex'), resized: this.is(Panel.RESIZED) }));
 		} else {
 			localStorage.removeItem(key);
 		}
@@ -244,8 +242,7 @@ Panel.RESIZED = 'tracy-panel-resized';
 Panel.zIndexCounter = 1;
 
 
-class Bar
-{
+class Bar {
 	init() {
 		this.id = 'tracy-debug-bar';
 		this.elem = document.getElementById(this.id);
@@ -255,7 +252,7 @@ class Bar
 			draggedClass: 'tracy-dragged',
 			stop: () => {
 				this.savePosition();
-			}
+			},
 		});
 
 		this.elem.addEventListener('mousedown', (e) => {
@@ -267,7 +264,7 @@ class Bar
 
 		(new MutationObserver(() => {
 			this.restorePosition();
-		})).observe(this.elem, {childList: true, characterData: true, subtree: true});
+		})).observe(this.elem, { childList: true, characterData: true, subtree: true });
 	}
 
 
@@ -318,7 +315,7 @@ class Bar
 							left: getOffset(link).left + getPosition(link).width + 4 - pos.width,
 							top: this.isAtTop()
 								? getOffset(this.elem).top + getPosition(this.elem).height + 4
-								: getOffset(this.elem).top - pos.height - 4
+								: getOffset(this.elem).top - pos.height - 4,
 						});
 						panel.peekPosition = true;
 					}
@@ -359,7 +356,7 @@ class Bar
 	reposition(deltaX, deltaY) {
 		let pos = getPosition(this.elem);
 		if (pos.width) { // is visible?
-			setPosition(this.elem, {left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0)});
+			setPosition(this.elem, { left: pos.left + (deltaX || 0), top: pos.top + (deltaY || 0) });
 			this.savePosition();
 		}
 	}
@@ -368,14 +365,14 @@ class Bar
 	savePosition() {
 		let pos = getPosition(this.elem);
 		if (pos.width) { // is visible?
-			localStorage.setItem(this.id, JSON.stringify(this.isAtTop() ? {right: pos.right, top: pos.top} : {right: pos.right, bottom: pos.bottom}));
+			localStorage.setItem(this.id, JSON.stringify(this.isAtTop() ? { right: pos.right, top: pos.top } : { right: pos.right, bottom: pos.bottom }));
 		}
 	}
 
 
 	restorePosition() {
 		let pos = JSON.parse(localStorage.getItem(this.id));
-		setPosition(this.elem, pos || {right: 0, bottom: 0});
+		setPosition(this.elem, pos || { right: 0, bottom: 0 });
 		this.savePosition();
 	}
 
@@ -387,8 +384,7 @@ class Bar
 }
 
 
-class Debug
-{
+class Debug {
 	static init(content) {
 		Debug.bar = new Bar;
 		Debug.panels = {};
@@ -483,13 +479,13 @@ class Debug
 		}
 		let oldOpen = XMLHttpRequest.prototype.open;
 
-		XMLHttpRequest.prototype.open = function() {
+		XMLHttpRequest.prototype.open = function () {
 			oldOpen.apply(this, arguments);
 
 			if (getOption('AutoRefresh') && new URL(arguments[1], location.origin).host === location.host) {
 				let reqId = Tracy.getAjaxHeader();
 				this.setRequestHeader('X-Tracy-Ajax', reqId);
-				this.addEventListener('load', function() {
+				this.addEventListener('load', function () {
 					if (this.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
 						Debug.loadScript(baseUrl + '_tracy_bar=content-ajax.' + reqId + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
 					}
@@ -498,7 +494,7 @@ class Debug
 		};
 
 		let oldFetch = window.fetch;
-		window.fetch = function(request, options) {
+		window.fetch = function (request, options) {
 			request = request instanceof Request ? request : new Request(request, options || {});
 			let reqId = request.headers.get('X-Tracy-Ajax');
 
@@ -548,14 +544,14 @@ function draggable(elem, options) {
 	let dE = document.documentElement, started, deltaX, deltaY, clientX, clientY;
 	options = options || {};
 
-	let redraw = function () {
+	let redraw = () => {
 		if (dragging) {
-			setPosition(elem, {left: clientX + deltaX, top: clientY + deltaY});
+			setPosition(elem, { left: clientX + deltaX, top: clientY + deltaY });
 			requestAnimationFrame(redraw);
 		}
 	};
 
-	let onMove = function(e) {
+	let onMove = (e) => {
 		if (e.buttons === 0) {
 			return onEnd(e);
 		}
@@ -574,7 +570,7 @@ function draggable(elem, options) {
 		return false;
 	};
 
-	let onEnd = function(e) {
+	let onEnd = (e) => {
 		if (started) {
 			if (options.draggedClass) {
 				elem.classList.remove(options.draggedClass);
@@ -591,7 +587,7 @@ function draggable(elem, options) {
 		return false;
 	};
 
-	let onStart = function(e) {
+	let onStart = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 
@@ -631,9 +627,10 @@ function draggable(elem, options) {
 
 // returns total offset for element
 function getOffset(elem) {
-	let res = {left: elem.offsetLeft, top: elem.offsetTop};
+	let res = { left: elem.offsetLeft, top: elem.offsetTop };
 	while (elem = elem.offsetParent) { // eslint-disable-line no-cond-assign
-		res.left += elem.offsetLeft; res.top += elem.offsetTop;
+		res.left += elem.offsetLeft;
+		res.top += elem.offsetTop;
 	}
 	return res;
 }
@@ -642,7 +639,7 @@ function getOffset(elem) {
 function getWindowSize() {
 	return {
 		width: document.documentElement.clientWidth,
-		height: document.compatMode === 'BackCompat' ? window.innerHeight : document.documentElement.clientHeight
+		height: document.compatMode === 'BackCompat' ? window.innerHeight : document.documentElement.clientHeight,
 	};
 }
 
@@ -670,7 +667,7 @@ function getPosition(elem) {
 		right: win.width - elem.offsetWidth - elem.offsetLeft,
 		bottom: win.height - elem.offsetHeight - elem.offsetTop,
 		width: elem.offsetWidth,
-		height: elem.offsetHeight
+		height: elem.offsetHeight,
 	};
 }
 
