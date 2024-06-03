@@ -3,8 +3,7 @@
  */
 
 // enables .tracy-tabs, .tracy-tab-label, .tracy-tab-panel, .tracy-active
-class Tabs
-{
+class Tabs {
 	static init() {
 		document.documentElement.addEventListener('click', (e) => {
 			let label, context;
@@ -19,7 +18,7 @@ class Tabs
 			}
 		});
 
-		Tabs.init = function() {};
+		Tabs.init = function () {};
 	}
 
 	static toggle(context, label) {
