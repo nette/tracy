@@ -326,10 +326,7 @@ class Debugger
 				$handler($exception);
 			}
 		} catch (\Throwable $e) {
-			try {
-				self::log($e, self::EXCEPTION);
-			} catch (\Throwable) {
-			}
+			self::tryLog($e, self::EXCEPTION);
 		}
 	}
 
@@ -561,6 +558,17 @@ class Debugger
 	public static function log(mixed $message, string $level = ILogger::INFO): mixed
 	{
 		return self::getLogger()->log($message, $level);
+	}
+
+
+	/** @internal */
+	public static function tryLog(mixed $message, string $level = ILogger::INFO): ?\Throwable
+	{
+		try {
+			self::log($message, $level);
+		} catch (\Throwable $e) {
+		}
+		return $e ?? null;
 	}
 
 
