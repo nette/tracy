@@ -227,7 +227,7 @@ test('callable error: ignore syntax mismatch', function () {
 	}
 
 	Helpers::improveException($e);
-	Assert::match('{closure}(): Argument #1 ($a) must be of type callable, null given, called in %a%', $e->getMessage());
+	Assert::match('{closure%a?%}(): Argument #1 ($a) must be of type callable, null given, called in %a%', $e->getMessage());
 });
 
 test('callable error: typo in class name', function () {
@@ -237,7 +237,7 @@ test('callable error: typo in class name', function () {
 	}
 
 	Helpers::improveException($e);
-	Assert::match("{closure}(): Argument #1 (\$a) must be of type callable, but class 'PhpTokn' does not exist, called in %a%", $e->getMessage());
+	Assert::match("{closure%a?%}(): Argument #1 (\$a) must be of type callable, but class 'PhpTokn' does not exist, called in %a%", $e->getMessage());
 });
 
 test('callable error: typo in class name', function () {
@@ -247,7 +247,7 @@ test('callable error: typo in class name', function () {
 	}
 
 	Helpers::improveException($e);
-	Assert::match("{closure}(): Argument #1 (\$a) must be of type callable, but class 'PhpTokn' does not exist, called in %a%", $e->getMessage());
+	Assert::match("{closure%a?%}(): Argument #1 (\$a) must be of type callable, but class 'PhpTokn' does not exist, called in %a%", $e->getMessage());
 });
 
 test('callable error: typo in method name', function () {
@@ -257,7 +257,7 @@ test('callable error: typo in method name', function () {
 	}
 
 	Helpers::improveException($e);
-	Assert::match('{closure}(): Argument #1 ($a) must be of type callable, but method PhpToken::tokenze() does not exist (did you mean tokenize?), called in %a%', $e->getMessage());
+	Assert::match('{closure%a?%}(): Argument #1 ($a) must be of type callable, but method PhpToken::tokenze() does not exist (did you mean tokenize?), called in %a%', $e->getMessage());
 });
 
 test('callable error: typo in method name', function () {
@@ -267,7 +267,7 @@ test('callable error: typo in method name', function () {
 	}
 
 	Helpers::improveException($e);
-	Assert::match('{closure}(): Argument #1 ($a) must be of type callable, but method PhpToken::tokenze() does not exist (did you mean tokenize?), called in %a%', $e->getMessage());
+	Assert::match('{closure%a?%}(): Argument #1 ($a) must be of type callable, but method PhpToken::tokenze() does not exist (did you mean tokenize?), called in %a%', $e->getMessage());
 });
 
 test('callable error: typo in function name', function () {
@@ -277,5 +277,5 @@ test('callable error: typo in function name', function () {
 	}
 
 	Helpers::improveException($e);
-	Assert::match("{closure}(): Argument #1 (\$a) must be of type callable, but function 'trm' does not exist (did you mean trim?), called in %a%", $e->getMessage());
+	Assert::match("{closure%a?%}(): Argument #1 (\$a) must be of type callable, but function 'trm' does not exist (did you mean trim?), called in %a%", $e->getMessage());
 });

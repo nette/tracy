@@ -175,7 +175,7 @@
 		</div>
 
 		<div class="tracy-callstack-callee">
-<b>{closure}</b> ()
+<b>{closure%a?%}</b> ()
 		</div>
 
 	</div>
