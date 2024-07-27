@@ -234,16 +234,13 @@ tracy-div:not(a b) .tracy-dump div div:hover {
 }
 
 tracy-div:not(a b) .tracy-dump {
-	background: #FDF5CE;
-	padding: .4em .7em;
-	border: 1px dotted silver;
 	overflow: auto;
 }
 
-tracy-div:not(a b) table .tracy-dump.tracy-dump { /* overwrite .tracy-dump.tracy-light etc. */
-	padding: 0;
-	margin: 0;
-	border: none;
+tracy-div:not(a b) .tracy-dump:not(.tracy-dump-seamless .tracy-dump) {
+	background: #FDF5CE;
+	padding: .4em .7em;
+	border: 1px dotted silver;
 }
 
 tracy-div:not(a b) .tracy-dump-location {
