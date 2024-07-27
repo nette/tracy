@@ -67,7 +67,7 @@ if (!$stack) {
 
 
 <?php		if (!empty($row['args'])): ?>
-			<table class="tracy-callstack-args">
+			<table class="tracy-callstack-args tracy-dump-seamless">
 <?php
 			try {
 				$r = isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']);
