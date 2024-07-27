@@ -84,7 +84,7 @@ body#tracy-debug { /* in popup window */
 	display: inline;
 }
 
-#tracy-debug .tracy-dump {
+#tracy-debug .tracy-dump:where(:not(.tracy-dump-seamless .tracy-dump)) {
 	margin: 0;
 	padding: 2px 5px;
 }

@@ -84,7 +84,7 @@
 <span class='tracy-line'>%d%:</span>    function </span>third<span class='tracy-code-keyword'>(</span><span class='tracy-code-var'>$arg1</span><span class='tracy-code-keyword'>)
 </span></code></div></pre>
 
-			<table class="tracy-callstack-args">
+			<table class="tracy-callstack-args tracy-dump-seamless">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>
 			</table>
@@ -116,7 +116,7 @@
 <span class='tracy-line'>%d%:</span>    function </span>second<span class='tracy-code-keyword'>(</span><span class='tracy-code-var'>$arg1</span><span class='tracy-code-keyword'>, </span><span class='tracy-code-var'>$arg2</span><span class='tracy-code-keyword'>)
 </span></code></div></pre>
 
-			<table class="tracy-callstack-args">
+			<table class="tracy-callstack-args tracy-dump-seamless">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
 </td></tr>
 <tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">false</span></pre>
@@ -146,7 +146,7 @@
 </span><span class='tracy-line-highlight'>%d%:    first(10, 'any string');</span>
 </code></div></pre>
 
-			<table class="tracy-callstack-args">
+			<table class="tracy-callstack-args tracy-dump-seamless">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
 </td></tr>
 <tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>
@@ -189,7 +189,7 @@
 
 		<div>
 			<div class="tracy-tab-panel tracy-pane tracy-active">
-				<table class="tracy-sortable">
+				<table class="tracy-sortable tracy-dump-seamless">
 				%A%
 				</table>
 			</div>
@@ -199,7 +199,7 @@
 
 
 			<div class="tracy-tab-panel tracy-pane">
-				<table class="tracy-sortable">
+				<table class="tracy-sortable tracy-dump-seamless">
 				%A%
 				</table>
 			</div>
@@ -250,7 +250,7 @@
 			<div class="tracy-tab-panel">
 			<h3>Code: %d%</h3>
 			<div class="tracy-pane">
-				<table class="tracy-sortable">%A%</table>
+				<table class="tracy-sortable tracy-dump-seamless">%A%</table>
 			</div>
 
 
