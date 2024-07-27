@@ -41,7 +41,7 @@ $constants = get_defined_constants(true)['user'] ?? [];
 
 		<div>
 			<div class="tracy-tab-panel tracy-pane tracy-active">
-				<table class="tracy-sortable">
+				<table class="tracy-sortable tracy-dump-seamless">
 <?php foreach ($_SERVER as $k => $v): ?>
 				<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
 <?php endforeach ?>
@@ -52,7 +52,7 @@ $constants = get_defined_constants(true)['user'] ?? [];
 <?php if ($_SESSION ?? null): ?>
 			<div class="tracy-tab-panel">
 				<div class="tracy-pane">
-					<table class="tracy-sortable">
+					<table class="tracy-sortable tracy-dump-seamless">
 <?php	foreach ($_SESSION as $k => $v): ?>
 						<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $k === '__NF' ? '<i>Nette Session</i>' : $dump($v, $k) ?></td></tr>
 <?php	endforeach ?>
@@ -63,7 +63,7 @@ $constants = get_defined_constants(true)['user'] ?? [];
 <?php if (!empty($_SESSION['__NF']['DATA'])):?>
 				<h3>Nette Session</h3>
 				<div class="tracy-pane">
-					<table class="tracy-sortable">
+					<table class="tracy-sortable tracy-dump-seamless">
 <?php	foreach ($_SESSION['__NF']['DATA'] as $k => $v): ?>
 						<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
 <?php	endforeach ?>
@@ -77,7 +77,7 @@ $constants = get_defined_constants(true)['user'] ?? [];
 
 <?php if ($constants): ?>
 			<div class="tracy-tab-panel tracy-pane">
-				<table class="tracy-sortable">
+				<table class="tracy-sortable tracy-dump-seamless">
 <?php	foreach ($constants as $k => $v): ?>
 					<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
 <?php	endforeach ?>
