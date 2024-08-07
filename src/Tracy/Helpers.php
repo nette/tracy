@@ -329,11 +329,11 @@ class Helpers
 
 
 	/** @internal */
-	public static function getNonce(): ?string
+	public static function getNonceAttr(): string
 	{
 		return preg_match('#^Content-Security-Policy(?:-Report-Only)?:.*\sscript-src\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
-			? $m[1]
-			: null;
+			? ' nonce="' . self::escapeHtml($m[1]) . '"'
+			: '';
 	}
 
 

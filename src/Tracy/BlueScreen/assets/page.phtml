@@ -7,13 +7,12 @@ namespace Tracy;
 /**
  * @var \Throwable $exception
  * @var string $title
- * @var ?string $nonce
+ * @var string $nonceAttr
  * @var string $css
  * @var string $source
  */
 
 $code = $exception->getCode() ? ' #' . $exception->getCode() : '';
-$nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 $chain = Helpers::getExceptionChain($exception);
 ?><!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table></p></code>
 <html>

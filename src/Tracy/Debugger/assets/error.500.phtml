@@ -38,6 +38,6 @@ namespace Tracy;
 	</div>
 </div>
 
-<script>
+<script<?= Helpers::getNonceAttr() ?>>
 	document.body.insertBefore(document.getElementById('tracy-error'), document.body.firstChild);
 </script>
