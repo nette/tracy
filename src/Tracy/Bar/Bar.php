@@ -59,7 +59,7 @@ class Bar
 
 		$this->loaderRendered = true;
 		$requestId = $defer->getRequestId();
-		$nonce = Helpers::getNonce();
+		$nonceAttr = Helpers::getNonceAttr();
 		$async = true;
 		require __DIR__ . '/assets/loader.phtml';
 	}
@@ -101,7 +101,7 @@ class Bar
 				$defer->addSetup('Tracy.Debug.init', $content);
 
 			} else {
-				$nonce = Helpers::getNonce();
+				$nonceAttr = Helpers::getNonceAttr();
 				$async = false;
 				Debugger::removeOutputBuffers(false);
 				require __DIR__ . '/assets/loader.phtml';
