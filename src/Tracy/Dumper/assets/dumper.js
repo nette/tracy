@@ -47,8 +47,8 @@ class Dumper {
 
 		document.documentElement.addEventListener('click', (e) => {
 			let el;
-			// enables <span data-tracy-href=""> & ctrl key
-			if (e.ctrlKey && (el = e.target.closest('[data-tracy-href]'))) {
+			// enables <span data-tracy-href=""> & ctrl or cmd key
+			if ((e.ctrlKey || e.metaKey) && (el = e.target.closest('[data-tracy-href]'))) {
 				location.href = el.getAttribute('data-tracy-href');
 				return false;
 			}
