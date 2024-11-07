@@ -150,8 +150,8 @@ class Panel {
 
 		let doc = win.document;
 		doc.write('<!DOCTYPE html><meta charset="utf-8">'
-		+ '<script src="' + (baseUrl.replace(/&/g, '&amp;').replace(/"/g, '&quot;')) + '_tracy_bar=js&amp;XDEBUG_SESSION_STOP=1" onload="Tracy.Dumper.init()" async></script>'
-		+ '<body id="tracy-debug">',
+			+ '<script src="' + (baseUrl.replace(/&/g, '&amp;').replace(/"/g, '&quot;')) + '_tracy_bar=js&amp;XDEBUG_SESSION_STOP=1" onload="Tracy.Dumper.init()" async></script>'
+			+ '<body id="tracy-debug">',
 		);
 
 		let meta = this.elem.parentElement.lastElementChild;
