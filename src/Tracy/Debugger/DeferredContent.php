@@ -126,6 +126,7 @@ final class DeferredContent
 			__DIR__ . '/../assets/toggle.js',
 			__DIR__ . '/../assets/table-sort.js',
 			__DIR__ . '/../assets/tabs.js',
+			__DIR__ . '/../assets/helpers.js',
 			__DIR__ . '/../Dumper/assets/dumper.js',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.js',
 		]);
