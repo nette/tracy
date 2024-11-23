@@ -29,19 +29,19 @@ class Debugger
 
 	public const CookieSecret = 'tracy-debug';
 
-	/** @deprecated use Debugger::Version */
+	#[\Deprecated('use Debugger::Version')]
 	public const VERSION = self::Version;
 
-	/** @deprecated use Debugger::Development */
+	#[\Deprecated('use Debugger::Development')]
 	public const DEVELOPMENT = self::Development;
 
-	/** @deprecated use Debugger::Production */
+	#[\Deprecated('use Debugger::Production')]
 	public const PRODUCTION = self::Production;
 
-	/** @deprecated use Debugger::Detect */
+	#[\Deprecated('use Debugger::Detect')]
 	public const DETECT = self::Detect;
 
-	/** @deprecated use Debugger::CookieSecret */
+	#[\Deprecated('use Debugger::CookieSecret')]
 	public const COOKIE_SECRET = self::CookieSecret;
 
 	/** in production mode is suppressed any debugging output */
@@ -95,7 +95,7 @@ class Debugger
 	/** theme for dump() */
 	public static string $dumpTheme = 'light';
 
-	/** @deprecated */
+	#[\Deprecated]
 	public static $maxLen;
 
 	/********************* logging ****************d*g**/
