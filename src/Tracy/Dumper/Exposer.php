@@ -20,6 +20,15 @@ final class Exposer
 {
 	public static function exposeObject(object $obj, Value $value, Describer $describer): void
 	{
+		if (PHP_VERSION_ID >= 80400 && ($rc = new \ReflectionClass($obj))->isUninitializedLazyObject($obj)) {
+			//$describer->addPropertyTo($value, 'lazy-object', '', Value::PropertyVirtual);
+			$value->value .= ' (lazy)';
+			if ($init = $rc->getLazyInitializer($obj)) {
+				$describer->addPropertyTo($value, 'initializer', $init, Value::PropertyVirtual);
+			}
+			return;
+		}
+
 		$values = get_mangled_object_vars($obj);
 		$props = self::getProperties($obj::class);
 
