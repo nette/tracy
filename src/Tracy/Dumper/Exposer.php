@@ -21,6 +21,11 @@ final class Exposer
 {
 	public static function exposeObject(object $obj, Value $value, Describer $describer): void
 	{
+		if (PHP_VERSION_ID >= 80400 && (new \ReflectionClass($obj))->isUninitializedLazyObject($obj)) {
+			self::exposeLazyObject($obj, $describer, $value);
+			return;
+		}
+
 		$values = get_mangled_object_vars($obj);
 		$props = self::getProperties($obj::class);
 
@@ -275,5 +280,24 @@ final class Exposer
 		foreach ($obj as $k => $v) {
 			$describer->addPropertyTo($value, (string) $i++, new Ds\Pair($k, $v));
 		}
+	}
+
+
+	private static function exposeLazyObject(object $obj, Describer $describer, Value $value): void
+	{
+		$rc = new \ReflectionClass($obj);
+		foreach ($rc->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
+			if (!$prop->isLazy($obj)) {
+				$describer->addPropertyTo(
+					$value,
+					$prop->getName(),
+					$prop->getValue($obj),
+					Value::PropertyPublic,
+					described: $describer->describeEnumProperty($obj::class, $prop->getName(), $prop->getValue($obj)),
+				);
+			}
+		}
+
+		$value->value .= ' (lazy)';
 	}
 }
