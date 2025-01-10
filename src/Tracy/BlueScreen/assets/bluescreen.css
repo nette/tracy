@@ -268,8 +268,7 @@ html.tracy-bs-visible body {
 
 /* source code */
 #tracy-bs pre.tracy-code > div {
-	min-width: 100%;
-	float: left;
+	min-width: fit-content;
 	white-space: pre;
 }
 

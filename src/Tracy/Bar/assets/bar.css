@@ -293,8 +293,7 @@ body#tracy-debug .tracy-panel { /* in popup window */
 
 
 #tracy-debug .tracy-inner-container {
-	min-width: 100%;
-	float: left;
+	min-width: fit-content;
 }
 
 @media print {
