@@ -31,7 +31,8 @@ class Panel {
 		let elem = this.elem;
 
 		this.init = function () {};
-		elem.innerHTML = elem.dataset.tracyContent;
+		elem.innerHTML = elem.tracyContent = elem.dataset.tracyContent;
+		delete elem.dataset.tracyContent;
 		Tracy.Dumper.init(Debug.layer);
 		evalScripts(elem);
 
@@ -156,7 +157,7 @@ class Panel {
 
 		let meta = this.elem.parentElement.lastElementChild;
 		doc.body.innerHTML = '<tracy-div itemscope>'
-		+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.dataset.tracyContent + '</div>'
+		+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.tracyContent + '</div>'
 		+ meta.outerHTML
 		+ '</tracy-div>';
 		evalScripts(doc.body);
