@@ -1,4 +1,5 @@
 <!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table></p></code>
+
 <html>
 <head>
 	<meta charset="utf-8">
@@ -16,24 +17,25 @@
 <body>
 <tracy-div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle">&#xfeff;</a>
+
 	<div class="tracy-bs-main">
 <section class="tracy-section tracy-section--error">
 	<p>Exception #123</p>
 
-	<h1><span>The my exception</span>
-	<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
+	<h1>
+		<span>The my exception</span>
+			<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
 	</h1>
 
-	</section>
-
-
-
+</section>
 <section class="tracy-section">
-	<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle">Source file</a>
+	</h2>
 
 	<div class="tracy-section-panel">
-		<p><b>File:</b> <a href="%a%" title="%a%" class="tracy-editor">%a%<b>Debugger.exception.in-generator.html.phpt</b>:%d%</a></p>
-		<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
+			<p><b>File:</b> <a href="%a%" title="%a%" class="tracy-editor">%a%<b>Debugger.exception.in-generator.html.phpt</b>:%d%</a></p>
+			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    </span>Debugger<span class='tracy-code-keyword'>::</span><span class='tracy-code-var'>$productionMode </span><span class='tracy-code-keyword'>= </span>false<span class='tracy-code-keyword'>;
 <span class='tracy-line'>%d%:</span>    </span>setHtmlMode<span class='tracy-code-keyword'>();
@@ -51,23 +53,25 @@
 </span></code></div></pre>
 	</div>
 </section>
-
 <section class="tracy-section">
-	<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle">Call stack</a>
+	</h2>
 
 	<div class="tracy-section-panel">
-	<div class="tracy-callstack">
+		<div class="tracy-callstack">
+				<div class="tracy-callstack-file">
+						<a href="%a%" title="%a%" class="tracy-editor">%a%<b>Debugger.exception.in-generator.html.phpt</b>:%d%</a>
+				</div>
 
-		<div class="tracy-callstack-file">
-			<a href="%a%" title="%a%" class="tracy-editor">%a%<b>Debugger.exception.in-generator.html.phpt</b>:%d%</a>
-		</div>
+				<div class="tracy-callstack-callee">
+						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+<b>{closure%a?%}</b> ()
+					</a>
+				</div>
 
-		<div class="tracy-callstack-callee">
-			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>{closure%a?%}</b> ()</a>
-		</div>
-
-		<div class="tracy-callstack-additional tracy-collapsed">
-			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>    </span>setHtmlMode<span class='tracy-code-keyword'>();
+					<div class="tracy-callstack-additional tracy-collapsed">
+							<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>    </span>setHtmlMode<span class='tracy-code-keyword'>();
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    </span>Debugger<span class='tracy-code-keyword'>::</span>enable<span class='tracy-code-keyword'>();
 <span class='tracy-line'>%d%:</span>
@@ -84,18 +88,19 @@
 <span class='tracy-line'>%d%:</span>    </span><span class='tracy-code-var'>$fn</span><span class='tracy-code-keyword'>(</span><span class='tracy-code-var'>$generator</span><span class='tracy-code-keyword'>);</span>
 </code></div></pre>
 
-		</div>
+					</div>
+				<div class="tracy-callstack-file">
+						<a href="%a%" title="%a%" class="tracy-editor">%a%<b>Debugger.exception.in-generator.html.phpt</b>:%d%</a>
+				</div>
 
-		<div class="tracy-callstack-file">
-			<a href="%a%" title="%a%" class="tracy-editor">%a%<b>Debugger.exception.in-generator.html.phpt</b>:%d%</a>
-		</div>
+				<div class="tracy-callstack-callee">
+						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+<b>{closure%a?%}</b> (...)
+					</a>
+				</div>
 
-		<div class="tracy-callstack-callee">
-			<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed"><b>{closure%a?%}</b> (...)</a>
-		</div>
-
-		<div class="tracy-callstack-additional tracy-collapsed">
-			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
+					<div class="tracy-callstack-additional tracy-collapsed">
+							<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    </span><span class='tracy-code-var'>$generator </span><span class='tracy-code-keyword'>= (function (): </span>iterable <span class='tracy-code-keyword'>{
 <span class='tracy-line'>%d%:</span>        yield </span><span class='tracy-dump-number'>5</span><span class='tracy-code-keyword'>;
 <span class='tracy-line'>%d%:</span>        throw new </span>Exception<span class='tracy-code-keyword'>(</span><span class='tracy-dump-string'>'The my exception'</span><span class='tracy-code-keyword'>, </span><span class='tracy-dump-number'>123</span><span class='tracy-code-keyword'>);
@@ -108,12 +113,19 @@
 </span><span class='tracy-line-highlight'>%d%:    $fn($generator);</span>
 </code></div></pre>
 
-			<table class="tracy-callstack-args">
-<tr><th>#0</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='%a%'></pre>
-</td></tr>
-			</table>
+							<table class="tracy-callstack-args">
+									<tr>
+										<th>#0</th>
+										<td><pre class="tracy-dump tracy-light" data-tracy-dump='{"ref":%d%}'></pre>
+</td>
+									</tr>
+							</table>
+					</div>
 		</div>
 	</div>
-	</div>
 </section>
+%A%
+</body>
+</html>
+
 %A%

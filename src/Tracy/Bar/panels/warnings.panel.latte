@@ -1,0 +1,14 @@
+{varType array<string, int|null> $data}
+<h1>Warnings</h1>
+
+<div class="tracy-inner">
+	<table class="tracy-sortable">
+		{foreach $data as $item => $count}
+			{do [$file, $line, $message] = explode('|', $item, 3)}
+			<tr>
+				<td class="tracy-right">{$count ? $count . '×' : ''}</td>
+				<td><pre>{$message} in {Tracy\Helpers::editorLink($file, (int) $line)}</pre></td>
+			</tr>
+		{/foreach}
+	</table>
+</div>

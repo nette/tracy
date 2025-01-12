@@ -1,0 +1,21 @@
+<?php declare(strict_types=1); ?>
+<?php /** @var bool $async */ ?><?php /** @var string $requestId */ ?>
+<?php $nonce = Tracy\Helpers::getNonce() ?><?php $baseUrl = $_SERVER['REQUEST_URI'] ?? '' ?><?php $baseUrl .= strpos($baseUrl, '?') === false ? '?' : '&' ?>
+<?php if (empty($content)): ?><script src="<?= Tracy\Helpers::escapeHtml($baseUrl) ?>
+_tracy_bar=<?= Tracy\Helpers::escapeHtml(urlencode('content.' . $requestId)) ?>
+&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Tracy\Helpers::escapeHtml($requestId) ?>
+"<?php if ($ʟ_tmp = $async) echo ' async', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?><?php if ($ʟ_tmp = $nonce) echo ' nonce', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?>></script>
+<?php else: ?>
+
+
+
+<!-- Tracy Debug Bar -->
+<script src="<?= Tracy\Helpers::escapeHtml($baseUrl) ?>
+_tracy_bar=js&amp;v=<?= Tracy\Helpers::escapeHtml(urlencode(Tracy\Debugger::Version)) ?>
+&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Tracy\Helpers::escapeHtml($requestId) ?>
+"<?php if ($ʟ_tmp = $nonce) echo ' nonce', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?>></script>
+<script<?php if ($ʟ_tmp = $nonce) echo ' nonce', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?>>
+Tracy.Debug.init(<?= str_replace(['<!--', '</s'], ['<\!--', '<\/s'], json_encode($content, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_INVALID_UTF8_SUBSTITUTE)) ?>
+);
+</script>
+<?php endif ?>

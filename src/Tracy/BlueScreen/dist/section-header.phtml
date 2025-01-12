@@ -1,0 +1,24 @@
+<?php declare(strict_types=1); ?>
+<?php use Tracy\Helpers ?><?php /** @var Throwable $ex */ ?><?php /** @var Throwable[] $exceptions */ ?><?php /** @var array{link: string, label: string, external?: bool}[] $actions */ ?><?php /** @var Tracy\BlueScreen $blueScreen */ ?>
+<?php $title = $ex instanceof ErrorException ? Helpers::errorTypeToString($ex->getSeverity()) : get_debug_type($ex) ?><?php $code = $ex->getCode() ? ' #' . $ex->getCode() : '' ?>
+<section class="tracy-section tracy-section--error">
+<?php if ($ex->getMessage()): ?>
+	<p><?= Tracy\Helpers::escapeHtml($title) ?>
+<?= Tracy\Helpers::escapeHtml($code) ?>
+</p>
+<?php endif ?>
+
+	<h1>
+		<span><?= $blueScreen->formatMessage($ex) ?: htmlspecialchars($title . $code) ?>
+</span>
+<?php foreach ($actions as $item): ?>			<a href="<?= Tracy\Helpers::escapeHtml($item['link']) ?>
+" class="tracy-action"<?php if ($ʟ_tmp = !empty($item['external']) ? '_blank' : null) echo ' target', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?><?php if ($ʟ_tmp = !empty($item['external']) ? 'noreferrer noopener' : null) echo ' rel', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?>><?= Tracy\Helpers::escapeHtml($item['label']) ?>
+&#x25ba;</a>
+<?php endforeach ?>	</h1>
+
+<?php if ($ex->getPrevious()): ?>		<div class="tracy-caused">
+			<a href="#tracyCaused<?= Tracy\Helpers::escapeHtml(count($exceptions) + 1) ?>
+">Caused by <?= Tracy\Helpers::escapeHtml(get_debug_type($ex->getPrevious())) ?>
+</a>
+		</div>
+<?php endif ?></section>

@@ -1,0 +1,34 @@
+{use Tracy\Helpers}
+{varType string $source}
+{varType callable $dump}
+
+{exitIf !Helpers::isCli()}
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">CLI request</a>
+	</h2>
+
+	<div class="tracy-section-panel tracy-collapsed">
+		<h3>Process ID {getmypid()}</h3>
+
+		{if count($tmp = explode('):', $source, 2)) === 2}
+			<pre>php{$tmp[1]}</pre>
+		{/if}
+
+		{if isset($_SERVER[argv])}
+			<h3>Arguments</h3>
+
+			<div class="tracy-pane">
+				<table>
+					{foreach $_SERVER[argv] as $k => $v}
+						<tr>
+							<th>{$k}</th>
+							<td>{$dump($v, $k)}</td>
+						</tr>
+					{/foreach}
+				</table>
+			</div>
+		{/if}
+	</div>
+</section>

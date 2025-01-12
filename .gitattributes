@@ -3,6 +3,7 @@
 .gitignore      export-ignore
 ncs.*           export-ignore
 phpstan*.neon   export-ignore
+src/**/*.latte  export-ignore
 tests/          export-ignore
 
 *.php*          diff=php

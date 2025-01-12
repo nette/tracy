@@ -31,7 +31,7 @@ class DefaultBarPanel implements IBarPanel
 	{
 		return Helpers::capture(function () {
 			$data = $this->data;
-			require __DIR__ . "/panels/{$this->id}.tab.phtml";
+			require __DIR__ . "/dist/{$this->id}.tab.phtml";
 		});
 	}
 
@@ -42,9 +42,9 @@ class DefaultBarPanel implements IBarPanel
 	public function getPanel(): string
 	{
 		return Helpers::capture(function () {
-			if (is_file(__DIR__ . "/panels/{$this->id}.panel.phtml")) {
+			if (is_file(__DIR__ . "/dist/{$this->id}.panel.phtml")) {
 				$data = $this->data;
-				require __DIR__ . "/panels/{$this->id}.panel.phtml";
+				require __DIR__ . "/dist/{$this->id}.panel.phtml";
 			}
 		});
 	}

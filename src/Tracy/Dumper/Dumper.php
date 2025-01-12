@@ -171,7 +171,7 @@ class Dumper
 
 		$sent = true;
 
-		$nonceAttr = Helpers::getNonceAttr();
+		$nonceAttr = ($nonce = Helpers::getNonce()) ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
 		$s = (Debugger::$showBar ? '' : file_get_contents(__DIR__ . '/../assets/reset.css'))
 			. file_get_contents(__DIR__ . '/../assets/toggle.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-light.css')
