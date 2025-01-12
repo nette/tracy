@@ -1,0 +1,16 @@
+<?php
+declare(strict_types=1);
+?>
+<h1>Warnings</h1>
+
+<div class="tracy-inner">
+	<table class="tracy-sortable">
+<?php foreach ($data as $item => $count): ?><?php [$file, $line, $message] = explode('|', $item, 3) ?>			<tr>
+				<td class="tracy-right"><?= Tracy\Helpers::escapeHtml($count ? $count . '×' : '') ?>
+</td>
+				<td><pre><?= Tracy\Helpers::escapeHtml($message) ?>
+ in <?= Tracy\Helpers::editorLink($file, (int) $line) ?>
+</pre></td>
+			</tr>
+<?php endforeach ?>	</table>
+</div>

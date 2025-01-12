@@ -120,14 +120,14 @@ class BlueScreen
 			header('Content-Type: text/html; charset=UTF-8');
 		}
 
-		$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml');
+		$this->renderTemplate($exception, __DIR__ . '/dist/page.phtml');
 	}
 
 
 	/** @internal */
 	public function renderToAjax(\Throwable $exception, DeferredContent $defer): void
 	{
-		$defer->addSetup('Tracy.BlueScreen.loadAjax', Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/assets/content.phtml')));
+		$defer->addSetup('Tracy.BlueScreen.loadAjax', Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/dist/content.phtml')));
 	}
 
 
@@ -142,7 +142,7 @@ class BlueScreen
 				fwrite($handle, $buffer);
 				return '';
 			}, 4096);
-			$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml', toScreen: false);
+			$this->renderTemplate($exception, __DIR__ . '/dist/page.phtml', toScreen: false);
 			ob_end_flush();
 			ob_end_clean();
 			fclose($handle);
@@ -189,7 +189,7 @@ class BlueScreen
 		], Debugger::$customCssFiles));
 		$css = Helpers::minifyCss(implode('', $css));
 
-		$nonceAttr = $toScreen ? Helpers::getNonceAttr() : null;
+		$nonce = $toScreen ? Helpers::getNonce() : null;
 		$actions = $toScreen ? $this->renderActions($exception) : [];
 
 		require $template;

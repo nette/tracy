@@ -60,9 +60,9 @@ class Bar
 
 		$this->loaderRendered = true;
 		$requestId = $defer->getRequestId();
-		$nonceAttr = Helpers::getNonceAttr();
+		$nonce = Helpers::getNonce();
 		$async = true;
-		require __DIR__ . '/assets/loader.phtml';
+		require __DIR__ . '/dist/loader.phtml';
 	}
 
 
@@ -102,10 +102,10 @@ class Bar
 				$defer->addSetup('Tracy.Debug.init', $content);
 
 			} else {
-				$nonceAttr = Helpers::getNonceAttr();
+				$nonce = Helpers::getNonce();
 				$async = false;
 				Debugger::removeOutputBuffers(errorOccurred: false);
-				require __DIR__ . '/assets/loader.phtml';
+				require __DIR__ . '/dist/loader.phtml';
 			}
 		}
 	}
@@ -118,10 +118,10 @@ class Bar
 
 		return [
 			'bar' => Helpers::capture(function () use ($type, $panels) {
-				require __DIR__ . '/assets/bar.phtml';
+				require __DIR__ . '/dist/bar.phtml';
 			}),
 			'panels' => Helpers::capture(function () use ($type, $panels) {
-				require __DIR__ . '/assets/panels.phtml';
+				require __DIR__ . '/dist/panels.phtml';
 			}),
 		];
 	}
