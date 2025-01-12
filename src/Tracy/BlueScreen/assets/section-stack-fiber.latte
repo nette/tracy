@@ -1,0 +1,14 @@
+<?php
+
+namespace Tracy;
+
+/**
+ * @var Fiber $fiber
+ * @var callable $dump
+ */
+
+$ref = new ReflectionFiber($fiber);
+$stack = $ref->getTrace();
+$expanded = 0;
+
+require __DIR__ . '/section-stack-callStack.phtml';

@@ -1,0 +1,24 @@
+<?php
+declare(strict_types=1);
+?>
+
+<?php $baseUrl = $_SERVER['REQUEST_URI'] ?? '' ?><?php $baseUrl .= strpos($baseUrl, '?') === false ? '?' : '&' ?><?php $asyncAttr = $async ? ' async' : '' ?>
+<?php if (empty($content)): ?><script src="<?= Tracy\Helpers::escapeHtml($baseUrl) ?>
+_tracy_bar=<?= Tracy\Helpers::escapeHtml(urlencode("content.{$requestId) ?>
+")}&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Tracy\Helpers::escapeHtml($requestId) ?>
+"<?= Tracy\Helpers::escapeHtml($asyncAttr) ?>
+<?= Tracy\Helpers::escapeHtml($nonceAttr) ?>
+></script>
+<?php else: ?>
+<!-- Tracy Debug Bar -->
+<script src="<?= Tracy\Helpers::escapeHtml($baseUrl) ?>
+_tracy_bar=js&amp;v=<?= Tracy\Helpers::escapeHtml(urlencode(Tracy\Debugger::Version)) ?>
+&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Tracy\Helpers::escapeHtml($requestId) ?>
+"<?= Tracy\Helpers::escapeHtml($nonceAttr) ?>
+></script>
+<script<?= Tracy\Helpers::escapeHtml($nonceAttr) ?>
+>
+Tracy.Debug.init(<?= Tracy\Helpers::escapeHtml(str_replace(['<!--', '</s'], ['<\!--', '<\/s'], json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE))) ?>
+);
+</script>
+<?php endif ?>
