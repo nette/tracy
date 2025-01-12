@@ -1,0 +1,67 @@
+{*
+ * @var Throwable $ex
+ * @var Throwable[] $exceptions
+ * @var array[] $actions
+ * @var callable $dump
+ * @var BlueScreen $blueScreen
+ * @var Generator[] $generators
+ * @var Fiber[] $fibers
+ *}
+
+{include 'section-header.phtml'}
+
+{foreach $blueScreen->renderPanels($ex) as $panel}
+	<section class="tracy-section">
+		<h2 class="tracy-section-label">
+			<a href="#" data-tracy-ref="^+" class="tracy-toggle">{$panel->tab}</a>
+		</h2>
+
+		<div class="tracy-section-panel">
+			{$panel->panel|noescape}
+		</div>
+	</section>
+{/foreach}
+
+{if !$exceptions && ($generators || $fibers)}
+	<section class="tracy-section tracy-section--stack">
+		<div class="tracy-section-panel">
+			<div class="tracy-tabs">
+				<ul class="tracy-tab-bar">
+					<li class="tracy-tab-label tracy-active"><a href="#">Main thread</a></li>
+
+					{foreach $generators as $id => $generator}
+						<li class="tracy-tab-label"><a href="#">Generator #{$id}</a></li>
+					{/foreach}
+
+					{foreach $fibers as $id => $fiber}
+						<li class="tracy-tab-label"><a href="#">Fiber #{$id}</a></li>
+					{/foreach}
+				</ul>
+
+				<div>
+					<div class="tracy-tab-panel tracy-active">
+						{include '../assets/section-stack-exception.php'}
+					</div>
+
+					{foreach $generators as $generator}
+						<div class="tracy-tab-panel">
+							{include '../assets/section-stack-generator.php'}
+						</div>
+					{/foreach}
+
+					{foreach $fibers as $fiber}
+						<div class="tracy-tab-panel">
+							{include '../assets/section-stack-fiber.php'}
+						</div>
+					{/foreach}
+				</div>
+			</div>
+		</div>
+	</section>
+{else}
+	{include '../assets/section-stack-exception.php'}
+{/if}
+
+{include 'section-exception-exception.phtml'}
+
+{include 'section-exception-causedBy.phtml'}

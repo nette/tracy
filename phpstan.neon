@@ -72,3 +72,9 @@ parameters:
 		-
 			identifier: missingType.return
 			path: src/Tracy/Logger/ILogger.php
+
+		# Arrow function callback receives class names from get_declared_classes() etc.
+		-
+			identifier: argument.type
+			message: '#class\-string#'
+			path: src/Tracy/Bar/panels/info.panel.php

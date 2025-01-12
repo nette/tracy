@@ -1,0 +1,48 @@
+<?php
+declare(strict_types=1);
+?>
+<?php use Tracy\Dumper ?>
+<tracy-div id="tracy-bs" itemscope>
+	<a id="tracy-bs-toggle" href="#" class="tracy-toggle">&#xfeff;</a>
+
+	<div class="tracy-bs-main">
+<?php $ex = $exception ?><?php $exceptions = [] ?>
+<?php require __DIR__ . '/section-exception.phtml' ?><?php require __DIR__ . '/section-lastMutedError.phtml' ?>
+<?php $bottomPanels = [] ?><?php foreach ($blueScreen->renderPanels(null) as $panel): ?><?php if (!empty($panel->bottom)): ?><?php $bottomPanels[] = $panel ?><?php if (true) { continue; } ?><?php endif ?>
+<?php $collapsed = !isset($panel->collapsed) || $panel->collapsed ?>			<section class="tracy-section">
+				<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null]))) ?>"><?= Tracy\Helpers::escapeHtml($panel->tab) ?>
+</a></h2>
+
+				<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-section-panel', $collapsed ? 'tracy-collapsed' : null]))) ?>">
+					<?= $panel->panel ?>
+
+				</div>
+			</section>
+<?php endforeach ?>
+<?php require __DIR__ . '/section-environment.phtml' ?><?php require __DIR__ . '/section-cli.phtml' ?><?php require __DIR__ . '/section-http.phtml' ?>
+<?php foreach ($bottomPanels as $panel): ?>			<section class="tracy-section">
+				<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle"><?= Tracy\Helpers::escapeHtml($panel->tab) ?>
+</a></h2>
+
+				<div class="tracy-section-panel">
+					<?= $panel->panel ?>
+
+				</div>
+			</section>
+<?php endforeach ?>
+		<footer>
+			<ul>
+				<li><b><a href="https://github.com/sponsors/dg" target="_blank" rel="noreferrer noopener">Please support Tracy via a donation 💙️</a></b></li>
+				<li>Report generated at <?= Tracy\Helpers::escapeHtml(date('Y/m/d H:i:s')) ?>
+</li>
+<?php foreach ($info as $item): ?>					<li><?= Tracy\Helpers::escapeHtml($item) ?>
+</li>
+<?php endforeach ?>			</ul>
+
+			<div class="tracy-footer-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
+		</footer>
+	</div>
+
+	<meta itemprop=tracy-snapshot content=<?= Dumper::formatSnapshotAttribute($snapshot) ?>
+>
+</tracy-div>

@@ -1,0 +1,16 @@
+<?php
+declare(strict_types=1);
+?>
+<?php use Tracy\Dumper ?>
+<?php $icons = '
+	<div class="tracy-icons">
+		<a href="#" data-tracy-action="window" title="open in window">&curren;</a>
+		<a href="#" data-tracy-action="close" title="close window">&times;</a>
+	</div>
+' ?><div itemscope>
+<?php foreach ($panels as $panel): ?><?php $content = $panel->panel ? $panel->panel . "\n" . $icons : '' ?>		<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-panel', $type !== 'ajax' ? 'tracy-panel-persist' : null, 'tracy-panel-' . $type]))) ?>" id="tracy-debug-panel-<?= Tracy\Helpers::escapeHtml($panel->id) ?>
+" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>
+'></div>
+<?php endforeach ?>	<meta itemprop=tracy-snapshot content=<?= Dumper::formatSnapshotAttribute(Dumper::$liveSnapshot) ?>
+>
+</div>

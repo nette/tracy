@@ -1,0 +1,42 @@
+<?php
+declare(strict_types=1);
+?>
+<?php use Tracy\BlueScreen ?><?php use Tracy\Debugger ?><?php use Tracy\Helpers ?>
+<?php $sourceOriginal = $file && @is_file($file) ? [$file, $line] : null ?><?php $sourceMapped = $sourceOriginal ? Debugger::mapSource($file, $line) : null ?><?php $collapsed = $expanded !== null ?>
+<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null]))) ?>">Source file</a>
+	</h2>
+
+	<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-section-panel', $collapsed ? 'tracy-collapsed' : null]))) ?>">
+<?php if ($sourceOriginal && $sourceMapped): ?>			<div class="tracy-tabs">
+				<ul class="tracy-tab-bar">
+					<li class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-label', !$sourceMapped['active'] ? 'tracy-active' : null]))) ?>"><a href="#">PHP</a></li>
+					<li class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-label', $sourceMapped['active'] ? 'tracy-active' : null]))) ?>"><a href="#"><?= Tracy\Helpers::escapeHtml($sourceMapped['label']) ?>
+</a></li>
+				</ul>
+
+				<div>
+					<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-panel', !$sourceMapped['active'] ? 'tracy-active' : null]))) ?>">
+						<p><b>File:</b> <?= Helpers::editorLink(...$sourceOriginal) ?>
+</p>
+						<?= BlueScreen::highlightFile(...$sourceOriginal) ?>
+
+					</div>
+
+					<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-panel', $sourceMapped['active'] ? 'tracy-active' : null]))) ?>">
+						<p><b>File:</b> <?= Helpers::editorLink($sourceMapped['file'], $sourceMapped['line']) ?>
+</p>
+						<?= BlueScreen::highlightFile($sourceMapped['file'], line: $sourceMapped['line'] ?? 0, column: $sourceMapped['column'] ?? 0, php: false) ?>
+
+					</div>
+				</div>
+			</div>
+<?php else: ?>			<p><b>File:</b> <?= Helpers::editorLink($file, $line) ?>
+</p>
+<?php if ($sourceOriginal): ?>
+			<?= BlueScreen::highlightFile(...$sourceOriginal) ?>
+
+<?php endif ?>
+<?php endif ?>	</div>
+</section>

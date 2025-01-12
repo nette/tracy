@@ -1,0 +1,99 @@
+{*
+ * @var callable $dump
+ * @var bool $showEnvironment
+ * @var array $obStatus
+ * @var BlueScreen $blueScreen
+ *}
+{use Tracy\Dumper}
+
+{exitIf !$showEnvironment}
+{do $constants = get_defined_constants(true)[user] ?? []}
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a>
+	</h2>
+
+	<div class="tracy-section-panel tracy-collapsed">
+		<div class="tracy-tabs">
+			<ul class="tracy-tab-bar">
+				<li class="tracy-tab-label tracy-active"><a href="#">$_SERVER</a></li>
+				{if $_SESSION ?? null}
+					<li class="tracy-tab-label"><a href="#">$_SESSION</a></li>
+				{/if}
+				{if $constants}
+					<li class="tracy-tab-label"><a href="#">Constants</a></li>
+				{/if}
+				<li class="tracy-tab-label"><a href="#">Configuration</a></li>
+				{if $obStatus}
+					<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
+				{/if}
+			</ul>
+
+			<div>
+				<div class="tracy-tab-panel tracy-pane tracy-active">
+					<table class="tracy-sortable">
+						{foreach $_SERVER as $k => $v}
+							<tr>
+								<th>{$k}</th>
+								<td>{$dump($v, $k)}</td>
+							</tr>
+						{/foreach}
+					</table>
+				</div>
+
+				{if $_SESSION ?? null}
+					<div class="tracy-tab-panel">
+						<div class="tracy-pane">
+							<table class="tracy-sortable">
+								{foreach $_SESSION as $k => $v}
+									<tr>
+										<th>{$k}</th>
+										<td>{if $k === __NF}<i>Nette Session</i>{else}{$dump($v, $k)}{/if}</td>
+									</tr>
+								{/foreach}
+							</table>
+						</div>
+
+						{if !empty($_SESSION[__NF][DATA])}
+							<h3>Nette Session</h3>
+							<div class="tracy-pane">
+								<table class="tracy-sortable">
+									{foreach $_SESSION[__NF][DATA] as $k => $v}
+										<tr>
+											<th>{$k}</th>
+											<td>{$dump($v, $k)}</td>
+										</tr>
+									{/foreach}
+								</table>
+							</div>
+						{/if}
+					</div>
+				{/if}
+
+				{if $constants}
+					<div class="tracy-tab-panel tracy-pane">
+						<table class="tracy-sortable">
+							{foreach $constants as $k => $v}
+								<tr>
+									<th>{$k}</th>
+									<td>{$dump($v, $k)}</td>
+								</tr>
+							{/foreach}
+						</table>
+					</div>
+				{/if}
+
+				<div class="tracy-tab-panel">
+					{do $blueScreen->renderPhpInfo()}
+				</div>
+
+				{if $obStatus}
+					<div class="tracy-tab-panel tracy-pane">
+						{Dumper::toHtml($obStatus, [Dumper::COLLAPSE_COUNT => 10])}
+					</div>
+				{/if}
+			</div>
+		</div>
+	</div>
+</section>

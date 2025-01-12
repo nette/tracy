@@ -1,0 +1,22 @@
+{*
+ * @var bool $async
+ * @var string $requestId
+ *}
+
+{do $nonce = Tracy\Helpers::getNonce()}
+{do $baseUrl = $_SERVER['REQUEST_URI'] ?? ''}
+{do $baseUrl .= strpos($baseUrl, '?') === false ? '?' : '&'}
+
+{if empty($content)}
+<script src="{$baseUrl}_tracy_bar={urlencode('content.' . $requestId)}&amp;XDEBUG_SESSION_STOP=1" data-id="{$requestId}" async={$async} nonce={$nonce}></script>
+{else}
+
+
+
+
+<!-- Tracy Debug Bar -->
+<script src="{$baseUrl}_tracy_bar=js&amp;v={urlencode(Tracy\Debugger::Version)}&amp;XDEBUG_SESSION_STOP=1" data-id="{$requestId}" nonce={$nonce}></script>
+<script nonce={$nonce}>
+Tracy.Debug.init({str_replace(['<!--', '</s'], ['<\!--', '<\/s'], json_encode($content, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_INVALID_UTF8_SUBSTITUTE))|noescape});
+</script>
+{/if}
