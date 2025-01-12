@@ -156,6 +156,7 @@ body#tracy-debug { /* in popup window */
 
 #tracy-debug-bar .tracy-label {
 	margin-left: .2em;
+	display: inline-block; /* removes leading and trailing spaces */
 }
 
 #tracy-debug-bar li > a,
