@@ -1,0 +1,27 @@
+{*
+ * @var ?array{type: int, message: string, file: string, line: int} $lastError
+ *}
+{use Tracy\BlueScreen}
+{use Tracy\Helpers}
+
+{exitIf !$lastError}
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last muted error</a>
+	</h2>
+
+	<div class="tracy-section-panel tracy-collapsed">
+		<h3>{Helpers::errorTypeToString($lastError[type])}: {$lastError[message]}</h3>
+
+		<p><i>Note: the last muted error may have nothing to do with the thrown exception.</i></p>
+
+		{if @is_file($lastError[file])}
+			<p>{Helpers::editorLink($lastError[file], $lastError[line])}</p>
+
+			<div>{BlueScreen::highlightFile($lastError[file], $lastError[line])}</div>
+		{else}
+			<p><i>inner-code</i>:{$lastError[line]}</p>
+		{/if}
+	</div>
+</section>

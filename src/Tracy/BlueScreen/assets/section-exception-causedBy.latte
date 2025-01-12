@@ -1,0 +1,20 @@
+{*
+ * @var Throwable $ex
+ * @var Throwable[] $exceptions
+ * @var array{link: string, label: string, external?: bool}[] $actions
+ * @var callable $dump
+ *}
+{do $ex = $ex->getPrevious()}
+{exitIf !$ex || in_array($ex, $exceptions, true)}
+{do $exceptions[] = $ex}
+{do $collapsed = count($exceptions) > 1}
+
+<section class="tracy-section" id="tracyCaused{count($exceptions)}">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class={[tracy-toggle, $collapsed ? tracy-collapsed : null]}>Caused by</a>
+	</h2>
+
+	<div class={[tracy-section-panel, tracy-section--causedby, $collapsed ? tracy-collapsed : null]}>
+		{include 'section-exception.phtml'}
+	</div>
+</section>

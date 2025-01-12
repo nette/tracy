@@ -39,7 +39,7 @@ final class ProductionStrategy
 				header('Content-Type: text/html; charset=UTF-8');
 			}
 
-			(fn($logged) => require Debugger::$errorTemplate ?? __DIR__ . '/assets/error.500.phtml')(!$e);
+			(fn($logged) => require Debugger::$errorTemplate ?? __DIR__ . '/dist/error.500.phtml')(!$e);
 
 		} elseif (Helpers::isCli() && is_resource(STDERR)) {
 			fwrite(STDERR, "ERROR: {$exception->getMessage()}\n"

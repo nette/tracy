@@ -1,0 +1,28 @@
+<?php
+declare(strict_types=1);
+?>
+<?php /**
+ * @var ?array{type: int, message: string, file: string, line: int} $lastError
+ */ ?><?php use Tracy\BlueScreen ?><?php use Tracy\Helpers ?>
+<?php if (!$lastError) { return; } ?>
+<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Last muted error</a>
+	</h2>
+
+	<div class="tracy-section-panel tracy-collapsed">
+		<h3><?= Tracy\Helpers::escapeHtml(Helpers::errorTypeToString($lastError['type'])) ?>
+: <?= Tracy\Helpers::escapeHtml($lastError['message']) ?>
+</h3>
+
+		<p><i>Note: the last muted error may have nothing to do with the thrown exception.</i></p>
+
+<?php if (@is_file($lastError['file'])): ?>			<p><?= Helpers::editorLink($lastError['file'], $lastError['line']) ?>
+</p>
+
+			<div><?= BlueScreen::highlightFile($lastError['file'], $lastError['line']) ?>
+</div>
+<?php else: ?>			<p><i>inner-code</i>:<?= Tracy\Helpers::escapeHtml($lastError['line']) ?>
+</p>
+<?php endif ?>	</div>
+</section>

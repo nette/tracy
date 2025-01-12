@@ -1,0 +1,77 @@
+<?php
+declare(strict_types=1);
+?>
+<?php /**
+ * @var callable $dump
+ * @var ?int $expanded
+ * @var array<int, array<string, mixed>> $stack
+ */ ?><?php use Tracy\BlueScreen ?><?php use Tracy\Debugger ?><?php use Tracy\Helpers ?>
+<?php if (!$stack) { return; } ?>
+<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle">Call stack</a>
+	</h2>
+
+	<div class="tracy-section-panel">
+		<div class="tracy-callstack">
+<?php foreach ($stack as $key => $row): ?><?php $clickable = !empty($row['args']) || isset($row['file']) && @is_file($row['file']) ?>
+				<div class="tracy-callstack-file">
+<?php if (isset($row['file']) && @is_file($row['file'])): ?>						<?= Helpers::editorLink($row['file'], $row['line']) ?>
+
+<?php else: ?>						<i>inner-code</i><?php if (isset($row['line'])): ?>
+:<?= Tracy\Helpers::escapeHtml($row['line']) ?>
+
+<?php endif ?>
+<?php endif ?>				</div>
+
+				<div class="tracy-callstack-callee">
+<?php if ($clickable): ?>						<a href="#" data-tracy-ref="^div + div" class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-toggle', $expanded !== $key ? 'tracy-collapsed' : null]))) ?>">
+<?php endif ?><?php if (isset($row['class'])): ?>
+					<?= Tracy\Helpers::escapeHtml($row['class']) ?>
+::<?php endif ?>
+<b><?= Tracy\Helpers::escapeHtml($row['function']) ?>
+</b> <?= Tracy\Helpers::escapeHtml(empty($row['args']) ? '()' : '(...)') ?>
+
+<?php if ($clickable): ?>
+					</a>
+<?php endif ?>
+				</div>
+
+<?php if ($clickable): ?>					<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-callstack-additional', $expanded !== $key ? 'tracy-collapsed' : null]))) ?>">
+<?php $sourceOriginal = isset($row['file']) && @is_file($row['file']) ? [$row['file'], $row['line']] : null ?><?php $sourceMapped = $sourceOriginal ? Debugger::mapSource(...$sourceOriginal) : null ?><?php if ($sourceOriginal && $sourceMapped): ?>							<div class="tracy-tabs">
+								<ul class="tracy-tab-bar">
+									<li class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-label', !$sourceMapped['active'] ? 'tracy-active' : null]))) ?>"><a href="#">PHP</a></li>
+									<li class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-label', $sourceMapped['active'] ? 'tracy-active' : null]))) ?>"><a href="#"><?= Tracy\Helpers::escapeHtml($sourceMapped['label']) ?>
+</a></li>
+								</ul>
+
+								<div>
+									<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-panel', !$sourceMapped['active'] ? 'tracy-active' : null]))) ?>">
+										<?= BlueScreen::highlightFile(...$sourceOriginal) ?>
+
+									</div>
+
+									<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-panel', $sourceMapped['active'] ? 'tracy-active' : null]))) ?>">
+										<?= BlueScreen::highlightFile($sourceMapped['file'], line: $sourceMapped['line'], column: $sourceMapped['column'], php: false) ?>
+
+									</div>
+								</div>
+							</div>
+<?php elseif ($sourceOriginal): ?>							<?= BlueScreen::highlightFile(...$sourceOriginal) ?>
+
+<?php endif ?>
+
+<?php if (!empty($row['args'])): ?>							<table class="tracy-callstack-args">
+<?php try { ?><?php $params = (isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']))->getParameters() ?><?php } catch (\Throwable) { ?><?php $params = [] ?><?php } ?>
+<?php foreach ($row['args'] as $k => $v): ?><?php $argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k ?>									<tr>
+										<th><?= Tracy\Helpers::escapeHtml(is_string($argName) ? '$' : '#') ?>
+<?= Tracy\Helpers::escapeHtml($argName) ?>
+</th>
+										<td><?= $dump($v, (string) $argName) ?>
+</td>
+									</tr>
+<?php endforeach ?>							</table>
+<?php endif ?>					</div>
+<?php endif ?><?php endforeach ?>		</div>
+	</div>
+</section>

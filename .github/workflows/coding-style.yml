@@ -14,7 +14,7 @@ jobs:
                   coverage: none
 
             - run: composer create-project nette/code-checker temp/code-checker ^3 --no-progress
-            - run: php temp/code-checker/code-checker --strict-types --no-progress -i tests/Tracy/fixtures -i examples/assets
+            - run: php temp/code-checker/code-checker --strict-types --no-progress -i tests/Tracy/fixtures -i examples/assets -i *.latte
 
 
     nette_cs:

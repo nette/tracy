@@ -34,10 +34,10 @@ register_shutdown_function(function () {
 		%A%<h1>Dumps</h1>
 
 		<div class="tracy-inner tracy-DumpPanel">
-
-			<pre class="tracy-dump tracy-light"
+				<pre class="tracy-dump tracy-light"
 		><a href="editor:%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">barDump('value') 📍</a
 		><span class="tracy-dump-string" title="5 characters"><span>'</span>value<span>'</span></span></pre>
+
 		</div>
 		%A%
 		XX, $panelContent);
