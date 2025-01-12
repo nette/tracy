@@ -63,7 +63,7 @@ class Bar
 		$requestId = $defer->getRequestId();
 		$nonceAttr = Helpers::getNonceAttr();
 		$async = true;
-		require __DIR__ . '/assets/loader.phtml';
+		require __DIR__ . '/dist/loader.phtml';
 	}
 
 
@@ -106,7 +106,7 @@ class Bar
 				$nonceAttr = Helpers::getNonceAttr();
 				$async = false;
 				Debugger::removeOutputBuffers(false);
-				require __DIR__ . '/assets/loader.phtml';
+				require __DIR__ . '/dist/loader.phtml';
 			}
 		}
 	}
@@ -118,10 +118,10 @@ class Bar
 
 		return [
 			'bar' => Helpers::capture(function () use ($type, $panels) {
-				require __DIR__ . '/assets/bar.phtml';
+				require __DIR__ . '/dist/bar.phtml';
 			}),
 			'panels' => Helpers::capture(function () use ($type, $panels) {
-				require __DIR__ . '/assets/panels.phtml';
+				require __DIR__ . '/dist/panels.phtml';
 			}),
 		];
 	}

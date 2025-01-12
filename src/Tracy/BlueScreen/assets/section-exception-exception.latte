@@ -1,0 +1,15 @@
+{*
+ * @var Throwable $ex
+ * @var callable $dump
+ *}
+{exitIf count(get_mangled_object_vars($ex)) <= count(get_mangled_object_vars(new Exception))}
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a>
+	</h2>
+
+	<div class="tracy-section-panel tracy-collapsed">
+		{$dump($ex)}
+	</div>
+</section>

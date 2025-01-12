@@ -1,0 +1,87 @@
+{*
+ * @var callable $dump
+ * @var int $expanded
+ * @var array $stack
+ *}
+{use Tracy\BlueScreen}
+{use Tracy\Debugger}
+{use Tracy\Helpers}
+
+{exitIf !$stack}
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle">Call stack</a>
+	</h2>
+
+	<div class="tracy-section-panel">
+		<div class="tracy-callstack">
+			{foreach $stack as $key => $row}
+				{do $clickable = !empty($row[args]) || isset($row[file]) && @is_file($row[file])}
+
+				<div class="tracy-callstack-file">
+					{if isset($row[file]) && @is_file($row[file])}
+						{Helpers::editorLink($row[file], $row[line])}
+					{else}
+						<i>inner-code</i>{if isset($row[line])}:{$row[line]}{/if}
+					{/if}
+				</div>
+
+				<div class="tracy-callstack-callee">
+					{if $clickable}
+						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle{if $expanded !== $key} tracy-collapsed{/if}">
+					{/if}
+					{if isset($row[class])}{$row[class]}::{/if}<b>{$row[function]}</b> {empty($row[args]) ? '()' : '(...)'}
+					{if $clickable}</a>{/if}
+				</div>
+
+				{if $clickable}
+					<div class="tracy-callstack-additional{if $expanded !== $key} tracy-collapsed{/if}">
+						{do $sourceOriginal = isset($row[file]) && @is_file($row[file]) ? [$row[file], $row[line]] : null}
+						{do $sourceMapped = $sourceOriginal ? Debugger::mapSource(...$sourceOriginal) : null}
+						{if $sourceOriginal && $sourceMapped}
+							<div class="tracy-tabs">
+								<ul class="tracy-tab-bar">
+									<li class="tracy-tab-label{$sourceMapped[active] ? '' : ' tracy-active'}"><a href="#">PHP</a></li>
+									<li class="tracy-tab-label{$sourceMapped[active] ? ' tracy-active' : ''}"><a href="#">{$sourceMapped[label]}</a></li>
+								</ul>
+
+								<div>
+									<div class="tracy-tab-panel{$sourceMapped[active] ? '' : ' tracy-active'}">
+										{BlueScreen::highlightFile(...$sourceOriginal)}
+									</div>
+
+									<div class="tracy-tab-panel{$sourceMapped[active] ? ' tracy-active' : ''}">
+										{BlueScreen::highlightFile($sourceMapped[file], $sourceMapped[line], php: false)}
+									</div>
+								</div>
+							</div>
+						{elseif $sourceOriginal}
+							{BlueScreen::highlightFile(...$sourceOriginal)}
+						{/if}
+
+
+						{if !empty($row[args])}
+							<table class="tracy-callstack-args">
+<?php
+								try {
+									$r = isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']);
+									$params = $r->getParameters();
+								} catch (\Exception) {
+									$params = [];
+								}
+								foreach ($row['args'] as $k => $v) {
+									$argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k;
+									echo '<tr><th>', Helpers::escapeHtml((is_string($argName) ? '$' : '#') . $argName), '</th><td>';
+									echo $dump($v, (string) $argName);
+									echo "</td></tr>\n";
+								}
+?>
+							</table>
+						{/if}
+					</div>
+				{/if}
+			{/foreach}
+		</div>
+	</div>
+</section>

@@ -1,0 +1,67 @@
+{*
+ * @var Throwable $ex
+ * @var Throwable[] $exceptions
+ * @var array[] $actions
+ * @var callable $dump
+ * @var BlueScreen $this
+ * @var Generator[] $generators
+ * @var Fiber[] $fibers
+ *}
+
+{do require(__DIR__ . '/section-header.phtml')}
+
+{foreach $this->renderPanels($ex) as $panel}
+	<section class="tracy-section">
+		<h2 class="tracy-section-label">
+			<a href="#" data-tracy-ref="^+" class="tracy-toggle">{$panel->tab}</a>
+		</h2>
+
+		<div class="tracy-section-panel">
+			{$panel->panel}
+		</div>
+	</section>
+{/foreach}
+
+{if !$exceptions && ($generators || $fibers)}
+	<section class="tracy-section tracy-section--stack">
+		<div class="tracy-section-panel">
+			<div class="tracy-tabs">
+				<ul class="tracy-tab-bar">
+					<li class="tracy-tab-label tracy-active"><a href="#">Main thread</a></li>
+
+					{foreach $generators as $id => $generator}
+						<li class="tracy-tab-label"><a href="#">Generator #{$id}</a></li>
+					{/foreach}
+
+					{foreach $fibers as $id => $fiber}
+						<li class="tracy-tab-label"><a href="#">Fiber #{$id}</a></li>
+					{/foreach}
+				</ul>
+
+				<div>
+					<div class="tracy-tab-panel tracy-active">
+						{do require(__DIR__ . '/section-stack-exception.phtml')}
+					</div>
+
+					{foreach $generators as $generator}
+						<div class="tracy-tab-panel">
+							{do require(__DIR__ . '/section-stack-generator.phtml')}
+						</div>
+					{/foreach}
+
+					{foreach $fibers as $fiber}
+						<div class="tracy-tab-panel">
+							{do require(__DIR__ . '/section-stack-fiber.phtml')}
+						</div>
+					{/foreach}
+				</div>
+			</div>
+		</div>
+	</section>
+{else}
+	{do require(__DIR__ . '/section-stack-exception.phtml')}
+{/if}
+
+{do require(__DIR__ . '/section-exception-exception.phtml')}
+
+{do require(__DIR__ . '/section-exception-causedBy.phtml')}
