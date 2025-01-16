@@ -128,7 +128,7 @@ class Logger implements ILogger
 		}
 
 		$hash = substr(md5(serialize($data)), 0, 10);
-		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
+		$dir = strtr($this->directory . '/', '\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		foreach (new \DirectoryIterator($this->directory) as $file) {
 			if (strpos($file->getBasename(), $hash)) {
 				return $dir . $file;
