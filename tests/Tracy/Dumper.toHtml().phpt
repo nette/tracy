@@ -38,7 +38,7 @@ Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string
 
 Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string"><span>\'</span>0<span>\'</span></span></pre>' . "\n", Dumper::toHtml('0'));
 
-Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string"><span>\'</span><i>\\x00</i><span>\'</span></span></pre>' . "\n", Dumper::toHtml("\x00"));
+Assert::same('<pre class="tracy-dump tracy-light"><span class="tracy-dump-string"><span>\'</span><i>\x00</i><span>\'</span></span></pre>' . "\n", Dumper::toHtml("\x00"));
 
 Assert::match('<pre class="tracy-dump tracy-light"
 ><div class="tracy-dump-string" title="3 characters"><span class="tracy-dump-lq">\'</span>a<i>\n</i>' . "\n<span class=\"tracy-dump-indent\"> </span>b<span>'</span></div></pre>\n", Dumper::toHtml("a\nb"));

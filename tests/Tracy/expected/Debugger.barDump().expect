@@ -7,12 +7,12 @@
 <div class="tracy-inner tracy-DumpPanel">
 
 	<pre class="tracy-dump tracy-light" data-tracy-snapshot='{"%d%":{"object":"stdClass","items":[["key1","val1",3],["key2",true,3]]}}' data-tracy-dump='[[0,10],[1,20.2],[2,true],[3,false],[4,null],[5,{"string":"hello \u0026lt;!-- \u0026lt;script> \u0026lt;/script>","length":29}],[6,[["key1","val1"],["key2",true]]],[7,{"ref":%d%}]]'
-><a href="editor://open/?file=%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">barDump($arr) ð</a
+><a href="editor://open/?file=%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">barDump($arr) 📍</a
 ></pre>
 		<h2>String</h2>
 
 	<pre class="tracy-dump tracy-light" data-tracy-snapshot='[]' data-tracy-dump='{"string":"\u0026lt;a href=\"#\">test\u0026lt;/a>","length":20}'
-><a href="editor://open/?file=%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">barDump('&lt;a href="#">test&lt;/a>', 'String') ð</a
+><a href="editor://open/?file=%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">barDump('&lt;a href="#">test&lt;/a>', 'String') 📍</a
 ></pre>
 </div>
 
