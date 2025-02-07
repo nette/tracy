@@ -35,6 +35,7 @@ export default [
 			'eqeqeq': ['error', 'always', { null: 'ignore' }],
 			'no-var': 'error',
 			'prefer-const': 'off',
+			'curly': 'error',
 		},
 	},
 ];
