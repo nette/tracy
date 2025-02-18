@@ -6,6 +6,7 @@ html.tracy-bs-visible,
 html.tracy-bs-visible body {
 	display: block;
 	overflow: auto;
+	position: static;
 }
 
 #tracy-bs {
