@@ -66,7 +66,7 @@
 		<div class="tracy-callstack-additional tracy-collapsed">
 			<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-			<table class="tracy-callstack-args">
+			<table class="tracy-callstack-args tracy-dump-seamless">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td></tr>
 			</table>
@@ -83,7 +83,7 @@
 		<div class="tracy-callstack-additional tracy-collapsed">
 			<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-			<table class="tracy-callstack-args">
+			<table class="tracy-callstack-args tracy-dump-seamless">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
 </td></tr>
 <tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">false</span></pre>
@@ -102,7 +102,7 @@
 		<div class="tracy-callstack-additional tracy-collapsed">
 			<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-			<table class="tracy-callstack-args">
+			<table class="tracy-callstack-args tracy-dump-seamless">
 <tr><th>$arg1</th><td><pre class="tracy-dump tracy-light" data-tracy-dump='{"ref":%d%}'></pre>
 </td></tr>
 <tr><th>$arg2</th><td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>

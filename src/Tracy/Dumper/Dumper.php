@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use Dom;
 use Ds;
 use Tracy\Dumper\Describer;
 use Tracy\Dumper\Exposer;
@@ -81,6 +82,11 @@ class Dumper
 		\DOMNode::class => [Exposer::class, 'exposeDOMNode'],
 		\DOMNodeList::class => [Exposer::class, 'exposeDOMNodeList'],
 		\DOMNamedNodeMap::class => [Exposer::class, 'exposeDOMNodeList'],
+		Dom\Node::class => [Exposer::class, 'exposeDOMNode'],
+		Dom\NodeList::class => [Exposer::class, 'exposeDOMNodeList'],
+		Dom\NamedNodeMap::class => [Exposer::class, 'exposeDOMNodeList'],
+		Dom\TokenList::class => [Exposer::class, 'exposeDOMNodeList'],
+		Dom\HTMLCollection::class => [Exposer::class, 'exposeDOMNodeList'],
 		Ds\Collection::class => [Exposer::class, 'exposeDsCollection'],
 		Ds\Map::class => [Exposer::class, 'exposeDsMap'],
 		\WeakMap::class => [Exposer::class, 'exposeWeakMap'],
@@ -154,8 +160,7 @@ class Dumper
 
 		http()->request()->payload['assents_sent'] = true;
 
-		$nonce = Helpers::getNonce();
-		$nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
+		$nonceAttr = Helpers::getNonceAttr();
 		$s = file_get_contents(__DIR__ . '/../assets/toggle.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-light.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-dark.css');
@@ -163,6 +168,7 @@ class Dumper
 
 		if (!Debugger::isEnabled()) {
 			$s = '(function(){' . file_get_contents(__DIR__ . '/../assets/toggle.js') . '})();'
+				. '(function(){' . file_get_contents(__DIR__ . '/../assets/helpers.js') . '})();'
 				. '(function(){' . file_get_contents(__DIR__ . '/../Dumper/assets/dumper.js') . '})();';
 			echo "<script{$nonceAttr}>", str_replace(['<!--', '</s'], ['<\!--', '<\/s'], Helpers::minifyJs($s)), "</script>\n";
 		}

@@ -25,7 +25,7 @@ if (!Helpers::isCli()) {
 <?php if (isset($_SERVER['argv'])): ?>
 		<h3>Arguments</h3>
 		<div class="tracy-pane">
-			<table>
+			<table class="tracy-dump-seamless">
 <?php	foreach ($_SERVER['argv'] as $k => $v): ?>
 				<tr><th><?= Helpers::escapeHtml($k) ?></th><td><?= $dump($v, $k) ?></td></tr>
 <?php	endforeach ?>

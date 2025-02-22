@@ -11,14 +11,14 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest, windows-latest]
-                php: ['8.0', '8.1', '8.2', '8.3']
+                php: ['8.1', '8.2', '8.3', '8.4']
                 sapi: ['php', 'php-cgi']
 
             fail-fast: false
 
         name: PHP ${{ matrix.php }}/${{ matrix.sapi }} tests on ${{ matrix.os }}
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
@@ -38,10 +38,10 @@ jobs:
         name: Code Coverage
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.0
+                  php-version: 8.1
                   extensions: ds
                   coverage: none
 

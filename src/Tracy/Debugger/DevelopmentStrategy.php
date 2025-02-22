@@ -91,8 +91,8 @@ final class DevelopmentStrategy
 			return ;
 		}
 
-		$message = 'PHP ' . Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message);
-		$count = &$this->bar->getPanel('Tracy:errors')->data["$file|$line|$message"];
+		$message = Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message);
+		$count = &$this->bar->getPanel('Tracy:warnings')->data["$file|$line|$message"];
 
 		if (!$count++ && !Helpers::isHtmlMode() && !Helpers::isAjax()) {
 			echo "\n$message in $file on line $line\n";

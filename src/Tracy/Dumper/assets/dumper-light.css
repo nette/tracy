@@ -13,6 +13,13 @@
 	white-space: pre-wrap;
 }
 
+.tracy-dump-seamless .tracy-dump {
+	padding: 0;
+	margin: 0;
+	border: none;
+	background: transparent;
+}
+
 .tracy-dump.tracy-light div {
 	padding-left: 2.5ex;
 }

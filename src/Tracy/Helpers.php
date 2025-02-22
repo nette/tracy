@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Tracy;
 
-use Nette;
-
 
 /**
  * Rendering helpers for Debugger.
@@ -117,37 +115,6 @@ class Helpers
 
 
 	/** @internal */
-	public static function fixStack(\Throwable $exception): \Throwable
-	{
-		if (function_exists('xdebug_get_function_stack')) {
-			$stack = [];
-			$trace = @xdebug_get_function_stack(); // @ xdebug compatibility warning
-			$trace = array_slice(array_reverse($trace), 2, -1);
-			foreach ($trace as $row) {
-				$frame = [
-					'file' => $row['file'],
-					'line' => $row['line'],
-					'function' => $row['function'] ?? '*unknown*',
-					'args' => [],
-				];
-				if (!empty($row['class'])) {
-					$frame['type'] = isset($row['type']) && $row['type'] === 'dynamic' ? '->' : '::';
-					$frame['class'] = $row['class'];
-				}
-
-				$stack[] = $frame;
-			}
-
-			$ref = new \ReflectionProperty('Exception', 'trace');
-			$ref->setAccessible(true);
-			$ref->setValue($exception, $stack);
-		}
-
-		return $exception;
-	}
-
-
-	/** @internal */
 	public static function errorTypeToString(int $type): string
 	{
 		$types = [
@@ -163,7 +130,6 @@ class Helpers
 			E_USER_WARNING => 'User Warning',
 			E_NOTICE => 'Notice',
 			E_USER_NOTICE => 'User Notice',
-			E_STRICT => 'Strict standards',
 			E_DEPRECATED => 'Deprecated',
 			E_USER_DEPRECATED => 'User Deprecated',
 		];
@@ -194,42 +160,67 @@ class Helpers
 	{
 		$message = $e->getMessage();
 		if (
-			(!$e instanceof \Error && !$e instanceof \ErrorException)
-			|| $e instanceof Nette\MemberAccessException
-			|| strpos($e->getMessage(), 'did you mean')
+			!($e instanceof \Error || $e instanceof \ErrorException)
+			|| str_contains($e->getMessage(), 'did you mean')
 		) {
 			// do nothing
-		} elseif (preg_match('#^Call to undefined function (\S+\\\\)?(\w+)\(#', $message, $m)) {
+		} elseif (preg_match('~Argument #(\d+)(?: \(\$\w+\))? must be of type callable, (.+ given)~', $message, $m)) {
+			$arg = $e->getTrace()[0]['args'][$m[1] - 1] ?? null;
+			if (is_string($arg) && str_contains($arg, '::')) {
+				$arg = explode('::', $arg, 2);
+			}
+			if (!is_callable($arg, syntax_only: true)) {
+				// do nothing
+			} elseif (is_array($arg) && is_string($arg[0]) && !class_exists($arg[0]) && !trait_exists($arg[0])) {
+				$message = str_replace($m[2], "but class '$arg[0]' does not exist", $message);
+			} elseif (is_array($arg) && !method_exists($arg[0], $arg[1])) {
+				$hint = self::getSuggestion(get_class_methods($arg[0]) ?: [], $arg[1]);
+				$class = is_object($arg[0]) ? get_class($arg[0]) : $arg[0];
+				$message = str_replace($m[2], "but method $class::$arg[1]() does not exist" . ($hint ? " (did you mean $hint?)" : ''), $message);
+			} elseif (is_string($arg) && !function_exists($arg)) {
+				$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
+				$hint = self::getSuggestion($funcs, $arg);
+				$message = str_replace($m[2], "but function '$arg' does not exist" . ($hint ? " (did you mean $hint?)" : ''), $message);
+			}
+
+		} elseif (preg_match('#^Call to undefined function (\S+\\\)?(\w+)\(#', $message, $m)) {
 			$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
-			$hint = self::getSuggestion($funcs, $m[1] . $m[2]) ?: self::getSuggestion($funcs, $m[2]);
-			$message = "Call to undefined function $m[2](), did you mean $hint()?";
-			$replace = ["$m[2](", "$hint("];
+			if ($hint = self::getSuggestion($funcs, $m[1] . $m[2]) ?: self::getSuggestion($funcs, $m[2])) {
+				$message = "Call to undefined function $m[2](), did you mean $hint()?";
+				$replace = ["$m[2](", "$hint("];
+			}
 
-		} elseif (preg_match('#^Call to undefined method ([\w\\\\]+)::(\w+)#', $message, $m)) {
-			$hint = self::getSuggestion(get_class_methods($m[1]) ?: [], $m[2]);
-			$message .= ", did you mean $hint()?";
-			$replace = ["$m[2](", "$hint("];
+		} elseif (preg_match('#^Call to undefined method ([\w\\\]+)::(\w+)#', $message, $m)) {
+			if ($hint = self::getSuggestion(get_class_methods($m[1]) ?: [], $m[2])) {
+				$message .= ", did you mean $hint()?";
+				$replace = ["$m[2](", "$hint("];
+			}
 
-		} elseif (preg_match('#^Undefined property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
+		} elseif (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), fn($prop) => !$prop->isStatic());
-			$hint = self::getSuggestion($items, $m[2]);
-			$message .= ", did you mean $$hint?";
-			$replace = ["->$m[2]", "->$hint"];
+			if ($hint = self::getSuggestion($items, $m[2])) {
+				$message .= ", did you mean $$hint?";
+				$replace = ["->$m[2]", "->$hint"];
+			}
 
-		} elseif (preg_match('#^Access to undeclared static property:? ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
+		} elseif (preg_match('#^Access to undeclared static property:? ([\w\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_STATIC), fn($prop) => $prop->isPublic());
-			$hint = self::getSuggestion($items, $m[2]);
-			$message .= ", did you mean $$hint?";
-			$replace = ["::$$m[2]", "::$$hint"];
+			if ($hint = self::getSuggestion($items, $m[2])) {
+				$message .= ", did you mean $$hint?";
+				$replace = ["::$$m[2]", "::$$hint"];
+			}
 		}
 
-		if (isset($hint)) {
-			$loc = Debugger::mapSource($e->getFile(), $e->getLine()) ?? ['file' => $e->getFile(), 'line' => $e->getLine()];
+		if ($message !== $e->getMessage()) {
 			$ref = new \ReflectionProperty($e, 'message');
 			$ref->setAccessible(true);
 			$ref->setValue($e, $message);
+		}
+
+		if (isset($replace)) {
+			$loc = Debugger::mapSource($e->getFile(), $e->getLine()) ?? ['file' => $e->getFile(), 'line' => $e->getLine()];
 			@$e->tracyAction = [ // dynamic properties are deprecated since PHP 8.2
 				'link' => self::editorUri($loc['file'], $loc['line'], 'fix', $replace[0], $replace[1]),
 				'label' => 'fix it',
@@ -241,7 +232,7 @@ class Helpers
 	/** @internal */
 	public static function improveError(string $message): string
 	{
-		if (preg_match('#^Undefined property: ([\w\\\\]+)::\$(\w+)#', $message, $m)) {
+		if (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m)) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), fn($prop) => !$prop->isStatic());
 			$hint = self::getSuggestion($items, $m[2]);
@@ -340,11 +331,11 @@ class Helpers
 
 
 	/** @internal */
-	public static function getNonce(): ?string
+	public static function getNonceAttr(): string
 	{
 		return preg_match('#^Content-Security-Policy(?:-Report-Only)?:.*\sscript-src\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
-			? $m[1]
-			: null;
+			? ' nonce="' . self::escapeHtml($m[1]) . '"'
+			: '';
 	}
 
 

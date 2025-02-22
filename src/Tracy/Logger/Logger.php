@@ -120,8 +120,8 @@ class Logger implements ILogger
 			];
 		}
 
-		$hash = substr(md5(serialize($data)), 0, 10);
-		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
+		$hash = substr(hash('xxh128', serialize($data)), 0, 10);
+		$dir = strtr($this->directory . '/', '\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		foreach (new \DirectoryIterator($this->directory) as $file) {
 			if (strpos($file->getBasename(), $hash)) {
 				return $dir . $file;
@@ -169,21 +169,16 @@ class Logger implements ILogger
 	public function defaultMailer(mixed $message, string $email): void
 	{
 		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
-		$parts = str_replace(
-			["\r\n", "\n"],
-			["\n", PHP_EOL],
-			[
-				'headers' => implode("\n", [
-					'From: ' . ($this->fromEmail ?: "noreply@$host"),
-					'X-Mailer: Tracy',
-					'Content-Type: text/plain; charset=UTF-8',
-					'Content-Transfer-Encoding: 8bit',
-				]) . "\n",
-				'subject' => "PHP: An error occurred on the server $host",
-				'body' => static::formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
-			],
+		mail(
+			$email,
+			"PHP: An error occurred on the server $host",
+			static::formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
+			implode("\r\n", [
+				'From: ' . ($this->fromEmail ?: "noreply@$host"),
+				'X-Mailer: Tracy',
+				'Content-Type: text/plain; charset=UTF-8',
+				'Content-Transfer-Encoding: 8bit',
+			]),
 		);
-
-		mail($email, $parts['subject'], $parts['body'], $parts['headers']);
 	}
 }

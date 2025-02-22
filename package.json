@@ -1,0 +1,13 @@
+{
+	"type": "module",
+	"devDependencies": {
+		"@eslint/js": "^9.4.0",
+		"@stylistic/eslint-plugin": "^2.1.0",
+		"eslint": "^9.4.0",
+		"globals": "^15.3.0"
+	},
+	"scripts": {
+		"lint": "eslint",
+		"lint:fix": "eslint --fix"
+	}
+}

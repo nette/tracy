@@ -42,11 +42,11 @@ register_shutdown_function(function () {
 	Assert::match(
 		<<<'XX'
 
-			PHP Notice: Only variables should be assigned by reference in %a% on line %d%
+			Notice: Only variables should be assigned by reference in %a% on line %d%
 
-			PHP Warning: hex2bin(): Hexadecimal input string must have an even length in %a% on line %d%
+			Warning: hex2bin(): Hexadecimal input string must have an even length in %a% on line %d%
 
-			PHP Compile Warning: Unsupported declare 'foo' in %a% on line %d%
+			Compile Warning: Unsupported declare 'foo' in %a% on line %d%
 			XX,
 		ob_get_clean(),
 	);

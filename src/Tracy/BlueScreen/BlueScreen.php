@@ -179,7 +179,7 @@ class BlueScreen
 		], Debugger::$customCssFiles));
 		$css = Helpers::minifyCss(implode('', $css));
 
-		$nonce = $toScreen ? Helpers::getNonce() : null;
+		$nonceAttr = $toScreen ? Helpers::getNonceAttr() : null;
 		$actions = $toScreen ? $this->renderActions($exception) : [];
 
 		require $template;
@@ -241,7 +241,7 @@ class BlueScreen
 			$actions[] = $ex->tracyAction;
 		}
 
-		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{3,})+)\1#i', $ex->getMessage(), $m)) {
+		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{2,})+)\1#i', $ex->getMessage(), $m)) {
 			$class = $m[2];
 			if (
 				!class_exists($class, false) && !interface_exists($class, false) && !trait_exists($class, false)
@@ -255,7 +255,7 @@ class BlueScreen
 			}
 		}
 
-		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\\])\w[^\'"]+\.\w{2,5})\1#i', $ex->getMessage(), $m)) {
+		if (preg_match('# ([\'"])((?:/|[a-z]:[/\\\])\w[^\'"]+\.\w{2,5})\1#i', $ex->getMessage(), $m)) {
 			$file = $m[2];
 			if (@is_file($file)) { // @ - may trigger error
 				$label = 'open';
@@ -380,14 +380,14 @@ class BlueScreen
 
 		// highlight 'string'
 		$msg = preg_replace(
-			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\\")*\S"#',
+			'#\'\S(?:[^\']|\\\\\')*\S\'|"\S(?:[^"]|\\\")*\S"#',
 			'<i>$0</i>',
 			$msg,
 		);
 
 		// clickable class & methods
 		$msg = preg_replace_callback(
-			'#(\w+\\\\[\w\\\\]+\w)(?:::(\w+))?#',
+			'#(\w+\\\[\w\\\]+\w)(?:::(\w+))?#',
 			function ($m) {
 				if (isset($m[2]) && method_exists($m[1], $m[2])) {
 					$r = new \ReflectionMethod($m[1], $m[2]);
@@ -406,7 +406,7 @@ class BlueScreen
 
 		// clickable file name
 		$msg = preg_replace_callback(
-			'#([\w\\\\/.:-]+\.(?:php|phpt|phtml|latte|neon))(?|:(\d+)| on line (\d+))?#',
+			'#([\w\\\/.:-]+\.(?:php|phpt|phtml|latte|neon))(?|:(\d+)| on line (\d+))?#',
 			fn($m) => @is_file($m[1]) // @ - may trigger error
 				? '<a href="' . Helpers::escapeHtml(Helpers::editorUri($m[1], isset($m[2]) ? (int) $m[2] : null)) . '" class="tracy-editor">' . $m[0] . '</a>'
 				: $m[0],
