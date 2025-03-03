@@ -32,7 +32,7 @@ class BlueScreen {
 		(new ResizeObserver(stickyFooter)).observe(blueScreen);
 
 		if (document.documentElement.classList.contains('tracy-bs-visible')) {
-			window.scrollTo(0, 0);
+			blueScreen.scrollIntoView();
 		}
 	}
 
