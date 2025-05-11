@@ -483,7 +483,12 @@ class BlueScreen
 		$add = function ($obj) use (&$generators, &$fibers) {
 			if ($obj instanceof \Generator) {
 				try {
-					new \ReflectionGenerator($obj);
+					$ref = new \ReflectionGenerator($obj);
+					// Before PHP 8.4 the ReflectionGenerator cannot be constructed from closed generator.
+					// Since PHP 8.4 it can, but getTrace throws ReflectionException.
+					if (PHP_VERSION_ID >= 80400 && $ref->isClosed()) {
+						return;
+					}
 					$generators[spl_object_id($obj)] = $obj;
 				} catch (\ReflectionException) {
 				}
