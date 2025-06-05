@@ -34,7 +34,10 @@
 	},
 	"autoload": {
 		"classmap": ["src"],
-		"files": ["src/Tracy/functions.php"]
+		"files": ["src/Tracy/functions.php"],
+		"psr-4": {
+			"Tracy\\": "src"
+		}
 	},
 	"minimum-stability": "dev",
 	"scripts": {
