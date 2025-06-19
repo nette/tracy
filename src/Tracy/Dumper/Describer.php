@@ -11,6 +11,7 @@ namespace Tracy\Dumper;
 
 use Tracy;
 use Tracy\Helpers;
+use function array_map, array_slice, class_exists, count, explode, file, get_debug_type, get_resource_type, gettype, htmlspecialchars, implode, is_bool, is_file, is_finite, is_int, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
 
 
 /**

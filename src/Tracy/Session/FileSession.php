@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use function is_string;
+use const LOCK_EX, LOCK_UN;
+
 
 class FileSession implements SessionStorage
 {

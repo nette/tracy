@@ -14,6 +14,8 @@ use Ds;
 use Tracy\Dumper\Describer;
 use Tracy\Dumper\Exposer;
 use Tracy\Dumper\Renderer;
+use function array_flip, array_map, file_get_contents, fwrite, str_replace;
+use const STDOUT;
 
 
 /**

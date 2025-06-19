@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use const PHP_SESSION_ACTIVE;
+
 
 class NativeSession implements SessionStorage
 {
