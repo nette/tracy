@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Tracy;
 
 use ErrorException;
+use function is_resource;
+use const STDERR;
 
 
 /**

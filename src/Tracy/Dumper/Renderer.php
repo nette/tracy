@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Tracy\Dumper;
 
 use Tracy\Helpers;
+use function count, htmlspecialchars, ini_set, is_array, is_bool, is_float, is_int, is_object, is_string, json_encode, str_repeat, str_replace, strlen, strrpos, substr, substr_count;
+use const JSON_HEX_AMP, JSON_HEX_APOS, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE;
 
 
 /**

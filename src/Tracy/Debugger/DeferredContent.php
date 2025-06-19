@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use function array_slice, is_string, strlen;
+use const JSON_INVALID_UTF8_SUBSTITUTE, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE;
+
 
 /**
  * @internal
