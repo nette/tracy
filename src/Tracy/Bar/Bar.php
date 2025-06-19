@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use function count;
+
 
 /**
  * Debug Bar.

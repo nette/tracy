@@ -11,6 +11,7 @@ namespace Tracy\Bridges\Psr;
 
 use Psr;
 use Tracy;
+use function is_string;
 
 
 /**

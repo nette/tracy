@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use function array_slice, count;
+use const PHP_OUTPUT_HANDLER_FINAL;
+
 
 /**
  * Debugger for outputs.

@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Tracy;
 
 use ErrorException;
+use function in_array, is_bool, is_int, is_string;
+use const PHP_VERSION;
 
 
 /**

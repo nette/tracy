@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Tracy;
 
+use function in_array, is_string;
+use const DIRECTORY_SEPARATOR, FILE_APPEND, LOCK_EX, PHP_EOL;
+
 
 /**
  * Logger.

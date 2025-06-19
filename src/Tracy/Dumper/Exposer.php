@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Tracy\Dumper;
 use Dom;
 use Ds;
+use function array_diff_key, array_key_exists, array_key_last, count, end, explode, get_mangled_object_vars, implode, iterator_to_array, preg_match_all, sort;
 
 
 /**

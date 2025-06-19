@@ -13,6 +13,7 @@ use Nette;
 use Nette\DI\Definitions\Statement;
 use Nette\Schema\Expect;
 use Tracy;
+use function is_array, is_string;
 
 
 /**
