@@ -59,9 +59,24 @@ var replace = match[5];
 var shell = new ActiveXObject('WScript.Shell');
 var fileSystem = new ActiveXObject('Scripting.FileSystemObject');
 
-for (var id in settings.mappings) {
-	if (file.indexOf(id) === 0) {
-		file = settings.mappings[id] + file.substr(id.length);
+function makeWildcardRegExp(s) {
+	s = s.replace(/([\\.^$+?{}()\[\]|])/g, '\\$1');
+	s = s.replace(/\*/g, '[^/]*');
+	return new RegExp('^' + s);
+}
+
+var compiled = [];
+for (var key in settings.mappings) {
+	compiled.push([ makeWildcardRegExp(key), settings.mappings[key] ]);
+}
+
+for (var i = 0; i < compiled.length; ++i) {
+	var rx  = compiled[i][0];
+	var dst = compiled[i][1];
+
+	var m = rx.exec(file);
+	if (m) {
+		file = dst + file.slice(m[0].length);
 		break;
 	}
 }
