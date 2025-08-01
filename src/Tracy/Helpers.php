@@ -359,7 +359,7 @@ class Helpers
 	 */
 	public static function capture(callable $func): string
 	{
-		ob_start(fn() => null);
+		ob_start(fn() => '');
 		try {
 			$func();
 			return ob_get_clean();
