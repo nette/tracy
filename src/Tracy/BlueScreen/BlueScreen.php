@@ -134,7 +134,10 @@ class BlueScreen
 	{
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
-			ob_start(function ($buffer) use ($handle): void { fwrite($handle, $buffer); }, 4096);
+			ob_start(function ($buffer) use ($handle) {
+				fwrite($handle, $buffer);
+				return '';
+			}, 4096);
 			$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml', toScreen: false);
 			ob_end_flush();
 			ob_end_clean();
