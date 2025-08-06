@@ -218,7 +218,6 @@ class Helpers
 
 		if ($message !== $e->getMessage()) {
 			$ref = new \ReflectionProperty($e, 'message');
-			$ref->setAccessible(true);
 			$ref->setValue($e, $message);
 		}
 

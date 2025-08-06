@@ -17,7 +17,6 @@ function compressJs(string $s): string
 		curl_setopt($curl, CURLOPT_POST, 1);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, 'output_info=compiled_code&js_code=' . urlencode($s));
 		$s = curl_exec($curl) ?: $s;
-		curl_close($curl);
 	}
 	return $s;
 }
