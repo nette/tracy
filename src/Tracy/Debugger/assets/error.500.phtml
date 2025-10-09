@@ -19,24 +19,37 @@ namespace Tracy;
 <title>Server Error</title>
 
 <style>
-	#tracy-error { all: initial; position: absolute; top: 0; left: 0; right: 0; height: 70vh; min-height: 400px; display: flex; align-items: center; justify-content: center; z-index: 1000; font: 16px/1.4 sans-serif; color: #333 }
+    #tracy-error { all: initial; position: fixed; top: 0; left: 0;  width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; z-index: 1000; font: 16px/1.4 sans-serif; color: #333;  background-color: white; }
 	#tracy-error * { all: initial; background: transparent; color: inherit; font: inherit }
-	#tracy-error div { max-width: 550px; background: white; display: block }
+    #tracy-error div.tracy-error-wrapper { height: 75vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #tracy-error div.tracy-error-panel { max-width: 550px; background: white; display: block; }
 	#tracy-error h1 { font: bold 50px/1.1 sans-serif; margin: 40px; display: block }
 	#tracy-error p { font: 20px/1.4 sans-serif; margin: 40px; display: block }
 	#tracy-error small { color: gray; font-size: 80% }
 	#tracy-error small span { color: silver }
+    @media (max-height: 550px) {
+        #tracy-error div.tracy-error-wrapper { height: 90vh; }
+    }
+    @media (max-height: 400px) {
+        #tracy-error div.tracy-error-wrapper { height: 100vh; }
+    }
+    @media (max-width: 480px) {
+        #tracy-error p { font: 18px/1.3 sans-serif; margin: 24px; }
+        #tracy-error h1 { font-size: 36px; margin: 28px; }
+    }
 </style>
 
 <div id=tracy-error>
-	<div>
-		<h1>Server Error</h1>
+    <div class="tracy-error-wrapper">
+        <div class="tracy-error-panel">
+            <h1>Server Error</h1>
 
-		<p>We're sorry! The server encountered an internal error and
-		was unable to complete your request. Please try again later.</p>
+            <p>We're sorry! The server encountered an internal error and
+            was unable to complete your request. Please try again later.</p>
 
-		<p><small>error 500 <span> | <?php echo date('j. n. Y H:i') ?></span><?php if (!$logged): ?><br>Tracy is unable to log error.<?php endif ?></small></p>
-	</div>
+            <p><small>error 500 <span> | <?php echo date('j. n. Y H:i') ?></span><?php if (!$logged): ?><br>Tracy is unable to log error.<?php endif ?></small></p>
+        </div>
+    </div>
 </div>
 
 <script<?= Helpers::getNonceAttr() ?>>
