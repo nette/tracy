@@ -286,7 +286,12 @@ class Debugger
 	{
 		$error = error_get_last();
 		if (in_array($error['type'] ?? null, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], true)) {
-			self::exceptionHandler(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']));
+			$e = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
+			if (!empty($error['trace'])) {
+				(new \ReflectionClass(\Exception::class))->getProperty('trace')->setValue($e, $error['trace']);
+			}
+			self::exceptionHandler($e);
+
 		} elseif (($error['type'] ?? null) === E_COMPILE_WARNING) {
 			error_clear_last();
 			self::errorHandler($error['type'], $error['message'], $error['file'], $error['line']);
