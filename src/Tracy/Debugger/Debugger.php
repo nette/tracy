@@ -19,7 +19,7 @@ use const PHP_VERSION;
  */
 class Debugger
 {
-	public const Version = '2.11-dev';
+	public const Version = '2.11.0';
 
 	/** server modes for Debugger::enable() */
 	public const
