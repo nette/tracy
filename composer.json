@@ -15,7 +15,7 @@
 		}
 	],
 	"require": {
-		"php": "8.2 - 8.4",
+		"php": "8.2 - 8.5",
 		"ext-session": "*",
 		"ext-json": "*"
 	},

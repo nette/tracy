@@ -92,8 +92,10 @@ final class Describer
 
 	private function describeDouble(float $num): Value|float
 	{
-		if (!is_finite($num)) {
-			return new Value(Value::TypeNumber, (string) $num);
+		if (is_nan($num)) {
+			return new Value(Value::TypeNumber, 'NAN');
+		} elseif (is_infinite($num)) {
+			return new Value(Value::TypeNumber, $num < 0 ? '-INF' : 'INF');
 		}
 
 		$js = json_encode($num);

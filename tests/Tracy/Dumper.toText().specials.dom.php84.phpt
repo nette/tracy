@@ -28,11 +28,6 @@ Assert::match(
 		   baseURI: 'about:blank'
 		%A%
 		   doctype: Dom\DocumentType #%d%
-		   |  attributes: null
-		   |  baseURI: 'about:blank'
-		   |  childNodes: %a%
-		   |  entities: Dom\DtdNamedNodeMap #%d% ...
-		   |  firstChild: null
 		%A%
 		   documentElement: Dom\Element #%d%
 		%A%
@@ -58,7 +53,6 @@ Assert::match(
 		   length: 1
 		   items: array (1)
 		   |  'class' => Dom\Attr #%d%
-		   |  |  attributes: null
 		%A%
 		XX,
 	Dumper::toText($namedNodeMap, [Dumper::DEPTH => 3]),
@@ -70,7 +64,7 @@ Assert::match(
 		Dom\HTMLCollection #%d%
 		   length: 1
 		   items: array (1)
-		   |  'li' => Dom\Element #%d% ...
+		   |  %a% => Dom\Element #%d% ...
 		XX,
 	Dumper::toText($collection, [Dumper::DEPTH => 2]),
 );

@@ -99,7 +99,7 @@ Assert::match(
 
 // inheritance
 Dumper::$objectExporters = [
-	null => fn($var) => ['type' => 'NULL'],
+	'' => fn($var) => ['type' => 'NULL'],
 	'Iterator' => fn($var) => ['type' => 'Default Iterator'],
 ];
 

@@ -53,10 +53,8 @@ Assert::match("SplFileInfo #%d%
 
 // SplObjectStorage
 $objStorage = new SplObjectStorage;
-$objStorage->attach($o1 = new stdClass);
-$objStorage[$o1] = 'o1';
-$objStorage->attach($o2 = (object) ['foo' => 'bar']);
-$objStorage[$o2] = 'o2';
+$objStorage[$o1 = new stdClass] = 'o1';
+$objStorage[$o2 = (object) ['foo' => 'bar']] = 'o2';
 
 $objStorage->next();
 $key = $objStorage->key();

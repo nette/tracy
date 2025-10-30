@@ -254,7 +254,7 @@ final class Renderer
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
-		$this->parents[$array->id ?? null] = $this->above[$array->id ?? null] = true;
+		$this->parents[$array->id ?? ''] = $this->above[$array->id ?? ''] = true;
 
 		foreach ($items as $info) {
 			[$k, $v, $ref] = $info + [2 => null];
@@ -270,7 +270,7 @@ final class Renderer
 			$out .= $indent . "…\n";
 		}
 
-		unset($this->parents[$array->id ?? null]);
+		unset($this->parents[$array->id ?? '']);
 		return $out . '</div>';
 	}
 
@@ -331,7 +331,7 @@ final class Renderer
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
-		$this->parents[$object->id] = $this->above[$object->id] = true;
+		$this->parents[$object->id ?? ''] = $this->above[$object->id ?? ''] = true;
 
 		foreach ($object->items as $info) {
 			[$k, $v, $type, $ref] = $info + [2 => Value::PropertyVirtual, null];
@@ -347,7 +347,7 @@ final class Renderer
 			$out .= $indent . "…\n";
 		}
 
-		unset($this->parents[$object->id]);
+		unset($this->parents[$object->id ?? '']);
 		return $out . '</div>';
 	}
 

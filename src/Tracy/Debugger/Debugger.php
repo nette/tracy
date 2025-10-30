@@ -436,13 +436,14 @@ class Debugger
 	/** @internal */
 	public static function getStrategy(): ProductionStrategy|DevelopmentStrategy
 	{
-		if (empty(self::$strategy[self::$productionMode])) {
-			self::$strategy[self::$productionMode] = self::$productionMode
+		$mode = (bool) self::$productionMode;
+		if (empty(self::$strategy[$mode])) {
+			self::$strategy[$mode] = $mode
 				? new ProductionStrategy
 				: new DevelopmentStrategy(self::getBar(), self::getBlueScreen(), new DeferredContent(self::getSessionStorage()));
 		}
 
-		return self::$strategy[self::$productionMode];
+		return self::$strategy[$mode];
 	}
 
 
@@ -520,6 +521,7 @@ class Debugger
 	{
 		static $time = [];
 		$now = hrtime(true);
+		$name ??= '';
 		$delta = isset($time[$name]) ? $now - $time[$name] : 0;
 		$time[$name] = $now;
 		return $delta / 1e9;
