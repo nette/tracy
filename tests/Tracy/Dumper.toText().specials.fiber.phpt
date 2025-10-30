@@ -2,7 +2,6 @@
 
 /**
  * Test: Tracy\Dumper::toText() Fiber
- * @phpVersion 8.1
  */
 
 declare(strict_types=1);

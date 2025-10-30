@@ -2,7 +2,6 @@
 
 /**
  * Test: Tracy\Debugger exception in generator in HTML.
- * @phpVersion 8.1  ReflectionGenerator::getTrace() is empty in PHP < 8.1
  * @httpCode   500
  * @exitCode   255
  * @outputMatchFile expected/Debugger.exception.in-generator.html.expect
