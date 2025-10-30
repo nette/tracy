@@ -314,9 +314,7 @@ class Debugger
 		self::$reserved = null;
 		self::$obStatus = ob_get_status(true);
 
-		if (!headers_sent()) {
-			http_response_code(isset($_SERVER['HTTP_USER_AGENT']) && str_contains($_SERVER['HTTP_USER_AGENT'], 'MSIE ') ? 503 : 500);
-		}
+		@http_response_code(isset($_SERVER['HTTP_USER_AGENT']) && str_contains($_SERVER['HTTP_USER_AGENT'], 'MSIE ') ? 503 : 500); // may not have an effect
 
 		Helpers::improveException($exception);
 		self::removeOutputBuffers(true);
