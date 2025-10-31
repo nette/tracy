@@ -35,6 +35,14 @@ dump('any string');
 echo "<h2>Objects</h2>\n";
 echo "<p>Hover over the name <code>\$baz</code> to see property declaring class and over the hash <code>#5</code> to see same objects.</p>\n";
 
+enum Suit
+{
+	case Clubs;
+	case Diamonds;
+	case Hearts;
+	case Spades;
+}
+
 class ParentClass
 {
 	public $foo = [10, 20];
@@ -42,6 +50,8 @@ class ParentClass
 	protected $bar = 30;
 
 	private $baz = 'parent';
+
+	public Suit $enum = Suit::Clubs;
 }
 
 #[\AllowDynamicProperties]
@@ -87,7 +97,8 @@ echo "<h2>Special Types</h2>\n";
 
 $arr = [
 	fopen(__FILE__, 'r'),
-	new class {},
+	new class {
+},
 	function ($x, $y) use (&$arr, $obj) {},
 ];
 
