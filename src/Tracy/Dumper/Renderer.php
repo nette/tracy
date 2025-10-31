@@ -9,6 +9,14 @@ declare(strict_types=1);
 
 namespace Tracy\Dumper;
 
+use Tracy\Dumper\Nodes\ArrayNode;
+use Tracy\Dumper\Nodes\CollectionNode;
+use Tracy\Dumper\Nodes\NumberNode;
+use Tracy\Dumper\Nodes\ObjectNode;
+use Tracy\Dumper\Nodes\ReferenceNode;
+use Tracy\Dumper\Nodes\ResourceNode;
+use Tracy\Dumper\Nodes\StringNode;
+use Tracy\Dumper\Nodes\TextNode;
 use Tracy\Helpers;
 use function count, htmlspecialchars, ini_set, is_array, is_bool, is_float, is_int, is_object, is_string, json_encode, str_repeat, str_replace, strlen, strrpos, substr, substr_count;
 use const JSON_HEX_AMP, JSON_HEX_APOS, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE;
@@ -33,10 +41,10 @@ final class Renderer
 	public ?string $theme = 'light';
 	public bool $collectingMode = false;
 
-	/** @var Value[] */
+	/** @var Node[] */
 	private array $snapshot = [];
 
-	/** @var Value[]|null */
+	/** @var Node[]|null */
 	private ?array $snapshotSelection = null;
 	private array $parents = [];
 	private array $above = [];
@@ -52,7 +60,7 @@ final class Renderer
 				$html = $this->renderVar($value);
 				$json = $snapshot = null;
 
-			} elseif ($this->lazy && (is_array($value) && $value || is_object($value))) { // full lazy-loading
+			} elseif ($this->lazy && (is_array($value) && $value || $value instanceof Node)) { // full lazy-loading
 				$html = '';
 				$snapshot = $this->collectingMode ? null : $this->snapshot;
 				$json = $value;
@@ -121,35 +129,34 @@ final class Renderer
 			is_bool($value) => '<span class="tracy-dump-bool">' . ($value ? 'true' : 'false') . '</span>',
 			is_int($value) => '<span class="tracy-dump-number">' . $value . '</span>',
 			is_float($value) => '<span class="tracy-dump-number">' . self::jsonEncode($value) . '</span>',
-			is_string($value) => $this->renderString($value, $depth, $keyType),
-			is_array($value), $value->type === Value::TypeArray => $this->renderArray($value, $depth),
-			$value->type === Value::TypeRef => $this->renderVar($this->snapshot[$value->value], $depth, $keyType),
-			$value->type === Value::TypeObject => $this->renderObject($value, $depth),
-			$value->type === Value::TypeNumber => '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . '</span>',
-			$value->type === Value::TypeText => '<span class="tracy-dump-virtual">' . Helpers::escapeHtml($value->value) . '</span>',
-			$value->type === Value::TypeStringHtml, $value->type === Value::TypeBinaryHtml => $this->renderString($value, $depth, $keyType),
-			$value->type === Value::TypeResource => $this->renderResource($value, $depth),
-			default => throw new \Exception('Unknown type'),
+			is_string($value), $value instanceof StringNode => $this->renderString($value, $depth, $keyType),
+			is_array($value), $value instanceof ArrayNode => $this->renderArray($value, $depth),
+			$value instanceof ReferenceNode => $this->renderVar($this->snapshot[$value->targetId], $depth, $keyType),
+			$value instanceof ObjectNode => $this->renderObject($value, $depth),
+			$value instanceof NumberNode => '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . '</span>',
+			$value instanceof TextNode => '<span class="tracy-dump-virtual">' . Helpers::escapeHtml($value->value) . '</span>',
+			$value instanceof ResourceNode => $this->renderResource($value, $depth),
+			default => throw new \Exception('Unknown type: ' . get_debug_type($value)),
 		};
 	}
 
 
-	private function renderString(string|Value $str, int $depth, string|int|null $keyType): string
+	private function renderString(string|StringNode $str, int $depth, string|int|null $keyType): string
 	{
 		if ($keyType === self::TypeArrayKey) {
 			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . ' </span>';
 			return '<span class="tracy-dump-string">'
 				. "<span class='tracy-dump-lq'>'</span>"
-				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n" . $indent, $str->value))
+				. (is_string($str) ? Helpers::escapeHtml($str) : str_replace("\n", "\n" . $indent, $str->content))
 				. "<span>'</span>"
 				. '</span>';
 
 		} elseif ($keyType !== null) {
 			$classes = [
-				Value::PropertyPublic => 'tracy-dump-public',
-				Value::PropertyProtected => 'tracy-dump-protected',
-				Value::PropertyDynamic => 'tracy-dump-dynamic',
-				Value::PropertyVirtual => 'tracy-dump-virtual',
+				ObjectNode::PropertyPublic => 'tracy-dump-public',
+				ObjectNode::PropertyProtected => 'tracy-dump-protected',
+				ObjectNode::PropertyDynamic => 'tracy-dump-dynamic',
+				ObjectNode::PropertyVirtual => 'tracy-dump-virtual',
 			];
 			$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth - 1) . ' </span>';
 			$title = is_string($keyType)
@@ -159,7 +166,7 @@ final class Renderer
 				. ($title ? 'tracy-dump-private' : $classes[$keyType]) . '"' . $title . '>'
 				. (is_string($str)
 					? Helpers::escapeHtml($str)
-					: "<span class='tracy-dump-lq'>'</span>" . str_replace("\n", "\n" . $indent, $str->value) . "<span>'</span>")
+					: "<span class='tracy-dump-lq'>'</span>" . str_replace("\n", "\n" . $indent, $str->content) . "<span>'</span>")
 				. '</span>';
 
 		} elseif (is_string($str)) {
@@ -173,8 +180,8 @@ final class Renderer
 				. '</span>';
 
 		} else {
-			$unit = $str->type === Value::TypeStringHtml ? 'characters' : 'bytes';
-			$count = substr_count($str->value, "\n");
+			$unit = $str->binary ? 'bytes' : 'characters';
+			$count = substr_count($str->content, "\n");
 			if ($count) {
 				$collapsed = $indent1 = $toggle = null;
 				$indent = '<span class="tracy-dump-indent"> </span>';
@@ -190,7 +197,7 @@ final class Renderer
 					. '" title="' . $str->length . ' ' . $unit . '">'
 					. $indent1
 					. '<span' . ($count ? ' class="tracy-dump-lq"' : '') . ">'</span>"
-					. str_replace("\n", "\n" . $indent, $str->value)
+					. str_replace("\n", "\n" . $indent, $str->content)
 					. "<span>'</span>"
 					. ($depth ? "\n" : '')
 					. '</div>';
@@ -200,14 +207,14 @@ final class Renderer
 				. ($str->length > 1 ? " title=\"{$str->length} $unit\"" : '')
 				. '>'
 				. "<span>'</span>"
-				. $str->value
+				. $str->content
 				. "<span>'</span>"
 				. '</span>';
 		}
 	}
 
 
-	private function renderArray(array|Value $array, int $depth): string
+	private function renderArray(array|ArrayNode $array, int $depth): string
 	{
 		$out = '<span class="tracy-dump-array">array</span> (';
 
@@ -226,7 +233,7 @@ final class Renderer
 
 			} elseif ($array->id && ($array->depth < $depth || isset($this->above[$array->id]))) {
 				if ($this->lazy !== false) {
-					$ref = new Value(Value::TypeRef, $array->id);
+					$ref = new ReferenceNode($array->id);
 					$this->copySnapshot($ref);
 					return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
 
@@ -247,9 +254,9 @@ final class Renderer
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
 		if ($collapsed && $this->lazy !== false) {
-			$array = isset($array->id) ? new Value(Value::TypeRef, $array->id) : $array;
-			$this->copySnapshot($array);
-			return $span . " data-tracy-dump='" . self::jsonEncode($array) . "'>" . $out . '</span>';
+			$value = $array instanceof ArrayNode && isset($array->id) ? new ReferenceNode($array->id) : $array;
+			$this->copySnapshot($value);
+			return $span . " data-tracy-dump='" . self::jsonEncode($value) . "'>" . $out . '</span>';
 		}
 
 		$out = $span . '>' . $out . "</span>\n" . '<div' . ($collapsed ? ' class="tracy-collapsed"' : '') . '>';
@@ -275,7 +282,7 @@ final class Renderer
 	}
 
 
-	private function renderObject(Value $object, int $depth): string
+	private function renderObject(ObjectNode $object, int $depth): string
 	{
 		$editorAttributes = '';
 		if ($this->classLocation && $object->editor) {
@@ -289,11 +296,11 @@ final class Renderer
 			);
 		}
 
-		$pos = strrpos($object->value, '\\');
+		$pos = strrpos($object->className, '\\');
 		$out = '<span class="tracy-dump-object"' . $editorAttributes . '>'
 			. ($pos
-				? Helpers::escapeHtml(substr($object->value, 0, $pos + 1)) . '<b>' . Helpers::escapeHtml(substr($object->value, $pos + 1)) . '</b>'
-				: Helpers::escapeHtml($object->value))
+				? Helpers::escapeHtml(substr($object->className, 0, $pos + 1)) . '<b>' . Helpers::escapeHtml(substr($object->className, $pos + 1)) . '</b>'
+				: Helpers::escapeHtml($object->className))
 			. '</span>'
 			. ($object->id && $this->hash ? ' <span class="tracy-dump-hash">#' . $object->id . '</span>' : '');
 
@@ -308,7 +315,7 @@ final class Renderer
 
 		} elseif ($object->id && ($object->depth < $depth || isset($this->above[$object->id]))) {
 			if ($this->lazy !== false) {
-				$ref = new Value(Value::TypeRef, $object->id);
+				$ref = new ReferenceNode($object->id);
 				$this->copySnapshot($ref);
 				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
 
@@ -324,7 +331,7 @@ final class Renderer
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
 		if ($collapsed && $this->lazy !== false) {
-			$value = $object->id ? new Value(Value::TypeRef, $object->id) : $object;
+			$value = $object->id ? new ReferenceNode($object->id) : $object;
 			$this->copySnapshot($value);
 			return $span . " data-tracy-dump='" . self::jsonEncode($value) . "'>" . $out . '</span>';
 		}
@@ -334,7 +341,7 @@ final class Renderer
 		$this->parents[$object->id ?? ''] = $this->above[$object->id ?? ''] = true;
 
 		foreach ($object->items as $info) {
-			[$k, $v, $type, $ref] = $info + [2 => Value::PropertyVirtual, null];
+			[$k, $v, $type, $ref] = $info + [2 => ObjectNode::PropertyVirtual, null];
 			$out .= $indent
 				. $this->renderVar($k, $depth + 1, $type)
 				. ': '
@@ -352,9 +359,9 @@ final class Renderer
 	}
 
 
-	private function renderResource(Value $resource, int $depth): string
+	private function renderResource(ResourceNode $resource, int $depth): string
 	{
-		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($resource->value) . '</span> '
+		$out = '<span class="tracy-dump-resource">' . Helpers::escapeHtml($resource->description) . '</span> '
 			. ($this->hash ? '<span class="tracy-dump-hash">@' . substr($resource->id, 1) . '</span>' : '');
 
 		if (!$resource->items) {
@@ -362,7 +369,7 @@ final class Renderer
 
 		} elseif (isset($this->above[$resource->id])) {
 			if ($this->lazy !== false) {
-				$ref = new Value(Value::TypeRef, $resource->id);
+				$ref = new ReferenceNode($resource->id);
 				$this->copySnapshot($ref);
 				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . json_encode($ref) . "'>" . $out . '</span>';
 			}
@@ -374,7 +381,7 @@ final class Renderer
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
 			foreach ($resource->items as [$k, $v]) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					. $this->renderVar($k, $depth + 1, Value::PropertyVirtual)
+					. $this->renderVar($k, $depth + 1, ObjectNode::PropertyVirtual)
 					. ': '
 					. ($tmp = $this->renderVar($v, $depth + 1))
 					. (substr($tmp, -6) === '</div>' ? '' : "\n");
@@ -399,12 +406,12 @@ final class Renderer
 			foreach ($value as [, $v]) {
 				$this->copySnapshot($v);
 			}
-		} elseif ($value instanceof Value && $value->type === Value::TypeRef) {
-			if (!isset($this->snapshotSelection[$value->value])) {
-				$ref = $this->snapshotSelection[$value->value] = $this->snapshot[$value->value];
+		} elseif ($value instanceof ReferenceNode) {
+			if (!isset($this->snapshotSelection[$value->targetId])) {
+				$ref = $this->snapshotSelection[$value->targetId] = $this->snapshot[$value->targetId];
 				$this->copySnapshot($ref);
 			}
-		} elseif ($value instanceof Value && $value->items) {
+		} elseif ($value instanceof CollectionNode && $value->items) {
 			foreach ($value->items as [, $v]) {
 				$this->copySnapshot($v);
 			}

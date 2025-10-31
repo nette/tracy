@@ -149,20 +149,12 @@ Assert::match(
 );
 
 
-// Tracy\Dumper\Value
-$obj = new Tracy\Dumper\Value(Tracy\Dumper\Value::TypeText, 'ahoj');
+// Tracy\Dumper\TextValue
+$obj = new Dumper\Nodes\TextNode('ahoj');
 Assert::match(
 	<<<'XX'
-		Tracy\Dumper\Value #%d%
-		   type: 'text'
+		Tracy\Dumper\Nodes\TextNode #%d%
 		   value: 'ahoj'
-		   length: null
-		   depth: null
-		   id: null
-		   holder: unset
-		   items: null
-		   editor: null
-		   collapsed: null
 		XX,
 	Dumper::toText($obj),
 );

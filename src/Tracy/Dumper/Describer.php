@@ -10,6 +10,13 @@ declare(strict_types=1);
 namespace Tracy\Dumper;
 
 use Tracy;
+use Tracy\Dumper\Nodes\ArrayNode;
+use Tracy\Dumper\Nodes\NumberNode;
+use Tracy\Dumper\Nodes\ObjectNode;
+use Tracy\Dumper\Nodes\ReferenceNode;
+use Tracy\Dumper\Nodes\ResourceNode;
+use Tracy\Dumper\Nodes\StringNode;
+use Tracy\Dumper\Nodes\TextNode;
 use Tracy\Helpers;
 use function array_map, array_slice, class_exists, count, explode, file, get_debug_type, get_resource_type, gettype, htmlspecialchars, implode, is_bool, is_file, is_finite, is_int, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
 
@@ -29,7 +36,7 @@ final class Describer
 	public int $maxLength = 150;
 	public int $maxItems = 100;
 
-	/** @var Value[] */
+	/** @var array<int|string, Node> */
 	public array $snapshot = [];
 	public bool $debugInfo = false;
 	public array $keysToHide = [];
@@ -42,7 +49,7 @@ final class Describer
 	/** @var array<string, callable(resource): array> */
 	public array $resourceExposers = [];
 
-	/** @var array<string, callable(object, Value, self): ?array> */
+	/** @var array<string, callable(object, ObjectNode, self): ?array> */
 	public array $objectExposers = [];
 
 	/** @var array<string, array{bool, string[]}> */
@@ -82,53 +89,53 @@ final class Describer
 	}
 
 
-	private function describeInteger(int $num): Value|int
+	private function describeInteger(int $num): NumberNode|int
 	{
 		return $num <= self::JsSafeInteger && $num >= -self::JsSafeInteger
 			? $num
-			: new Value(Value::TypeNumber, "$num");
+			: new NumberNode("$num");
 	}
 
 
-	private function describeDouble(float $num): Value|float
+	private function describeDouble(float $num): NumberNode|float
 	{
 		if (is_nan($num)) {
-			return new Value(Value::TypeNumber, 'NAN');
+			return new NumberNode('NAN');
 		} elseif (is_infinite($num)) {
-			return new Value(Value::TypeNumber, $num < 0 ? '-INF' : 'INF');
+			return new NumberNode($num < 0 ? '-INF' : 'INF');
 		}
 
 		$js = json_encode($num);
 		return strpos($js, '.')
 			? $num
-			: new Value(Value::TypeNumber, "$js.0"); // to distinct int and float in JS
+			: new NumberNode("$js.0"); // to distinct int and float in JS
 	}
 
 
-	private function describeString(string $s, int $depth = 0): Value|string
+	private function describeString(string $s, int $depth = 0): StringNode|string
 	{
 		$encoded = Helpers::encodeString($s, $depth ? $this->maxLength : null);
 		if ($encoded === $s) {
 			return $encoded;
 		} elseif (Helpers::isUtf8($s)) {
-			return new Value(Value::TypeStringHtml, $encoded, Helpers::utf8Length($s));
+			return new StringNode($encoded, Helpers::utf8Length($s), binary: false);
 		} else {
-			return new Value(Value::TypeBinaryHtml, $encoded, strlen($s));
+			return new StringNode($encoded, strlen($s), binary: true);
 		}
 	}
 
 
-	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): Value|array
+	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): ArrayNode|ReferenceNode|array
 	{
 		if ($refId) {
-			$res = new Value(Value::TypeRef, 'p' . $refId);
-			$value = &$this->snapshot[$res->value];
+			$res = new ReferenceNode('p' . $refId);
+			$value = &$this->snapshot[$res->targetId];
 			if ($value && $value->depth <= $depth) {
 				return $res;
 			}
 
-			$value = new Value(Value::TypeArray);
-			$value->id = $res->value;
+			$value = new ArrayNode;
+			$value->id = $res->targetId;
 			$value->depth = $depth;
 			if ($this->maxDepth && $depth >= $this->maxDepth) {
 				$value->length = count($arr);
@@ -141,10 +148,13 @@ final class Describer
 			$items = &$value->items;
 
 		} elseif ($arr && $this->maxDepth && $depth >= $this->maxDepth) {
-			return new Value(Value::TypeArray, null, count($arr));
+			$res = new ArrayNode;
+			$res->length = count($arr);
+			return $res;
 
 		} elseif ($depth && $this->maxItems && count($arr) > $this->maxItems) {
-			$res = new Value(Value::TypeArray, null, count($arr));
+			$res = new ArrayNode;
+			$res->length = count($arr);
 			$res->depth = $depth;
 			$items = &$res->items;
 			$arr = array_slice($arr, 0, $this->maxItems, preserve_keys: true);
@@ -156,7 +166,7 @@ final class Describer
 			$items[] = [
 				$this->describeVar($k, $depth + 1),
 				$this->isSensitive((string) $k, $v)
-					? new Value(Value::TypeText, self::hideValue($v))
+					? new TextNode(self::hideValue($v))
 					: $this->describeVar($v, $depth + 1, $refId),
 			] + ($refId ? [2 => $refId] : []);
 		}
@@ -165,18 +175,19 @@ final class Describer
 	}
 
 
-	private function describeObject(object $obj, int $depth = 0): Value
+	private function describeObject(object $obj, int $depth = 0): ObjectNode|ReferenceNode
 	{
 		$id = spl_object_id($obj);
 		$value = &$this->snapshot[$id];
 		if ($value && $value->depth <= $depth) {
-			return new Value(Value::TypeRef, $id);
+			return new ReferenceNode($id);
 		}
 
-		$value = new Value(Value::TypeObject, get_debug_type($obj));
+		$value = new ObjectNode(get_debug_type($obj));
 		$value->id = $id;
 		$value->depth = $depth;
 		$value->holder = $obj; // to be not released by garbage collector in collecting mode
+
 		if ($this->location) {
 			$rc = $obj instanceof \Closure
 				? new \ReflectionFunction($obj)
@@ -190,27 +201,25 @@ final class Describer
 			$value->items = [];
 			$props = $this->exposeObject($obj, $value);
 			foreach ($props ?? [] as $k => $v) {
-				$this->addPropertyTo($value, (string) $k, $v, Value::PropertyVirtual, $this->getReferenceId($props, $k));
+				$this->addPropertyTo($value, (string) $k, $v, ObjectNode::PropertyVirtual, $this->getReferenceId($props, $k));
 			}
 		}
 
-		return new Value(Value::TypeRef, $id);
+		return new ReferenceNode($id);
 	}
 
 
 	/**
 	 * @param  resource  $resource
 	 */
-	private function describeResource($resource, int $depth = 0): Value
+	private function describeResource($resource, int $depth = 0): ResourceNode|ReferenceNode
 	{
 		$id = 'r' . (int) $resource;
 		$value = &$this->snapshot[$id];
 		if (!$value) {
 			$type = is_resource($resource) ? get_resource_type($resource) : 'closed';
-			$value = new Value(Value::TypeResource, $type . ' resource');
-			$value->id = $id;
+			$value = new ResourceNode($type . ' resource', $id);
 			$value->depth = $depth;
-			$value->items = [];
 			if (isset($this->resourceExposers[$type])) {
 				foreach (($this->resourceExposers[$type])($resource) as $k => $v) {
 					$value->items[] = [htmlspecialchars($k), $this->describeVar($v, $depth + 1)];
@@ -218,11 +227,11 @@ final class Describer
 			}
 		}
 
-		return new Value(Value::TypeRef, $id);
+		return new ReferenceNode($id);
 	}
 
 
-	public function describeKey(string $key): Value|string
+	public function describeKey(string $key): StringNode|string
 	{
 		if (preg_match('#^[\w!\#$%&*+./;<>?@^{|}~-]{1,50}$#D', $key) && !preg_match('#^(true|false|null)$#iD', $key)) {
 			return $key;
@@ -230,19 +239,19 @@ final class Describer
 
 		$value = $this->describeString($key);
 		return is_string($value) // ensure result is Value
-			? new Value(Value::TypeStringHtml, $key, Helpers::utf8Length($key))
+			? new StringNode($key, Helpers::utf8Length($key), binary: false)
 			: $value;
 	}
 
 
 	public function addPropertyTo(
-		Value $value,
+		ObjectNode $value,
 		string $k,
 		mixed $v,
-		int $type = Value::PropertyVirtual,
+		int $type = ObjectNode::PropertyVirtual,
 		?int $refId = null,
 		?string $class = null,
-		?Value $described = null,
+		?Node $described = null,
 	): void
 	{
 		if ($value->depth && $this->maxItems && count($value->items ?? []) >= $this->maxItems) {
@@ -250,18 +259,18 @@ final class Describer
 			return;
 		}
 
-		$class ??= $value->value;
+		$class ??= $value instanceof ObjectNode ? $value->className : null;
 		$value->items[] = [
 			$this->describeKey($k),
-			$type !== Value::PropertyVirtual && $this->isSensitive($k, $v, $class)
-				? new Value(Value::TypeText, self::hideValue($v))
+			$type !== ObjectNode::PropertyVirtual && $this->isSensitive($k, $v, $class)
+				? new TextNode(self::hideValue($v))
 				: ($described ?? $this->describeVar($v, $value->depth + 1, $refId)),
-			$type === Value::PropertyPrivate ? $class : $type,
+			$type === ObjectNode::PropertyPrivate ? $class : $type,
 		] + ($refId ? [3 => $refId] : []);
 	}
 
 
-	private function exposeObject(object $obj, Value $value): ?array
+	private function exposeObject(object $obj, ObjectNode $value): ?array
 	{
 		foreach ($this->objectExposers as $type => $dumper) {
 			if (!$type || $obj instanceof $type) {
@@ -297,7 +306,7 @@ final class Describer
 	}
 
 
-	public function describeEnumProperty(string $class, string $property, mixed $value): ?Value
+	public function describeEnumProperty(string $class, string $property, mixed $value): ?TextNode
 	{
 		[$set, $constants] = $this->enumProperties["$class::$property"] ?? null;
 		if (!is_int($value)
@@ -308,7 +317,7 @@ final class Describer
 		}
 
 		$constants = array_map(fn(string $const): string => str_replace("$class::", 'self::', $const), $constants);
-		return new Value(Value::TypeNumber, implode(' | ', $constants) . " ($value)");
+		return new TextNode(implode(' | ', $constants) . " ($value)");
 	}
 
 

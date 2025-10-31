@@ -195,21 +195,13 @@ Assert::match(
 );
 
 
-// Tracy\Dumper\Value
-$obj = new Tracy\Dumper\Value(Tracy\Dumper\Value::TypeText, 'ahoj');
+// Tracy\Dumper\TextValue
+$obj = new Dumper\Nodes\TextNode('ahoj');
 Assert::match(
 	<<<'XX'
 		<pre class="tracy-dump tracy-light"
-		><span class="tracy-toggle"><span class="tracy-dump-object">Tracy\Dumper\<b>Value</b></span> <span class="tracy-dump-hash">#%d%</span></span>
-		<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">type</span>: <span class="tracy-dump-string" title="4 characters"><span>'</span>text<span>'</span></span>
-		<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">value</span>: <span class="tracy-dump-string" title="4 characters"><span>'</span>ahoj<span>'</span></span>
-		<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">length</span>: <span class="tracy-dump-null">null</span>
-		<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">depth</span>: <span class="tracy-dump-null">null</span>
-		<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">id</span>: <span class="tracy-dump-null">null</span>
-		<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">holder</span>: <span class="tracy-dump-virtual">unset</span>
-		<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">items</span>: <span class="tracy-dump-null">null</span>
-		<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">editor</span>: <span class="tracy-dump-null">null</span>
-		<span class="tracy-dump-indent">   </span><span class="tracy-dump-public">collapsed</span>: <span class="tracy-dump-null">null</span>
+		><span class="tracy-toggle"><span class="tracy-dump-object">Tracy\Dumper\Nodes\<b>TextNode</b></span> <span class="tracy-dump-hash">#%d%</span></span>
+		<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-public">value</span>: <span class="tracy-dump-string" title="4 characters"><span>'</span>ahoj<span>'</span></span>
 		</div></pre>
 		XX,
 	Dumper::toHtml($obj),

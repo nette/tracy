@@ -8,8 +8,11 @@
 declare(strict_types=1);
 
 namespace Tracy\Dumper;
+
 use Dom;
 use Ds;
+use Tracy\Dumper\Nodes\ObjectNode;
+use Tracy\Dumper\Nodes\TextNode;
 use function array_diff_key, array_key_exists, array_key_last, count, end, explode, get_mangled_object_vars, implode, iterator_to_array, preg_match_all, sort;
 
 
@@ -19,7 +22,7 @@ use function array_diff_key, array_key_exists, array_key_last, count, end, explo
  */
 final class Exposer
 {
-	public static function exposeObject(object $obj, Value $value, Describer $describer): void
+	public static function exposeObject(object $obj, ObjectNode $value, Describer $describer): void
 	{
 		$values = get_mangled_object_vars($obj);
 		$props = self::getProperties($obj::class);
@@ -33,7 +36,7 @@ final class Exposer
 				$value,
 				(string) $k,
 				$v,
-				Value::PropertyDynamic,
+				ObjectNode::PropertyDynamic,
 				$describer->getReferenceId($values, $k),
 			);
 		}
@@ -56,7 +59,7 @@ final class Exposer
 					null,
 					$type,
 					class: $class,
-					described: new Value(Value::TypeText, 'unset'),
+					described: new TextNode('unset'),
 				);
 			}
 		}
@@ -79,11 +82,11 @@ final class Exposer
 			if ($prop->isStatic() || $prop->getDeclaringClass()->getName() !== $class) {
 				// nothing
 			} elseif ($prop->isPrivate()) {
-				$props["\x00" . $class . "\x00" . $name] = [$name, $class, Value::PropertyPrivate];
+				$props["\x00" . $class . "\x00" . $name] = [$name, $class, ObjectNode::PropertyPrivate];
 			} elseif ($prop->isProtected()) {
-				$props["\x00*\x00" . $name] = [$name, $class, Value::PropertyProtected];
+				$props["\x00*\x00" . $name] = [$name, $class, ObjectNode::PropertyProtected];
 			} else {
-				$props[$name] = [$name, $class, Value::PropertyPublic];
+				$props[$name] = [$name, $class, ObjectNode::PropertyPublic];
 				unset($parentProps["\x00*\x00" . $name]);
 			}
 		}
@@ -92,7 +95,7 @@ final class Exposer
 	}
 
 
-	public static function exposeClosure(\Closure $obj, Value $value, Describer $describer): void
+	public static function exposeClosure(\Closure $obj, ObjectNode $value, Describer $describer): void
 	{
 		$rc = new \ReflectionFunction($obj);
 		if ($describer->location) {
@@ -104,10 +107,10 @@ final class Exposer
 			$params[] = '$' . $param->getName();
 		}
 
-		$value->value .= '(' . implode(', ', $params) . ')';
+		$value->className .= '(' . implode(', ', $params) . ')';
 
 		$uses = [];
-		$useValue = new Value(Value::TypeObject);
+		$useValue = new ObjectNode;
 		$useValue->depth = $value->depth + 1;
 		foreach ($rc->getStaticVariables() as $name => $v) {
 			$uses[] = '$' . $name;
@@ -115,16 +118,16 @@ final class Exposer
 		}
 
 		if ($uses) {
-			$useValue->value = implode(', ', $uses);
+			$useValue->className = implode(', ', $uses);
 			$useValue->collapsed = true;
 			$describer->addPropertyTo($value, 'use', null, described: $useValue);
 		}
 	}
 
 
-	public static function exposeEnum(\UnitEnum $enum, Value $value, Describer $describer): void
+	public static function exposeEnum(\UnitEnum $enum, ObjectNode $value, Describer $describer): void
 	{
-		$value->value = $enum::class . '::' . $enum->name;
+		$value->className = $enum::class . '::' . $enum->name;
 		if ($enum instanceof \BackedEnum) {
 			$describer->addPropertyTo($value, 'value', $enum->value);
 			$value->collapsed = true;
@@ -132,56 +135,56 @@ final class Exposer
 	}
 
 
-	public static function exposeArrayObject(\ArrayObject $obj, Value $value, Describer $describer): void
+	public static function exposeArrayObject(\ArrayObject $obj, ObjectNode $value, Describer $describer): void
 	{
 		$flags = $obj->getFlags();
 		$obj->setFlags(\ArrayObject::STD_PROP_LIST);
 		self::exposeObject($obj, $value, $describer);
 		$obj->setFlags($flags);
-		$describer->addPropertyTo($value, 'storage', $obj->getArrayCopy(), Value::PropertyPrivate, null, \ArrayObject::class);
-		$value->value .= ' (' . count($obj) . ')';
+		$describer->addPropertyTo($value, 'storage', $obj->getArrayCopy(), ObjectNode::PropertyPrivate, null, \ArrayObject::class);
+		$value->className .= ' (' . count($obj) . ')';
 	}
 
 
-	public static function exposeDOMNode(\DOMNode|Dom\Node $obj, Value $value, Describer $describer): void
+	public static function exposeDOMNode(\DOMNode|Dom\Node $obj, ObjectNode $value, Describer $describer): void
 	{
 		$props = preg_match_all('#^\s*\[([^\]]+)\] =>#m', print_r($obj, return: true), $tmp) ? $tmp[1] : [];
 		sort($props);
 		foreach ($props as $p) {
-			$describer->addPropertyTo($value, $p, @$obj->$p, Value::PropertyPublic); // @ some props may be deprecated
+			$describer->addPropertyTo($value, $p, @$obj->$p, ObjectNode::PropertyPublic); // @ some props may be deprecated
 		}
 	}
 
 
 	public static function exposeDOMNodeList(
 		\DOMNodeList|\DOMNamedNodeMap|Dom\NodeList|Dom\NamedNodeMap|Dom\TokenList|Dom\HTMLCollection $obj,
-		Value $value,
+		ObjectNode $value,
 		Describer $describer,
 	): void
 	{
-		$describer->addPropertyTo($value, 'length', $obj->length, Value::PropertyPublic);
+		$describer->addPropertyTo($value, 'length', $obj->length, ObjectNode::PropertyPublic);
 		$describer->addPropertyTo($value, 'items', iterator_to_array($obj));
 	}
 
 
-	public static function exposeGenerator(\Generator $gen, Value $value, Describer $describer): void
+	public static function exposeGenerator(\Generator $gen, ObjectNode $value, Describer $describer): void
 	{
 		try {
 			$r = new \ReflectionGenerator($gen);
 			$describer->addPropertyTo($value, 'file', $r->getExecutingFile() . ':' . $r->getExecutingLine());
 			$describer->addPropertyTo($value, 'this', $r->getThis());
 		} catch (\ReflectionException) {
-			$value->value = $gen::class . ' (terminated)';
+			$value->className = $gen::class . ' (terminated)';
 		}
 	}
 
 
-	public static function exposeFiber(\Fiber $fiber, Value $value, Describer $describer): void
+	public static function exposeFiber(\Fiber $fiber, ObjectNode $value, Describer $describer): void
 	{
 		if ($fiber->isTerminated()) {
-			$value->value = $fiber::class . ' (terminated)';
+			$value->className = $fiber::class . ' (terminated)';
 		} elseif (!$fiber->isStarted()) {
-			$value->value = $fiber::class . ' (not started)';
+			$value->className = $fiber::class . ' (not started)';
 		} else {
 			$r = new \ReflectionFiber($fiber);
 			$describer->addPropertyTo($value, 'file', $r->getExecutingFile() . ':' . $r->getExecutingLine());
@@ -196,11 +199,11 @@ final class Exposer
 	}
 
 
-	public static function exposeSplObjectStorage(\SplObjectStorage $obj, Value $value, Describer $describer): void
+	public static function exposeSplObjectStorage(\SplObjectStorage $obj, ObjectNode $value, Describer $describer): void
 	{
-		$value->value .= ' (' . count($obj) . ')';
+		$value->className .= ' (' . count($obj) . ')';
 		foreach (clone $obj as $v) {
-			$pair = new Value(Value::TypeObject, '');
+			$pair = new ObjectNode;
 			$pair->depth = $value->depth + 1;
 			$describer->addPropertyTo($pair, 'key', $v);
 			$describer->addPropertyTo($pair, 'value', $obj[$v]);
@@ -210,11 +213,11 @@ final class Exposer
 	}
 
 
-	public static function exposeWeakMap(\WeakMap $obj, Value $value, Describer $describer): void
+	public static function exposeWeakMap(\WeakMap $obj, ObjectNode $value, Describer $describer): void
 	{
-		$value->value .= ' (' . count($obj) . ')';
+		$value->className .= ' (' . count($obj) . ')';
 		foreach ($obj as $k => $v) {
-			$pair = new Value(Value::TypeObject, '');
+			$pair = new ObjectNode;
 			$pair->depth = $value->depth + 1;
 			$describer->addPropertyTo($pair, 'key', $k);
 			$describer->addPropertyTo($pair, 'value', $v);
@@ -226,7 +229,7 @@ final class Exposer
 
 	public static function exposePhpIncompleteClass(
 		\__PHP_Incomplete_Class $obj,
-		Value $value,
+		ObjectNode $value,
 		Describer $describer,
 	): void
 	{
@@ -238,10 +241,10 @@ final class Exposer
 			if (isset($k[0]) && $k[0] === "\x00") {
 				$info = explode("\00", $k);
 				$k = end($info);
-				$type = $info[1] === '*' ? Value::PropertyProtected : Value::PropertyPrivate;
-				$decl = $type === Value::PropertyPrivate ? $info[1] : null;
+				$type = $info[1] === '*' ? ObjectNode::PropertyProtected : ObjectNode::PropertyPrivate;
+				$decl = $type === ObjectNode::PropertyPrivate ? $info[1] : null;
 			} else {
-				$type = Value::PropertyPublic;
+				$type = ObjectNode::PropertyPublic;
 				$k = (string) $k;
 				$decl = null;
 			}
@@ -249,13 +252,13 @@ final class Exposer
 			$describer->addPropertyTo($value, $k, $v, $type, $refId, $decl);
 		}
 
-		$value->value = $class . ' (Incomplete Class)';
+		$value->className = $class . ' (Incomplete Class)';
 	}
 
 
 	public static function exposeDsCollection(
 		Ds\Collection $obj,
-		Value $value,
+		ObjectNode $value,
 		Describer $describer,
 	): void
 	{
@@ -267,7 +270,7 @@ final class Exposer
 
 	public static function exposeDsMap(
 		Ds\Map $obj,
-		Value $value,
+		ObjectNode $value,
 		Describer $describer,
 	): void
 	{

@@ -47,7 +47,7 @@ class Dumper
 
 	public const HIDDEN_VALUE = Describer::HiddenValue;
 
-	/** @var Dumper\Value[] */
+	/** @var Dumper\Node[] */
 	public static array $liveSnapshot = [];
 
 	public static ?array $terminalColors = [
