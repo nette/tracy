@@ -49,7 +49,7 @@ $arr = [1, 2, 3, ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']];
 $arr[3][] = &$arr;
 Assert::match(
 	<<<'XX'
-		<pre class="tracy-dump tracy-light" data-tracy-snapshot='{"p1":{"array":null,"items":[[0,1],[1,2],[2,3],[3,[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"ref":"p1"},1]]]]}}'
+		<pre class="tracy-dump tracy-light" data-tracy-snapshot='{"p1":[[0,1],[1,2],[2,3],[3,[[0,"a"],[1,"b"],[2,"c"],[3,"d"],[4,"e"],[5,"f"],[6,"g"],[7,"h"],[8,{"ref":"p1"},1]]]]}'
 		><span class="tracy-toggle"><span class="tracy-dump-array">array</span> (4)</span>
 		<div><span class="tracy-dump-indent">   </span><span class="tracy-dump-number">0</span> => <span class="tracy-dump-number">1</span>
 		<span class="tracy-dump-indent">   </span><span class="tracy-dump-number">1</span> => <span class="tracy-dump-number">2</span>

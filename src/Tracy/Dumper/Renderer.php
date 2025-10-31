@@ -18,7 +18,7 @@ use Tracy\Dumper\Nodes\ResourceNode;
 use Tracy\Dumper\Nodes\StringNode;
 use Tracy\Dumper\Nodes\TextNode;
 use Tracy\Helpers;
-use function count, htmlspecialchars, ini_set, is_array, is_bool, is_float, is_int, is_object, is_string, json_encode, str_repeat, str_replace, strlen, strrpos, substr, substr_count;
+use function count, htmlspecialchars, ini_set, is_bool, is_float, is_int, is_object, is_string, json_encode, str_repeat, str_replace, strlen, strrpos, substr, substr_count;
 use const JSON_HEX_AMP, JSON_HEX_APOS, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE;
 
 
@@ -60,7 +60,10 @@ final class Renderer
 				$html = $this->renderVar($value);
 				$json = $snapshot = null;
 
-			} elseif ($this->lazy && (is_array($value) && $value || $value instanceof Node)) { // full lazy-loading
+			} elseif (
+				$this->lazy
+				&& ($value instanceof ArrayNode ? $value->items : $value instanceof Node)
+			) { // full lazy-loading
 				$html = '';
 				$snapshot = $this->collectingMode ? null : $this->snapshot;
 				$json = $value;
@@ -130,7 +133,7 @@ final class Renderer
 			is_int($value) => '<span class="tracy-dump-number">' . $value . '</span>',
 			is_float($value) => '<span class="tracy-dump-number">' . self::jsonEncode($value) . '</span>',
 			is_string($value), $value instanceof StringNode => $this->renderString($value, $depth, $keyType),
-			is_array($value), $value instanceof ArrayNode => $this->renderArray($value, $depth),
+			$value instanceof ArrayNode => $this->renderArray($value, $depth),
 			$value instanceof ReferenceNode => $this->renderVar($this->snapshot[$value->targetId], $depth, $keyType),
 			$value instanceof ObjectNode => $this->renderObject($value, $depth),
 			$value instanceof NumberNode => '<span class="tracy-dump-number">' . Helpers::escapeHtml($value->value) . '</span>',
@@ -214,15 +217,11 @@ final class Renderer
 	}
 
 
-	private function renderArray(array|ArrayNode $array, int $depth): string
+	private function renderArray(ArrayNode $array, int $depth): string
 	{
 		$out = '<span class="tracy-dump-array">array</span> (';
 
-		if (is_array($array)) {
-			$items = $array;
-			$count = count($items);
-			$out .= $count . ')';
-		} elseif ($array->items === null) {
+		if ($array->items === null) {
 			return $out . $array->length . ') …';
 		} else {
 			$items = $array->items;
@@ -254,7 +253,7 @@ final class Renderer
 		$span = '<span class="tracy-toggle' . ($collapsed ? ' tracy-collapsed' : '') . '"';
 
 		if ($collapsed && $this->lazy !== false) {
-			$value = $array instanceof ArrayNode && isset($array->id) ? new ReferenceNode($array->id) : $array;
+			$value = isset($array->id) ? new ReferenceNode($array->id) : $array;
 			$this->copySnapshot($value);
 			return $span . " data-tracy-dump='" . self::jsonEncode($value) . "'>" . $out . '</span>';
 		}
@@ -398,11 +397,7 @@ final class Renderer
 
 		$this->snapshotSelection ??= [];
 
-		if (is_array($value)) {
-			foreach ($value as $item) {
-				$this->copySnapshot($item->value);
-			}
-		} elseif ($value instanceof ReferenceNode) {
+		if ($value instanceof ReferenceNode) {
 			if (!isset($this->snapshotSelection[$value->targetId])) {
 				$ref = $this->snapshotSelection[$value->targetId] = $this->snapshot[$value->targetId];
 				$this->copySnapshot($ref);

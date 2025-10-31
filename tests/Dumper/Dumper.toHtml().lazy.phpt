@@ -94,7 +94,7 @@ $arr = [1, 2, 3];
 $arr[] = &$arr;
 Assert::match(
 	<<<'XX'
-		<pre class="tracy-dump" data-tracy-snapshot='{"p1":{"array":null,"items":[[0,1],[1,2],[2,3],[3,{"ref":"p1"},1]]}}' data-tracy-dump='[[0,1],[1,2],[2,3],[3,{"ref":"p1"},1]]'></pre>
+		<pre class="tracy-dump" data-tracy-snapshot='{"p1":[[0,1],[1,2],[2,3],[3,{"ref":"p1"},1]]}' data-tracy-dump='[[0,1],[1,2],[2,3],[3,{"ref":"p1"},1]]'></pre>
 		XX,
 	Dumper::toHtml($arr, $options),
 );

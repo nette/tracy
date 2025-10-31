@@ -137,10 +137,7 @@ Assert::match(
 	Dumper::toHtml($arr, $options),
 );
 Assert::equal([
-	[
-		'array' => null,
-		'items' => [[0, 1], [1, 2], [2, 3], [3, ['ref' => 'p1'], 1]],
-	],
+	[[0, 1], [1, 2], [2, 3], [3, ['ref' => 'p1'], 1]],
 ], array_values(formatSnapshot($snapshot)));
 
 

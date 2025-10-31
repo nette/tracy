@@ -126,7 +126,7 @@ final class Describer
 	}
 
 
-	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): ArrayNode|ReferenceNode|array
+	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): ArrayNode|ReferenceNode
 	{
 		if ($refId) {
 			$res = new ReferenceNode('p' . $refId);
@@ -159,6 +159,9 @@ final class Describer
 			$res->depth = $depth;
 			$items = &$res->items;
 			$arr = array_slice($arr, 0, $this->maxItems, preserve_keys: true);
+		} else {
+			$res = new ArrayNode;
+			$items = &$res->items;
 		}
 
 		$items = [];
@@ -173,7 +176,7 @@ final class Describer
 			);
 		}
 
-		return $res ?? $items;
+		return $res;
 	}
 
 

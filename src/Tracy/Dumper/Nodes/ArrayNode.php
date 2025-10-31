@@ -28,6 +28,9 @@ final class ArrayNode extends CollectionNode
 			}
 		}
 
+		if ($this->items !== null && ($this->length === null || $this->length === count($this->items))) {
+			return $res['items'];
+		}
 		return $res;
 	}
 }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 use Tester\Assert;
 use Tracy\Dumper\Describer;
 use Tracy\Dumper\Exposer;
+use Tracy\Dumper\Nodes\ArrayNode;
 use Tracy\Dumper\Nodes\CollectionItem;
 use Tracy\Dumper\Nodes\NumberNode;
 use Tracy\Dumper\Nodes\ObjectNode;
@@ -52,8 +53,10 @@ Assert::with(Exposer::class, function () {
 
 $value = new ObjectNode;
 Exposer::exposeObject(new Test, $value, new Describer);
+$arr = new ArrayNode;
+$arr->items = [new CollectionItem(0, 10), new CollectionItem(1, null)];
 Assert::equal([
-	new CollectionItem('x', [new CollectionItem(0, 10), new CollectionItem(1, null)], type: ObjectNode::PropertyPublic),
+	new CollectionItem('x', $arr, type: ObjectNode::PropertyPublic),
 	new CollectionItem('y', 'hello', type: 'Test'),
 	new CollectionItem('z', new NumberNode('30.0'), type: ObjectNode::PropertyProtected),
 ], $value->items);
