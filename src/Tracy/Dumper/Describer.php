@@ -11,6 +11,7 @@ namespace Tracy\Dumper;
 
 use Tracy;
 use Tracy\Dumper\Nodes\ArrayNode;
+use Tracy\Dumper\Nodes\CollectionItem;
 use Tracy\Dumper\Nodes\NumberNode;
 use Tracy\Dumper\Nodes\ObjectNode;
 use Tracy\Dumper\Nodes\ReferenceNode;
@@ -163,12 +164,13 @@ final class Describer
 		$items = [];
 		foreach ($arr as $k => $v) {
 			$refId = $this->getReferenceId($arr, $k);
-			$items[] = [
+			$items[] = new CollectionItem(
 				$this->describeVar($k, $depth + 1),
 				$this->isSensitive((string) $k, $v)
 					? new TextNode(self::hideValue($v))
 					: $this->describeVar($v, $depth + 1, $refId),
-			] + ($refId ? [2 => $refId] : []);
+				$refId,
+			);
 		}
 
 		return $res ?? $items;
@@ -222,7 +224,7 @@ final class Describer
 			$node->depth = $depth;
 			if (isset($this->resourceExposers[$type])) {
 				foreach (($this->resourceExposers[$type])($resource) as $k => $v) {
-					$node->items[] = [htmlspecialchars($k), $this->describeVar($v, $depth + 1)];
+					$node->items[] = new CollectionItem(htmlspecialchars($k), $this->describeVar($v, $depth + 1));
 				}
 			}
 		}
@@ -260,13 +262,14 @@ final class Describer
 		}
 
 		$class ??= $node instanceof ObjectNode ? $node->className : null;
-		$node->items[] = [
+		$node->items[] = new CollectionItem(
 			$this->describeKey($k),
 			$type !== ObjectNode::PropertyVirtual && $this->isSensitive($k, $v, $class)
 				? new TextNode(self::hideValue($v))
 				: ($described ?? $this->describeVar($v, $node->depth + 1, $refId)),
+			$refId,
 			$type === ObjectNode::PropertyPrivate ? $class : $type,
-		] + ($refId ? [3 => $refId] : []);
+		);
 	}
 
 

@@ -263,14 +263,13 @@ final class Renderer
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[$array->id ?? ''] = $this->above[$array->id ?? ''] = true;
 
-		foreach ($items as $info) {
-			[$k, $v, $ref] = $info + [2 => null];
+		foreach ($items as $item) {
 			$out .= $indent
-				. $this->renderVar($k, $depth + 1, self::TypeArrayKey)
+				. $this->renderVar($item->key, $depth + 1, self::TypeArrayKey)
 				. ' => '
-				. ($ref && $this->hash ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
-				. ($tmp = $this->renderVar($v, $depth + 1))
-				. (substr($tmp, -6) === '</div>' ? '' : "\n");
+				. ($item->refId && $this->hash ? '<span class="tracy-dump-hash">&' . $item->refId . '</span> ' : '')
+				. ($tmp = $this->renderVar($item->value, $depth + 1))
+				. (str_ends_with($tmp, '</div>') ? '' : "\n");
 		}
 
 		if ($count > count($items)) {
@@ -340,14 +339,13 @@ final class Renderer
 		$indent = '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>';
 		$this->parents[$object->id ?? ''] = $this->above[$object->id ?? ''] = true;
 
-		foreach ($object->items as $info) {
-			[$k, $v, $type, $ref] = $info + [2 => ObjectNode::PropertyVirtual, null];
+		foreach ($object->items as $item) {
 			$out .= $indent
-				. $this->renderVar($k, $depth + 1, $type)
+				. $this->renderVar($item->key, $depth + 1, $item->type ?? ObjectNode::PropertyVirtual)
 				. ': '
-				. ($ref && $this->hash ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
-				. ($tmp = $this->renderVar($v, $depth + 1))
-				. (substr($tmp, -6) === '</div>' ? '' : "\n");
+				. ($item->refId && $this->hash ? '<span class="tracy-dump-hash">&' . $item->refId . '</span> ' : '')
+				. ($tmp = $this->renderVar($item->value, $depth + 1))
+				. (str_ends_with($tmp, '</div>') ? '' : "\n");
 		}
 
 		if ($object->length > count($object->items)) {
@@ -379,12 +377,12 @@ final class Renderer
 		} else {
 			$this->above[$resource->id] = true;
 			$out = "<span class=\"tracy-toggle tracy-collapsed\">$out</span>\n<div class=\"tracy-collapsed\">";
-			foreach ($resource->items as [$k, $v]) {
+			foreach ($resource->items as $item) {
 				$out .= '<span class="tracy-dump-indent">   ' . str_repeat('|  ', $depth) . '</span>'
-					. $this->renderVar($k, $depth + 1, ObjectNode::PropertyVirtual)
+					. $this->renderVar($item->key, $depth + 1, ObjectNode::PropertyVirtual)
 					. ': '
-					. ($tmp = $this->renderVar($v, $depth + 1))
-					. (substr($tmp, -6) === '</div>' ? '' : "\n");
+					. ($tmp = $this->renderVar($item->value, $depth + 1))
+					. (str_ends_with($tmp, '</div>') ? '' : "\n");
 			}
 
 			return $out . '</div>';
@@ -398,13 +396,11 @@ final class Renderer
 			return;
 		}
 
-		if ($this->snapshotSelection === null) {
-			$this->snapshotSelection = [];
-		}
+		$this->snapshotSelection ??= [];
 
 		if (is_array($value)) {
-			foreach ($value as [, $v]) {
-				$this->copySnapshot($v);
+			foreach ($value as $item) {
+				$this->copySnapshot($item->value);
 			}
 		} elseif ($value instanceof ReferenceNode) {
 			if (!isset($this->snapshotSelection[$value->targetId])) {
@@ -412,8 +408,8 @@ final class Renderer
 				$this->copySnapshot($ref);
 			}
 		} elseif ($value instanceof CollectionNode && $value->items) {
-			foreach ($value->items as [, $v]) {
-				$this->copySnapshot($v);
+			foreach ($value->items as $item) {
+				$this->copySnapshot($item->value);
 			}
 		}
 	}

@@ -230,7 +230,7 @@ class Dumper
 			$model = $this->describer->describe($var);
 		} else {
 			$model = $this->describer->describe([$key => $var]);
-			$model->value = $model->value[0][1];
+			$model->value = $model->value[0]->value;
 		}
 
 		return $this->renderer->renderAsHtml($model);

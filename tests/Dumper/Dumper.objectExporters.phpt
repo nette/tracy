@@ -9,6 +9,7 @@ declare(strict_types=1);
 use Tester\Assert;
 use Tracy\Dumper;
 use Tracy\Dumper\Node;
+use Tracy\Dumper\Nodes\CollectionItem;
 use Tracy\Dumper\Nodes\ObjectNode;
 use Tracy\Dumper\Nodes\TextNode;
 
@@ -42,11 +43,11 @@ Assert::match(
 $exporters = [
 	'stdClass' => function ($var, Node $value, Dumper\Describer $describer) {
 		$describer->addPropertyTo($value, 'x', $var->a + 2, ObjectNode::PropertyPublic);
-		$value->items[] = [$describer->describeKey('key'), new TextNode('hello')];
-		$value->items[] = [new TextNode('$x'), new TextNode('hello')];
+		$value->items[] = new CollectionItem($describer->describeKey('key'), new TextNode('hello'));
+		$value->items[] = new CollectionItem(new TextNode('$x'), new TextNode('hello'));
 		$inner = new ObjectNode('hello');
 		$describer->addPropertyTo($inner, 'a', 'b', ObjectNode::PropertyPublic);
-		$value->items[] = ['object', $inner];
+		$value->items[] = new CollectionItem('object', $inner);
 	},
 ];
 Assert::match(

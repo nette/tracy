@@ -14,7 +14,7 @@ use Tracy\Dumper\Node;
 
 abstract class CollectionNode extends Node
 {
-	/** @var array{$key, $value, [$type,] [$refId]} */
+	/** @var CollectionItem[]|null */
 	public ?array $items = null;
 
 	/** Total number of elements (may exceed displayed items) */

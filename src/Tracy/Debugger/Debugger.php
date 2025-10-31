@@ -246,6 +246,7 @@ class Debugger
 			'Dumper/Nodes/ResourceNode',
 			'Dumper/Nodes/StringNode',
 			'Dumper/Nodes/TextNode',
+			'Dumper/Nodes/CollectionItem',
 			'Logger/Logger',
 			'Session/SessionStorage',
 			'Session/FileSession',

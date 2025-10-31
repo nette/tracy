@@ -9,6 +9,7 @@ declare(strict_types=1);
 use Tester\Assert;
 use Tracy\Dumper\Describer;
 use Tracy\Dumper\Exposer;
+use Tracy\Dumper\Nodes\CollectionItem;
 use Tracy\Dumper\Nodes\NumberNode;
 use Tracy\Dumper\Nodes\ObjectNode;
 
@@ -52,31 +53,31 @@ Assert::with(Exposer::class, function () {
 $value = new ObjectNode;
 Exposer::exposeObject(new Test, $value, new Describer);
 Assert::equal([
-	['x', [[0, 10], [1, null]], ObjectNode::PropertyPublic],
-	['y', 'hello', 'Test'],
-	['z', new NumberNode('30.0'), ObjectNode::PropertyProtected],
+	new CollectionItem('x', [new CollectionItem(0, 10), new CollectionItem(1, null)], type: ObjectNode::PropertyPublic),
+	new CollectionItem('y', 'hello', type: 'Test'),
+	new CollectionItem('z', new NumberNode('30.0'), type: ObjectNode::PropertyProtected),
 ], $value->items);
 
 $value = new ObjectNode;
 Exposer::exposeObject(new Child, $value, new Describer);
-Assert::same([
-	['x', 1, ObjectNode::PropertyPublic],
-	['y', 2, 'Child'],
-	['z', 3, ObjectNode::PropertyProtected],
-	['x2', 4, ObjectNode::PropertyPublic],
-	['y2', 5, ObjectNode::PropertyProtected],
-	['z2', 6, 'Child'],
-	['y', 'hello', 'Test'],
+Assert::equal([
+	new CollectionItem('x', 1, type: ObjectNode::PropertyPublic),
+	new CollectionItem('y', 2, type: 'Child'),
+	new CollectionItem('z', 3, type: ObjectNode::PropertyProtected),
+	new CollectionItem('x2', 4, type: ObjectNode::PropertyPublic),
+	new CollectionItem('y2', 5, type: ObjectNode::PropertyProtected),
+	new CollectionItem('z2', 6, type: 'Child'),
+	new CollectionItem('y', 'hello', type: 'Test'),
 ], $value->items);
 
 $value = new ObjectNode;
 Exposer::exposeObject(new GrandChild, $value, new Describer);
-Assert::same([
-	['x', 1, ObjectNode::PropertyPublic],
-	['y', 2, 'Child'],
-	['z', 3, ObjectNode::PropertyProtected],
-	['x2', 4, ObjectNode::PropertyPublic],
-	['y2', 5, ObjectNode::PropertyProtected],
-	['z2', 6, 'Child'],
-	['y', 'hello', 'Test'],
+Assert::equal([
+	new CollectionItem('x', 1, type: ObjectNode::PropertyPublic),
+	new CollectionItem('y', 2, type: 'Child'),
+	new CollectionItem('z', 3, type: ObjectNode::PropertyProtected),
+	new CollectionItem('x2', 4, type: ObjectNode::PropertyPublic),
+	new CollectionItem('y2', 5, type: ObjectNode::PropertyProtected),
+	new CollectionItem('z2', 6, type: 'Child'),
+	new CollectionItem('y', 'hello', type: 'Test'),
 ], $value->items);
