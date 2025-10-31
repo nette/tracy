@@ -55,6 +55,7 @@ $value = new ObjectNode;
 Exposer::exposeObject(new Test, $value, new Describer);
 $arr = new ArrayNode;
 $arr->items = [new CollectionItem(0, 10), new CollectionItem(1, null)];
+$arr->length = 2;
 Assert::equal([
 	new CollectionItem('x', $arr, type: ObjectNode::PropertyPublic),
 	new CollectionItem('y', 'hello', type: 'Test'),

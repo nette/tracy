@@ -129,45 +129,30 @@ final class Describer
 	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): ArrayNode|ReferenceNode
 	{
 		if ($refId) {
-			$res = new ReferenceNode('p' . $refId);
-			$node = &$this->snapshot[$res->targetId];
+			$ref = new ReferenceNode('p' . $refId);
+			$node = &$this->snapshot[$ref->targetId];
 			if ($node && $node->depth <= $depth) {
-				return $res;
+				return $ref;
 			}
 
 			$node = new ArrayNode;
-			$node->id = $res->targetId;
+			$node->id = $ref->targetId;
 			$node->depth = $depth;
-			if ($this->maxDepth && $depth >= $this->maxDepth) {
-				$node->length = count($arr);
-				return $res;
-			} elseif ($depth && $this->maxItems && count($arr) > $this->maxItems) {
-				$node->length = count($arr);
-				$arr = array_slice($arr, 0, $this->maxItems, preserve_keys: true);
-			}
-
-			$items = &$node->items;
-
-		} elseif ($arr && $this->maxDepth && $depth >= $this->maxDepth) {
-			$res = new ArrayNode;
-			$res->length = count($arr);
-			return $res;
-
-		} elseif ($depth && $this->maxItems && count($arr) > $this->maxItems) {
-			$res = new ArrayNode;
-			$res->length = count($arr);
-			$res->depth = $depth;
-			$items = &$res->items;
-			$arr = array_slice($arr, 0, $this->maxItems, preserve_keys: true);
 		} else {
-			$res = new ArrayNode;
-			$items = &$res->items;
+			$node = new ArrayNode;
 		}
 
-		$items = [];
+		$node->length = count($arr);
+		if ($arr && $this->maxDepth && $depth >= $this->maxDepth) {
+			return $ref ?? $node;
+		} elseif ($depth && $this->maxItems && count($arr) > $this->maxItems) {
+			$arr = array_slice($arr, 0, $this->maxItems, preserve_keys: true);
+		}
+
+		$node->items = [];
 		foreach ($arr as $k => $v) {
 			$refId = $this->getReferenceId($arr, $k);
-			$items[] = new CollectionItem(
+			$node->items[] = new CollectionItem(
 				$this->describeVar($k, $depth + 1),
 				$this->isSensitive((string) $k, $v)
 					? new TextNode(self::hideValue($v))
@@ -176,7 +161,7 @@ final class Describer
 			);
 		}
 
-		return $res;
+		return $ref ?? $node;
 	}
 
 
