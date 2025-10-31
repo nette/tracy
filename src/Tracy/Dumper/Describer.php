@@ -129,23 +129,23 @@ final class Describer
 	{
 		if ($refId) {
 			$res = new ReferenceNode('p' . $refId);
-			$value = &$this->snapshot[$res->targetId];
-			if ($value && $value->depth <= $depth) {
+			$node = &$this->snapshot[$res->targetId];
+			if ($node && $node->depth <= $depth) {
 				return $res;
 			}
 
-			$value = new ArrayNode;
-			$value->id = $res->targetId;
-			$value->depth = $depth;
+			$node = new ArrayNode;
+			$node->id = $res->targetId;
+			$node->depth = $depth;
 			if ($this->maxDepth && $depth >= $this->maxDepth) {
-				$value->length = count($arr);
+				$node->length = count($arr);
 				return $res;
 			} elseif ($depth && $this->maxItems && count($arr) > $this->maxItems) {
-				$value->length = count($arr);
+				$node->length = count($arr);
 				$arr = array_slice($arr, 0, $this->maxItems, preserve_keys: true);
 			}
 
-			$items = &$value->items;
+			$items = &$node->items;
 
 		} elseif ($arr && $this->maxDepth && $depth >= $this->maxDepth) {
 			$res = new ArrayNode;
@@ -178,30 +178,30 @@ final class Describer
 	private function describeObject(object $obj, int $depth = 0): ObjectNode|ReferenceNode
 	{
 		$id = spl_object_id($obj);
-		$value = &$this->snapshot[$id];
-		if ($value && $value->depth <= $depth) {
+		$node = &$this->snapshot[$id];
+		if ($node && $node->depth <= $depth) {
 			return new ReferenceNode($id);
 		}
 
-		$value = new ObjectNode(get_debug_type($obj));
-		$value->id = $id;
-		$value->depth = $depth;
-		$value->holder = $obj; // to be not released by garbage collector in collecting mode
+		$node = new ObjectNode(get_debug_type($obj));
+		$node->id = $id;
+		$node->depth = $depth;
+		$node->holder = $obj; // to be not released by garbage collector in collecting mode
 
 		if ($this->location) {
 			$rc = $obj instanceof \Closure
 				? new \ReflectionFunction($obj)
 				: new \ReflectionClass($obj);
 			if ($rc->getFileName() && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine()))) {
-				$value->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
+				$node->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
 			}
 		}
 
 		if ($this->maxDepth && $depth < $this->maxDepth) {
-			$value->items = [];
-			$props = $this->exposeObject($obj, $value);
+			$node->items = [];
+			$props = $this->exposeObject($obj, $node);
 			foreach ($props ?? [] as $k => $v) {
-				$this->addPropertyTo($value, (string) $k, $v, ObjectNode::PropertyVirtual, $this->getReferenceId($props, $k));
+				$this->addPropertyTo($node, (string) $k, $v, ObjectNode::PropertyVirtual, $this->getReferenceId($props, $k));
 			}
 		}
 
@@ -215,14 +215,14 @@ final class Describer
 	private function describeResource($resource, int $depth = 0): ResourceNode|ReferenceNode
 	{
 		$id = 'r' . (int) $resource;
-		$value = &$this->snapshot[$id];
-		if (!$value) {
+		$node = &$this->snapshot[$id];
+		if (!$node) {
 			$type = is_resource($resource) ? get_resource_type($resource) : 'closed';
-			$value = new ResourceNode($type . ' resource', $id);
-			$value->depth = $depth;
+			$node = new ResourceNode($type . ' resource', $id);
+			$node->depth = $depth;
 			if (isset($this->resourceExposers[$type])) {
 				foreach (($this->resourceExposers[$type])($resource) as $k => $v) {
-					$value->items[] = [htmlspecialchars($k), $this->describeVar($v, $depth + 1)];
+					$node->items[] = [htmlspecialchars($k), $this->describeVar($v, $depth + 1)];
 				}
 			}
 		}
@@ -237,15 +237,15 @@ final class Describer
 			return $key;
 		}
 
-		$value = $this->describeString($key);
-		return is_string($value) // ensure result is Value
+		$node = $this->describeString($key);
+		return is_string($node) // ensure result is Node
 			? new StringNode($key, Helpers::utf8Length($key), binary: false)
-			: $value;
+			: $node;
 	}
 
 
 	public function addPropertyTo(
-		ObjectNode $value,
+		ObjectNode $node,
 		string $k,
 		mixed $v,
 		int $type = ObjectNode::PropertyVirtual,
@@ -254,27 +254,27 @@ final class Describer
 		?Node $described = null,
 	): void
 	{
-		if ($value->depth && $this->maxItems && count($value->items ?? []) >= $this->maxItems) {
-			$value->length = ($value->length ?? count($value->items)) + 1;
+		if ($node->depth && $this->maxItems && count($node->items ?? []) >= $this->maxItems) {
+			$node->length = ($node->length ?? count($node->items)) + 1;
 			return;
 		}
 
-		$class ??= $value instanceof ObjectNode ? $value->className : null;
-		$value->items[] = [
+		$class ??= $node instanceof ObjectNode ? $node->className : null;
+		$node->items[] = [
 			$this->describeKey($k),
 			$type !== ObjectNode::PropertyVirtual && $this->isSensitive($k, $v, $class)
 				? new TextNode(self::hideValue($v))
-				: ($described ?? $this->describeVar($v, $value->depth + 1, $refId)),
+				: ($described ?? $this->describeVar($v, $node->depth + 1, $refId)),
 			$type === ObjectNode::PropertyPrivate ? $class : $type,
 		] + ($refId ? [3 => $refId] : []);
 	}
 
 
-	private function exposeObject(object $obj, ObjectNode $value): ?array
+	private function exposeObject(object $obj, ObjectNode $node): ?array
 	{
 		foreach ($this->objectExposers as $type => $dumper) {
 			if (!$type || $obj instanceof $type) {
-				return $dumper($obj, $value, $this);
+				return $dumper($obj, $node, $this);
 			}
 		}
 
@@ -282,7 +282,7 @@ final class Describer
 			return $obj->__debugInfo();
 		}
 
-		Exposer::exposeObject($obj, $value, $this);
+		Exposer::exposeObject($obj, $node, $this);
 		return null;
 	}
 
