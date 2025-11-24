@@ -1,7 +1,7 @@
 var settings = {
 
 	// PhpStorm
-	// editor: '"C:\\Program Files\\JetBrains\\PhpStorm 2018.1.2\\bin\\phpstorm64.exe" --line %line% "%file%"',
+	// editor: '"C:\\Program Files\\JetBrains\\PhpStorm 2018.1.2\\bin\\phpstorm64.exe" --line %line% --column %column% "%file%"',
 	// title: 'PhpStorm',
 
 	// NetBeans
@@ -14,7 +14,7 @@ var settings = {
 	// editor: '"C:\\Program Files\\SciTE\\scite.exe" "-open:%file%" -goto:%line%',
 
 	// EmEditor
-	// editor: '"C:\\Program Files\\EmEditor\\EmEditor.exe" "%file%" /l %line%',
+	// editor: '"C:\\Program Files\\EmEditor\\EmEditor.exe" "%file%" /l %line% /cl %column%',
 
 	// PSPad Editor
 	// editor: '"C:\\Program Files\\PSPad editor\\PSPad.exe" -%line% "%file%"',
@@ -26,7 +26,7 @@ var settings = {
 	// editor: '"C:\\Program Files\\Sublime Text 2\\sublime_text.exe" "%file%:%line%"',
 
 	// Visual Studio Code / VSCodium
-	// editor: '"C:\\Program Files\\Microsoft VS Code\\Code.exe" --goto "%file%:%line%"',
+	// editor: '"C:\\Program Files\\Microsoft VS Code\\Code.exe" --goto "%file%:%line%:%column%"',
 
 	mappings: {
 		// '/remotepath': '/localpath'
@@ -41,7 +41,7 @@ if (!settings.editor) {
 }
 
 var url = WScript.Arguments(0);
-var match = /^editor:\/\/(open|create|fix)\/?\?file=([^&]+)&line=(\d+)(?:&search=([^&]*)&replace=([^&]*))?/.exec(url);
+var match = /^editor:\/\/(open|create|fix)\/?\?file=([^&]+)&line=(\d+)(?::(\d+))?(?:&search=([^&]*)&replace=([^&]*))?/.exec(url);
 if (!match) {
 	WScript.Echo('Unexpected URI ' + url);
 	WScript.Quit();
@@ -53,8 +53,9 @@ for (var i in match) {
 var action = match[1];
 var file = match[2];
 var line = match[3];
-var search = match[4];
-var replace = match[5];
+var column = match[4] || 1;
+var search = match[5];
+var replace = match[6];
 
 var shell = new ActiveXObject('WScript.Shell');
 var fileSystem = new ActiveXObject('Scripting.FileSystemObject');
@@ -76,7 +77,7 @@ if (action === 'create' && !fileSystem.FileExists(file)) {
 	fileSystem.OpenTextFile(file, 2).Write(lines.join('\n'));
 }
 
-var command = settings.editor.replace(/%line%/, line).replace(/%file%/, file);
+var command = settings.editor.replace(/%line%/, line).replace(/%column%/, column).replace(/%file%/, file);
 shell.Exec(command);
 
 if (settings.title) {
