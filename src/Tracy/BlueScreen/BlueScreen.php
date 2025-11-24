@@ -424,7 +424,7 @@ class BlueScreen
 				. CodeHighlighter::highlightLine(htmlspecialchars($source, ENT_IGNORE, 'UTF-8'), $line, $column)
 				. '</div></pre>';
 
-		if ($editor = Helpers::editorUri($file, $line)) {
+		if ($editor = Helpers::editorUri($file, line: $line, column: $column)) {
 			$source = substr_replace(
 				$source,
 				' title="Ctrl-Click to open in editor" data-tracy-href="' . Helpers::escapeHtml($editor) . '"',

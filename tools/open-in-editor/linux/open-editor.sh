@@ -6,7 +6,7 @@ declare -A mapping
 #
 
 # Visual Studio Code
-#editor='code --goto "$FILE":"$LINE"'
+#editor='code --goto "$FILE":"$LINE":"$COLUMN"'
 # Emacs
 #editor='emacs +$LINE "$FILE"'
 # gVim
@@ -17,11 +17,9 @@ declare -A mapping
 #editor='pluma +$LINE "$FILE"'
 # PHPStorm
 # To enable PHPStorm command-line interface, folow this guide: https://www.jetbrains.com/help/phpstorm/working-with-the-ide-features-from-command-line.html
-#editor='phpstorm --line $LINE "$FILE"'
+#editor='phpstorm --line $LINE --column $COLUMN "$FILE"'
 # VS Codium
 #editor='codium --goto "$FILE":"$LINE"'
-# Visual Studio Code
-#editor='code --goto "$FILE":"$LINE"'
 
 #
 # Optionally configure custom mapping here:
@@ -56,9 +54,13 @@ action=`echo $url | sed -r "s/$regex/\1/i"`
 uri_params=`echo $url | sed -r "s/$regex/\2/i"`
 
 file=`get_param $uri_params "file"`
-line=`get_param $uri_params "line"`
+line_param=`get_param $uri_params "line"`
 search=`get_param $uri_params "search"`
 replace=`get_param $uri_params "replace"`
+
+# Parse line and column from line parameter (format: "12:5" or just "12")
+IFS=':' read -r line column <<< "$line_param"
+column="${column:-1}"
 
 # Debug?
 #echo "action '$action'"
@@ -66,6 +68,7 @@ replace=`get_param $uri_params "replace"`
 #echo "line '$line'"
 #echo "search '$search'"
 #echo "replace '$replace'"
+#echo "column '$column'"
 
 # Convert URI encoded codes to normal characters (e.g. '%2F' => '/').
 printf -v file "${file//%/\\x}"
@@ -102,6 +105,7 @@ fi
 # Format the command according to the selected editor.
 command="${editor//\$FILE/$file}"
 command="${command//\$LINE/$line}"
+command="${command//\$COLUMN/$column}"
 
 # Debug?
 #echo $command
