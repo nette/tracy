@@ -586,7 +586,7 @@ class Debugger
 	}
 
 
-	/** @return array{file: string, line: int, label: string, active: bool} */
+	/** @return array{file: string, line: int, column: int, label: string, active: bool} */
 	public static function mapSource(string $file, int $line): ?array
 	{
 		foreach (self::$sourceMappers as $mapper) {
