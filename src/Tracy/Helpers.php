@@ -55,6 +55,7 @@ class Helpers
 		string $action = 'open',
 		string $search = '',
 		string $replace = '',
+		?int $column = null,
 	): ?string
 	{
 		if (Debugger::$editor && $file && ($action === 'create' || @is_file($file))) { // @ - may trigger error
@@ -65,7 +66,7 @@ class Helpers
 			return strtr(Debugger::$editor, [
 				'%action' => $action,
 				'%file' => rawurlencode($file),
-				'%line' => $line ?: 1,
+				'%line' => ($line ?: 1) . ($column ? ':' . $column : ''),
 				'%search' => rawurlencode($search),
 				'%replace' => rawurlencode($replace),
 			]);
