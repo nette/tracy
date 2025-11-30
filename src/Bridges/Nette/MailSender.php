@@ -42,7 +42,7 @@ class MailSender
 		$mail = new Nette\Mail\Message;
 		$mail->setHeader('X-Mailer', 'Tracy');
 		if ($this->fromEmail || Nette\Utils\Validators::isEmail("noreply@$host")) {
-			$mail->setFrom($this->fromEmail ?: "noreply@$host");
+			$mail->setFrom($this->fromEmail ?? "noreply@$host");
 		}
 
 		foreach (explode(',', $email) as $item) {
