@@ -148,8 +148,8 @@ class Logger implements ILogger
 	 */
 	protected function logException(\Throwable $exception, ?string $file = null): string
 	{
-		$file = $file ?: $this->getExceptionFile($exception);
-		$bs = $this->blueScreen ?: new BlueScreen;
+		$file ??= $this->getExceptionFile($exception);
+		$bs = $this->blueScreen ?? new BlueScreen;
 		$bs->renderToFile($exception, $file);
 		return $file;
 	}
@@ -188,7 +188,7 @@ class Logger implements ILogger
 			"PHP: An error occurred on the server $host",
 			static::formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
 			implode("\r\n", [
-				'From: ' . ($this->fromEmail ?: "noreply@$host"),
+				'From: ' . ($this->fromEmail ?? "noreply@$host"),
 				'X-Mailer: Tracy',
 				'Content-Type: text/plain; charset=UTF-8',
 				'Content-Transfer-Encoding: 8bit',
