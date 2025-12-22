@@ -552,6 +552,7 @@ class Debugger
 				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::LOCATION => self::$showLocation ?: Dumper::LOCATION_CLASS | Dumper::LOCATION_SOURCE,
 				Dumper::LAZY => true,
+				Dumper::KEYS_TO_HIDE => self::$keysToHide,
 			])];
 		}
 
