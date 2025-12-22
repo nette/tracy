@@ -105,12 +105,17 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		foreach ($options as $key => $value) {
 			if ($value !== null) {
 				$tbl = [
-					'keysToHide' => 'array_push(Tracy\Debugger::getBlueScreen()->keysToHide, ... ?)',
-					'fromEmail' => 'if ($logger instanceof Tracy\Logger) $logger->fromEmail = ?',
-					'emailSnooze' => 'if ($logger instanceof Tracy\Logger) $logger->emailSnooze = ?',
+					'keysToHide' => [
+						'$keysToHide = ?',
+						'array_push(Tracy\Debugger::$keysToHide, ...$keysToHide)',
+						'array_push(Tracy\Debugger::getBlueScreen()->keysToHide, ...$keysToHide)',
+						'array_push(Nette\Bridges\DITracy\ContainerPanel::$keysToHide, ...$keysToHide)',
+					],
+					'fromEmail' => ['if ($logger instanceof Tracy\Logger) $logger->fromEmail = ?'],
+					'emailSnooze' => ['if ($logger instanceof Tracy\Logger) $logger->emailSnooze = ?'],
 				];
 				$initialize->addBody($builder->formatPhp(
-					($tbl[$key] ?? 'Tracy\Debugger::$' . $key . ' = ?') . ';',
+					(isset($tbl[$key]) ? implode(";\n", $tbl[$key]) : ('Tracy\Debugger::$' . $key . ' = ?')) . ';',
 					Nette\DI\Helpers::filterArguments([$value]),
 				));
 			}
