@@ -66,12 +66,14 @@ class Dumper
 		'indent' => '1;30',
 	];
 
+	/** @var array<string, string> */
 	public static array $resources = [
 		'stream' => 'stream_get_meta_data',
 		'stream-context' => 'stream_context_get_options',
 		'curl' => 'curl_getinfo',
 	];
 
+	/** @var array<string, string[]> */
 	public static array $objectExporters = [
 		\Closure::class => [Exposer::class, 'exposeClosure'],
 		\UnitEnum::class => [Exposer::class, 'exposeEnum'],
@@ -189,7 +191,7 @@ class Dumper
 		$describer->maxItems = (int) ($options[self::ITEMS] ?? $describer->maxItems);
 		$describer->debugInfo = (bool) ($options[self::DEBUGINFO] ?? $describer->debugInfo);
 		$describer->scrubber = $options[self::SCRUBBER] ?? $describer->scrubber;
-		$describer->keysToHide = array_flip(array_map('strtolower', $options[self::KEYS_TO_HIDE] ?? []));
+		$describer->keysToHide = array_flip(array_map(strtolower(...), $options[self::KEYS_TO_HIDE] ?? []));
 		$describer->resourceExposers = ($options['resourceExporters'] ?? []) + self::$resources;
 		$describer->objectExposers = ($options[self::OBJECT_EXPORTERS] ?? []) + self::$objectExporters;
 		$describer->enumProperties = self::$enumProperties;

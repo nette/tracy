@@ -47,7 +47,7 @@ Assert::match(
 );
 
 // proxy
-$proxy = $rc->newLazyProxy(function () { return new LazyClass; });
+$proxy = $rc->newLazyProxy(fn() => new LazyClass);
 Assert::match(
 	<<<'XX'
 		<pre class="tracy-dump tracy-light"><span class="tracy-dump-object">LazyClass (lazy)</span> <span class="tracy-dump-hash">#%d%</span></pre>

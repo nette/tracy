@@ -45,7 +45,7 @@ Assert::match(
 );
 
 // proxy
-$proxy = $rc->newLazyProxy(function () { return new LazyClass; });
+$proxy = $rc->newLazyProxy(fn() => new LazyClass);
 Assert::match(
 	<<<'XX'
 		LazyClass (lazy) #%d%

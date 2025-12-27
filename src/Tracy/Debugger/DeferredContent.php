@@ -18,14 +18,13 @@ use const JSON_INVALID_UTF8_SUBSTITUTE, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_U
  */
 final class DeferredContent
 {
-	private SessionStorage $sessionStorage;
-	private string $requestId;
+	private readonly string $requestId;
 	private bool $useSession = false;
 
 
-	public function __construct(SessionStorage $sessionStorage)
-	{
-		$this->sessionStorage = $sessionStorage;
+	public function __construct(
+		private readonly SessionStorage $sessionStorage,
+	) {
 		$this->requestId = $_SERVER['HTTP_X_TRACY_AJAX'] ?? Helpers::createId();
 	}
 
@@ -113,7 +112,7 @@ final class DeferredContent
 
 	private function buildJsCss(): string
 	{
-		$css = array_map('file_get_contents', array_merge([
+		$css = array_map(file_get_contents(...), array_merge([
 			__DIR__ . '/../assets/reset.css',
 			__DIR__ . '/../Bar/assets/bar.css',
 			__DIR__ . '/../assets/toggle.css',
@@ -133,7 +132,7 @@ final class DeferredContent
 			__DIR__ . '/../Dumper/assets/dumper.js',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.js',
 		]);
-		$js2 = array_map('file_get_contents', Debugger::$customJsFiles);
+		$js2 = array_map(file_get_contents(...), Debugger::$customJsFiles);
 
 		$str = "'use strict';
 (function(){

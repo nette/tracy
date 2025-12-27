@@ -146,7 +146,7 @@ class Helpers
 	{
 		if (self::isCli()) {
 			return 'CLI (PID: ' . getmypid() . ')'
-				. (isset($_SERVER['argv']) ? ': ' . implode(' ', array_map([self::class, 'escapeArg'], $_SERVER['argv'])) : '');
+				. (isset($_SERVER['argv']) ? ': ' . implode(' ', array_map(self::escapeArg(...), $_SERVER['argv'])) : '');
 
 		} elseif (isset($_SERVER['REQUEST_URI'])) {
 			return (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
@@ -179,7 +179,7 @@ class Helpers
 				$message = str_replace($m[2], "but class '$arg[0]' does not exist", $message);
 			} elseif (is_array($arg) && !method_exists($arg[0], $arg[1])) {
 				$hint = self::getSuggestion(get_class_methods($arg[0]) ?: [], $arg[1]);
-				$class = is_object($arg[0]) ? get_class($arg[0]) : $arg[0];
+				$class = is_object($arg[0]) ? $arg[0]::class : $arg[0];
 				$message = str_replace($m[2], "but method $class::$arg[1]() does not exist" . ($hint ? " (did you mean $hint?)" : ''), $message);
 			} elseif (is_string($arg) && !function_exists($arg)) {
 				$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
@@ -589,7 +589,7 @@ class Helpers
 	public static function getExceptionChain(\Throwable $ex): array
 	{
 		$res = [$ex];
-		while (($ex = $ex->getPrevious()) && !in_array($ex, $res, true)) {
+		while (($ex = $ex->getPrevious()) && !in_array($ex, $res, strict: true)) {
 			$res[] = $ex;
 		}
 

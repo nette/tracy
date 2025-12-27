@@ -58,7 +58,7 @@ class BlueScreen
 		$this->collapsePaths = preg_match('#(.+/vendor)/tracy/tracy/src/Tracy/BlueScreen$#', strtr(__DIR__, '\\', '/'), $m)
 			? [$m[1] . '/tracy', $m[1] . '/nette', $m[1] . '/latte']
 			: [dirname(__DIR__)];
-		$this->fileGenerators[] = [self::class, 'generateNewPhpFileContents'];
+		$this->fileGenerators[] = self::generateNewPhpFileContents(...);
 		$this->fibers = new \WeakMap;
 	}
 
@@ -69,7 +69,7 @@ class BlueScreen
 	 */
 	public function addPanel(callable $panel): self
 	{
-		if (!in_array($panel, $this->panels, true)) {
+		if (!in_array($panel, $this->panels, strict: true)) {
 			$this->panels[] = $panel;
 		}
 
@@ -167,7 +167,7 @@ class BlueScreen
 		if (function_exists('apache_request_headers')) {
 			$httpHeaders = apache_request_headers();
 		} else {
-			$httpHeaders = array_filter($_SERVER, fn($k) => strncmp($k, 'HTTP_', 5) === 0, ARRAY_FILTER_USE_KEY);
+			$httpHeaders = array_filter($_SERVER, fn($k) => str_starts_with($k, 'HTTP_'), ARRAY_FILTER_USE_KEY);
 			$httpHeaders = array_combine(array_map(fn($k) => strtolower(strtr(substr($k, 5), '_', '-')), array_keys($httpHeaders)), $httpHeaders);
 		}
 
@@ -175,7 +175,7 @@ class BlueScreen
 		$snapshot = [];
 		$dump = $this->getDumper();
 
-		$css = array_map('file_get_contents', array_merge([
+		$css = array_map(file_get_contents(...), array_merge([
 			__DIR__ . '/../assets/reset.css',
 			__DIR__ . '/assets/bluescreen.css',
 			__DIR__ . '/../assets/toggle.css',
@@ -250,7 +250,7 @@ class BlueScreen
 		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{2,})+)\1#i', $ex->getMessage(), $m)) {
 			$class = $m[2];
 			if (
-				!class_exists($class, false) && !interface_exists($class, false) && !trait_exists($class, false)
+				!class_exists($class, autoload: false) && !interface_exists($class, autoload: false) && !trait_exists($class, autoload: false)
 				&& ($file = Helpers::guessClassFile($class)) && !@is_file($file) // @ - may trigger error
 			) {
 				[$content, $line] = $this->generateNewFileContents($file, $class);
@@ -356,7 +356,7 @@ class BlueScreen
 		$file = strtr($file, '\\', '/') . '/';
 		foreach ($this->collapsePaths as $path) {
 			$path = strtr($path, '\\', '/') . '/';
-			if (strncmp($file, $path, strlen($path)) === 0) {
+			if (str_starts_with($file, $path)) {
 				return true;
 			}
 		}
@@ -397,7 +397,7 @@ class BlueScreen
 			function ($m) {
 				if (isset($m[2]) && method_exists($m[1], $m[2])) {
 					$r = new \ReflectionMethod($m[1], $m[2]);
-				} elseif (class_exists($m[1], false) || interface_exists($m[1], false)) {
+				} elseif (class_exists($m[1], autoload: false) || interface_exists($m[1], autoload: false)) {
 					$r = new \ReflectionClass($m[1]);
 				}
 
@@ -465,7 +465,7 @@ class BlueScreen
 	/** @internal */
 	public static function generateNewPhpFileContents(string $file, ?string $class = null): ?string
 	{
-		if (substr($file, -4) !== '.php') {
+		if (!str_ends_with($file, '.php')) {
 			return null;
 		}
 

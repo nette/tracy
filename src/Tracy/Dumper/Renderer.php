@@ -104,7 +104,7 @@ final class Renderer
 
 		$s = $colors ? Helpers::htmlToAnsi($s, $colors) : Helpers::htmlToText($s);
 		$s = str_replace('…', '...', $s);
-		$s .= substr($s, -1) === "\n" ? '' : "\n";
+		$s .= str_ends_with($s, "\n") ? '' : "\n";
 
 		if ($this->sourceLocation && ([$file, $line] = $model->location)) {
 			$s .= "in $file:$line\n";
@@ -263,7 +263,7 @@ final class Renderer
 				. ' => '
 				. ($ref && $this->hash ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))
-				. (substr($tmp, -6) === '</div>' ? '' : "\n");
+				. (str_ends_with($tmp, '</div>') ? '' : "\n");
 		}
 
 		if ($count > count($items)) {
@@ -340,7 +340,7 @@ final class Renderer
 				. ': '
 				. ($ref && $this->hash ? '<span class="tracy-dump-hash">&' . $ref . '</span> ' : '')
 				. ($tmp = $this->renderVar($v, $depth + 1))
-				. (substr($tmp, -6) === '</div>' ? '' : "\n");
+				. (str_ends_with($tmp, '</div>') ? '' : "\n");
 		}
 
 		if ($object->length > count($object->items)) {
@@ -377,7 +377,7 @@ final class Renderer
 					. $this->renderVar($k, $depth + 1, Value::PropertyVirtual)
 					. ': '
 					. ($tmp = $this->renderVar($v, $depth + 1))
-					. (substr($tmp, -6) === '</div>' ? '' : "\n");
+					. (str_ends_with($tmp, '</div>') ? '' : "\n");
 			}
 
 			return $out . '</div>';

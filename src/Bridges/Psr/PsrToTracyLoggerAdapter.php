@@ -31,12 +31,12 @@ class PsrToTracyLoggerAdapter implements Tracy\ILogger
 
 
 	public function __construct(
-		private Psr\Log\LoggerInterface $psrLogger,
+		private readonly Psr\Log\LoggerInterface $psrLogger,
 	) {
 	}
 
 
-	public function log(mixed $value, string $level = self::INFO)
+	public function log(mixed $value, string $level = self::INFO): void
 	{
 		if ($value instanceof \Throwable) {
 			$message = get_debug_type($value) . ': ' . $value->getMessage() . ($value->getCode() ? ' #' . $value->getCode() : '') . ' in ' . $value->getFile() . ':' . $value->getLine();

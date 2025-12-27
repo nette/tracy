@@ -105,7 +105,7 @@ class Bar
 			} else {
 				$nonceAttr = Helpers::getNonceAttr();
 				$async = false;
-				Debugger::removeOutputBuffers(false);
+				Debugger::removeOutputBuffers(errorOccurred: false);
 				require __DIR__ . '/assets/loader.phtml';
 			}
 		}

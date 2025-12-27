@@ -39,7 +39,7 @@ final class OutputDebugger
 			}
 		}
 
-		ob_start([$this, 'handler'], 1);
+		ob_start($this->handler(...), 1);
 	}
 
 

@@ -22,16 +22,15 @@ class FileSession implements SessionStorage
 
 	/** probability that the clean() routine is started */
 	public float $gcProbability = 0.03;
-	private string $dir;
 
 	/** @var resource */
 	private $file;
 	private array $data = [];
 
 
-	public function __construct(string $dir)
-	{
-		$this->dir = $dir;
+	public function __construct(
+		private readonly string $dir,
+	) {
 	}
 
 

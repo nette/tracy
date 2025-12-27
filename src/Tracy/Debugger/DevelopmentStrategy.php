@@ -19,9 +19,9 @@ use function is_bool;
 final class DevelopmentStrategy
 {
 	public function __construct(
-		private Bar $bar,
-		private BlueScreen $blueScreen,
-		private DeferredContent $defer,
+		private readonly Bar $bar,
+		private readonly BlueScreen $blueScreen,
+		private readonly DeferredContent $defer,
 	) {
 	}
 
