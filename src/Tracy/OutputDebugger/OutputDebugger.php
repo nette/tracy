@@ -20,7 +20,7 @@ final class OutputDebugger
 {
 	private const BOM = "\xEF\xBB\xBF";
 
-	/** @var array of [file, line, output, stack] */
+	/** @var list<array{string, int, string, list<array<string, mixed>>}> */
 	private array $list = [];
 
 

@@ -17,7 +17,7 @@ namespace Tracy;
 #[\AllowDynamicProperties]
 class DefaultBarPanel implements IBarPanel
 {
-	public $data;
+	public mixed $data = null;
 
 
 	public function __construct(

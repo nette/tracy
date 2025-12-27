@@ -41,6 +41,7 @@ final class DeferredContent
 	}
 
 
+	/** @return array<mixed> */
 	public function &getItems(string $key): array
 	{
 		$items = &$this->sessionStorage->getData()[$key];

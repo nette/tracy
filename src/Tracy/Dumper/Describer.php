@@ -32,23 +32,25 @@ final class Describer
 	/** @var Value[] */
 	public array $snapshot = [];
 	public bool $debugInfo = false;
+
+	/** @var array<string, int> */
 	public array $keysToHide = [];
 
-	/** @var (callable(string, mixed): bool)|null */
+	/** @var ?(callable(string $key, mixed $value, ?string $class): bool) */
 	public $scrubber;
 
 	public bool $location = false;
 
-	/** @var array<string, callable(resource): array> */
+	/** @var array<string, callable(resource): array<string, mixed>> */
 	public array $resourceExposers = [];
 
-	/** @var array<string, callable(object, Value, self): ?array> */
+	/** @var array<string, callable(object, Value, self): ?array<string, mixed>> */
 	public array $objectExposers = [];
 
 	/** @var array<string, array{bool, string[]}> */
 	public array $enumProperties = [];
 
-	/** @var (int|\stdClass)[] */
+	/** @var array<string, int> */
 	public array $references = [];
 
 
@@ -118,6 +120,10 @@ final class Describer
 	}
 
 
+	/**
+	 * @param  mixed[]  $arr
+	 * @return Value|array<int, array{mixed, mixed, 2?: int}>
+	 */
 	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): Value|array
 	{
 		if ($refId) {
@@ -261,6 +267,7 @@ final class Describer
 	}
 
 
+	/** @return ?array<string, mixed> */
 	private function exposeObject(object $obj, Value $value): ?array
 	{
 		foreach ($this->objectExposers as $type => $dumper) {
@@ -297,6 +304,7 @@ final class Describer
 	}
 
 
+	/** @param class-string  $class */
 	public function describeEnumProperty(string $class, string $property, mixed $value): ?Value
 	{
 		[$set, $constants] = $this->enumProperties["$class::$property"] ?? null;
@@ -312,6 +320,7 @@ final class Describer
 	}
 
 
+	/** @param  mixed[]  $arr */
 	public function getReferenceId(array $arr, string|int $key): ?int
 	{
 		return ($rr = \ReflectionReference::fromArrayElement($arr, $key))
@@ -322,6 +331,7 @@ final class Describer
 
 	/**
 	 * Finds the location where dump was called. Returns [file, line, code]
+	 * @return ?array{string, int, string}
 	 */
 	private static function findLocation(): ?array
 	{

@@ -30,7 +30,7 @@ class BlueScreen
 	public int $maxLength = 150;
 	public int $maxItems = 100;
 
-	/** @var callable|null  a callable returning true for sensitive data; fn(string $key, mixed $val): bool */
+	/** @var ?(callable(string $key, mixed $value, ?string $class): bool)  callable returning true for sensitive data */
 	public $scrubber;
 
 	/** @var string[] */
@@ -41,15 +41,19 @@ class BlueScreen
 
 	public bool $showEnvironment = true;
 
-	/** @var callable[] */
+	/** @var array<\Closure(?\Throwable): ?array{tab: string, panel: string}> */
 	private array $panels = [];
 
-	/** @var callable[] functions that returns action for exceptions */
+	/** @var array<\Closure(\Throwable): ?array{link: string, label: string}> */
 	private array $actions = [];
-	private array $fileGenerators = [];
-	private ?array $snapshot = null;
 
-	/** @var \WeakMap<\Fiber|\Generator> */
+	/** @var array<\Closure(string, ?string): ?string> */
+	private array $fileGenerators = [];
+
+	/** @var array<Dumper\Value> */
+	private array $snapshot = [];
+
+	/** @var \WeakMap<\Fiber|\Generator, true> */
 	private \WeakMap $fibers;
 
 
@@ -64,7 +68,8 @@ class BlueScreen
 
 
 	/**
-	 * Add custom panel as function (?\Throwable $e): ?array
+	 * Add custom panel.
+	 * @param  callable(?\Throwable): ?array{tab: string, panel: string}  $panel
 	 */
 	public function addPanel(callable $panel): static
 	{
@@ -79,6 +84,7 @@ class BlueScreen
 
 	/**
 	 * Add action.
+	 * @param  callable(\Throwable): ?array{link: string, label: string}  $action
 	 */
 	public function addAction(callable $action): static
 	{
@@ -89,7 +95,7 @@ class BlueScreen
 
 	/**
 	 * Add new file generator.
-	 * @param  callable(string): ?string  $generator
+	 * @param  callable(string, ?string): ?string  $generator
 	 */
 	public function addFileGenerator(callable $generator): static
 	{
@@ -225,7 +231,7 @@ class BlueScreen
 
 
 	/**
-	 * @return array[]
+	 * @return list<array{link: string, label: string, external?: bool}>
 	 */
 	private function renderActions(\Throwable $ex): array
 	{
@@ -363,7 +369,10 @@ class BlueScreen
 	}
 
 
-	/** @internal */
+	/**
+	 * @return \Closure(mixed, int|string): string
+	 * @internal
+	 */
 	public function getDumper(): \Closure
 	{
 		return fn($v, $k = null): string => Dumper::toHtml($v, [
@@ -439,6 +448,7 @@ class BlueScreen
 	}
 
 
+	/** @return array{string, int} */
 	private function generateNewFileContents(string $file, ?string $class = null): array
 	{
 		foreach (array_reverse($this->fileGenerators) as $generator) {
@@ -479,6 +489,7 @@ class BlueScreen
 	}
 
 
+	/** @return array{array<int, \Generator>, array<int, \Fiber>} */
 	private function findGeneratorsAndFibers(object $object): array
 	{
 		$generators = $fibers = [];

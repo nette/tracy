@@ -38,6 +38,8 @@ final class Value implements \JsonSerializable
 	public ?int $depth = null;
 	public int|string|null $id = null;
 	public object $holder;
+
+	/** @var list<mixed[]>|null */
 	public ?array $items = null;
 	public ?\stdClass $editor = null;
 	public ?bool $collapsed = null;
@@ -51,6 +53,7 @@ final class Value implements \JsonSerializable
 	}
 
 
+	/** @return array<string, mixed> */
 	public function jsonSerialize(): array
 	{
 		$res = [$this->type => $this->value];

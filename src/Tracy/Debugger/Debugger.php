@@ -61,7 +61,7 @@ class Debugger
 	/** initial output buffer level */
 	private static int $obLevel;
 
-	/** output buffer status @internal */
+	/** @var ?list<array<string, mixed>>  output buffer status @internal */
 	public static ?array $obStatus = null;
 
 	/********************* errors and exceptions reporting ****************d*g**/
@@ -72,7 +72,7 @@ class Debugger
 	/** disables the @ (shut-up) operator so that notices and warnings are no longer hidden; if integer than it's matched against error severity */
 	public static bool|int $scream = false;
 
-	/** @var callable[] functions that are automatically called after fatal error */
+	/** @var array<callable(\Throwable): void>  functions that are automatically called after fatal error */
 	public static array $onFatalError = [];
 
 	/********************* Debugger::dump() ****************d*g**/
@@ -106,7 +106,7 @@ class Debugger
 	/** log bluescreen in production mode for this error severity */
 	public static int $logSeverity = 0;
 
-	/** email(s) to which send error notifications */
+	/** @var string|string[]|null  email(s) to which send error notifications */
 	public static string|array|null $email = null;
 
 	/** for Debugger::log() */
@@ -126,7 +126,7 @@ class Debugger
 	/** URI pattern mask to open editor */
 	public static ?string $editor = 'editor://%action/?file=%file&line=%line&search=%search&replace=%replace';
 
-	/** replacements in path */
+	/** @var array<string, string>  replacements in path */
 	public static array $editorMapping = [];
 
 	/** command to open browser (use 'start ""' in Windows) */
@@ -141,9 +141,10 @@ class Debugger
 	/** @var string[] */
 	public static array $customJsFiles = [];
 
-	/** @var callable[] */
+	/** @var array<\Closure(string, int): ?array{file: string, line: int, column?: int}> */
 	private static array $sourceMappers = [];
 
+	/** @var ?array<string, int> */
 	private static ?array $cpuUsage = null;
 
 	/********************* services ****************d*g**/
@@ -170,7 +171,7 @@ class Debugger
 	 * Enables displaying or logging errors and exceptions.
 	 * @param  bool|string|string[]  $mode  use constant Debugger::Production, Development, Detect (autodetection) or IP address(es) whitelist.
 	 * @param  string  $logDirectory  error log directory
-	 * @param  string|array  $email  administrator email; enables email sending in production mode
+	 * @param  string|string[]|null  $email  administrator email; enables email sending in production mode
 	 */
 	public static function enable(
 		bool|string|array|null $mode = null,
@@ -338,7 +339,7 @@ class Debugger
 
 	/**
 	 * Handler to catch warnings and notices.
-	 * @return bool|null   false to call normal error handler, null otherwise
+	 * @return false
 	 * @throws ErrorException
 	 * @internal
 	 */
@@ -536,6 +537,7 @@ class Debugger
 	/**
 	 * Dumps information about a variable in Tracy Debug Bar.
 	 * @tracySkipLocation
+	 * @param  array<string, mixed>  $options
 	 * @return mixed  variable itself
 	 */
 	public static function barDump(mixed $var, ?string $title = null, array $options = []): mixed
@@ -579,14 +581,17 @@ class Debugger
 	}
 
 
-	/** @internal */
+	/**
+	 * @param  callable(string, int): ?array{file: string, line: int, column?: int}  $mapper
+	 * @internal
+	 */
 	public static function addSourceMapper(callable $mapper): void
 	{
 		self::$sourceMappers[] = $mapper(...);
 	}
 
 
-	/** @return array{file: string, line: int, column: int, label: string, active: bool} */
+	/** @return ?array{file: string, line: int, column?: int} */
 	public static function mapSource(string $file, int $line): ?array
 	{
 		foreach (self::$sourceMappers as $mapper) {
@@ -601,7 +606,7 @@ class Debugger
 
 	/**
 	 * Detects debug mode by IP address.
-	 * @param  string|array  $list  IP addresses or computer names whitelist detection
+	 * @param  string|string[]|null  $list  IP addresses or computer names whitelist detection
 	 */
 	public static function detectDebugMode(string|array|null $list = null): bool
 	{

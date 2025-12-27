@@ -23,8 +23,10 @@ class FileSession implements SessionStorage
 	/** probability that the clean() routine is started */
 	public float $gcProbability = 0.03;
 
-	/** @var resource */
+	/** @var ?resource */
 	private $file;
+
+	/** @var array<string, mixed> */
 	private array $data = [];
 
 

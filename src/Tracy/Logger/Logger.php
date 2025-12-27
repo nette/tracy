@@ -18,25 +18,28 @@ use const DIRECTORY_SEPARATOR, FILE_APPEND, LOCK_EX, PHP_EOL;
  */
 class Logger implements ILogger
 {
-	/** @var string|null name of the directory where errors should be logged */
+	/** @var ?string name of the directory where errors should be logged */
 	public $directory;
 
-	/** @var string|array|null email or emails to which send error notifications */
+	/** @var string|string[]|null email or emails to which send error notifications */
 	public $email;
 
-	/** @var string|null sender of email notifications */
+	/** @var ?string sender of email notifications */
 	public $fromEmail;
 
 	/** @var mixed interval for sending email is 2 days */
 	public $emailSnooze = '2 days';
 
-	/** @var callable handler for sending emails */
+	/** @var callable(mixed $message, string $email): void  handler for sending emails */
 	public $mailer;
 
-	/** @var BlueScreen|null */
+	/** @var ?BlueScreen */
 	private $blueScreen;
 
 
+	/**
+	 * @param  string|string[]|null  $email
+	 */
 	public function __construct(?string $directory, string|array|null $email = null, ?BlueScreen $blueScreen = null)
 	{
 		$this->directory = $directory;
@@ -49,7 +52,7 @@ class Logger implements ILogger
 	/**
 	 * Logs message or exception to file and sends email notification.
 	 * For levels ERROR, EXCEPTION and CRITICAL it sends email.
-	 * @return string|null logged error filename
+	 * @return ?string  logged error filename
 	 */
 	public function log(mixed $message, string $level = self::INFO)
 	{

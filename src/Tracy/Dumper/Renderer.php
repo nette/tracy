@@ -38,7 +38,11 @@ final class Renderer
 
 	/** @var Value[]|null */
 	private ?array $snapshotSelection = null;
+
+	/** @var true[] */
 	private array $parents = [];
+
+	/** @var true[] */
 	private array $above = [];
 
 
@@ -92,6 +96,7 @@ final class Renderer
 	}
 
 
+	/** @param array<string, string>  $colors */
 	public function renderAsText(\stdClass $model, array $colors = []): string
 	{
 		try {
@@ -207,6 +212,7 @@ final class Renderer
 	}
 
 
+	/** @param mixed[]|Value  $array */
 	private function renderArray(array|Value $array, int $depth): string
 	{
 		$out = '<span class="tracy-dump-array">array</span> (';

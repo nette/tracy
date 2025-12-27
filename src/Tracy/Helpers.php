@@ -98,6 +98,11 @@ class Helpers
 	}
 
 
+	/**
+	 * @param  array<int, array{file?: string, line?: int, class?: string, function?: string, args?: mixed[]}>  $trace
+	 * @param  string|string[]  $method
+	 * @return ?array{file?: string, line?: int, class?: string, function?: string, args?: mixed[]}
+	 */
 	public static function findTrace(array $trace, array|string $method, ?int &$index = null): ?array
 	{
 		$m = is_array($method) ? $method : explode('::', $method);
@@ -272,6 +277,7 @@ class Helpers
 
 	/**
 	 * Finds the best suggestion.
+	 * @param  string[]|\ReflectionMethod[]|\ReflectionProperty[]  $items
 	 * @internal
 	 */
 	public static function getSuggestion(array $items, string $value): ?string
@@ -355,6 +361,7 @@ class Helpers
 
 	/**
 	 * Captures PHP output into a string.
+	 * @param  callable(): void  $func
 	 */
 	public static function capture(callable $func): string
 	{
@@ -467,7 +474,10 @@ class Helpers
 	}
 
 
-	/** @internal */
+	/**
+	 * @param  array<string, string>  $colors
+	 * @internal
+	 */
 	public static function htmlToAnsi(string $s, array $colors): string
 	{
 		$stack = ['0'];
@@ -585,6 +595,7 @@ class Helpers
 	}
 
 
+	/** @return \Throwable[] */
 	public static function getExceptionChain(\Throwable $ex): array
 	{
 		$res = [$ex];
@@ -596,6 +607,10 @@ class Helpers
 	}
 
 
+	/**
+	 * @param  callable(object): void  $callback
+	 * @param  array<int|string, true>  $skip
+	 */
 	public static function traverseValue(mixed $val, callable $callback, array &$skip = [], ?string $refId = null): void
 	{
 		if (is_object($val)) {
@@ -622,7 +637,11 @@ class Helpers
 	}
 
 
-	/** @internal */
+	/**
+	 * @param  string[]  $constants
+	 * @return string[]|null
+	 * @internal
+	 */
 	public static function decomposeFlags(int $flags, bool $set, array $constants): ?array
 	{
 		$res = null;
