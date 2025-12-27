@@ -142,7 +142,7 @@ class Debugger
 	public static array $customJsFiles = [];
 
 	/** @var callable[] */
-	private static $sourceMappers = [];
+	private static array $sourceMappers = [];
 
 	private static ?array $cpuUsage = null;
 
@@ -185,7 +185,7 @@ class Debugger
 		}
 
 		self::$reserved ??= str_repeat('t', self::$reservedMemorySize);
-		self::$time ??= $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(true);
+		self::$time ??= $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(as_float: true);
 		self::$obLevel ??= ob_get_level();
 		self::$cpuUsage ??= !self::$productionMode && function_exists('getrusage') ? getrusage() : null;
 
@@ -221,12 +221,12 @@ class Debugger
 			return;
 		}
 
-		register_shutdown_function([self::class, 'shutdownHandler']);
+		register_shutdown_function(self::shutdownHandler(...));
 		set_exception_handler(function (\Throwable $e) {
 			self::exceptionHandler($e);
 			exit(255);
 		});
-		set_error_handler([self::class, 'errorHandler']);
+		set_error_handler(self::errorHandler(...));
 
 		foreach ([
 			'Bar/Bar',
@@ -285,7 +285,7 @@ class Debugger
 	public static function shutdownHandler(): void
 	{
 		$error = error_get_last();
-		if (in_array($error['type'] ?? null, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], true)) {
+		if (in_array($error['type'] ?? null, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], strict: true)) {
 			$e = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
 			if (!empty($error['trace'])) {
 				(new \ReflectionClass(\Exception::class))->getProperty('trace')->setValue($e, $error['trace']);
@@ -317,12 +317,12 @@ class Debugger
 	{
 		$firstTime = (bool) self::$reserved;
 		self::$reserved = null;
-		self::$obStatus = ob_get_status(true);
+		self::$obStatus = ob_get_status(full_status: true);
 
 		@http_response_code(isset($_SERVER['HTTP_USER_AGENT']) && str_contains($_SERVER['HTTP_USER_AGENT'], 'MSIE ') ? 503 : 500); // may not have an effect
 
 		Helpers::improveException($exception);
-		self::removeOutputBuffers(true);
+		self::removeOutputBuffers(errorOccurred: true);
 
 		self::getStrategy()->handleException($exception, $firstTime);
 
@@ -375,7 +375,7 @@ class Debugger
 	{
 		while (ob_get_level() > self::$obLevel) {
 			$status = ob_get_status();
-			if (in_array($status['name'], ['ob_gzhandler', 'zlib output compression'], true)) {
+			if (in_array($status['name'], ['ob_gzhandler', 'zlib output compression'], strict: true)) {
 				break;
 			}
 
@@ -525,7 +525,7 @@ class Debugger
 	public static function timer(?string $name = null): float
 	{
 		static $time = [];
-		$now = hrtime(true);
+		$now = hrtime(as_number: true);
 		$name ??= '';
 		$delta = isset($time[$name]) ? $now - $time[$name] : 0;
 		$time[$name] = $now;
@@ -618,6 +618,6 @@ class Debugger
 			$list[] = '[::1]'; // workaround for PHP < 7.3.4
 		}
 
-		return in_array($addr, $list, true) || in_array("$secret@$addr", $list, true);
+		return in_array($addr, $list, strict: true) || in_array("$secret@$addr", $list, strict: true);
 	}
 }

@@ -32,7 +32,7 @@ class TracyToPsrLoggerAdapter extends Psr\Log\AbstractLogger
 
 
 	public function __construct(
-		private Tracy\ILogger $tracyLogger,
+		private readonly Tracy\ILogger $tracyLogger,
 	) {
 	}
 

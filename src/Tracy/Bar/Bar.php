@@ -24,9 +24,8 @@ class Bar
 
 	/**
 	 * Add custom panel.
-	 * @return static
 	 */
-	public function addPanel(IBarPanel $panel, ?string $id = null): self
+	public function addPanel(IBarPanel $panel, ?string $id = null): static
 	{
 		if ($id === null) {
 			$c = 0;
@@ -105,7 +104,7 @@ class Bar
 			} else {
 				$nonceAttr = Helpers::getNonceAttr();
 				$async = false;
-				Debugger::removeOutputBuffers(false);
+				Debugger::removeOutputBuffers(errorOccurred: false);
 				require __DIR__ . '/assets/loader.phtml';
 			}
 		}

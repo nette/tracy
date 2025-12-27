@@ -42,7 +42,7 @@ class Logger implements ILogger
 		$this->directory = $directory;
 		$this->email = $email;
 		$this->blueScreen = $blueScreen;
-		$this->mailer = [$this, 'defaultMailer'];
+		$this->mailer = $this->defaultMailer(...);
 	}
 
 
@@ -73,7 +73,7 @@ class Logger implements ILogger
 			$this->logException($message, $exceptionFile);
 		}
 
-		if (in_array($level, [self::ERROR, self::EXCEPTION, self::CRITICAL], true)) {
+		if (in_array($level, [self::ERROR, self::EXCEPTION, self::CRITICAL], strict: true)) {
 			$this->sendEmail($message);
 		}
 

@@ -24,8 +24,8 @@ class Bridge
 	public static function initialize(): void
 	{
 		$blueScreen = Tracy\Debugger::getBlueScreen();
-		$blueScreen->addAction([self::class, 'renderMemberAccessException']);
-		$blueScreen->addPanel([self::class, 'renderNeonError']);
+		$blueScreen->addAction(self::renderMemberAccessException(...));
+		$blueScreen->addPanel(self::renderNeonError(...));
 	}
 
 

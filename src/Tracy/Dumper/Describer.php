@@ -54,7 +54,7 @@ final class Describer
 
 	public function describe(mixed $var): \stdClass
 	{
-		uksort($this->objectExposers, fn($a, $b): int => $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1);
+		uksort($this->objectExposers, fn($a, $b): int => $b === '' || (class_exists($a, autoload: false) && is_subclass_of($a, $b)) ? -1 : 1);
 
 		try {
 			return (object) [
