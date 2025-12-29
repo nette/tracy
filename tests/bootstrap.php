@@ -13,6 +13,7 @@ if (@!include __DIR__ . '/../vendor/autoload.php') {
 
 // configure environment
 Tester\Environment::setup();
+Tester\Environment::setupFunctions();
 date_default_timezone_set('Europe/Prague');
 ini_set('serialize_precision', '14');
 $_GET = $_POST = $_COOKIE = [];
@@ -37,12 +38,6 @@ function getTempDir(): string
 	}
 
 	return $dir;
-}
-
-
-function test(string $title, Closure $function): void
-{
-	$function();
 }
 
 

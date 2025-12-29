@@ -3,7 +3,7 @@ name: Tests
 on: [push, pull_request]
 
 env:
-    php-options: -C -d opcache.enable=0 -d zend.exception_ignore_args=0
+    php-options: -d opcache.enable=0 -d zend.exception_ignore_args=0
 
 jobs:
     tests:
@@ -26,7 +26,7 @@ jobs:
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
-            - run: vendor/bin/tester tests -p ${{ matrix.sapi }} -s ${{ env.php-options }}
+            - run: composer tester -- -p ${{ matrix.sapi }} ${{ env.php-options }}
             - if: failure()
               uses: actions/upload-artifact@v4
               with:
@@ -46,7 +46,7 @@ jobs:
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
-            - run: vendor/bin/tester tests -p phpdbg -s ${{ env.php-options }} --coverage ./coverage.xml --coverage-src ./src
+            - run: composer tester -- -p phpdbg ${{ env.php-options }} --coverage ./coverage.xml --coverage-src ./src
             - run: wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
             - env:
                   COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
