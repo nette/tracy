@@ -68,6 +68,7 @@ final class Exposer
 	}
 
 
+	/** @return array<string, array{string, string, int}> */
 	private static function getProperties(string $class): array
 	{
 		static $cache;
@@ -195,6 +196,7 @@ final class Exposer
 	}
 
 
+	/** @return array{path: string} */
 	public static function exposeSplFileInfo(\SplFileInfo $obj): array
 	{
 		return ['path' => $obj->getPathname()];

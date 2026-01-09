@@ -38,7 +38,11 @@ final class Renderer
 
 	/** @var Value[]|null */
 	private ?array $snapshotSelection = null;
+
+	/** @var array<int|string, true> */
 	private array $parents = [];
+
+	/** @var array<int|string, true> */
 	private array $above = [];
 
 

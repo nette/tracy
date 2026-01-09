@@ -112,6 +112,7 @@ class Bar
 	}
 
 
+	/** @return array{bar: string, panels: string} */
 	private function renderPartial(string $type, string $suffix = ''): array
 	{
 		$panels = $this->renderPanels($suffix);
@@ -127,6 +128,7 @@ class Bar
 	}
 
 
+	/** @return \stdClass[] */
 	private function renderPanels(string $suffix = ''): array
 	{
 		set_error_handler(function (int $severity, string $message, string $file, int $line) {

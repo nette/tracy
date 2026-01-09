@@ -29,6 +29,7 @@ class Bridge
 	}
 
 
+	/** @return array{link: string, label: string}|null */
 	public static function renderMemberAccessException(?\Throwable $e): ?array
 	{
 		if (!$e instanceof Nette\MemberAccessException && !$e instanceof \LogicException) {
@@ -61,6 +62,7 @@ class Bridge
 	}
 
 
+	/** @return array{tab: string, panel: string}|null */
 	public static function renderNeonError(?\Throwable $e): ?array
 	{
 		if (!$e instanceof Nette\Neon\Exception || !preg_match('#line (\d+)#', $e->getMessage(), $m)) {

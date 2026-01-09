@@ -72,7 +72,7 @@ class Debugger
 	/** disables the @ (shut-up) operator so that notices and warnings are no longer hidden; if integer than it's matched against error severity */
 	public static bool|int $scream = false;
 
-	/** @var callable[] functions that are automatically called after fatal error */
+	/** @var array<callable(\Throwable): void>  functions that are automatically called after fatal error */
 	public static array $onFatalError = [];
 
 	/********************* Debugger::dump() ****************d*g**/
@@ -126,7 +126,7 @@ class Debugger
 	/** URI pattern mask to open editor */
 	public static ?string $editor = 'editor://%action/?file=%file&line=%line&search=%search&replace=%replace';
 
-	/** replacements in path */
+	/** @var array<string, string>  replacements in path */
 	public static array $editorMapping = [];
 
 	/** command to open browser (use 'start ""' in Windows) */
@@ -141,7 +141,7 @@ class Debugger
 	/** @var string[] */
 	public static array $customJsFiles = [];
 
-	/** @var callable[] */
+	/** @var array<\Closure(string, int): ?array{file: string, line: int, column?: int}> */
 	private static array $sourceMappers = [];
 
 	private static ?array $cpuUsage = null;
@@ -579,10 +579,13 @@ class Debugger
 	}
 
 
-	/** @internal */
+	/**
+	 * @param  callable(string, int): ?array{file: string, line: int, column?: int}  $mapper
+	 * @internal
+	 */
 	public static function addSourceMapper(callable $mapper): void
 	{
-		self::$sourceMappers[] = $mapper;
+		self::$sourceMappers[] = $mapper(...);
 	}
 
 

@@ -30,7 +30,7 @@ class BlueScreen
 	public int $maxLength = 150;
 	public int $maxItems = 100;
 
-	/** @var callable|null  a callable returning true for sensitive data; fn(string $key, mixed $val): bool */
+	/** @var (callable(string $key, mixed $value, ?string $class): bool)|null */
 	public $scrubber;
 
 	/** @var string[] */
@@ -41,12 +41,16 @@ class BlueScreen
 
 	public bool $showEnvironment = true;
 
-	/** @var callable[] */
+	/** @var array<\Closure(?\Throwable): ?array{tab: string, panel: string}> */
 	private array $panels = [];
 
-	/** @var callable[] functions that returns action for exceptions */
+	/** @var array<\Closure(\Throwable): ?array{link: string, label: string}> */
 	private array $actions = [];
+
+	/** @var array<\Closure(string, ?string): ?string> */
 	private array $fileGenerators = [];
+
+	/** @var Dumper\Value[]|null */
 	private ?array $snapshot = null;
 
 	/** @var \WeakMap<\Fiber|\Generator> */
@@ -64,11 +68,13 @@ class BlueScreen
 
 
 	/**
-	 * Add custom panel as function (?\Throwable $e): ?array
+	 * Add custom panel.
+	 * @param  callable(?\Throwable): ?array{tab: string, panel: string}  $panel
 	 * @return static
 	 */
 	public function addPanel(callable $panel): self
 	{
+		$panel = $panel(...);
 		if (!in_array($panel, $this->panels, strict: true)) {
 			$this->panels[] = $panel;
 		}
@@ -79,23 +85,24 @@ class BlueScreen
 
 	/**
 	 * Add action.
+	 * @param  callable(\Throwable): ?array{link: string, label: string}  $action
 	 * @return static
 	 */
 	public function addAction(callable $action): self
 	{
-		$this->actions[] = $action;
+		$this->actions[] = $action(...);
 		return $this;
 	}
 
 
 	/**
 	 * Add new file generator.
-	 * @param  callable(string): ?string  $generator
+	 * @param  callable(string, ?string): ?string  $generator
 	 * @return static
 	 */
 	public function addFileGenerator(callable $generator): self
 	{
-		$this->fileGenerators[] = $generator;
+		$this->fileGenerators[] = $generator(...);
 		return $this;
 	}
 
@@ -441,7 +448,10 @@ class BlueScreen
 	}
 
 
-	/** @internal */
+	/**
+	 * @return array{string, int}
+	 * @internal
+	 */
 	private function generateNewFileContents(string $file, ?string $class = null): array
 	{
 		foreach (array_reverse($this->fileGenerators) as $generator) {
@@ -483,6 +493,7 @@ class BlueScreen
 	}
 
 
+	/** @return array{array<int, \Generator>, array<int, \Fiber>} */
 	private function findGeneratorsAndFibers(object $object): array
 	{
 		$generators = $fibers = [];

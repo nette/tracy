@@ -99,6 +99,11 @@ class Helpers
 	}
 
 
+	/**
+	 * @param  array<int, array{file?: string, line?: int, class?: string, function?: string, args?: array}>  $trace
+	 * @param  string|string[]  $method
+	 * @return array{file?: string, line?: int, class?: string, function?: string, args?: array}|null
+	 */
 	public static function findTrace(array $trace, array|string $method, ?int &$index = null): ?array
 	{
 		$m = is_array($method) ? $method : explode('::', $method);
@@ -586,6 +591,7 @@ class Helpers
 	}
 
 
+	/** @return \Throwable[] */
 	public static function getExceptionChain(\Throwable $ex): array
 	{
 		$res = [$ex];
@@ -597,6 +603,7 @@ class Helpers
 	}
 
 
+	/** @param  array<string|int, true>  $skip */
 	public static function traverseValue(mixed $val, callable $callback, array &$skip = [], ?string $refId = null): void
 	{
 		if (is_object($val)) {
@@ -623,7 +630,11 @@ class Helpers
 	}
 
 
-	/** @internal */
+	/**
+	 * @param  string[]  $constants
+	 * @return string[]|null
+	 * @internal
+	 */
 	public static function decomposeFlags(int $flags, bool $set, array $constants): ?array
 	{
 		$res = null;

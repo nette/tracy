@@ -34,7 +34,7 @@ final class Describer
 	public bool $debugInfo = false;
 	public array $keysToHide = [];
 
-	/** @var (callable(string, mixed): bool)|null */
+	/** @var (callable(string $key, mixed $value, ?string $class): bool)|null */
 	public $scrubber;
 
 	public bool $location = false;
@@ -118,6 +118,7 @@ final class Describer
 	}
 
 
+	/** @return Value|array<int, array{mixed, mixed, 2?: int}> */
 	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): Value|array
 	{
 		if ($refId) {
@@ -261,6 +262,7 @@ final class Describer
 	}
 
 
+	/** @return array<string, mixed>|null */
 	private function exposeObject(object $obj, Value $value): ?array
 	{
 		foreach ($this->objectExposers as $type => $dumper) {
@@ -312,6 +314,7 @@ final class Describer
 	}
 
 
+	/** @param  array<int|string, mixed>  $arr */
 	public function getReferenceId(array $arr, string|int $key): ?int
 	{
 		return ($rr = \ReflectionReference::fromArrayElement($arr, $key))

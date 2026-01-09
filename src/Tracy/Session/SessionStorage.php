@@ -14,5 +14,6 @@ interface SessionStorage
 {
 	function isAvailable(): bool;
 
+	/** @return array<string, mixed> */
 	function &getData(): array;
 }

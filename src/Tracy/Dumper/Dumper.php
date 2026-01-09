@@ -249,6 +249,7 @@ class Dumper
 	}
 
 
+	/** @param  array{0?: Dumper\Value[], 1?: array}  $snapshot */
 	public static function formatSnapshotAttribute(array &$snapshot): string
 	{
 		$res = "'" . Renderer::jsonEncode($snapshot[0] ?? []) . "'";
@@ -257,6 +258,7 @@ class Dumper
 	}
 
 
+	/** @param  string[]  $constants */
 	public static function addEnumProperty(string $class, string $property, array $constants, bool $set = false): void
 	{
 		self::$enumProperties["$class::$property"] = [$set, $constants];
