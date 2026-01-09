@@ -64,7 +64,7 @@ class FileSession implements SessionStorage
 		}
 
 		if (!@flock($file, LOCK_EX)) { // intentionally @
-			throw new \RuntimeException("Unable to acquire exclusive lock on '$path'. ", error_get_last()['message']);
+			throw new \RuntimeException("Unable to acquire exclusive lock on '$path'. " . error_get_last()['message']);
 		}
 
 		$this->file = $file;

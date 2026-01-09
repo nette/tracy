@@ -188,7 +188,7 @@ class Debugger
 		self::$reserved ??= str_repeat('t', self::$reservedMemorySize);
 		self::$time ??= $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(as_float: true);
 		self::$obLevel ??= ob_get_level();
-		self::$cpuUsage ??= !self::$productionMode && function_exists('getrusage') ? getrusage() : null;
+		self::$cpuUsage ??= !self::$productionMode && function_exists('getrusage') ? (getrusage() ?: null) : null;
 
 		// logging configuration
 		self::$email = $email ?? self::$email;
@@ -442,14 +442,14 @@ class Debugger
 	/** @internal */
 	public static function getStrategy(): ProductionStrategy|DevelopmentStrategy
 	{
-		$mode = (bool) self::$productionMode;
-		if (empty(self::$strategy[$mode])) {
-			self::$strategy[$mode] = $mode
+		$key = (int) (bool) self::$productionMode;
+		if (empty(self::$strategy[$key])) {
+			self::$strategy[$key] = $key
 				? new ProductionStrategy
 				: new DevelopmentStrategy(self::getBar(), self::getBlueScreen(), new DeferredContent(self::getSessionStorage()));
 		}
 
-		return self::$strategy[$mode];
+		return self::$strategy[$key];
 	}
 
 
@@ -467,8 +467,8 @@ class Debugger
 	public static function getSessionStorage(): SessionStorage
 	{
 		if (empty(self::$sessionStorage)) {
-			self::$sessionStorage = @is_dir($dir = session_save_path())
-				|| @is_dir($dir = ini_get('upload_tmp_dir'))
+			self::$sessionStorage = @is_dir($dir = (string) session_save_path())
+				|| @is_dir($dir = (string) ini_get('upload_tmp_dir'))
 				|| @is_dir($dir = sys_get_temp_dir())
 				|| ($dir = self::$logDirectory)
 				? new FileSession($dir)

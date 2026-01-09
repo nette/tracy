@@ -1,5 +1,76 @@
 parameters:
-	level: 5
+	level: 6
 
 	paths:
 		- src
+
+	checkMissingCallableSignature: true
+
+	ignoreErrors:
+		# Template variables used in required .phtml files via variable scope
+		-
+			identifier: closure.unusedUse
+			path: src/Tracy/Bar/Bar.php
+
+		# Tracy doesn't need generic type parameters for Fiber, ArrayObject, DOMNodeList, etc.
+		-
+			identifier: missingType.generics
+
+		# Private methods called from .phtml template files
+		-
+			identifier: method.unused
+			path: src/Tracy/BlueScreen/BlueScreen.php
+
+		# Runtime validation of callable-string and Closure types
+		-
+			identifier: function.alreadyNarrowedType
+
+		# Tracy uses dynamic properties on exceptions and panels
+		-
+			identifier: property.notFound
+
+		# PHPStan doesn't track reference assignments to snapshot array
+		-
+			identifier: booleanAnd.leftAlwaysTrue
+			path: src/Tracy/Dumper/Describer.php
+		-
+			identifier: booleanNot.alwaysFalse
+			path: src/Tracy/Dumper/Describer.php
+
+		# Public property can be set to null by user code at runtime
+		-
+			identifier: booleanAnd.rightAlwaysTrue
+			path: src/Tracy/Logger/Logger.php
+
+		# Condition inside if-block checking same variable
+		-
+			identifier: ternary.alwaysTrue
+			path: src/Tracy/Dumper/Renderer.php
+
+		# PHP 8.4+ adds 'trace' key to error_get_last() return
+		-
+			identifier: empty.offset
+			path: src/Tracy/Debugger/Debugger.php
+		-
+			identifier: offsetAccess.notFound
+			path: src/Tracy/Debugger/Debugger.php
+
+		# Variable is always defined when used (same function_exists() condition guards both paths)
+		-
+			identifier: variable.undefined
+			path: src/Tracy/Debugger/DevelopmentStrategy.php
+
+		# Deprecated property without type
+		-
+			identifier: missingType.property
+			path: src/Tracy/Debugger/Debugger.php
+
+		# Closure parameter used for inspection only, signature not relevant
+		-
+			identifier: missingType.callable
+			path: src/Tracy/Dumper/Exposer.php
+
+		# ILogger::log() return type omitted for backward compatibility
+		-
+			identifier: missingType.return
+			path: src/Tracy/Logger/ILogger.php

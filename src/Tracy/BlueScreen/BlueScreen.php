@@ -412,7 +412,7 @@ class BlueScreen
 					return $m[0];
 				}
 
-				return '<a href="' . Helpers::escapeHtml(Helpers::editorUri($r->getFileName(), $r->getStartLine())) . '" class="tracy-editor">' . $m[0] . '</a>';
+				return '<a href="' . Helpers::escapeHtml(Helpers::editorUri($r->getFileName(), $r->getStartLine() ?: null)) . '" class="tracy-editor">' . $m[0] . '</a>';
 			},
 			$msg,
 		);

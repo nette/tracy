@@ -40,7 +40,7 @@ class Bridge
 		do {
 			$loc = array_shift($trace);
 		} while (($loc['class'] ?? null) === Nette\Utils\ObjectHelpers::class);
-		if (!isset($loc['file'])) {
+		if (!isset($loc['file'], $loc['line'])) {
 			return null;
 		}
 
@@ -72,7 +72,7 @@ class Bridge
 			?? Helpers::findTrace($e->getTrace(), [Nette\DI\Config\Adapters\NeonAdapter::class, 'load'])
 		) {
 			$panel = '<p><b>File:</b> ' . Helpers::editorLink($trace['args'][0], (int) $m[1]) . '</p>'
-				. self::highlightNeon(file_get_contents($trace['args'][0]), (int) $m[1]);
+				. self::highlightNeon((string) file_get_contents($trace['args'][0]), (int) $m[1]);
 
 		} elseif ($trace = Helpers::findTrace($e->getTrace(), [Nette\Neon\Decoder::class, 'decode'])) {
 			$panel = self::highlightNeon($trace['args'][0], (int) $m[1]);

@@ -40,7 +40,7 @@ final class CodeHighlighter
 				$out .= implode('', $closeTags);
 			}
 
-			preg_replace_callback('#</?(\w+)[^>]*>#', function ($m) use (&$openTags, &$closeTags) {
+			preg_replace_callback('#</?(\w+)[^>]*>#', function ($m) use (&$openTags, &$closeTags): string {
 				if ($m[0][1] === '/') {
 					array_pop($openTags);
 					array_shift($closeTags);
@@ -48,6 +48,8 @@ final class CodeHighlighter
 					$openTags[] = $m[0];
 					array_unshift($closeTags, "</$m[1]>");
 				}
+
+				return '';
 			}, $lines[$n]);
 
 			if ($n === $line) {

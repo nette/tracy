@@ -130,10 +130,12 @@ class Bar
 	/** @return \stdClass[] */
 	private function renderPanels(string $suffix = ''): array
 	{
-		set_error_handler(function (int $severity, string $message, string $file, int $line) {
+		set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
 			if (error_reporting() & $severity) {
 				throw new \ErrorException($message, 0, $severity, $file, $line);
 			}
+
+			return true;
 		});
 
 		$obLevel = ob_get_level();

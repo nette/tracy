@@ -26,7 +26,7 @@ final class OutputDebugger
 
 	public static function enable(): void
 	{
-		$me = new static;
+		$me = new self;
 		$me->start();
 	}
 
@@ -34,8 +34,8 @@ final class OutputDebugger
 	public function start(): void
 	{
 		foreach (get_included_files() as $file) {
-			if (fread(fopen($file, 'r'), 3) === self::BOM) {
-				$this->list[] = [$file, 1, self::BOM];
+			if (file_get_contents($file, length: 3) === self::BOM) {
+				$this->list[] = [$file, 1, self::BOM, []];
 			}
 		}
 

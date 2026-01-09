@@ -284,7 +284,7 @@ class Helpers
 	{
 		$best = null;
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
-		$items = array_map(fn($item) => $item instanceof \Reflector ? $item->getName() : (string) $item, $items);
+		$items = array_map(fn($item) => $item instanceof \ReflectionMethod || $item instanceof \ReflectionProperty ? $item->getName() : (string) $item, $items);
 		foreach (array_unique($items) as $item) {
 			if (($len = levenshtein($item, $value, 10, 11, 10)) > 0 && $len < $min) {
 				$min = $len;

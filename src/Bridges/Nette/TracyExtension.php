@@ -79,6 +79,9 @@ class TracyExtension extends Nette\DI\CompilerExtension
 
 	public function afterCompile(Nette\PhpGenerator\ClassType $class): void
 	{
+		$config = $this->config;
+		\assert($config instanceof \stdClass);
+
 		$initialize = $this->initialization ?? new Nette\PhpGenerator\Closure;
 		$initialize->addBody('if (!Tracy\Debugger::isEnabled()) { return; }');
 
@@ -93,7 +96,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			$initialize->addBody('Tracy\Debugger::setLogger($logger);');
 		}
 
-		$options = (array) $this->config;
+		$options = (array) $config;
 		unset($options['bar'], $options['blueScreen'], $options['netteMailer']);
 
 		foreach (['logSeverity', 'strictMode', 'scream'] as $key) {
@@ -120,9 +123,9 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		if ($this->config->netteMailer && $builder->getByType(Nette\Mail\IMailer::class)) {
+		if ($config->netteMailer && $builder->getByType(Nette\Mail\IMailer::class)) {
 			$params = [];
-			$params['fromEmail'] = $this->config->fromEmail;
+			$params['fromEmail'] = $config->fromEmail;
 			if (class_exists(Nette\Http\Request::class)) {
 				$params['host'] = new Statement('$this->getByType(?, false)\?->getUrl()->getHost()', [Nette\Http\Request::class]);
 			}
@@ -133,7 +136,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		}
 
 		if ($this->debugMode) {
-			foreach ($this->config->bar as $item) {
+			foreach ($config->bar as $item) {
 				if (is_string($item) && str_starts_with($item, '@')) {
 					$item = new Statement(['@' . $builder::THIS_CONTAINER, 'getService'], [substr($item, 1)]);
 				} elseif (is_string($item)) {
@@ -156,7 +159,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		foreach ($this->config->blueScreen as $item) {
+		foreach ($config->blueScreen as $item) {
 			$initialize->addBody($builder->formatPhp(
 				'$this->getService(?)->addPanel(?);',
 				Nette\DI\Helpers::filterArguments([$this->prefix('blueScreen'), $item]),

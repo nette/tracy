@@ -90,6 +90,7 @@ class Logger implements ILogger
 	public static function formatMessage($message): string
 	{
 		if ($message instanceof \Throwable) {
+			$tmp = [];
 			foreach (Helpers::getExceptionChain($message) as $exception) {
 				$tmp[] = ($exception instanceof \ErrorException
 					? Helpers::errorTypeToString($exception->getSeverity()) . ': ' . $exception->getMessage()
@@ -123,6 +124,7 @@ class Logger implements ILogger
 
 	public function getExceptionFile(\Throwable $exception, string $level = self::EXCEPTION): string
 	{
+		$data = [];
 		foreach (Helpers::getExceptionChain($exception) as $exception) {
 			$data[] = [
 				$exception::class, $exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(),
