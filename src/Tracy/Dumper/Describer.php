@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Tracy\Dumper;
 
+use Symfony\Component\VarDumper\VarDumper as SymfonyVarDumper;
 use Tracy;
 use Tracy\Helpers;
 use function array_map, array_slice, class_exists, count, explode, file, get_debug_type, get_resource_type, gettype, htmlspecialchars, implode, is_bool, is_file, is_finite, is_int, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
@@ -329,10 +330,15 @@ final class Describer
 	private static function findLocation(): ?array
 	{
 		foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $item) {
-			if (isset($item['class']) && ($item['class'] === self::class || $item['class'] === Tracy\Dumper::class)) {
+			if (in_array($class ?? null, [self::class, Tracy\Dumper::class, SymfonyVarDumper::class])) {
 				$location = $item;
 				continue;
 			} elseif (isset($item['function'])) {
+				if (!isset($item['class']) && $item['function'] === 'dump') {
+					$location = $item;
+					continue;
+				}
+
 				try {
 					$reflection = isset($item['class'])
 						? new \ReflectionMethod($item['class'], $item['function'])
