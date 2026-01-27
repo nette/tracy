@@ -336,23 +336,24 @@ final class Describer
 	private static function findLocation(): ?array
 	{
 		foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $item) {
-			if (isset($item['class']) && ($item['class'] === self::class || $item['class'] === Tracy\Dumper::class)) {
+			$reflection = null;
+			if (isset($item['class'])) {
+				if ($item['class'] === self::class || $item['class'] === Tracy\Dumper::class) {
+					$location = $item;
+					continue;
+				} elseif (method_exists($item['class'], $item['function'])) {
+					$reflection = new \ReflectionMethod($item['class'], $item['function']);
+				}
+			} elseif (function_exists($item['function'])) {
+				$reflection = new \ReflectionFunction($item['function']);
+			}
+
+			if (
+				$reflection?->isInternal()
+				|| preg_match('#\s@tracySkipLocation\s#', (string) $reflection?->getDocComment())
+			) {
 				$location = $item;
 				continue;
-			} elseif (isset($item['function'])) {
-				try {
-					$reflection = isset($item['class'])
-						? new \ReflectionMethod($item['class'], $item['function'])
-						: new \ReflectionFunction($item['function']);
-					if (
-						$reflection->isInternal()
-						|| preg_match('#\s@tracySkipLocation\s#', (string) $reflection->getDocComment())
-					) {
-						$location = $item;
-						continue;
-					}
-				} catch (\ReflectionException) {
-				}
 			}
 
 			break;
