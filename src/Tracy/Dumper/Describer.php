@@ -333,6 +333,12 @@ final class Describer
 				$location = $item;
 				continue;
 			} elseif (isset($item['function'])) {
+				$exists = isset($item['class'])
+					? method_exists($item['class'], $item['function'])
+					: function_exists($item['function']);
+				if (!$exists) {
+					continue;
+				}
 				try {
 					$reflection = isset($item['class'])
 						? new \ReflectionMethod($item['class'], $item['function'])
