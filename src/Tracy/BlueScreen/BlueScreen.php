@@ -68,6 +68,7 @@ class BlueScreen
 	 */
 	public function addPanel(callable $panel): static
 	{
+		$panel = $panel(...);
 		if (!in_array($panel, $this->panels, strict: true)) {
 			$this->panels[] = $panel;
 		}
@@ -81,7 +82,7 @@ class BlueScreen
 	 */
 	public function addAction(callable $action): static
 	{
-		$this->actions[] = $action;
+		$this->actions[] = $action(...);
 		return $this;
 	}
 
@@ -92,7 +93,7 @@ class BlueScreen
 	 */
 	public function addFileGenerator(callable $generator): static
 	{
-		$this->fileGenerators[] = $generator;
+		$this->fileGenerators[] = $generator(...);
 		return $this;
 	}
 

@@ -582,7 +582,7 @@ class Debugger
 	/** @internal */
 	public static function addSourceMapper(callable $mapper): void
 	{
-		self::$sourceMappers[] = $mapper;
+		self::$sourceMappers[] = $mapper(...);
 	}
 
 
