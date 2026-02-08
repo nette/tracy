@@ -9,6 +9,7 @@ use Tracy\Logger;
 
 require __DIR__ . '/../bootstrap.php';
 
+Tester\Helpers::purge(getTempDir());
 
 test('', function () {
 	$e = new Exception('First');

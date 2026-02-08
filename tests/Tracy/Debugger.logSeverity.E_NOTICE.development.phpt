@@ -11,6 +11,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
+Tester\Helpers::purge(getTempDir());
 Debugger::enable(Debugger::Development, getTempDir());
 Debugger::$logSeverity = E_NOTICE;
 

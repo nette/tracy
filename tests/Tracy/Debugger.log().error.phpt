@@ -9,6 +9,7 @@ use Tracy\Debugger;
 
 require __DIR__ . '/../bootstrap.php';
 
+Tester\Helpers::purge(getTempDir());
 
 Assert::exception(
 	fn() => Debugger::log('Hello'),
