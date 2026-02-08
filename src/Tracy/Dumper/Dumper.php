@@ -171,12 +171,13 @@ class Dumper
 		$sent = true;
 
 		$nonceAttr = Helpers::getNonceAttr();
-		$s = file_get_contents(__DIR__ . '/../assets/toggle.css')
+		$s = (Debugger::$showBar ? '' : file_get_contents(__DIR__ . '/../assets/reset.css'))
+			. file_get_contents(__DIR__ . '/../assets/toggle.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-light.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-dark.css');
 		echo "<style{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
 
-		if (!Debugger::isEnabled()) {
+		if (!Debugger::isEnabled() || !Debugger::$showBar) {
 			$s = '(function(){' . file_get_contents(__DIR__ . '/../assets/toggle.js') . '})();'
 				. '(function(){' . file_get_contents(__DIR__ . '/../assets/helpers.js') . '})();'
 				. '(function(){' . file_get_contents(__DIR__ . '/../Dumper/assets/dumper.js') . '})();';
