@@ -13,6 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
+Tester\Helpers::purge(getTempDir());
 Debugger::$logDirectory = getTempDir();
 
 

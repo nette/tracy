@@ -12,6 +12,7 @@ use Tracy\Logger;
 require __DIR__ . '/../bootstrap.php';
 
 
+Tester\Helpers::purge(getTempDir());
 $logger = new Logger(getTempDir());
 $logger->log('Hello'); // no error
 
