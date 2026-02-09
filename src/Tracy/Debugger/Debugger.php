@@ -338,7 +338,6 @@ class Debugger
 
 	/**
 	 * Handler to catch warnings and notices.
-	 * @return false
 	 * @throws ErrorException
 	 * @internal
 	 */
