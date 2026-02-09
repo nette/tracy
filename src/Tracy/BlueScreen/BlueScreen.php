@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Tracy;
 
-use function in_array, strlen;
-use const ARRAY_FILTER_USE_KEY, ENT_IGNORE;
+use function in_array;
+use const ARRAY_FILTER_USE_KEY, ENT_IGNORE, PHP_VERSION_ID;
 
 
 /**
