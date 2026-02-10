@@ -4,8 +4,6 @@ parameters:
 	paths:
 		- src
 
-	checkMissingCallableSignature: true
-
 	ignoreErrors:
 		# Template variables used in required .phtml files via variable scope
 		-
