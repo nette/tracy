@@ -27,7 +27,9 @@
 		"nette/tester": "^2.6",
 		"latte/latte": "^2.5 || ^3.0",
 		"psr/log": "^1.0 || ^2.0 || ^3.0",
-		"phpstan/phpstan": "^2.0@stable"
+		"phpstan/phpstan": "^2.1@stable",
+		"phpstan/extension-installer": "^1.4@stable",
+		"nette/phpstan-rules": "^1.0"
 	},
 	"conflict": {
 		"nette/di": "<3.0"
@@ -47,6 +49,11 @@
 	"extra": {
 		"branch-alias": {
 			"dev-master": "2.11-dev"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"phpstan/extension-installer": true
 		}
 	}
 }
