@@ -106,7 +106,10 @@ class Dumper
 
 	/**
 	 * Dumps variable to the output.
+	 * @template T
+	 * @param  T  $var
 	 * @param  array<string, mixed>  $options
+	 * @return T
 	 */
 	public static function dump(mixed $var, array $options = []): mixed
 	{

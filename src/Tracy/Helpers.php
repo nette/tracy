@@ -595,7 +595,7 @@ class Helpers
 	}
 
 
-	/** @return \Throwable[] */
+	/** @return list<\Throwable> */
 	public static function getExceptionChain(\Throwable $ex): array
 	{
 		$res = [$ex];
@@ -609,7 +609,7 @@ class Helpers
 
 	/**
 	 * @param  callable(object): void  $callback
-	 * @param  array<int|string, true>  $skip
+	 * @param  true[]  $skip
 	 */
 	public static function traverseValue(mixed $val, callable $callback, array &$skip = [], ?string $refId = null): void
 	{
@@ -639,7 +639,7 @@ class Helpers
 
 	/**
 	 * @param  string[]  $constants
-	 * @return string[]|null
+	 * @return list<string>|null
 	 * @internal
 	 */
 	public static function decomposeFlags(int $flags, bool $set, array $constants): ?array

@@ -11,6 +11,9 @@ if (!function_exists('dump')) {
 	/**
 	 * Tracy\Debugger::dump() shortcut.
 	 * @tracySkipLocation
+	 * @template T
+	 * @param  T  $var
+	 * @return T
 	 */
 	function dump(mixed $var): mixed
 	{
@@ -37,6 +40,9 @@ if (!function_exists('bdump')) {
 	/**
 	 * Tracy\Debugger::barDump() shortcut.
 	 * @tracySkipLocation
+	 * @template T
+	 * @param  T  $var
+	 * @return T
 	 */
 	function bdump(mixed $var): mixed
 	{
