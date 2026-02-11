@@ -61,7 +61,7 @@ class Debugger
 	/** initial output buffer level */
 	private static int $obLevel;
 
-	/** @var ?list<array<string, mixed>>  output buffer status @internal */
+	/** @var ?array<int, array<string, mixed>>  output buffer status @internal */
 	public static ?array $obStatus = null;
 
 	/********************* errors and exceptions reporting ****************d*g**/
@@ -141,7 +141,7 @@ class Debugger
 	/** @var string[] */
 	public static array $customJsFiles = [];
 
-	/** @var array<\Closure(string, int): ?array{file: string, line: int, column?: int}> */
+	/** @var array<\Closure(string, int): ?array{file: string, label: string, line?: int, column?: int, active?: bool}> */
 	private static array $sourceMappers = [];
 
 	/** @var ?array<string, int> */
@@ -153,7 +153,7 @@ class Debugger
 	private static Bar $bar;
 	private static ILogger $logger;
 
-	/** @var array{DevelopmentStrategy, ProductionStrategy} */
+	/** @var array<int, DevelopmentStrategy|ProductionStrategy> */
 	private static array $strategy;
 	private static SessionStorage $sessionStorage;
 
@@ -483,9 +483,10 @@ class Debugger
 	/**
 	 * Dumps information about a variable in readable format.
 	 * @tracySkipLocation
-	 * @param  mixed  $var  variable to dump
-	 * @param  bool   $return  return output instead of printing it? (bypasses $productionMode)
-	 * @return mixed  variable itself or dump
+	 * @template T
+	 * @param  T     $var     variable to dump
+	 * @param  bool  $return  return output instead of printing it? (bypasses $productionMode)
+	 * @return ($return is true ? string : T)
 	 */
 	public static function dump(mixed $var, bool $return = false): mixed
 	{
@@ -535,8 +536,10 @@ class Debugger
 	/**
 	 * Dumps information about a variable in Tracy Debug Bar.
 	 * @tracySkipLocation
+	 * @template T
+	 * @param  T  $var
 	 * @param  array<string, mixed>  $options
-	 * @return mixed  variable itself
+	 * @return T
 	 */
 	public static function barDump(mixed $var, ?string $title = null, array $options = []): mixed
 	{
@@ -581,7 +584,7 @@ class Debugger
 
 
 	/**
-	 * @param  callable(string, int): ?array{file: string, line: int, column?: int}  $mapper
+	 * @param  callable(string, int): ?array{file: string, label: string, line?: int, column?: int, active?: bool}  $mapper
 	 * @internal
 	 */
 	public static function addSourceMapper(callable $mapper): void
@@ -590,7 +593,7 @@ class Debugger
 	}
 
 
-	/** @return ?array{file: string, line: int, column?: int} */
+	/** @return ?array{file: string, label: string, line: int, column: int, active: bool} */
 	public static function mapSource(string $file, int $line): ?array
 	{
 		foreach (self::$sourceMappers as $mapper) {

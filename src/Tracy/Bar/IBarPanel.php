@@ -17,13 +17,13 @@ interface IBarPanel
 {
 	/**
 	 * Renders HTML code for custom tab.
-	 * @return string
+	 * @return ?string
 	 */
 	function getTab();
 
 	/**
 	 * Renders HTML code for custom panel.
-	 * @return string
+	 * @return ?string
 	 */
 	function getPanel();
 }

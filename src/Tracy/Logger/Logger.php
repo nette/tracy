@@ -27,7 +27,7 @@ class Logger implements ILogger
 	/** @var ?string sender of email notifications */
 	public $fromEmail;
 
-	/** @var mixed interval for sending email is 2 days */
+	/** @var string|int  interval for sending email is 2 days */
 	public $emailSnooze = '2 days';
 
 	/** @var callable(mixed $message, string $email): void  handler for sending emails */
