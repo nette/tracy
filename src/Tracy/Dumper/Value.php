@@ -37,7 +37,7 @@ final class Value implements \JsonSerializable
 	public int|string|null $id = null;
 	public object $holder;
 
-	/** @var list<mixed[]>|null */
+	/** @var array<int, mixed[]>|null */
 	public ?array $items = null;
 	public ?\stdClass $editor = null;
 	public ?bool $collapsed = null;

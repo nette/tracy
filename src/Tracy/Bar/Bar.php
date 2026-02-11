@@ -125,7 +125,7 @@ class Bar
 	}
 
 
-	/** @return \stdClass[] */
+	/** @return list<\stdClass> */
 	private function renderPanels(string $suffix = ''): array
 	{
 		set_error_handler(function (int $severity, string $message, string $file, int $line): bool {

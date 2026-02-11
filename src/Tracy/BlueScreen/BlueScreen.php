@@ -195,7 +195,7 @@ class BlueScreen
 
 
 	/**
-	 * @return \stdClass[]
+	 * @return list<\stdClass>
 	 */
 	private function renderPanels(?\Throwable $ex): array
 	{
