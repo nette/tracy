@@ -7,7 +7,7 @@ namespace Tracy;
 /** @var DefaultBarPanel $this */
 
 if (isset($this->cpuUsage) && $this->time) {
-	foreach (getrusage() as $key => $val) {
+	foreach (getrusage() ?: [] as $key => $val) {
 		$this->cpuUsage[$key] -= $val;
 	}
 	$userUsage = -round(($this->cpuUsage['ru_utime.tv_sec'] * 1e6 + $this->cpuUsage['ru_utime.tv_usec']) / $this->time / 10000);
@@ -54,7 +54,8 @@ $info = array_map('strval', array_filter($info + (array) $this->data));
 $packages = $devPackages = [];
 if (class_exists('Composer\Autoload\ClassLoader', autoload: false)) {
 	$baseDir = (function () {
-		@include dirname((new \ReflectionClass('Composer\Autoload\ClassLoader'))->getFileName()) . '/autoload_psr4.php'; // @ may not exist
+		$baseDir = null;
+		@include dirname((string) (new \ReflectionClass(\Composer\Autoload\ClassLoader::class))->getFileName()) . '/autoload_psr4.php'; // @ may not exist
 		return $baseDir;
 	})();
 	$composer = @json_decode((string) file_get_contents($baseDir . '/composer.lock')); // @ may not exist or be valid

@@ -182,7 +182,8 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	private function parseErrorSeverity(string|array $value): int
 	{
 		$value = implode('|', (array) $value);
-		$res = (int) @parse_ini_string('e = ' . $value)['e']; // @ may fail
+		$ini = @parse_ini_string('e = ' . $value); // @ may fail
+		$res = (int) ($ini['e'] ?? 0);
 		if (!$res) {
 			throw new Nette\InvalidStateException("Syntax error in expression '$value'");
 		}

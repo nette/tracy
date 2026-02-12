@@ -187,7 +187,7 @@ final class Describer
 			$rc = $obj instanceof \Closure
 				? new \ReflectionFunction($obj)
 				: new \ReflectionClass($obj);
-			if ($rc->getFileName() && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine()))) {
+			if ($rc->getFileName() && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine() ?: null))) {
 				$value->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
 			}
 		}
@@ -256,7 +256,7 @@ final class Describer
 			return;
 		}
 
-		$class ??= $value->value;
+		$class ??= is_string($value->value) ? $value->value : null;
 		$value->items[] = [
 			$this->describeKey($k),
 			$type !== Value::PropertyVirtual && $this->isSensitive($k, $v, $class)
