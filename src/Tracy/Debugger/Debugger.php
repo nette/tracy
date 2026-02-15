@@ -556,7 +556,10 @@ class Debugger
 				Dumper::LOCATION => self::$showLocation ?: Dumper::LOCATION_CLASS | Dumper::LOCATION_SOURCE,
 				Dumper::LAZY => true,
 				Dumper::KEYS_TO_HIDE => self::$keysToHide,
-			])];
+			]), 'text' => Helpers::isAgent() ? Dumper::toText($var, [
+				Dumper::DEPTH => 3,
+				Dumper::KEYS_TO_HIDE => self::$keysToHide,
+			]) : null];
 		}
 
 		return $var;

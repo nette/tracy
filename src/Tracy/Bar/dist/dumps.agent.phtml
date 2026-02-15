@@ -1,0 +1,19 @@
+<?php declare(strict_types=1);
+
+/** @var array<array{title:string|null,dump:string,text:?string}> $data */
+if (!$data) /* pos 2:1 */ return;
+echo '## Dumps
+
+';
+foreach ($data as $item) /* pos 5:1 */ {
+	if ($item['title']) /* pos 6:2 */ {
+		echo '### ';
+		echo Tracy\Helpers::escapeMd($item['title']) /* pos 7:7 */;
+		echo '
+
+';
+	}
+	echo Tracy\Helpers::escapeMd($item['text']) /* pos 10:2 */;
+	echo "\n";
+
+}
