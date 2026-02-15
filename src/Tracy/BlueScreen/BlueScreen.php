@@ -122,10 +122,22 @@ class BlueScreen
 	}
 
 
+	/**
+	 * Captures blue screen as plain text (markdown).
+	 */
+	public function renderAgent(\Throwable $exception): string
+	{
+		return Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/dist/agent.phtml'));
+	}
+
+
 	/** @internal */
 	public function renderToAjax(\Throwable $exception, DeferredContent $defer): void
 	{
 		$defer->addSetup('Tracy.BlueScreen.loadAjax', Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/dist/content.phtml')));
+		if (Helpers::isAgent()) {
+			$defer->addSetup('console.error', $this->renderAgent($exception));
+		}
 	}
 
 
@@ -173,6 +185,7 @@ class BlueScreen
 		$snapshot = &$this->snapshot;
 		$snapshot = [];
 		$dump = $this->getDumper();
+		$agentDump = $this->getAgentDumper();
 
 		$css = array_map(file_get_contents(...), array_merge([
 			__DIR__ . '/../assets/reset.css',
@@ -418,6 +431,16 @@ class BlueScreen
 			Dumper::ITEMS => $this->maxItems,
 			Dumper::SNAPSHOT => &$this->snapshot,
 			Dumper::LOCATION => Dumper::LOCATION_CLASS,
+			Dumper::SCRUBBER => $this->scrubber,
+			Dumper::KEYS_TO_HIDE => $this->keysToHide,
+		], $k);
+	}
+
+
+	public function getAgentDumper(): \Closure
+	{
+		return fn($v, $k = null): string => Dumper::toText($v, [
+			Dumper::DEPTH => 3,
 			Dumper::SCRUBBER => $this->scrubber,
 			Dumper::KEYS_TO_HIDE => $this->keysToHide,
 		], $k);
