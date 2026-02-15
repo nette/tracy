@@ -1,6 +1,6 @@
 <?php declare(strict_types=1); ?>
-<?php use Tracy\Helpers ?><?php /** @var Throwable $exception */ ?><?php /** @var string $title */ ?><?php /** @var ?string $nonce */ ?><?php /** @var string $css */ ?><?php /** @var string $js */ ?><?php /** @var string $source */ ?>
-<?php $code = $exception->getCode() ? ' #' . $exception->getCode() : '' ?><?php $chain = Helpers::getExceptionChain($exception) ?><!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table></p></code>
+<?php use Tracy\Helpers ?><?php /** @var Tracy\BlueScreen $blueScreen */ ?><?php /** @var Throwable $exception */ ?><?php /** @var ?string $nonce */ ?><?php /** @var string $css */ ?><?php /** @var string $js */ ?><?php /** @var string $source */ ?>
+<?php $title = $blueScreen->getExceptionTitle($exception) ?><?php $code = $exception->getCode() ? ' #' . $exception->getCode() : '' ?><?php $chain = Helpers::getExceptionChain($exception) ?><!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table></p></code>
 
 <html>
 <head>
