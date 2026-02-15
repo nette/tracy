@@ -70,7 +70,18 @@ echo '>
 echo str_replace(['<!--', '</s'], ['<\\!--', '<\\/s'], $js) /* pos 40:1 */;
 echo '
 Tracy.BlueScreen.init();
-</script>
+
+';
+if (Helpers::isAgent()) /* pos 43:1 */ {
+	echo 'document.title=';
+	echo Tracy\Helpers::jsonEncode('Tracy: ' . $title . ': ' . $exception->getMessage() . $code, true) /* pos 44:17 */;
+	echo ';
+console.error(';
+	echo Tracy\Helpers::jsonEncode($blueScreen->renderAgent($exception), true) /* pos 45:16 */;
+	echo ');
+';
+}
+echo '</script>
 </body>
 </html>
 ';

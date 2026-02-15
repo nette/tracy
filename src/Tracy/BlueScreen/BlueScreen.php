@@ -122,10 +122,23 @@ class BlueScreen
 	}
 
 
+	/**
+	 * Captures blue screen as plain text (markdown).
+	 * @param  ?array{file: string, line: int}  $logLocation
+	 */
+	public function renderAgent(\Throwable $exception, ?array $logLocation = null): string
+	{
+		return Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/dist/agent.phtml', logLocation: $logLocation));
+	}
+
+
 	/** @internal */
 	public function renderToAjax(\Throwable $exception, DeferredContent $defer): void
 	{
 		$defer->addSetup('Tracy.BlueScreen.loadAjax', Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/dist/content.phtml')));
+		if (Helpers::isAgent()) {
+			$defer->addSetup('console.error', $this->renderAgent($exception));
+		}
 	}
 
 
@@ -182,6 +195,7 @@ class BlueScreen
 		$this->snapshot = [];
 		$snapshot = &$this->snapshot[0];
 		$dump = $this->getDumper();
+		$agentDump = $this->getAgentDumper();
 
 		$css = array_map(file_get_contents(...), array_merge([
 			__DIR__ . '/../assets/reset.css',
@@ -391,7 +405,7 @@ class BlueScreen
 	 * Returns the exception's stack trace with Tracy-internal handler frames stripped, together with the
 	 * index of the frame that should be expanded by default (or null).
 	 * Strips top frames belonging to DevelopmentStrategy/ProductionStrategy and Debugger error/shutdown handlers.
-	 * @return array{list<array{file?: string, class?: string, function?: string}>, ?int}
+	 * @return array{list<array{file?: string, line?: int, class?: string, type?: string, function: string, args?: array<mixed>}>, ?int}
 	 * @internal
 	 */
 	public function prepareStack(\Throwable $ex): array
@@ -429,6 +443,17 @@ class BlueScreen
 			Dumper::ITEMS => $this->maxItems,
 			Dumper::SNAPSHOT => &$this->snapshot,
 			Dumper::LOCATION => Dumper::LOCATION_CLASS,
+			Dumper::SCRUBBER => $this->scrubber,
+			Dumper::KEYS_TO_HIDE => $this->keysToHide,
+		], $k);
+	}
+
+
+	/** @return \Closure(mixed, int|string): string */
+	public function getAgentDumper(): \Closure
+	{
+		return fn($v, $k = null): string => Dumper::toText($v, [
+			Dumper::DEPTH => 3,
 			Dumper::SCRUBBER => $this->scrubber,
 			Dumper::KEYS_TO_HIDE => $this->keysToHide,
 		], $k);

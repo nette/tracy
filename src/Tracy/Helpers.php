@@ -130,7 +130,7 @@ class Helpers
 	 * Returns the index of the first user-visible frame in $trace. A frame is transparent
 	 * when its file is missing, synthetic, in $paths, or its containing function (trace[n+1])
 	 * is annotated @tracySkipLocation.
-	 * @param  list<array{file?: string, class?: string, function?: string}>  $trace
+	 * @param  list<array{file?: string, line?: int, class?: string, type?: string, function?: string, args?: array<mixed>}>  $trace
 	 * @param  string[]|null  $paths  defaults to Debugger::$transparentPaths
 	 * @internal
 	 */

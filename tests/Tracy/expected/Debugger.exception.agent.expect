@@ -1,0 +1,9 @@
+<!DOCTYPE html>%A%
+	<title>Exception: The my exception #123</title>
+%A%
+document.title="Tracy: Exception: The my exception #123";
+console.error(%A%# Exception: The my exception #123%A%);
+</script>
+%A%
+</html>
+%A%

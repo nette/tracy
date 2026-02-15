@@ -39,6 +39,11 @@
 'use strict';
 {str_replace(['<!--', '</s'], ['<\!--', '<\/s'], $js)|noescape}
 Tracy.BlueScreen.init();
+
+{if Helpers::isAgent()}
+	document.title={='Tracy: ' . $title . ': ' . $exception->getMessage() . $code};
+	console.error({$blueScreen->renderAgent($exception)});
+{/if}
 </script>
 </body>
 </html>
