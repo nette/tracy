@@ -25,6 +25,7 @@ parameters:
 		-
 			identifier: function.alreadyNarrowedType
 			paths:
+				- src/Tracy/Bar/Bar.php
 				- src/Tracy/Bar/dist/loader.phtml
 				- src/Tracy/BlueScreen/BlueScreen.php
 				- src/Tracy/Helpers.php

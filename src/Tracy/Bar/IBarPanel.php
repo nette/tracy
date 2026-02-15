@@ -10,6 +10,7 @@ namespace Tracy;
 
 /**
  * Tracy Bar panel providing a tab label and optional panel content.
+ * @method ?string getAgentInfo() Returns markdown summary for AI agents.
  */
 interface IBarPanel
 {
