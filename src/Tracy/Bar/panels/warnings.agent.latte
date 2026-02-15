@@ -1,0 +1,8 @@
+{varType array<string, int|null> $data}
+{exitIf !$data}
+## Warnings
+
+{foreach $data as $item => $count}
+	{do [$file, $line, $message] = explode('|', $item, 3)}
+	- {=$message . ' in ' . $file . ':' . $line . ($count > 1 ? " (×" . $count . ')' : '')}
+{/foreach}
