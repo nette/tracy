@@ -104,6 +104,11 @@ class Bar
 				require __DIR__ . '/dist/loader.phtml';
 			}
 		}
+
+		if (Helpers::isAgent() && Helpers::isHtmlMode() && !Helpers::isRedirect()) {
+			$nonceAttr = ($nonce = Helpers::getNonce()) ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
+			echo '<script' . $nonceAttr . '>console.log(' . json_encode($this->renderAgent()) . ');</script>';
+		}
 	}
 
 
@@ -159,5 +164,23 @@ class Bar
 
 		restore_error_handler();
 		return $panels;
+	}
+
+
+	/**
+	 * Captures debug bar as plain text (markdown) for AI agents.
+	 */
+	public function renderAgent(): string
+	{
+		$time = number_format((microtime(true) - Debugger::$time) * 1000, 1);
+		$memory = number_format(memory_get_peak_usage() / 1_000_000, 2);
+		$parts = ["Tracy Bar | $time ms | $memory MB"];
+		foreach ($this->panels as $panel) {
+			if (method_exists($panel, 'getAgentInfo') && ($text = $panel->getAgentInfo()) !== null) {
+				$parts[] = $text;
+			}
+		}
+
+		return implode("\n\n", $parts) . "\n";
 	}
 }

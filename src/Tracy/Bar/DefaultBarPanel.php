@@ -42,4 +42,15 @@ class DefaultBarPanel implements IBarPanel
 			}
 		});
 	}
+
+
+	public function getAgentInfo(): ?string
+	{
+		return is_file(__DIR__ . "/dist/{$this->id}.agent.phtml")
+			? Helpers::capture(function () {
+				$data = $this->data;
+				require __DIR__ . "/dist/{$this->id}.agent.phtml";
+			})
+			: null;
+	}
 }
