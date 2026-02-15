@@ -143,9 +143,9 @@ class Dumper
 	 * Returns variable dump as plain text.
 	 * @param  array<string, mixed>  $options
 	 */
-	public static function toText(mixed $var, array $options = []): string
+	public static function toText(mixed $var, array $options = [], mixed $key = null): string
 	{
-		return (new self($options))->asTerminal($var);
+		return (new self($options))->asTerminal($var, [], $key);
 	}
 
 
@@ -251,9 +251,15 @@ class Dumper
 	 * Dumps variable to x-terminal.
 	 * @param  array<string, string>  $colors
 	 */
-	private function asTerminal(mixed $var, array $colors = []): string
+	private function asTerminal(mixed $var, array $colors = [], mixed $key = null): string
 	{
-		$model = $this->describer->describe($var);
+		if ($key === null) {
+			$model = $this->describer->describe($var);
+		} else {
+			$model = $this->describer->describe([$key => $var]);
+			$model->value = $model->value[0][1];
+		}
+
 		return $this->renderer->renderAsText($model, $colors);
 	}
 
