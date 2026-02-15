@@ -312,6 +312,13 @@ class Helpers
 
 
 	/** @internal */
+	public static function isAgent(): bool
+	{
+		return ($_COOKIE['tracy-webdriver'] ?? null) === '1';
+	}
+
+
+	/** @internal */
 	public static function isRedirect(): bool
 	{
 		return (bool) preg_match('#^Location:#im', implode("\n", headers_list()));

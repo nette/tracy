@@ -122,6 +122,15 @@ class BlueScreen
 	}
 
 
+	/**
+	 * Captures blue screen as plain text (markdown).
+	 */
+	public function renderAgent(\Throwable $exception): string
+	{
+		return Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/dist/agent.phtml'));
+	}
+
+
 	/** @internal */
 	public function renderToAjax(\Throwable $exception, DeferredContent $defer): void
 	{

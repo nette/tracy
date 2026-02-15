@@ -38,6 +38,11 @@
 <?= str_replace(['<!--', '</s'], ['<\!--', '<\/s'], $js) ?>
 
 Tracy.BlueScreen.init();
-</script>
+
+<?php if (Helpers::isAgent()): ?>document.title=<?= json_encode('Tracy: ' . $title . ': ' . $exception->getMessage() . $code) ?>
+;
+console.error(<?= json_encode($blueScreen->renderAgent($exception)) ?>
+);
+<?php endif ?></script>
 </body>
 </html>
