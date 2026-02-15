@@ -70,14 +70,22 @@ class Bar
 	{
 		$redirectQueue = &$defer->getItems('redirect');
 		$requestId = $defer->getRequestId();
+		$contentAgent = [];
 
 		if ($defer->isDeferred()) {
 			if ($defer->isAvailable()) {
 				$defer->addSetup('Tracy.Debug.loadAjax', $this->renderPartial('ajax', '-ajax:' . $requestId));
+				if (Helpers::isAgent()) {
+					$defer->addSetup('console.log', $this->renderAgent());
+				}
 			}
 		} elseif (Helpers::isRedirect()) {
 			if ($defer->isAvailable()) {
-				$redirectQueue[] = ['content' => $this->renderPartial('redirect', '-r' . count($redirectQueue)), 'time' => time()];
+				$redirectQueue[] = [
+					'content' => $this->renderPartial('redirect', '-r' . count($redirectQueue)),
+					'agent' => Helpers::isAgent() ? $this->renderAgent() : null,
+					'time' => time(),
+				];
 			}
 		} elseif (Helpers::isHtmlMode()) {
 			if (preg_match('#^Content-Length:#im', implode("\n", headers_list()))) {
@@ -89,6 +97,7 @@ class Bar
 			foreach (array_reverse($redirectQueue) as $item) {
 				$content['bar'] .= $item['content']['bar'];
 				$content['panels'] .= $item['content']['panels'];
+				$contentAgent[] = $item['agent'];
 			}
 
 			$redirectQueue = null;
@@ -102,6 +111,14 @@ class Bar
 				$async = false;
 				Debugger::removeOutputBuffers(errorOccurred: false);
 				require __DIR__ . '/dist/loader.phtml';
+			}
+		}
+
+		if (Helpers::isAgent() && Helpers::isHtmlMode() && !Helpers::isRedirect()) {
+			$contentAgent[] = $this->renderAgent();
+			$nonceAttr = ($nonce = Helpers::getNonce()) ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
+			foreach (array_filter($contentAgent) as $item) {
+				echo '<script' . $nonceAttr . '>console.log(' . json_encode($item) . ');</script>';
 			}
 		}
 	}
@@ -159,5 +176,23 @@ class Bar
 
 		restore_error_handler();
 		return $panels;
+	}
+
+
+	/**
+	 * Captures debug bar as plain text (markdown) for AI agents.
+	 */
+	public function renderAgent(): string
+	{
+		$time = number_format((microtime(true) - Debugger::$time) * 1000, 1);
+		$memory = number_format(memory_get_peak_usage() / 1_000_000, 2);
+		$parts = ["Tracy Bar | $time ms | $memory MB"];
+		foreach ($this->panels as $panel) {
+			if (method_exists($panel, 'getAgentInfo') && ($text = $panel->getAgentInfo()) !== null) {
+				$parts[] = $text;
+			}
+		}
+
+		return implode("\n\n", $parts) . "\n";
 	}
 }
