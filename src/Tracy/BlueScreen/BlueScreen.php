@@ -124,6 +124,36 @@ class BlueScreen
 	}
 
 
+	private static function exceptionTitle(\Throwable $exception): string
+	{
+		return $exception instanceof \ErrorException
+			? Helpers::errorTypeToString($exception->getSeverity())
+			: get_debug_type($exception);
+	}
+
+
+	/**
+	 * @param  array<int, array<string, mixed>>  $trace
+	 * @return array<int, array<string, mixed>>
+	 * @internal
+	 */
+	public static function cleanStackTrace(array $trace): array
+	{
+		if (in_array($trace[0]['class'] ?? null, [DevelopmentStrategy::class, ProductionStrategy::class], true)) {
+			array_shift($trace);
+		}
+
+		if (
+			($trace[0]['class'] ?? null) === Debugger::class
+			&& in_array($trace[0]['function'], ['shutdownHandler', 'errorHandler'], true)
+		) {
+			array_shift($trace);
+		}
+
+		return $trace;
+	}
+
+
 	/** @internal */
 	public function renderToAjax(\Throwable $exception, DeferredContent $defer): void
 	{
@@ -161,9 +191,7 @@ class BlueScreen
 		$showEnvironment = $this->showEnvironment && (!str_contains($exception->getMessage(), 'Allowed memory size'));
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
-		$title = $exception instanceof \ErrorException
-			? Helpers::errorTypeToString($exception->getSeverity())
-			: get_debug_type($exception);
+		$title = self::exceptionTitle($exception);
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error
 			? null
 			: error_get_last();
@@ -204,6 +232,33 @@ class BlueScreen
 		$blueScreen = $this;
 
 		require $template;
+	}
+
+
+	/**
+	 * Renders blue screen as plain text (markdown).
+	 */
+	public function renderAsText(\Throwable $exception): void
+	{
+		if (!headers_sent()) {
+			header('Content-Type: text/markdown; charset=UTF-8');
+		}
+
+		$showEnvironment = $this->showEnvironment && !str_contains($exception->getMessage(), 'Allowed memory size');
+		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error
+			? null
+			: error_get_last();
+		$source = Helpers::getSource();
+
+		if (function_exists('apache_request_headers')) {
+			$httpHeaders = apache_request_headers();
+		} else {
+			$httpHeaders = array_filter($_SERVER, fn($k) => str_starts_with($k, 'HTTP_'), ARRAY_FILTER_USE_KEY);
+			$httpHeaders = array_combine(array_map(fn($k) => strtolower(strtr(substr($k, 5), '_', '-')), array_keys($httpHeaders)), $httpHeaders);
+		}
+
+		$blueScreen = $this;
+		require __DIR__ . '/dist/markdown.phtml';
 	}
 
 

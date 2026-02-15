@@ -311,6 +311,14 @@ class Helpers
 
 
 	/** @internal */
+	public static function isAgent(): bool
+	{
+		$accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+		return $accept !== '' && !str_contains($accept, 'text/html');
+	}
+
+
+	/** @internal */
 	public static function isRedirect(): bool
 	{
 		return (bool) preg_match('#^Location:#im', implode("\n", headers_list()));

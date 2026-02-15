@@ -66,6 +66,18 @@ class Bar
 
 
 	/**
+	 * Renders debug bar as plain text (markdown).
+	 */
+	public function renderAsText(): void
+	{
+		$time = microtime(true) - Debugger::$time;
+		$memory = memory_get_peak_usage() / 1_000_000;
+		$warningsPanel = $this->panels['Tracy:warnings'] ?? null;
+		require __DIR__ . '/dist/markdown.phtml';
+	}
+
+
+	/**
 	 * Renders debug bar.
 	 */
 	public function render(DeferredContent $defer): void

@@ -1,0 +1,24 @@
+<?php
+declare(strict_types=1);
+?>
+<?php /**
+ * Tracy Bar rendered as HTML comment (for AI agents).
+ *
+ * @var float $time
+ * @var float $memory
+ * @var ?Tracy\DefaultBarPanel $warningsPanel
+ */ ?>
+
+<!-- tracy
+Tracy Bar | <?= number_format($time * 1000, 1) ?> ms | <?= number_format($memory, 2) ?> MB
+<?php if ($warningsPanel instanceof \Tracy\DefaultBarPanel && $warningsPanel->data): ?>
+
+## Warnings
+
+<?php foreach ($warningsPanel->data as $key => $count): ?>
+<?php [$file, $line, $message] = explode('|', $key, 3) ?>
+- <?= $message . ' in ' . $file . ':' . $line . ($count > 1 ? " (×" . $count . ')' : '') ?>
+
+<?php endforeach ?>
+<?php endif ?>
+-->

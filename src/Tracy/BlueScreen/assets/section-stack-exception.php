@@ -12,16 +12,7 @@ use function in_array;
  * @var BlueScreen $blueScreen
  */
 
-$stack = $ex->getTrace();
-if (in_array($stack[0]['class'] ?? null, [DevelopmentStrategy::class, ProductionStrategy::class], true)) {
-	array_shift($stack);
-}
-if (
-	($stack[0]['class'] ?? null) === Debugger::class
-	&& in_array($stack[0]['function'], ['shutdownHandler', 'errorHandler'], true)
-) {
-	array_shift($stack);
-}
+$stack = BlueScreen::cleanStackTrace($ex->getTrace());
 
 $expanded = null;
 if (

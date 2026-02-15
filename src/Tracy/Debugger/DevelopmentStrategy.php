@@ -42,6 +42,9 @@ final class DevelopmentStrategy
 		if ($this->defer->isDeferred() && $this->defer->isAvailable()) {
 			$this->blueScreen->renderToAjax($exception, $this->defer);
 
+		} elseif ($firstTime && Helpers::isAgent()) {
+			$this->blueScreen->renderAsText($exception);
+
 		} elseif ($firstTime && Helpers::isHtmlMode()) {
 			$this->blueScreen->render($exception);
 
@@ -134,6 +137,10 @@ final class DevelopmentStrategy
 			ini_set('display_errors', '1');
 		}
 
-		$this->bar->render($this->defer);
+		if (Helpers::isAgent()) {
+			$this->bar->renderAsText();
+		} else {
+			$this->bar->render($this->defer);
+		}
 	}
 }
