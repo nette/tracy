@@ -342,7 +342,7 @@ class Helpers
 	/** @internal */
 	public static function getNonce(): ?string
 	{
-		return preg_match('#^Content-Security-Policy(?:-Report-Only)?:.*\sscript-src\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
+		return preg_match('#^Content-Security-Policy(?:-Report-Only)?:.*\s(?:script-src|script-src-elem)\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
 			? $m[1]
 			: null;
 	}
