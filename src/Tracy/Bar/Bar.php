@@ -73,7 +73,7 @@ class Bar
 		$redirectQueue = &$defer->getItems('redirect');
 		$requestId = $defer->getRequestId();
 
-		if (Helpers::isAjax()) {
+		if ($defer->isDeferred()) {
 			if ($defer->isAvailable()) {
 				$defer->addSetup('Tracy.Debug.loadAjax', $this->renderPartial('ajax', '-ajax:' . $requestId));
 			}
