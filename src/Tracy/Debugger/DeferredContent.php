@@ -16,6 +16,7 @@ use const JSON_INVALID_UTF8_SUBSTITUTE, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_U
  */
 final class DeferredContent
 {
+	private readonly bool $deferred;
 	private readonly string $requestId;
 	private bool $useSession = false;
 
@@ -23,7 +24,15 @@ final class DeferredContent
 	public function __construct(
 		private readonly SessionStorage $sessionStorage,
 	) {
-		$this->requestId = $_SERVER['HTTP_X_TRACY_AJAX'] ?? Helpers::createId();
+		$ajax = $_SERVER['HTTP_X_TRACY_AJAX'] ?? '';
+		$this->deferred = (bool) preg_match('#^\w{10,15}$#D', $ajax);
+		$this->requestId = $this->deferred ? $ajax : Helpers::createId();
+	}
+
+
+	public function isDeferred(): bool
+	{
+		return $this->deferred;
 	}
 
 
@@ -101,7 +110,7 @@ final class DeferredContent
 			return true;
 		}
 
-		if (Helpers::isAjax()) {
+		if ($this->deferred) {
 			header('X-Tracy-Ajax: 1'); // session must be already locked
 		}
 

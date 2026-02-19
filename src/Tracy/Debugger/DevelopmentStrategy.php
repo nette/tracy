@@ -31,7 +31,7 @@ final class DevelopmentStrategy
 
 	public function handleException(\Throwable $exception, bool $firstTime): void
 	{
-		if (Helpers::isAjax() && $this->defer->isAvailable()) {
+		if ($this->defer->isDeferred() && $this->defer->isAvailable()) {
 			$this->blueScreen->renderToAjax($exception, $this->defer);
 
 		} elseif ($firstTime && Helpers::isHtmlMode()) {
@@ -91,7 +91,7 @@ final class DevelopmentStrategy
 		$message = Helpers::errorTypeToString($severity) . ': ' . Helpers::improveError($message);
 		$count = &$this->bar->getPanel('Tracy:warnings')->data["$file|$line|$message"];
 
-		if (!$count++ && !Helpers::isHtmlMode() && !Helpers::isAjax()) {
+		if (!$count++ && !Helpers::isHtmlMode() && !$this->defer->isDeferred()) {
 			echo "\n$message in $file on line $line\n";
 		}
 

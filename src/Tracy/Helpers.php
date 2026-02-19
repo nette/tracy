@@ -309,13 +309,6 @@ class Helpers
 
 
 	/** @internal */
-	public static function isAjax(): bool
-	{
-		return isset($_SERVER['HTTP_X_TRACY_AJAX']) && preg_match('#^\w{10,15}$#D', $_SERVER['HTTP_X_TRACY_AJAX']);
-	}
-
-
-	/** @internal */
 	public static function isRedirect(): bool
 	{
 		return (bool) preg_match('#^Location:#im', implode("\n", headers_list()));
