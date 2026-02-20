@@ -495,7 +495,7 @@ class Debugger
 
 		} elseif (!self::$productionMode) {
 			$html = Helpers::isHtmlMode();
-			echo $html ? '<tracy-div>' : '';
+			echo $html ? '<tracy-dump>' : '';
 			Dumper::dump($var, [
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
@@ -504,7 +504,7 @@ class Debugger
 				Dumper::THEME => self::$dumpTheme,
 				Dumper::KEYS_TO_HIDE => self::$keysToHide,
 			]);
-			echo $html ? '</tracy-div>' : '';
+			echo $html ? '</tracy-dump>' : '';
 
 			if ($html && Helpers::isAgent()) {
 				Helpers::consoleLog(Dumper::toText($var, [
