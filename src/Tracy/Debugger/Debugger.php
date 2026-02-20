@@ -142,9 +142,6 @@ class Debugger
 	/** @var array<\Closure(string, int): ?array{file: string, label: string, line?: int, column?: int, active?: bool}> */
 	private static array $sourceMappers = [];
 
-	/** @var ?array<string, int> */
-	private static ?array $cpuUsage = null;
-
 	/********************* services ****************d*g**/
 
 	private static BlueScreen $blueScreen;
@@ -186,8 +183,6 @@ class Debugger
 		self::$reserved ??= str_repeat('t', self::$reservedMemorySize);
 		self::$time ??= $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(as_float: true);
 		self::$obLevel ??= ob_get_level();
-		self::$cpuUsage ??= !self::$productionMode && function_exists('getrusage') ? (getrusage() ?: null) : null;
-
 		// logging configuration
 		self::$email = $email ?? self::$email;
 		self::$logDirectory = $logDirectory ?? self::$logDirectory;
@@ -402,8 +397,7 @@ class Debugger
 	{
 		if (empty(self::$bar)) {
 			self::$bar = new Bar;
-			self::$bar->addPanel($info = new DefaultBarPanel('info'), 'Tracy:info');
-			$info->cpuUsage = self::$cpuUsage;
+			self::$bar->addPanel(new DefaultBarPanel('info'), 'Tracy:info');
 			self::$bar->addPanel(new DefaultBarPanel('warnings'), 'Tracy:warnings'); // filled by errorHandler()
 		}
 
