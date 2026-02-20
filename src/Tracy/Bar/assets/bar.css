@@ -2,6 +2,11 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+/* shadow DOM host */
+:host {
+	display: contents;
+}
+
 /* common styles */
 #tracy-debug {
 	--tracy-space: 10px;

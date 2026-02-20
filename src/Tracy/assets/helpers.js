@@ -5,7 +5,7 @@ function init() {
 		document.addEventListener(
 			'click',
 			(e) => {
-				e.target.closest('a[href^="editor:"]')?.setAttribute('target', '_blank');
+				(e.composedPath()[0] || e.target).closest('a[href^="editor:"]')?.setAttribute('target', '_blank');
 			},
 			true,
 		);
