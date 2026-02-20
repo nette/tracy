@@ -176,7 +176,7 @@ class Dumper
 			. file_get_contents(__DIR__ . '/../assets/toggle.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-light.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-dark.css');
-		echo "<style{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
+		echo "<style class=\"tracy-dump-style\"{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
 
 		if (!Debugger::isEnabled() || !Debugger::$showBar) {
 			$s = '(function(){' . file_get_contents(__DIR__ . '/../assets/toggle.js') . '})();'
