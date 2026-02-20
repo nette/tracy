@@ -393,8 +393,8 @@ if (!customElements.get('tracy-dump')) {
 			}
 			let shadow = this.attachShadow({ mode: 'open' });
 
-			// clone CSS from document into shadow root
-			document.querySelectorAll('style.tracy-debug, style.tracy-dump-style').forEach((s) => {
+			// clone CSS from document into shadow root (exclude component-specific CSS)
+			document.querySelectorAll('style.tracy-debug:not(.tracy-bar-css):not(.tracy-bs-css), style.tracy-dump-style').forEach((s) => {
 				shadow.appendChild(s.cloneNode(true));
 			});
 
