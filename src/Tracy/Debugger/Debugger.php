@@ -468,7 +468,7 @@ class Debugger
 			self::$sessionStorage = @is_dir($dir = (string) session_save_path())
 				|| @is_dir($dir = (string) ini_get('upload_tmp_dir'))
 				|| @is_dir($dir = sys_get_temp_dir())
-				|| ($dir = self::$logDirectory)
+				|| ($dir = (string) self::$logDirectory)
 				? new FileSession($dir)
 				: new NativeSession;
 		}
@@ -598,7 +598,7 @@ class Debugger
 	{
 		foreach (self::$sourceMappers as $mapper) {
 			if ($res = $mapper($file, $line)) {
-				return $res;
+				return $res + ['line' => 0, 'column' => 0, 'active' => true];
 			}
 		}
 

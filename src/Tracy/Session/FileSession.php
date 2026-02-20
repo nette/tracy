@@ -59,12 +59,12 @@ class FileSession implements SessionStorage
 
 			$file = @fopen($path = $this->dir . '/' . self::FilePrefix . $id, 'c+'); // intentionally @
 			if ($file === false) {
-				throw new \RuntimeException("Unable to create file '$path'. " . error_get_last()['message']);
+				throw new \RuntimeException("Unable to create file '$path'. " . (error_get_last()['message'] ?? ''));
 			}
 		}
 
 		if (!@flock($file, LOCK_EX)) { // intentionally @
-			throw new \RuntimeException("Unable to acquire exclusive lock on '$path'. " . error_get_last()['message']);
+			throw new \RuntimeException("Unable to acquire exclusive lock on '$path'. " . (error_get_last()['message'] ?? ''));
 		}
 
 		$this->file = $file;
@@ -85,7 +85,7 @@ class FileSession implements SessionStorage
 	public function clean(): void
 	{
 		$old = strtotime('-1 week');
-		foreach (glob($this->dir . '/' . self::FilePrefix . '*') as $file) {
+		foreach (glob($this->dir . '/' . self::FilePrefix . '*') ?: [] as $file) {
 			if (filemtime($file) < $old) {
 				unlink($file);
 			}

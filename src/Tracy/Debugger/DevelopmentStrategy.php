@@ -59,7 +59,7 @@ final class DevelopmentStrategy
 		}
 
 		if (Helpers::detectColors() && @is_file($exception->getFile())) {
-			echo "\n\n" . CodeHighlighter::highlightPhpCli(file_get_contents($exception->getFile()), $exception->getLine()) . "\n";
+			echo "\n\n" . CodeHighlighter::highlightPhpCli((string) file_get_contents($exception->getFile()), $exception->getLine()) . "\n";
 		}
 
 		echo "$exception\n" . ($logFile ? "\n(stored in $logFile)\n" : '');

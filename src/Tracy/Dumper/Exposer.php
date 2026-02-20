@@ -217,6 +217,7 @@ final class Exposer
 			$describer->addPropertyTo($pair, 'key', $v);
 			$describer->addPropertyTo($pair, 'value', $obj[$v]);
 			$describer->addPropertyTo($value, '', null, described: $pair);
+			assert($value->items !== null);
 			$value->items[count($value->items) - 1][0] = '';
 		}
 	}
@@ -231,6 +232,7 @@ final class Exposer
 			$describer->addPropertyTo($pair, 'key', $k);
 			$describer->addPropertyTo($pair, 'value', $v);
 			$describer->addPropertyTo($value, '', null, described: $pair);
+			assert($value->items !== null);
 			$value->items[count($value->items) - 1][0] = '';
 		}
 	}
