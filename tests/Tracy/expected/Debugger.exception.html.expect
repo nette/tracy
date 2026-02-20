@@ -15,8 +15,8 @@
 
 
 <body>
-<tracy-div id="tracy-bs" itemscope>
-	<a id="tracy-bs-toggle" href="#" class="tracy-toggle">&#xfeff;</a>
+<div class="tracy-bs" id="tracy-bs" itemscope>
+	<a href="#" class="tracy-bs-toggle tracy-toggle">&#xfeff;</a>
 
 	<div class="tracy-bs-main">
 <section class="tracy-section tracy-section--error">
@@ -280,7 +280,7 @@
 	</div>
 
 	<meta itemprop=tracy-snapshot content='%a%'>
-</tracy-div>
+</div>
 <script>%A%</script>
 </body>
 </html>

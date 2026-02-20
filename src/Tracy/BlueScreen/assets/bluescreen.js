@@ -6,15 +6,16 @@ class BlueScreen {
 	static init(ajax) {
 		BlueScreen.globalInit();
 
-		let blueScreen = document.getElementById('tracy-bs');
+		let blueScreen = document.querySelector('.tracy-bs');
 
 		// Shadow DOM for CSS isolation
 		let host = document.createElement('tracy-bs');
 		let shadow = host.attachShadow({ mode: 'open' });
 		BlueScreen.shadow = shadow;
+		BlueScreen.host = host;
 
-		// Clone CSS into shadow root
-		document.querySelectorAll('style.tracy-debug').forEach((s) => {
+		// Clone CSS into shadow root (exclude Bar CSS)
+		document.querySelectorAll('style.tracy-debug:not(.tracy-bar-css)').forEach((s) => {
 			shadow.appendChild(s.cloneNode(true));
 		});
 
@@ -28,7 +29,7 @@ class BlueScreen {
 
 		blueScreen.addEventListener('tracy-toggle', (e) => {
 			let target = e.composedPath()[0] || e.target;
-			if (target.matches('#tracy-bs-toggle')) { // blue screen toggle
+			if (target.matches('.tracy-bs-toggle')) { // blue screen toggle
 				document.documentElement.classList.toggle('tracy-bs-visible', !e.detail.collapsed);
 
 			} else if (!target.matches('.tracy-dump *') && e.detail.originalEvent) { // panel toggle
@@ -55,7 +56,7 @@ class BlueScreen {
 		// enables toggling via ESC
 		document.addEventListener('keyup', (e) => {
 			if (e.keyCode === 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) { // ESC
-				let toggle = BlueScreen.shadow && BlueScreen.shadow.querySelector('#tracy-bs-toggle');
+				let toggle = BlueScreen.shadow && BlueScreen.shadow.querySelector('.tracy-bs-toggle');
 				if (toggle) {
 					Tracy.Toggle.toggle(toggle);
 				}
@@ -82,7 +83,7 @@ class BlueScreen {
 }
 
 function stickyFooter(root) {
-	let footer = root && root.querySelector('#tracy-bs footer');
+	let footer = root && root.querySelector('footer');
 	if (!footer) {
 		return;
 	}

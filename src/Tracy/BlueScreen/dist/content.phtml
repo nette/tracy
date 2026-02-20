@@ -1,7 +1,7 @@
 <?php declare(strict_types=1); ?>
 <?php use Tracy\Dumper ?><?php /** @var Throwable $exception */ ?><?php /** @var array{link: string, label: string, external?: bool}[] $actions */ ?><?php /** @var string[] $info */ ?><?php /** @var string $source */ ?><?php /** @var ?array{type: int, message: string, file: string, line: int} $lastError */ ?><?php /** @var array<string, string> $httpHeaders */ ?><?php /** @var callable $dump */ ?><?php /** @var array{0?: Tracy\Dumper\Value[], 1?: mixed[]} $snapshot */ ?><?php /** @var bool $showEnvironment */ ?><?php /** @var Tracy\BlueScreen $blueScreen */ ?><?php /** @var bool $headersSent */ ?><?php /** @var ?string $headersFile */ ?><?php /** @var ?int $headersLine */ ?><?php /** @var mixed[][] $obStatus */ ?><?php /** @var Generator[] $generators */ ?><?php /** @var Fiber[] $fibers */ ?>
-<tracy-div id="tracy-bs" itemscope>
-	<a id="tracy-bs-toggle" href="#" class="tracy-toggle">&#xfeff;</a>
+<div class="tracy-bs" id="tracy-bs" itemscope>
+	<a href="#" class="tracy-bs-toggle tracy-toggle">&#xfeff;</a>
 
 	<div class="tracy-bs-main">
 <?php $ex = $exception ?><?php $exceptions = [] ?>
@@ -43,4 +43,4 @@
 
 	<meta itemprop=tracy-snapshot content=<?= Dumper::formatSnapshotAttribute($snapshot) ?>
 >
-</tracy-div>
+</div>

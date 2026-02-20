@@ -113,7 +113,7 @@ class Dumper {
 
 			let el;
 
-			if (target.matches('.tracy-dump-hash') && (el = target.closest('[id="tracy-debug"]') || target.closest('tracy-div'))) {
+			if (target.matches('.tracy-dump-hash') && (el = target.getRootNode())) {
 				el.querySelectorAll('.tracy-dump-hash').forEach((el) => {
 					if (el.textContent === target.textContent) {
 						el.classList.add('tracy-dump-highlight');
