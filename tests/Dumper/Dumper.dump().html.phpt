@@ -21,7 +21,7 @@ test('html mode', function () {
 	Assert::same(123, Dumper::dump(123));
 	Assert::match(
 		<<<'XX'
-			<style>%a%</style>
+			<style class="tracy-dump-style">%a%</style>
 			<script>%a%</script>
 			<pre class="tracy-dump tracy-light"
 			><a href="editor://%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">Dumper::dump(123)) 📍</a
