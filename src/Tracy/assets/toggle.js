@@ -16,7 +16,7 @@ class Toggle {
 			let el;
 			if (
 				!e.shiftKey && !e.ctrlKey && !e.metaKey
-				&& (el = e.target.closest('.tracy-toggle'))
+				&& (el = (e.composedPath()[0] || e.target).closest('.tracy-toggle'))
 				&& Math.pow(start[0] - e.clientX, 2) + Math.pow(start[1] - e.clientY, 2) < MOVE_THRESHOLD
 			) {
 				Toggle.toggle(el, undefined, e);
@@ -40,13 +40,14 @@ class Toggle {
 
 		el.dispatchEvent(new CustomEvent('tracy-beforetoggle', {
 			bubbles: true,
+			composed: true,
 			detail: { collapsed: !expand, originalEvent: e },
 		}));
 
 		if (!ref || ref === '#') {
 			ref = '+';
 		} else if (ref.substr(0, 1) === '#') {
-			dest = document;
+			dest = el.getRootNode();
 		}
 		ref = ref.match(/(\^\s*([^+\s]*)\s*)?(\+\s*(\S*)\s*)?(.*)/);
 		dest = ref[1] ? dest.parentNode : dest;
@@ -59,6 +60,7 @@ class Toggle {
 
 		el.dispatchEvent(new CustomEvent('tracy-toggle', {
 			bubbles: true,
+			composed: true,
 			detail: { relatedTarget: dest, collapsed: !expand, originalEvent: e },
 		}));
 	}

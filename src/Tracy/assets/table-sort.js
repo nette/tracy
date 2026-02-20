@@ -6,10 +6,11 @@
 class TableSort {
 	static init() {
 		document.documentElement.addEventListener('click', (e) => {
+			let target = e.composedPath()[0] || e.target;
 			if ((window.getSelection().type !== 'Range')
-				&& e.target.matches('.tracy-sortable > :first-child > tr:first-child *')
+				&& target.matches('.tracy-sortable > :first-child > tr:first-child *')
 			) {
-				TableSort.sort(e.target.closest('td,th'));
+				TableSort.sort(target.closest('td,th'));
 			}
 		});
 
