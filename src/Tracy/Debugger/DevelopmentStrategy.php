@@ -31,6 +31,9 @@ final class DevelopmentStrategy
 
 	public function initialize(): void
 	{
+		$this->bar->getPanel('Tracy:info')->cpuUsage = function_exists('getrusage')
+			? (getrusage() ?: null)
+			: null;
 	}
 
 
