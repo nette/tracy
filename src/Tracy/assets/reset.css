@@ -2,6 +2,10 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+@layer base, components;
+
+@layer base {
+
 :root,
 :host {
 	--tracy-space: 16px;
@@ -32,4 +36,6 @@ input {
 
 textarea {
 	padding: 2px;
+}
+
 }

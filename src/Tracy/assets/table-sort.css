@@ -2,6 +2,8 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+@layer base {
+
 .tracy-sortable > :first-child > tr:first-child > * {
 	position: relative;
 }
@@ -12,4 +14,6 @@
 	content: "\21C5";
 	opacity: .4;
 	font-weight: normal;
+}
+
 }

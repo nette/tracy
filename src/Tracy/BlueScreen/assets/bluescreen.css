@@ -2,6 +2,8 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+@layer components {
+
 /* shadow DOM host */
 :host {
 	display: contents;
@@ -424,4 +426,6 @@ span[data-tracy-href] {
 	border-top: 2px solid white;
 	padding-top: var(--tracy-space);
 	overflow: auto;
+}
+
 }

@@ -2,6 +2,8 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+@layer components {
+
 /* shadow DOM host */
 :host {
 	--tracy-space: 10px;
@@ -312,4 +314,6 @@ h1 {
 	* {
 		display: none;
 	}
+}
+
 }
