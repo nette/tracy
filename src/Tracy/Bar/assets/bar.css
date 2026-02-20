@@ -37,6 +37,7 @@ body#tracy-debug { /* in popup window */
 
 #tracy-debug h2,
 #tracy-debug h3 {
+	font-size: inherit;
 	font-weight: bold;
 }
 
