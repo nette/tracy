@@ -2,6 +2,8 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+@layer base {
+
 .tracy-dump.tracy-light {
 	text-align: left;
 	color: #444;
@@ -142,4 +144,6 @@ span[data-tracy-href] {
 	0% {
 		background: #c0c0c033;
 	}
+}
+
 }

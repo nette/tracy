@@ -2,6 +2,8 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+@layer base {
+
 .tracy-collapsed {
 	display: none;
 }
@@ -32,4 +34,6 @@
 
 .tracy-toggle.tracy-collapsed:after {
 	transform: rotate(-90deg) scale(1, 1.5) translate(.1ex, 0);
+}
+
 }
