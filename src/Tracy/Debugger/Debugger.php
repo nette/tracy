@@ -252,13 +252,7 @@ class Debugger
 
 	public static function dispatch(): void
 	{
-		if (
-			!Helpers::isCli()
-			&& self::getStrategy()->sendAssets()
-		) {
-			self::$showBar = false;
-			exit;
-		}
+		self::getStrategy()->dispatch();
 	}
 
 
@@ -298,7 +292,7 @@ class Debugger
 
 		self::$reserved = null;
 
-		if (self::$showBar && !Helpers::isCli()) {
+		if (self::$showBar) {
 			try {
 				self::getStrategy()->renderBar();
 			} catch (\Throwable $e) {

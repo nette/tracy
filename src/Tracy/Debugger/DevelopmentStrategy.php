@@ -16,6 +16,9 @@ use function is_bool;
  */
 final class DevelopmentStrategy
 {
+	private bool $assetsSent = false;
+
+
 	public function __construct(
 		private readonly Bar $bar,
 		private readonly BlueScreen $blueScreen,
@@ -101,9 +104,12 @@ final class DevelopmentStrategy
 	}
 
 
-	public function sendAssets(): bool
+	public function dispatch(): void
 	{
-		return $this->defer->sendAssets();
+		if (!Helpers::isCli() && $this->defer->sendAssets()) {
+			$this->assetsSent = true;
+			exit;
+		}
 	}
 
 
@@ -115,6 +121,10 @@ final class DevelopmentStrategy
 
 	public function renderBar(): void
 	{
+		if ($this->assetsSent || Helpers::isCli()) {
+			return;
+		}
+
 		if (function_exists('ini_set')) {
 			ini_set('display_errors', '1');
 		}
