@@ -8,28 +8,42 @@ class BlueScreen {
 
 		let blueScreen = document.getElementById('tracy-bs');
 
+		// Shadow DOM for CSS isolation
+		let host = document.createElement('tracy-bs');
+		let shadow = host.attachShadow({ mode: 'open' });
+		BlueScreen.shadow = shadow;
+
+		// Clone CSS into shadow root
+		document.querySelectorAll('style.tracy-debug').forEach((s) => {
+			shadow.appendChild(s.cloneNode(true));
+		});
+
+		shadow.appendChild(blueScreen);
+		document.body.appendChild(host);
+
 		document.documentElement.classList.add('tracy-bs-visible');
 		if (navigator.platform.indexOf('Mac') > -1) {
 			blueScreen.classList.add('tracy-mac');
 		}
 
 		blueScreen.addEventListener('tracy-toggle', (e) => {
-			if (e.target.matches('#tracy-bs-toggle')) { // blue screen toggle
+			let target = e.composedPath()[0] || e.target;
+			if (target.matches('#tracy-bs-toggle')) { // blue screen toggle
 				document.documentElement.classList.toggle('tracy-bs-visible', !e.detail.collapsed);
 
-			} else if (!e.target.matches('.tracy-dump *') && e.detail.originalEvent) { // panel toggle
+			} else if (!target.matches('.tracy-dump *') && e.detail.originalEvent) { // panel toggle
 				e.detail.relatedTarget.classList.toggle('tracy-panel-fadein', !e.detail.collapsed);
 			}
 		});
 
 		if (!ajax) {
-			document.body.appendChild(blueScreen);
-			let id = location.href + document.querySelector('.tracy-section--error').textContent;
+			let id = location.href + shadow.querySelector('.tracy-section--error').textContent;
 			Tracy.Toggle.persist(blueScreen, sessionStorage.getItem('tracy-toggles-bskey') === id);
 			sessionStorage.setItem('tracy-toggles-bskey', id);
 		}
 
-		(new ResizeObserver(stickyFooter)).observe(blueScreen);
+		Tracy.Dumper.init(shadow);
+		(new ResizeObserver(() => stickyFooter(shadow))).observe(blueScreen);
 
 		if (document.documentElement.classList.contains('tracy-bs-visible')) {
 			blueScreen.scrollIntoView();
@@ -41,33 +55,37 @@ class BlueScreen {
 		// enables toggling via ESC
 		document.addEventListener('keyup', (e) => {
 			if (e.keyCode === 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) { // ESC
-				Tracy.Toggle.toggle(document.getElementById('tracy-bs-toggle'));
+				let toggle = BlueScreen.shadow && BlueScreen.shadow.querySelector('#tracy-bs-toggle');
+				if (toggle) {
+					Tracy.Toggle.toggle(toggle);
+				}
 			}
 		});
 
 		Tracy.TableSort.init();
 		Tracy.Tabs.init();
 
-		window.addEventListener('scroll', stickyFooter);
+		window.addEventListener('scroll', () => stickyFooter(BlueScreen.shadow));
 
 		BlueScreen.globalInit = function () {};
 	}
 
 
 	static loadAjax(content) {
-		let ajaxBs = document.getElementById('tracy-bs');
-		if (ajaxBs) {
-			ajaxBs.remove();
+		let host = document.querySelector('tracy-bs');
+		if (host) {
+			host.remove();
 		}
 		document.body.insertAdjacentHTML('beforeend', content);
-		ajaxBs = document.getElementById('tracy-bs');
-		Tracy.Dumper.init(ajaxBs);
 		BlueScreen.init(true);
 	}
 }
 
-function stickyFooter() {
-	let footer = document.querySelector('#tracy-bs footer');
+function stickyFooter(root) {
+	let footer = root && root.querySelector('#tracy-bs footer');
+	if (!footer) {
+		return;
+	}
 	footer.classList.toggle('tracy-footer--sticky', false); // to measure footer.offsetTop
 	footer.classList.toggle('tracy-footer--sticky', footer.offsetHeight + footer.offsetTop - window.innerHeight - document.documentElement.scrollTop < 0);
 }
