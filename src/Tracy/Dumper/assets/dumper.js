@@ -46,9 +46,9 @@ class Dumper {
 		Dumper.inited = true;
 
 		document.documentElement.addEventListener('click', (e) => {
-			let el;
+			let el, target = e.composedPath()[0] || e.target;
 			// enables <span data-tracy-href=""> & ctrl or cmd key
-			if ((e.ctrlKey || e.metaKey) && (el = e.target.closest('[data-tracy-href]'))) {
+			if ((e.ctrlKey || e.metaKey) && (el = target.closest('[data-tracy-href]'))) {
 				location.href = el.getAttribute('data-tracy-href');
 				return false;
 			}
@@ -56,9 +56,9 @@ class Dumper {
 		});
 
 		document.documentElement.addEventListener('tracy-beforetoggle', (e) => {
-			let el;
+			let el, target = e.composedPath()[0] || e.target;
 			// initializes lazy <span data-tracy-dump> inside <pre data-tracy-snapshot>
-			if ((el = e.target.closest('[data-tracy-snapshot]'))) {
+			if ((el = target.closest('[data-tracy-snapshot]'))) {
 				let snapshot = JSON.parse(el.getAttribute('data-tracy-snapshot'));
 				el.removeAttribute('data-tracy-snapshot');
 				el.querySelectorAll('[data-tracy-dump]').forEach((toggler) => {
@@ -72,7 +72,8 @@ class Dumper {
 		});
 
 		document.documentElement.addEventListener('tracy-toggle', (e) => {
-			if (!e.target.matches('.tracy-dump *')) {
+			let target = e.composedPath()[0] || e.target;
+			if (!target.matches('.tracy-dump *')) {
 				return;
 			}
 
@@ -98,21 +99,23 @@ class Dumper {
 		});
 
 		document.documentElement.addEventListener('animationend', (e) => {
+			let target = e.composedPath()[0] || e.target;
 			if (e.animationName === 'tracy-dump-flash') {
-				e.target.classList.toggle('tracy-dump-flash', false);
+				target.classList.toggle('tracy-dump-flash', false);
 			}
 		});
 
 		document.addEventListener('mouseover', (e) => {
-			if (!e.target.matches('.tracy-dump *')) {
+			let target = e.composedPath()[0] || e.target;
+			if (!target.matches('.tracy-dump *')) {
 				return;
 			}
 
 			let el;
 
-			if (e.target.matches('.tracy-dump-hash') && (el = e.target.closest('tracy-div'))) {
+			if (target.matches('.tracy-dump-hash') && (el = target.closest('[id="tracy-debug"]') || target.closest('tracy-div'))) {
 				el.querySelectorAll('.tracy-dump-hash').forEach((el) => {
-					if (el.textContent === e.target.textContent) {
+					if (el.textContent === target.textContent) {
 						el.classList.add('tracy-dump-highlight');
 					}
 				});
@@ -125,8 +128,9 @@ class Dumper {
 		});
 
 		document.addEventListener('mouseout', (e) => {
-			if (e.target.matches('.tracy-dump-hash')) {
-				document.querySelectorAll('.tracy-dump-hash.tracy-dump-highlight').forEach((el) => {
+			let target = e.composedPath()[0] || e.target;
+			if (target.matches('.tracy-dump-hash')) {
+				target.getRootNode().querySelectorAll('.tracy-dump-hash.tracy-dump-highlight').forEach((el) => {
 					el.classList.remove('tracy-dump-highlight');
 				});
 			}
@@ -380,6 +384,31 @@ function UnknownEntityException() {}
 
 let Tracy = window.Tracy = window.Tracy || {};
 Tracy.Dumper = Tracy.Dumper || Dumper;
+
+if (!customElements.get('tracy-dump')) {
+	customElements.define('tracy-dump', class extends HTMLElement {
+		connectedCallback() {
+			if (this.shadowRoot) {
+				return;
+			}
+			let shadow = this.attachShadow({ mode: 'open' });
+
+			// clone CSS from document into shadow root
+			document.querySelectorAll('style.tracy-debug, style.tracy-dump-style').forEach((s) => {
+				shadow.appendChild(s.cloneNode(true));
+			});
+
+			// move only non-style/script children into shadow root
+			Array.from(this.childNodes).forEach((child) => {
+				if (child.nodeType !== 1 || (child.tagName !== 'STYLE' && child.tagName !== 'SCRIPT')) {
+					shadow.appendChild(child);
+				}
+			});
+
+			Tracy.Dumper.init(shadow);
+		}
+	});
+}
 
 function init() {
 	Tracy.Dumper.init();
