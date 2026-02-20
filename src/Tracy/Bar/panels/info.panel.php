@@ -9,7 +9,7 @@ use const PHP_VERSION, PHP_ZTS;
 /** @var DefaultBarPanel $this */
 
 if (isset($this->cpuUsage) && $this->time) {
-	foreach (getrusage() as $key => $val) {
+	foreach (getrusage() ?: [] as $key => $val) {
 		$this->cpuUsage[$key] -= $val;
 	}
 	$userUsage = -round(($this->cpuUsage['ru_utime.tv_sec'] * 1e6 + $this->cpuUsage['ru_utime.tv_usec']) / $this->time / 10000);

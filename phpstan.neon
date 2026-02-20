@@ -1,31 +1,51 @@
 parameters:
-	level: 6
+	level: 8
 
 	paths:
 		- src
+
+	fileExtensions:
+		- php
+		- phtml
 
 	ignoreErrors:
 		# Template variables used in required .phtml files via variable scope
 		-
 			identifier: closure.unusedUse
 			path: src/Tracy/Bar/Bar.php
+		-
+			identifier: closure.unusedUse
+			path: src/Tracy/BlueScreen/dist/markdown.phtml
 
 		# Tracy doesn't need generic type parameters for Fiber, ArrayObject, DOMNodeList, etc.
 		-
 			identifier: missingType.generics
 
-		# Private methods called from .phtml template files
-		-
-			identifier: method.unused
-			path: src/Tracy/BlueScreen/BlueScreen.php
-
 		# Runtime validation of callable-string and Closure types
 		-
 			identifier: function.alreadyNarrowedType
+			paths:
+				- src/Tracy/Bar/dist/loader.phtml
+				- src/Tracy/BlueScreen/BlueScreen.php
+				- src/Tracy/Helpers.php
 
 		# Tracy uses dynamic properties on exceptions and panels
 		-
 			identifier: property.notFound
+			paths:
+				- src/Tracy/Bar/dist/info.panel.phtml
+				- src/Tracy/Bar/dist/info.tab.phtml
+				- src/Tracy/Bar/panels/info.panel.php
+				- src/Tracy/Debugger/DevelopmentStrategy.php
+				- src/Tracy/Helpers.php
+
+		# Private methods called from .phtml template files
+		-
+			identifier: method.unused
+			path: src/Tracy/BlueScreen/BlueScreen.php
+		-
+			identifier: method.private
+			path: src/Tracy/BlueScreen/dist
 
 		# PHPStan doesn't track reference assignments to snapshot array
 		-
@@ -72,3 +92,29 @@ parameters:
 		-
 			identifier: missingType.return
 			path: src/Tracy/Logger/ILogger.php
+
+		# Arrow function callback receives class names from get_declared_classes() etc.
+		-
+			identifier: argument.type
+			message: '#class\-string#'
+			path: src/Tracy/Bar/panels/info.panel.php
+
+		# getPanel() returns ?IBarPanel but panel is always registered; dynamic props correct by design
+		-
+			identifier: property.nonObject
+			path: src/Tracy/Debugger/DevelopmentStrategy.php
+
+		# Value::$id and $value are always non-null when used as array keys (snapshot/above maps)
+		-
+			identifier: offsetAccess.invalidOffset
+			paths:
+				- src/Tracy/Dumper/Describer.php
+				- src/Tracy/Dumper/Renderer.php
+
+		# Generated phtml templates use is_bool() as a runtime type guard; PHPStan sees it as always-false for string-typed vars
+		-
+			identifier: function.impossibleType
+			paths:
+				- src/Tracy/Bar/dist
+				- src/Tracy/BlueScreen/dist
+				- src/Tracy/Debugger/dist

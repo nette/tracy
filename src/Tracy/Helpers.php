@@ -171,7 +171,7 @@ class Helpers
 		) {
 			// do nothing
 		} elseif (preg_match('~Argument #(\d+)(?: \(\$\w+\))? must be of type callable, (.+ given)~', $message, $m)) {
-			$arg = $e->getTrace()[0]['args'][$m[1] - 1] ?? null;
+			$arg = $e->getTrace()[0]['args'][(int) $m[1] - 1] ?? null;
 			if (is_string($arg) && str_contains($arg, '::')) {
 				$arg = explode('::', $arg, 2);
 			}
@@ -202,7 +202,7 @@ class Helpers
 				$replace = ["$m[2](", "$hint("];
 			}
 
-		} elseif (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m)) {
+		} elseif (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m) && class_exists($m[1])) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), fn($prop) => !$prop->isStatic());
 			if ($hint = self::getSuggestion($items, $m[2])) {
@@ -210,7 +210,10 @@ class Helpers
 				$replace = ["->$m[2]", "->$hint"];
 			}
 
-		} elseif (preg_match('#^Access to undeclared static property:? ([\w\\\]+)::\$(\w+)#', $message, $m)) {
+		} elseif (
+			preg_match('#^Access to undeclared static property:? ([\w\\\]+)::\$(\w+)#', $message, $m)
+			&& class_exists($m[1])
+		) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_STATIC), fn($prop) => $prop->isPublic());
 			if ($hint = self::getSuggestion($items, $m[2])) {
@@ -237,7 +240,7 @@ class Helpers
 	/** @internal */
 	public static function improveError(string $message): string
 	{
-		if (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m)) {
+		if (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m) && class_exists($m[1])) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), fn($prop) => !$prop->isStatic());
 			$hint = self::getSuggestion($items, $m[2]);
@@ -441,7 +444,7 @@ class Helpers
 	{
 		return match (true) {
 			extension_loaded('mbstring') => mb_strlen($s, 'UTF-8'),
-			extension_loaded('iconv') => iconv_strlen($s, 'UTF-8'),
+			extension_loaded('iconv') => iconv_strlen($s, 'UTF-8') ?: strlen($s),
 			default => strlen(@utf8_decode($s)), // deprecated
 		};
 	}

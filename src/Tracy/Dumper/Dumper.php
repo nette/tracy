@@ -114,7 +114,7 @@ class Dumper
 		if (Helpers::isCli()) {
 			$useColors = self::$terminalColors && Helpers::detectColors();
 			$dumper = new self($options);
-			fwrite(STDOUT, $dumper->asTerminal($var, $useColors ? self::$terminalColors : []));
+			fwrite(STDOUT, $dumper->asTerminal($var, $useColors ? self::$terminalColors ?? [] : []));
 
 		} elseif (Helpers::isHtmlMode()) {
 			$options[self::LOCATION] ??= true;
@@ -155,7 +155,7 @@ class Dumper
 	 */
 	public static function toTerminal(mixed $var, array $options = []): string
 	{
-		return (new self($options))->asTerminal($var, self::$terminalColors);
+		return (new self($options))->asTerminal($var, self::$terminalColors ?? []);
 	}
 
 
