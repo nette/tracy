@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Dumper::toHtml() & lazy object
  * @phpversion 8.4
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 use Tracy\Dumper;

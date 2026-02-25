@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger exception in generator in HTML.
@@ -6,8 +6,6 @@
  * @exitCode   255
  * @outputMatchFile expected/Debugger.exception.in-generator.html.expect
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

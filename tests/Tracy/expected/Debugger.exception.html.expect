@@ -99,7 +99,7 @@
 		</div>
 
 		<div class="tracy-callstack-additional tracy-collapsed">
-			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>19:</span>
+			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    </span>Debugger<span class='tracy-code-keyword'>::</span><span class='tracy-code-var'>$productionMode </span><span class='tracy-code-keyword'>= </span>false<span class='tracy-code-keyword'>;
 <span class='tracy-line'>%d%:</span>    </span>setHtmlMode<span class='tracy-code-keyword'>();

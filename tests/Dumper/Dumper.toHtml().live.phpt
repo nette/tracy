@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Dumper::toHtml() live static snapshot
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 use Tester\Expect;

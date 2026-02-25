@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger exception in non-HTML.
@@ -6,8 +6,6 @@
  * @httpCode   500
  * @outputMatchFile expected/Debugger.exception.nonhtml.expect
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

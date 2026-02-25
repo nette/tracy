@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger::barDump() with showLocation.
  * @outputMatch OK!
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 use Tester\DomQuery;

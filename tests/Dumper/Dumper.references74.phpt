@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @phpVersion 7.4
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 use Tracy\Dumper;

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger eval error in HTML.
@@ -6,8 +6,6 @@
  * @exitCode   255
  * @outputMatchFile expected/Debugger.error-in-eval.expect
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

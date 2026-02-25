@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger notices and warnings and shut-up operator.
  * @outputMatch %A%Compile Warning: Unsupported declare 'foo' in %a% on line %d%
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

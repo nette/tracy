@@ -1,12 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Tracy (https://tracy.nette.org)
  *
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 require __DIR__ . '/Tracy/Bar/IBarPanel.php';
 require __DIR__ . '/Tracy/Bar/Bar.php';

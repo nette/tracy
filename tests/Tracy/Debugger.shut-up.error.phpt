@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger errors and shut-up operator.
@@ -6,8 +6,6 @@
  * @httpCode   500
  * @outputMatch Error%a?%: Call to undefined function missing_function() in %A%
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

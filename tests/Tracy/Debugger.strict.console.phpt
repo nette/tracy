@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger notices and warnings with $strictMode in console.
@@ -6,8 +6,6 @@
  * @httpCode   500
  * @outputMatchFile expected/Debugger.strict.console.expect
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

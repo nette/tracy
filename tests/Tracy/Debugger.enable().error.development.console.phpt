@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger::enable() error.
@@ -6,8 +6,6 @@
  * @httpCode   500
  * @outputMatch RuntimeException: %A%
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

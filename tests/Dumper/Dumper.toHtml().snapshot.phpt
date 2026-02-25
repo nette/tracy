@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Dumper::toHtml() snapshop
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 use Tester\Expect;

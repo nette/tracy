@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger error in toString.
@@ -6,8 +6,6 @@
  * @exitCode   255
  * @outputMatch %A%<title>User Error: Test::__toString</title>%A%
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 
