@@ -31,10 +31,16 @@ class Panel {
 		let elem = this.elem;
 
 		this.init = function () {};
-		elem.innerHTML = elem.tracyContent = elem.dataset.tracyContent;
-		delete elem.dataset.tracyContent;
-		Tracy.Dumper.init(Debug.layer);
-		evalScripts(elem);
+
+		if (elem.dataset.tracyLazy && !elem.dataset.tracyContent) {
+			elem.innerHTML = elem.tracyContent = '<h1>Loading\u2026</h1><div class="tracy-inner"><p>Loading panel content\u2026</p></div>';
+			this.fetchLazyContent();
+		} else {
+			elem.innerHTML = elem.tracyContent = elem.dataset.tracyContent;
+			delete elem.dataset.tracyContent;
+			Tracy.Dumper.init(Debug.layer);
+			evalScripts(elem);
+		}
 
 		draggable(elem, {
 			handles: elem.querySelectorAll('h1'),
@@ -84,6 +90,45 @@ class Panel {
 		if (this.is('tracy-panel-persist')) {
 			Tracy.Toggle.persist(elem);
 		}
+	}
+
+
+	fetchLazyContent() {
+		let elem = this.elem;
+		let panelId = elem.id.replace('tracy-debug-panel-', '');
+		let url = baseUrl + '_tracy_bar=lazy-panel.' + requestId + '.' + panelId + '&XDEBUG_SESSION_STOP=1&v=' + Math.random();
+
+		fetch(url)
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.content) {
+					elem.innerHTML = elem.tracyContent = data.content;
+					delete elem.dataset.tracyLazy;
+					Tracy.Dumper.init(Debug.layer);
+					evalScripts(elem);
+
+					elem.querySelectorAll('.tracy-icons a').forEach((link) => {
+						link.addEventListener('click', (e) => {
+							if (link.dataset.tracyAction === 'close') {
+								this.toPeek();
+							} else if (link.dataset.tracyAction === 'window') {
+								this.toWindow();
+							}
+							e.preventDefault();
+							e.stopImmediatePropagation();
+						});
+					});
+
+					if (this.is('tracy-panel-persist')) {
+						Tracy.Toggle.persist(elem);
+					}
+				} else {
+					elem.innerHTML = elem.tracyContent = '<h1>Error</h1><div class="tracy-inner"><p>Lazy panel content not available. The panel may have expired from the session.</p></div>';
+				}
+			})
+			.catch(() => {
+				elem.innerHTML = elem.tracyContent = '<h1>Error</h1><div class="tracy-inner"><p>Failed to load lazy panel content.</p></div>';
+			});
 	}
 
 

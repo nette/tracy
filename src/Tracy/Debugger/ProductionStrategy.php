@@ -69,8 +69,9 @@ final class ProductionStrategy
 	}
 
 
-	public function dispatch(): void
+	public function sendAssets(): bool
 	{
+		return false;
 	}
 
 

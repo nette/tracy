@@ -109,12 +109,14 @@ final class DevelopmentStrategy
 	}
 
 
-	public function dispatch(): void
+	public function sendAssets(): bool
 	{
 		if (!Helpers::isCli() && $this->defer->sendAssets()) {
 			$this->assetsSent = true;
-			exit;
+			return true;
 		}
+
+		return false;
 	}
 
 
@@ -135,5 +137,6 @@ final class DevelopmentStrategy
 		}
 
 		$this->bar->render($this->defer);
+		$this->bar->renderLazyPanels($this->defer);
 	}
 }
