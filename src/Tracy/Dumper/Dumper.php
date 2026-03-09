@@ -140,7 +140,7 @@ class Dumper
 
 
 	/**
-	 * Dumps variable to plain text.
+	 * Returns variable dump as plain text.
 	 * @param  array<string, mixed>  $options
 	 */
 	public static function toText(mixed $var, array $options = []): string
@@ -150,7 +150,7 @@ class Dumper
 
 
 	/**
-	 * Dumps variable to x-terminal.
+	 * Returns variable dump as ANSI-colored terminal output.
 	 * @param  array<string, mixed>  $options
 	 */
 	public static function toTerminal(mixed $var, array $options = []): string

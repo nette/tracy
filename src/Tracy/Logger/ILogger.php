@@ -9,7 +9,7 @@ namespace Tracy;
 
 
 /**
- * Logger.
+ * Logs messages and exceptions with a severity level.
  */
 interface ILogger
 {

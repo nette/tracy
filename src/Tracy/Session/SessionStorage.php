@@ -8,6 +8,9 @@
 namespace Tracy;
 
 
+/**
+ * Persistent storage for Tracy debug session data (deferred Bar and BlueScreen content).
+ */
 interface SessionStorage
 {
 	function isAvailable(): bool;

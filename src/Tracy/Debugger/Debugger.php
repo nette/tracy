@@ -245,6 +245,10 @@ class Debugger
 	}
 
 
+	/**
+	 * Dispatches deferred Bar/BlueScreen assets for AJAX requests or redirect queues.
+	 * Must be called after session_start() when using NativeSession.
+	 */
 	public static function dispatch(): void
 	{
 		self::getStrategy()->dispatch();
@@ -267,7 +271,7 @@ class Debugger
 
 
 	/**
-	 * Shutdown handler to catch fatal errors and execute of the planned activities.
+	 * Shutdown handler to catch fatal errors and render the Bar.
 	 * @internal
 	 */
 	public static function shutdownHandler(): void
@@ -298,7 +302,7 @@ class Debugger
 
 
 	/**
-	 * Handler to catch uncaught exception.
+	 * Handles an uncaught exception by rendering or logging it.
 	 * @internal
 	 */
 	public static function exceptionHandler(\Throwable $exception): void
@@ -324,7 +328,7 @@ class Debugger
 
 
 	/**
-	 * Handler to catch warnings and notices.
+	 * Handles PHP warnings and notices; converts recoverable errors to exceptions.
 	 * @throws ErrorException
 	 * @internal
 	 */

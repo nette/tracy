@@ -10,6 +10,9 @@ namespace Tracy;
 use const PHP_SESSION_ACTIVE;
 
 
+/**
+ * Session storage backed by native PHP session ($_SESSION).
+ */
 class NativeSession implements SessionStorage
 {
 	public function isAvailable(): bool
