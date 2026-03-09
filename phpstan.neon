@@ -13,9 +13,6 @@ parameters:
 		-
 			identifier: closure.unusedUse
 			path: src/Tracy/Bar/Bar.php
-		-
-			identifier: closure.unusedUse
-			path: src/Tracy/BlueScreen/dist/markdown.phtml
 
 		# Tracy doesn't need generic type parameters for Fiber, ArrayObject, DOMNodeList, etc.
 		-
