@@ -12,7 +12,7 @@ use const ARRAY_FILTER_USE_KEY, ENT_IGNORE, PHP_VERSION_ID;
 
 
 /**
- * Red BlueScreen.
+ * Renders a beautiful error/exception page with syntax-highlighted stack trace.
  */
 class BlueScreen
 {
@@ -315,7 +315,7 @@ class BlueScreen
 
 
 	/**
-	 * Returns syntax highlighted source code.
+	 * Returns syntax highlighted snippet from a file, or null if the file cannot be read.
 	 */
 	public static function highlightFile(
 		string $file,
@@ -343,7 +343,7 @@ class BlueScreen
 
 
 	/**
-	 * Returns syntax highlighted source code.
+	 * Returns syntax highlighted PHP source code with the given line emphasized.
 	 */
 	public static function highlightPhp(string $source, int $line, int $lines = 15, int $column = 0): string
 	{
@@ -352,7 +352,7 @@ class BlueScreen
 
 
 	/**
-	 * Returns highlighted line in HTML code.
+	 * Returns highlighted line in already-tokenized HTML code.
 	 */
 	public static function highlightLine(string $html, int $line, int $lines = 15, int $column = 0): string
 	{

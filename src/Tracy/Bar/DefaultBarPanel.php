@@ -9,7 +9,7 @@ namespace Tracy;
 
 
 /**
- * IBarPanel implementation helper.
+ * Built-in IBarPanel implementation backed by compiled .phtml templates.
  * @internal
  */
 #[\AllowDynamicProperties]
@@ -24,9 +24,6 @@ class DefaultBarPanel implements IBarPanel
 	}
 
 
-	/**
-	 * Renders HTML code for custom tab.
-	 */
 	public function getTab(): string
 	{
 		return Helpers::capture(function () {
@@ -36,9 +33,6 @@ class DefaultBarPanel implements IBarPanel
 	}
 
 
-	/**
-	 * Renders HTML code for custom panel.
-	 */
 	public function getPanel(): string
 	{
 		return Helpers::capture(function () {
