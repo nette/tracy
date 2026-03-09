@@ -75,6 +75,9 @@ class Helpers
 	}
 
 
+	/**
+	 * Formats an HTML string by replacing each % placeholder with the next argument, HTML-escaped.
+	 */
 	public static function formatHtml(string $mask): string
 	{
 		$args = func_get_args();
@@ -632,6 +635,9 @@ class Helpers
 
 
 	/**
+	 * Decomposes an integer flags value into matching constant names.
+	 * When $set is true, finds all flags set in the value (bitmask decomposition).
+	 * When $set is false, finds a single constant that equals the value exactly.
 	 * @param  string[]  $constants
 	 * @return list<string>|null
 	 * @internal

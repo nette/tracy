@@ -11,6 +11,9 @@ use function is_string;
 use const LOCK_EX, LOCK_UN;
 
 
+/**
+ * File-based session storage using a cookie-identified lock file.
+ */
 class FileSession implements SessionStorage
 {
 	private const FilePrefix = 'tracy-';

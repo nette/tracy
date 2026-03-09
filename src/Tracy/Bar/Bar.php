@@ -38,7 +38,7 @@ class Bar
 
 
 	/**
-	 * Returns panel with given id
+	 * Returns panel with given ID, or null if not found.
 	 */
 	public function getPanel(string $id): ?IBarPanel
 	{
