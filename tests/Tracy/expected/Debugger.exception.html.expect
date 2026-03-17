@@ -24,7 +24,7 @@
 
 	<h1>
 		<span>The my exception</span>
-			<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
+		<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
 	</h1>
 
 </section>
@@ -34,8 +34,8 @@
 	</h2>
 
 	<div class="tracy-section-panel">
-			<p><b>File:</b> <a href="%a%" title="%a%:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
-			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
+		<p><b>File:</b> <a href="%a%" title="%a%:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
+		<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    function </span>second<span class='tracy-code-keyword'>(</span><span class='tracy-code-var'>$arg1</span><span class='tracy-code-keyword'>, </span><span class='tracy-code-var'>$arg2</span><span class='tracy-code-keyword'>)
 <span class='tracy-line'>%d%:</span>    {
@@ -60,18 +60,18 @@
 
 	<div class="tracy-section-panel">
 		<div class="tracy-callstack">
-				<div class="tracy-callstack-file">
-						<a href="editor:%a%" title="%a%:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
-				</div>
+			<div class="tracy-callstack-file">
+				<a href="editor:%a%" title="%a%:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
+			</div>
 
-				<div class="tracy-callstack-callee">
-						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+			<div class="tracy-callstack-callee">
+				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
 <b>third</b> (...)
-					</a>
-				</div>
+				</a>
+			</div>
 
-					<div class="tracy-callstack-additional tracy-collapsed">
-							<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
+			<div class="tracy-callstack-additional tracy-collapsed">
+				<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    function </span>first<span class='tracy-code-keyword'>(</span><span class='tracy-code-var'>$arg1</span><span class='tracy-code-keyword'>, </span><span class='tracy-code-var'>$arg2</span><span class='tracy-code-keyword'>)
 <span class='tracy-line'>%d%:</span>    {
@@ -88,26 +88,26 @@
 <span class='tracy-line'>%d%:</span>    function </span>third<span class='tracy-code-keyword'>(</span><span class='tracy-code-var'>$arg1</span><span class='tracy-code-keyword'>)
 </span></code></div></pre>
 
-							<table class="tracy-callstack-args">
-									<tr>
-										<th>$arg1</th>
-										<td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
+				<table class="tracy-callstack-args">
+					<tr>
+						<th>$arg1</th>
+						<td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td>
-									</tr>
-							</table>
-					</div>
-				<div class="tracy-callstack-file">
-						<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
-				</div>
+					</tr>
+				</table>
+			</div>
+			<div class="tracy-callstack-file">
+				<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
+			</div>
 
-				<div class="tracy-callstack-callee">
-						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+			<div class="tracy-callstack-callee">
+				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
 <b>second</b> (...)
-					</a>
-				</div>
+				</a>
+			</div>
 
-					<div class="tracy-callstack-additional tracy-collapsed">
-							<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
+			<div class="tracy-callstack-additional tracy-collapsed">
+				<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    </span>Debugger<span class='tracy-code-keyword'>::</span><span class='tracy-code-var'>$productionMode </span><span class='tracy-code-keyword'>= </span>false<span class='tracy-code-keyword'>;
 <span class='tracy-line'>%d%:</span>    </span>setHtmlMode<span class='tracy-code-keyword'>();
@@ -124,31 +124,31 @@
 <span class='tracy-line'>%d%:</span>    function </span>second<span class='tracy-code-keyword'>(</span><span class='tracy-code-var'>$arg1</span><span class='tracy-code-keyword'>, </span><span class='tracy-code-var'>$arg2</span><span class='tracy-code-keyword'>)
 </span></code></div></pre>
 
-							<table class="tracy-callstack-args">
-									<tr>
-										<th>$arg1</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
+				<table class="tracy-callstack-args">
+					<tr>
+						<th>$arg1</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
 </td>
-									</tr>
-									<tr>
-										<th>$arg2</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">false</span></pre>
+					</tr>
+					<tr>
+						<th>$arg2</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">false</span></pre>
 </td>
-									</tr>
-							</table>
-					</div>
-				<div class="tracy-callstack-file">
-						<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
-				</div>
+					</tr>
+				</table>
+			</div>
+			<div class="tracy-callstack-file">
+				<a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a>
+			</div>
 
-				<div class="tracy-callstack-callee">
-						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+			<div class="tracy-callstack-callee">
+				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
 <b>first</b> (...)
-					</a>
-				</div>
+				</a>
+			</div>
 
-					<div class="tracy-callstack-additional tracy-collapsed">
-							<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
+			<div class="tracy-callstack-additional tracy-collapsed">
+				<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'><div><code><span class='tracy-code-keyword'><span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    function </span>third<span class='tracy-code-keyword'>(</span><span class='tracy-code-var'>$arg1</span><span class='tracy-code-keyword'>)
 <span class='tracy-line'>%d%:</span>    {
@@ -161,19 +161,19 @@
 </span><span class='tracy-line-highlight'>%d%:    first(10, 'any string');</span>
 </code></div></pre>
 
-							<table class="tracy-callstack-args">
-									<tr>
-										<th>$arg1</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
+				<table class="tracy-callstack-args">
+					<tr>
+						<th>$arg1</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
 </td>
-									</tr>
-									<tr>
-										<th>$arg2</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>
+					</tr>
+					<tr>
+						<th>$arg2</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>
 </td>
-									</tr>
-							</table>
-					</div>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 </section>
@@ -187,9 +187,9 @@
 
 		<p><i>Note: the last muted error may have nothing to do with the thrown exception.</i></p>
 
-			<p><a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
+		<p><a href="editor:%a%" title="%a%Debugger.exception.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.exception.html.phpt</b>:%d%</a></p>
 
-			<div>%A%</div>
+		<div>%A%</div>
 	</div>
 </section>
 <section class="tracy-section">
@@ -201,9 +201,9 @@
 		<div class="tracy-tabs">
 			<ul class="tracy-tab-bar">
 				<li class="tracy-tab-label tracy-active"><a href="#">$_SERVER</a></li>
-					<li class="tracy-tab-label"><a href="#">Constants</a></li>
+				<li class="tracy-tab-label"><a href="#">Constants</a></li>
 				<li class="tracy-tab-label"><a href="#">Configuration</a></li>
-					<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
+				<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
 			</ul>
 
 			<div>
@@ -213,19 +213,19 @@
 					</table>
 				</div>
 
-					<div class="tracy-tab-panel tracy-pane">
-						<table class="tracy-sortable">
-						%A%
-						</table>
-					</div>
+				<div class="tracy-tab-panel tracy-pane">
+					<table class="tracy-sortable">
+					%A%
+					</table>
+				</div>
 				<div class="tracy-tab-panel">
 %A%</div>
 
-					<div class="tracy-tab-panel tracy-pane">
-						<pre class="tracy-dump tracy-light"
+				<div class="tracy-tab-panel tracy-pane">
+					<pre class="tracy-dump tracy-light"
 %A%</pre>
 
-					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -247,21 +247,21 @@
 					<h3>URL <a href="%a%" target="_blank" rel="noreferrer noopener" style="font-weight: normal">%a%</a></h3>
 
 					<h3>$_GET</h3>
-						<p><i>empty</i></p>
+					<p><i>empty</i></p>
 					<h3>$_COOKIE</h3>
-						<p><i>empty</i></p>
+					<p><i>empty</i></p>
 				</div>
 
 
 				<div class="tracy-tab-panel">
 					<h3>Code: %d%</h3>
 
-						<div class="tracy-pane">
-							<table class="tracy-sortable">
+					<div class="tracy-pane">
+						<table class="tracy-sortable">
 %A%
-							</table>
-						</div>
-						<p>Headers were not sent at the time the exception was thrown</p>
+						</table>
+					</div>
+					<p>Headers were not sent at the time the exception was thrown</p>
 				</div>
 			</div>
 		</div>
@@ -271,8 +271,8 @@
 			<ul>
 				<li><b><a href="%a%" target="_blank" rel="noreferrer noopener">%a%</a></b></li>
 				<li>Report generated at %a%</li>
-					<li>PHP %a%</li>
-					<li>Tracy %a%</li>
+				<li>PHP %a%</li>
+				<li>Tracy %a%</li>
 			</ul>
 
 			<div class="tracy-footer-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>

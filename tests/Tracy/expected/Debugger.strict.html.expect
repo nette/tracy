@@ -24,7 +24,7 @@
 
 	<h1>
 		<span>Only variables should be assigned by reference</span>
-			<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
+		<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
 	</h1>
 
 </section>
@@ -34,8 +34,8 @@
 	</h2>
 
 	<div class="tracy-section-panel">
-			<p><b>File:</b> <a href="%a%" title="%a%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a></p>
-			<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'>%A%</pre>
+		<p><b>File:</b> <a href="%a%" title="%a%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a></p>
+		<pre title="Ctrl-Click to open in editor" data-tracy-href="%a%" class='tracy-code'>%A%</pre>
 	</div>
 </section>
 <section class="tracy-section">
@@ -45,79 +45,79 @@
 
 	<div class="tracy-section-panel">
 		<div class="tracy-callstack">
-				<div class="tracy-callstack-file">
-						<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
-				</div>
+			<div class="tracy-callstack-file">
+				<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
+			</div>
 
-				<div class="tracy-callstack-callee">
-						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+			<div class="tracy-callstack-callee">
+				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
 <b>third</b> (...)
-					</a>
-				</div>
+				</a>
+			</div>
 
-					<div class="tracy-callstack-additional tracy-collapsed">
-							<pre title="Ctrl-Click to open in editor" %A%</pre>
+			<div class="tracy-callstack-additional tracy-collapsed">
+				<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-							<table class="tracy-callstack-args">
-									<tr>
-										<th>$arg1</th>
-										<td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
+				<table class="tracy-callstack-args">
+					<tr>
+						<th>$arg1</th>
+						<td><pre class="tracy-dump tracy-light" data-tracy-dump='[[0,1],[1,2],[2,3]]'></pre>
 </td>
-									</tr>
-							</table>
-					</div>
-				<div class="tracy-callstack-file">
-						<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
-				</div>
+					</tr>
+				</table>
+			</div>
+			<div class="tracy-callstack-file">
+				<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
+			</div>
 
-				<div class="tracy-callstack-callee">
-						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+			<div class="tracy-callstack-callee">
+				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
 <b>second</b> (...)
-					</a>
-				</div>
+				</a>
+			</div>
 
-					<div class="tracy-callstack-additional tracy-collapsed">
-							<pre title="Ctrl-Click to open in editor" %A%</pre>
+			<div class="tracy-callstack-additional tracy-collapsed">
+				<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-							<table class="tracy-callstack-args">
-									<tr>
-										<th>$arg1</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
+				<table class="tracy-callstack-args">
+					<tr>
+						<th>$arg1</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">true</span></pre>
 </td>
-									</tr>
-									<tr>
-										<th>$arg2</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">false</span></pre>
+					</tr>
+					<tr>
+						<th>$arg2</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-bool">false</span></pre>
 </td>
-									</tr>
-							</table>
-					</div>
-				<div class="tracy-callstack-file">
-						<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
-				</div>
+					</tr>
+				</table>
+			</div>
+			<div class="tracy-callstack-file">
+				<a href="editor:%a%" title="%a%Debugger.strict.html.phpt:%d%" class="tracy-editor">%a%<b>Debugger.strict.html.phpt</b>:%d%</a>
+			</div>
 
-				<div class="tracy-callstack-callee">
-						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+			<div class="tracy-callstack-callee">
+				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
 <b>first</b> (...)
-					</a>
-				</div>
+				</a>
+			</div>
 
-					<div class="tracy-callstack-additional tracy-collapsed">
-							<pre title="Ctrl-Click to open in editor" %A%</pre>
+			<div class="tracy-callstack-additional tracy-collapsed">
+				<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-							<table class="tracy-callstack-args">
-									<tr>
-										<th>$arg1</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
+				<table class="tracy-callstack-args">
+					<tr>
+						<th>$arg1</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">10</span></pre>
 </td>
-									</tr>
-									<tr>
-										<th>$arg2</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>
+					</tr>
+					<tr>
+						<th>$arg2</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="10 characters"><span>'</span>any string<span>'</span></span></pre>
 </td>
-									</tr>
-							</table>
-					</div>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 </section>
@@ -140,9 +140,9 @@
 		<div class="tracy-tabs">
 			<ul class="tracy-tab-bar">
 				<li class="tracy-tab-label tracy-active"><a href="#">$_SERVER</a></li>
-					<li class="tracy-tab-label"><a href="#">Constants</a></li>
+				<li class="tracy-tab-label"><a href="#">Constants</a></li>
 				<li class="tracy-tab-label"><a href="#">Configuration</a></li>
-					<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
+				<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
 			</ul>
 
 			<div>
@@ -152,19 +152,19 @@
 					</table>
 				</div>
 
-					<div class="tracy-tab-panel tracy-pane">
-						<table class="tracy-sortable">
-						%A%
-						</table>
-					</div>
+				<div class="tracy-tab-panel tracy-pane">
+					<table class="tracy-sortable">
+					%A%
+					</table>
+				</div>
 				<div class="tracy-tab-panel">
-%A%				</div>
+%A%			</div>
 
-					<div class="tracy-tab-panel tracy-pane">
-						<pre class="tracy-dump tracy-light"
+				<div class="tracy-tab-panel tracy-pane">
+					<pre class="tracy-dump tracy-light"
 >%A%</pre>
 
-					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -186,21 +186,21 @@
 					<h3>URL <a href="%a%" target="_blank" rel="noreferrer noopener" style="font-weight: normal">%a%</a></h3>
 
 					<h3>$_GET</h3>
-						<p><i>empty</i></p>
+					<p><i>empty</i></p>
 					<h3>$_COOKIE</h3>
-						<p><i>empty</i></p>
+					<p><i>empty</i></p>
 				</div>
 
 
 				<div class="tracy-tab-panel">
 					<h3>Code: %d%</h3>
 
-						<div class="tracy-pane">
-							<table class="tracy-sortable">
-								%A%
-							</table>
-						</div>
-						<p>Headers were not sent at the time the exception was thrown</p>
+					<div class="tracy-pane">
+						<table class="tracy-sortable">
+							%A%
+						</table>
+					</div>
+					<p>Headers were not sent at the time the exception was thrown</p>
 				</div>
 			</div>
 		</div>
@@ -210,8 +210,8 @@
 			<ul>
 				<li><b><a href="%a%" target="_blank" rel="noreferrer noopener">%a%</a></b></li>
 				<li>Report generated at %a%</li>
-					<li>PHP %a%</li>
-					<li>Tracy %a%</li>
+				<li>PHP %a%</li>
+				<li>Tracy %a%</li>
 			</ul>
 
 			<div class="tracy-footer-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>

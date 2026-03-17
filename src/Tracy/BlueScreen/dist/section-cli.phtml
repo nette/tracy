@@ -10,20 +10,20 @@
 		<h3>Process ID <?= Tracy\Helpers::escapeHtml(getmypid()) ?>
 </h3>
 
-<?php if (count($tmp = explode('):', $source, 2)) === 2): ?>			<pre>php<?= Tracy\Helpers::escapeHtml($tmp[1]) ?>
+<?php if (count($tmp = explode('):', $source, 2)) === 2): ?>		<pre>php<?= Tracy\Helpers::escapeHtml($tmp[1]) ?>
 </pre>
 <?php endif ?>
-<?php if (isset($_SERVER['argv'])): ?>			<h3>Arguments</h3>
+<?php if (isset($_SERVER['argv'])): ?>		<h3>Arguments</h3>
 
-			<div class="tracy-pane">
-				<table>
-<?php foreach ($_SERVER['argv'] as $k => $v): ?>						<tr>
-							<th><?= Tracy\Helpers::escapeHtml($k) ?>
+		<div class="tracy-pane">
+			<table>
+<?php foreach ($_SERVER['argv'] as $k => $v): ?>				<tr>
+					<th><?= Tracy\Helpers::escapeHtml($k) ?>
 </th>
-							<td><?= $dump($v, $k) ?>
+					<td><?= $dump($v, $k) ?>
 </td>
-						</tr>
-<?php endforeach ?>				</table>
-			</div>
+				</tr>
+<?php endforeach ?>			</table>
+		</div>
 <?php endif ?>	</div>
 </section>

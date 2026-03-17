@@ -24,7 +24,7 @@
 
 	<h1>
 		<span>The my error</span>
-			<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
+		<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
 	</h1>
 
 </section>
@@ -34,7 +34,7 @@
 	</h2>
 
 	<div class="tracy-section-panel">
-			<p><b>File:</b> <span>%a% : eval()&apos;d code:1</span></p>
+		<p><b>File:</b> <span>%a% : eval()&apos;d code:1</span></p>
 	</div>
 </section>
 <section class="tracy-section">
@@ -44,72 +44,72 @@
 
 	<div class="tracy-section-panel">
 		<div class="tracy-callstack">
-				<div class="tracy-callstack-file">
-						<i>inner-code</i>:1
-				</div>
+			<div class="tracy-callstack-file">
+				<i>inner-code</i>:1
+			</div>
 
-				<div class="tracy-callstack-callee">
-						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+			<div class="tracy-callstack-callee">
+				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
 <b>trigger_error</b> (...)
-					</a>
-				</div>
+				</a>
+			</div>
 
-					<div class="tracy-callstack-additional tracy-collapsed">
+			<div class="tracy-callstack-additional tracy-collapsed">
 
-							<table class="tracy-callstack-args">
-									<tr>
-										<th>$message</th>
-										<td><pre class="tracy-dump tracy-light"
+				<table class="tracy-callstack-args">
+					<tr>
+						<th>$message</th>
+						<td><pre class="tracy-dump tracy-light"
 ><span class="tracy-dump-string" title="12 characters"><span>'</span>The my error<span>'</span></span></pre>
 </td>
-									</tr>
-									<tr>
-										<th>$error%a%</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">256</span></pre>
+					</tr>
+					<tr>
+						<th>$error%a%</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-number">256</span></pre>
 </td>
-									</tr>
-							</table>
-					</div>
-				<div class="tracy-callstack-file">
-						<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%" class="tracy-editor">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
-				</div>
+					</tr>
+				</table>
+			</div>
+			<div class="tracy-callstack-file">
+				<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%" class="tracy-editor">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
+			</div>
 
-				<div class="tracy-callstack-callee">
-						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+			<div class="tracy-callstack-callee">
+				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
 <b>eval</b> ()
-					</a>
-				</div>
+				</a>
+			</div>
 
-					<div class="tracy-callstack-additional tracy-collapsed">
-							<pre title="Ctrl-Click to open in editor" %A%</pre>
+			<div class="tracy-callstack-additional tracy-collapsed">
+				<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-					</div>
-				<div class="tracy-callstack-file">
-						<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%" class="tracy-editor">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
-				</div>
+			</div>
+			<div class="tracy-callstack-file">
+				<a href="editor:%a%" title="%a%Debugger.error-in-eval.phpt:%d%" class="tracy-editor">%a%<b>Debugger.error-in-eval.phpt</b>:%d%</a>
+			</div>
 
-				<div class="tracy-callstack-callee">
-						<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
+			<div class="tracy-callstack-callee">
+				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
 <b>first</b> (...)
-					</a>
-				</div>
+				</a>
+			</div>
 
-					<div class="tracy-callstack-additional tracy-collapsed">
-							<pre title="Ctrl-Click to open in editor" %A%</pre>
+			<div class="tracy-callstack-additional tracy-collapsed">
+				<pre title="Ctrl-Click to open in editor" %A%</pre>
 
-							<table class="tracy-callstack-args">
-									<tr>
-										<th>$user</th>
-										<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="4 characters"><span>'</span>root<span>'</span></span></pre>
+				<table class="tracy-callstack-args">
+					<tr>
+						<th>$user</th>
+						<td><pre class="tracy-dump tracy-light"><span class="tracy-dump-string" title="4 characters"><span>'</span>root<span>'</span></span></pre>
 </td>
-									</tr>
-									<tr>
-										<th>$pass</th>
-										<td><pre class="tracy-dump tracy-light" data-tracy-dump='{"text":"***** (string)"}'></pre>
+					</tr>
+					<tr>
+						<th>$pass</th>
+						<td><pre class="tracy-dump tracy-light" data-tracy-dump='{"text":"***** (string)"}'></pre>
 </td>
-									</tr>
-							</table>
-					</div>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 </section>
@@ -132,9 +132,9 @@
 		<div class="tracy-tabs">
 			<ul class="tracy-tab-bar">
 				<li class="tracy-tab-label tracy-active"><a href="#">$_SERVER</a></li>
-					<li class="tracy-tab-label"><a href="#">Constants</a></li>
+				<li class="tracy-tab-label"><a href="#">Constants</a></li>
 				<li class="tracy-tab-label"><a href="#">Configuration</a></li>
-					<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
+				<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
 			</ul>
 
 			<div>
@@ -144,18 +144,18 @@
 					</table>
 				</div>
 
-					<div class="tracy-tab-panel tracy-pane">
-						<table class="tracy-sortable">
-						%A%
-						</table>
-					</div>
+				<div class="tracy-tab-panel tracy-pane">
+					<table class="tracy-sortable">
+					%A%
+					</table>
+				</div>
 				<div class="tracy-tab-panel">%A%</div>
 
-					<div class="tracy-tab-panel tracy-pane">
-						<pre class="tracy-dump tracy-light"
+				<div class="tracy-tab-panel tracy-pane">
+					<pre class="tracy-dump tracy-light"
 >%A%</pre>
 
-					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -177,21 +177,21 @@
 					<h3>URL <a href="%a%" target="_blank" rel="noreferrer noopener" style="font-weight: normal">%a%</a></h3>
 
 					<h3>$_GET</h3>
-						<p><i>empty</i></p>
+					<p><i>empty</i></p>
 					<h3>$_COOKIE</h3>
-						<p><i>empty</i></p>
+					<p><i>empty</i></p>
 				</div>
 
 
 				<div class="tracy-tab-panel">
 					<h3>Code: %d%</h3>
 
-						<div class="tracy-pane">
-							<table class="tracy-sortable">
+					<div class="tracy-pane">
+						<table class="tracy-sortable">
 %A%
-							</table>
-						</div>
-						<p>Headers were not sent at the time the exception was thrown</p>
+						</table>
+					</div>
+					<p>Headers were not sent at the time the exception was thrown</p>
 				</div>
 			</div>
 		</div>
@@ -201,8 +201,8 @@
 			<ul>
 				<li><b><a href="%a%" target="_blank" rel="noreferrer noopener">%a%</a></b></li>
 				<li>Report generated at %a%</li>
-					<li>PHP %a%</li>
-					<li>Tracy %a%</li>
+				<li>PHP %a%</li>
+				<li>Tracy %a%</li>
 			</ul>
 
 			<div class="tracy-footer-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>

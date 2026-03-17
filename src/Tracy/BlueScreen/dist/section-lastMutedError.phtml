@@ -13,12 +13,12 @@
 
 		<p><i>Note: the last muted error may have nothing to do with the thrown exception.</i></p>
 
-<?php if (@is_file($lastError['file'])): ?>			<p><?= Helpers::editorLink($lastError['file'], $lastError['line']) ?>
+<?php if (@is_file($lastError['file'])): ?>		<p><?= Helpers::editorLink($lastError['file'], $lastError['line']) ?>
 </p>
 
-			<div><?= BlueScreen::highlightFile($lastError['file'], $lastError['line']) ?>
+		<div><?= BlueScreen::highlightFile($lastError['file'], $lastError['line']) ?>
 </div>
-<?php else: ?>			<p><i>inner-code</i>:<?= Tracy\Helpers::escapeHtml($lastError['line']) ?>
+<?php else: ?>		<p><i>inner-code</i>:<?= Tracy\Helpers::escapeHtml($lastError['line']) ?>
 </p>
 <?php endif ?>	</div>
 </section>

@@ -12,9 +12,9 @@
 <h1>Dumps</h1>
 
 <div class="tracy-inner tracy-DumpPanel">
-<?php foreach ($data as $item): ?><?php if ($item['title']): ?>			<h2><?= Tracy\Helpers::escapeHtml($item['title']) ?>
+<?php foreach ($data as $item): ?><?php if ($item['title']): ?>	<h2><?= Tracy\Helpers::escapeHtml($item['title']) ?>
 </h2>
 <?php endif ?>
-		<?= $item['dump'] ?>
+	<?= $item['dump'] ?>
 
 <?php endforeach ?></div>

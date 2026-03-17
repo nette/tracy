@@ -20,44 +20,44 @@
 <div class="tracy-inner tracy-InfoPanel">
 	<div class="tracy-inner-container">
 		<table class="tracy-sortable">
-<?php foreach ($info as $key => $val): ?>				<tr>
-<?php if (strlen($val) > 25): ?>						<td colspan=2><?= Tracy\Helpers::escapeHtml($key) ?>
+<?php foreach ($info as $key => $val): ?>			<tr>
+<?php if (strlen($val) > 25): ?>				<td colspan=2><?= Tracy\Helpers::escapeHtml($key) ?>
  <b><?= Tracy\Helpers::escapeHtml($val) ?>
 </b></td>
-<?php else: ?>						<td><?= Tracy\Helpers::escapeHtml($key) ?>
+<?php else: ?>				<td><?= Tracy\Helpers::escapeHtml($key) ?>
 </td><td><?= Tracy\Helpers::escapeHtml($val) ?>
 </td>
-<?php endif ?>				</tr>
+<?php endif ?>			</tr>
 <?php endforeach ?>		</table>
 
-<?php if ($packages || $devPackages): ?>			<h2><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^div .tracy-InfoPanel-packages">
-				Composer Packages (<?= Tracy\Helpers::escapeHtml(count($packages)) ?>
+<?php if ($packages || $devPackages): ?>		<h2><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^div .tracy-InfoPanel-packages">
+			Composer Packages (<?= Tracy\Helpers::escapeHtml(count($packages)) ?>
 <?= Tracy\Helpers::escapeHtml($devPackages ? ' + ' . count($devPackages) . ' dev' : '') ?>
 )
-			</a></h2>
+		</a></h2>
 
-			<div class="tracy-InfoPanel-packages tracy-collapsed">
-<?php if ($packages): ?>					<table class="tracy-sortable">
-<?php foreach ($packages as $package): ?>							<tr>
-								<td><?= Tracy\Helpers::escapeHtml($package->name) ?>
+		<div class="tracy-InfoPanel-packages tracy-collapsed">
+<?php if ($packages): ?>			<table class="tracy-sortable">
+<?php foreach ($packages as $package): ?>				<tr>
+					<td><?= Tracy\Helpers::escapeHtml($package->name) ?>
 </td>
-								<td><?= Tracy\Helpers::escapeHtml($package->version) ?>
+					<td><?= Tracy\Helpers::escapeHtml($package->version) ?>
 <?= Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '') ?>
 </td>
-							</tr>
-<?php endforeach ?>					</table>
+				</tr>
+<?php endforeach ?>			</table>
 <?php endif ?>
-<?php if ($devPackages): ?>					<h2>Dev Packages</h2>
+<?php if ($devPackages): ?>			<h2>Dev Packages</h2>
 
-					<table class="tracy-sortable">
-<?php foreach ($devPackages as $package): ?>							<tr>
-								<td><?= Tracy\Helpers::escapeHtml($package->name) ?>
+			<table class="tracy-sortable">
+<?php foreach ($devPackages as $package): ?>				<tr>
+					<td><?= Tracy\Helpers::escapeHtml($package->name) ?>
 </td>
-								<td><?= Tracy\Helpers::escapeHtml($package->version) ?>
+					<td><?= Tracy\Helpers::escapeHtml($package->version) ?>
 <?= Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '') ?>
 </td>
-							</tr>
-<?php endforeach ?>					</table>
-<?php endif ?>			</div>
+				</tr>
+<?php endforeach ?>			</table>
+<?php endif ?>		</div>
 <?php endif ?>	</div>
 </div>

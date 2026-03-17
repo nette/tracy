@@ -11,14 +11,14 @@
 	<h1>
 		<span><?= $blueScreen->formatMessage($ex) ?: htmlspecialchars($title . $code) ?>
 </span>
-<?php foreach ($actions as $item): ?>			<a href="<?= Tracy\Helpers::escapeHtml($item['link']) ?>
+<?php foreach ($actions as $item): ?>		<a href="<?= Tracy\Helpers::escapeHtml($item['link']) ?>
 " class="tracy-action"<?php if ($ʟ_tmp = !empty($item['external']) ? '_blank' : null) echo ' target', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?><?php if ($ʟ_tmp = !empty($item['external']) ? 'noreferrer noopener' : null) echo ' rel', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?>><?= Tracy\Helpers::escapeHtml($item['label']) ?>
 &#x25ba;</a>
 <?php endforeach ?>	</h1>
 
-<?php if ($ex->getPrevious()): ?>		<div class="tracy-caused">
-			<a href="#tracyCaused<?= Tracy\Helpers::escapeHtml(count($exceptions) + 1) ?>
+<?php if ($ex->getPrevious()): ?>	<div class="tracy-caused">
+		<a href="#tracyCaused<?= Tracy\Helpers::escapeHtml(count($exceptions) + 1) ?>
 ">Caused by <?= Tracy\Helpers::escapeHtml(get_debug_type($ex->getPrevious())) ?>
 </a>
-		</div>
+	</div>
 <?php endif ?></section>
