@@ -50,3 +50,16 @@ test('', function () {
 	$logger->log(new ErrorException('Msg', 0, E_NOTICE, __FILE__, __LINE__), 'f');
 	Assert::match('[%a%] Notice: Msg in %a%Logger.log().phpt:%d%  @  %a%  @@  f-%a%.html', file_get_contents($logger->directory . '/f.log'));
 });
+
+
+test('markdown file is created alongside HTML', function () {
+	$logger = new Logger(getTempDir());
+	$file = $logger->log(new Exception('MD test'), Logger::EXCEPTION);
+	Assert::type('string', $file);
+	Assert::true(str_ends_with($file, '.html'));
+	Assert::true(is_file($file));
+
+	$mdFile = substr($file, 0, -5) . '.md';
+	Assert::true(is_file($mdFile));
+	Assert::match('%A%# Exception: MD test%A%', file_get_contents($mdFile));
+});
