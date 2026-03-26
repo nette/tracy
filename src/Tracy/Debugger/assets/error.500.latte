@@ -30,4 +30,7 @@
 
 <script nonce={$nonce}>
 	document.body.insertBefore(document.getElementById('tracy-error'), document.body.firstChild);
+	if (navigator.webdriver) {
+		console.error('Tracy: Server Error 500. {if $logged}Details have been logged on the server.{else}Tracy was unable to log the error.{/if}');
+	}
 </script>

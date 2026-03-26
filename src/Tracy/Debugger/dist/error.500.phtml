@@ -32,4 +32,10 @@
 
 <script<?php if ($ʟ_tmp = $nonce) echo ' nonce', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?>>
 	document.body.insertBefore(document.getElementById('tracy-error'), document.body.firstChild);
+	if (navigator.webdriver) {
+		console.error('Tracy: Server Error 500. <?php if ($logged): ?>
+Details have been logged on the server.<?php else: ?>
+Tracy was unable to log the error.<?php endif ?>
+');
+	}
 </script>
