@@ -376,6 +376,13 @@ class Helpers
 
 
 	/** @internal */
+	public static function consoleLog(string $data): void
+	{
+		echo '<script' . self::getNonce(attr: true) . '>console.log(' . self::jsonEncode($data, inScript: true) . ');</script>';
+	}
+
+
+	/** @internal */
 	public static function isAgent(): bool
 	{
 		return ($_COOKIE['tracy-webdriver'] ?? null) === '1';

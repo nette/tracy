@@ -505,6 +505,13 @@ class Debugger
 				Dumper::KEYS_TO_HIDE => self::$keysToHide,
 			]);
 			echo $html ? '</tracy-div>' : '';
+
+			if ($html && Helpers::isAgent()) {
+				Helpers::consoleLog(Dumper::toText($var, [
+					Dumper::DEPTH => 3,
+					Dumper::KEYS_TO_HIDE => self::$keysToHide,
+				]));
+			}
 		}
 
 		return $var;
