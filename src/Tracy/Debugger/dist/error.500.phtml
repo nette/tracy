@@ -40,5 +40,14 @@ echo '</small></p>
 echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 31:16 */;
 echo '>
 	document.body.insertBefore(document.getElementById(\'tracy-error\'), document.body.firstChild);
+	if (navigator.webdriver) {
+		console.error(\'Tracy: Server Error 500. ';
+if ($logged) /* pos 34:43 */ {
+	echo 'Details have been logged on the server.';
+} else /* pos 34:94 */ {
+	echo 'Tracy was unable to log the error.';
+}
+echo '\');
+	}
 </script>
 ';
