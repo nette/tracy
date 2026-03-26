@@ -21,4 +21,7 @@ test('Debugger::log() writes the call site into the report as "Logged from"', fu
 
 	$html = file_get_contents($file);
 	Assert::match('%A%Logged from <a%A%<b>Debugger.log().location.phpt</b>:' . $line . '</a>%A%', $html);
+
+	$md = file_get_contents(substr($file, 0, -5) . '.md');
+	Assert::match('This is an error page%A%Logged from: %a%Debugger.log().location.phpt:' . $line . '%A%', $md);
 });

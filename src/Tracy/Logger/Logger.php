@@ -137,7 +137,7 @@ class Logger implements ILogger
 		assert($this->directory !== null);
 		$dir = strtr($this->directory . '/', '\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		foreach (new \DirectoryIterator($this->directory) as $file) {
-			if (strpos($file->getBasename(), $hash)) {
+			if (str_ends_with($file->getBasename(), "$hash.html")) {
 				return $dir . $file;
 			}
 		}

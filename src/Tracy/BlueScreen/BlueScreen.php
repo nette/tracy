@@ -158,6 +158,12 @@ class BlueScreen
 			ob_end_flush();
 			ob_end_clean();
 			fclose($handle);
+
+			if ($handle = @fopen(substr($file, 0, -5) . '.md', 'x')) {
+				fwrite($handle, $this->renderAgent($exception, $logLocation));
+				fclose($handle);
+			}
+
 			return true;
 		}
 
