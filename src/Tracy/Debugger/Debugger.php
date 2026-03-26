@@ -502,6 +502,15 @@ class Debugger
 				Dumper::KEYS_TO_HIDE => self::$keysToHide,
 			]);
 			echo $html ? '</tracy-div>' : '';
+
+			if ($html && Helpers::isAgent()) {
+				$text = Dumper::toText($var, [
+					Dumper::DEPTH => 3,
+					Dumper::KEYS_TO_HIDE => self::$keysToHide,
+				]);
+				$nonceAttr = ($nonce = Helpers::getNonce()) ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
+				echo '<script' . $nonceAttr . '>console.log(' . json_encode($text) . ');</script>';
+			}
 		}
 
 		return $var;
