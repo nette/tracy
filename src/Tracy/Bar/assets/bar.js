@@ -150,10 +150,13 @@ class Panel {
 		}
 
 		let doc = win.document;
-		doc.write('<!DOCTYPE html><meta charset="utf-8">'
-			+ '<script src="' + (baseUrl.replace(/&/g, '&amp;').replace(/"/g, '&quot;')) + '_tracy_bar=js&amp;XDEBUG_SESSION_STOP=1" onload="Tracy.Dumper.init()" async></script>'
-			+ '<body id="tracy-debug">',
-		);
+		doc.write('<!DOCTYPE html><meta charset="utf-8"><body id="tracy-debug">');
+
+		let script = doc.createElement('script');
+		script.src = baseUrl + '_tracy_bar=js&XDEBUG_SESSION_STOP=1';
+		script.async = true;
+		script.addEventListener('load', () => win.Tracy.Dumper.init());
+		doc.head.appendChild(script);
 
 		let meta = this.elem.parentElement.lastElementChild;
 		doc.body.innerHTML = '<tracy-div itemscope>'
