@@ -333,10 +333,10 @@ class Helpers
 
 
 	/** @internal */
-	public static function getNonce(): ?string
+	public static function getNonce(bool $attr = false): ?string
 	{
 		return preg_match('#^Content-Security-Policy(?:-Report-Only)?:.*\sscript-src(?:-elem)?\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
-			? $m[1]
+			? ($attr ? ' nonce="' . self::escapeHtml($m[1]) . '"' : $m[1])
 			: null;
 	}
 

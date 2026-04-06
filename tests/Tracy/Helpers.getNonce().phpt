@@ -23,6 +23,7 @@ test('no CSP header', function () {
 test('script-src with nonce', function () {
 	header("Content-Security-Policy: script-src 'nonce-abc123='");
 	Assert::same('abc123=', Helpers::getNonce());
+	Assert::same(' nonce="abc123="', Helpers::getNonce(attr: true));
 });
 
 
