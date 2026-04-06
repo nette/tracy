@@ -261,7 +261,7 @@ class Dumper
 	/** @param  array{0?: Dumper\Value[], 1?: mixed[]}  $snapshot */
 	public static function formatSnapshotAttribute(array &$snapshot): string
 	{
-		$res = "'" . Renderer::jsonEncode($snapshot[0] ?? []) . "'";
+		$res = "'" . Helpers::jsonEncode($snapshot[0] ?? []) . "'";
 		$snapshot = [];
 		return $res;
 	}

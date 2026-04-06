@@ -8,7 +8,6 @@
 namespace Tracy;
 
 use function array_slice, is_string, strlen;
-use const JSON_INVALID_UTF8_SUBSTITUTE, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE;
 
 
 /**
@@ -59,7 +58,7 @@ final class DeferredContent
 
 	public function addSetup(string $method, mixed $argument): void
 	{
-		$argument = json_encode($argument, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+		$argument = Helpers::jsonEncode($argument);
 		$item = &$this->getItems('setup')[$this->requestId];
 		$item['code'] = ($item['code'] ?? '') . "$method($argument);\n";
 		$item['time'] = time();
@@ -147,7 +146,7 @@ final class DeferredContent
 	var el = document.createElement('style');
 	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
 	el.className='tracy-debug';
-	el.textContent=" . json_encode(Helpers::minifyCss(implode('', $css))) . ";
+	el.textContent=" . Helpers::jsonEncode(Helpers::minifyCss(implode('', $css))) . ";
 	document.head.appendChild(el);})
 ();\n" . implode('', $js1) . implode('', $js2);
 
