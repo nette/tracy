@@ -6,7 +6,7 @@
 {varType ?array{type: int, message: string, file: string, line: int} $lastError}
 {varType array<string, string> $httpHeaders}
 {varType callable $dump}
-{varType array{0?: Tracy\Dumper\Value[], 1?: mixed[]} $snapshot}
+{varType Tracy\Dumper\Value[]|null $snapshot}
 {varType bool $showEnvironment}
 {varType Tracy\BlueScreen $blueScreen}
 {varType bool $headersSent}
@@ -15,6 +15,7 @@
 {varType mixed[][] $obStatus}
 {varType Generator[] $generators}
 {varType Fiber[] $fibers}
+{* *}
 
 <tracy-div id="tracy-bs" itemscope>
 	<a id="tracy-bs-toggle" href="#" class="tracy-toggle">&#xfeff;</a>
@@ -70,5 +71,5 @@
 		</footer>
 	</div>
 
-	<meta itemprop=tracy-snapshot content={Dumper::formatSnapshotAttribute($snapshot)}>
+	<meta itemprop=tracy-snapshot content={$snapshot ?? []|json}>
 </tracy-div>

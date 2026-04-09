@@ -1,14 +1,35 @@
-<?php declare(strict_types=1); ?>
-<?php use Tracy\Dumper ?><?php /** @var string $type */ ?><?php /** @var stdClass[] $panels */ ?>
-<?php $icons = '
+<?php declare(strict_types=1);
+
+use Tracy\Dumper;
+/** @var string $type */
+/** @var stdClass[] $panels */
+echo "\n";
+$icons = '
 	<div class="tracy-icons">
 		<a href="#" data-tracy-action="window" title="open in window">&curren;</a>
 		<a href="#" data-tracy-action="close" title="close window">&times;</a>
 	</div>
-' ?><div itemscope>
-<?php foreach ($panels as $panel): ?><?php $content = $panel->panel ? $panel->panel . "\n" . $icons : '' ?>		<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-panel', $type !== 'ajax' ? 'tracy-panel-persist' : null, 'tracy-panel-' . $type]))) ?>" id="tracy-debug-panel-<?= Tracy\Helpers::escapeHtml($panel->id) ?>
-" data-tracy-content='<?= str_replace(['&', "'"], ['&amp;', '&#039;'], $content) ?>
-'></div>
-<?php endforeach ?>	<meta itemprop=tracy-snapshot content=<?= Dumper::formatSnapshotAttribute(Dumper::$liveSnapshot) ?>
->
-</div>
+' /* pos 5:1 */;
+echo '<div itemscope>
+';
+foreach ($panels as $panel) /* pos 12:2 */ {
+	$content = $panel->panel ? $panel->panel . '
+' . $icons : '' /* pos 13:3 */;
+	echo '	<div';
+	echo ($ʟ_tmp = array_filter(['tracy-panel', $type !== 'ajax' ? 'tracy-panel-persist' : null, 'tracy-panel-' . $type])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 14:15 */;
+	echo ' id="tracy-debug-panel-';
+	echo Tracy\Helpers::escapeHtml($panel->id) /* pos 14:114 */;
+	echo '" data-tracy-content=\'';
+	echo str_replace(['&', '\''], ['&amp;', '&#039;'], $content) /* pos 14:148 */;
+	echo '\'></div>
+';
+
+}
+
+echo '	<meta itemprop=tracy-snapshot';
+echo ($ʟ_tmp = (Tracy\Helpers::jsonEncode(Dumper::$liveSnapshot[0] ?? []))) === null ? '' : ' content=\'' . $ʟ_tmp . '\'' /* pos 16:42 */;
+echo '>
+';
+Dumper::$liveSnapshot = [] /* pos 17:2 */;
+echo '</div>
+';

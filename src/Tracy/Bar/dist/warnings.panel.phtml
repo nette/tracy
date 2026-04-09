@@ -1,14 +1,27 @@
-<?php declare(strict_types=1); ?>
-<?php /** @var array<string, int|null> $data */ ?><h1>Warnings</h1>
+<?php declare(strict_types=1);
+
+/** @var array<string,int|null> $data */
+echo '<h1>Warnings</h1>
 
 <div class="tracy-inner">
 	<table class="tracy-sortable">
-<?php foreach ($data as $item => $count): ?><?php [$file, $line, $message] = explode('|', $item, 3) ?>			<tr>
-				<td class="tracy-right"><?= Tracy\Helpers::escapeHtml($count ? $count . '×' : '') ?>
-</td>
-				<td><pre><?= Tracy\Helpers::escapeHtml($message) ?>
- in <?= Tracy\Helpers::editorLink($file, (int) $line) ?>
-</pre></td>
-			</tr>
-<?php endforeach ?>	</table>
+';
+foreach ($data as $item => $count) /* pos 6:3 */ {
+	[$file, $line, $message] = explode('|', $item, 3) /* pos 7:4 */;
+	echo '		<tr>
+			<td class="tracy-right">';
+	echo Tracy\Helpers::escapeHtml($count ? $count . '×' : '') /* pos 9:29 */;
+	echo '</td>
+			<td><pre>';
+	echo Tracy\Helpers::escapeHtml($message) /* pos 10:14 */;
+	echo ' in ';
+	echo Tracy\Helpers::editorLink($file, (int) $line) /* pos 10:28 */;
+	echo '</pre></td>
+		</tr>
+';
+
+}
+
+echo '	</table>
 </div>
+';

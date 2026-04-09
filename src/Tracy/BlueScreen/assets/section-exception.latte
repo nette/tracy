@@ -43,13 +43,23 @@
 
 					{foreach $generators as $generator}
 						<div class="tracy-tab-panel">
-							{include '../assets/section-stack-generator.php'}
+							{do $ref = new \ReflectionGenerator($generator)}
+							{do $stack = $ref->getTrace()}
+							{do $expanded = null}
+							{do $refExec = new \ReflectionGenerator($ref->getExecutingGenerator())}
+							{do $file = $refExec->getExecutingFile()}
+							{do $line = $refExec->getExecutingLine()}
+							{include 'section-stack-sourceFile.phtml'}
+							{include 'section-stack-callStack.phtml'}
 						</div>
 					{/foreach}
 
 					{foreach $fibers as $fiber}
 						<div class="tracy-tab-panel">
-							{include '../assets/section-stack-fiber.php'}
+							{do $ref = new \ReflectionFiber($fiber)}
+							{do $stack = $ref->getTrace()}
+							{do $expanded = 0}
+							{include 'section-stack-callStack.phtml'}
 						</div>
 					{/foreach}
 				</div>

@@ -1,5 +1,10 @@
-<?php declare(strict_types=1); ?>
-<?php require __DIR__ . '/../panels/info.panel.php' ?><?php /** @var array<string, string> $info */ ?><?php /** @var object[] $packages */ ?><?php /** @var object[] $devPackages */ ?>
+<?php declare(strict_types=1);
+
+require __DIR__ . '/../panels/info.panel.php';
+/** @var array<string,string> $info */
+/** @var object[] $packages */
+/** @var object[] $devPackages */
+echo '
 <style class="tracy-debug">
 	#tracy-debug .tracy-InfoPanel td {
 		white-space: nowrap;
@@ -8,7 +13,7 @@
 		font-weight: bold;
 		width: 60%;
 	}
-	#tracy-debug .tracy-InfoPanel td[colspan='2'] b {
+	#tracy-debug .tracy-InfoPanel td[colspan=\'2\'] b {
 		float: right;
 		margin-left: 2em;
 		white-space: normal;
@@ -20,44 +25,89 @@
 <div class="tracy-inner tracy-InfoPanel">
 	<div class="tracy-inner-container">
 		<table class="tracy-sortable">
-<?php foreach ($info as $key => $val): ?>				<tr>
-<?php if (strlen($val) > 25): ?>						<td colspan=2><?= Tracy\Helpers::escapeHtml($key) ?>
- <b><?= Tracy\Helpers::escapeHtml($val) ?>
-</b></td>
-<?php else: ?>						<td><?= Tracy\Helpers::escapeHtml($key) ?>
-</td><td><?= Tracy\Helpers::escapeHtml($val) ?>
-</td>
-<?php endif ?>				</tr>
-<?php endforeach ?>		</table>
+';
+foreach ($info as $key => $val) /* pos 26:4 */ {
+	echo '			<tr>
+';
+	if (strlen($val) > 25) /* pos 28:6 */ {
+		echo '				<td colspan=2>';
+		echo Tracy\Helpers::escapeHtml($key) /* pos 29:21 */;
+		echo ' <b>';
+		echo Tracy\Helpers::escapeHtml($val) /* pos 29:31 */;
+		echo '</b></td>
+';
+	} else /* pos 30:6 */ {
+		echo '				<td>';
+		echo Tracy\Helpers::escapeHtml($key) /* pos 31:11 */;
+		echo '</td><td>';
+		echo Tracy\Helpers::escapeHtml($val) /* pos 31:26 */;
+		echo '</td>
+';
+	}
+	echo '			</tr>
+';
 
-<?php if ($packages || $devPackages): ?>			<h2><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^div .tracy-InfoPanel-packages">
-				Composer Packages (<?= Tracy\Helpers::escapeHtml(count($packages)) ?>
-<?= Tracy\Helpers::escapeHtml($devPackages ? ' + ' . count($devPackages) . ' dev' : '') ?>
-)
-			</a></h2>
+}
 
-			<div class="tracy-InfoPanel-packages tracy-collapsed">
-<?php if ($packages): ?>					<table class="tracy-sortable">
-<?php foreach ($packages as $package): ?>							<tr>
-								<td><?= Tracy\Helpers::escapeHtml($package->name) ?>
-</td>
-								<td><?= Tracy\Helpers::escapeHtml($package->version) ?>
-<?= Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '') ?>
-</td>
-							</tr>
-<?php endforeach ?>					</table>
-<?php endif ?>
-<?php if ($devPackages): ?>					<h2>Dev Packages</h2>
+echo '		</table>
 
-					<table class="tracy-sortable">
-<?php foreach ($devPackages as $package): ?>							<tr>
-								<td><?= Tracy\Helpers::escapeHtml($package->name) ?>
-</td>
-								<td><?= Tracy\Helpers::escapeHtml($package->version) ?>
-<?= Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '') ?>
-</td>
-							</tr>
-<?php endforeach ?>					</table>
-<?php endif ?>			</div>
-<?php endif ?>	</div>
+';
+if ($packages || $devPackages) /* pos 37:3 */ {
+	echo '		<h2><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^div .tracy-InfoPanel-packages">
+			Composer Packages (';
+	echo Tracy\Helpers::escapeHtml(count($packages)) /* pos 39:24 */;
+	echo Tracy\Helpers::escapeHtml($devPackages ? ' + ' . count($devPackages) . ' dev' : '') /* pos 39:42 */;
+	echo ')
+		</a></h2>
+
+		<div class="tracy-InfoPanel-packages tracy-collapsed">
+';
+	if ($packages) /* pos 43:5 */ {
+		echo '			<table class="tracy-sortable">
+';
+		foreach ($packages as $package) /* pos 45:7 */ {
+			echo '				<tr>
+					<td>';
+			echo Tracy\Helpers::escapeHtml($package->name) /* pos 47:13 */;
+			echo '</td>
+					<td>';
+			echo Tracy\Helpers::escapeHtml($package->version) /* pos 48:13 */;
+			echo Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '') /* pos 48:32 */;
+			echo '</td>
+				</tr>
+';
+
+		}
+
+		echo '			</table>
+';
+	}
+	echo "\n";
+	if ($devPackages) /* pos 54:5 */ {
+		echo '			<h2>Dev Packages</h2>
+
+			<table class="tracy-sortable">
+';
+		foreach ($devPackages as $package) /* pos 58:7 */ {
+			echo '				<tr>
+					<td>';
+			echo Tracy\Helpers::escapeHtml($package->name) /* pos 60:13 */;
+			echo '</td>
+					<td>';
+			echo Tracy\Helpers::escapeHtml($package->version) /* pos 61:13 */;
+			echo Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '') /* pos 61:32 */;
+			echo '</td>
+				</tr>
+';
+
+		}
+
+		echo '			</table>
+';
+	}
+	echo '		</div>
+';
+}
+echo '	</div>
 </div>
+';

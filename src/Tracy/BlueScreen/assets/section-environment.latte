@@ -47,17 +47,17 @@
 								{foreach $_SESSION as $k => $v}
 									<tr>
 										<th>{$k}</th>
-										<td>{if $k === __NF}<i>Nette Session</i>{else}{$dump($v, $k)}{/if}</td>
+										<td>{if $k === '__NF'}<i>Nette Session</i>{else}{$dump($v, $k)}{/if}</td>
 									</tr>
 								{/foreach}
 							</table>
 						</div>
 
-						{if !empty($_SESSION[__NF][DATA])}
+						{if !empty($_SESSION['__NF']['DATA'])}
 							<h3>Nette Session</h3>
 							<div class="tracy-pane">
 								<table class="tracy-sortable">
-									{foreach $_SESSION[__NF][DATA] as $k => $v}
+									{foreach $_SESSION['__NF']['DATA'] as $k => $v}
 										<tr>
 											<th>{$k}</th>
 											<td>{$dump($v, $k)}</td>

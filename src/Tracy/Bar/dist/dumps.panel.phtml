@@ -1,5 +1,7 @@
-<?php declare(strict_types=1); ?>
-<?php /** @var array<array{title: string|null, dump: string}> $data */ ?><style class="tracy-debug">
+<?php declare(strict_types=1);
+
+/** @var array<array{title:string|null,dump:string}> $data */
+echo '<style class="tracy-debug">
 	#tracy-debug .tracy-DumpPanel h2 {
 		font: 11pt/1.5 sans-serif;
 		margin: 0;
@@ -12,9 +14,20 @@
 <h1>Dumps</h1>
 
 <div class="tracy-inner tracy-DumpPanel">
-<?php foreach ($data as $item): ?><?php if ($item['title']): ?>			<h2><?= Tracy\Helpers::escapeHtml($item['title']) ?>
-</h2>
-<?php endif ?>
-		<?= $item['dump'] ?>
+';
+foreach ($data as $item) /* pos 15:2 */ {
+	if ($item['title']) /* pos 16:3 */ {
+		echo '	<h2>';
+		echo Tracy\Helpers::escapeHtml($item['title']) /* pos 17:8 */;
+		echo '</h2>
+';
+	}
+	echo '
+	';
+	echo $item['dump'] /* pos 20:3 */;
+	echo "\n";
 
-<?php endforeach ?></div>
+}
+
+echo '</div>
+';

@@ -23,7 +23,7 @@
 
 			<div>
 				<div class="tracy-tab-panel tracy-active">
-					<h3>{$_SERVER[REQUEST_METHOD] ?? URL} <a href="{$source}" target="_blank" rel="noreferrer noopener" style="font-weight: normal">{$source}</a></h3>
+					<h3>{$_SERVER['REQUEST_METHOD'] ?? 'URL'} <a href="{$source}" target="_blank" rel="noreferrer noopener" style="font-weight: normal">{$source}</a></h3>
 
 					{if $httpHeaders}
 						<div class="tracy-pane">
@@ -54,7 +54,7 @@
 						</div>
 					{/if}
 
-					{if ($_SERVER[REQUEST_METHOD] ?? null) === POST}
+					{if ($_SERVER['REQUEST_METHOD'] ?? null) === 'POST'}
 						{if empty($_POST)}
 							{if ($post = file_get_contents('php://input', length: 2000)) === ''}
 								<h3>$_POST</h3>

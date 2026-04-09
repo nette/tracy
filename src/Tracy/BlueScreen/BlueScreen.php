@@ -173,8 +173,8 @@ class BlueScreen
 			$httpHeaders = array_combine(array_map(fn($k) => strtolower(strtr(substr($k, 5), '_', '-')), array_keys($httpHeaders)), $httpHeaders);
 		}
 
-		$snapshot = &$this->snapshot;
-		$snapshot = [];
+		$this->snapshot = [];
+		$snapshot = &$this->snapshot[0];
 		$dump = $this->getDumper();
 
 		$css = array_map(file_get_contents(...), array_merge([
@@ -202,6 +202,7 @@ class BlueScreen
 		$blueScreen = $this;
 
 		require $template;
+		$this->snapshot = [];
 	}
 
 

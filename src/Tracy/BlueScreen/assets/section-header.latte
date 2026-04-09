@@ -11,7 +11,7 @@
 	{if $ex->getMessage()}<p>{$title}{$code}</p>{/if}
 
 	<h1>
-		<span>{$blueScreen->formatMessage($ex) ?: htmlspecialchars($title . $code)}</span>
+		<span>{$blueScreen->formatMessage($ex) ?: ($title . $code)}</span>
 		{foreach $actions as $item}
 			<a href="{$item[link]}" class="tracy-action" target={!empty($item[external]) ? '_blank' : null} rel={!empty($item[external]) ? 'noreferrer noopener' : null}>{$item[label]}&#x25ba;</a>
 		{/foreach}

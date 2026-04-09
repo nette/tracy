@@ -1,12 +1,18 @@
-<?php declare(strict_types=1); ?>
-<?php /** @var Throwable $ex */ ?><?php /** @var callable $dump */ ?><?php if (count(get_mangled_object_vars($ex)) <= count(get_mangled_object_vars(new Exception))) { return; } ?>
+<?php declare(strict_types=1);
+
+/** @var Throwable $ex */
+/** @var callable $dump */
+if (count(get_mangled_object_vars($ex)) <= count(get_mangled_object_vars(new Exception))) /* pos 3:1 */ return;
+echo '
 <section class="tracy-section">
 	<h2 class="tracy-section-label">
 		<a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a>
 	</h2>
 
 	<div class="tracy-section-panel tracy-collapsed">
-		<?= $dump($ex) ?>
-
+		';
+echo $dump($ex) /* pos 11:3 */;
+echo '
 	</div>
 </section>
+';

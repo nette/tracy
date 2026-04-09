@@ -29,18 +29,18 @@ register_shutdown_function(function () {
 	$panelContent = (string) DomQuery::fromHtml($rawContent)->find('#tracy-debug-panel-Tracy-warnings')[0]['data-tracy-content'];
 	Assert::match(<<<'XX'
 		%A%<table class="tracy-sortable">
-					<tr>
-						<td class="tracy-right">1%a%</td>
-						<td><pre>Notice: Only variables should be assigned by reference in %a%:%d%</a></pre></td>
-					</tr>
-					<tr>
-						<td class="tracy-right">1%a%</td>
-						<td><pre>Warning: hex2bin(): Hexadecimal input string must have an even length in %a%:%d%</a></pre></td>
-					</tr>
-					<tr>
-						<td class="tracy-right">1%a%</td>
-						<td><pre>Compile Warning: Unsupported declare &apos;foo&apos; in %a%:%d%</a></pre></td>
-					</tr>
+				<tr>
+					<td class="tracy-right">1%a%</td>
+					<td><pre>Notice: Only variables should be assigned by reference in %a%:%d%</a></pre></td>
+				</tr>
+				<tr>
+					<td class="tracy-right">1%a%</td>
+					<td><pre>Warning: hex2bin(): Hexadecimal input string must have an even length in %a%:%d%</a></pre></td>
+				</tr>
+				<tr>
+					<td class="tracy-right">1%a%</td>
+					<td><pre>Compile Warning: Unsupported declare &apos;foo&apos; in %a%:%d%</a></pre></td>
+				</tr>
 			</table>
 		</div>%A%
 		XX, $panelContent);

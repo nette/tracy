@@ -22,7 +22,6 @@ parameters:
 		-
 			identifier: function.alreadyNarrowedType
 			paths:
-				- src/Tracy/Bar/dist/loader.phtml
 				- src/Tracy/BlueScreen/BlueScreen.php
 				- src/Tracy/Helpers.php
 
@@ -108,10 +107,24 @@ parameters:
 				- src/Tracy/Dumper/Describer.php
 				- src/Tracy/Dumper/Renderer.php
 
-		# Generated phtml templates use is_bool() as a runtime type guard; PHPStan sees it as always-false for string-typed vars
+		# Latte-compiled .phtml templates: PHPStan false positives from generated code patterns
 		-
-			identifier: function.impossibleType
+			identifier: identical.alwaysFalse
 			paths:
 				- src/Tracy/Bar/dist
 				- src/Tracy/BlueScreen/dist
-				- src/Tracy/Debugger/dist
+		-
+			identifier: ternary.alwaysTrue
+			paths:
+				- src/Tracy/Bar/dist
+				- src/Tracy/BlueScreen/dist
+		-
+			identifier: if.alwaysTrue
+			paths:
+				- src/Tracy/BlueScreen/dist
+		-
+			identifier: variable.undefined
+			path: src/Tracy/BlueScreen/dist/section-exception-causedBy.phtml
+		-
+			identifier: booleanNot.alwaysFalse
+			path: src/Tracy/BlueScreen/dist/section-exception-causedBy.phtml

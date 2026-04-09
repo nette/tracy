@@ -1,44 +1,106 @@
-<?php declare(strict_types=1); ?>
-<?php /** @var Throwable $ex */ ?><?php /** @var Throwable[] $exceptions */ ?><?php /** @var array{link: string, label: string, external?: bool}[] $actions */ ?><?php /** @var callable $dump */ ?><?php /** @var Tracy\BlueScreen $blueScreen */ ?><?php /** @var Generator[] $generators */ ?><?php /** @var Fiber[] $fibers */ ?>
-<?php require __DIR__ . '/section-header.phtml' ?>
-<?php foreach ($blueScreen->renderPanels($ex) as $panel): ?>	<section class="tracy-section">
-		<h2 class="tracy-section-label">
-			<a href="#" data-tracy-ref="^+" class="tracy-toggle"><?= Tracy\Helpers::escapeHtml($panel->tab) ?>
-</a>
-		</h2>
+<?php declare(strict_types=1);
 
-		<div class="tracy-section-panel">
-			<?= $panel->panel ?>
+/** @var Throwable $ex */
+/** @var Throwable[] $exceptions */
+/** @var array{link:string,label:string,external?:bool}[] $actions */
+/** @var callable $dump */
+/** @var Tracy\BlueScreen $blueScreen */
+/** @var Generator[] $generators */
+/** @var Fiber[] $fibers */
+echo "\n";
+require __DIR__ . '/section-header.phtml';
+echo "\n";
+foreach ($blueScreen->renderPanels($ex) as $panel) /* pos 11:1 */ {
+	echo '<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle">';
+	echo Tracy\Helpers::escapeHtml($panel->tab) /* pos 14:57 */;
+	echo '</a>
+	</h2>
 
+	<div class="tracy-section-panel">
+		';
+	echo $panel->panel /* pos 18:4 */;
+	echo '
+	</div>
+</section>
+';
+
+}
+
+echo "\n";
+if (!$exceptions && ($generators || $fibers)) /* pos 23:1 */ {
+	echo '<section class="tracy-section tracy-section--stack">
+	<div class="tracy-section-panel">
+		<div class="tracy-tabs">
+			<ul class="tracy-tab-bar">
+				<li class="tracy-tab-label tracy-active"><a href="#">Main thread</a></li>
+
+';
+	foreach ($generators as $id => $generator) /* pos 30:6 */ {
+		echo '				<li class="tracy-tab-label"><a href="#">Generator #';
+		echo Tracy\Helpers::escapeHtml($id) /* pos 31:59 */;
+		echo '</a></li>
+';
+
+	}
+
+	echo "\n";
+	foreach ($fibers as $id => $fiber) /* pos 34:6 */ {
+		echo '				<li class="tracy-tab-label"><a href="#">Fiber #';
+		echo Tracy\Helpers::escapeHtml($id) /* pos 35:55 */;
+		echo '</a></li>
+';
+
+	}
+
+	echo '			</ul>
+
+			<div>
+				<div class="tracy-tab-panel tracy-active">
+';
+	require __DIR__ . '/../assets/section-stack-exception.php';
+	echo '				</div>
+
+';
+	foreach ($generators as $generator) /* pos 44:6 */ {
+		echo '				<div class="tracy-tab-panel">
+';
+		$ref = new \ReflectionGenerator($generator) /* pos 46:8 */;
+		$stack = $ref->getTrace() /* pos 47:8 */;
+		$expanded = null /* pos 48:8 */;
+		$refExec = new \ReflectionGenerator($ref->getExecutingGenerator()) /* pos 49:8 */;
+		$file = $refExec->getExecutingFile() /* pos 50:8 */;
+		$line = $refExec->getExecutingLine() /* pos 51:8 */;
+		require __DIR__ . '/section-stack-sourceFile.phtml';
+		require __DIR__ . '/section-stack-callStack.phtml';
+		echo '				</div>
+';
+
+	}
+
+	echo "\n";
+	foreach ($fibers as $fiber) /* pos 57:6 */ {
+		echo '				<div class="tracy-tab-panel">
+';
+		$ref = new \ReflectionFiber($fiber) /* pos 59:8 */;
+		$stack = $ref->getTrace() /* pos 60:8 */;
+		$expanded = 0 /* pos 61:8 */;
+		require __DIR__ . '/section-stack-callStack.phtml';
+		echo '				</div>
+';
+
+	}
+
+	echo '			</div>
 		</div>
-	</section>
-<?php endforeach ?>
-<?php if (!$exceptions && ($generators || $fibers)): ?>	<section class="tracy-section tracy-section--stack">
-		<div class="tracy-section-panel">
-			<div class="tracy-tabs">
-				<ul class="tracy-tab-bar">
-					<li class="tracy-tab-label tracy-active"><a href="#">Main thread</a></li>
-
-<?php foreach ($generators as $id => $generator): ?>						<li class="tracy-tab-label"><a href="#">Generator #<?= Tracy\Helpers::escapeHtml($id) ?>
-</a></li>
-<?php endforeach ?>
-<?php foreach ($fibers as $id => $fiber): ?>						<li class="tracy-tab-label"><a href="#">Fiber #<?= Tracy\Helpers::escapeHtml($id) ?>
-</a></li>
-<?php endforeach ?>				</ul>
-
-				<div>
-					<div class="tracy-tab-panel tracy-active">
-<?php require __DIR__ . '/../assets/section-stack-exception.php' ?>					</div>
-
-<?php foreach ($generators as $generator): ?>						<div class="tracy-tab-panel">
-<?php require __DIR__ . '/../assets/section-stack-generator.php' ?>						</div>
-<?php endforeach ?>
-<?php foreach ($fibers as $fiber): ?>						<div class="tracy-tab-panel">
-<?php require __DIR__ . '/../assets/section-stack-fiber.php' ?>						</div>
-<?php endforeach ?>				</div>
-			</div>
-		</div>
-	</section>
-<?php else: ?><?php require __DIR__ . '/../assets/section-stack-exception.php' ?><?php endif ?>
-<?php require __DIR__ . '/section-exception-exception.phtml' ?>
-<?php require __DIR__ . '/section-exception-causedBy.phtml' ?>
+	</div>
+</section>
+';
+} else /* pos 69:1 */ {
+	require __DIR__ . '/../assets/section-stack-exception.php';
+}
+echo "\n";
+require __DIR__ . '/section-exception-exception.phtml';
+echo "\n";
+require __DIR__ . '/section-exception-causedBy.phtml';

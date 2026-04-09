@@ -11,7 +11,8 @@
 <div itemscope>
 	{foreach $panels as $panel}
 		{do $content = $panel->panel ? $panel->panel . "\n" . $icons : ''}
-		<div class={[tracy-panel, $type !== ajax ? tracy-panel-persist : null, 'tracy-panel-' . $type]} id="tracy-debug-panel-{$panel->id}" data-tracy-content='{str_replace(['&', "'"], ['&amp;', '&#039;'], $content)|noescape}'></div>
+		<div class={[tracy-panel, $type !== ajax ? tracy-panel-persist, 'tracy-panel-' . $type]} id="tracy-debug-panel-{$panel->id}" data-tracy-content='{str_replace(['&', "'"], ['&amp;', '&#039;'], $content)|noescape}'></div>
 	{/foreach}
-	<meta itemprop=tracy-snapshot content={=Dumper::formatSnapshotAttribute(Dumper::$liveSnapshot)}>
+	<meta itemprop=tracy-snapshot content={=Dumper::$liveSnapshot[0] ?? []|json}>
+	{do Dumper::$liveSnapshot = []}
 </div>

@@ -1,40 +1,75 @@
-<?php declare(strict_types=1); ?>
-<?php use Tracy\BlueScreen ?><?php use Tracy\Debugger ?><?php use Tracy\Helpers ?><?php /** @var string $file */ ?><?php /** @var int $line */ ?><?php /** @var ?int $expanded */ ?>
-<?php $sourceOriginal = $file && @is_file($file) ? [$file, $line] : null ?><?php $sourceMapped = $sourceOriginal ? Debugger::mapSource($file, $line) : null ?><?php $collapsed = $expanded !== null ?>
+<?php declare(strict_types=1);
+
+use Tracy\BlueScreen;
+use Tracy\Debugger;
+use Tracy\Helpers;
+/** @var string $file */
+/** @var int $line */
+/** @var ?int $expanded */
+echo "\n";
+$sourceOriginal = $file && @is_file($file) ? [$file, $line] : null /* pos 8:1 */;
+$sourceMapped = $sourceOriginal ? Debugger::mapSource($file, $line) : null /* pos 9:1 */;
+$collapsed = $expanded !== null /* pos 10:1 */;
+echo '
 <section class="tracy-section">
 	<h2 class="tracy-section-label">
-		<a href="#" data-tracy-ref="^+" class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null]))) ?>">Source file</a>
+		<a href="#" data-tracy-ref="^+"';
+echo ($ʟ_tmp = array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 14:42 */;
+echo '>Source file</a>
 	</h2>
 
-	<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-section-panel', $collapsed ? 'tracy-collapsed' : null]))) ?>">
-<?php if ($sourceOriginal && $sourceMapped): ?>			<div class="tracy-tabs">
-				<ul class="tracy-tab-bar">
-					<li class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-label', !$sourceMapped['active'] ? 'tracy-active' : null]))) ?>"><a href="#">PHP</a></li>
-					<li class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-label', $sourceMapped['active'] ? 'tracy-active' : null]))) ?>"><a href="#"><?= Tracy\Helpers::escapeHtml($sourceMapped['label']) ?>
-</a></li>
-				</ul>
+	<div';
+echo ($ʟ_tmp = array_filter(['tracy-section-panel', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 17:14 */;
+echo '>
+';
+if ($sourceOriginal && $sourceMapped) /* pos 18:3 */ {
+	echo '		<div class="tracy-tabs">
+			<ul class="tracy-tab-bar">
+				<li';
+	echo ($ʟ_tmp = array_filter(['tracy-tab-label', !$sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 21:17 */;
+	echo '><a href="#">PHP</a></li>
+				<li';
+	echo ($ʟ_tmp = array_filter(['tracy-tab-label', $sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 22:17 */;
+	echo '><a href="#">';
+	echo Tracy\Helpers::escapeHtml($sourceMapped['label']) /* pos 22:93 */;
+	echo '</a></li>
+			</ul>
 
-				<div>
-					<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-panel', !$sourceMapped['active'] ? 'tracy-active' : null]))) ?>">
-						<p><b>File:</b> <?= Helpers::editorLink(...$sourceOriginal) ?>
-</p>
-						<?= BlueScreen::highlightFile(...$sourceOriginal) ?>
+			<div>
+				<div';
+	echo ($ʟ_tmp = array_filter(['tracy-tab-panel', !$sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 26:18 */;
+	echo '>
+					<p><b>File:</b> ';
+	echo Helpers::editorLink(...$sourceOriginal) /* pos 27:23 */;
+	echo '</p>
+					';
+	echo BlueScreen::highlightFile(...$sourceOriginal) /* pos 28:7 */;
+	echo '
+				</div>
 
-					</div>
-
-					<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-tab-panel', $sourceMapped['active'] ? 'tracy-active' : null]))) ?>">
-						<p><b>File:</b> <?= Helpers::editorLink($sourceMapped['file'], $sourceMapped['line']) ?>
-</p>
-						<?= BlueScreen::highlightFile($sourceMapped['file'], line: $sourceMapped['line'], column: $sourceMapped['column'], php: false) ?>
-
-					</div>
+				<div';
+	echo ($ʟ_tmp = array_filter(['tracy-tab-panel', $sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 31:18 */;
+	echo '>
+					<p><b>File:</b> ';
+	echo Helpers::editorLink($sourceMapped['file'], $sourceMapped['line']) /* pos 32:23 */;
+	echo '</p>
+					';
+	echo BlueScreen::highlightFile($sourceMapped['file'], line: $sourceMapped['line'], column: $sourceMapped['column'], php: false) /* pos 33:7 */;
+	echo '
 				</div>
 			</div>
-<?php else: ?>			<p><b>File:</b> <?= Helpers::editorLink($file, $line) ?>
-</p>
-<?php if ($sourceOriginal): ?>
-			<?= BlueScreen::highlightFile(...$sourceOriginal) ?>
-
-<?php endif ?>
-<?php endif ?>	</div>
+		</div>
+';
+} else /* pos 37:3 */ {
+	echo '		<p><b>File:</b> ';
+	echo Helpers::editorLink($file, $line) /* pos 38:20 */;
+	echo '</p>
+		';
+	if ($sourceOriginal) /* pos 39:4 */ {
+		echo BlueScreen::highlightFile(...$sourceOriginal) /* pos 39:24 */;
+	}
+	echo "\n";
+}
+echo '	</div>
 </section>
+';

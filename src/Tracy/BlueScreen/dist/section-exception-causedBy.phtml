@@ -1,11 +1,28 @@
-<?php declare(strict_types=1); ?>
-<?php /** @var Throwable $ex */ ?><?php /** @var Throwable[] $exceptions */ ?><?php /** @var array{link: string, label: string, external?: bool}[] $actions */ ?><?php /** @var callable $dump */ ?><?php $ex = $ex->getPrevious() ?><?php if (!$ex || in_array($ex, $exceptions, true)) { return; } ?><?php $exceptions[] = $ex ?><?php $collapsed = count($exceptions) > 1 ?>
-<section class="tracy-section" id="tracyCaused<?= Tracy\Helpers::escapeHtml(count($exceptions)) ?>
-">
+<?php declare(strict_types=1);
+
+/** @var Throwable $ex */
+/** @var Throwable[] $exceptions */
+/** @var array{link:string,label:string,external?:bool}[] $actions */
+/** @var callable $dump */
+$ex = $ex->getPrevious() /* pos 5:1 */;
+if (!$ex || in_array($ex, $exceptions, true)) /* pos 6:1 */ return;
+$exceptions[] = $ex /* pos 7:1 */;
+$collapsed = count($exceptions) > 1 /* pos 8:1 */;
+echo '
+<section class="tracy-section" id="tracyCaused';
+echo Tracy\Helpers::escapeHtml(count($exceptions)) /* pos 10:47 */;
+echo '">
 	<h2 class="tracy-section-label">
-		<a href="#" data-tracy-ref="^+" class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null]))) ?>">Caused by</a>
+		<a href="#" data-tracy-ref="^+"';
+echo ($ʟ_tmp = array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 12:42 */;
+echo '>Caused by</a>
 	</h2>
 
-	<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-section-panel', 'tracy-section--causedby', $collapsed ? 'tracy-collapsed' : null]))) ?>">
-<?php require __DIR__ . '/section-exception.phtml' ?>	</div>
+	<div';
+echo ($ʟ_tmp = array_filter(['tracy-section-panel', 'tracy-section--causedby', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 15:14 */;
+echo '>
+';
+require __DIR__ . '/section-exception.phtml';
+echo '	</div>
 </section>
+';

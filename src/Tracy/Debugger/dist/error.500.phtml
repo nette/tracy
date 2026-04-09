@@ -1,6 +1,8 @@
-<?php declare(strict_types=1); ?>
-<?php /** @var bool $logged */ ?><?php $nonce = Tracy\Helpers::getNonce() ?>
-<!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></audio></button></canvas></datalist></details></dialog></iframe></listing></meter></noembed></noframes></noscript></optgroup></option></progress></rp></select></table></template></title></video>
+<?php declare(strict_types=1);
+
+/** @var bool $logged */
+$nonce = Tracy\Helpers::getNonce() /* pos 2:1 */;
+echo '<!DOCTYPE html><!-- "\' --></textarea></script></style></pre></xmp></a></audio></button></canvas></datalist></details></dialog></iframe></listing></meter></noembed></noframes></noscript></optgroup></option></progress></rp></select></table></template></title></video>
 <meta charset="utf-8">
 <meta name=robots content=noindex>
 <meta name=generator content="Tracy">
@@ -20,16 +22,22 @@
 	<div>
 		<h1>Server Error</h1>
 
-		<p>We're sorry! The server encountered an internal error and
+		<p>We\'re sorry! The server encountered an internal error and
 		was unable to complete your request. Please try again later.</p>
 
-		<p><small>error 500 <span> | <?= Tracy\Helpers::escapeHtml(date('j. n. Y H:i')) ?>
-</span><?php if (!$logged): ?>
-<br>Tracy is unable to log error.<?php endif ?>
-</small></p>
+		<p><small>error 500 <span> | ';
+echo Tracy\Helpers::escapeHtml(date('j. n. Y H:i')) /* pos 26:32 */;
+echo '</span>';
+if (!$logged) /* pos 26:60 */ {
+	echo '<br>Tracy is unable to log error.';
+}
+echo '</small></p>
 	</div>
 </div>
 
-<script<?php if ($ʟ_tmp = $nonce) echo ' nonce', is_bool($ʟ_tmp) ? '' : '="'  . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' ?>>
-	document.body.insertBefore(document.getElementById('tracy-error'), document.body.firstChild);
+<script';
+echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 30:16 */;
+echo '>
+	document.body.insertBefore(document.getElementById(\'tracy-error\'), document.body.firstChild);
 </script>
+';
