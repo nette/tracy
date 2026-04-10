@@ -119,16 +119,16 @@ final class DeferredContent
 
 	private function buildJsCss(): string
 	{
-		$css = array_map(file_get_contents(...), array_merge([
+		$sharedCss = array_map(file_get_contents(...), array_merge([
 			__DIR__ . '/../assets/reset.css',
-			__DIR__ . '/../Bar/assets/bar.css',
 			__DIR__ . '/../assets/toggle.css',
 			__DIR__ . '/../assets/table-sort.css',
 			__DIR__ . '/../assets/tabs.css',
 			__DIR__ . '/../Dumper/assets/dumper-light.css',
 			__DIR__ . '/../Dumper/assets/dumper-dark.css',
-			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
 		], Debugger::$customCssFiles));
+		$barCss = file_get_contents(__DIR__ . '/../Bar/assets/bar.css') ?: throw new \RuntimeException('Cannot read bar.css');
+		$bsCss = file_get_contents(__DIR__ . '/../BlueScreen/assets/bluescreen.css') ?: throw new \RuntimeException('Cannot read bluescreen.css');
 
 		$js1 = array_map(fn($file) => '(function() {' . file_get_contents($file) . '})();', [
 			__DIR__ . '/../Bar/assets/bar.js',
@@ -143,11 +143,17 @@ final class DeferredContent
 
 		$str = "'use strict';
 (function(){
-	var el = document.createElement('style');
-	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
-	el.className='tracy-debug';
-	el.textContent=" . Helpers::jsonEncode(Helpers::minifyCss(implode('', $css))) . ";
-	document.head.appendChild(el);})
+	var n = document.currentScript.getAttribute('nonce') || document.currentScript.nonce;
+	function s(css, cls) {
+		var el = document.createElement('style');
+		el.setAttribute('nonce', n);
+		el.className = cls;
+		el.textContent = css;
+		document.head.appendChild(el);
+	}
+	s(" . json_encode(Helpers::minifyCss(implode('', $sharedCss))) . ",'tracy-debug');
+	s(" . json_encode(Helpers::minifyCss($barCss)) . ",'tracy-debug tracy-bar-css');
+	s(" . json_encode(Helpers::minifyCss($bsCss)) . ",'tracy-debug tracy-bs-css');})
 ();\n" . implode('', $js1) . implode('', $js2);
 
 		return $str;

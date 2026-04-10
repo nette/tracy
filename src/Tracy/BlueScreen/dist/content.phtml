@@ -19,8 +19,8 @@ use Tracy\Helpers;
 /** @var mixed[][] $obStatus */
 /** @var Generator[] $generators */
 /** @var Fiber[] $fibers */
-echo '<tracy-div id="tracy-bs" itemscope>
-	<a id="tracy-bs-toggle" href="#" class="tracy-toggle">&#xfeff;</a>
+echo '<div class="tracy-bs" id="tracy-bs" itemscope>
+	<a href="#" class="tracy-bs-toggle tracy-toggle">&#xfeff;</a>
 
 	<div class="tracy-bs-main">
 ';
@@ -109,5 +109,5 @@ echo '			</ul>
 	<meta itemprop=tracy-snapshot';
 echo ($ʟ_tmp = (Tracy\Helpers::jsonEncode($snapshot ?? []))) === null ? '' : ' content=\'' . $ʟ_tmp . '\'' /* pos 73:41 */;
 echo '>
-</tracy-div>
+</div>
 ';

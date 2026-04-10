@@ -14,7 +14,7 @@ html.tracy-bs-visible body {
 	position: static;
 }
 
-#tracy-bs {
+.tracy-bs {
 	font: 9pt/1.5 Verdana, sans-serif;
 	background: white;
 	color: #333;
@@ -26,23 +26,23 @@ html.tracy-bs-visible body {
 	text-align: left;
 }
 
-#tracy-bs a {
+a {
 	text-decoration: none;
 	color: #328ADC;
 	padding: 0 4px;
 	margin: 0 -4px;
 }
 
-#tracy-bs a + a {
+a + a {
 	margin-left: 0;
 }
 
-#tracy-bs a:hover,
-#tracy-bs a:focus {
+a:hover,
+a:focus {
 	color: #085AA3;
 }
 
-#tracy-bs-toggle {
+.tracy-bs-toggle {
 	position: absolute;
 	right: .5em;
 	top: .5em;
@@ -52,7 +52,7 @@ html.tracy-bs-visible body {
 	padding: 3px;
 }
 
-#tracy-bs-toggle.tracy-collapsed {
+.tracy-bs-toggle.tracy-collapsed {
 	position: fixed;
 }
 
@@ -66,7 +66,7 @@ html.tracy-bs-visible body {
 	display: none;
 }
 
-#tracy-bs :where(:is(
+:where(:is(
 	h1, h2, h3, h4, h5, h6,
 	p,
 	ol, ul, dl,
@@ -77,34 +77,34 @@ html.tracy-bs-visible body {
 	margin-top: var(--tracy-space);
 }
 
-#tracy-bs h1 {
+h1 {
 	font-size: 15pt;
 	font-weight: normal;
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, .3);
 }
 
-#tracy-bs h1 span {
+h1 span {
 	white-space: pre-wrap;
 }
 
-#tracy-bs h2 {
+h2 {
 	font-size: 14pt;
 	font-weight: normal;
 }
 
-#tracy-bs h3 {
+h3 {
 	font-size: 10pt;
 	font-weight: bold;
 }
 
-#tracy-bs pre,
-#tracy-bs code,
-#tracy-bs table {
+pre,
+code,
+table {
 	font: 9pt/1.5 Consolas, monospace !important;
 }
 
-#tracy-bs pre,
-#tracy-bs table {
+pre,
+table {
 	background: #FDF5CE;
 	padding: .4em .7em;
 	border: 2px solid #ffffffa6;
@@ -112,46 +112,46 @@ html.tracy-bs-visible body {
 	overflow: auto;
 }
 
-#tracy-bs table pre {
+table pre {
 	padding: 0;
 	margin: 0;
 	border: none;
 	box-shadow: none;
 }
 
-#tracy-bs table {
+table {
 	border-collapse: collapse;
 	width: 100%;
 }
 
-#tracy-bs td,
-#tracy-bs th {
+td,
+th {
 	vertical-align: top;
 	text-align: left;
 	padding: 2px 6px;
 	border: 1px solid #e6dfbf;
 }
 
-#tracy-bs th {
+th {
 	font-weight: bold;
 }
 
-#tracy-bs tr > :first-child {
+tr > :first-child {
 	width: 20%;
 }
 
-#tracy-bs tr:nth-child(2n),
-#tracy-bs tr:nth-child(2n) pre {
+tr:nth-child(2n),
+tr:nth-child(2n) pre {
 	background-color: #F7F0CB;
 }
 
-#tracy-bs .tracy-footer--sticky {
+.tracy-footer--sticky {
 	position: fixed;
 	width: 100%;
 	bottom: 0;
 }
 
-#tracy-bs footer ul {
+footer ul {
 	font-size: 7pt;
 	padding: var(--tracy-space);
 	margin: var(--tracy-space) 0 0;
@@ -161,11 +161,11 @@ html.tracy-bs-visible body {
 	list-style: none;
 }
 
-#tracy-bs .tracy-footer-logo {
+.tracy-footer-logo {
 	position: relative;
 }
 
-#tracy-bs .tracy-footer-logo a {
+.tracy-footer-logo a {
 	position: absolute;
 	bottom: 0;
 	right: 0;
@@ -177,18 +177,18 @@ html.tracy-bs-visible body {
 	margin: 0;
 }
 
-#tracy-bs .tracy-footer-logo a:hover,
-#tracy-bs .tracy-footer-logo a:focus {
+.tracy-footer-logo a:hover,
+.tracy-footer-logo a:focus {
 	opacity: 1;
 	transition: opacity 0.1s;
 }
 
 
-#tracy-bs .tracy-section {
+.tracy-section {
 	padding: var(--tracy-space);
 }
 
-#tracy-bs .tracy-section-panel {
+.tracy-section-panel {
 	background: #5040200E;
 	padding: var(--tracy-space);
 	border-radius: 8px;
@@ -196,103 +196,103 @@ html.tracy-bs-visible body {
 	overflow: hidden;
 }
 
-#tracy-bs .outer, /* deprecated */
-#tracy-bs .tracy-pane {
+.outer, /* deprecated */
+.tracy-pane {
 	overflow: auto;
 }
 
-#tracy-bs.tracy-mac .tracy-pane {
+.tracy-bs.tracy-mac .tracy-pane {
 	padding-bottom: 12px;
 }
 
 
 /* header */
-#tracy-bs .tracy-section--error {
+.tracy-section--error {
 	background: #CD1818;
 	color: white;
 }
 
-#tracy-bs .tracy-section--error p,
-#tracy-bs .tracy-section--error h1 {
+.tracy-section--error p,
+.tracy-section--error h1 {
 	font-size: 13pt;
 	color: white;
 }
 
-#tracy-bs .tracy-section--error::selection,
-#tracy-bs .tracy-section--error ::selection {
+.tracy-section--error::selection,
+.tracy-section--error ::selection {
 	color: black !important;
 	background: #FDF5CE !important;
 }
 
-#tracy-bs .tracy-section--error h1 a {
+.tracy-section--error h1 a {
 	color: #ffefa1 !important;
 }
 
-#tracy-bs .tracy-section--error span span {
+.tracy-section--error span span {
 	font-size: 80%;
 	color: rgba(255, 255, 255, 0.5);
 	text-shadow: none;
 }
 
-#tracy-bs .tracy-section--error a.tracy-action {
+.tracy-section--error a.tracy-action {
 	color: white !important;
 	opacity: 0;
 	font-size: .7em;
 	border-bottom: none !important;
 }
 
-#tracy-bs .tracy-section--error:hover a.tracy-action {
+.tracy-section--error:hover a.tracy-action {
 	opacity: .6;
 }
 
-#tracy-bs .tracy-section--error a.tracy-action:hover {
+.tracy-section--error a.tracy-action:hover {
 	opacity: 1;
 }
 
-#tracy-bs .tracy-section--error i {
+.tracy-section--error i {
 	color: #ffefa1;
 	font-style: normal;
 }
 
-#tracy-bs .tracy-section--error:has(.tracy-caused) {
+.tracy-section--error:has(.tracy-caused) {
 	border-radius: 0 0 0 8px;
 	overflow: hidden;
 }
 
-#tracy-bs .tracy-caused {
+.tracy-caused {
 	margin: var(--tracy-space) calc(-1 * var(--tracy-space)) calc(-1 * var(--tracy-space));
 	padding: .3em var(--tracy-space);
 	background: #df8075;
 	white-space: nowrap;
 }
 
-#tracy-bs .tracy-caused a {
+.tracy-caused a {
 	color: white;
 }
 
 
 
 /* source code */
-#tracy-bs pre.tracy-code > div {
+pre.tracy-code > div {
 	min-width: fit-content;
 	white-space: pre;
 }
 
-#tracy-bs .tracy-code-comment {
+.tracy-code-comment {
 	color: rgba(0, 0, 0, 0.5);
 	font-style: italic;
 }
 
-#tracy-bs .tracy-code-keyword {
+.tracy-code-keyword {
 	color: #D24;
 	font-weight: bold;
 }
 
-#tracy-bs .tracy-code-var {
+.tracy-code-var {
 	font-weight: bold;
 }
 
-#tracy-bs .tracy-line-highlight {
+.tracy-line-highlight {
 	background: #CD1818;
 	color: white;
 	font-weight: bold;
@@ -302,71 +302,71 @@ html.tracy-bs-visible body {
 	margin: 0 -1ch -1lh;
 }
 
-#tracy-bs .tracy-column-highlight {
+.tracy-column-highlight {
 	display: inline-block;
 	backdrop-filter: grayscale(1);
 	margin: 0 -1px;
 	padding: 0 1px;
 }
 
-#tracy-bs .tracy-line {
+.tracy-line {
 	color: #9F9C7F;
 	font-weight: normal;
 	font-style: normal;
 }
 
-#tracy-bs a.tracy-editor {
+a.tracy-editor {
 	color: inherit;
 	border-bottom: 1px dotted rgba(0, 0, 0, .3);
 	border-radius: 3px;
 }
 
-#tracy-bs a.tracy-editor:hover {
+a.tracy-editor:hover {
 	background: #0001;
 }
 
-#tracy-bs span[data-tracy-href] {
+span[data-tracy-href] {
 	border-bottom: 1px dotted rgba(0, 0, 0, .3);
 }
 
-#tracy-bs .tracy-dump-whitespace {
+.tracy-dump-whitespace {
 	color: #0003;
 }
 
-#tracy-bs .tracy-callstack {
+.tracy-callstack {
 	display: grid;
 	overflow: auto;
 	grid-template-columns: max-content 1fr;
 	row-gap: calc(.5 * var(--tracy-space));
 }
 
-#tracy-bs .tracy-callstack-file {
+.tracy-callstack-file {
 	text-align: right;
 	padding-right: var(--tracy-space);
 	white-space: nowrap;
 }
 
-#tracy-bs .tracy-callstack-callee {
+.tracy-callstack-callee {
 	white-space: nowrap;
 }
 
-#tracy-bs .tracy-callstack-additional {
+.tracy-callstack-additional {
 	grid-column-start: 1;
 	grid-column-end: 3;
 }
 
-#tracy-bs .tracy-callstack-args tr:first-child > * {
+.tracy-callstack-args tr:first-child > * {
 	position: relative;
 }
 
-#tracy-bs .tracy-callstack-args tr:first-child td:before {
+.tracy-callstack-args tr:first-child td:before {
 	position: absolute;
 	right: .3em;
 	content: 'may not be true';
 	opacity: .4;
 }
 
-#tracy-bs .tracy-panel-fadein {
+.tracy-panel-fadein {
 	animation: tracy-panel-fadein .12s ease;
 }
 
@@ -376,26 +376,26 @@ html.tracy-bs-visible body {
 	}
 }
 
-#tracy-bs .tracy-section--causedby {
+.tracy-section--causedby {
 	flex-direction: column;
 	padding: 0;
 }
 
-#tracy-bs .tracy-section--causedby:not(.tracy-collapsed) {
+.tracy-section--causedby:not(.tracy-collapsed) {
 	display: flex;
 }
 
-#tracy-bs .tracy-section--causedby .tracy-section--error {
+.tracy-section--causedby .tracy-section--error {
 	background: #cd1818a6;
 }
 
-#tracy-bs .tracy-section--error + .tracy-section--stack {
+.tracy-section--error + .tracy-section--stack {
 	margin-top: calc(1.5 * var(--tracy-space));
 }
 
 
 /* tabs */
-#tracy-bs .tracy-tab-bar {
+.tracy-tab-bar {
 	display: flex;
 	list-style: none;
 	padding-left: 0;
@@ -405,7 +405,7 @@ html.tracy-bs-visible body {
 	column-gap: var(--tracy-space);
 }
 
-#tracy-bs .tracy-tab-bar a {
+.tracy-tab-bar a {
 	display: block;
 	padding: calc(.5 * var(--tracy-space)) var(--tracy-space);
 	margin: 0;
@@ -416,11 +416,11 @@ html.tracy-bs-visible body {
 	transition: all 0.1s;
 }
 
-#tracy-bs .tracy-tab-bar > .tracy-active a {
+.tracy-tab-bar > .tracy-active a {
 	background: white;
 }
 
-#tracy-bs .tracy-tab-panel {
+.tracy-tab-panel {
 	border-top: 2px solid white;
 	padding-top: var(--tracy-space);
 	overflow: auto;

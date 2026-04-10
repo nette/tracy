@@ -26,7 +26,7 @@ function getOption(key) {
 class Panel {
 	constructor(id) {
 		this.id = id;
-		this.elem = Debug.layer.querySelector('#' + CSS.escape(this.id));
+		this.elem = Debug.shadow.querySelector('#' + CSS.escape(this.id));
 		this.elem.Tracy = this.elem.Tracy || {};
 	}
 
@@ -37,7 +37,7 @@ class Panel {
 		this.init = function () {};
 		elem.innerHTML = elem.tracyContent = elem.dataset.tracyContent;
 		delete elem.dataset.tracyContent;
-		Tracy.Dumper.init(Debug.layer);
+		Tracy.Dumper.init(Debug.shadow);
 		evalScripts(elem);
 
 		draggable(elem, {
@@ -154,7 +154,7 @@ class Panel {
 		}
 
 		let doc = win.document;
-		doc.write('<!DOCTYPE html><meta charset="utf-8"><body id="tracy-debug">');
+		doc.write('<!DOCTYPE html><meta charset="utf-8"><body class="tracy-debug">');
 
 		let script = doc.createElement('script');
 		script.src = baseUrl + '_tracy_bar=js&XDEBUG_SESSION_STOP=1';
@@ -163,10 +163,10 @@ class Panel {
 		doc.head.appendChild(script);
 
 		let meta = this.elem.parentElement.lastElementChild;
-		doc.body.innerHTML = '<tracy-div itemscope>'
+		doc.body.innerHTML = '<div itemscope>'
 			+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.tracyContent + '</div>'
 			+ meta.outerHTML
-			+ '</tracy-div>';
+			+ '</div>';
 		evalScripts(doc.body);
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').textContent;
@@ -253,7 +253,7 @@ Panel.zIndexCounter = 1;
 class Bar {
 	init() {
 		this.id = 'tracy-debug-bar';
-		this.elem = Debug.layer.querySelector('#' + this.id);
+		this.elem = Debug.shadow.querySelector('#' + this.id);
 
 		draggable(this.elem, {
 			handles: this.elem.querySelectorAll('li:first-child'),
@@ -357,7 +357,7 @@ class Bar {
 
 
 	close() {
-		Debug.layer.style.display = 'none';
+		Debug.host.style.display = 'none';
 	}
 
 
@@ -399,25 +399,28 @@ class Debug {
 
 		// Shadow DOM for CSS isolation
 		let host = document.createElement('tracy-bar');
+		Debug.host = host;
 		let shadow = host.attachShadow({ mode: 'open' });
 		Debug.shadow = shadow;
 
-		// Clone CSS from document.head into shadow root
-		document.querySelectorAll('style.tracy-debug').forEach((s) => {
+		// Clone CSS from document.head into shadow root (exclude BlueScreen CSS)
+		document.querySelectorAll('style.tracy-debug:not(.tracy-bs-css)').forEach((s) => {
 			shadow.appendChild(s.cloneNode(true));
 		});
 
-		Debug.layer = document.createElement('tracy-div');
-		Debug.layer.setAttribute('id', 'tracy-debug');
-		Debug.layer.innerHTML = content;
-		shadow.appendChild(Debug.layer);
+		// Insert content directly into shadow root
+		let temp = document.createElement('div');
+		temp.innerHTML = content;
+		while (temp.firstChild) {
+			shadow.appendChild(temp.firstChild);
+		}
 
 		(document.body || document.documentElement).appendChild(host);
-		evalScripts(Debug.layer);
-		Debug.layer.style.display = 'block';
+		evalScripts(shadow);
+		host.style.display = 'block';
 		Debug.bar.init();
 
-		Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
+		Debug.shadow.querySelectorAll('.tracy-panel').forEach((panel) => {
 			Debug.panels[panel.id] = new Panel(panel.id);
 			Debug.panels[panel.id].restorePosition();
 		});
@@ -455,12 +458,16 @@ class Debug {
 			});
 		}
 
-		Debug.layer.insertAdjacentHTML('beforeend', content.panels);
-		evalScripts(Debug.layer);
+		let temp = document.createElement('div');
+		temp.innerHTML = content.panels;
+		while (temp.firstChild) {
+			Debug.shadow.appendChild(temp.firstChild);
+		}
+		evalScripts(Debug.shadow);
 		Debug.bar.elem.insertAdjacentHTML('beforeend', content.bar);
 		let ajaxBar = Debug.bar.elem.querySelector('.tracy-row:last-child');
 
-		Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
+		Debug.shadow.querySelectorAll('.tracy-panel').forEach((panel) => {
 			if (!Debug.panels[panel.id]) {
 				Debug.panels[panel.id] = new Panel(panel.id);
 				Debug.panels[panel.id].restorePosition();
