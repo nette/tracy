@@ -1,16 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Tracy\Bridges\Psr;
 
 use Psr;
 use Tracy;
+use function is_string;
 
 
 /**
@@ -30,12 +29,12 @@ class PsrToTracyLoggerAdapter implements Tracy\ILogger
 
 
 	public function __construct(
-		private Psr\Log\LoggerInterface $psrLogger,
+		private readonly Psr\Log\LoggerInterface $psrLogger,
 	) {
 	}
 
 
-	public function log(mixed $value, string $level = self::INFO)
+	public function log(mixed $value, string $level = self::INFO): void
 	{
 		if ($value instanceof \Throwable) {
 			$message = get_debug_type($value) . ': ' . $value->getMessage() . ($value->getCode() ? ' #' . $value->getCode() : '') . ' in ' . $value->getFile() . ':' . $value->getLine();

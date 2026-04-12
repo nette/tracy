@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 
 use Tester\Assert;
 
@@ -43,4 +40,42 @@ test('dumper with regexp scrubbing', function () {
 
 	Assert::notContains('secret', $dumper($fix));
 	Assert::contains('foo ok', $dumper($fix));
+});
+
+
+// getAgentDumper() tests
+
+test('agent dumper returns plain text', function () {
+	$blueScreen = new Tracy\BlueScreen;
+	$dumper = $blueScreen->getAgentDumper();
+	$output = $dumper('foo');
+	Assert::contains('foo', $output);
+	Assert::notContains('<', $output); // no HTML tags
+});
+
+test('agent dumper with default keysToHide scrubbing', function () {
+	$blueScreen = new Tracy\BlueScreen;
+	$dumper = $blueScreen->getAgentDumper();
+	Assert::contains('foo', $dumper('foo', 'bar'));
+	Assert::notContains('secret', $dumper('secret', 'password'));
+	Assert::notContains('secret', $dumper('secret', 'PiN'));
+});
+
+test('agent dumper with custom scrubber', function () {
+	$blueScreen = new Tracy\BlueScreen;
+	$blueScreen->scrubber = fn(string $k, $v = null): bool => strtolower($k) === 'token';
+	$dumper = $blueScreen->getAgentDumper();
+	Assert::contains('foo', $dumper('foo', 'bar'));
+	Assert::notContains('secret', $dumper('secret', 'password')); // default keysToHide
+	Assert::notContains('my-token', $dumper('my-token', 'token')); // custom scrubber
+});
+
+test('agent dumper respects depth 3', function () {
+	$blueScreen = new Tracy\BlueScreen;
+	$dumper = $blueScreen->getAgentDumper();
+	$deep = ['a' => ['b' => ['c' => ['d' => 'deep']]]]; // 4 levels
+	$output = $dumper($deep);
+	Assert::contains("'c'", $output);
+	Assert::contains('...', $output);
+	Assert::notContains("'deep'", $output);
 });

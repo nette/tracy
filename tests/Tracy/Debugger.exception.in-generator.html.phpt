@@ -1,0 +1,34 @@
+<?php declare(strict_types=1);
+
+/**
+ * Test: Tracy\Debugger exception in generator in HTML.
+ * @httpCode   500
+ * @exitCode   255
+ * @outputMatchFile expected/Debugger.exception.in-generator.html.expect
+ */
+
+use Tracy\Debugger;
+
+require __DIR__ . '/../bootstrap.php';
+
+if (PHP_SAPI === 'cli') {
+	Tester\Environment::skip('Debugger Bluescreen is not rendered in CLI mode');
+}
+
+
+Debugger::$productionMode = false;
+setHtmlMode();
+
+Debugger::enable();
+
+
+$generator = (function (): iterable {
+	yield 5;
+	throw new Exception('The my exception', 123);
+})();
+$fn = function ($generator) {
+	foreach ($generator as $value) {
+	}
+};
+
+$fn($generator);

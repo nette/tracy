@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use Tester\Assert;
 
@@ -18,10 +16,10 @@ $output = ob_get_clean();
 Assert::contains('custom-asset{}', $output);
 
 
-$handler = Tracy\Debugger::getStrategy();
+$defer = new Tracy\DeferredContent(Tracy\Debugger::getSessionStorage());
 ob_start();
 $_GET['_tracy_bar'] = 'js';
-$handler->sendAssets();
+$defer->sendAssets();
 $output = ob_get_clean();
 
 Assert::contains('custom-asset{}', $output);

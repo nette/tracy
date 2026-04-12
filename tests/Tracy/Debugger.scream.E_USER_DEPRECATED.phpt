@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger scream mode with specified severity.
  * @outputMatchFile expected/Debugger.scream.E_USER_DEPRECATED.expect
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

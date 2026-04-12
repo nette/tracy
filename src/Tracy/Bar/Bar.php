@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Tracy;
+
+use function count;
 
 
 /**
@@ -22,9 +22,8 @@ class Bar
 
 	/**
 	 * Add custom panel.
-	 * @return static
 	 */
-	public function addPanel(IBarPanel $panel, ?string $id = null): self
+	public function addPanel(IBarPanel $panel, ?string $id = null): static
 	{
 		if ($id === null) {
 			$c = 0;
@@ -39,7 +38,7 @@ class Bar
 
 
 	/**
-	 * Returns panel with given id
+	 * Returns panel with given ID, or null if not found.
 	 */
 	public function getPanel(string $id): ?IBarPanel
 	{
@@ -59,9 +58,8 @@ class Bar
 
 		$this->loaderRendered = true;
 		$requestId = $defer->getRequestId();
-		$nonceAttr = Helpers::getNonceAttr();
 		$async = true;
-		require __DIR__ . '/assets/loader.phtml';
+		require __DIR__ . '/dist/loader.phtml';
 	}
 
 
@@ -72,14 +70,22 @@ class Bar
 	{
 		$redirectQueue = &$defer->getItems('redirect');
 		$requestId = $defer->getRequestId();
+		$contentAgent = [];
 
-		if (Helpers::isAjax()) {
+		if ($defer->isDeferred()) {
 			if ($defer->isAvailable()) {
 				$defer->addSetup('Tracy.Debug.loadAjax', $this->renderPartial('ajax', '-ajax:' . $requestId));
+				if (Helpers::isAgent()) {
+					$defer->addSetup('console.log', $this->renderAgent());
+				}
 			}
 		} elseif (Helpers::isRedirect()) {
 			if ($defer->isAvailable()) {
-				$redirectQueue[] = ['content' => $this->renderPartial('redirect', '-r' . count($redirectQueue)), 'time' => time()];
+				$redirectQueue[] = [
+					'content' => $this->renderPartial('redirect', '-r' . count($redirectQueue)),
+					'agent' => Helpers::isAgent() ? $this->renderAgent() : null,
+					'time' => time(),
+				];
 			}
 		} elseif (Helpers::isHtmlMode()) {
 			if (preg_match('#^Content-Length:#im', implode("\n", headers_list()))) {
@@ -91,6 +97,7 @@ class Bar
 			foreach (array_reverse($redirectQueue) as $item) {
 				$content['bar'] .= $item['content']['bar'];
 				$content['panels'] .= $item['content']['panels'];
+				$contentAgent[] = $item['agent'];
 			}
 
 			$redirectQueue = null;
@@ -101,36 +108,47 @@ class Bar
 				$defer->addSetup('Tracy.Debug.init', $content);
 
 			} else {
-				$nonceAttr = Helpers::getNonceAttr();
 				$async = false;
-				Debugger::removeOutputBuffers(false);
-				require __DIR__ . '/assets/loader.phtml';
+				Debugger::removeOutputBuffers(errorOccurred: false);
+				require __DIR__ . '/dist/loader.phtml';
+			}
+		}
+
+		if (Helpers::isAgent() && Helpers::isHtmlMode() && !Helpers::isRedirect()) {
+			$contentAgent[] = $this->renderAgent();
+			$nonceAttr = ($nonce = Helpers::getNonce()) ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
+			foreach (array_filter($contentAgent) as $item) {
+				echo '<script' . $nonceAttr . '>console.log(' . json_encode($item) . ');</script>';
 			}
 		}
 	}
 
 
+	/** @return array{bar: string, panels: string} */
 	private function renderPartial(string $type, string $suffix = ''): array
 	{
 		$panels = $this->renderPanels($suffix);
 
 		return [
 			'bar' => Helpers::capture(function () use ($type, $panels) {
-				require __DIR__ . '/assets/bar.phtml';
+				require __DIR__ . '/dist/bar.phtml';
 			}),
 			'panels' => Helpers::capture(function () use ($type, $panels) {
-				require __DIR__ . '/assets/panels.phtml';
+				require __DIR__ . '/dist/panels.phtml';
 			}),
 		];
 	}
 
 
+	/** @return list<\stdClass> */
 	private function renderPanels(string $suffix = ''): array
 	{
-		set_error_handler(function (int $severity, string $message, string $file, int $line) {
+		set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
 			if (error_reporting() & $severity) {
 				throw new \ErrorException($message, 0, $severity, $file, $line);
 			}
+
+			return true;
 		});
 
 		$obLevel = ob_get_level();
@@ -158,5 +176,23 @@ class Bar
 
 		restore_error_handler();
 		return $panels;
+	}
+
+
+	/**
+	 * Captures debug bar as plain text (markdown) for AI agents.
+	 */
+	public function renderAgent(): string
+	{
+		$time = number_format((microtime(true) - Debugger::$time) * 1000, 1);
+		$memory = number_format(memory_get_peak_usage() / 1_000_000, 2);
+		$parts = ["Tracy Bar | $time ms | $memory MB"];
+		foreach ($this->panels as $panel) {
+			if (method_exists($panel, 'getAgentInfo') && ($text = $panel->getAgentInfo()) !== null) {
+				$parts[] = $text;
+			}
+		}
+
+		return implode("\n\n", $parts) . "\n";
 	}
 }

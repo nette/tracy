@@ -1,14 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger exception in HTML.
- * @phpVersion 8.1  ReflectionGenerator::getTrace() is empty in PHP < 8.1
  * @httpCode   500
  * @exitCode   255
  * @outputMatchFile expected/Debugger.exception.generator.html.expect
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

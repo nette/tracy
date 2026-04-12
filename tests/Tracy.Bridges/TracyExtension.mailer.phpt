@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use Nette\Bridges\HttpDI\HttpExtension;
 use Nette\Bridges\MailDI\MailExtension;

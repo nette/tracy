@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger error in console.
@@ -6,8 +6,6 @@
  * @httpCode   500
  * @outputMatch OK!
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 use Tracy\Debugger;
@@ -24,12 +22,26 @@ $onFatalErrorCalled = false;
 
 register_shutdown_function(function () use (&$onFatalErrorCalled) {
 	Assert::true($onFatalErrorCalled);
-	Assert::match('ErrorException: Cannot re-assign $this in %a%
-Stack trace:
-#0 [internal function]: Tracy\Debugger::shutdownHandler()
-#1 {main}
-Tracy is unable to log error: Logging directory is not specified.
-', ob_get_clean());
+	Assert::match(
+		ini_get('fatal_error_backtraces') ? <<<'XX'
+			ErrorException: Cannot re-assign $this in %a%
+			Stack trace:
+			#0 %a%: third(Array)
+			#1 %a%: second(true, false)
+			#2 %a%
+			#3 {main}
+			Tracy is unable to log error: Logging directory is not specified.
+
+			XX : <<<'XX'
+			ErrorException: Cannot re-assign $this in %a%
+			Stack trace:
+			#0 [internal function]: Tracy\Debugger::shutdownHandler()
+			#1 {main}
+			Tracy is unable to log error: Logging directory is not specified.
+
+			XX,
+		ob_get_clean(),
+	);
 	echo 'OK!'; // prevents PHP bug #62725
 });
 

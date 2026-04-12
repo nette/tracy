@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Tracy\Bridges\Nette;
 
@@ -13,21 +11,23 @@ use Nette;
 use Tracy;
 use Tracy\BlueScreen;
 use Tracy\Helpers;
+use const ENT_IGNORE;
 
 
 /**
- * Bridge for NEON.
+ * Bridge for Utils & NEON.
  */
 class Bridge
 {
 	public static function initialize(): void
 	{
 		$blueScreen = Tracy\Debugger::getBlueScreen();
-		$blueScreen->addAction([self::class, 'renderMemberAccessException']);
-		$blueScreen->addPanel([self::class, 'renderNeonError']);
+		$blueScreen->addAction(self::renderMemberAccessException(...));
+		$blueScreen->addPanel(self::renderNeonError(...));
 	}
 
 
+	/** @return array{link: string, label: string}|null */
 	public static function renderMemberAccessException(?\Throwable $e): ?array
 	{
 		if (!$e instanceof Nette\MemberAccessException && !$e instanceof \LogicException) {
@@ -38,40 +38,41 @@ class Bridge
 		do {
 			$loc = array_shift($trace);
 		} while (($loc['class'] ?? null) === Nette\Utils\ObjectHelpers::class);
-		if (!isset($loc['file'])) {
+		if (!isset($loc['file'], $loc['line'])) {
 			return null;
 		}
 
 		$loc = Tracy\Debugger::mapSource($loc['file'], $loc['line']) ?? $loc;
 		if (preg_match('#Cannot (?:read|write to) an undeclared property .+::\$(\w+), did you mean \$(\w+)\?#A', $e->getMessage(), $m)) {
-			return [
-				'link' => Helpers::editorUri($loc['file'], $loc['line'], 'fix', '->' . $m[1], '->' . $m[2]),
-				'label' => 'fix it',
-			];
+			$link = Helpers::editorUri($loc['file'], $loc['line'], 'fix', '->' . $m[1], '->' . $m[2]);
+			return $link !== null ? ['link' => $link, 'label' => 'fix it'] : null;
 		} elseif (preg_match('#Call to undefined (static )?method .+::(\w+)\(\), did you mean (\w+)\(\)?#A', $e->getMessage(), $m)) {
 			$operator = $m[1] ? '::' : '->';
-			return [
-				'link' => Helpers::editorUri($loc['file'], $loc['line'], 'fix', $operator . $m[2] . '(', $operator . $m[3] . '('),
-				'label' => 'fix it',
-			];
+			$link = Helpers::editorUri($loc['file'], $loc['line'], 'fix', $operator . $m[2] . '(', $operator . $m[3] . '(');
+			return $link !== null ? ['link' => $link, 'label' => 'fix it'] : null;
 		}
 
 		return null;
 	}
 
 
+	/** @return array{tab: string, panel: string}|null */
 	public static function renderNeonError(?\Throwable $e): ?array
 	{
 		if (!$e instanceof Nette\Neon\Exception || !preg_match('#line (\d+)#', $e->getMessage(), $m)) {
 			return null;
 
-		} elseif ($trace = Helpers::findTrace($e->getTrace(), [Nette\Neon\Decoder::class, 'decodeFile'])
-			?? Helpers::findTrace($e->getTrace(), [Nette\DI\Config\Adapters\NeonAdapter::class, 'load'])
+		} elseif (($trace = Helpers::findTrace($e->getTrace(), [Nette\Neon\Decoder::class, 'decodeFile'])
+			?? Helpers::findTrace($e->getTrace(), [Nette\DI\Config\Adapters\NeonAdapter::class, 'load']))
+			&& isset($trace['args'])
 		) {
 			$panel = '<p><b>File:</b> ' . Helpers::editorLink($trace['args'][0], (int) $m[1]) . '</p>'
-				. self::highlightNeon(file_get_contents($trace['args'][0]), (int) $m[1]);
+				. self::highlightNeon((string) file_get_contents($trace['args'][0]), (int) $m[1]);
 
-		} elseif ($trace = Helpers::findTrace($e->getTrace(), [Nette\Neon\Decoder::class, 'decode'])) {
+		} elseif (
+			($trace = Helpers::findTrace($e->getTrace(), [Nette\Neon\Decoder::class, 'decode']))
+			&& isset($trace['args'])
+		) {
 			$panel = self::highlightNeon($trace['args'][0], (int) $m[1]);
 		}
 

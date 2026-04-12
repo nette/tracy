@@ -1,0 +1,19 @@
+<?php declare(strict_types=1);
+
+namespace Tracy;
+
+/**
+ * @var \Generator $generator
+ * @var callable $dump
+ */
+
+$ref = new \ReflectionGenerator($generator);
+$stack = $ref->getTrace();
+$expanded = null;
+$execGenerator = $ref->getExecutingGenerator();
+$refExec = new \ReflectionGenerator($execGenerator);
+$file = $refExec->getExecutingFile();
+$line = $refExec->getExecutingLine();
+
+require __DIR__ . '/../dist/section-stack-sourceFile.phtml';
+require __DIR__ . '/../dist/section-stack-callStack.phtml';

@@ -15,7 +15,7 @@
 		}
 	],
 	"require": {
-		"php": "8.1 - 8.4",
+		"php": "8.2 - 8.5",
 		"ext-session": "*",
 		"ext-json": "*"
 	},
@@ -24,17 +24,22 @@
 		"nette/di": "^3.0",
 		"nette/http": "^3.0",
 		"nette/mail": "^3.0 || ^4.0",
-		"nette/tester": "^2.2",
+		"nette/tester": "^2.6",
 		"latte/latte": "^2.5 || ^3.0",
 		"psr/log": "^1.0 || ^2.0 || ^3.0",
-		"phpstan/phpstan": "^1.0"
+		"phpstan/phpstan": "^2.1@stable",
+		"phpstan/extension-installer": "^1.4@stable",
+		"nette/phpstan-rules": "^1.0"
 	},
 	"conflict": {
 		"nette/di": "<3.0"
 	},
 	"autoload": {
 		"classmap": ["src"],
-		"files": ["src/Tracy/functions.php"]
+		"files": ["src/Tracy/functions.php"],
+		"psr-4": {
+			"Tracy\\": "src"
+		}
 	},
 	"minimum-stability": "dev",
 	"scripts": {
@@ -44,6 +49,11 @@
 	"extra": {
 		"branch-alias": {
 			"dev-master": "3.0-dev"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"phpstan/extension-installer": true
 		}
 	}
 }

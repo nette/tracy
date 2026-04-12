@@ -1,15 +1,19 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Tracy;
 
+use function is_string;
+use const LOCK_EX, LOCK_UN;
 
+
+/**
+ * File-based session storage using a cookie-identified lock file.
+ */
 class FileSession implements SessionStorage
 {
 	private const FilePrefix = 'tracy-';
@@ -19,16 +23,17 @@ class FileSession implements SessionStorage
 
 	/** probability that the clean() routine is started */
 	public float $gcProbability = 0.03;
-	private string $dir;
 
-	/** @var resource */
+	/** @var ?resource */
 	private $file;
+
+	/** @var array<string, mixed> */
 	private array $data = [];
 
 
-	public function __construct(string $dir)
-	{
-		$this->dir = $dir;
+	public function __construct(
+		private readonly string $dir,
+	) {
 	}
 
 
@@ -55,12 +60,12 @@ class FileSession implements SessionStorage
 
 			$file = @fopen($path = $this->dir . '/' . self::FilePrefix . $id, 'c+'); // intentionally @
 			if ($file === false) {
-				throw new \RuntimeException("Unable to create file '$path'. " . error_get_last()['message']);
+				throw new \RuntimeException("Unable to create file '$path'. " . (error_get_last()['message'] ?? ''));
 			}
 		}
 
 		if (!@flock($file, LOCK_EX)) { // intentionally @
-			throw new \RuntimeException("Unable to acquire exclusive lock on '$path'. ", error_get_last()['message']);
+			throw new \RuntimeException("Unable to acquire exclusive lock on '$path'. " . (error_get_last()['message'] ?? ''));
 		}
 
 		$this->file = $file;
@@ -81,7 +86,7 @@ class FileSession implements SessionStorage
 	public function clean(): void
 	{
 		$old = strtotime('-1 week');
-		foreach (glob($this->dir . '/' . self::FilePrefix . '*') as $file) {
+		foreach (glob($this->dir . '/' . self::FilePrefix . '*') ?: [] as $file) {
 			if (filemtime($file) < $old) {
 				unlink($file);
 			}

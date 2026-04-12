@@ -1,53 +1,57 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Tracy;
+
+use function in_array, is_string;
+use const DIRECTORY_SEPARATOR, FILE_APPEND, LOCK_EX, PHP_EOL;
 
 
 /**
- * Logger.
+ * Logs messages and exceptions to files and sends email notifications on critical errors.
  */
 class Logger implements ILogger
 {
 	/** name of the directory where errors should be logged */
 	public ?string $directory = null;
 
-	/** email or emails to which send error notifications */
+	/** @var string|string[]|null  email or emails to which send error notifications */
 	public string|array|null $email = null;
 
 	/** sender of email notifications */
 	public ?string $fromEmail = null;
 
 	/** interval for sending email is 2 days */
-	public mixed $emailSnooze = '2 days';
+	public string|int $emailSnooze = '2 days';
 
-	/** @var callable handler for sending emails */
-	public $mailer;
+	/** @var \Closure(mixed $message, string $email): void  handler for sending emails */
+	public ?\Closure $mailer = null;
 
 	private ?BlueScreen $blueScreen = null;
 
 
+	/**
+	 * @param  string|string[]|null  $email
+	 */
 	public function __construct(?string $directory, string|array|null $email = null, ?BlueScreen $blueScreen = null)
 	{
 		$this->directory = $directory;
 		$this->email = $email;
 		$this->blueScreen = $blueScreen;
-		$this->mailer = [$this, 'defaultMailer'];
+		$this->mailer = $this->defaultMailer(...);
 	}
 
 
 	/**
 	 * Logs message or exception to file and sends email notification.
 	 * For levels ERROR, EXCEPTION and CRITICAL it sends email.
-	 * @return string|null logged error filename
+	 * @return ?string  logged error filename
 	 */
-	public function log(mixed $message, string $level = self::INFO)
+	public function log(mixed $message, string $level = self::INFO): ?string
 	{
 		if (!$this->directory) {
 			throw new \LogicException('Logging directory is not specified.');
@@ -69,7 +73,7 @@ class Logger implements ILogger
 			$this->logException($message, $exceptionFile);
 		}
 
-		if (in_array($level, [self::ERROR, self::EXCEPTION, self::CRITICAL], true)) {
+		if (in_array($level, [self::ERROR, self::EXCEPTION, self::CRITICAL], strict: true)) {
 			$this->sendEmail($message);
 		}
 
@@ -80,6 +84,7 @@ class Logger implements ILogger
 	public static function formatMessage(mixed $message): string
 	{
 		if ($message instanceof \Throwable) {
+			$tmp = [];
 			foreach (Helpers::getExceptionChain($message) as $exception) {
 				$tmp[] = ($exception instanceof \ErrorException
 					? Helpers::errorTypeToString($exception->getSeverity()) . ': ' . $exception->getMessage()
@@ -110,6 +115,7 @@ class Logger implements ILogger
 
 	public function getExceptionFile(\Throwable $exception, string $level = self::EXCEPTION): string
 	{
+		$data = [];
 		foreach (Helpers::getExceptionChain($exception) as $exception) {
 			$data[] = [
 				$exception::class, $exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(),
@@ -121,6 +127,7 @@ class Logger implements ILogger
 		}
 
 		$hash = substr(hash('xxh128', serialize($data)), 0, 10);
+		assert($this->directory !== null);
 		$dir = strtr($this->directory . '/', '\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
 		foreach (new \DirectoryIterator($this->directory) as $file) {
 			if (strpos($file->getBasename(), $hash)) {
@@ -138,8 +145,8 @@ class Logger implements ILogger
 	 */
 	protected function logException(\Throwable $exception, ?string $file = null): string
 	{
-		$file = $file ?: $this->getExceptionFile($exception);
-		$bs = $this->blueScreen ?: new BlueScreen;
+		$file ??= $this->getExceptionFile($exception);
+		$bs = $this->blueScreen ?? new BlueScreen;
 		$bs->renderToFile($exception, $file);
 		return $file;
 	}
@@ -162,11 +169,7 @@ class Logger implements ILogger
 	}
 
 
-	/**
-	 * Default mailer.
-	 * @internal
-	 */
-	public function defaultMailer(mixed $message, string $email): void
+	private function defaultMailer(mixed $message, string $email): void
 	{
 		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 		mail(
@@ -174,7 +177,7 @@ class Logger implements ILogger
 			"PHP: An error occurred on the server $host",
 			static::formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
 			implode("\r\n", [
-				'From: ' . ($this->fromEmail ?: "noreply@$host"),
+				'From: ' . ($this->fromEmail ?? "noreply@$host"),
 				'X-Mailer: Tracy',
 				'Content-Type: text/plain; charset=UTF-8',
 				'Content-Transfer-Encoding: 8bit',

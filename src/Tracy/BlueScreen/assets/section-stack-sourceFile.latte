@@ -1,0 +1,42 @@
+{use Tracy\BlueScreen}
+{use Tracy\Debugger}
+{use Tracy\Helpers}
+{varType string $file}
+{varType int $line}
+{varType ?int $expanded}
+
+{do $sourceOriginal = $file && @is_file($file) ? [$file, $line] : null}
+{do $sourceMapped = $sourceOriginal ? Debugger::mapSource($file, $line) : null}
+{do $collapsed = $expanded !== null}
+
+<section class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class={[tracy-toggle, $collapsed ? tracy-collapsed : null]}>Source file</a>
+	</h2>
+
+	<div class={[tracy-section-panel, $collapsed ? tracy-collapsed : null]}>
+		{if $sourceOriginal && $sourceMapped}
+			<div class="tracy-tabs">
+				<ul class="tracy-tab-bar">
+					<li class={[tracy-tab-label, !$sourceMapped[active] ? tracy-active : null]}><a href="#">PHP</a></li>
+					<li class={[tracy-tab-label, $sourceMapped[active] ? tracy-active : null]}><a href="#">{$sourceMapped[label]}</a></li>
+				</ul>
+
+				<div>
+					<div class={[tracy-tab-panel, !$sourceMapped[active] ? tracy-active : null]}>
+						<p><b>File:</b> {Helpers::editorLink(...$sourceOriginal)}</p>
+						{BlueScreen::highlightFile(...$sourceOriginal)}
+					</div>
+
+					<div class={[tracy-tab-panel, $sourceMapped[active] ? tracy-active : null]}>
+						<p><b>File:</b> {Helpers::editorLink($sourceMapped[file], $sourceMapped[line])}</p>
+						{BlueScreen::highlightFile($sourceMapped[file], line: $sourceMapped[line], column: $sourceMapped[column], php: false)}
+					</div>
+				</div>
+			</div>
+		{else}
+			<p><b>File:</b> {Helpers::editorLink($file, $line)}</p>
+			{if $sourceOriginal}{BlueScreen::highlightFile(...$sourceOriginal)}{/if}
+		{/if}
+	</div>
+</section>

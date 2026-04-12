@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger exception in production mode.
@@ -6,8 +6,6 @@
  * @exitCode   255
  * @outputMatch %A%<h1>Server Error</h1>%A%
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

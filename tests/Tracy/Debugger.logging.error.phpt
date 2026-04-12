@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger error logging.
@@ -7,8 +7,6 @@
  * @outputMatch %A?%OK!
  */
 
-declare(strict_types=1);
-
 use Tester\Assert;
 use Tracy\Debugger;
 
@@ -16,6 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
+Tester\Helpers::purge(getTempDir());
 $_SERVER['HTTP_HOST'] = 'nette.org';
 
 Debugger::$logDirectory = getTempDir();

@@ -1,16 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Tracy\Dumper;
 
 use Tracy;
 use Tracy\Helpers;
+use function array_map, array_slice, class_exists, count, explode, file, get_debug_type, get_resource_type, gettype, htmlspecialchars, implode, is_bool, is_file, is_int, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
 
 
 /**
@@ -31,29 +30,31 @@ final class Describer
 	/** @var Value[] */
 	public array $snapshot = [];
 	public bool $debugInfo = false;
+
+	/** @var array<string, int> */
 	public array $keysToHide = [];
 
-	/** @var (callable(string, mixed): bool)|null */
+	/** @var ?(callable(string $key, mixed $value, ?string $class): bool) */
 	public $scrubber;
 
 	public bool $location = false;
 
-	/** @var array<string, callable(resource): array> */
+	/** @var array<string, callable(resource): array<string, mixed>> */
 	public array $resourceExposers = [];
 
-	/** @var array<string, callable(object, Value, self): ?array> */
+	/** @var array<string, callable(object, Value, self): ?array<string, mixed>> */
 	public array $objectExposers = [];
 
 	/** @var array<string, array{bool, string[]}> */
 	public array $enumProperties = [];
 
-	/** @var (int|\stdClass)[] */
+	/** @var array<string, int> */
 	public array $references = [];
 
 
 	public function describe(mixed $var): \stdClass
 	{
-		uksort($this->objectExposers, fn($a, $b): int => $b === '' || (class_exists($a, false) && is_subclass_of($a, $b)) ? -1 : 1);
+		uksort($this->objectExposers, fn($a, $b): int => $b === '' || (class_exists($a, autoload: false) && is_subclass_of($a, $b)) ? -1 : 1);
 
 		try {
 			return (object) [
@@ -91,8 +92,10 @@ final class Describer
 
 	private function describeDouble(float $num): Value|float
 	{
-		if (!is_finite($num)) {
-			return new Value(Value::TypeNumber, (string) $num);
+		if (is_nan($num)) {
+			return new Value(Value::TypeNumber, 'NAN');
+		} elseif (is_infinite($num)) {
+			return new Value(Value::TypeNumber, $num < 0 ? '-INF' : 'INF');
 		}
 
 		$js = json_encode($num);
@@ -115,6 +118,10 @@ final class Describer
 	}
 
 
+	/**
+	 * @param  mixed[]  $arr
+	 * @return Value|array<int, array{mixed, mixed, 2?: int}>
+	 */
 	private function describeArray(array $arr, int $depth = 0, ?int $refId = null): Value|array
 	{
 		if ($refId) {
@@ -178,7 +185,7 @@ final class Describer
 			$rc = $obj instanceof \Closure
 				? new \ReflectionFunction($obj)
 				: new \ReflectionClass($obj);
-			if ($rc->getFileName() && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine()))) {
+			if ($rc->getFileName() && ($editor = Helpers::editorUri($rc->getFileName(), $rc->getStartLine() ?: null))) {
 				$value->editor = (object) ['file' => $rc->getFileName(), 'line' => $rc->getStartLine(), 'url' => $editor];
 			}
 		}
@@ -187,7 +194,7 @@ final class Describer
 			$value->items = [];
 			$props = $this->exposeObject($obj, $value);
 			foreach ($props ?? [] as $k => $v) {
-				$this->addPropertyTo($value, (string) $k, $v, Value::PropertyVirtual, $this->getReferenceId($props, $k));
+				$this->addPropertyTo($value, (string) $k, $v, Value::PropertyVirtual, $this->getReferenceId($props ?? [], $k));
 			}
 		}
 
@@ -243,11 +250,11 @@ final class Describer
 	): void
 	{
 		if ($value->depth && $this->maxItems && count($value->items ?? []) >= $this->maxItems) {
-			$value->length = ($value->length ?? count($value->items)) + 1;
+			$value->length = ($value->length ?? count($value->items ?? [])) + 1;
 			return;
 		}
 
-		$class ??= $value->value;
+		$class ??= is_string($value->value) ? $value->value : null;
 		$value->items[] = [
 			$this->describeKey($k),
 			$type !== Value::PropertyVirtual && $this->isSensitive($k, $v, $class)
@@ -258,6 +265,7 @@ final class Describer
 	}
 
 
+	/** @return ?array<string, mixed> */
 	private function exposeObject(object $obj, Value $value): ?array
 	{
 		foreach ($this->objectExposers as $type => $dumper) {
@@ -294,9 +302,10 @@ final class Describer
 	}
 
 
+	/** @param class-string  $class */
 	public function describeEnumProperty(string $class, string $property, mixed $value): ?Value
 	{
-		[$set, $constants] = $this->enumProperties["$class::$property"] ?? null;
+		[$set, $constants] = $this->enumProperties["$class::$property"] ?? [false, []];
 		if (!is_int($value)
 			|| !$constants
 			|| !($constants = Helpers::decomposeFlags($value, $set, $constants))
@@ -309,6 +318,7 @@ final class Describer
 	}
 
 
+	/** @param  mixed[]  $arr */
 	public function getReferenceId(array $arr, string|int $key): ?int
 	{
 		return ($rr = \ReflectionReference::fromArrayElement($arr, $key))
@@ -319,34 +329,37 @@ final class Describer
 
 	/**
 	 * Finds the location where dump was called. Returns [file, line, code]
+	 * @return ?array{string, int, string}
 	 */
 	private static function findLocation(): ?array
 	{
 		foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $item) {
-			if (isset($item['class']) && ($item['class'] === self::class || $item['class'] === Tracy\Dumper::class)) {
+			$reflection = null;
+			if (isset($item['class'])) {
+				if ($item['class'] === self::class || $item['class'] === Tracy\Dumper::class) {
+					$location = $item;
+					continue;
+				} elseif (method_exists($item['class'], $item['function'])) {
+					$reflection = new \ReflectionMethod($item['class'], $item['function']);
+				}
+			} elseif (function_exists($item['function'])) {
+				$reflection = new \ReflectionFunction($item['function']);
+			}
+
+			if (
+				$reflection?->isInternal()
+				|| preg_match('#\s@tracySkipLocation\s#', (string) $reflection?->getDocComment())
+			) {
 				$location = $item;
 				continue;
-			} elseif (isset($item['function'])) {
-				try {
-					$reflection = isset($item['class'])
-						? new \ReflectionMethod($item['class'], $item['function'])
-						: new \ReflectionFunction($item['function']);
-					if (
-						$reflection->isInternal()
-						|| preg_match('#\s@tracySkipLocation\s#', (string) $reflection->getDocComment())
-					) {
-						$location = $item;
-						continue;
-					}
-				} catch (\ReflectionException) {
-				}
 			}
 
 			break;
 		}
 
-		if (isset($location['file'], $location['line']) && @is_file($location['file'])) { // @ - may trigger error
-			$lines = file($location['file']);
+		if (isset($location['file'], $location['line']) && @is_file($location['file']) // @ - may trigger error
+			&& ($lines = @file($location['file'])) // @ - file may not be readable
+		) {
 			$line = $lines[$location['line'] - 1];
 			return [
 				$location['file'],

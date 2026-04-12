@@ -1,13 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Tracy;
+
+use function array_slice, is_string, strlen;
+use const JSON_INVALID_UTF8_SUBSTITUTE, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE;
 
 
 /**
@@ -15,15 +16,23 @@ namespace Tracy;
  */
 final class DeferredContent
 {
-	private SessionStorage $sessionStorage;
-	private string $requestId;
+	private readonly bool $deferred;
+	private readonly string $requestId;
 	private bool $useSession = false;
 
 
-	public function __construct(SessionStorage $sessionStorage)
+	public function __construct(
+		private readonly SessionStorage $sessionStorage,
+	) {
+		$ajax = $_SERVER['HTTP_X_TRACY_AJAX'] ?? '';
+		$this->deferred = (bool) preg_match('#^\w{10,15}$#D', $ajax);
+		$this->requestId = $this->deferred ? $ajax : Helpers::createId();
+	}
+
+
+	public function isDeferred(): bool
 	{
-		$this->sessionStorage = $sessionStorage;
-		$this->requestId = $_SERVER['HTTP_X_TRACY_AJAX'] ?? Helpers::createId();
+		return $this->deferred;
 	}
 
 
@@ -39,6 +48,7 @@ final class DeferredContent
 	}
 
 
+	/** @return array<mixed> */
 	public function &getItems(string $key): array
 	{
 		$items = &$this->sessionStorage->getData()[$key];
@@ -100,7 +110,7 @@ final class DeferredContent
 			return true;
 		}
 
-		if (Helpers::isAjax()) {
+		if ($this->deferred) {
 			header('X-Tracy-Ajax: 1'); // session must be already locked
 		}
 
@@ -110,7 +120,7 @@ final class DeferredContent
 
 	private function buildJsCss(): string
 	{
-		$css = array_map('file_get_contents', array_merge([
+		$css = array_map(file_get_contents(...), array_merge([
 			__DIR__ . '/../assets/reset.css',
 			__DIR__ . '/../Bar/assets/bar.css',
 			__DIR__ . '/../assets/toggle.css',
@@ -130,7 +140,7 @@ final class DeferredContent
 			__DIR__ . '/../Dumper/assets/dumper.js',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.js',
 		]);
-		$js2 = array_map('file_get_contents', Debugger::$customJsFiles);
+		$js2 = array_map(file_get_contents(...), Debugger::$customJsFiles);
 
 		$str = "'use strict';
 (function(){

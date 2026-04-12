@@ -2,6 +2,10 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
+if (navigator.webdriver) {
+	document.cookie = 'tracy-webdriver=1;path=/;SameSite=Lax';
+}
+
 let requestId = document.currentScript.dataset.id,
 	ajaxCounter = 1,
 	baseUrl = location.href.split('#')[0];
@@ -150,16 +154,19 @@ class Panel {
 		}
 
 		let doc = win.document;
-		doc.write('<!DOCTYPE html><meta charset="utf-8">'
-			+ '<script src="' + (baseUrl.replace(/&/g, '&amp;').replace(/"/g, '&quot;')) + '_tracy_bar=js&amp;XDEBUG_SESSION_STOP=1" onload="Tracy.Dumper.init()" async></script>'
-			+ '<body id="tracy-debug">',
-		);
+		doc.write('<!DOCTYPE html><meta charset="utf-8"><body id="tracy-debug">');
+
+		let script = doc.createElement('script');
+		script.src = baseUrl + '_tracy_bar=js&XDEBUG_SESSION_STOP=1';
+		script.async = true;
+		script.addEventListener('load', () => win.Tracy.Dumper.init());
+		doc.head.appendChild(script);
 
 		let meta = this.elem.parentElement.lastElementChild;
 		doc.body.innerHTML = '<tracy-div itemscope>'
-		+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.tracyContent + '</div>'
-		+ meta.outerHTML
-		+ '</tracy-div>';
+			+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.tracyContent + '</div>'
+			+ meta.outerHTML
+			+ '</tracy-div>';
 		evalScripts(doc.body);
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').textContent;

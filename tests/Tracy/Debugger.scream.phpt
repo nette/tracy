@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger notices and warnings in scream mode.
  * @outputMatchFile expected/Debugger.scream.expect
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

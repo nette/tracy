@@ -1,13 +1,11 @@
 {
 	"type": "module",
 	"devDependencies": {
-		"@eslint/js": "^9.4.0",
-		"@stylistic/eslint-plugin": "^2.1.0",
-		"eslint": "^9.4.0",
-		"globals": "^15.3.0"
+		"@nette/eslint-plugin": "^0.2",
+		"eslint": "^9.26.0"
 	},
 	"scripts": {
-		"lint": "eslint",
-		"lint:fix": "eslint --fix"
+		"lint": "eslint --cache",
+		"lint:fix": "eslint --cache --fix"
 	}
 }

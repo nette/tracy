@@ -1,0 +1,14 @@
+<?php declare(strict_types=1); ?>
+<?php /** @var array<array{title: string|null, dump: string, text: ?string}> $data */ ?>
+<?php if (!$data) { return; } ?>
+## Dumps
+
+<?php foreach ($data as $item): ?>
+<?php if ($item['title']): ?>
+### <?= $item['title'] ?>
+
+
+<?php endif ?>
+<?= $item['text'] ?>
+
+<?php endforeach ?>

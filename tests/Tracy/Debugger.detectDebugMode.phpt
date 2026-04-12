@@ -1,16 +1,31 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger::detectDebugMode()
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 use Tracy\Debugger;
 
 require __DIR__ . '/../bootstrap.php';
 
+
+test('forced enable', function () {
+	unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+	$_SERVER['REMOTE_ADDR'] = 'xx';
+
+	Debugger::enable();
+	Assert::true(Debugger::$productionMode);
+
+	Debugger::enable(true);
+	Assert::true(Debugger::$productionMode);
+
+	Debugger::enable(false);
+	Assert::false(Debugger::$productionMode);
+
+	Debugger::enable($_SERVER['REMOTE_ADDR']);
+	Assert::false(Debugger::$productionMode);
+});
 
 
 test('localhost', function () {
@@ -73,22 +88,4 @@ test('secret', function () {
 
 	$_COOKIE[Debugger::CookieSecret] = ['*secret*'];
 	Assert::false(Debugger::detectDebugMode('*secret*@192.168.1.1'));
-});
-
-
-test('', function () {
-	unset($_SERVER['HTTP_X_FORWARDED_FOR']);
-	$_SERVER['REMOTE_ADDR'] = 'xx';
-
-	Debugger::enable();
-	Assert::true(Debugger::$productionMode);
-
-	Debugger::enable(true);
-	Assert::true(Debugger::$productionMode);
-
-	Debugger::enable(false);
-	Assert::false(Debugger::$productionMode);
-
-	Debugger::enable($_SERVER['REMOTE_ADDR']);
-	Assert::false(Debugger::$productionMode);
 });

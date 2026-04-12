@@ -1,0 +1,10 @@
+<?php declare(strict_types=1); ?>
+<?php /** @var array<string, int|null> $data */ ?>
+<?php if (!$data) { return; } ?>
+## Warnings
+
+<?php foreach ($data as $item => $count): ?>
+<?php [$file, $line, $message] = explode('|', $item, 3) ?>
+- <?= $message . ' in ' . $file . ':' . $line . ($count > 1 ? " (×" . $count . ')' : '') ?>
+
+<?php endforeach ?>

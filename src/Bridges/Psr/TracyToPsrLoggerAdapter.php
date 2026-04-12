@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Tracy\Bridges\Psr;
 
@@ -32,11 +30,12 @@ class TracyToPsrLoggerAdapter extends Psr\Log\AbstractLogger
 
 
 	public function __construct(
-		private Tracy\ILogger $tracyLogger,
+		private readonly Tracy\ILogger $tracyLogger,
 	) {
 	}
 
 
+	/** @param string|\Stringable $message */
 	public function log($level, $message, array $context = []): void
 	{
 		$level = self::LevelMap[$level] ?? Tracy\ILogger::ERROR;

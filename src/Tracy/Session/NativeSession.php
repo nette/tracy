@@ -1,15 +1,18 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Tracy;
 
+use const PHP_SESSION_ACTIVE;
 
+
+/**
+ * Session storage backed by native PHP session ($_SESSION).
+ */
 class NativeSession implements SessionStorage
 {
 	public function isAvailable(): bool

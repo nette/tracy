@@ -1,0 +1,11 @@
+<?php declare(strict_types=1); ?>
+<?php /** @var Throwable $ex */ ?><?php /** @var Throwable[] $exceptions */ ?><?php /** @var array{link: string, label: string, external?: bool}[] $actions */ ?><?php /** @var callable $dump */ ?><?php $ex = $ex->getPrevious() ?><?php if (!$ex || in_array($ex, $exceptions, true)) { return; } ?><?php $exceptions[] = $ex ?><?php $collapsed = count($exceptions) > 1 ?>
+<section class="tracy-section" id="tracyCaused<?= Tracy\Helpers::escapeHtml(count($exceptions)) ?>
+">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null]))) ?>">Caused by</a>
+	</h2>
+
+	<div class="<?= Tracy\Helpers::escapeHtml(implode(' ', array_filter(['tracy-section-panel', 'tracy-section--causedby', $collapsed ? 'tracy-collapsed' : null]))) ?>">
+<?php require __DIR__ . '/section-exception.phtml' ?>	</div>
+</section>

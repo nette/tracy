@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: PsrToTracyLoggerAdapter.
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 use Tracy\Bridges\Psr\PsrToTracyLoggerAdapter;
@@ -41,5 +39,5 @@ Assert::same([
 	[Psr\Log\LogLevel::WARNING, 'warning', []],
 	[Psr\Log\LogLevel::INFO, '123', []],
 	[Psr\Log\LogLevel::INFO, "array (1)\n   'x' => 'y'", []],
-	[Psr\Log\LogLevel::INFO, 'Exception: Something went wrong #123 in ' . __DIR__ . DIRECTORY_SEPARATOR . 'PsrToTracyLoggerAdapter.phpt:31', ['exception' => $exception]],
+	[Psr\Log\LogLevel::INFO, 'Exception: Something went wrong #123 in ' . __DIR__ . DIRECTORY_SEPARATOR . 'PsrToTracyLoggerAdapter.phpt:29', ['exception' => $exception]],
 ], $psrLogger->entries);

@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use Tester\Assert;
 
@@ -21,7 +19,7 @@ $render = function ($exception) use ($blueScreen) {
 
 $exception = new Exception('foo');
 
-$lookFor = '<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>';
+$lookFor = '<a href="#" data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a>';
 
 // sanity test: The environment section is present in the rendered string
 $c = $render($exception);

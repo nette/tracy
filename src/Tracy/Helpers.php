@@ -1,13 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Tracy (https://tracy.nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Tracy;
+
+use function array_filter, array_map, array_merge, array_pop, array_slice, array_unique, basename, bin2hex, class_exists, constant, count, dechex, defined, dirname, end, escapeshellarg, explode, extension_loaded, func_get_args, function_exists, get_class_methods, get_declared_classes, get_defined_functions, getenv, getmypid, headers_list, htmlspecialchars, htmlspecialchars_decode, iconv_strlen, implode, in_array, is_a, is_array, is_callable, is_file, is_object, is_string, levenshtein, ltrim, mb_strlen, mb_substr, method_exists, ob_end_clean, ob_get_clean, ob_start, ord, preg_match, preg_replace, preg_replace_callback, random_bytes, rawurlencode, rtrim, sapi_windows_vt100_support, spl_object_id, str_contains, str_pad, str_replace, strcasecmp, stream_isatty, strip_tags, strlen, strtoupper, strtr, substr, trait_exists, utf8_decode;
+use const DIRECTORY_SEPARATOR, ENT_HTML5, ENT_QUOTES, ENT_SUBSTITUTE, PHP_EOL, PHP_SAPI, STDOUT, STR_PAD_LEFT;
 
 
 /**
@@ -54,6 +55,7 @@ class Helpers
 		string $action = 'open',
 		string $search = '',
 		string $replace = '',
+		?int $column = null,
 	): ?string
 	{
 		if (Debugger::$editor && $file && ($action === 'create' || @is_file($file))) { // @ - may trigger error
@@ -64,7 +66,7 @@ class Helpers
 			return strtr(Debugger::$editor, [
 				'%action' => $action,
 				'%file' => rawurlencode($file),
-				'%line' => $line ?: 1,
+				'%line' => ($line ?: 1) . ($column ? ':' . $column : ''),
 				'%search' => rawurlencode($search),
 				'%replace' => rawurlencode($replace),
 			]);
@@ -74,6 +76,9 @@ class Helpers
 	}
 
 
+	/**
+	 * Formats an HTML string by replacing each % placeholder with the next argument, HTML-escaped.
+	 */
 	public static function formatHtml(string $mask): string
 	{
 		$args = func_get_args();
@@ -95,6 +100,11 @@ class Helpers
 	}
 
 
+	/**
+	 * @param  array<int, array{file?: string, line?: int, class?: string, function?: string, args?: mixed[]}>  $trace
+	 * @param  string|string[]  $method
+	 * @return ?array{file?: string, line?: int, class?: string, function?: string, args?: mixed[]}
+	 */
 	public static function findTrace(array $trace, array|string $method, ?int &$index = null): ?array
 	{
 		$m = is_array($method) ? $method : explode('::', $method);
@@ -142,7 +152,7 @@ class Helpers
 	{
 		if (self::isCli()) {
 			return 'CLI (PID: ' . getmypid() . ')'
-				. (isset($_SERVER['argv']) ? ': ' . implode(' ', array_map([self::class, 'escapeArg'], $_SERVER['argv'])) : '');
+				. (isset($_SERVER['argv']) ? ': ' . implode(' ', array_map(self::escapeArg(...), $_SERVER['argv'])) : '');
 
 		} elseif (isset($_SERVER['REQUEST_URI'])) {
 			return (!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https://' : 'http://')
@@ -165,7 +175,7 @@ class Helpers
 		) {
 			// do nothing
 		} elseif (preg_match('~Argument #(\d+)(?: \(\$\w+\))? must be of type callable, (.+ given)~', $message, $m)) {
-			$arg = $e->getTrace()[0]['args'][$m[1] - 1] ?? null;
+			$arg = $e->getTrace()[0]['args'][(int) $m[1] - 1] ?? null;
 			if (is_string($arg) && str_contains($arg, '::')) {
 				$arg = explode('::', $arg, 2);
 			}
@@ -175,7 +185,7 @@ class Helpers
 				$message = str_replace($m[2], "but class '$arg[0]' does not exist", $message);
 			} elseif (is_array($arg) && !method_exists($arg[0], $arg[1])) {
 				$hint = self::getSuggestion(get_class_methods($arg[0]) ?: [], $arg[1]);
-				$class = is_object($arg[0]) ? get_class($arg[0]) : $arg[0];
+				$class = is_object($arg[0]) ? $arg[0]::class : $arg[0];
 				$message = str_replace($m[2], "but method $class::$arg[1]() does not exist" . ($hint ? " (did you mean $hint?)" : ''), $message);
 			} elseif (is_string($arg) && !function_exists($arg)) {
 				$funcs = array_merge(get_defined_functions()['internal'], get_defined_functions()['user']);
@@ -196,7 +206,7 @@ class Helpers
 				$replace = ["$m[2](", "$hint("];
 			}
 
-		} elseif (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m)) {
+		} elseif (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m) && class_exists($m[1])) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), fn($prop) => !$prop->isStatic());
 			if ($hint = self::getSuggestion($items, $m[2])) {
@@ -204,7 +214,10 @@ class Helpers
 				$replace = ["->$m[2]", "->$hint"];
 			}
 
-		} elseif (preg_match('#^Access to undeclared static property:? ([\w\\\]+)::\$(\w+)#', $message, $m)) {
+		} elseif (
+			preg_match('#^Access to undeclared static property:? ([\w\\\]+)::\$(\w+)#', $message, $m)
+			&& class_exists($m[1])
+		) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_STATIC), fn($prop) => $prop->isPublic());
 			if ($hint = self::getSuggestion($items, $m[2])) {
@@ -215,7 +228,6 @@ class Helpers
 
 		if ($message !== $e->getMessage()) {
 			$ref = new \ReflectionProperty($e, 'message');
-			$ref->setAccessible(true);
 			$ref->setValue($e, $message);
 		}
 
@@ -232,7 +244,7 @@ class Helpers
 	/** @internal */
 	public static function improveError(string $message): string
 	{
-		if (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m)) {
+		if (preg_match('#^Undefined property: ([\w\\\]+)::\$(\w+)#', $message, $m) && class_exists($m[1])) {
 			$rc = new \ReflectionClass($m[1]);
 			$items = array_filter($rc->getProperties(\ReflectionProperty::IS_PUBLIC), fn($prop) => !$prop->isStatic());
 			$hint = self::getSuggestion($items, $m[2]);
@@ -270,13 +282,14 @@ class Helpers
 
 	/**
 	 * Finds the best suggestion.
+	 * @param  string[]|\ReflectionMethod[]|\ReflectionProperty[]  $items
 	 * @internal
 	 */
 	public static function getSuggestion(array $items, string $value): ?string
 	{
 		$best = null;
 		$min = (strlen($value) / 4 + 1) * 10 + .1;
-		$items = array_map(fn($item) => $item instanceof \Reflector ? $item->getName() : (string) $item, $items);
+		$items = array_map(fn($item) => $item instanceof \ReflectionMethod || $item instanceof \ReflectionProperty ? $item->getName() : (string) $item, $items);
 		foreach (array_unique($items) as $item) {
 			if (($len = levenshtein($item, $value, 10, 11, 10)) > 0 && $len < $min) {
 				$min = $len;
@@ -300,9 +313,9 @@ class Helpers
 
 
 	/** @internal */
-	public static function isAjax(): bool
+	public static function isAgent(): bool
 	{
-		return isset($_SERVER['HTTP_X_TRACY_AJAX']) && preg_match('#^\w{10,15}$#D', $_SERVER['HTTP_X_TRACY_AJAX']);
+		return ($_COOKIE['tracy-webdriver'] ?? null) === '1';
 	}
 
 
@@ -328,11 +341,11 @@ class Helpers
 
 
 	/** @internal */
-	public static function getNonceAttr(): string
+	public static function getNonce(): ?string
 	{
 		return preg_match('#^Content-Security-Policy(?:-Report-Only)?:.*\sscript-src\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
-			? ' nonce="' . self::escapeHtml($m[1]) . '"'
-			: '';
+			? $m[1]
+			: null;
 	}
 
 
@@ -353,10 +366,11 @@ class Helpers
 
 	/**
 	 * Captures PHP output into a string.
+	 * @param  callable(): void  $func
 	 */
 	public static function capture(callable $func): string
 	{
-		ob_start(fn() => null);
+		ob_start(fn() => '');
 		try {
 			$func();
 			return ob_get_clean();
@@ -434,7 +448,7 @@ class Helpers
 	{
 		return match (true) {
 			extension_loaded('mbstring') => mb_strlen($s, 'UTF-8'),
-			extension_loaded('iconv') => iconv_strlen($s, 'UTF-8'),
+			extension_loaded('iconv') => iconv_strlen($s, 'UTF-8') ?: strlen($s),
 			default => strlen(@utf8_decode($s)), // deprecated
 		};
 	}
@@ -465,7 +479,10 @@ class Helpers
 	}
 
 
-	/** @internal */
+	/**
+	 * @param  array<string, string>  $colors
+	 * @internal
+	 */
 	public static function htmlToAnsi(string $s, array $colors): string
 	{
 		$stack = ['0'];
@@ -583,10 +600,11 @@ class Helpers
 	}
 
 
+	/** @return list<\Throwable> */
 	public static function getExceptionChain(\Throwable $ex): array
 	{
 		$res = [$ex];
-		while (($ex = $ex->getPrevious()) && !in_array($ex, $res, true)) {
+		while (($ex = $ex->getPrevious()) && !in_array($ex, $res, strict: true)) {
 			$res[] = $ex;
 		}
 
@@ -594,6 +612,10 @@ class Helpers
 	}
 
 
+	/**
+	 * @param  callable(object): void  $callback
+	 * @param  true[]  $skip
+	 */
 	public static function traverseValue(mixed $val, callable $callback, array &$skip = [], ?string $refId = null): void
 	{
 		if (is_object($val)) {
@@ -620,7 +642,14 @@ class Helpers
 	}
 
 
-	/** @internal */
+	/**
+	 * Decomposes an integer flags value into matching constant names.
+	 * When $set is true, finds all flags set in the value (bitmask decomposition).
+	 * When $set is false, finds a single constant that equals the value exactly.
+	 * @param  string[]  $constants
+	 * @return list<string>|null
+	 * @internal
+	 */
 	public static function decomposeFlags(int $flags, bool $set, array $constants): ?array
 	{
 		$res = null;

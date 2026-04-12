@@ -1,0 +1,11 @@
+{varType array<array{title: string|null, dump: string, text: ?string}> $data}
+{exitIf !$data}
+## Dumps
+
+{foreach $data as $item}
+{if $item[title]}
+### {$item[title]}
+
+{/if}
+{=$item[text]}
+{/foreach}

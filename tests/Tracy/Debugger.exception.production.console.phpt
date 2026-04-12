@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger exception in production & console mode.
@@ -6,8 +6,6 @@
  * @httpCode   500
  * @outputMatch
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 

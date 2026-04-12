@@ -1,4 +1,4 @@
-name: Static Analysis (only informative)
+name: Static Analysis
 
 on: [push, pull_request]
 
@@ -7,12 +7,11 @@ jobs:
         name: PHPStan
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.1
+                  php-version: 8.5
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
             - run: composer phpstan -- --no-progress
-              continue-on-error: true # is only informative

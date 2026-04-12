@@ -7,21 +7,21 @@ jobs:
         name: Nette Code Checker
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.3
                   coverage: none
 
             - run: composer create-project nette/code-checker temp/code-checker ^3 --no-progress
-            - run: php temp/code-checker/code-checker --strict-types --no-progress -i tests/Tracy/fixtures -i examples/assets
+            - run: php temp/code-checker/code-checker --strict-types --no-progress -i tests/Tracy/fixtures -i examples/assets -i *.latte
 
 
     nette_cs:
         name: Nette Coding Standard
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.3
@@ -35,6 +35,6 @@ jobs:
         name: Code Standard Checker (JS)
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - run: npm install
             - run: npm run lint

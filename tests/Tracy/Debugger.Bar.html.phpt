@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\Debugger Bar in HTML.
  * @outputMatch %A%<!-- Tracy Debug Bar -->%A%
  */
-
-declare(strict_types=1);
 
 use Tracy\Debugger;
 
