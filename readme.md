@@ -457,5 +457,6 @@ This is a list of unofficial integrations to other frameworks and CMS:
 - Symfony framework: [kutny/tracy-bundle](https://github.com/kutny/tracy-bundle), [VasekPurchart/Tracy-Blue-Screen-Bundle](https://github.com/VasekPurchart/Tracy-Blue-Screen-Bundle)
 - [Wordpress](https://github.com/ktstudio/WP-Tracy)
 - [Joomla! CMS](https://n3t.bitbucket.io/extension/n3t-debug/)
+- [Yii3 framework](https://github.com/beastbytes/yii-tracy)
 
 ... feel free to be famous, create an integration for your favourite platform!
