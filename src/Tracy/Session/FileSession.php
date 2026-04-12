@@ -85,6 +85,11 @@ class FileSession implements SessionStorage
 
 	public function clean(): void
 	{
+		if (!is_readable($this->dir)) {
+			trigger_error("Tracy session directory '$this->dir' is not readable, cannot clean up old session files.", E_USER_WARNING);
+			return;
+		}
+
 		$old = strtotime('-1 week');
 		foreach (glob($this->dir . '/' . self::FilePrefix . '*') ?: [] as $file) {
 			if (filemtime($file) < $old) {
