@@ -4,6 +4,7 @@
 $nonce = Tracy\Helpers::getNonce() /* pos 2:1 */;
 echo '<!DOCTYPE html><!-- "\' --></textarea></script></style></pre></xmp></a></audio></button></canvas></datalist></details></dialog></iframe></listing></meter></noembed></noframes></noscript></optgroup></option></progress></rp></select></table></template></title></video>
 <meta charset="utf-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
 <meta name=robots content=noindex>
 <meta name=generator content="Tracy">
 <title>Server Error</title>
@@ -26,9 +27,9 @@ echo '<!DOCTYPE html><!-- "\' --></textarea></script></style></pre></xmp></a></a
 		was unable to complete your request. Please try again later.</p>
 
 		<p><small>error 500 <span> | ';
-echo Tracy\Helpers::escapeHtml(date('j. n. Y H:i')) /* pos 26:32 */;
+echo Tracy\Helpers::escapeHtml(date('j. n. Y H:i')) /* pos 27:32 */;
 echo '</span>';
-if (!$logged) /* pos 26:60 */ {
+if (!$logged) /* pos 27:60 */ {
 	echo '<br>Tracy is unable to log error.';
 }
 echo '</small></p>
@@ -36,7 +37,7 @@ echo '</small></p>
 </div>
 
 <script';
-echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 30:16 */;
+echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 31:16 */;
 echo '>
 	document.body.insertBefore(document.getElementById(\'tracy-error\'), document.body.firstChild);
 </script>

@@ -15,29 +15,30 @@ echo '<!DOCTYPE html><!-- "\' --></textarea></script></style></pre></xmp></a></i
 <head>
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="generator" content="Tracy by Nette Framework">
 
 	<title>';
-echo Tracy\Helpers::escapeHtml($title) /* pos 20:9 */;
+echo Tracy\Helpers::escapeHtml($title) /* pos 21:9 */;
 echo ': ';
-echo Tracy\Helpers::escapeHtml($exception->getMessage()) /* pos 20:19 */;
-echo Tracy\Helpers::escapeHtml($code) /* pos 20:45 */;
+echo Tracy\Helpers::escapeHtml($exception->getMessage()) /* pos 21:19 */;
+echo Tracy\Helpers::escapeHtml($code) /* pos 21:45 */;
 echo '</title>
 	<!-- in ';
-echo Tracy\Helpers::escapeHtml($exception->getFile()) /* pos 21:10 */;
+echo Tracy\Helpers::escapeHtml($exception->getFile()) /* pos 22:10 */;
 echo ':';
-echo Tracy\Helpers::escapeHtml($exception->getLine()) /* pos 21:34 */;
+echo Tracy\Helpers::escapeHtml($exception->getLine()) /* pos 22:34 */;
 echo ' -->
 ';
-if (count($chain) > 1) /* pos 22:2 */ {
+if (count($chain) > 1) /* pos 23:2 */ {
 	echo '	<!--';
-	foreach (array_slice($chain, 1) as $ex) /* pos 23:6 */ {
+	foreach (array_slice($chain, 1) as $ex) /* pos 24:6 */ {
 		echo '
 	caused by ';
-		echo Tracy\Helpers::escapeHtml(get_debug_type($ex)) /* pos 24:12 */;
+		echo Tracy\Helpers::escapeHtml(get_debug_type($ex)) /* pos 25:12 */;
 		echo ': ';
-		echo Tracy\Helpers::escapeHtml($ex->getMessage()) /* pos 24:35 */;
-		echo Tracy\Helpers::escapeHtml($ex->getCode() ? ' #' . $ex->getCode() : '') /* pos 24:54 */;
+		echo Tracy\Helpers::escapeHtml($ex->getMessage()) /* pos 25:35 */;
+		echo Tracy\Helpers::escapeHtml($ex->getCode() ? ' #' . $ex->getCode() : '') /* pos 25:54 */;
 		echo '
 	';
 
@@ -47,11 +48,11 @@ if (count($chain) > 1) /* pos 22:2 */ {
 ';
 }
 echo '	<!-- ';
-echo Tracy\Helpers::escapeHtml($source) /* pos 27:7 */;
+echo Tracy\Helpers::escapeHtml($source) /* pos 28:7 */;
 echo ' -->
 
 	<style class="tracy-debug">';
-echo str_replace('</', '<\\/', $css) /* pos 29:29 */;
+echo str_replace('</', '<\\/', $css) /* pos 30:29 */;
 echo '</style>
 </head>
 
@@ -61,11 +62,11 @@ echo '</style>
 require __DIR__ . '/content.phtml';
 echo '
 <script';
-echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 36:16 */;
+echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 37:16 */;
 echo '>
 \'use strict\';
 ';
-echo str_replace(['<!--', '</s'], ['<\\!--', '<\\/s'], $js) /* pos 38:1 */;
+echo str_replace(['<!--', '</s'], ['<\\!--', '<\\/s'], $js) /* pos 39:1 */;
 echo '
 Tracy.BlueScreen.init();
 </script>
