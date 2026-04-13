@@ -93,6 +93,18 @@ class Helpers
 	}
 
 
+	public static function escapeMd(mixed $s): string
+	{
+		$s = (string) $s;
+		// inline-anywhere: \ ` * [ ] < | ~ and _ at word boundary
+		$s = preg_replace('/[\\\`*\[\]<|~]|(?<![A-Za-z0-9])_|_(?![A-Za-z0-9])/', '\\\$0', $s);
+		// line-start block markers: > always; # + need following whitespace; - = need whitespace, repeat, or EOL
+		$s = preg_replace('/(?:^|(?<=[\r\n]))(>|#(?=[\s#]|$)|\+(?=\s|$)|-(?=[\s-]|$)|=(?=[\s=]|$))/', '\\\$0', $s);
+		// line-start ordered list marker: 1-9 digits + . or ) followed by whitespace or EOL
+		return preg_replace('/(?:^|(?<=[\r\n]))(\d{1,9})([.)])(?=\s|$)/', '$1\\\$2', $s);
+	}
+
+
 	public static function htmlToText(string $s): string
 	{
 		return htmlspecialchars_decode(strip_tags($s), ENT_QUOTES | ENT_HTML5);
@@ -360,6 +372,13 @@ class Helpers
 			&& isset($_SERVER['HTTP_HOST'])
 			&& !self::isCli()
 			&& !preg_match('#^Content-Type: *+(?!text/html)#im', implode("\n", headers_list()));
+	}
+
+
+	/** @internal */
+	public static function isAgent(): bool
+	{
+		return ($_COOKIE['tracy-webdriver'] ?? null) === '1';
 	}
 
 
