@@ -20,3 +20,9 @@ function findCallerLocationWrapper(): ?array
 {
 	return Helpers::findCallerLocation([__DIR__]);
 }
+
+
+function makeException(): \Throwable
+{
+	return new \Exception('inside transparent path');
+}

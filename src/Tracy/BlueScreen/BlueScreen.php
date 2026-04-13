@@ -21,7 +21,10 @@ class BlueScreen
 	/** @var string[] */
 	public array $info = [];
 
-	/** @var string[] paths to be collapsed in stack trace (e.g. core libraries) */
+	/**
+	 * @var string[]
+	 * @deprecated use Debugger::$transparentPaths instead
+	 */
 	public array $collapsePaths = [];
 
 	public int $maxDepth = 5;
@@ -57,9 +60,6 @@ class BlueScreen
 
 	public function __construct()
 	{
-		$this->collapsePaths = preg_match('#(.+/vendor)/tracy/tracy/src/Tracy/BlueScreen$#', strtr(__DIR__, '\\', '/'), $m)
-			? [$m[1] . '/tracy', $m[1] . '/nette', $m[1] . '/latte']
-			: [dirname(__DIR__)];
 		$this->fileGenerators[] = self::generateNewPhpFileContents(...);
 		$this->fibers = new \WeakMap;
 	}
@@ -363,19 +363,42 @@ class BlueScreen
 
 	/**
 	 * Should a file be collapsed in stack trace?
+	 * @deprecated use Helpers::countTransparentFrames()
 	 * @internal
 	 */
 	public function isCollapsed(string $file): bool
 	{
-		$file = strtr($file, '\\', '/') . '/';
-		foreach ($this->collapsePaths as $path) {
-			$path = strtr($path, '\\', '/') . '/';
-			if (str_starts_with($file, $path)) {
-				return true;
-			}
+		return Helpers::countTransparentFrames([['file' => $file]], [...$this->collapsePaths, ...Debugger::$transparentPaths]) > 0;
+	}
+
+
+	/**
+	 * Returns the exception's stack trace with Tracy-internal handler frames stripped, together with the
+	 * index of the frame that should be expanded by default (or null).
+	 * Strips top frames belonging to DevelopmentStrategy/ProductionStrategy and Debugger error/shutdown handlers.
+	 * @return array{list<array{file?: string, class?: string, function?: string}>, ?int}
+	 * @internal
+	 */
+	public function prepareStack(\Throwable $ex): array
+	{
+		$stack = $ex->getTrace();
+		while ($stack && (
+			in_array($stack[0]['class'] ?? null, [DevelopmentStrategy::class, ProductionStrategy::class], true)
+			|| (($stack[0]['class'] ?? null) === Debugger::class && in_array($stack[0]['function'], ['shutdownHandler', 'errorHandler'], true))
+		)) {
+			array_shift($stack);
 		}
 
-		return false;
+		$expanded = null;
+		if (
+			!$ex instanceof \ErrorException
+			|| in_array($ex->getSeverity(), [E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED], true)
+		) {
+			$n = Helpers::countTransparentFrames([['file' => $ex->getFile(), 'line' => $ex->getLine()], ...$stack], [...$this->collapsePaths, ...Debugger::$transparentPaths]);
+			$expanded = $n > 0 && $n <= count($stack) ? $n - 1 : null;
+		}
+
+		return [$stack, $expanded];
 	}
 
 

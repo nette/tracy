@@ -2,37 +2,13 @@
 
 namespace Tracy;
 
-use function in_array;
-
 /**
  * @var \Throwable $ex
  * @var callable $dump
  * @var BlueScreen $blueScreen
  */
 
-$stack = $ex->getTrace();
-if (in_array($stack[0]['class'] ?? null, [DevelopmentStrategy::class, ProductionStrategy::class], true)) {
-	array_shift($stack);
-}
-if (
-	($stack[0]['class'] ?? null) === Debugger::class
-	&& in_array($stack[0]['function'], ['shutdownHandler', 'errorHandler'], true)
-) {
-	array_shift($stack);
-}
-
-$expanded = null;
-if (
-	(!$ex instanceof \ErrorException || in_array($ex->getSeverity(), [E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED], true))
-	&& $blueScreen->isCollapsed($ex->getFile())
-) {
-	foreach ($stack as $key => $row) {
-		if (isset($row['file']) && !$blueScreen->isCollapsed($row['file'])) {
-			$expanded = $key;
-			break;
-		}
-	}
-}
+[$stack, $expanded] = $blueScreen->prepareStack($ex);
 
 $file = $ex->getFile();
 $line = $ex->getLine();
