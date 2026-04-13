@@ -139,6 +139,9 @@ class Debugger
 	/** @var string[] */
 	public static array $customJsFiles = [];
 
+	/** @var string[] path prefixes of "transparent" packages whose frames are skipped when locating user code and collapsed in stack traces */
+	public static array $transparentPaths = [];
+
 	/** @var array<\Closure(string, int): ?array{file: string, label: string, line?: int, column?: int, active?: bool}> */
 	private static array $sourceMappers = [];
 
@@ -617,4 +620,19 @@ class Debugger
 
 		return in_array($addr, $list, strict: true) || in_array("$secret@$addr", $list, strict: true);
 	}
+
+
+	/**
+	 * @return string[]
+	 * @internal
+	 */
+	public static function detectTransparentPaths(): array
+	{
+		return preg_match('#(.+/vendor)/tracy/tracy/src/Tracy/Debugger$#', strtr(__DIR__, '\\', '/'), $m)
+			? [$m[1] . '/tracy', $m[1] . '/nette', $m[1] . '/latte']
+			: [dirname(__DIR__)];
+	}
 }
+
+
+Debugger::$transparentPaths = Debugger::detectTransparentPaths();

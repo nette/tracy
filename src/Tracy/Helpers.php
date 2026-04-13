@@ -100,6 +100,58 @@ class Helpers
 
 
 	/**
+	 * Finds the file+line in user code from which a Tracy call originated.
+	 * @param  string[]|null  $paths  defaults to Debugger::$transparentPaths
+	 * @return ?array{file: string, line: int}
+	 */
+	public static function findCallerLocation(?array $paths = null): ?array
+	{
+		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+		$n = self::countTransparentFrames($trace, $paths);
+		return isset($trace[$n]['file'], $trace[$n]['line'])
+			? ['file' => $trace[$n]['file'], 'line' => $trace[$n]['line']]
+			: null;
+	}
+
+
+	/**
+	 * Returns the index of the first user-visible frame in $trace. A frame is transparent
+	 * when its file is missing, synthetic, in $paths, or its containing function (trace[n+1])
+	 * is annotated @tracySkipLocation.
+	 * @param  list<array{file?: string, class?: string, function?: string}>  $trace
+	 * @param  string[]|null  $paths  defaults to Debugger::$transparentPaths
+	 * @internal
+	 */
+	public static function countTransparentFrames(array $trace, ?array $paths = null): int
+	{
+		$paths ??= Debugger::$transparentPaths;
+		foreach ($trace as $key => $item) {
+			$next = $trace[$key + 1] ?? null;
+			$nextReflection = match (true) {
+				$next === null => null,
+				isset($next['class'], $next['function']) && method_exists($next['class'], $next['function']) => new \ReflectionMethod($next['class'], $next['function']),
+				isset($next['function']) && function_exists($next['function']) => new \ReflectionFunction($next['function']),
+				default => null,
+			};
+
+			if (isset($item['file'])
+				&& @is_file($item['file']) // @ - synthetic paths like eval()'d code, CLI, etc.
+				&& (!preg_match('#\s@tracySkipLocation\s#', (string) $nextReflection?->getDocComment()))
+			) {
+				$file = strtr($item['file'], '\\', '/') . '/';
+				foreach ($paths as $path) {
+					if (str_starts_with($file, strtr($path, '\\', '/') . '/')) {
+						continue 2;
+					}
+				}
+				return $key;
+			}
+		}
+		return count($trace);
+	}
+
+
+	/**
 	 * @param  array<int, array{file?: string, line?: int, class?: string, function?: string, args?: mixed[]}>  $trace
 	 * @param  string|string[]  $method
 	 * @return ?array{file?: string, line?: int, class?: string, function?: string, args?: mixed[]}

@@ -7,7 +7,6 @@
 
 namespace Tracy\Dumper;
 
-use Tracy;
 use Tracy\Helpers;
 use function array_map, array_slice, class_exists, count, explode, file, get_debug_type, get_resource_type, gettype, htmlspecialchars, implode, is_bool, is_file, is_int, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
 
@@ -60,7 +59,7 @@ final class Describer
 			return (object) [
 				'value' => $this->describeVar($var),
 				'snapshot' => $this->snapshot,
-				'location' => $this->location ? self::findLocation() : null,
+				'location' => $this->location ? self::findDumpCallSite() : null,
 			];
 
 		} finally {
@@ -328,46 +327,21 @@ final class Describer
 
 
 	/**
-	 * Finds the location where dump was called. Returns [file, line, code]
+	 * Finds the location where dump() was called and extracts the call's source snippet.
 	 * @return ?array{string, int, string}
 	 */
-	private static function findLocation(): ?array
+	private static function findDumpCallSite(): ?array
 	{
-		foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $item) {
-			$reflection = null;
-			if (isset($item['class'])) {
-				if ($item['class'] === self::class || $item['class'] === Tracy\Dumper::class) {
-					$location = $item;
-					continue;
-				} elseif (method_exists($item['class'], $item['function'])) {
-					$reflection = new \ReflectionMethod($item['class'], $item['function']);
-				}
-			} elseif (function_exists($item['function'])) {
-				$reflection = new \ReflectionFunction($item['function']);
-			}
-
-			if (
-				$reflection?->isInternal()
-				|| preg_match('#\s@tracySkipLocation\s#', (string) $reflection?->getDocComment())
-			) {
-				$location = $item;
-				continue;
-			}
-
-			break;
+		$location = Helpers::findCallerLocation();
+		if (!$location || !($lines = @file($location['file']))) { // @ - file may not be readable
+			return null;
 		}
 
-		if (isset($location['file'], $location['line']) && @is_file($location['file']) // @ - may trigger error
-			&& ($lines = @file($location['file'])) // @ - file may not be readable
-		) {
-			$line = $lines[$location['line'] - 1];
-			return [
-				$location['file'],
-				$location['line'],
-				trim(preg_match('#\w*dump(er::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line),
-			];
-		}
-
-		return null;
+		$line = $lines[$location['line'] - 1];
+		return [
+			$location['file'],
+			$location['line'],
+			trim(preg_match('#\w*dump(er::\w+)?\(.*\)#i', $line, $m) ? $m[0] : $line),
+		];
 	}
 }
