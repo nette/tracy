@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <ruleset name="Custom" namespace="Nette">
-	<rule ref="$presets/php82.xml"/>
-
 	<!-- \Exception::class -->
 	<rule ref="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly">
 		<exclude-pattern>./src/Tracy/Debugger/Debugger.php</exclude-pattern>
