@@ -7,23 +7,6 @@ if (!class_exists('Phar') || ini_get('phar.readonly')) {
 }
 
 
-function compressJs(string $s): string
-{
-	return $s;
-}
-
-
-function compressCss(string $s): string
-{
-	$s = preg_replace('#/\*.*?\*/#s', '', $s); // remove comments
-	$s = preg_replace('#[ \t\r\n]+#', ' ', $s); // compress space, ignore hard space
-	$s = preg_replace('# ([^0-9a-z.\#*-])#i', '$1', $s);
-	$s = preg_replace('#([^0-9a-z%)]) #i', '$1', $s);
-	$s = str_replace(';}', '}', $s); // remove leading semicolon
-	return trim($s);
-}
-
-
 @unlink('tracy.phar'); // @ - file may not exist
 
 $phar = new Phar('tracy.phar');
@@ -34,40 +17,16 @@ __HALT_COMPILER();
 
 $phar->startBuffering();
 foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../src', RecursiveDirectoryIterator::SKIP_DOTS)) as $file) {
-	echo "adding: {$iterator->getSubPathname()}\n";
+	if (!in_array($file->getExtension(), ['php', 'phtml', 'js', 'css'], true)) {
+		continue;
+	}
 
 	$s = file_get_contents($file->getPathname());
 	if (!str_contains($s, '@tracySkipLocation')) {
 		$s = php_strip_whitespace($file->getPathname());
 	}
 
-	if ($file->getExtension() === 'js') {
-		$s = compressJs($s);
-
-	} elseif ($file->getExtension() === 'css') {
-		$s = compressCss($s);
-
-	} elseif ($file->getExtension() === 'phtml') {
-		$s = preg_replace_callback('#(<(script|style).*(?<![?=])>)(.*)(</)#Uis', function ($m): string {
-			[, $begin, $type, $s, $end] = $m;
-
-			if ($s === '' || str_contains($s, '<?')) {
-				return $m[0];
-
-			} elseif ($type === 'script') {
-				$s = compressJs($s);
-
-			} elseif ($type === 'style') {
-				$s = compressCss($s);
-			}
-
-			return $begin . $s . $end;
-		}, $s);
-
-	} elseif ($file->getExtension() !== 'php') {
-		continue;
-	}
-
+	echo "adding: {$iterator->getSubPathname()}\n";
 	$phar[$iterator->getSubPathname()] = $s;
 }
 
