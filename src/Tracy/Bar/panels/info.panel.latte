@@ -23,15 +23,13 @@
 <div class="tracy-inner tracy-InfoPanel">
 	<div class="tracy-inner-container">
 		<table class="tracy-sortable">
-			{foreach $info as $key => $val}
-				<tr>
-					{if strlen($val) > 25}
-						<td colspan=2>{$key} <b>{$val}</b></td>
-					{else}
-						<td>{$key}</td><td>{$val}</td>
-					{/if}
-				</tr>
-			{/foreach}
+			<tr n:foreach="$info as $key => $val">
+				{if strlen($val) > 25}
+					<td colspan=2>{$key} <b>{$val}</b></td>
+				{else}
+					<td>{$key}</td><td>{$val}</td>
+				{/if}
+			</tr>
 		</table>
 
 		{if $packages || $devPackages}
@@ -40,27 +38,21 @@
 			</a></h2>
 
 			<div class="tracy-InfoPanel-packages tracy-collapsed">
-				{if $packages}
-					<table class="tracy-sortable">
-						{foreach $packages as $package}
-							<tr>
-								<td>{$package->name}</td>
-								<td>{$package->version}{strpos($package->version, dev) !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : ''}</td>
-							</tr>
-						{/foreach}
-					</table>
-				{/if}
+				<table n:if="$packages" class="tracy-sortable">
+					<tr n:foreach="$packages as $package">
+						<td>{$package->name}</td>
+						<td>{$package->version}{strpos($package->version, dev) !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : ''}</td>
+					</tr>
+				</table>
 
 				{if $devPackages}
 					<h2>Dev Packages</h2>
 
 					<table class="tracy-sortable">
-						{foreach $devPackages as $package}
-							<tr>
-								<td>{$package->name}</td>
-								<td>{$package->version}{strpos($package->version, dev) !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : ''}</td>
-							</tr>
-						{/foreach}
+						<tr n:foreach="$devPackages as $package">
+							<td>{$package->name}</td>
+							<td>{$package->version}{strpos($package->version, dev) !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : ''}</td>
+						</tr>
 					</table>
 				{/if}
 			</div>

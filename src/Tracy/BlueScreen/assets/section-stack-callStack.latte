@@ -26,58 +26,52 @@
 				</div>
 
 				<div class="tracy-callstack-callee">
-					{if $clickable}
-						<a href="#" data-tracy-ref="^div + div" class={[tracy-toggle, $expanded !== $key ? tracy-collapsed : null]}>
-					{/if}
-					{if isset($row[class])}{$row[class]}::{/if}<b>{$row[function]}</b> {empty($row[args]) ? '()' : '(...)'}
-					{if $clickable}</a>{/if}
+					<a n:tag-if="$clickable" href="#" data-tracy-ref="^div + div" class={[tracy-toggle, $expanded !== $key ? tracy-collapsed]}>
+						{if isset($row[class])}{$row[class]}::{/if}<b>{$row[function]}</b> {empty($row[args]) ? '()' : '(...)'}
+					</a>
 				</div>
 
-				{if $clickable}
-					<div class={[tracy-callstack-additional, $expanded !== $key ? tracy-collapsed : null]}>
-						{do $sourceOriginal = isset($row[file]) && @is_file($row[file]) ? [$row[file], $row[line]] : null}
-						{do $sourceMapped = $sourceOriginal ? Debugger::mapSource(...$sourceOriginal) : null}
-						{if $sourceOriginal && $sourceMapped}
-							<div class="tracy-tabs">
-								<ul class="tracy-tab-bar">
-									<li class={[tracy-tab-label, !$sourceMapped[active] ? tracy-active : null]}><a href="#">PHP</a></li>
-									<li class={[tracy-tab-label, $sourceMapped[active] ? tracy-active : null]}><a href="#">{$sourceMapped[label]}</a></li>
-								</ul>
+				<div n:if="$clickable" class={[tracy-callstack-additional, $expanded !== $key ? tracy-collapsed]}>
+					{do $sourceOriginal = isset($row[file]) && @is_file($row[file]) ? [$row[file], $row[line]]}
+					{do $sourceMapped = $sourceOriginal ? Debugger::mapSource(...$sourceOriginal)}
+					{if $sourceOriginal && $sourceMapped}
+						<div class="tracy-tabs">
+							<ul class="tracy-tab-bar">
+								<li class={[tracy-tab-label, !$sourceMapped[active] ? tracy-active]}><a href="#">PHP</a></li>
+								<li class={[tracy-tab-label, $sourceMapped[active] ? tracy-active]}><a href="#">{$sourceMapped[label]}</a></li>
+							</ul>
 
-								<div>
-									<div class={[tracy-tab-panel, !$sourceMapped[active] ? tracy-active : null]}>
-										{BlueScreen::highlightFile(...$sourceOriginal)}
-									</div>
+							<div>
+								<div class={[tracy-tab-panel, !$sourceMapped[active] ? tracy-active]}>
+									{BlueScreen::highlightFile(...$sourceOriginal)}
+								</div>
 
-									<div class={[tracy-tab-panel, $sourceMapped[active] ? tracy-active : null]}>
-										{BlueScreen::highlightFile($sourceMapped[file], line: $sourceMapped[line], column: $sourceMapped[column], php: false)}
-									</div>
+								<div class={[tracy-tab-panel, $sourceMapped[active] ? tracy-active]}>
+									{BlueScreen::highlightFile($sourceMapped[file], line: $sourceMapped[line], column: $sourceMapped[column], php: false)}
 								</div>
 							</div>
-						{elseif $sourceOriginal}
-							{BlueScreen::highlightFile(...$sourceOriginal)}
-						{/if}
+						</div>
+					{elseif $sourceOriginal}
+						{BlueScreen::highlightFile(...$sourceOriginal)}
+					{/if}
 
 
-						{if !empty($row[args])}
-							<table class="tracy-callstack-args">
-								{try}
-									{do $params = (isset($row[class]) ? new \ReflectionMethod($row[class], $row[function]) : new \ReflectionFunction($row[function]))->getParameters()}
-								{rollback}
-									{do $params = []}
-								{/try}
+					<table n:if="!empty($row[args])" class="tracy-callstack-args">
+						{try}
+							{do $params = (isset($row[class]) ? new \ReflectionMethod($row[class], $row[function]) : new \ReflectionFunction($row[function]))->getParameters()}
+						{rollback}
+							{do $params = []}
+						{/try}
 
-								{foreach $row[args] as $k => $v}
-									{do $argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k}
-									<tr>
-										<th>{is_string($argName) ? '$' : '#'}{$argName}</th>
-										<td>{$dump($v, (string) $argName)}</td>
-									</tr>
-								{/foreach}
-							</table>
-						{/if}
-					</div>
-				{/if}
+						{foreach $row[args] as $k => $v}
+							{do $argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k}
+							<tr>
+								<th>{is_string($argName) ? '$' : '#'}{$argName}</th>
+								<td>{$dump($v, (string) $argName)}</td>
+							</tr>
+						{/foreach}
+					</table>
+				</div>
 			{/foreach}
 		</div>
 	</div>

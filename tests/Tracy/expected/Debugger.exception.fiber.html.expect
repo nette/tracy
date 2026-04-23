@@ -29,7 +29,9 @@
 
 	<h1>
 		<span>The my exception</span>
-		<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
+		<a href="%a%" class="tracy-action" target="_blank" rel="noreferrer noopener">
+			search&#x25ba;
+		</a>
 	</h1>
 
 </section>
@@ -75,7 +77,7 @@
 
 			<div class="tracy-callstack-callee">
 				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
-				<b>third</b> (...)
+					<b>third</b> (...)
 				</a>
 			</div>
 
@@ -99,7 +101,7 @@
 
 			<div class="tracy-callstack-callee">
 				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
-				<b>second</b> (...)
+					<b>second</b> (...)
 				</a>
 			</div>
 
@@ -128,7 +130,7 @@
 
 			<div class="tracy-callstack-callee">
 				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
-				<b>first</b> (...)
+					<b>first</b> (...)
 				</a>
 			</div>
 
@@ -173,7 +175,7 @@
 
 			<div class="tracy-callstack-callee">
 				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle">
-				Fiber::<b>suspend</b> (...)
+					Fiber::<b>suspend</b> (...)
 				</a>
 			</div>
 
@@ -197,7 +199,7 @@
 
 			<div class="tracy-callstack-callee">
 				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
-				<b>gen2</b> (...)
+					<b>gen2</b> (...)
 				</a>
 			</div>
 
@@ -221,7 +223,7 @@
 
 			<div class="tracy-callstack-callee">
 				<a href="#" data-tracy-ref="^div + div" class="tracy-toggle tracy-collapsed">
-				<b>gen1</b> ()
+					<b>gen1</b> ()
 				</a>
 			</div>
 
@@ -236,7 +238,8 @@
 			</div>
 
 			<div class="tracy-callstack-callee">
-				<b>{closure%a?%}</b> ()
+
+					<b>{closure%a?%}</b> ()
 
 			</div>
 

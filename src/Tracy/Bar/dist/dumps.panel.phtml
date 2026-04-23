@@ -16,15 +16,15 @@ echo '<style class="tracy-debug">
 <div class="tracy-inner tracy-DumpPanel">
 ';
 foreach ($data as $item) /* pos 15:2 */ {
-	if ($item['title']) /* pos 16:3 */ {
+	if ($item['title']) /* pos 16:7 */ {
 		echo '	<h2>';
-		echo Tracy\Helpers::escapeHtml($item['title']) /* pos 17:8 */;
+		echo Tracy\Helpers::escapeHtml($item['title']) /* pos 16:27 */;
 		echo '</h2>
 ';
 	}
 	echo '
 	';
-	echo $item['dump'] /* pos 20:3 */;
+	echo $item['dump'] /* pos 18:3 */;
 	echo "\n";
 
 }

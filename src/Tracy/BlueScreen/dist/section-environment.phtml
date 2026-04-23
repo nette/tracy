@@ -19,17 +19,17 @@ echo '
 			<ul class="tracy-tab-bar">
 				<li class="tracy-tab-label tracy-active"><a href="#">$_SERVER</a></li>
 ';
-if ($_SESSION ?? null) /* pos 19:5 */ {
+if ($_SESSION ?? null) /* pos 19:9 */ {
 	echo '				<li class="tracy-tab-label"><a href="#">$_SESSION</a></li>
 ';
 }
-if ($constants) /* pos 22:5 */ {
+if ($constants) /* pos 20:9 */ {
 	echo '				<li class="tracy-tab-label"><a href="#">Constants</a></li>
 ';
 }
 echo '				<li class="tracy-tab-label"><a href="#">Configuration</a></li>
 ';
-if ($obStatus) /* pos 26:5 */ {
+if ($obStatus) /* pos 22:9 */ {
 	echo '				<li class="tracy-tab-label"><a href="#">Output buffers</a></li>
 ';
 }
@@ -39,13 +39,13 @@ echo '			</ul>
 				<div class="tracy-tab-panel tracy-pane tracy-active">
 					<table class="tracy-sortable">
 ';
-foreach ($_SERVER as $k => $v) /* pos 34:7 */ {
+foreach ($_SERVER as $k => $v) /* pos 28:11 */ {
 	echo '						<tr>
 							<th>';
-	echo Tracy\Helpers::escapeHtml($k) /* pos 36:13 */;
+	echo Tracy\Helpers::escapeHtml($k) /* pos 29:12 */;
 	echo '</th>
 							<td>';
-	echo $dump($v, $k) /* pos 37:13 */;
+	echo $dump($v, $k) /* pos 30:12 */;
 	echo '</td>
 						</tr>
 ';
@@ -56,21 +56,21 @@ echo '					</table>
 				</div>
 
 ';
-if ($_SESSION ?? null) /* pos 43:5 */ {
+if ($_SESSION ?? null) /* pos 35:10 */ {
 	echo '				<div class="tracy-tab-panel">
 					<div class="tracy-pane">
 						<table class="tracy-sortable">
 ';
-	foreach ($_SESSION as $k => $v) /* pos 47:9 */ {
+	foreach ($_SESSION as $k => $v) /* pos 38:12 */ {
 		echo '							<tr>
 								<th>';
-		echo Tracy\Helpers::escapeHtml($k) /* pos 49:15 */;
+		echo Tracy\Helpers::escapeHtml($k) /* pos 39:13 */;
 		echo '</th>
 								<td>';
-		if ($k === '__NF') /* pos 50:15 */ {
+		if ($k === '__NF') /* pos 40:13 */ {
 			echo '<i>Nette Session</i>';
-		} else /* pos 50:53 */ {
-			echo $dump($v, $k) /* pos 50:59 */;
+		} else /* pos 40:51 */ {
+			echo $dump($v, $k) /* pos 40:57 */;
 		}
 		echo '</td>
 							</tr>
@@ -82,18 +82,18 @@ if ($_SESSION ?? null) /* pos 43:5 */ {
 					</div>
 
 ';
-	if (!empty($_SESSION['__NF']['DATA'])) /* pos 56:7 */ {
+	if (!empty($_SESSION['__NF']['DATA'])) /* pos 45:6 */ {
 		echo '					<h3>Nette Session</h3>
 					<div class="tracy-pane">
 						<table class="tracy-sortable">
 ';
-		foreach ($_SESSION['__NF']['DATA'] as $k => $v) /* pos 60:10 */ {
+		foreach ($_SESSION['__NF']['DATA'] as $k => $v) /* pos 49:13 */ {
 			echo '							<tr>
 								<th>';
-			echo Tracy\Helpers::escapeHtml($k) /* pos 62:16 */;
+			echo Tracy\Helpers::escapeHtml($k) /* pos 50:14 */;
 			echo '</th>
 								<td>';
-			echo $dump($v, $k) /* pos 63:16 */;
+			echo $dump($v, $k) /* pos 51:14 */;
 			echo '</td>
 							</tr>
 ';
@@ -108,17 +108,17 @@ if ($_SESSION ?? null) /* pos 43:5 */ {
 ';
 }
 echo "\n";
-if ($constants) /* pos 72:5 */ {
+if ($constants) /* pos 58:10 */ {
 	echo '				<div class="tracy-tab-panel tracy-pane">
 					<table class="tracy-sortable">
 ';
-	foreach ($constants as $k => $v) /* pos 75:8 */ {
+	foreach ($constants as $k => $v) /* pos 60:11 */ {
 		echo '						<tr>
 							<th>';
-		echo Tracy\Helpers::escapeHtml($k) /* pos 77:14 */;
+		echo Tracy\Helpers::escapeHtml($k) /* pos 61:12 */;
 		echo '</th>
 							<td>';
-		echo $dump($v, $k) /* pos 78:14 */;
+		echo $dump($v, $k) /* pos 62:12 */;
 		echo '</td>
 						</tr>
 ';
@@ -132,14 +132,14 @@ if ($constants) /* pos 72:5 */ {
 echo '
 				<div class="tracy-tab-panel">
 ';
-$blueScreen->renderPhpInfo() /* pos 86:6 */;
+$blueScreen->renderPhpInfo() /* pos 68:6 */;
 echo '				</div>
 
 ';
-if ($obStatus) /* pos 89:5 */ {
+if ($obStatus) /* pos 71:10 */ {
 	echo '				<div class="tracy-tab-panel tracy-pane">
 					';
-	echo Dumper::toHtml($obStatus, [Dumper::COLLAPSE_COUNT => 10]) /* pos 91:7 */;
+	echo Dumper::toHtml($obStatus, [Dumper::COLLAPSE_COUNT => 10]) /* pos 72:6 */;
 	echo '
 				</div>
 ';

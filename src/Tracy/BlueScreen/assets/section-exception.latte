@@ -8,17 +8,15 @@
 
 {include 'section-header.phtml'}
 
-{foreach $blueScreen->renderPanels($ex) as $panel}
-	<section class="tracy-section">
-		<h2 class="tracy-section-label">
-			<a href="#" data-tracy-ref="^+" class="tracy-toggle">{$panel->tab}</a>
-		</h2>
+<section n:foreach="$blueScreen->renderPanels($ex) as $panel" class="tracy-section">
+	<h2 class="tracy-section-label">
+		<a href="#" data-tracy-ref="^+" class="tracy-toggle">{$panel->tab}</a>
+	</h2>
 
-		<div class="tracy-section-panel">
-			{$panel->panel|noescape}
-		</div>
-	</section>
-{/foreach}
+	<div class="tracy-section-panel">
+		{$panel->panel|noescape}
+	</div>
+</section>
 
 {if !$exceptions && ($generators || $fibers)}
 	<section class="tracy-section tracy-section--stack">
@@ -27,13 +25,9 @@
 				<ul class="tracy-tab-bar">
 					<li class="tracy-tab-label tracy-active"><a href="#">Main thread</a></li>
 
-					{foreach $generators as $id => $generator}
-						<li class="tracy-tab-label"><a href="#">Generator #{$id}</a></li>
-					{/foreach}
+					<li n:foreach="$generators as $id => $generator" class="tracy-tab-label"><a href="#">Generator #{$id}</a></li>
 
-					{foreach $fibers as $id => $fiber}
-						<li class="tracy-tab-label"><a href="#">Fiber #{$id}</a></li>
-					{/foreach}
+					<li n:foreach="$fibers as $id => $fiber" class="tracy-tab-label"><a href="#">Fiber #{$id}</a></li>
 				</ul>
 
 				<div>
@@ -41,27 +35,23 @@
 						{include '../assets/section-stack-exception.php'}
 					</div>
 
-					{foreach $generators as $generator}
-						<div class="tracy-tab-panel">
-							{do $ref = new \ReflectionGenerator($generator)}
-							{do $stack = $ref->getTrace()}
-							{do $expanded = null}
-							{do $refExec = new \ReflectionGenerator($ref->getExecutingGenerator())}
-							{do $file = $refExec->getExecutingFile()}
-							{do $line = $refExec->getExecutingLine()}
-							{include 'section-stack-sourceFile.phtml'}
-							{include 'section-stack-callStack.phtml'}
-						</div>
-					{/foreach}
+					<div n:foreach="$generators as $generator" class="tracy-tab-panel">
+						{do $ref = new \ReflectionGenerator($generator)}
+						{do $stack = $ref->getTrace()}
+						{do $expanded = null}
+						{do $refExec = new \ReflectionGenerator($ref->getExecutingGenerator())}
+						{do $file = $refExec->getExecutingFile()}
+						{do $line = $refExec->getExecutingLine()}
+						{include 'section-stack-sourceFile.phtml'}
+						{include 'section-stack-callStack.phtml'}
+					</div>
 
-					{foreach $fibers as $fiber}
-						<div class="tracy-tab-panel">
-							{do $ref = new \ReflectionFiber($fiber)}
-							{do $stack = $ref->getTrace()}
-							{do $expanded = 0}
-							{include 'section-stack-callStack.phtml'}
-						</div>
-					{/foreach}
+					<div n:foreach="$fibers as $fiber" class="tracy-tab-panel">
+						{do $ref = new \ReflectionFiber($fiber)}
+						{do $stack = $ref->getTrace()}
+						{do $expanded = 0}
+						{include 'section-stack-callStack.phtml'}
+					</div>
 				</div>
 			</div>
 		</div>

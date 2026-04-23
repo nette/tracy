@@ -8,18 +8,16 @@
 {do $code = $ex->getCode() ? ' #' . $ex->getCode() : ''}
 
 <section class="tracy-section tracy-section--error">
-	{if $ex->getMessage()}<p>{$title}{$code}</p>{/if}
+	<p n:if="$ex->getMessage()">{$title}{$code}</p>
 
 	<h1>
 		<span>{$blueScreen->formatMessage($ex) ?: ($title . $code)}</span>
-		{foreach $actions as $item}
-			<a href="{$item[link]}" class="tracy-action" target={!empty($item[external]) ? '_blank' : null} rel={!empty($item[external]) ? 'noreferrer noopener' : null}>{$item[label]}&#x25ba;</a>
-		{/foreach}
+		<a n:foreach="$actions as $item" href="{$item[link]}" class="tracy-action" target={!empty($item[external]) ? '_blank'} rel={!empty($item[external]) ? 'noreferrer noopener'}>
+			{$item[label]}&#x25ba;
+		</a>
 	</h1>
 
-	{if $ex->getPrevious()}
-		<div class="tracy-caused">
-			<a href="#tracyCaused{count($exceptions) + 1}">Caused by {get_debug_type($ex->getPrevious())}</a>
-		</div>
-	{/if}
+	<div n:if="$ex->getPrevious()" class="tracy-caused">
+		<a href="#tracyCaused{count($exceptions) + 1}">Caused by {get_debug_type($ex->getPrevious())}</a>
+	</div>
 </section>

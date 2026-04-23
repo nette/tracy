@@ -17,26 +17,26 @@ echo Tracy\Helpers::escapeHtml(getmypid()) /* pos 13:18 */;
 echo '</h3>
 
 ';
-if (count($tmp = explode('):', $source, 2)) === 2) /* pos 15:3 */ {
+if (count($tmp = explode('):', $source, 2)) === 2) /* pos 15:8 */ {
 	echo '		<pre>php';
-	echo Tracy\Helpers::escapeHtml($tmp[1]) /* pos 16:12 */;
+	echo Tracy\Helpers::escapeHtml($tmp[1]) /* pos 15:64 */;
 	echo '</pre>
 ';
 }
 echo "\n";
-if (isset($_SERVER['argv'])) /* pos 19:3 */ {
+if (isset($_SERVER['argv'])) /* pos 17:3 */ {
 	echo '		<h3>Arguments</h3>
 
 		<div class="tracy-pane">
 			<table>
 ';
-	foreach ($_SERVER['argv'] as $k => $v) /* pos 24:6 */ {
+	foreach ($_SERVER['argv'] as $k => $v) /* pos 22:10 */ {
 		echo '				<tr>
 					<th>';
-		echo Tracy\Helpers::escapeHtml($k) /* pos 26:12 */;
+		echo Tracy\Helpers::escapeHtml($k) /* pos 23:11 */;
 		echo '</th>
 					<td>';
-		echo $dump($v, $k) /* pos 27:12 */;
+		echo $dump($v, $k) /* pos 24:11 */;
 		echo '</td>
 				</tr>
 ';

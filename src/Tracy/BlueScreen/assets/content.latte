@@ -36,9 +36,9 @@
 
 			{do $collapsed = !isset($panel->collapsed) || $panel->collapsed}
 			<section class="tracy-section">
-				<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class={[tracy-toggle, $collapsed ? tracy-collapsed : null]}>{$panel->tab}</a></h2>
+				<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class={[tracy-toggle, $collapsed ? tracy-collapsed]}>{$panel->tab}</a></h2>
 
-				<div class={[tracy-section-panel, $collapsed ? tracy-collapsed : null]}>
+				<div class={[tracy-section-panel, $collapsed ? tracy-collapsed]}>
 					{$panel->panel|noescape}
 				</div>
 			</section>
@@ -48,23 +48,19 @@
 		{include 'section-cli.phtml'}
 		{include 'section-http.phtml'}
 
-		{foreach $bottomPanels as $panel}
-			<section class="tracy-section">
-				<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">{$panel->tab}</a></h2>
+		<section n:foreach="$bottomPanels as $panel" class="tracy-section">
+			<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">{$panel->tab}</a></h2>
 
-				<div class="tracy-section-panel">
-					{$panel->panel|noescape}
-				</div>
-			</section>
-		{/foreach}
+			<div class="tracy-section-panel">
+				{$panel->panel|noescape}
+			</div>
+		</section>
 
 		<footer>
 			<ul>
 				<li><b><a href="https://github.com/sponsors/dg" target="_blank" rel="noreferrer noopener">Please support Tracy via a donation 💙️</a></b></li>
 				<li>Report generated at {date('Y/m/d H:i:s')}</li>
-				{foreach $info as $item}
-					<li>{$item}</li>
-				{/foreach}
+				<li n:foreach="$info as $item">{$item}</li>
 			</ul>
 
 			<div class="tracy-footer-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>

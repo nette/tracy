@@ -11,28 +11,30 @@ $code = $ex->getCode() ? ' #' . $ex->getCode() : '' /* pos 8:1 */;
 echo '
 <section class="tracy-section tracy-section--error">
 ';
-if ($ex->getMessage()) /* pos 11:2 */ {
+if ($ex->getMessage()) /* pos 11:5 */ {
 	echo '	<p>';
-	echo Tracy\Helpers::escapeHtml($title) /* pos 11:27 */;
-	echo Tracy\Helpers::escapeHtml($code) /* pos 11:35 */;
-	echo '</p>';
+	echo Tracy\Helpers::escapeHtml($title) /* pos 11:30 */;
+	echo Tracy\Helpers::escapeHtml($code) /* pos 11:38 */;
+	echo '</p>
+';
 }
 echo '
-
 	<h1>
 		<span>';
 echo $blueScreen->formatMessage($ex) ?: $title . $code /* pos 14:9 */;
 echo '</span>
 ';
-foreach ($actions as $item) /* pos 15:3 */ {
+foreach ($actions as $item) /* pos 15:6 */ {
 	echo '		<a';
-	echo ($ʟ_tmp = ($item['link'])) === null ? '' : ' href="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 16:14 */;
+	echo ($ʟ_tmp = ($item['link'])) === null ? '' : ' href="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 15:43 */;
 	echo ' class="tracy-action"';
-	echo ($ʟ_tmp = (!empty($item['external']) ? '_blank' : null)) === null ? '' : ' target="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 16:57 */;
-	echo ($ʟ_tmp = (!empty($item['external']) ? 'noreferrer noopener' : null)) === null ? '' : ' rel="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 16:105 */;
-	echo '>';
-	echo Tracy\Helpers::escapeHtml($item['label']) /* pos 16:161 */;
-	echo '&#x25ba;</a>
+	echo ($ʟ_tmp = (!empty($item['external']) ? '_blank' : null)) === null ? '' : ' target="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 15:86 */;
+	echo ($ʟ_tmp = (!empty($item['external']) ? 'noreferrer noopener' : null)) === null ? '' : ' rel="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 15:127 */;
+	echo '>
+			';
+	echo Tracy\Helpers::escapeHtml($item['label']) /* pos 16:4 */;
+	echo '&#x25ba;
+		</a>
 ';
 
 }
@@ -40,12 +42,12 @@ foreach ($actions as $item) /* pos 15:3 */ {
 echo '	</h1>
 
 ';
-if ($ex->getPrevious()) /* pos 20:2 */ {
+if ($ex->getPrevious()) /* pos 20:7 */ {
 	echo '	<div class="tracy-caused">
 		<a href="#tracyCaused';
-	echo Tracy\Helpers::escapeHtml(count($exceptions) + 1) /* pos 22:25 */;
+	echo Tracy\Helpers::escapeHtml(count($exceptions) + 1) /* pos 21:24 */;
 	echo '">Caused by ';
-	echo Tracy\Helpers::escapeHtml(get_debug_type($ex->getPrevious())) /* pos 22:61 */;
+	echo Tracy\Helpers::escapeHtml(get_debug_type($ex->getPrevious())) /* pos 21:60 */;
 	echo '</a>
 	</div>
 ';

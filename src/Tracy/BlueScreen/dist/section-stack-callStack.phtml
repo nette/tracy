@@ -37,97 +37,98 @@ foreach ($stack as $key => $row) /* pos 17:4 */ {
 	echo '			</div>
 
 			<div class="tracy-callstack-callee">
-';
-	if ($clickable) /* pos 29:6 */ {
-		echo '				<a href="#" data-tracy-ref="^div + div"';
-		echo ($ʟ_tmp = array_filter(['tracy-toggle', $expanded !== $key ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 30:54 */;
-		echo '>
-';
+				';
+	$ʟ_tag = '';
+	if ($clickable) /* pos 29:9 */ {
+		$ʟ_tag = '</a>' . $ʟ_tag;
+		echo '<a href="#" data-tracy-ref="^div + div"';
+		echo ($ʟ_tmp = array_filter(['tracy-toggle', $expanded !== $key ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 29:75 */;
+		echo '>';
 	}
-	echo '				';
-	if (isset($row['class'])) /* pos 32:6 */ {
-		echo Tracy\Helpers::escapeHtml($row['class']) /* pos 32:29 */;
+	$ʟ_tags[0] = $ʟ_tag;
+	echo '
+					';
+	if (isset($row['class'])) /* pos 30:7 */ {
+		echo Tracy\Helpers::escapeHtml($row['class']) /* pos 30:30 */;
 		echo '::';
 	}
 	echo '<b>';
-	echo Tracy\Helpers::escapeHtml($row['function']) /* pos 32:52 */;
+	echo Tracy\Helpers::escapeHtml($row['function']) /* pos 30:53 */;
 	echo '</b> ';
-	echo Tracy\Helpers::escapeHtml(empty($row['args']) ? '()' : '(...)') /* pos 32:73 */;
+	echo Tracy\Helpers::escapeHtml(empty($row['args']) ? '()' : '(...)') /* pos 30:74 */;
 	echo '
 				';
-	if ($clickable) /* pos 33:6 */ {
-		echo '</a>';
-	}
+	echo $ʟ_tags[0];
 	echo '
 			</div>
 
 ';
-	if ($clickable) /* pos 36:5 */ {
+	if ($clickable) /* pos 34:10 */ {
 		echo '			<div';
-		echo ($ʟ_tmp = array_filter(['tracy-callstack-additional', $expanded !== $key ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 37:18 */;
+		echo ($ʟ_tmp = array_filter(['tracy-callstack-additional', $expanded !== $key ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 34:35 */;
 		echo '>
 ';
-		$sourceOriginal = isset($row['file']) && @is_file($row['file']) ? [$row['file'], $row['line']] : null /* pos 38:7 */;
-		$sourceMapped = $sourceOriginal ? Debugger::mapSource(...$sourceOriginal) : null /* pos 39:7 */;
-		if ($sourceOriginal && $sourceMapped) /* pos 40:7 */ {
+		$sourceOriginal = isset($row['file']) && @is_file($row['file']) ? [$row['file'], $row['line']] : null /* pos 35:6 */;
+		$sourceMapped = $sourceOriginal ? Debugger::mapSource(...$sourceOriginal) : null /* pos 36:6 */;
+		if ($sourceOriginal && $sourceMapped) /* pos 37:6 */ {
 			echo '				<div class="tracy-tabs">
 					<ul class="tracy-tab-bar">
 						<li';
-			echo ($ʟ_tmp = array_filter(['tracy-tab-label', !$sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 43:21 */;
+			echo ($ʟ_tmp = array_filter(['tracy-tab-label', !$sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 40:20 */;
 			echo '><a href="#">PHP</a></li>
 						<li';
-			echo ($ʟ_tmp = array_filter(['tracy-tab-label', $sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 44:21 */;
+			echo ($ʟ_tmp = array_filter(['tracy-tab-label', $sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 41:20 */;
 			echo '><a href="#">';
-			echo Tracy\Helpers::escapeHtml($sourceMapped['label']) /* pos 44:97 */;
+			echo Tracy\Helpers::escapeHtml($sourceMapped['label']) /* pos 41:89 */;
 			echo '</a></li>
 					</ul>
 
 					<div>
 						<div';
-			echo ($ʟ_tmp = array_filter(['tracy-tab-panel', !$sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 48:22 */;
+			echo ($ʟ_tmp = array_filter(['tracy-tab-panel', !$sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 45:21 */;
 			echo '>
 							';
-			echo BlueScreen::highlightFile(...$sourceOriginal) /* pos 49:11 */;
+			echo BlueScreen::highlightFile(...$sourceOriginal) /* pos 46:10 */;
 			echo '
 						</div>
 
 						<div';
-			echo ($ʟ_tmp = array_filter(['tracy-tab-panel', $sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 52:22 */;
+			echo ($ʟ_tmp = array_filter(['tracy-tab-panel', $sourceMapped['active'] ? 'tracy-active' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 49:21 */;
 			echo '>
 							';
-			echo BlueScreen::highlightFile($sourceMapped['file'], line: $sourceMapped['line'], column: $sourceMapped['column'], php: false) /* pos 53:11 */;
+			echo BlueScreen::highlightFile($sourceMapped['file'], line: $sourceMapped['line'], column: $sourceMapped['column'], php: false) /* pos 50:10 */;
 			echo '
 						</div>
 					</div>
 				</div>
 ';
-		} elseif ($sourceOriginal) /* pos 57:7 */ {
+		} elseif ($sourceOriginal) /* pos 54:6 */ {
 			echo '				';
-			echo BlueScreen::highlightFile(...$sourceOriginal) /* pos 58:8 */;
+			echo BlueScreen::highlightFile(...$sourceOriginal) /* pos 55:7 */;
 			echo "\n";
 		}
 
 		echo '
 
 ';
-		if (!empty($row['args'])) /* pos 62:7 */ {
+		if (!empty($row['args'])) /* pos 59:13 */ {
 			echo '				<table class="tracy-callstack-args">
 ';
 			try {
-				$params = (isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']))->getParameters() /* pos 65:10 */;
+				$params = (isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']))->getParameters() /* pos 61:8 */;
 			} catch (\Throwable) {
-				$params = [] /* pos 67:10 */;
+				$params = [] /* pos 63:8 */;
 			}
 			echo "\n";
-			foreach ($row['args'] as $k => $v) /* pos 70:9 */ {
-				$argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k /* pos 71:10 */;
+			foreach ($row['args'] as $k => $v) /* pos 66:7 */ {
+				$argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k /* pos 67:8 */;
 				echo '					<tr>
 						<th>';
-				echo Tracy\Helpers::escapeHtml(is_string($argName) ? '$' : '#') /* pos 73:15 */;
-				echo Tracy\Helpers::escapeHtml($argName) /* pos 73:48 */;
+				echo Tracy\Helpers::escapeHtml(is_string($argName) ? '$' : '#') /* pos 69:13 */;
+				echo Tracy\Helpers::escapeHtml($argName) /* pos 69:46 */;
 				echo '</th>
 						<td>';
-				echo $dump($v, (string) $argName) /* pos 74:15 */;
+				echo $dump($v, (string) $argName) /* pos 70:13 */;
 				echo '</td>
 					</tr>
 ';

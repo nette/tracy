@@ -9,10 +9,10 @@
 
 <section class="tracy-section" id="tracyCaused{count($exceptions)}">
 	<h2 class="tracy-section-label">
-		<a href="#" data-tracy-ref="^+" class={[tracy-toggle, $collapsed ? tracy-collapsed : null]}>Caused by</a>
+		<a href="#" data-tracy-ref="^+" class={[tracy-toggle, $collapsed ? tracy-collapsed]}>Caused by</a>
 	</h2>
 
-	<div class={[tracy-section-panel, tracy-section--causedby, $collapsed ? tracy-collapsed : null]}>
+	<div class={[tracy-section-panel, tracy-section--causedby, $collapsed ? tracy-collapsed]}>
 		{include 'section-exception.phtml'}
 	</div>
 </section>

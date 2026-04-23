@@ -34,17 +34,17 @@ echo Tracy\Helpers::escapeHtml($source) /* pos 26:138 */;
 echo '</a></h3>
 
 ';
-if ($httpHeaders) /* pos 28:6 */ {
+if ($httpHeaders) /* pos 28:11 */ {
 	echo '					<div class="tracy-pane">
 						<table class="tracy-sortable">
 ';
-	foreach ($httpHeaders as $k => $v) /* pos 31:9 */ {
+	foreach ($httpHeaders as $k => $v) /* pos 30:12 */ {
 		echo '							<tr>
 								<th>';
-		echo Tracy\Helpers::escapeHtml($k) /* pos 33:15 */;
+		echo Tracy\Helpers::escapeHtml($k) /* pos 31:13 */;
 		echo '</th>
 								<td>';
-		echo $dump($v, $k) /* pos 34:15 */;
+		echo $dump($v, $k) /* pos 32:13 */;
 		echo '</td>
 							</tr>
 ';
@@ -58,20 +58,20 @@ if ($httpHeaders) /* pos 28:6 */ {
 echo '
 					<h3>$_GET</h3>
 ';
-if (empty($_GET)) /* pos 42:6 */ {
+if (empty($_GET)) /* pos 38:6 */ {
 	echo '					<p><i>empty</i></p>
 ';
-} else /* pos 44:6 */ {
+} else /* pos 40:6 */ {
 	echo '					<div class="tracy-pane">
 						<table class="tracy-sortable">
 ';
-	foreach ($_GET as $k => $v) /* pos 47:9 */ {
+	foreach ($_GET as $k => $v) /* pos 43:13 */ {
 		echo '							<tr>
 								<th>';
-		echo Tracy\Helpers::escapeHtml($k) /* pos 49:15 */;
+		echo Tracy\Helpers::escapeHtml($k) /* pos 44:14 */;
 		echo '</th>
 								<td>';
-		echo $dump($v, $k) /* pos 50:15 */;
+		echo $dump($v, $k) /* pos 45:14 */;
 		echo '</td>
 							</tr>
 ';
@@ -83,30 +83,30 @@ if (empty($_GET)) /* pos 42:6 */ {
 ';
 }
 echo "\n";
-if (($_SERVER['REQUEST_METHOD'] ?? null) === 'POST') /* pos 57:6 */ {
-	if (empty($_POST)) /* pos 58:7 */ {
-		if (($post = file_get_contents('php://input', length: 2000)) === '') /* pos 59:8 */ {
+if (($_SERVER['REQUEST_METHOD'] ?? null) === 'POST') /* pos 51:6 */ {
+	if (empty($_POST)) /* pos 52:7 */ {
+		if (($post = file_get_contents('php://input', length: 2000)) === '') /* pos 53:8 */ {
 			echo '					<h3>$_POST</h3>
 					<p><i>empty</i></p>
 ';
-		} else /* pos 62:8 */ {
+		} else /* pos 56:8 */ {
 			echo '					<h3>POST (preview)</h3>
 					';
-			echo $dump($post) /* pos 64:9 */;
+			echo $dump($post) /* pos 58:9 */;
 			echo "\n";
 		}
-	} else /* pos 66:7 */ {
+	} else /* pos 60:7 */ {
 		echo '					<h3>$_POST</h3>
 					<div class="tracy-pane">
 						<table class="tracy-sortable">
 ';
-		foreach ($_POST as $k => $v) /* pos 70:10 */ {
+		foreach ($_POST as $k => $v) /* pos 64:14 */ {
 			echo '							<tr>
 								<th>';
-			echo Tracy\Helpers::escapeHtml($k) /* pos 72:16 */;
+			echo Tracy\Helpers::escapeHtml($k) /* pos 65:15 */;
 			echo '</th>
 								<td>';
-			echo $dump($v, $k) /* pos 73:16 */;
+			echo $dump($v, $k) /* pos 66:15 */;
 			echo '</td>
 							</tr>
 ';
@@ -121,20 +121,20 @@ if (($_SERVER['REQUEST_METHOD'] ?? null) === 'POST') /* pos 57:6 */ {
 echo '
 					<h3>$_COOKIE</h3>
 ';
-if (empty($_COOKIE)) /* pos 82:6 */ {
+if (empty($_COOKIE)) /* pos 74:6 */ {
 	echo '					<p><i>empty</i></p>
 ';
-} else /* pos 84:6 */ {
+} else /* pos 76:6 */ {
 	echo '					<div class="tracy-pane">
 						<table class="tracy-sortable">
 ';
-	foreach ($_COOKIE as $k => $v) /* pos 87:9 */ {
+	foreach ($_COOKIE as $k => $v) /* pos 79:13 */ {
 		echo '							<tr>
 								<th>';
-		echo Tracy\Helpers::escapeHtml($k) /* pos 89:15 */;
+		echo Tracy\Helpers::escapeHtml($k) /* pos 80:14 */;
 		echo '</th>
 								<td>';
-		echo $dump($v, $k) /* pos 90:15 */;
+		echo $dump($v, $k) /* pos 81:14 */;
 		echo '</td>
 							</tr>
 ';
@@ -150,22 +150,22 @@ echo '				</div>
 
 				<div class="tracy-tab-panel">
 					<h3>Code: ';
-echo Tracy\Helpers::escapeHtml(http_response_code()) /* pos 100:16 */;
+echo Tracy\Helpers::escapeHtml(http_response_code()) /* pos 90:16 */;
 echo '</h3>
 
 ';
-if (headers_list()) /* pos 102:6 */ {
+if (headers_list()) /* pos 92:6 */ {
 	echo '					<div class="tracy-pane">
 						<table class="tracy-sortable">
 ';
-	foreach (headers_list() as $s) /* pos 105:9 */ {
-		$s = explode(':', $s, 2) /* pos 106:10 */;
+	foreach (headers_list() as $s) /* pos 95:9 */ {
+		$s = explode(':', $s, 2) /* pos 96:10 */;
 		echo '							<tr>
 								<th>';
-		echo Tracy\Helpers::escapeHtml($s[0]) /* pos 108:15 */;
+		echo Tracy\Helpers::escapeHtml($s[0]) /* pos 98:15 */;
 		echo '</th>
 								<td>';
-		echo $dump(trim($s[1]), $s[0]) /* pos 109:15 */;
+		echo $dump(trim($s[1]), $s[0]) /* pos 99:15 */;
 		echo '</td>
 							</tr>
 ';
@@ -175,24 +175,24 @@ if (headers_list()) /* pos 102:6 */ {
 	echo '						</table>
 					</div>
 ';
-} else /* pos 114:6 */ {
+} else /* pos 104:6 */ {
 	echo '					<p><i>no headers</i></p>
 ';
 }
 echo "\n";
-if ($headersSent && $headersFile && $headersLine !== null && @is_file($headersFile)) /* pos 118:6 */ {
+if ($headersSent && $headersFile && $headersLine !== null && @is_file($headersFile)) /* pos 108:6 */ {
 	echo '					<p>Headers have been sent, output started at ';
-	echo Helpers::editorLink($headersFile, $headersLine) /* pos 119:52 */;
+	echo Helpers::editorLink($headersFile, $headersLine) /* pos 109:52 */;
 	echo ' <a href="#" data-tracy-ref="^p + div" class="tracy-toggle tracy-collapsed">source</a></p>
 
 					<div class="tracy-collapsed">';
-	echo BlueScreen::highlightFile($headersFile, $headersLine) /* pos 121:36 */;
+	echo BlueScreen::highlightFile($headersFile, $headersLine) /* pos 111:36 */;
 	echo '</div>
 ';
-} elseif ($headersSent) /* pos 122:6 */ {
+} elseif ($headersSent) /* pos 112:6 */ {
 	echo '					<p>Headers have been sent</p>
 ';
-} else /* pos 124:6 */ {
+} else /* pos 114:6 */ {
 	echo '					<p>Headers were not sent at the time the exception was thrown</p>
 ';
 }

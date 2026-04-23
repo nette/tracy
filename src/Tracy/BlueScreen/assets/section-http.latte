@@ -25,18 +25,14 @@
 				<div class="tracy-tab-panel tracy-active">
 					<h3>{$_SERVER['REQUEST_METHOD'] ?? 'URL'} <a href="{$source}" target="_blank" rel="noreferrer noopener" style="font-weight: normal">{$source}</a></h3>
 
-					{if $httpHeaders}
-						<div class="tracy-pane">
-							<table class="tracy-sortable">
-								{foreach $httpHeaders as $k => $v}
-									<tr>
-										<th>{$k}</th>
-										<td>{$dump($v, $k)}</td>
-									</tr>
-								{/foreach}
-							</table>
-						</div>
-					{/if}
+					<div n:if="$httpHeaders" class="tracy-pane">
+						<table class="tracy-sortable">
+							<tr n:foreach="$httpHeaders as $k => $v">
+								<th>{$k}</th>
+								<td>{$dump($v, $k)}</td>
+							</tr>
+						</table>
+					</div>
 
 					<h3>$_GET</h3>
 					{if empty($_GET)}
@@ -44,12 +40,10 @@
 					{else}
 						<div class="tracy-pane">
 							<table class="tracy-sortable">
-								{foreach $_GET as $k => $v}
-									<tr>
-										<th>{$k}</th>
-										<td>{$dump($v, $k)}</td>
-									</tr>
-								{/foreach}
+								<tr n:foreach="$_GET as $k => $v">
+									<th>{$k}</th>
+									<td>{$dump($v, $k)}</td>
+								</tr>
 							</table>
 						</div>
 					{/if}
@@ -67,12 +61,10 @@
 							<h3>$_POST</h3>
 							<div class="tracy-pane">
 								<table class="tracy-sortable">
-									{foreach $_POST as $k => $v}
-										<tr>
-											<th>{$k}</th>
-											<td>{$dump($v, $k)}</td>
-										</tr>
-									{/foreach}
+									<tr n:foreach="$_POST as $k => $v">
+										<th>{$k}</th>
+										<td>{$dump($v, $k)}</td>
+									</tr>
 								</table>
 							</div>
 						{/if}
@@ -84,12 +76,10 @@
 					{else}
 						<div class="tracy-pane">
 							<table class="tracy-sortable">
-								{foreach $_COOKIE as $k => $v}
-									<tr>
-										<th>{$k}</th>
-										<td>{$dump($v, $k)}</td>
-									</tr>
-								{/foreach}
+								<tr n:foreach="$_COOKIE as $k => $v">
+									<th>{$k}</th>
+									<td>{$dump($v, $k)}</td>
+								</tr>
 							</table>
 						</div>
 					{/if}

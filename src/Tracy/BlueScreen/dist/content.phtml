@@ -40,7 +40,7 @@ foreach ($blueScreen->renderPanels(null) as $panel) /* pos 31:3 */ {
 			<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+"';
 	echo ($ʟ_tmp = array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 39:76 */;
 	echo '>';
-	echo Tracy\Helpers::escapeHtml($panel->tab) /* pos 39:129 */;
+	echo Tracy\Helpers::escapeHtml($panel->tab) /* pos 39:122 */;
 	echo '</a></h2>
 
 			<div';
@@ -60,15 +60,15 @@ require __DIR__ . '/section-environment.phtml';
 require __DIR__ . '/section-cli.phtml';
 require __DIR__ . '/section-http.phtml';
 echo "\n";
-foreach ($bottomPanels as $panel) /* pos 51:3 */ {
+foreach ($bottomPanels as $panel) /* pos 51:12 */ {
 	echo '		<section class="tracy-section">
 			<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">';
-	echo Tracy\Helpers::escapeHtml($panel->tab) /* pos 53:90 */;
+	echo Tracy\Helpers::escapeHtml($panel->tab) /* pos 52:89 */;
 	echo '</a></h2>
 
 			<div class="tracy-section-panel">
 				';
-	echo $panel->panel /* pos 56:6 */;
+	echo $panel->panel /* pos 55:5 */;
 	echo '
 			</div>
 		</section>
@@ -81,12 +81,12 @@ echo '
 			<ul>
 				<li><b><a href="https://github.com/sponsors/dg" target="_blank" rel="noreferrer noopener">Please support Tracy via a donation 💙️</a></b></li>
 				<li>Report generated at ';
-echo Tracy\Helpers::escapeHtml(date('Y/m/d H:i:s')) /* pos 64:29 */;
+echo Tracy\Helpers::escapeHtml(date('Y/m/d H:i:s')) /* pos 62:29 */;
 echo '</li>
 ';
-foreach ($info as $item) /* pos 65:5 */ {
+foreach ($info as $item) /* pos 63:9 */ {
 	echo '				<li>';
-	echo Tracy\Helpers::escapeHtml($item) /* pos 66:10 */;
+	echo Tracy\Helpers::escapeHtml($item) /* pos 63:36 */;
 	echo '</li>
 ';
 
@@ -99,7 +99,7 @@ echo '			</ul>
 	</div>
 
 	<meta itemprop=tracy-snapshot';
-echo ($ʟ_tmp = (Tracy\Helpers::jsonEncode($snapshot ?? []))) === null ? '' : ' content=\'' . $ʟ_tmp . '\'' /* pos 74:41 */;
+echo ($ʟ_tmp = (Tracy\Helpers::jsonEncode($snapshot ?? []))) === null ? '' : ' content=\'' . $ʟ_tmp . '\'' /* pos 70:41 */;
 echo '>
 </tracy-div>
 ';

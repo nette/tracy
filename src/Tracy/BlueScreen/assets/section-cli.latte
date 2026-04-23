@@ -12,21 +12,17 @@
 	<div class="tracy-section-panel tracy-collapsed">
 		<h3>Process ID {getmypid()}</h3>
 
-		{if count($tmp = explode('):', $source, 2)) === 2}
-			<pre>php{$tmp[1]}</pre>
-		{/if}
+		<pre n:if="count($tmp = explode('):', $source, 2)) === 2">php{$tmp[1]}</pre>
 
 		{if isset($_SERVER[argv])}
 			<h3>Arguments</h3>
 
 			<div class="tracy-pane">
 				<table>
-					{foreach $_SERVER[argv] as $k => $v}
-						<tr>
-							<th>{$k}</th>
-							<td>{$dump($v, $k)}</td>
-						</tr>
-					{/foreach}
+					<tr n:foreach="$_SERVER[argv] as $k => $v">
+						<th>{$k}</th>
+						<td>{$dump($v, $k)}</td>
+					</tr>
 				</table>
 			</div>
 		{/if}

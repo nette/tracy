@@ -13,9 +13,7 @@
 
 <div class="tracy-inner tracy-DumpPanel">
 	{foreach $data as $item}
-		{if $item[title]}
-			<h2>{$item[title]}</h2>
-		{/if}
+		<h2 n:if="$item[title]">{$item[title]}</h2>
 
 		{$item[dump]|noescape}
 	{/foreach}

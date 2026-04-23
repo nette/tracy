@@ -5,30 +5,30 @@
 {varType int $line}
 {varType ?int $expanded}
 
-{do $sourceOriginal = $file && @is_file($file) ? [$file, $line] : null}
-{do $sourceMapped = $sourceOriginal ? Debugger::mapSource($file, $line) : null}
+{do $sourceOriginal = $file && @is_file($file) ? [$file, $line]}
+{do $sourceMapped = $sourceOriginal ? Debugger::mapSource($file, $line)}
 {do $collapsed = $expanded !== null}
 
 <section class="tracy-section">
 	<h2 class="tracy-section-label">
-		<a href="#" data-tracy-ref="^+" class={[tracy-toggle, $collapsed ? tracy-collapsed : null]}>Source file</a>
+		<a href="#" data-tracy-ref="^+" class={[tracy-toggle, $collapsed ? tracy-collapsed]}>Source file</a>
 	</h2>
 
-	<div class={[tracy-section-panel, $collapsed ? tracy-collapsed : null]}>
+	<div class={[tracy-section-panel, $collapsed ? tracy-collapsed]}>
 		{if $sourceOriginal && $sourceMapped}
 			<div class="tracy-tabs">
 				<ul class="tracy-tab-bar">
-					<li class={[tracy-tab-label, !$sourceMapped[active] ? tracy-active : null]}><a href="#">PHP</a></li>
-					<li class={[tracy-tab-label, $sourceMapped[active] ? tracy-active : null]}><a href="#">{$sourceMapped[label]}</a></li>
+					<li class={[tracy-tab-label, !$sourceMapped[active] ? tracy-active]}><a href="#">PHP</a></li>
+					<li class={[tracy-tab-label, $sourceMapped[active] ? tracy-active]}><a href="#">{$sourceMapped[label]}</a></li>
 				</ul>
 
 				<div>
-					<div class={[tracy-tab-panel, !$sourceMapped[active] ? tracy-active : null]}>
+					<div class={[tracy-tab-panel, !$sourceMapped[active] ? tracy-active]}>
 						<p><b>File:</b> {Helpers::editorLink(...$sourceOriginal)}</p>
 						{BlueScreen::highlightFile(...$sourceOriginal)}
 					</div>
 
-					<div class={[tracy-tab-panel, $sourceMapped[active] ? tracy-active : null]}>
+					<div class={[tracy-tab-panel, $sourceMapped[active] ? tracy-active]}>
 						<p><b>File:</b> {Helpers::editorLink($sourceMapped[file], $sourceMapped[line])}</p>
 						{BlueScreen::highlightFile($sourceMapped[file], line: $sourceMapped[line], column: $sourceMapped[column], php: false)}
 					</div>
