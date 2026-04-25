@@ -57,6 +57,10 @@ class Bar
 		}
 
 		$this->loaderRendered = true;
+		if (Helpers::isIframe()) {
+			return;
+		}
+
 		$requestId = $defer->getRequestId();
 		$async = true;
 		require __DIR__ . '/dist/loader.phtml';
@@ -86,6 +90,13 @@ class Bar
 					'agent' => Helpers::isAgent() ? $this->renderAgent() : null,
 					'time' => time(),
 				];
+			}
+		} elseif (Helpers::isHtmlMode() && Helpers::isIframe()) {
+			if ($defer->isAvailable()) {
+				$defer->addSetup('Tracy.Debug.loadAjax', $this->renderPartial('iframe', '-iframe:' . $requestId));
+				echo '<script' . Helpers::getNonce(attr: true) . '>'
+					. '(window.parent !== window) && parent.postMessage({tracyIframeBar:' . Helpers::jsonEncode($requestId) . '}, "*")'
+					. '</script>';
 			}
 		} elseif (Helpers::isHtmlMode()) {
 			if (preg_match('#^Content-Length:#im', implode("\n", headers_list()))) {

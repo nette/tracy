@@ -397,6 +397,14 @@ class Helpers
 
 
 	/** @internal */
+	public static function isIframe(): bool
+	{
+		$dest = $_SERVER['HTTP_SEC_FETCH_DEST'] ?? '';
+		return $dest === 'iframe' || $dest === 'frame';
+	}
+
+
+	/** @internal */
 	public static function createId(): string
 	{
 		return bin2hex(random_bytes(5));

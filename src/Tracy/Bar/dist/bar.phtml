@@ -22,21 +22,24 @@ if ($ʟ_switch === ('main')) /* pos 6:3 */ {
 } elseif ($ʟ_switch === ('ajax')) /* pos 12:3 */ {
 	echo '	<li>AJAX</li>
 ';
+} elseif ($ʟ_switch === ('iframe')) /* pos 14:3 */ {
+	echo '	<li>iframe</li>
+';
 }
 echo "\n";
-foreach ($panels as $panel) /* pos 16:2 */ {
-	if ($panel->tab) /* pos 17:7 */ {
+foreach ($panels as $panel) /* pos 18:2 */ {
+	if ($panel->tab) /* pos 19:7 */ {
 		echo '	<li>';
-		if ($panel->panel) /* pos 17:26 */ {
+		if ($panel->panel) /* pos 19:26 */ {
 			echo '<a href="#" rel="tracy-debug-panel-';
-			echo Tracy\Helpers::escapeHtml($panel->id) /* pos 17:79 */;
+			echo Tracy\Helpers::escapeHtml($panel->id) /* pos 19:79 */;
 			echo '">';
-			echo trim($panel->tab) /* pos 17:93 */;
+			echo trim($panel->tab) /* pos 19:93 */;
 			echo '</a>
 ';
-		} else /* pos 18:3 */ {
+		} else /* pos 20:3 */ {
 			echo '	<span>';
-			echo trim($panel->tab) /* pos 18:15 */;
+			echo trim($panel->tab) /* pos 20:15 */;
 			echo '</span>
 ';
 		}
@@ -47,7 +50,7 @@ foreach ($panels as $panel) /* pos 16:2 */ {
 }
 
 echo "\n";
-if ($type === 'main') /* pos 22:6 */ {
+if ($type === 'main') /* pos 24:6 */ {
 	echo '	<li><a href="#" data-tracy-action="close" title="close debug bar">&times;</a></li>
 ';
 }

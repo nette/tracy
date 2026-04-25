@@ -411,6 +411,7 @@ class Debug {
 
 		Debug.captureWindow();
 		Debug.captureAjax();
+		Debug.captureIframe();
 
 		Tracy.TableSort.init();
 		Tracy.Tabs.init();
@@ -520,6 +521,16 @@ class Debug {
 				return response;
 			});
 		};
+	}
+
+
+	static captureIframe() {
+		window.addEventListener('message', (e) => {
+			let id = e.data && e.data.tracyIframeBar;
+			if (typeof id === 'string' && /^\w{10,15}$/.test(id)) {
+				Debug.loadScript(baseUrl + '_tracy_bar=content-ajax.' + id + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+			}
+		});
 	}
 
 
