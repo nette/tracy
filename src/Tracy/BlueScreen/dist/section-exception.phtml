@@ -59,19 +59,23 @@ if (!$exceptions && ($generators || $fibers)) /* pos 21:1 */ {
 			<div>
 				<div class="tracy-tab-panel tracy-active">
 ';
-	require __DIR__ . '/../assets/section-stack-exception.php';
+	[$stack, $expanded] = $blueScreen->prepareStack($ex) /* pos 35:7 */;
+	$file = $ex->getFile() /* pos 36:7 */;
+	$line = $ex->getLine() /* pos 37:7 */;
+	require __DIR__ . '/section-stack-sourceFile.phtml';
+	require __DIR__ . '/section-stack-callStack.phtml';
 	echo '				</div>
 
 ';
-	foreach ($generators as $generator) /* pos 38:11 */ {
+	foreach ($generators as $generator) /* pos 42:11 */ {
 		echo '				<div class="tracy-tab-panel">
 ';
-		$ref = new \ReflectionGenerator($generator) /* pos 39:7 */;
-		$stack = $ref->getTrace() /* pos 40:7 */;
-		$expanded = null /* pos 41:7 */;
-		$refExec = new \ReflectionGenerator($ref->getExecutingGenerator()) /* pos 42:7 */;
-		$file = $refExec->getExecutingFile() /* pos 43:7 */;
-		$line = $refExec->getExecutingLine() /* pos 44:7 */;
+		$ref = new \ReflectionGenerator($generator) /* pos 43:7 */;
+		$stack = $ref->getTrace() /* pos 44:7 */;
+		$expanded = null /* pos 45:7 */;
+		$refExec = new \ReflectionGenerator($ref->getExecutingGenerator()) /* pos 46:7 */;
+		$file = $refExec->getExecutingFile() /* pos 47:7 */;
+		$line = $refExec->getExecutingLine() /* pos 48:7 */;
 		require __DIR__ . '/section-stack-sourceFile.phtml';
 		require __DIR__ . '/section-stack-callStack.phtml';
 		echo '				</div>
@@ -80,12 +84,12 @@ if (!$exceptions && ($generators || $fibers)) /* pos 21:1 */ {
 	}
 
 	echo "\n";
-	foreach ($fibers as $fiber) /* pos 49:11 */ {
+	foreach ($fibers as $fiber) /* pos 53:11 */ {
 		echo '				<div class="tracy-tab-panel">
 ';
-		$ref = new \ReflectionFiber($fiber) /* pos 50:7 */;
-		$stack = $ref->getTrace() /* pos 51:7 */;
-		$expanded = 0 /* pos 52:7 */;
+		$ref = new \ReflectionFiber($fiber) /* pos 54:7 */;
+		$stack = $ref->getTrace() /* pos 55:7 */;
+		$expanded = 0 /* pos 56:7 */;
 		require __DIR__ . '/section-stack-callStack.phtml';
 		echo '				</div>
 ';
@@ -97,8 +101,12 @@ if (!$exceptions && ($generators || $fibers)) /* pos 21:1 */ {
 	</div>
 </section>
 ';
-} else /* pos 59:1 */ {
-	require __DIR__ . '/../assets/section-stack-exception.php';
+} else /* pos 63:1 */ {
+	[$stack, $expanded] = $blueScreen->prepareStack($ex) /* pos 64:2 */;
+	$file = $ex->getFile() /* pos 65:2 */;
+	$line = $ex->getLine() /* pos 66:2 */;
+	require __DIR__ . '/section-stack-sourceFile.phtml';
+	require __DIR__ . '/section-stack-callStack.phtml';
 }
 echo "\n";
 require __DIR__ . '/section-exception-exception.phtml';

@@ -168,9 +168,6 @@ class BlueScreen
 		$showEnvironment = $this->showEnvironment && (!str_contains($exception->getMessage(), 'Allowed memory size'));
 		$info = array_filter($this->info);
 		$source = Helpers::getSource();
-		$title = $exception instanceof \ErrorException
-			? Helpers::errorTypeToString($exception->getSeverity())
-			: get_debug_type($exception);
 		$lastError = $exception instanceof \ErrorException || $exception instanceof \Error
 			? null
 			: error_get_last();
@@ -321,6 +318,15 @@ class BlueScreen
 		}
 
 		return $actions;
+	}
+
+
+	/** @internal */
+	public static function getExceptionTitle(\Throwable $exception): string
+	{
+		return $exception instanceof \ErrorException
+			? Helpers::errorTypeToString($exception->getSeverity())
+			: get_debug_type($exception);
 	}
 
 

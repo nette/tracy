@@ -32,7 +32,11 @@
 
 				<div>
 					<div class="tracy-tab-panel tracy-active">
-						{include '../assets/section-stack-exception.php'}
+						{do [$stack, $expanded] = $blueScreen->prepareStack($ex)}
+						{do $file = $ex->getFile()}
+						{do $line = $ex->getLine()}
+						{include 'section-stack-sourceFile.phtml'}
+						{include 'section-stack-callStack.phtml'}
 					</div>
 
 					<div n:foreach="$generators as $generator" class="tracy-tab-panel">
@@ -57,7 +61,11 @@
 		</div>
 	</section>
 {else}
-	{include '../assets/section-stack-exception.php'}
+	{do [$stack, $expanded] = $blueScreen->prepareStack($ex)}
+	{do $file = $ex->getFile()}
+	{do $line = $ex->getLine()}
+	{include 'section-stack-sourceFile.phtml'}
+	{include 'section-stack-callStack.phtml'}
 {/if}
 
 {include 'section-exception-exception.phtml'}

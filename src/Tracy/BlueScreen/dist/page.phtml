@@ -1,14 +1,15 @@
 <?php declare(strict_types=1);
 
 use Tracy\Helpers;
+/** @var Tracy\BlueScreen $blueScreen */
 /** @var Throwable $exception */
-/** @var string $title */
 /** @var ?string $nonce */
 /** @var string $css */
 /** @var string $js */
 /** @var string $source */
-$code = $exception->getCode() ? ' #' . $exception->getCode() : '' /* pos 8:1 */;
-$chain = Helpers::getExceptionChain($exception) /* pos 9:1 */;
+$title = $blueScreen->getExceptionTitle($exception) /* pos 8:1 */;
+$code = $exception->getCode() ? ' #' . $exception->getCode() : '' /* pos 9:1 */;
+$chain = Helpers::getExceptionChain($exception) /* pos 10:1 */;
 echo '<!DOCTYPE html><!-- "\' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table></p></code>
 
 <html>
@@ -19,26 +20,26 @@ echo '<!DOCTYPE html><!-- "\' --></textarea></script></style></pre></xmp></a></i
 	<meta name="generator" content="Tracy by Nette Framework">
 
 	<title>';
-echo Tracy\Helpers::escapeHtml($title) /* pos 21:9 */;
+echo Tracy\Helpers::escapeHtml($title) /* pos 22:9 */;
 echo ': ';
-echo Tracy\Helpers::escapeHtml($exception->getMessage()) /* pos 21:19 */;
-echo Tracy\Helpers::escapeHtml($code) /* pos 21:45 */;
+echo Tracy\Helpers::escapeHtml($exception->getMessage()) /* pos 22:19 */;
+echo Tracy\Helpers::escapeHtml($code) /* pos 22:45 */;
 echo '</title>
 	<!-- in ';
-echo Tracy\Helpers::escapeHtml($exception->getFile()) /* pos 22:10 */;
+echo Tracy\Helpers::escapeHtml($exception->getFile()) /* pos 23:10 */;
 echo ':';
-echo Tracy\Helpers::escapeHtml($exception->getLine()) /* pos 22:34 */;
+echo Tracy\Helpers::escapeHtml($exception->getLine()) /* pos 23:34 */;
 echo ' -->
 ';
-if (count($chain) > 1) /* pos 23:2 */ {
+if (count($chain) > 1) /* pos 24:2 */ {
 	echo '	<!--';
-	foreach (array_slice($chain, 1) as $ex) /* pos 24:6 */ {
+	foreach (array_slice($chain, 1) as $ex) /* pos 25:6 */ {
 		echo '
 	caused by ';
-		echo Tracy\Helpers::escapeHtml(get_debug_type($ex)) /* pos 25:12 */;
+		echo Tracy\Helpers::escapeHtml(get_debug_type($ex)) /* pos 26:12 */;
 		echo ': ';
-		echo Tracy\Helpers::escapeHtml($ex->getMessage()) /* pos 25:35 */;
-		echo Tracy\Helpers::escapeHtml($ex->getCode() ? ' #' . $ex->getCode() : '') /* pos 25:54 */;
+		echo Tracy\Helpers::escapeHtml($ex->getMessage()) /* pos 26:35 */;
+		echo Tracy\Helpers::escapeHtml($ex->getCode() ? ' #' . $ex->getCode() : '') /* pos 26:54 */;
 		echo '
 	';
 
@@ -48,11 +49,11 @@ if (count($chain) > 1) /* pos 23:2 */ {
 ';
 }
 echo '	<!-- ';
-echo Tracy\Helpers::escapeHtml($source) /* pos 28:7 */;
+echo Tracy\Helpers::escapeHtml($source) /* pos 29:7 */;
 echo ' -->
 
 	<style class="tracy-debug">';
-echo str_replace('</', '<\\/', $css) /* pos 30:29 */;
+echo str_replace('</', '<\\/', $css) /* pos 31:29 */;
 echo '</style>
 </head>
 
@@ -62,11 +63,11 @@ echo '</style>
 require __DIR__ . '/content.phtml';
 echo '
 <script';
-echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 37:16 */;
+echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 38:16 */;
 echo '>
 \'use strict\';
 ';
-echo str_replace(['<!--', '</s'], ['<\\!--', '<\\/s'], $js) /* pos 39:1 */;
+echo str_replace(['<!--', '</s'], ['<\\!--', '<\\/s'], $js) /* pos 40:1 */;
 echo '
 Tracy.BlueScreen.init();
 </script>

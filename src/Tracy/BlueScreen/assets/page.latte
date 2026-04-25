@@ -1,10 +1,11 @@
 {use Tracy\Helpers}
+{varType Tracy\BlueScreen $blueScreen}
 {varType Throwable $exception}
-{varType string $title}
 {varType ?string $nonce}
 {varType string $css}
 {varType string $js}
 {varType string $source}
+{do $title = $blueScreen->getExceptionTitle($exception)}
 {do $code = $exception->getCode() ? ' #' . $exception->getCode() : ''}
 {do $chain = Helpers::getExceptionChain($exception)}
 {* *}

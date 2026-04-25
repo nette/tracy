@@ -4,7 +4,7 @@
 {varType array{link: string, label: string, external?: bool}[] $actions}
 {varType Tracy\BlueScreen $blueScreen}
 
-{do $title = $ex instanceof ErrorException ? Helpers::errorTypeToString($ex->getSeverity()) : get_debug_type($ex)}
+{do $title = $blueScreen->getExceptionTitle($ex)}
 {do $code = $ex->getCode() ? ' #' . $ex->getCode() : ''}
 
 <section class="tracy-section tracy-section--error">

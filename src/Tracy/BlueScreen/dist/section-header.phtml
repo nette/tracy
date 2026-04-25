@@ -6,7 +6,7 @@ use Tracy\Helpers;
 /** @var array{link:string,label:string,external?:bool}[] $actions */
 /** @var Tracy\BlueScreen $blueScreen */
 echo "\n";
-$title = $ex instanceof ErrorException ? Helpers::errorTypeToString($ex->getSeverity()) : get_debug_type($ex) /* pos 7:1 */;
+$title = $blueScreen->getExceptionTitle($ex) /* pos 7:1 */;
 $code = $ex->getCode() ? ' #' . $ex->getCode() : '' /* pos 8:1 */;
 echo '
 <section class="tracy-section tracy-section--error">
