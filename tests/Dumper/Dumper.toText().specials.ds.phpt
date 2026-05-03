@@ -11,10 +11,10 @@ use Tracy\Dumper;
 require __DIR__ . '/../bootstrap.php';
 
 
-$collection = new Ds\Vector(['value']);
+$collection = new Ds\Set(['value']);
 Assert::match(
 	<<<'XX'
-		Ds\Vector #%d%
+		Ds\Set #%d%
 		   0: 'value'
 		XX,
 	Dumper::toText($collection),
@@ -32,25 +32,3 @@ Assert::match(
 		XX,
 	Dumper::toText($map),
 );
-
-
-$queue = new Ds\Queue(['value']);
-Assert::match(
-	<<<'XX'
-		Ds\Queue #%d%
-		   0: 'value'
-		XX,
-	Dumper::toText($queue),
-);
-Assert::count(1, $queue);
-
-
-$stack = new Ds\Stack(['value']);
-Assert::match(
-	<<<'XX'
-		Ds\Stack #%d%
-		   0: 'value'
-		XX,
-	Dumper::toText($stack),
-);
-Assert::count(1, $stack);

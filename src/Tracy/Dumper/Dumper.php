@@ -91,6 +91,9 @@ class Dumper
 		Dom\TokenList::class => [Exposer::class, 'exposeDOMNodeList'],
 		Dom\HTMLCollection::class => [Exposer::class, 'exposeDOMNodeList'],
 		Ds\Collection::class => [Exposer::class, 'exposeDsCollection'],
+		Ds\Seq::class => [Exposer::class, 'exposeDsCollection'],
+		Ds\Set::class => [Exposer::class, 'exposeDsCollection'],
+		Ds\Heap::class => [Exposer::class, 'exposeDsCollection'],
 		Ds\Map::class => [Exposer::class, 'exposeDsMap'],
 		\WeakMap::class => [Exposer::class, 'exposeWeakMap'],
 	];

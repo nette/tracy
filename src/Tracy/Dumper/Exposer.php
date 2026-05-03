@@ -266,7 +266,7 @@ final class Exposer
 
 
 	public static function exposeDsCollection(
-		Ds\Collection $obj,
+		Ds\Collection|Ds\Seq|Ds\Set|Ds\Heap $obj,
 		Value $value,
 		Describer $describer,
 	): void
