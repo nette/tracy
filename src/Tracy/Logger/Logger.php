@@ -154,7 +154,7 @@ class Logger implements ILogger
 	{
 		$file ??= $this->getExceptionFile($exception);
 		$bs = $this->blueScreen ?? new BlueScreen;
-		$bs->renderToFile($exception, $file);
+		$bs->renderToFile($exception, $file, Helpers::findCallerLocation());
 		return $file;
 	}
 

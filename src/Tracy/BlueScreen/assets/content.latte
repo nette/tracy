@@ -1,9 +1,11 @@
 {use Tracy\Dumper}
+{use Tracy\Helpers}
 {varType Throwable $exception}
 {varType array{link: string, label: string, external?: bool}[] $actions}
 {varType string[] $info}
 {varType string $source}
 {varType ?array{type: int, message: string, file: string, line: int} $lastError}
+{varType ?array{file: string, line: int} $logLocation}
 {varType array<string, string> $httpHeaders}
 {varType callable $dump}
 {varType Tracy\Dumper\Value[]|null $snapshot}
@@ -60,6 +62,7 @@
 			<ul>
 				<li><b><a href="https://github.com/sponsors/dg" target="_blank" rel="noreferrer noopener">Please support Tracy via a donation 💙️</a></b></li>
 				<li>Report generated at {date('Y/m/d H:i:s')}</li>
+				<li n:if="$logLocation">Logged from {Helpers::editorLink($logLocation[file], $logLocation[line])}</li>
 				<li n:foreach="$info as $item">{$item}</li>
 			</ul>
 

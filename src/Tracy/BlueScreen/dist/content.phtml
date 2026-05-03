@@ -1,11 +1,13 @@
 <?php declare(strict_types=1);
 
 use Tracy\Dumper;
+use Tracy\Helpers;
 /** @var Throwable $exception */
 /** @var array{link:string,label:string,external?:bool}[] $actions */
 /** @var string[] $info */
 /** @var string $source */
 /** @var ?array{type:int,message:string,file:string,line:int} $lastError */
+/** @var ?array{file:string,line:int} $logLocation */
 /** @var array<string,string> $httpHeaders */
 /** @var callable $dump */
 /** @var Tracy\Dumper\Value[]|null $snapshot */
@@ -22,32 +24,32 @@ echo '<tracy-div id="tracy-bs" itemscope>
 
 	<div class="tracy-bs-main">
 ';
-$ex = $exception /* pos 24:3 */;
-$exceptions = [] /* pos 25:3 */;
+$ex = $exception /* pos 26:3 */;
+$exceptions = [] /* pos 27:3 */;
 echo "\n";
 require __DIR__ . '/section-exception.phtml';
 require __DIR__ . '/section-lastMutedError.phtml';
 echo "\n";
-$bottomPanels = [] /* pos 30:3 */;
-foreach ($blueScreen->renderPanels(null) as $panel) /* pos 31:3 */ {
-	if (!empty($panel->bottom)) /* pos 32:4 */ {
-		$bottomPanels[] = $panel /* pos 33:5 */;
-		if (true) /* pos 34:5 */ continue;
+$bottomPanels = [] /* pos 32:3 */;
+foreach ($blueScreen->renderPanels(null) as $panel) /* pos 33:3 */ {
+	if (!empty($panel->bottom)) /* pos 34:4 */ {
+		$bottomPanels[] = $panel /* pos 35:5 */;
+		if (true) /* pos 36:5 */ continue;
 	}
 	echo "\n";
-	$collapsed = !isset($panel->collapsed) || $panel->collapsed /* pos 37:4 */;
+	$collapsed = !isset($panel->collapsed) || $panel->collapsed /* pos 39:4 */;
 	echo '		<section class="tracy-section">
 			<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+"';
-	echo ($ʟ_tmp = array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 39:76 */;
+	echo ($ʟ_tmp = array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 41:76 */;
 	echo '>';
-	echo Tracy\Helpers::escapeHtml($panel->tab) /* pos 39:122 */;
+	echo Tracy\Helpers::escapeHtml($panel->tab) /* pos 41:122 */;
 	echo '</a></h2>
 
 			<div';
-	echo ($ʟ_tmp = array_filter(['tracy-section-panel', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 41:17 */;
+	echo ($ʟ_tmp = array_filter(['tracy-section-panel', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 43:17 */;
 	echo '>
 				';
-	echo $panel->panel /* pos 42:6 */;
+	echo $panel->panel /* pos 44:6 */;
 	echo '
 			</div>
 		</section>
@@ -60,15 +62,15 @@ require __DIR__ . '/section-environment.phtml';
 require __DIR__ . '/section-cli.phtml';
 require __DIR__ . '/section-http.phtml';
 echo "\n";
-foreach ($bottomPanels as $panel) /* pos 51:12 */ {
+foreach ($bottomPanels as $panel) /* pos 53:12 */ {
 	echo '		<section class="tracy-section">
 			<h2 class="tracy-section-label"><a href="#" data-tracy-ref="^+" class="tracy-toggle">';
-	echo Tracy\Helpers::escapeHtml($panel->tab) /* pos 52:89 */;
+	echo Tracy\Helpers::escapeHtml($panel->tab) /* pos 54:89 */;
 	echo '</a></h2>
 
 			<div class="tracy-section-panel">
 				';
-	echo $panel->panel /* pos 55:5 */;
+	echo $panel->panel /* pos 57:5 */;
 	echo '
 			</div>
 		</section>
@@ -81,12 +83,18 @@ echo '
 			<ul>
 				<li><b><a href="https://github.com/sponsors/dg" target="_blank" rel="noreferrer noopener">Please support Tracy via a donation 💙️</a></b></li>
 				<li>Report generated at ';
-echo Tracy\Helpers::escapeHtml(date('Y/m/d H:i:s')) /* pos 62:29 */;
+echo Tracy\Helpers::escapeHtml(date('Y/m/d H:i:s')) /* pos 64:29 */;
 echo '</li>
 ';
-foreach ($info as $item) /* pos 63:9 */ {
+if ($logLocation) /* pos 65:9 */ {
+	echo '				<li>Logged from ';
+	echo Helpers::editorLink($logLocation['file'], $logLocation['line']) /* pos 65:41 */;
+	echo '</li>
+';
+}
+foreach ($info as $item) /* pos 66:9 */ {
 	echo '				<li>';
-	echo Tracy\Helpers::escapeHtml($item) /* pos 63:36 */;
+	echo Tracy\Helpers::escapeHtml($item) /* pos 66:36 */;
 	echo '</li>
 ';
 
@@ -99,7 +107,7 @@ echo '			</ul>
 	</div>
 
 	<meta itemprop=tracy-snapshot';
-echo ($ʟ_tmp = (Tracy\Helpers::jsonEncode($snapshot ?? []))) === null ? '' : ' content=\'' . $ʟ_tmp . '\'' /* pos 70:41 */;
+echo ($ʟ_tmp = (Tracy\Helpers::jsonEncode($snapshot ?? []))) === null ? '' : ' content=\'' . $ʟ_tmp . '\'' /* pos 73:41 */;
 echo '>
 </tracy-div>
 ';

@@ -131,8 +131,9 @@ class BlueScreen
 
 	/**
 	 * Renders blue screen to file (if file exists, it will not be overwritten).
+	 * @param  ?array{file: string, line: int}  $logLocation  location from which Debugger::log() was called
 	 */
-	public function renderToFile(\Throwable $exception, string $file): bool
+	public function renderToFile(\Throwable $exception, string $file, ?array $logLocation = null): bool
 	{
 		if ($handle = @fopen($file, 'x')) {
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
@@ -140,7 +141,7 @@ class BlueScreen
 				fwrite($handle, $buffer);
 				return '';
 			}, 4096);
-			$this->renderTemplate($exception, __DIR__ . '/dist/page.phtml', toScreen: false);
+			$this->renderTemplate($exception, __DIR__ . '/dist/page.phtml', toScreen: false, logLocation: $logLocation);
 			ob_end_flush();
 			ob_end_clean();
 			fclose($handle);
@@ -151,7 +152,15 @@ class BlueScreen
 	}
 
 
-	private function renderTemplate(\Throwable $exception, string $template, bool $toScreen = true): void
+	/**
+	 * @param  ?array{file: string, line: int}  $logLocation
+	 */
+	private function renderTemplate(
+		\Throwable $exception,
+		string $template,
+		bool $toScreen = true,
+		?array $logLocation = null,
+	): void
 	{
 		[$generators, $fibers] = $this->findGeneratorsAndFibers($exception);
 		$headersSent = headers_sent($headersFile, $headersLine);
