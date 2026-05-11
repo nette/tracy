@@ -10,7 +10,7 @@ foreach ($data as $item => $count) /* pos 6:3 */ {
 	[$file, $line, $message] = explode('|', $item, 3) /* pos 7:4 */;
 	echo '		<tr>
 			<td class="tracy-right">';
-	echo Tracy\Helpers::escapeHtml($count ? $count . '×' : '') /* pos 9:29 */;
+	echo Tracy\Helpers::escapeHtml($count ? $count . '×' : null) /* pos 9:29 */;
 	echo '</td>
 			<td><pre>';
 	echo Tracy\Helpers::escapeHtml($message) /* pos 10:14 */;

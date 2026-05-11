@@ -8,7 +8,7 @@ use Tracy\Helpers;
 /** @var string $js */
 /** @var string $source */
 $title = $blueScreen->getExceptionTitle($exception) /* pos 8:1 */;
-$code = $exception->getCode() ? ' #' . $exception->getCode() : '' /* pos 9:1 */;
+$code = $exception->getCode() ? ' #' . $exception->getCode() : null /* pos 9:1 */;
 $chain = Helpers::getExceptionChain($exception) /* pos 10:1 */;
 echo '<!DOCTYPE html><!-- "\' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table></p></code>
 
@@ -39,7 +39,7 @@ if (count($chain) > 1) /* pos 24:2 */ {
 		echo Tracy\Helpers::escapeHtml(get_debug_type($ex)) /* pos 26:12 */;
 		echo ': ';
 		echo Tracy\Helpers::escapeHtml($ex->getMessage()) /* pos 26:35 */;
-		echo Tracy\Helpers::escapeHtml($ex->getCode() ? ' #' . $ex->getCode() : '') /* pos 26:54 */;
+		echo Tracy\Helpers::escapeHtml($ex->getCode() ? ' #' . $ex->getCode() : null) /* pos 26:54 */;
 		echo '
 	';
 

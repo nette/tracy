@@ -7,7 +7,7 @@ use Tracy\Helpers;
 /** @var Tracy\BlueScreen $blueScreen */
 echo "\n";
 $title = $blueScreen->getExceptionTitle($ex) /* pos 7:1 */;
-$code = $ex->getCode() ? ' #' . $ex->getCode() : '' /* pos 8:1 */;
+$code = $ex->getCode() ? ' #' . $ex->getCode() : null /* pos 8:1 */;
 echo '
 <section class="tracy-section tracy-section--error">
 ';

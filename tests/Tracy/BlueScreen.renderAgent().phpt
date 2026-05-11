@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Tracy\BlueScreen::renderAsText()
  */
-
-declare(strict_types=1);
 
 use Tester\Assert;
 

@@ -87,7 +87,7 @@ final class CodeHighlighter
 		$code = str_replace("\r\n", "\n", $code);
 		$code = preg_replace('#(__halt_compiler\s*\(\)\s*;).*#is', '$1', $code);
 		$code = rtrim($code);
-		$code = preg_replace('#/\*sensitive\{\*/.*?/\*\}\*/#s', Dumper\Describer::HiddenValue, $code);
+		$code = preg_replace('#/\*sensitive\{\*/.*?/\*}\*/#s', Dumper\Describer::HiddenValue, $code);
 
 		$last = $out = '';
 		foreach (\PhpToken::tokenize($code) as $token) {

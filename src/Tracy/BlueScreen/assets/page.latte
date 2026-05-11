@@ -6,7 +6,7 @@
 {varType string $js}
 {varType string $source}
 {do $title = $blueScreen->getExceptionTitle($exception)}
-{do $code = $exception->getCode() ? ' #' . $exception->getCode() : ''}
+{do $code = $exception->getCode() ? ' #' . $exception->getCode()}
 {do $chain = Helpers::getExceptionChain($exception)}
 {* *}
 
@@ -23,7 +23,7 @@
 	<!-- in {$exception->getFile()}:{$exception->getLine()} -->
 	{if count($chain) > 1}
 	<!--{foreach array_slice($chain, 1) as $ex}
-	caused by {get_debug_type($ex)}: {$ex->getMessage()}{$ex->getCode() ? ' #' . $ex->getCode() : ''}
+	caused by {get_debug_type($ex)}: {$ex->getMessage()}{$ex->getCode() ? ' #' . $ex->getCode()}
 	{/foreach} -->
 	{/if}
 	<!-- {$source} -->

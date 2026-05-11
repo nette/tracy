@@ -34,14 +34,14 @@
 
 		{if $packages || $devPackages}
 			<h2><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^div .tracy-InfoPanel-packages">
-				Composer Packages ({count($packages)}{$devPackages ? ' + ' . count($devPackages) . ' dev' : ''})
+				Composer Packages ({count($packages)}{$devPackages ? ' + ' . count($devPackages) . ' dev'})
 			</a></h2>
 
 			<div class="tracy-InfoPanel-packages tracy-collapsed">
 				<table n:if="$packages" class="tracy-sortable">
 					<tr n:foreach="$packages as $package">
 						<td>{$package->name}</td>
-						<td>{$package->version}{strpos($package->version, dev) !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : ''}</td>
+						<td>{$package->version}{strpos($package->version, dev) !== false && $package->hash ? ' #' . substr($package->hash, 0, 4)}</td>
 					</tr>
 				</table>
 
@@ -51,7 +51,7 @@
 					<table class="tracy-sortable">
 						<tr n:foreach="$devPackages as $package">
 							<td>{$package->name}</td>
-							<td>{$package->version}{strpos($package->version, dev) !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : ''}</td>
+							<td>{$package->version}{strpos($package->version, dev) !== false && $package->hash ? ' #' . substr($package->hash, 0, 4)}</td>
 						</tr>
 					</table>
 				{/if}

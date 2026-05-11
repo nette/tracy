@@ -168,7 +168,7 @@ class Debugger
 	/**
 	 * Enables displaying or logging errors and exceptions.
 	 * @param  bool|string|string[]  $mode  use constant Debugger::Production, Development, Detect (autodetection) or IP address(es) whitelist.
-	 * @param  string  $logDirectory  error log directory
+	 * @param  ?string  $logDirectory  error log directory
 	 * @param  string|string[]|null  $email  administrator email; enables email sending in production mode
 	 */
 	public static function enable(

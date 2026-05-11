@@ -89,7 +89,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$initialize->addBody($builder->formatPhp('$logger = ?;', [$logger]));
 		if (
 			!$logger instanceof Nette\DI\Definitions\ServiceDefinition
-			|| $logger->getFactory()->getEntity() !== [Tracy\Debugger::class, 'getLogger']
+			|| $logger->getEntity() !== [Tracy\Debugger::class, 'getLogger']
 		) {
 			$initialize->addBody('Tracy\Debugger::setLogger($logger);');
 		}
@@ -103,19 +103,20 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
+		$special = [
+			'keysToHide' => <<<'XX'
+				$keysToHide = ?;
+				array_push(Tracy\Debugger::$keysToHide, ...$keysToHide);
+				array_push(Tracy\Debugger::getBlueScreen()->keysToHide, ...$keysToHide);
+				XX,
+			'fromEmail' => 'if ($logger instanceof Tracy\Logger) $logger->fromEmail = ?',
+			'emailSnooze' => 'if ($logger instanceof Tracy\Logger) $logger->emailSnooze = ?',
+		];
+
 		foreach ($options as $key => $value) {
 			if ($value !== null) {
-				$tbl = [
-					'keysToHide' => <<<'XX'
-						$keysToHide = ?;
-						array_push(Tracy\Debugger::$keysToHide, ...$keysToHide);
-						array_push(Tracy\Debugger::getBlueScreen()->keysToHide, ...$keysToHide);
-						XX,
-					'fromEmail' => 'if ($logger instanceof Tracy\Logger) $logger->fromEmail = ?',
-					'emailSnooze' => 'if ($logger instanceof Tracy\Logger) $logger->emailSnooze = ?',
-				];
 				$initialize->addBody($builder->formatPhp(
-					($tbl[$key] ?? 'Tracy\Debugger::$' . $key . ' = ?') . ';',
+					($special[$key] ?? 'Tracy\Debugger::$' . $key . ' = ?') . ';',
 					Nette\DI\Helpers::filterArguments([$value]),
 				));
 			}

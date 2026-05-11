@@ -63,7 +63,7 @@ Mapped source: ';
 echo "\n";
 foreach (Helpers::getExceptionChain($exception) as $i => $ex) /* pos 46:1 */ {
 	$title = $blueScreen->getExceptionTitle($ex) /* pos 47:2 */;
-	$code = $ex->getCode() ? ' #' . $ex->getCode() : '' /* pos 48:2 */;
+	$code = $ex->getCode() ? ' #' . $ex->getCode() : null /* pos 48:2 */;
 	if ($i === 0) /* pos 49:2 */ {
 		echo '# ';
 		echo Tracy\Helpers::escapeMd($title) /* pos 50:5 */;

@@ -8,7 +8,7 @@
 namespace Tracy\Dumper;
 
 use Tracy\Helpers;
-use function array_map, array_slice, class_exists, count, explode, file, get_debug_type, get_resource_type, gettype, htmlspecialchars, implode, is_bool, is_file, is_int, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
+use function array_map, array_slice, class_exists, count, explode, file, get_debug_type, get_resource_type, gettype, htmlspecialchars, implode, is_bool, is_int, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
 
 
 /**
@@ -20,7 +20,7 @@ final class Describer
 	public const HiddenValue = '*****';
 
 	// Number.MAX_SAFE_INTEGER
-	private const JsSafeInteger = 1 << 53 - 1;
+	private const JsSafeInteger = (1 << 53) - 1;
 
 	public int $maxDepth = 7;
 	public int $maxLength = 150;
