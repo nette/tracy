@@ -8,6 +8,10 @@ parameters:
 		- php
 		- phtml
 
+	scanFiles:
+		# ext-ds 2.0 classes unknown to bundled phpstorm-stubs
+		- phpstan-stubs.php
+
 	ignoreErrors:
 		# Template variables used in required .phtml files via variable scope
 		-
