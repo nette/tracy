@@ -7,7 +7,7 @@
 
 namespace Tracy;
 
-use function in_array;
+use function count, in_array;
 use const ARRAY_FILTER_USE_KEY, ENT_IGNORE, PHP_VERSION_ID;
 
 
@@ -468,7 +468,7 @@ class BlueScreen
 
 	public function formatMessage(\Throwable $exception): string
 	{
-		$msg = Helpers::encodeString(trim((string) $exception->getMessage()), self::MaxMessageLength, showWhitespaces: false);
+		$msg = Helpers::encodeString(trim($exception->getMessage()), self::MaxMessageLength, showWhitespaces: false);
 
 		// highlight 'string'
 		$msg = preg_replace(

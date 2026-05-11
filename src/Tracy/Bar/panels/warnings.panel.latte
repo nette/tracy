@@ -6,7 +6,7 @@
 		{foreach $data as $item => $count}
 			{do [$file, $line, $message] = explode('|', $item, 3)}
 			<tr>
-				<td class="tracy-right">{$count ? $count . '×' : ''}</td>
+				<td class="tracy-right">{$count ? $count . '×'}</td>
 				<td><pre>{$message} in {Tracy\Helpers::editorLink($file, (int) $line)}</pre></td>
 			</tr>
 		{/foreach}

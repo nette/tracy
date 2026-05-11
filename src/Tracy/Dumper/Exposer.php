@@ -154,7 +154,7 @@ final class Exposer
 
 	public static function exposeDOMNode(\DOMNode|Dom\Node $obj, Value $value, Describer $describer): void
 	{
-		$props = preg_match_all('#^\s*\[([^\]]+)\] =>#m', print_r($obj, return: true), $tmp) ? $tmp[1] : [];
+		$props = preg_match_all('#^\s*\[([^\]]+)] =>#m', print_r($obj, return: true), $tmp) ? $tmp[1] : [];
 		sort($props);
 		foreach ($props as $p) {
 			$describer->addPropertyTo($value, $p, @$obj->$p, Value::PropertyPublic); // @ some props may be deprecated

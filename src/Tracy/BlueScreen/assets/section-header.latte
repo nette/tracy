@@ -5,7 +5,7 @@
 {varType Tracy\BlueScreen $blueScreen}
 
 {do $title = $blueScreen->getExceptionTitle($ex)}
-{do $code = $ex->getCode() ? ' #' . $ex->getCode() : ''}
+{do $code = $ex->getCode() ? ' #' . $ex->getCode()}
 
 <section class="tracy-section tracy-section--error">
 	<p n:if="$ex->getMessage()">{$title}{$code}</p>

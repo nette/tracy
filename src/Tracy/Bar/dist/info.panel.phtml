@@ -56,7 +56,7 @@ if ($packages || $devPackages) /* pos 35:3 */ {
 	echo '		<h2><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^div .tracy-InfoPanel-packages">
 			Composer Packages (';
 	echo Tracy\Helpers::escapeHtml(count($packages)) /* pos 37:24 */;
-	echo Tracy\Helpers::escapeHtml($devPackages ? ' + ' . count($devPackages) . ' dev' : '') /* pos 37:42 */;
+	echo Tracy\Helpers::escapeHtml($devPackages ? ' + ' . count($devPackages) . ' dev' : null) /* pos 37:42 */;
 	echo ')
 		</a></h2>
 
@@ -72,7 +72,7 @@ if ($packages || $devPackages) /* pos 35:3 */ {
 			echo '</td>
 					<td>';
 			echo Tracy\Helpers::escapeHtml($package->version) /* pos 44:11 */;
-			echo Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '') /* pos 44:30 */;
+			echo Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : null) /* pos 44:30 */;
 			echo '</td>
 				</tr>
 ';
@@ -95,7 +95,7 @@ if ($packages || $devPackages) /* pos 35:3 */ {
 			echo '</td>
 					<td>';
 			echo Tracy\Helpers::escapeHtml($package->version) /* pos 54:12 */;
-			echo Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : '') /* pos 54:31 */;
+			echo Tracy\Helpers::escapeHtml(strpos($package->version, 'dev') !== false && $package->hash ? ' #' . substr($package->hash, 0, 4) : null) /* pos 54:31 */;
 			echo '</td>
 				</tr>
 ';
