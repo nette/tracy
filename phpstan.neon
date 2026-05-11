@@ -12,22 +12,21 @@ parameters:
 		# Template variables used in required .phtml files via variable scope
 		-
 			identifier: closure.unusedUse
-			path: src/Tracy/Bar/Bar.php
-		-
-			identifier: closure.unusedUse
 			path: src/Tracy/BlueScreen/dist/agent.phtml
 
-		# Tracy doesn't need generic type parameters for Fiber, ArrayObject, DOMNodeList, etc.
-		-
+		-   # Tracy doesn't need generic type parameters for Fiber, ArrayObject, DOMNodeList, etc.
 			identifier: missingType.generics
+			message: '#^(Method|Class|Property|PHPDoc tag @var for variable \$\w+ contains|.+ has parameter \$\w+ with|.+ return type with) .+ (generic|class|interface) (class |interface )?\w+\\?\w*(\\?\w*)* (but )?does not specify its types:#'
+			paths:
+				- src/Tracy/BlueScreen/BlueScreen.php
+				- src/Tracy/BlueScreen/dist/content.phtml
+				- src/Tracy/BlueScreen/dist/section-exception.phtml
+				- src/Tracy/Dumper/Exposer.php
 
 		# Runtime validation of callable-string and Closure types
 		-
 			identifier: function.alreadyNarrowedType
-			paths:
-				- src/Tracy/Bar/Bar.php
-				- src/Tracy/BlueScreen/BlueScreen.php
-				- src/Tracy/Helpers.php
+			path: src/Tracy/BlueScreen/BlueScreen.php
 
 		# Tracy uses dynamic properties on exceptions and panels
 		-
@@ -54,11 +53,6 @@ parameters:
 		-
 			identifier: booleanNot.alwaysFalse
 			path: src/Tracy/Dumper/Describer.php
-
-		# Public property can be set to null by user code at runtime
-		-
-			identifier: booleanAnd.rightAlwaysTrue
-			path: src/Tracy/Logger/Logger.php
 
 		# Condition inside if-block checking same variable
 		-
