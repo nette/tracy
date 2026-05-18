@@ -16,6 +16,29 @@ use function is_array, is_string;
 
 /**
  * Tracy extension for Nette DI.
+ *
+ * @property object{
+ *     email: string|list<string>|null,
+ *     fromEmail: string|null,
+ *     emailSnooze: string|null,
+ *     logSeverity: int|string|list<string>|null,
+ *     editor: string|null,
+ *     browser: string|null,
+ *     errorTemplate: string|null,
+ *     strictMode: bool|int|string|list<string>|null,
+ *     showBar: bool|null,
+ *     maxLength: int|null,
+ *     maxDepth: int|null,
+ *     maxItems: int|null,
+ *     keysToHide: array<mixed>|null,
+ *     dumpTheme: string|null,
+ *     showLocation: bool|null,
+ *     scream: bool|int|string|list<string>|null,
+ *     bar: list<string|Nette\DI\Definitions\Statement>,
+ *     blueScreen: list<callable(?\Throwable): ?array{tab: string, panel: string}>,
+ *     editorMapping: array<string, string>|null,
+ *     netteMailer: bool,
+ * } $config
  */
 class TracyExtension extends Nette\DI\CompilerExtension
 {
@@ -78,7 +101,6 @@ class TracyExtension extends Nette\DI\CompilerExtension
 	public function afterCompile(Nette\PhpGenerator\ClassType $class): void
 	{
 		$config = $this->config;
-		\assert($config instanceof \stdClass);
 
 		$initialize = $this->initialization ?? new Nette\PhpGenerator\Closure;
 		$initialize->addBody('if (!Tracy\Debugger::isEnabled()) { return; }');
