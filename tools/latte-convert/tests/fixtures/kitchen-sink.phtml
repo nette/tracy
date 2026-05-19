@@ -1,0 +1,140 @@
+<?php declare(strict_types=1);
+
+/** @var string $file */
+/** @var int $line */
+/** @var int $expanded */
+use Tracy\Helpers;
+echo '<style class="tracy-debug">
+	#tracy-debug td.nette-DbConnectionPanel-sql { background: white !important; overflow-x: auto; max-width: 0; }
+	#tracy-debug .nette-DbConnectionPanel-source { color: #BBB !important }
+	#tracy-debug .nette-DbConnectionPanel-explain td { white-space: pre }
+</style>
+
+<h1>Queries: ';
+echo Tracy\Helpers::escapeHtml($count) /* pos 11:14 */;
+echo Tracy\Helpers::escapeHtml($totalTime ? foo(' time ms ', ' time ms ', '', '') : 'Anjb-d') /* pos 11:22 */;
+echo ', ';
+echo Tracy\Helpers::escapeHtml($name . (string) $foo) /* pos 11:85 */;
+echo ' ';
+echo Tracy\Helpers::escapeHtml(\JSON_UNESCAPED_SLASHES) /* pos 11:109 */;
+echo '</h1>
+
+<div class="tracy-inner" style="min-width: 600px">
+';
+$_blocks['foo'] = function () use (&$_blocks) {
+	echo '	hello
+';
+	if (true) /* pos 16:3 */ return;
+};
+echo "\n";
+$_blocks['bar'] = function ($arg,$arg) use (&$_blocks) {
+	echo '	hello
+';
+};
+echo "\n";
+$_blocks['foo']();
+$_blocks['for']($var1,var);
+require __DIR__ . '/section-exception.phtml';
+echo "\n";
+foreach ($events as [$connection, $query, $trace, $time, $rows, $error, $command, $explain]) /* pos 27:2 */ {
+	echo '	<tr>
+		<td style="background:rgba(255, 95, 23, ';
+	echo Tracy\Helpers::escapeHtml(sprintf('%0.3f', log($time * 1000 + 1, 10) * $performanceScale)) /* pos 29:44 */;
+	echo ')"';
+	echo ($ʟ_tmp = ((float) $time)) === null ? '' : ' data-order="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 29:126 */;
+	echo '>
+';
+	if ($error) /* pos 30:5 */ {
+		echo '			<span';
+		echo ($ʟ_tmp = ($error)) === null ? '' : ' title="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 31:20 */;
+		echo '>ERROR</span>
+			';
+	} elseif ($time !== null) /* pos 32:6 */ {
+		echo Tracy\Helpers::escapeHtml(sprintf('%0.3f', $time * 1000)) /* pos 32:29 */;
+		echo "\n";
+	}
+
+	echo "\n";
+	if ($explain) /* pos 35:5 */ {
+		echo '			<br/><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^tr .nette-DbConnectionPanel-explain">explain</a>';
+	}
+	echo "\n";
+	if ($trace) /* pos 36:5 */ {
+		echo '			<br/><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^tr .nette-DbConnectionPanel-trace">trace</a>';
+	}
+	echo '
+		</td>
+
+		<td class="nette-DbConnectionPanel-sql nette-DbConnectionPanel-sql-';
+	echo Tracy\Helpers::escapeHtml($command) /* pos 39:71 */;
+	echo '">
+			';
+	echo Nette\Database\Helpers::dumpSql($query, $connection) /* pos 40:5 */;
+	echo '
+
+';
+	if ($trace) /* pos 42:5 */ {
+		echo '			';
+		echo substr_replace(Helpers::editorLink($trace[0]['file'], $trace[0]['line']), ' class="nette-DbConnectionPanel-source"', 2, 0) /* pos 43:6 */;
+		echo '
+			<table class="tracy-collapsed nette-DbConnectionPanel-trace">
+';
+		foreach ($trace as $row) /* pos 45:7 */ {
+			echo '				<tr>
+					<td>';
+			echo isset($row['file']) ? Tracy\Helpers::editorLink($row['file'], $row['line']) : null /* pos 47:13 */;
+			echo '</td>
+					<td>';
+			echo Tracy\Helpers::escapeHtml($row['class'] ?? '') /* pos 48:13 */;
+			echo Tracy\Helpers::escapeHtml($row['type'] ?? '') /* pos 48:32 */;
+			echo Tracy\Helpers::escapeHtml($row['function']) /* pos 48:50 */;
+			echo '()</td>
+				</tr>
+';
+
+		}
+
+		echo '			</table>
+';
+	}
+	echo '		</td>
+
+		<td>';
+	echo Tracy\Helpers::escapeHtml($rows) /* pos 55:8 */;
+	echo '</td>
+	</tr>
+';
+
+}
+
+echo "\n";
+if (count($events) < $count) /* pos 59:2 */ {
+	echo '	<p>...and more</p>';
+}
+echo '
+</div>
+
+<div';
+echo ($ʟ_tmp = ($foo)) === null ? '' : ' attr="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 62:12 */;
+echo ($ʟ_tmp = array_filter(['bar', $cond ? 'baz' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 62:25 */;
+echo '></div>
+<script';
+echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 63:16 */;
+echo '></script>
+<script>';
+echo Tracy\Helpers::jsonEncode($data) /* pos 64:9 */;
+echo '</script>
+<a';
+echo ($ʟ_tmp = (!empty($item['external']) ? '_blank' : null)) === null ? '' : ' target="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 65:12 */;
+echo ($ʟ_tmp = (!empty($item['external']) ? 'noreferrer noopener' : null)) === null ? '' : ' rel="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 65:60 */;
+echo '>link</a>
+<div';
+echo ($ʟ_tmp = array_filter(['tracy-toggle', $collapsed ? 'tracy-collapsed' : null])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 66:13 */;
+echo '></div>
+
+';
+try {
+	$x = dangerous() /* pos 69:2 */;
+} catch (\Throwable) {
+	$x = fallback() /* pos 71:2 */;
+}

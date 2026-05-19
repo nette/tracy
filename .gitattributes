@@ -5,6 +5,9 @@ ncs.*           export-ignore
 phpstan*.neon   export-ignore
 src/**/*.latte  export-ignore
 tests/          export-ignore
+tools/latte-convert/    export-ignore
 
 *.php*          diff=php
 *.sh            text eol=lf
+tools/latte-convert/tests/fixtures/*.latte    text eol=lf
+tools/latte-convert/tests/fixtures/*.phtml    text eol=lf

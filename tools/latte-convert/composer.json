@@ -1,0 +1,17 @@
+{
+	"name": "tracy/latte-convert",
+	"description": "Compiles Tracy's .latte templates into standalone .phtml files with no Latte runtime dependency.",
+	"license": "BSD-3-Clause",
+	"type": "library",
+	"require": {
+		"php": ">=8.2",
+		"latte/latte": "^3.1.4"
+	},
+	"require-dev": {
+		"nette/tester": "^2.6"
+	},
+	"autoload": {
+		"classmap": ["src"]
+	},
+	"minimum-stability": "dev"
+}

@@ -1,0 +1,72 @@
+{varType string $file}
+{varType int $line}
+{varType int $expanded}
+{use Tracy\Helpers}
+<style class="tracy-debug">
+	#tracy-debug td.nette-DbConnectionPanel-sql { background: white !important; overflow-x: auto; max-width: 0; }
+	#tracy-debug .nette-DbConnectionPanel-source { color: #BBB !important }
+	#tracy-debug .nette-DbConnectionPanel-explain td { white-space: pre }
+</style>
+
+<h1>Queries: {$count}{$totalTime ? foo(' time ms ', " time ms ", '', "") : Anjb-d}, {$name . (string) $foo} {=\JSON_UNESCAPED_SLASHES}</h1>
+
+<div class="tracy-inner" style="min-width: 600px">
+	{define foo}
+		hello
+		{exitIf true}
+	{/define}
+
+	{define bar $arg, $arg}
+		hello
+	{/define}
+
+	{include foo}
+	{include for $var1, var}
+	{include 'section-exception.phtml'}
+
+	{foreach $events as [$connection, $query, $trace, $time, $rows, $error, $command, $explain]}
+		<tr>
+			<td style="background:rgba(255, 95, 23, {sprintf('%0.3f', log($time * 1000 + 1, 10) * $performanceScale)})" data-order="{=(float) $time}">
+				{if $error}
+					<span title="{$error}">ERROR</span>
+					{elseif $time !== null}{sprintf('%0.3f', $time * 1000)}
+				{/if}
+
+				{if $explain}<br/><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^tr .nette-DbConnectionPanel-explain">explain</a>{/if}
+				{if $trace}<br/><a class="tracy-toggle tracy-collapsed" data-tracy-ref="^tr .nette-DbConnectionPanel-trace">trace</a>{/if}
+			</td>
+
+			<td class="nette-DbConnectionPanel-sql nette-DbConnectionPanel-sql-{$command}">
+				{Nette\Database\Helpers::dumpSql($query, $connection)|noescape}
+
+				{if $trace}
+					{substr_replace(Helpers::editorLink($trace[0][file], $trace[0][line]), ' class="nette-DbConnectionPanel-source"', 2, 0)|noescape}
+					<table class="tracy-collapsed nette-DbConnectionPanel-trace">
+						{foreach $trace as $row}
+							<tr>
+								<td>{isset($row[file]) ? Tracy\Helpers::editorLink($row[file], $row[line])}</td>
+								<td>{$row[class] ?? ''}{$row[type] ?? ''}{$row[function]}()</td>
+							</tr>
+						{/foreach}
+					</table>
+				{/if}
+			</td>
+
+			<td>{$rows}</td>
+		</tr>
+	{/foreach}
+
+	{if count($events) < $count}<p>...and more</p>{/if}
+</div>
+
+<div attr={$foo} class={[bar, $cond ? baz : null]}></div>
+<script nonce={$nonce}></script>
+<script>{$data|json}</script>
+<a target={!empty($item[external]) ? '_blank' : null} rel={!empty($item[external]) ? 'noreferrer noopener' : null}>link</a>
+<div class={[tracy-toggle, $collapsed ? tracy-collapsed : null]}></div>
+
+{try}
+	{do $x = dangerous()}
+{rollback}
+	{do $x = fallback()}
+{/try}
