@@ -497,6 +497,8 @@ class BlueScreen
 	{
 		return fn($v, $k = null): string => Dumper::toText($v, [
 			Dumper::DEPTH => 3,
+			Dumper::TRUNCATE => $this->maxLength,
+			Dumper::ITEMS => $this->maxItems,
 			Dumper::SCRUBBER => $this->scrubber,
 			Dumper::KEYS_TO_HIDE => $this->keysToHide,
 		], $k);

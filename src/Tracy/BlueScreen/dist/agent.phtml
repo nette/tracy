@@ -119,7 +119,7 @@ in ';
 				$argParts = [] /* pos 84:5 */;
 				foreach ($row['args'] as $k => $v) /* pos 85:5 */ {
 					$name = isset($params[$k]) && !$params[$k]->isVariadic() ? '$' . $params[$k]->getName() : '#' . $k /* pos 86:6 */;
-					$dump = rtrim($agentDump($v)) /* pos 87:6 */;
+					$dump = rtrim($agentDump($v, $name)) /* pos 87:6 */;
 					if (str_contains($dump, '
 ') || strlen($dump) > 50) /* pos 88:6 */ {
 						$allSimple = false /* pos 89:7 */;
