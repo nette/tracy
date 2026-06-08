@@ -334,7 +334,7 @@ final class Exposer
 	{
 		$rc = new \ReflectionClass($obj);
 		foreach ($rc->getProperties() as $prop) {
-			if ($prop->isStatic() || $prop->isLazy($obj) || !$prop->isInitialized($obj)) {
+			if ($prop->isStatic() || $prop->isLazy($obj) || $prop->isVirtual() || !$prop->isInitialized($obj)) {
 				continue;
 			}
 
