@@ -488,9 +488,10 @@ class Debugger
 				Dumper::DEPTH => self::$maxDepth,
 				Dumper::TRUNCATE => self::$maxLength,
 				Dumper::ITEMS => self::$maxItems,
+				Dumper::KEYS_TO_HIDE => self::$keysToHide,
 			];
 			return Helpers::isCli()
-				? Dumper::toText($var)
+				? Dumper::toText($var, $options)
 				: Helpers::capture(fn() => Dumper::dump($var, $options));
 
 		} elseif (!self::$productionMode) {
