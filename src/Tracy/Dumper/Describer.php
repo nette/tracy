@@ -193,7 +193,10 @@ final class Describer
 			$value->items = [];
 			$props = $this->exposeObject($obj, $value);
 			foreach ($props ?? [] as $k => $v) {
-				$this->addPropertyTo($value, (string) $k, $v, Value::PropertyVirtual, $this->getReferenceId($props ?? [], $k));
+				$described = $this->isSensitive((string) $k, $v, get_debug_type($obj)) // props come from user callbacks (__debugInfo, custom exposers)
+					? new Value(Value::TypeText, self::hideValue($v))
+					: null;
+				$this->addPropertyTo($value, (string) $k, $v, Value::PropertyVirtual, $this->getReferenceId($props ?? [], $k), described: $described);
 			}
 		}
 
