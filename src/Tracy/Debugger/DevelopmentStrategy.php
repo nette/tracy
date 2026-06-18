@@ -51,10 +51,14 @@ final class DevelopmentStrategy
 
 	private function renderExceptionCli(\Throwable $exception): void
 	{
+		$escape = fn(string $s): string => Helpers::isHtmlMode() // exception message may contain user input
+			? '<pre>' . Helpers::escapeHtml($s) . '</pre>'
+			: $s;
+
 		try {
 			$logFile = Debugger::log($exception, Debugger::EXCEPTION);
 		} catch (\Throwable $e) {
-			echo "$exception\nTracy is unable to log error: {$e->getMessage()}\n";
+			echo $escape("$exception\nTracy is unable to log error: {$e->getMessage()}\n");
 			return;
 		}
 
@@ -66,7 +70,7 @@ final class DevelopmentStrategy
 			echo "\n\n" . CodeHighlighter::highlightPhpCli((string) file_get_contents($exception->getFile()), $exception->getLine()) . "\n";
 		}
 
-		echo "$exception\n" . ($logFile ? "\n(stored in $logFile)\n" : '');
+		echo $escape("$exception\n" . ($logFile ? "\n(stored in $logFile)\n" : ''));
 		if ($logFile && Debugger::$browser) {
 			exec(Debugger::$browser . ' ' . escapeshellarg(strtr($logFile, Debugger::$editorMapping)));
 		}
