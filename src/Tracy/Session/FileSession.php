@@ -56,12 +56,20 @@ class FileSession implements SessionStorage
 			|| !($file = @fopen($path = $this->dir . '/' . self::FilePrefix . $id, 'r+')) // intentionally @
 		) {
 			$id = Helpers::createId();
-			setcookie($this->cookieName, $id, time() + self::CookieLifetime, '/', '', secure: false, httponly: true);
+			setcookie($this->cookieName, $id, [
+				'expires' => time() + self::CookieLifetime,
+				'path' => '/',
+				'secure' => Helpers::isHttps(),
+				'httponly' => true,
+				'samesite' => 'Lax',
+			]);
 
 			$file = @fopen($path = $this->dir . '/' . self::FilePrefix . $id, 'c+'); // intentionally @
 			if ($file === false) {
 				throw new \RuntimeException("Unable to create file '$path'. " . (error_get_last()['message'] ?? ''));
 			}
+
+			@chmod($path, 0o600); // @ - may not be supported by the filesystem
 		}
 
 		if (!@flock($file, LOCK_EX)) { // intentionally @
@@ -69,7 +77,7 @@ class FileSession implements SessionStorage
 		}
 
 		$this->file = $file;
-		$this->data = @unserialize(stream_get_contents($this->file)) ?: []; // @ - file may be empty
+		$this->data = @unserialize(stream_get_contents($this->file), ['allowed_classes' => false]) ?: []; // @ - file may be empty; data contain no objects
 
 		if (mt_rand() / mt_getrandmax() < $this->gcProbability) {
 			$this->clean();
