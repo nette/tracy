@@ -504,7 +504,7 @@ class Debug {
 
 		let oldFetch = window.fetch;
 		window.fetch = function (request, options) {
-			request = request instanceof Request ? request : new Request(request, options || {});
+			request = new Request(request, options);
 			let reqId = request.headers.get('X-Tracy-Ajax');
 
 			if (getOption('AutoRefresh') && !reqId && new URL(request.url, location.origin).host === location.host) {
