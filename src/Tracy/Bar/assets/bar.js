@@ -23,6 +23,14 @@ function getOption(key) {
 	return global === undefined ? defaults[key] : global;
 }
 
+function restoreJSON(key) {
+	try {
+		return JSON.parse(localStorage.getItem(key));
+	} catch {
+		return null; // ignore corrupt data
+	}
+}
+
 class Panel {
 	constructor(id) {
 		this.id = id;
@@ -221,7 +229,7 @@ class Panel {
 
 	restorePosition() {
 		let key = this.id.split(':')[0];
-		let pos = JSON.parse(localStorage.getItem(key));
+		let pos = restoreJSON(key);
 		if (!pos) {
 			this.elem.classList.add(Panel.PEEK);
 		} else if (pos.window) {
@@ -379,7 +387,7 @@ class Bar {
 
 
 	restorePosition() {
-		let pos = JSON.parse(localStorage.getItem(this.id));
+		let pos = restoreJSON(this.id);
 		setPosition(this.elem, pos || { right: 0, bottom: 0 });
 		this.savePosition();
 	}

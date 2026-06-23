@@ -73,7 +73,12 @@ class Toggle {
 			}
 		});
 
-		let toggles = JSON.parse(sessionStorage.getItem('tracy-toggles-' + baseEl.id));
+		let toggles;
+		try {
+			toggles = JSON.parse(sessionStorage.getItem('tracy-toggles-' + baseEl.id));
+		} catch {
+			// ignore corrupt data
+		}
 		if (toggles && restore !== false) {
 			toggles.forEach((item) => {
 				let el = baseEl;
