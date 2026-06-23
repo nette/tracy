@@ -95,8 +95,8 @@ class FileSession implements SessionStorage
 	{
 		$old = strtotime('-1 week');
 		foreach (glob($this->dir . '/' . self::FilePrefix . '*') ?: [] as $file) {
-			if (filemtime($file) < $old) {
-				unlink($file);
+			if (@filemtime($file) < $old) { // @ - file may be deleted by concurrent GC
+				@unlink($file); // @ - file may be deleted by concurrent GC
 			}
 		}
 	}
