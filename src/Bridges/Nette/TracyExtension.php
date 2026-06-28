@@ -22,7 +22,7 @@ use function is_array, is_string;
  *     fromEmail: string|null,
  *     emailSnooze: string|null,
  *     logSeverity: int|string|list<string>|null,
- *     editor: string|null,
+ *     editor: string|false|null,
  *     browser: string|null,
  *     errorTemplate: string|null,
  *     strictMode: bool|int|string|list<string>|null,
@@ -62,7 +62,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			'fromEmail' => Expect::email()->dynamic(),
 			'emailSnooze' => Expect::string()->dynamic(),
 			'logSeverity' => Expect::anyOf(Expect::int(), $errorSeverityExpr, Expect::listOf($errorSeverity)),
-			'editor' => Expect::type('string|null')->dynamic(),
+			'editor' => Expect::anyOf(Expect::string(), false, null)->dynamic(),
 			'browser' => Expect::string()->dynamic(),
 			'errorTemplate' => Expect::string()->dynamic(),
 			'strictMode' => Expect::anyOf(Expect::bool(), Expect::int(), $errorSeverityExpr, Expect::listOf($errorSeverity)),
@@ -136,12 +136,16 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		];
 
 		foreach ($options as $key => $value) {
-			if ($value !== null) {
-				$initialize->addBody($builder->formatPhp(
-					($special[$key] ?? 'Tracy\Debugger::$' . $key . ' = ?') . ';',
-					Nette\DI\Helpers::filterArguments([$value]),
-				));
+			if ($key === 'editor' && $value === false) {
+				$value = null; // 'editor: false' disables editor links
+			} elseif ($value === null) {
+				continue;
 			}
+
+			$initialize->addBody($builder->formatPhp(
+				($special[$key] ?? 'Tracy\Debugger::$' . $key . ' = ?') . ';',
+				Nette\DI\Helpers::filterArguments([$value]),
+			));
 		}
 
 		if ($config->netteMailer && $builder->getByType(Nette\Mail\IMailer::class)) {
