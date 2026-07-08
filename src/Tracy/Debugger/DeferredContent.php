@@ -67,14 +67,17 @@ final class DeferredContent
 
 	public function sendAssets(): bool
 	{
+		$asset = $_GET['_tracy_bar'] ?? null;
 		if (headers_sent($file, $line) || ob_get_length()) {
+			if ($asset === null && !$this->deferred) { // nothing to send, repeated enable() is a no-op
+				return false;
+			}
+
 			throw new \LogicException(
 				__METHOD__ . '() called after some output has been sent. '
 				. ($file ? "Output started at $file:$line." : 'Try Tracy\OutputDebugger to find where output started.'),
 			);
 		}
-
-		$asset = $_GET['_tracy_bar'] ?? null;
 		if ($asset === 'js') {
 			header('Content-Type: application/javascript; charset=UTF-8');
 			header('Cache-Control: max-age=864000');
