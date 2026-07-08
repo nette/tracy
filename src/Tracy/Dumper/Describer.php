@@ -8,7 +8,7 @@
 namespace Tracy\Dumper;
 
 use Tracy\Helpers;
-use function array_map, array_slice, class_exists, count, explode, file, get_debug_type, get_resource_type, gettype, htmlspecialchars, implode, interface_exists, is_bool, is_int, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
+use function array_map, array_slice, class_exists, count, file, get_debug_type, get_resource_type, htmlspecialchars, implode, interface_exists, is_array, is_bool, is_float, is_int, is_object, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
 
 
 /**
@@ -75,12 +75,15 @@ final class Describer
 
 	private function describeVar(mixed $var, int $depth = 0, ?int $refId = null): mixed
 	{
-		if ($var === null || is_bool($var)) {
-			return $var;
-		}
-
-		$m = 'describe' . explode(' ', gettype($var))[0];
-		return $this->$m($var, $depth, $refId);
+		return match (true) {
+			$var === null, is_bool($var) => $var,
+			is_int($var) => $this->describeInteger($var),
+			is_float($var) => $this->describeDouble($var),
+			is_string($var) => $this->describeString($var, $depth),
+			is_array($var) => $this->describeArray($var, $depth, $refId),
+			is_object($var) => $this->describeObject($var, $depth),
+			default => $this->describeResource($var, $depth), // open or closed resource
+		};
 	}
 
 
