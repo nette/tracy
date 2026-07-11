@@ -11,6 +11,20 @@
 	display: none;
 }
 
+/* host is shown as a manual popover in the top layer, undo UA popover geometry */
+:host([popover]) {
+	position: static;
+	inset: auto;
+	width: auto;
+	height: auto;
+	margin: 0;
+	border: none;
+	padding: 0;
+	background: none;
+	overflow: visible;
+	color: inherit;
+}
+
 body#tracy-debug { /* in popup window, the sheet is adopted by the document */
 	--tracy-space: 10px;
 	direction: ltr;

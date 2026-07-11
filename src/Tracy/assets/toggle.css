@@ -4,7 +4,7 @@
 
 @layer tracy-base {
 
-.tracy-collapsed {
+.tracy-collapsed:not([hidden='until-found']) { /* until-found elements are hidden by the UA, keeping them findable via Ctrl+F */
 	display: none;
 }
 

@@ -26,7 +26,7 @@ class MailSender
 	}
 
 
-	public function send(mixed $message, string $email): void
+	public function send(mixed $message, string $email, ?string $exceptionFile = null): void
 	{
 		$host = preg_replace('#[^\w.-]+#', '', $this->host ?? $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 
@@ -41,7 +41,11 @@ class MailSender
 		}
 
 		$mail->setSubject('PHP: An error occurred on the server ' . $host);
-		$mail->setBody(Tracy\Logger::formatMessage($message) . "\n\nsource: " . Tracy\Helpers::getSource());
+		$mail->setBody(
+			Tracy\Logger::formatMessage($message)
+			. "\n\nsource: " . Tracy\Helpers::getSource()
+			. ($exceptionFile ? "\nreport: " . basename($exceptionFile) : ''),
+		);
 
 		$this->mailer->send($mail);
 	}

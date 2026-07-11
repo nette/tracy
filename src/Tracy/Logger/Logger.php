@@ -28,11 +28,14 @@ class Logger implements ILogger
 	/** @var string|int  interval for sending email is 2 days */
 	public $emailSnooze = '2 days';
 
-	/** @var ?callable(mixed $message, string $email): void  handler for sending emails, null disables sending */
+	/** @var ?callable(mixed $message, string $email, ?string $exceptionFile): void  handler for sending emails, null disables sending */
 	public $mailer;
 
 	/** @var ?string  how long to keep exception report files (.html/.md), e.g. '30 days', null keeps them forever */
 	public $retention;
+
+	/** @var array<callable(mixed $message, string $level, ?string $exceptionFile): void>  called for every logged message (Slack, Sentry, webhooks...) */
+	public array $notifiers = [];
 
 	/** @var ?BlueScreen */
 	private $blueScreen;
@@ -79,8 +82,12 @@ class Logger implements ILogger
 			$this->purgeOldFiles();
 		}
 
+		foreach ($this->notifiers as $notifier) {
+			$notifier($message, $level, $exceptionFile);
+		}
+
 		if (in_array($level, [self::ERROR, self::EXCEPTION, self::CRITICAL], strict: true)) {
-			$this->sendEmail($message);
+			$this->sendEmail($message, $exceptionFile);
 		}
 
 		return $exceptionFile;
@@ -210,7 +217,7 @@ class Logger implements ILogger
 	/**
 	 * @param  mixed  $message
 	 */
-	protected function sendEmail($message): void
+	protected function sendEmail($message, ?string $exceptionFile = null): void
 	{
 		if (!$this->email || !$this->mailer) {
 			return;
@@ -219,7 +226,7 @@ class Logger implements ILogger
 		$this->throttle(
 			$this->directory . '/email-sent',
 			Helpers::parseInterval($this->emailSnooze),
-			fn() => ($this->mailer)($message, implode(', ', (array) $this->email)),
+			fn() => ($this->mailer)($message, implode(', ', (array) $this->email), $exceptionFile),
 		);
 	}
 
@@ -259,13 +266,15 @@ class Logger implements ILogger
 	 * @param  mixed  $message
 	 * @internal
 	 */
-	public function defaultMailer($message, string $email): void
+	public function defaultMailer($message, string $email, ?string $exceptionFile = null): void
 	{
 		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 		mail(
 			$email,
 			"PHP: An error occurred on the server $host",
-			static::formatMessage($message) . "\n\nsource: " . Helpers::getSource(),
+			static::formatMessage($message)
+				. "\n\nsource: " . Helpers::getSource()
+				. ($exceptionFile ? "\nreport: " . basename($exceptionFile) : ''),
 			implode("\r\n", [
 				'From: ' . ($this->fromEmail ?? "noreply@$host"),
 				'X-Mailer: Tracy',
