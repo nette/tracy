@@ -1,6 +1,7 @@
 {use Tracy\Helpers}
 {varType Tracy\BlueScreen $blueScreen}
 {varType Throwable $exception}
+{varType bool $toScreen}
 {varType ?string $nonce}
 {varType string $css}
 {varType string $js}
@@ -40,7 +41,7 @@
 {str_replace(['<!--', '</s'], ['<\!--', '<\/s'], $js)|noescape}
 Tracy.BlueScreen.init();
 
-{if Helpers::isAgent()}
+{if $toScreen && Helpers::isAgent()}
 	document.title={='Tracy: ' . $title . ': ' . $exception->getMessage() . $code};
 	console.error({$blueScreen->renderAgent($exception)});
 {/if}
