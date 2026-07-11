@@ -1,0 +1,10 @@
+{varType Tracy\DefaultBarPanel $this}
+{do $this->time ??= microtime(true) - Tracy\Debugger::$time}
+{include '../panels/info.panel.php'}
+{varType array<string, string> $info}
+{exitIf !$info}
+## System Info
+
+{foreach $info as $key => $val}
+	- {=$key}: {=$val}
+{/foreach}
