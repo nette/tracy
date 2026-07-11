@@ -48,6 +48,8 @@ class Dumper {
 			// <meta> must be left for debug bar panel content
 		});
 
+		Tracy.Toggle.enhance(context || document);
+
 		if (Dumper.inited) {
 			return;
 		}
