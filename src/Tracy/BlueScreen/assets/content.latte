@@ -12,6 +12,7 @@
 {varType bool $showEnvironment}
 {varType Tracy\BlueScreen $blueScreen}
 {varType bool $headersSent}
+{varType bool $toScreen}
 {varType ?string $headersFile}
 {varType ?int $headersLine}
 {varType mixed[][] $obStatus}
@@ -71,4 +72,8 @@
 	</div>
 
 	<meta itemprop=tracy-snapshot content={$snapshot ?? []|json}>
+	{if $toScreen}
+		{* markdown source for the Copy button; must be after the snapshot meta, renderAgent() resets the snapshot state *}
+		<script type="application/json" class="tracy-markdown-source">{=Helpers::jsonEncode($blueScreen->renderAgent($exception), inScript: true)|noescape}</script>
+	{/if}
 </div>
