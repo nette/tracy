@@ -127,8 +127,7 @@ final class DeferredContent
 			__DIR__ . '/../assets/toggle.css',
 			__DIR__ . '/../assets/table-sort.css',
 			__DIR__ . '/../assets/tabs.css',
-			__DIR__ . '/../Dumper/assets/dumper-light.css',
-			__DIR__ . '/../Dumper/assets/dumper-dark.css',
+			__DIR__ . '/../Dumper/assets/dumper.css',
 		], Debugger::$customCssFiles));
 		$barCss = file_get_contents(__DIR__ . '/../Bar/assets/bar.css') ?: throw new \RuntimeException('Cannot read bar.css');
 		$bsCss = file_get_contents(__DIR__ . '/../BlueScreen/assets/bluescreen.css') ?: throw new \RuntimeException('Cannot read bluescreen.css');

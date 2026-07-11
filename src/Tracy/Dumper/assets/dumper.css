@@ -1,0 +1,196 @@
+/**
+ * This file is part of the Tracy (https://tracy.nette.org)
+ */
+
+@layer tracy-base {
+
+.tracy-dump {
+	--tracy-dump-color: #444;
+	--tracy-dump-background: #fdf9e2;
+	--tracy-dump-guide: rgba(0, 0, 0, .1);
+	--tracy-dump-guide-hover: rgba(0, 0, 0, .25);
+	--tracy-dump-location: gray;
+	--tracy-dump-name: #C22;
+	--tracy-dump-string: #35D;
+	--tracy-dump-number: #090;
+	--tracy-dump-keyword: #850;
+	--tracy-dump-muted: rgba(0, 0, 0, .5);
+	--tracy-dump-hash: rgba(0, 0, 0, .35);
+	--tracy-dump-href-underline: rgba(0, 0, 0, .2);
+}
+
+.tracy-dump.tracy-dark {
+	--tracy-dump-color: #f8f8f2;
+	--tracy-dump-background: #29292e;
+	--tracy-dump-guide: rgba(255, 255, 255, .1);
+	--tracy-dump-guide-hover: rgba(255, 255, 255, .25);
+	--tracy-dump-location: silver;
+	--tracy-dump-name: #f69c2e;
+	--tracy-dump-string: #3cdfef;
+	--tracy-dump-number: #77d285;
+	--tracy-dump-keyword: #f3cb44;
+	--tracy-dump-muted: rgba(255, 255, 255, .5);
+	--tracy-dump-hash: rgba(255, 255, 255, .35);
+	--tracy-dump-href-underline: rgba(255, 255, 255, .2);
+}
+
+@media (prefers-color-scheme: dark) {
+	.tracy-dump.tracy-auto {
+		--tracy-dump-color: #f8f8f2;
+		--tracy-dump-background: #29292e;
+		--tracy-dump-guide: rgba(255, 255, 255, .1);
+		--tracy-dump-guide-hover: rgba(255, 255, 255, .25);
+		--tracy-dump-location: silver;
+		--tracy-dump-name: #f69c2e;
+		--tracy-dump-string: #3cdfef;
+		--tracy-dump-number: #77d285;
+		--tracy-dump-keyword: #f3cb44;
+		--tracy-dump-muted: rgba(255, 255, 255, .5);
+		--tracy-dump-hash: rgba(255, 255, 255, .35);
+		--tracy-dump-href-underline: rgba(255, 255, 255, .2);
+	}
+}
+
+.tracy-dump {
+	text-align: left;
+	color: var(--tracy-dump-color);
+	background: var(--tracy-dump-background);
+	border-radius: 4px;
+	padding: var(--tracy-space);
+	margin: var(--tracy-space) 0;
+	word-break: break-all;
+	white-space: pre-wrap;
+}
+
+.tracy-dump div {
+	padding-left: 2.5ex;
+}
+
+.tracy-dump div div {
+	border-left: 1px solid var(--tracy-dump-guide);
+	margin-left: .5ex;
+}
+
+.tracy-dump div div:hover {
+	border-left-color: var(--tracy-dump-guide-hover);
+}
+
+.tracy-dump .tracy-dump-location {
+	color: var(--tracy-dump-location);
+	font-size: 80%;
+	text-decoration: none;
+	background: none;
+	opacity: .5;
+	float: right;
+	cursor: pointer;
+}
+
+.tracy-dump .tracy-dump-location:hover,
+.tracy-dump .tracy-dump-location:focus {
+	opacity: 1;
+}
+
+.tracy-dump .tracy-dump-array,
+.tracy-dump .tracy-dump-object {
+	color: var(--tracy-dump-name);
+	user-select: text;
+}
+
+.tracy-dump .tracy-dump-string {
+	color: var(--tracy-dump-string);
+	white-space: break-spaces;
+}
+
+.tracy-dump div.tracy-dump-string {
+	position: relative;
+	padding-left: 3.5ex;
+}
+
+.tracy-dump .tracy-dump-lq {
+	margin-left: calc(-1ex - 1px);
+}
+
+.tracy-dump div.tracy-dump-string:before {
+	content: '';
+	position: absolute;
+	left: calc(3ex - 1px);
+	top: 1.5em;
+	bottom: 0;
+	border-left: 1px solid var(--tracy-dump-guide);
+}
+
+.tracy-dump .tracy-dump-virtual span,
+.tracy-dump .tracy-dump-dynamic span,
+.tracy-dump .tracy-dump-string span {
+	color: var(--tracy-dump-muted);
+}
+
+.tracy-dump .tracy-dump-virtual i,
+.tracy-dump .tracy-dump-dynamic i,
+.tracy-dump .tracy-dump-string i {
+	font-size: 80%;
+	font-style: normal;
+	color: var(--tracy-dump-muted);
+	user-select: none;
+}
+
+.tracy-dump .tracy-dump-number {
+	color: var(--tracy-dump-number);
+}
+
+.tracy-dump .tracy-dump-null,
+.tracy-dump .tracy-dump-bool {
+	color: var(--tracy-dump-keyword);
+}
+
+.tracy-dump .tracy-dump-virtual {
+	font-style: italic;
+}
+
+.tracy-dump .tracy-dump-public::after {
+	content: ' pub';
+}
+
+.tracy-dump .tracy-dump-protected::after {
+	content: ' pro';
+}
+
+.tracy-dump .tracy-dump-private::after {
+	content: ' pri';
+}
+
+.tracy-dump .tracy-dump-public::after,
+.tracy-dump .tracy-dump-protected::after,
+.tracy-dump .tracy-dump-private::after,
+.tracy-dump .tracy-dump-hash {
+	font-size: 85%;
+	color: var(--tracy-dump-hash);
+}
+
+.tracy-dump .tracy-dump-indent {
+	display: none;
+}
+
+.tracy-dump .tracy-dump-highlight {
+	background: #C22;
+	color: white;
+	border-radius: 2px;
+	padding: 0 2px;
+	margin: 0 -2px;
+}
+
+.tracy-dump span[data-tracy-href] {
+	border-bottom: 1px dotted var(--tracy-dump-href-underline);
+}
+
+.tracy-dump .tracy-dump-flash {
+	animation: tracy-dump-flash .2s ease;
+}
+
+@keyframes tracy-dump-flash {
+	0% {
+		background: #c0c0c033;
+	}
+}
+
+}

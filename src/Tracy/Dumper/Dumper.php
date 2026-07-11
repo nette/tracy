@@ -183,8 +183,7 @@ class Dumper
 		// class-scoped styles for the light DOM before <tracy-dump> elements are upgraded;
 		// reset.css is deliberately not included, it must not leak into the host page
 		$s = file_get_contents(__DIR__ . '/../assets/toggle.css')
-			. file_get_contents(__DIR__ . '/assets/dumper-light.css')
-			. file_get_contents(__DIR__ . '/assets/dumper-dark.css');
+			. file_get_contents(__DIR__ . '/assets/dumper.css');
 		echo "<style class=\"tracy-dump-style\"{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
 
 		if (!Debugger::isEnabled() || !Debugger::$showBar) { // otherwise the deferred loader provides the registry & scripts
