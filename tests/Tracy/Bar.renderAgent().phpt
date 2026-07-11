@@ -15,7 +15,7 @@ test('info line with time and memory', function () {
 	Debugger::$time = microtime(true) - 0.05; // simulate 50 ms
 	$bar = Debugger::getBar();
 	Assert::match(
-		"Tracy Bar | %a% ms | %a% MB\n",
+		"Tracy Bar | %a% ms | %a% MB\n\n## System Info\n%A%",
 		$bar->renderAgent(),
 	);
 });
@@ -93,6 +93,72 @@ test('no dumps section when empty', function () {
 
 	Assert::match(
 		"Tracy Bar | %a% ms | %a% MB\n",
+		$bar->renderAgent(),
+	);
+});
+
+
+class AgentAwarePanel implements Tracy\IBarPanel, Tracy\AgentPanel
+{
+	public function getTab(): string
+	{
+		return 'tab';
+	}
+
+
+	public function getPanel(): string
+	{
+		return 'panel';
+	}
+
+
+	public function getAgentInfo(): ?string
+	{
+		return "## Queries\n\n- SELECT 1";
+	}
+}
+
+class BrokenAgentPanel implements Tracy\IBarPanel, Tracy\AgentPanel
+{
+	public function getTab(): string
+	{
+		return 'tab';
+	}
+
+
+	public function getPanel(): string
+	{
+		return 'panel';
+	}
+
+
+	public function getAgentInfo(): ?string
+	{
+		throw new RuntimeException('boom');
+	}
+}
+
+
+test('custom AgentPanel contributes, a broken panel does not kill the render', function () {
+	$bar = new Tracy\Bar;
+	$bar->addPanel(new AgentAwarePanel, 'agent');
+	$bar->addPanel(new BrokenAgentPanel, 'broken');
+
+	Assert::match(
+		"Tracy Bar | %a% ms | %a% MB\n\n## Queries\n\n- SELECT 1\n\nError in panel broken: boom\n",
+		$bar->renderAgent(),
+	);
+});
+
+
+test('info panel provides system info for agents', function () {
+	$bar = new Tracy\Bar;
+	$panel = new Tracy\DefaultBarPanel('info');
+	$panel->time = 0.05;
+	$bar->addPanel($panel, 'Tracy:info');
+
+	Assert::match(
+		"Tracy Bar | %a% ms | %a% MB\n\n## System Info\n\n- Execution time: %a%\n%A%- PHP: %a%\n%A%",
 		$bar->renderAgent(),
 	);
 });

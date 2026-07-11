@@ -42,7 +42,7 @@ class BlueScreen
 
 	public bool $showEnvironment = true;
 
-	/** @var array<\Closure(?\Throwable): ?array{tab: string, panel: string}> */
+	/** @var array<\Closure(?\Throwable): ?array{tab: string, panel: string, text?: string, bottom?: bool, collapsed?: bool}> */
 	private array $panels = [];
 
 	/** @var array<\Closure(\Throwable): ?array{link: string, label: string}> */
@@ -70,8 +70,9 @@ class BlueScreen
 
 
 	/**
-	 * Add custom panel.
-	 * @param  callable(?\Throwable): ?array{tab: string, panel: string}  $panel
+	 * Add custom panel. The callback is invoked with the exception (possibly repeatedly for each
+	 * exception in the chain) and once with null for panels rendered below the call stack.
+	 * @param  callable(?\Throwable): ?array{tab: string, panel: string, text?: string, bottom?: bool, collapsed?: bool}  $panel
 	 */
 	public function addPanel(callable $panel): static
 	{
@@ -274,6 +275,28 @@ class BlueScreen
 				'tab' => "Error in panel $name",
 				'panel' => nl2br(Helpers::escapeHtml($e)),
 			];
+		}
+
+		return $res;
+	}
+
+
+	/**
+	 * Collects plain-text (markdown) sections provided by custom panels via the 'text' key.
+	 * @return list<\stdClass>
+	 */
+	private function renderPanelsAgent(?\Throwable $ex): array
+	{
+		$res = [];
+		foreach ($this->panels as $callback) {
+			try {
+				$panel = $callback($ex);
+				if (!empty($panel['tab']) && !empty($panel['text'])) {
+					$res[] = (object) $panel;
+				}
+			} catch (\Throwable) {
+				// the error is already reported in the HTML blue screen
+			}
 		}
 
 		return $res;

@@ -97,6 +97,9 @@ class Bar
 			foreach (array_reverse($redirectQueue) as $item) {
 				$content['bar'] .= $item['content']['bar'];
 				$content['panels'] .= $item['content']['panels'];
+			}
+
+			foreach ($redirectQueue as $item) { // chronological order for the console log
 				$contentAgent[] = $item['agent'];
 			}
 
@@ -186,9 +189,16 @@ class Bar
 		$time = number_format((microtime(true) - Debugger::$time) * 1000, 1);
 		$memory = number_format(memory_get_peak_usage() / 1_000_000, 2);
 		$parts = ["Tracy Bar | $time ms | $memory MB"];
-		foreach ($this->panels as $panel) {
-			if (method_exists($panel, 'getAgentInfo') && ($text = $panel->getAgentInfo()) !== null) {
-				$parts[] = $text;
+		foreach ($this->panels as $id => $panel) {
+			try {
+				if (
+					($panel instanceof AgentPanel || method_exists($panel, 'getAgentInfo'))
+					&& ($text = $panel->getAgentInfo()) !== null
+				) {
+					$parts[] = $text;
+				}
+			} catch (\Throwable $e) { // a broken panel must not kill the whole bar render
+				$parts[] = "Error in panel $id: {$e->getMessage()}";
 			}
 		}
 

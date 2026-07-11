@@ -47,6 +47,35 @@ test('caused by section for chained exceptions', function () use ($blueScreen) {
 });
 
 
+test('custom panel text key is included in agent output', function () {
+	$blueScreen = new Tracy\BlueScreen;
+	$blueScreen->addPanel(fn(?Throwable $e) => $e ? [
+		'tab' => 'Database',
+		'panel' => '<pre>SELECT 1</pre>',
+		'text' => "SELECT 1\nSELECT 2",
+	] : null);
+	$blueScreen->addPanel(fn(?Throwable $e) => $e ? [
+		'tab' => 'HTML only',
+		'panel' => '<b>no text key</b>',
+	] : null);
+
+	$output = $blueScreen->renderAgent(new Exception('Oops'));
+	Assert::match("%A%## Database\n\nSELECT 1\nSELECT 2%A%", $output);
+	Assert::notContains('## HTML' . ' only', $output); // panel without 'text' key gets no section (needle split to avoid matching this source line in the stack trace)
+});
+
+
+test('throwing panel does not break agent output', function () {
+	$blueScreen = new Tracy\BlueScreen;
+	$blueScreen->addPanel(function (?Throwable $e): array {
+		throw new LogicException('broken panel');
+	});
+
+	$output = $blueScreen->renderAgent(new Exception('Oops'));
+	Assert::match("%A%# Exception: Oops%A%", $output);
+});
+
+
 test('environment section hidden when disabled', function () {
 	$bs = new Tracy\BlueScreen;
 	$bs->showEnvironment = false;

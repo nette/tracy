@@ -13,7 +13,7 @@ namespace Tracy;
  * @internal
  */
 #[\AllowDynamicProperties]
-class DefaultBarPanel implements IBarPanel
+class DefaultBarPanel implements IBarPanel, AgentPanel
 {
 	public mixed $data = null;
 
