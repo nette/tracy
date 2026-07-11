@@ -71,3 +71,27 @@ Assert::match(
 		XX,
 	Dumper::toText($container),
 );
+
+
+// KEYS_TO_HIDE is applied to keys returned by __debugInfo
+Assert::match(
+	<<<'XX'
+		Password #%d%
+		   password: ***** (string)
+		XX,
+	Dumper::toText($obj, [Dumper::DEBUGINFO => true, Dumper::KEYS_TO_HIDE => ['password']]),
+);
+
+
+// KEYS_TO_HIDE is applied to keys returned by custom object exporters
+Assert::match(
+	<<<'XX'
+		Password #%d%
+		   apiKey: ***** (string)
+		   name: 'joe'
+		XX,
+	Dumper::toText($obj, [
+		Dumper::OBJECT_EXPORTERS => [Password::class => fn() => ['apiKey' => 'secret', 'name' => 'joe']],
+		Dumper::KEYS_TO_HIDE => ['apiKey'],
+	]),
+);
