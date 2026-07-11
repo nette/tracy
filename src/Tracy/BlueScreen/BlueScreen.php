@@ -481,9 +481,10 @@ class BlueScreen
 		$msg = preg_replace_callback(
 			'#(\w+\\\[\w\\\]+\w)(?:::(\w+))?#',
 			function ($m) {
-				if (isset($m[2]) && method_exists($m[1], $m[2])) {
+				$classLike = class_exists($m[1], autoload: false) || interface_exists($m[1], autoload: false) || trait_exists($m[1], autoload: false);
+				if ($classLike && isset($m[2]) && method_exists($m[1], $m[2])) {
 					$r = new \ReflectionMethod($m[1], $m[2]);
-				} elseif (class_exists($m[1], autoload: false) || interface_exists($m[1], autoload: false)) {
+				} elseif ($classLike) {
 					$r = new \ReflectionClass($m[1]);
 				}
 
