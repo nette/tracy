@@ -572,83 +572,68 @@ function evalScripts(elem) {
 }
 
 
-let dragging;
-
-function draggable(elem, options) {
-	let dE = document.documentElement, started, deltaX, deltaY, clientX, clientY;
-	options = options || {};
+function draggable(elem, options = {}) {
+	let started, deltaX, deltaY, clientX, clientY, rafId;
 
 	let redraw = () => {
-		if (dragging) {
-			setPosition(elem, { left: clientX + deltaX, top: clientY + deltaY });
-			requestAnimationFrame(redraw);
-		}
-	};
-
-	let onMove = (e) => {
-		if (e.buttons === 0) {
-			return onEnd(e);
-		}
-		if (!started) {
-			if (options.draggedClass) {
-				elem.classList.add(options.draggedClass);
-			}
-			if (options.start) {
-				options.start(e, elem);
-			}
-			started = true;
-		}
-
-		clientX = e.touches ? e.touches[0].clientX : e.clientX;
-		clientY = e.touches ? e.touches[0].clientY : e.clientY;
-		return false;
-	};
-
-	let onEnd = (e) => {
-		if (started) {
-			if (options.draggedClass) {
-				elem.classList.remove(options.draggedClass);
-			}
-			if (options.stop) {
-				options.stop(e, elem);
-			}
-		}
-		dragging = null;
-		dE.removeEventListener('mousemove', onMove);
-		dE.removeEventListener('mouseup', onEnd);
-		dE.removeEventListener('touchmove', onMove);
-		dE.removeEventListener('touchend', onEnd);
-		return false;
-	};
-
-	let onStart = (e) => {
-		e.preventDefault();
-		e.stopPropagation();
-
-		if (dragging) { // missed mouseup out of window?
-			return onEnd(e);
-		}
-
-		let pos = getPosition(elem);
-		clientX = e.touches ? e.touches[0].clientX : e.clientX;
-		clientY = e.touches ? e.touches[0].clientY : e.clientY;
-		deltaX = pos.left - clientX;
-		deltaY = pos.top - clientY;
-		dragging = true;
-		started = false;
-		dE.addEventListener('mousemove', onMove);
-		dE.addEventListener('mouseup', onEnd);
-		dE.addEventListener('touchmove', onMove);
-		dE.addEventListener('touchend', onEnd);
-		requestAnimationFrame(redraw);
-		if (options.start) {
-			options.start(e, elem);
-		}
+		setPosition(elem, { left: clientX + deltaX, top: clientY + deltaY });
+		rafId = requestAnimationFrame(redraw);
 	};
 
 	options.handles.forEach((handle) => {
-		handle.addEventListener('mousedown', onStart);
-		handle.addEventListener('touchstart', onStart);
+		handle.style.touchAction = 'none'; // prevents scrolling while dragging on touch devices
+
+		handle.addEventListener('pointerdown', (e) => {
+			if (!e.isPrimary || e.button !== 0) {
+				return;
+			}
+			e.preventDefault();
+			e.stopPropagation();
+			handle.setPointerCapture(e.pointerId); // guarantees pointerup delivery even outside the window
+
+			let pos = getPosition(elem);
+			clientX = e.clientX;
+			clientY = e.clientY;
+			deltaX = pos.left - clientX;
+			deltaY = pos.top - clientY;
+			started = false;
+			if (options.start) {
+				options.start(e, elem);
+			}
+		});
+
+		handle.addEventListener('pointermove', (e) => {
+			if (!handle.hasPointerCapture(e.pointerId)) {
+				return;
+			}
+			if (!started) {
+				started = true;
+				if (options.draggedClass) {
+					elem.classList.add(options.draggedClass);
+				}
+				rafId = requestAnimationFrame(redraw);
+			}
+			clientX = e.clientX;
+			clientY = e.clientY;
+		});
+
+		let onEnd = (e) => {
+			if (!handle.hasPointerCapture(e.pointerId)) {
+				return;
+			}
+			cancelAnimationFrame(rafId);
+			if (started) {
+				if (options.draggedClass) {
+					elem.classList.remove(options.draggedClass);
+				}
+				if (options.stop) {
+					options.stop(e, elem);
+				}
+			}
+		};
+
+		handle.addEventListener('pointerup', onEnd);
+		handle.addEventListener('pointercancel', onEnd);
 
 		handle.addEventListener('click', (e) => {
 			if (started) {
