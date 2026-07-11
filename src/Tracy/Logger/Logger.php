@@ -8,7 +8,7 @@
 namespace Tracy;
 
 use function in_array, is_string;
-use const DIRECTORY_SEPARATOR, FILE_APPEND, LOCK_EX, PHP_EOL;
+use const DIRECTORY_SEPARATOR, FILE_APPEND, LOCK_EX, LOCK_UN, PHP_EOL;
 
 
 /**
@@ -164,17 +164,42 @@ class Logger implements ILogger
 	 */
 	protected function sendEmail($message): void
 	{
-		$snooze = is_numeric($this->emailSnooze)
-			? $this->emailSnooze
-			: strtotime($this->emailSnooze) - time();
+		if ($this->email && $this->mailer) {
+			$this->throttle(
+				$this->directory . '/email-sent',
+				Helpers::parseInterval($this->emailSnooze),
+				fn() => ($this->mailer)($message, implode(', ', (array) $this->email)),
+			);
+		}
+	}
 
-		if (
-			$this->email
-			&& $this->mailer
-			&& @filemtime($this->directory . '/email-sent') + $snooze < time() // @ file may not exist
-			&& @file_put_contents($this->directory . '/email-sent', 'sent') // @ file may not be writable
-		) {
-			($this->mailer)($message, implode(', ', (array) $this->email));
+
+	/**
+	 * Executes the action at most once per given interval. The check is atomic across
+	 * concurrent requests and the interval restarts only after the action succeeds.
+	 * @param  \Closure(): void  $action
+	 */
+	private function throttle(string $lockFile, int $interval, \Closure $action): void
+	{
+		$handle = @fopen($lockFile, 'c+'); // @ - file may not be writable
+		if (!$handle) {
+			return;
+		}
+
+		try {
+			if (!flock($handle, LOCK_EX)) {
+				return;
+			}
+
+			$stat = fstat($handle);
+			if ($stat['size'] === 0 || $stat['mtime'] + $interval < time()) {
+				$action();
+				ftruncate($handle, 0);
+				fwrite($handle, date('c'));
+			}
+		} finally {
+			flock($handle, LOCK_UN);
+			fclose($handle);
 		}
 	}
 
