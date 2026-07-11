@@ -31,6 +31,9 @@ class Logger implements ILogger
 	/** @var ?callable(mixed $message, string $email): void  handler for sending emails, null disables sending */
 	public $mailer;
 
+	/** @var ?string  how long to keep exception report files (.html/.md), e.g. '30 days', null keeps them forever */
+	public $retention;
+
 	/** @var ?BlueScreen */
 	private $blueScreen;
 
@@ -72,6 +75,8 @@ class Logger implements ILogger
 
 		if ($exceptionFile) {
 			$this->logException($message, $exceptionFile);
+			$this->appendToIndex($message, $level, $exceptionFile);
+			$this->purgeOldFiles();
 		}
 
 		if (in_array($level, [self::ERROR, self::EXCEPTION, self::CRITICAL], strict: true)) {
@@ -79,6 +84,49 @@ class Logger implements ILogger
 		}
 
 		return $exceptionFile;
+	}
+
+
+	/**
+	 * Appends a machine-readable record to exceptions.jsonl, a stable entry point for log aggregators and AI agents.
+	 */
+	protected function appendToIndex(\Throwable $exception, string $level, string $exceptionFile): void
+	{
+		$line = json_encode([
+			'time' => date(\DateTimeInterface::ATOM),
+			'level' => $level,
+			'hash' => preg_match('#--(\w+)\.html$#', $exceptionFile, $m) ? $m[1] : null,
+			'message' => static::formatMessage($exception),
+			'file' => basename($exceptionFile),
+			'source' => Helpers::getSource(),
+		], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+		@file_put_contents($this->directory . '/exceptions.jsonl', $line . PHP_EOL, FILE_APPEND | LOCK_EX); // @ - file may not be writable
+	}
+
+
+	/**
+	 * Deletes exception report files older than $retention, at most once a day.
+	 */
+	protected function purgeOldFiles(): void
+	{
+		$marker = $this->directory . '/.tracy-purge';
+		if (
+			!$this->retention
+			|| @filemtime($marker) > strtotime('-1 day') // @ - file may not exist
+		) {
+			return;
+		}
+
+		$oldest = time() - Helpers::parseInterval($this->retention);
+
+		@file_put_contents($marker, ''); // @ - file may not be writable
+		foreach (['html', 'md'] as $ext) {
+			foreach (glob($this->directory . '/*--*--*.' . $ext) ?: [] as $file) {
+				if (@filemtime($file) < $oldest) { // @ - file may be deleted by a concurrent purge
+					@unlink($file);
+				}
+			}
+		}
 	}
 
 
@@ -168,17 +216,9 @@ class Logger implements ILogger
 			return;
 		}
 
-		if (is_numeric($this->emailSnooze)) {
-			$snooze = (int) $this->emailSnooze;
-		} elseif (($time = strtotime($this->emailSnooze)) !== false) {
-			$snooze = $time - time();
-		} else {
-			throw new \InvalidArgumentException("Invalid time interval '$this->emailSnooze'.");
-		}
-
 		$this->throttle(
 			$this->directory . '/email-sent',
-			$snooze,
+			Helpers::parseInterval($this->emailSnooze),
 			fn() => ($this->mailer)($message, implode(', ', (array) $this->email)),
 		);
 	}

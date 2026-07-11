@@ -235,6 +235,22 @@ class Helpers
 	}
 
 
+	/**
+	 * Converts a time interval like '2 days' or a number of seconds to seconds.
+	 * @internal
+	 */
+	public static function parseInterval(string|int $value): int
+	{
+		if (is_numeric($value)) {
+			return (int) $value;
+		} elseif (($time = strtotime((string) $value)) !== false) {
+			return $time - time();
+		}
+
+		throw new \InvalidArgumentException("Invalid time interval '$value'.");
+	}
+
+
 	/** @internal */
 	public static function improveException(\Throwable $e): void
 	{
