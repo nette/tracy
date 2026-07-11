@@ -145,6 +145,9 @@ class Debugger
 	/** @var array<\Closure(string, int): ?array{file: string, label: string, line?: int, column?: int, active?: bool}> */
 	private static array $sourceMappers = [];
 
+	/** @var array<string, int|float>  timer() stopwatches */
+	private static array $timers = [];
+
 	/********************* services ****************d*g**/
 
 	private static BlueScreen $blueScreen;
@@ -271,6 +274,34 @@ class Debugger
 	public static function isEnabled(): bool
 	{
 		return self::$enabled;
+	}
+
+
+	/**
+	 * Resets per-request state. Call at the beginning of each request in long-running
+	 * environments such as FrankenPHP worker mode, RoadRunner or Swoole.
+	 */
+	public static function reset(): void
+	{
+		self::$time = $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(as_float: true);
+		self::$obLevel = ob_get_level();
+		self::$timers = [];
+		Dumper::$liveSnapshot = [];
+
+		if (isset(self::$bar)) { // built-in panels accumulate per-request data
+			foreach (['Tracy:dumps', 'Tracy:warnings'] as $id) {
+				$panel = self::$bar->getPanel($id);
+				if ($panel instanceof DefaultBarPanel) {
+					$panel->data = null;
+				}
+			}
+		}
+
+		if (isset(self::$sessionStorage) && self::$sessionStorage instanceof FileSession) {
+			self::$sessionStorage->flush(); // persist deferred content of the previous request
+		}
+
+		self::$strategy = []; // strategies hold per-request state (request id, deferred content)
 	}
 
 
@@ -514,11 +545,10 @@ class Debugger
 	 */
 	public static function timer(?string $name = null): float
 	{
-		static $time = [];
 		$now = hrtime(as_number: true);
 		$name ??= '';
-		$delta = isset($time[$name]) ? $now - $time[$name] : 0;
-		$time[$name] = $now;
+		$delta = isset(self::$timers[$name]) ? $now - self::$timers[$name] : 0;
+		self::$timers[$name] = $now;
 		return $delta / 1e9;
 	}
 
