@@ -236,7 +236,7 @@ class BlueScreen
 			__DIR__ . '/../assets/toggle.css',
 			__DIR__ . '/../assets/table-sort.css',
 			__DIR__ . '/../assets/tabs.css',
-			__DIR__ . '/../Dumper/assets/dumper-light.css',
+			__DIR__ . '/../Dumper/assets/dumper.css',
 			...Debugger::$customCssFiles,
 		]);
 
