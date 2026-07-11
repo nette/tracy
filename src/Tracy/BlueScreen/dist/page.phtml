@@ -3,13 +3,14 @@
 use Tracy\Helpers;
 /** @var Tracy\BlueScreen $blueScreen */
 /** @var Throwable $exception */
+/** @var bool $toScreen */
 /** @var ?string $nonce */
 /** @var string $css */
 /** @var string $js */
 /** @var string $source */
-$title = $blueScreen->getExceptionTitle($exception) /* pos 8:1 */;
-$code = $exception->getCode() ? ' #' . $exception->getCode() : null /* pos 9:1 */;
-$chain = Helpers::getExceptionChain($exception) /* pos 10:1 */;
+$title = $blueScreen->getExceptionTitle($exception) /* pos 9:1 */;
+$code = $exception->getCode() ? ' #' . $exception->getCode() : null /* pos 10:1 */;
+$chain = Helpers::getExceptionChain($exception) /* pos 11:1 */;
 echo '<!DOCTYPE html><!-- "\' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table></p></code>
 
 <html>
@@ -20,26 +21,26 @@ echo '<!DOCTYPE html><!-- "\' --></textarea></script></style></pre></xmp></a></i
 	<meta name="generator" content="Tracy by Nette Framework">
 
 	<title>';
-echo Tracy\Helpers::escapeHtml($title) /* pos 22:9 */;
+echo Tracy\Helpers::escapeHtml($title) /* pos 23:9 */;
 echo ': ';
-echo Tracy\Helpers::escapeHtml($exception->getMessage()) /* pos 22:19 */;
-echo Tracy\Helpers::escapeHtml($code) /* pos 22:45 */;
+echo Tracy\Helpers::escapeHtml($exception->getMessage()) /* pos 23:19 */;
+echo Tracy\Helpers::escapeHtml($code) /* pos 23:45 */;
 echo '</title>
 	<!-- in ';
-echo Tracy\Helpers::escapeHtml($exception->getFile()) /* pos 23:10 */;
+echo Tracy\Helpers::escapeHtml($exception->getFile()) /* pos 24:10 */;
 echo ':';
-echo Tracy\Helpers::escapeHtml($exception->getLine()) /* pos 23:34 */;
+echo Tracy\Helpers::escapeHtml($exception->getLine()) /* pos 24:34 */;
 echo ' -->
 ';
-if (count($chain) > 1) /* pos 24:2 */ {
+if (count($chain) > 1) /* pos 25:2 */ {
 	echo '	<!--';
-	foreach (array_slice($chain, 1) as $ex) /* pos 25:6 */ {
+	foreach (array_slice($chain, 1) as $ex) /* pos 26:6 */ {
 		echo '
 	caused by ';
-		echo Tracy\Helpers::escapeHtml(get_debug_type($ex)) /* pos 26:12 */;
+		echo Tracy\Helpers::escapeHtml(get_debug_type($ex)) /* pos 27:12 */;
 		echo ': ';
-		echo Tracy\Helpers::escapeHtml($ex->getMessage()) /* pos 26:35 */;
-		echo Tracy\Helpers::escapeHtml($ex->getCode() ? ' #' . $ex->getCode() : null) /* pos 26:54 */;
+		echo Tracy\Helpers::escapeHtml($ex->getMessage()) /* pos 27:35 */;
+		echo Tracy\Helpers::escapeHtml($ex->getCode() ? ' #' . $ex->getCode() : null) /* pos 27:54 */;
 		echo '
 	';
 
@@ -49,11 +50,11 @@ if (count($chain) > 1) /* pos 24:2 */ {
 ';
 }
 echo '	<!-- ';
-echo Tracy\Helpers::escapeHtml($source) /* pos 29:7 */;
+echo Tracy\Helpers::escapeHtml($source) /* pos 30:7 */;
 echo ' -->
 
 	<style class="tracy-debug">';
-echo str_replace('</', '<\\/', $css) /* pos 31:29 */;
+echo str_replace('</', '<\\/', $css) /* pos 32:29 */;
 echo '</style>
 </head>
 
@@ -63,21 +64,21 @@ echo '</style>
 require __DIR__ . '/content.phtml';
 echo '
 <script';
-echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 38:16 */;
+echo ($ʟ_tmp = ($nonce)) === null ? '' : ' nonce="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 39:16 */;
 echo '>
 \'use strict\';
 ';
-echo str_replace(['<!--', '</s'], ['<\\!--', '<\\/s'], $js) /* pos 40:1 */;
+echo str_replace(['<!--', '</s'], ['<\\!--', '<\\/s'], $js) /* pos 41:1 */;
 echo '
 Tracy.BlueScreen.init();
 
 ';
-if (Helpers::isAgent()) /* pos 43:1 */ {
+if ($toScreen && Helpers::isAgent()) /* pos 44:1 */ {
 	echo 'document.title=';
-	echo Tracy\Helpers::jsonEncode('Tracy: ' . $title . ': ' . $exception->getMessage() . $code, true) /* pos 44:17 */;
+	echo Tracy\Helpers::jsonEncode('Tracy: ' . $title . ': ' . $exception->getMessage() . $code, true) /* pos 45:17 */;
 	echo ';
 console.error(';
-	echo Tracy\Helpers::jsonEncode($blueScreen->renderAgent($exception), true) /* pos 45:16 */;
+	echo Tracy\Helpers::jsonEncode($blueScreen->renderAgent($exception), true) /* pos 46:16 */;
 	echo ');
 ';
 }

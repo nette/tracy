@@ -57,11 +57,15 @@ class BlueScreen
 	/** @var \WeakMap<\Fiber|\Generator, true> */
 	private \WeakMap $fibers;
 
+	/** @var \WeakMap<\Throwable, array{array<int, mixed>, array<int, mixed>}> */
+	private \WeakMap $renderContext;
+
 
 	public function __construct()
 	{
 		$this->fileGenerators[] = self::generateNewPhpFileContents(...);
 		$this->fibers = new \WeakMap;
+		$this->renderContext = new \WeakMap;
 	}
 
 
@@ -181,7 +185,8 @@ class BlueScreen
 		?array $logLocation = null,
 	): void
 	{
-		[$generators, $fibers] = $this->findGeneratorsAndFibers($exception);
+		// expensive object-graph traversal is computed once and shared by all render targets (HTML page, AJAX, log file, agent markdown)
+		[$generators, $fibers] = $this->renderContext[$exception] ??= $this->findGeneratorsAndFibers($exception);
 		$headersSent = headers_sent($headersFile, $headersLine);
 		$obStatus = Debugger::$obStatus;
 		$showEnvironment = $this->showEnvironment && (!str_contains($exception->getMessage(), 'Allowed memory size'));
@@ -203,6 +208,22 @@ class BlueScreen
 		$dump = $this->getDumper();
 		$agentDump = $this->getAgentDumper();
 
+		if (str_ends_with($template, 'page.phtml')) { // the only template embedding assets
+			[$css, $js] = $this->prepareAssets();
+		}
+
+		$nonce = $toScreen ? Helpers::getNonce() : null;
+		$actions = $toScreen ? $this->renderActions($exception) : [];
+		$blueScreen = $this;
+
+		require $template;
+		$this->snapshot = [];
+	}
+
+
+	/** @return array{string, string}  minified CSS and JS for the standalone error page */
+	private function prepareAssets(): array
+	{
 		$css = array_map(file_get_contents(...), array_merge([
 			__DIR__ . '/../assets/reset.css',
 			__DIR__ . '/assets/bluescreen.css',
@@ -211,24 +232,17 @@ class BlueScreen
 			__DIR__ . '/../assets/tabs.css',
 			__DIR__ . '/../Dumper/assets/dumper-light.css',
 		], Debugger::$customCssFiles));
-		$css = Helpers::minifyCss(implode('', $css));
 
 		$js = array_map(fn($file) => '(function(){' . file_get_contents($file) . '})();', [
+			__DIR__ . '/../assets/helpers.js',
 			__DIR__ . '/../assets/toggle.js',
 			__DIR__ . '/../assets/table-sort.js',
 			__DIR__ . '/../assets/tabs.js',
-			__DIR__ . '/../assets/helpers.js',
 			__DIR__ . '/../Dumper/assets/dumper.js',
 			__DIR__ . '/assets/bluescreen.js',
 		]);
-		$js = Helpers::minifyJs(implode('', $js));
 
-		$nonce = $toScreen ? Helpers::getNonce() : null;
-		$actions = $toScreen ? $this->renderActions($exception) : [];
-		$blueScreen = $this;
-
-		require $template;
-		$this->snapshot = [];
+		return [Helpers::minifyCss(implode('', $css)), Helpers::minifyJs(implode('', $js))];
 	}
 
 
