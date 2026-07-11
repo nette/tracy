@@ -152,8 +152,8 @@ class Panel {
 
 	toWindow() {
 		let offset = getOffset(this.elem);
-		offset.left += typeof window.screenLeft === 'number' ? window.screenLeft : (window.screenX + 10);
-		offset.top += typeof window.screenTop === 'number' ? window.screenTop : (window.screenY + 50);
+		offset.left += window.screenLeft;
+		offset.top += window.screenTop;
 
 		let win = window.open('', this.id.replace(/-/g, '_'), 'left=' + offset.left + ',top=' + offset.top
 			+ ',width=' + this.elem.offsetWidth + ',height=' + this.elem.offsetHeight + ',resizable=yes,scrollbars=yes');
@@ -162,7 +162,8 @@ class Panel {
 		}
 
 		let doc = win.document;
-		doc.write('<!DOCTYPE html><meta charset="utf-8"><body id="tracy-debug">');
+		doc.head.appendChild(doc.createElement('meta')).setAttribute('charset', 'utf-8');
+		doc.body.id = 'tracy-debug';
 
 		let script = doc.createElement('script');
 		script.src = baseUrl + '_tracy_bar=js&XDEBUG_SESSION_STOP=1';
@@ -186,7 +187,7 @@ class Panel {
 		});
 
 		doc.addEventListener('keyup', (e) => {
-			if (e.keyCode === 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
+			if (e.key === 'Escape' && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
 				win.close();
 			}
 		});
@@ -549,6 +550,7 @@ function evalScripts(elem) {
 			let dolly = document.createElement('script');
 			dolly.textContent = script.textContent;
 			(document.body || document.documentElement).appendChild(dolly);
+			dolly.remove();
 			script.tracyEvaluated = true;
 		}
 	});
