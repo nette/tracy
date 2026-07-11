@@ -227,6 +227,7 @@ class Debugger
 
 		foreach ([
 			'Bar/Bar',
+			'Bar/AgentPanel',
 			'Bar/DefaultBarPanel',
 			'BlueScreen/BlueScreen',
 			'BlueScreen/CodeHighlighter',
