@@ -33,6 +33,8 @@ $psrLogger->warning('warning');
 $psrLogger->error('order failed with exception', ['exception' => $exception]);
 $psrLogger->error('order failed with context', ['orderId' => 123]);
 $psrLogger->error('order failed with context and exception', ['orderId' => 123, 'exception' => $exception]);
+$psrLogger->error($exception->getMessage(), ['exception' => $exception]); // message adds no information
+$psrLogger->error('', ['exception' => $exception]);
 
 Assert::same([
 	[ILogger::INFO, 'info'],
@@ -42,4 +44,6 @@ Assert::same([
 	[ILogger::ERROR, ['message' => 'order failed with context', 'context' => ['orderId' => 123]]],
 	[ILogger::ERROR, $exception],
 	[ILogger::ERROR, ['message' => 'order failed with context and exception', 'context' => ['orderId' => 123]]],
+	[ILogger::ERROR, $exception],
+	[ILogger::ERROR, $exception],
 ], $tracyLogger->entries);
