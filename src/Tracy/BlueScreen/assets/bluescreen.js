@@ -49,6 +49,8 @@ class BlueScreen {
 			sessionStorage.setItem('tracy-toggles-bskey', id);
 		}
 
+		BlueScreen.initCopyButton(shadow);
+
 		Tracy.Dumper.init(shadow);
 		(new ResizeObserver(() => stickyFooter(shadow))).observe(blueScreen);
 
@@ -75,6 +77,26 @@ class BlueScreen {
 		window.addEventListener('scroll', () => stickyFooter(BlueScreen.shadow));
 
 		BlueScreen.globalInit = function () {};
+	}
+
+
+	static initCopyButton(shadow) {
+		let source = shadow.querySelector('.tracy-markdown-source');
+		let button = shadow.querySelector('a[data-tracy-copy]');
+		if (!source || !button || !navigator.clipboard) { // clipboard requires a secure context
+			return;
+		}
+
+		button.hidden = false;
+		button.addEventListener('click', (e) => {
+			e.preventDefault();
+			navigator.clipboard.writeText(JSON.parse(source.textContent))
+				.then(() => {
+					let label = button.textContent;
+					button.textContent = 'copied ✓';
+					setTimeout(() => button.textContent = label, 1500);
+				});
+		});
 	}
 
 

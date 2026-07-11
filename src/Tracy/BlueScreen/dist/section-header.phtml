@@ -39,15 +39,19 @@ foreach ($actions as $item) /* pos 15:6 */ {
 
 }
 
+if (!$exceptions) /* pos 18:6 */ {
+	echo '		<a href="#" class="tracy-action" data-tracy-copy hidden>copy as markdown&#x25ba;</a>
+';
+}
 echo '	</h1>
 
 ';
-if ($ex->getPrevious()) /* pos 20:7 */ {
+if ($ex->getPrevious()) /* pos 21:7 */ {
 	echo '	<div class="tracy-caused">
 		<a href="#tracyCaused';
-	echo Tracy\Helpers::escapeHtml(count($exceptions) + 1) /* pos 21:24 */;
+	echo Tracy\Helpers::escapeHtml(count($exceptions) + 1) /* pos 22:24 */;
 	echo '">Caused by ';
-	echo Tracy\Helpers::escapeHtml(get_debug_type($ex->getPrevious())) /* pos 21:60 */;
+	echo Tracy\Helpers::escapeHtml(get_debug_type($ex->getPrevious())) /* pos 22:60 */;
 	echo '</a>
 	</div>
 ';

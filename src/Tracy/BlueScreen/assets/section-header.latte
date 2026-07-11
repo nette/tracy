@@ -15,6 +15,7 @@
 		<a n:foreach="$actions as $item" href="{$item[link]}" class="tracy-action" target={!empty($item[external]) ? '_blank'} rel={!empty($item[external]) ? 'noreferrer noopener'}>
 			{$item[label]}&#x25ba;
 		</a>
+		<a n:if="!$exceptions" href="#" class="tracy-action" data-tracy-copy hidden>copy as markdown&#x25ba;</a>
 	</h1>
 
 	<div n:if="$ex->getPrevious()" class="tracy-caused">
