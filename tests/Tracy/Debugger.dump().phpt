@@ -44,3 +44,13 @@ test('returned value', function () {
 	$obj = new stdClass;
 	Assert::same(Debugger::dump($obj), $obj);
 });
+
+
+test('keysToHide is applied with return: true', function () {
+	Debugger::$productionMode = false;
+	Debugger::$keysToHide = ['password'];
+	$output = Debugger::dump(['password' => 'secret'], return: true);
+	Assert::contains('*****', $output);
+	Assert::notContains('secret', $output);
+	Debugger::$keysToHide = [];
+});
