@@ -422,6 +422,10 @@ class Debug {
 
 		(document.body || document.documentElement).appendChild(host);
 		evalScripts(Debug.layer);
+		if (host.showPopover) { // top layer wins over any host-page z-index or modal <dialog>
+			host.popover = 'manual';
+			host.showPopover();
+		}
 		host.style.display = 'block';
 		Debug.bar.init();
 
