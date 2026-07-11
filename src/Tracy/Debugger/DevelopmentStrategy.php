@@ -66,6 +66,12 @@ final class DevelopmentStrategy
 			header("X-Tracy-Error-Log: $logFile", replace: false);
 		}
 
+		if (Helpers::isAgent() && !Helpers::isCli() && !Helpers::isHtmlMode()) {
+			// non-HTML HTTP response for an agent carries the markdown report directly in the body
+			echo $this->blueScreen->renderAgent($exception) . ($logFile ? "\n(stored in $logFile)\n" : '');
+			return;
+		}
+
 		if (Helpers::detectColors() && @is_file($exception->getFile())) {
 			echo "\n\n" . CodeHighlighter::highlightPhpCli((string) file_get_contents($exception->getFile()), $exception->getLine()) . "\n";
 		}

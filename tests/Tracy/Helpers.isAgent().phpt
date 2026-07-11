@@ -28,4 +28,11 @@ test('returns false when cookie has wrong value', function () {
 test('returns true when cookie is set to 1', function () {
 	$_COOKIE['tracy-webdriver'] = '1';
 	Assert::true(Helpers::isAgent());
+	unset($_COOKIE['tracy-webdriver']);
+});
+
+test('returns true for X-Tracy-Agent request header', function () {
+	$_SERVER['HTTP_X_TRACY_AGENT'] = '1';
+	Assert::true(Helpers::isAgent());
+	unset($_SERVER['HTTP_X_TRACY_AGENT']);
 });
