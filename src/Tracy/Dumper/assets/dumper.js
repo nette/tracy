@@ -19,23 +19,31 @@ class Dumper {
 	static init(context) {
 		// full lazy
 		(context || document).querySelectorAll('[data-tracy-snapshot][data-tracy-dump]').forEach((pre) => { // <pre>
-			let snapshot = JSON.parse(pre.getAttribute('data-tracy-snapshot'));
-			pre.removeAttribute('data-tracy-snapshot');
-			pre.appendChild(build(JSON.parse(pre.getAttribute('data-tracy-dump')), snapshot, pre.classList.contains('tracy-collapsed')));
-			pre.removeAttribute('data-tracy-dump');
-			pre.classList.remove('tracy-collapsed');
+			try {
+				let snapshot = JSON.parse(pre.getAttribute('data-tracy-snapshot'));
+				pre.removeAttribute('data-tracy-snapshot');
+				pre.appendChild(build(JSON.parse(pre.getAttribute('data-tracy-dump')), snapshot, pre.classList.contains('tracy-collapsed')));
+				pre.removeAttribute('data-tracy-dump');
+				pre.classList.remove('tracy-collapsed');
+			} catch {
+				// a broken dump must not prevent the remaining dumps from initializing
+			}
 		});
 
 		// snapshots
 		(context || document).querySelectorAll('meta[itemprop=tracy-snapshot]').forEach((meta) => {
 			let snapshot = JSON.parse(meta.getAttribute('content'));
 			meta.parentElement.querySelectorAll('[data-tracy-dump]').forEach((pre) => { // <pre>
-				if (pre.closest('[data-tracy-snapshot]')) { // ignore unrelated <span data-tracy-dump>
-					return;
+				try {
+					if (pre.closest('[data-tracy-snapshot]')) { // ignore unrelated <span data-tracy-dump>
+						return;
+					}
+					pre.appendChild(build(JSON.parse(pre.getAttribute('data-tracy-dump')), snapshot, pre.classList.contains('tracy-collapsed')));
+					pre.removeAttribute('data-tracy-dump');
+					pre.classList.remove('tracy-collapsed');
+				} catch {
+					// a broken dump must not prevent the remaining dumps from initializing
 				}
-				pre.appendChild(build(JSON.parse(pre.getAttribute('data-tracy-dump')), snapshot, pre.classList.contains('tracy-collapsed')));
-				pre.removeAttribute('data-tracy-dump');
-				pre.classList.remove('tracy-collapsed');
 			});
 			// <meta> must be left for debug bar panel content
 		});

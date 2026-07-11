@@ -499,13 +499,16 @@ class Debug {
 			oldOpen.apply(this, arguments);
 
 			if (getOption('AutoRefresh') && new URL(arguments[1], location.origin).host === location.host) {
-				let reqId = Tracy.getAjaxHeader();
-				this.setRequestHeader('X-Tracy-Ajax', reqId);
-				this.addEventListener('load', function () {
-					if (this.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
-						Debug.loadScript(baseUrl + '_tracy_bar=content-ajax.' + reqId + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
-					}
-				});
+				this.tracyReqId = Tracy.getAjaxHeader();
+				this.setRequestHeader('X-Tracy-Ajax', this.tracyReqId);
+				if (!this.tracyLoadListener) { // open() may be called repeatedly on the same instance
+					this.tracyLoadListener = true;
+					this.addEventListener('load', function () {
+						if (this.getAllResponseHeaders().match(/^X-Tracy-Ajax: 1/mi)) {
+							Debug.loadScript(baseUrl + '_tracy_bar=content-ajax.' + this.tracyReqId + '&XDEBUG_SESSION_STOP=1&v=' + Math.random());
+						}
+					});
+				}
 			}
 		};
 
