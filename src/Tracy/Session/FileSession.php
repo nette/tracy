@@ -101,7 +101,10 @@ class FileSession implements SessionStorage
 	}
 
 
-	public function __destruct()
+	/**
+	 * Writes the data to the file and releases the lock; the file is reopened on next use.
+	 */
+	public function flush(): void
 	{
 		if (!$this->file) {
 			return;
@@ -113,5 +116,11 @@ class FileSession implements SessionStorage
 		flock($this->file, LOCK_UN);
 		fclose($this->file);
 		$this->file = null;
+	}
+
+
+	public function __destruct()
+	{
+		$this->flush();
 	}
 }
