@@ -177,106 +177,120 @@ in ';
 }
 
 echo "\n";
-if ($lastError) /* pos 118:1 */ {
+$panelsText = array_merge($blueScreen->renderPanelsAgent($exception), $blueScreen->renderPanelsAgent(null)) /* pos 118:1 */;
+foreach ($panelsText as $panel) /* pos 119:1 */ {
+	echo '
+## ';
+	echo Tracy\Helpers::escapeMd($panel->tab) /* pos 121:5 */;
+	echo '
+
+';
+	echo $panel->text /* pos 123:2 */;
+	echo "\n";
+
+}
+
+echo "\n";
+if ($lastError) /* pos 126:1 */ {
 	echo '
 ## Last Muted Error
 
 ';
-	echo Tracy\Helpers::escapeMd(Helpers::errorTypeToString($lastError['type'])) /* pos 122:2 */;
+	echo Tracy\Helpers::escapeMd(Helpers::errorTypeToString($lastError['type'])) /* pos 130:2 */;
 	echo ': ';
-	echo Tracy\Helpers::escapeMd($lastError['message']) /* pos 122:51 */;
+	echo Tracy\Helpers::escapeMd($lastError['message']) /* pos 130:51 */;
 	echo '
 in ';
-	echo Tracy\Helpers::escapeMd($lastError['file']) /* pos 123:5 */;
+	echo Tracy\Helpers::escapeMd($lastError['file']) /* pos 131:5 */;
 	echo ':';
-	echo Tracy\Helpers::escapeMd($lastError['line']) /* pos 123:24 */;
+	echo Tracy\Helpers::escapeMd($lastError['line']) /* pos 131:24 */;
 	echo "\n";
-	if (@is_file($lastError['file'])) /* pos 124:2 */ {
+	if (@is_file($lastError['file'])) /* pos 132:2 */ {
 		$_blocks['renderSource']($lastError['file'],$lastError['line']);
 	}
 }
 echo "\n";
-if (!Helpers::isCli() && isset($_SERVER['REQUEST_METHOD'])) /* pos 129:1 */ {
+if (!Helpers::isCli() && isset($_SERVER['REQUEST_METHOD'])) /* pos 137:1 */ {
 	echo '
 ## HTTP Request
 
 ';
-	echo Tracy\Helpers::escapeMd($_SERVER['REQUEST_METHOD']) /* pos 133:2 */;
+	echo Tracy\Helpers::escapeMd($_SERVER['REQUEST_METHOD']) /* pos 141:2 */;
 	echo ' ';
-	echo Tracy\Helpers::escapeMd($source) /* pos 133:31 */;
+	echo Tracy\Helpers::escapeMd($source) /* pos 141:31 */;
 	echo "\n";
-	if ($httpHeaders) /* pos 134:2 */ {
+	if ($httpHeaders) /* pos 142:2 */ {
 		echo '
 ### Headers
 
 ';
-		foreach ($httpHeaders as $k => $v) /* pos 138:3 */ {
+		foreach ($httpHeaders as $k => $v) /* pos 146:3 */ {
 			echo '- ';
-			echo Tracy\Helpers::escapeMd($k) /* pos 139:6 */;
+			echo Tracy\Helpers::escapeMd($k) /* pos 147:6 */;
 			echo ': ';
-			echo Tracy\Helpers::escapeMd($v) /* pos 139:12 */;
+			echo Tracy\Helpers::escapeMd($v) /* pos 147:12 */;
 			echo "\n";
 
 		}
 
 	}
 	echo "\n";
-	if (!empty($_GET)) /* pos 143:2 */ {
+	if (!empty($_GET)) /* pos 151:2 */ {
 		echo '
 ### $_GET
 
 ';
-		echo Tracy\Helpers::escapeMd($agentDump($_GET)) /* pos 147:3 */;
+		echo Tracy\Helpers::escapeMd($agentDump($_GET)) /* pos 155:3 */;
 		echo "\n";
 	}
 	echo "\n";
-	if (!empty($_POST)) /* pos 150:2 */ {
+	if (!empty($_POST)) /* pos 158:2 */ {
 		echo '
 ### $_POST
 
 ';
-		echo Tracy\Helpers::escapeMd($agentDump($_POST)) /* pos 154:3 */;
+		echo Tracy\Helpers::escapeMd($agentDump($_POST)) /* pos 162:3 */;
 		echo "\n";
 	}
 	echo "\n";
-	if (!empty($_COOKIE)) /* pos 157:2 */ {
+	if (!empty($_COOKIE)) /* pos 165:2 */ {
 		echo '
 ### $_COOKIE
 
 ';
-		echo Tracy\Helpers::escapeMd($agentDump($_COOKIE)) /* pos 161:3 */;
+		echo Tracy\Helpers::escapeMd($agentDump($_COOKIE)) /* pos 169:3 */;
 		echo "\n";
 	}
 }
 echo "\n";
-if ($showEnvironment) /* pos 165:1 */ {
+if ($showEnvironment) /* pos 173:1 */ {
 	echo '
 ## Environment
 
 | Key | Value |
 |-----|-------|
 | PHP | ';
-	echo Tracy\Helpers::escapeMd(\PHP_VERSION . ' (' . (\PHP_ZTS ? 'TS' : 'NTS') . ')') /* pos 171:10 */;
+	echo Tracy\Helpers::escapeMd(\PHP_VERSION . ' (' . (\PHP_ZTS ? 'TS' : 'NTS') . ')') /* pos 179:10 */;
 	echo ' |
 ';
-	if (isset($_SERVER['REQUEST_METHOD'])) /* pos 172:2 */ {
+	if (isset($_SERVER['REQUEST_METHOD'])) /* pos 180:2 */ {
 		echo '| Method | ';
-		echo Tracy\Helpers::escapeMd($_SERVER['REQUEST_METHOD']) /* pos 173:14 */;
+		echo Tracy\Helpers::escapeMd($_SERVER['REQUEST_METHOD']) /* pos 181:14 */;
 		echo ' |
 ';
 	}
 	echo '| Source | ';
-	echo Tracy\Helpers::escapeMd($source) /* pos 175:13 */;
+	echo Tracy\Helpers::escapeMd($source) /* pos 183:13 */;
 	echo ' |
 ';
-	if (isset($_SERVER['SERVER_SOFTWARE'])) /* pos 176:2 */ {
+	if (isset($_SERVER['SERVER_SOFTWARE'])) /* pos 184:2 */ {
 		echo '| Server | ';
-		echo Tracy\Helpers::escapeMd($_SERVER['SERVER_SOFTWARE']) /* pos 177:14 */;
+		echo Tracy\Helpers::escapeMd($_SERVER['SERVER_SOFTWARE']) /* pos 185:14 */;
 		echo ' |
 ';
 	}
 	echo '| Tracy | ';
-	echo Tracy\Helpers::escapeMd(Debugger::Version) /* pos 179:12 */;
+	echo Tracy\Helpers::escapeMd(Debugger::Version) /* pos 187:12 */;
 	echo ' |
 ';
 }

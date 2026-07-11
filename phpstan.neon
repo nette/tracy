@@ -36,6 +36,7 @@ parameters:
 		-
 			identifier: property.notFound
 			paths:
+				- src/Tracy/Bar/dist/info.agent.phtml
 				- src/Tracy/Bar/dist/info.panel.phtml
 				- src/Tracy/Bar/dist/info.tab.phtml
 				- src/Tracy/Bar/panels/info.panel.php
