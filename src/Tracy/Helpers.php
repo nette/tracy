@@ -392,7 +392,8 @@ class Helpers
 	/** @internal */
 	public static function isAgent(): bool
 	{
-		return ($_COOKIE['tracy-webdriver'] ?? null) === '1';
+		return ($_COOKIE['tracy-webdriver'] ?? null) === '1' // set by bar.js when navigator.webdriver
+			|| isset($_SERVER['HTTP_X_TRACY_AGENT']); // non-browser agents (curl, HTTP clients)
 	}
 
 

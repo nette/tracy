@@ -2,9 +2,7 @@
  * This file is part of the Tracy (https://tracy.nette.org)
  */
 
-if (navigator.webdriver) {
-	document.cookie = 'tracy-webdriver=1;path=/;SameSite=Lax';
-}
+document.cookie = navigator.webdriver ? 'tracy-webdriver=1;path=/;SameSite=Lax' : 'tracy-webdriver=;path=/;Max-Age=0;SameSite=Lax';
 
 let requestId = document.currentScript.dataset.id,
 	ajaxCounter = 1,
