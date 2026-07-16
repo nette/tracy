@@ -31,7 +31,7 @@ class Toggle {
 	// changes element visibility
 	static toggle(el, expand, e) {
 		let collapsed = el.classList.contains('tracy-collapsed'),
-			ref = el.getAttribute('data-tracy-ref') || el.getAttribute('href', 2),
+			ref = el.getAttribute('data-tracy-ref') || el.getAttribute('href'),
 			dest = el;
 
 		if (typeof expand === 'undefined') {
