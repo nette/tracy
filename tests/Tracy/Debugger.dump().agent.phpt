@@ -24,7 +24,7 @@ test('agent gets console.log output', function () {
 	$output = ob_get_clean();
 
 	Assert::match(
-		'<tracy-div>%A%</tracy-div><script>console.log(%a%hello%a%);</script>',
+		'<tracy-dump>%A%</tracy-dump><script>console.log(%a%hello%a%);</script>',
 		$output,
 	);
 });

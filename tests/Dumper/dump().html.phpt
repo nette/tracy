@@ -20,12 +20,12 @@ test('html mode', function () {
 	dump(123);
 	Assert::match(
 		<<<'XX'
-			<tracy-div><style>%a%</style>
+			<tracy-dump><style%a%>%a%</style>
 			<script>%a%</script>
 			<pre class="tracy-dump tracy-light"
 			><a href="editor://%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">dump(123) 📍</a
 			><span class="tracy-dump-number">123</span></pre>
-			</tracy-div>
+			</tracy-dump>
 			XX,
 		ob_get_clean(),
 	);
@@ -39,10 +39,10 @@ test('dark theme', function () {
 	dump(123);
 	Assert::match(
 		<<<'XX'
-			<tracy-div><pre class="tracy-dump tracy-dark"
+			<tracy-dump><pre class="tracy-dump tracy-dark"
 			><a href="editor://%a%" class="tracy-dump-location" title="in file %a% on line %d%&#10;Click to open in editor">dump(123) 📍</a
 			><span class="tracy-dump-number">123</span></pre>
-			</tracy-div>
+			</tracy-dump>
 			XX,
 		ob_get_clean(),
 	);
