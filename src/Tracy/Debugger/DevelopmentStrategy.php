@@ -143,5 +143,6 @@ final class DevelopmentStrategy
 		}
 
 		$this->bar->render($this->defer);
+		$this->bar->renderLazyPanels($this->defer);
 	}
 }

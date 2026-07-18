@@ -19,8 +19,10 @@ foreach ($panels as $panel) /* pos 12:2 */ {
 	echo ($ʟ_tmp = array_filter(['tracy-panel', $type !== 'ajax' ? 'tracy-panel-persist' : null, 'tracy-panel-' . $type])) ? ' class="' . Tracy\Helpers::escapeHtml(implode(' ', $ʟ_tmp)) . '"' : '' /* pos 14:15 */;
 	echo ' id="tracy-debug-panel-';
 	echo Tracy\Helpers::escapeHtml($panel->id) /* pos 14:114 */;
-	echo '" data-tracy-content=\'';
-	echo str_replace(['&', '\''], ['&amp;', '&#039;'], $content) /* pos 14:148 */;
+	echo '"';
+	echo ($ʟ_tmp = ($panel->lazy ?? false ? '1' : null)) === null ? '' : ' data-tracy-lazy="' . Tracy\Helpers::escapeHtml($ʟ_tmp) . '"' /* pos 14:146 */;
+	echo ' data-tracy-content=\'';
+	echo str_replace(['&', '\''], ['&amp;', '&#039;'], $content) /* pos 14:205 */;
 	echo '\'></div>
 ';
 
