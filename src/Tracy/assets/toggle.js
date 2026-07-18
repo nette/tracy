@@ -16,7 +16,7 @@ class Toggle {
 			let el;
 			if (
 				!e.shiftKey && !e.ctrlKey && !e.metaKey
-				&& (el = e.target.closest('.tracy-toggle'))
+				&& (el = Tracy.retarget(e).closest('.tracy-toggle'))
 				&& (!start || Math.pow(start[0] - e.clientX, 2) + Math.pow(start[1] - e.clientY, 2) < MOVE_THRESHOLD) // no start = keyboard activation
 			) {
 				Toggle.toggle(el, undefined, e);
