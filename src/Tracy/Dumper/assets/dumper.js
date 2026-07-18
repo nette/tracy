@@ -121,7 +121,7 @@ class Dumper {
 
 			let el;
 
-			if (target.matches('.tracy-dump-hash') && (el = target.closest('tracy-div'))) {
+			if (target.matches('.tracy-dump-hash') && (el = target.getRootNode())) {
 				el.querySelectorAll('.tracy-dump-hash').forEach((el) => {
 					if (el.textContent === target.textContent) {
 						el.classList.add('tracy-dump-highlight');
@@ -138,7 +138,7 @@ class Dumper {
 		document.addEventListener('mouseout', (e) => {
 			let target = Tracy.retarget(e);
 			if (target.matches('.tracy-dump-hash')) {
-				document.querySelectorAll('.tracy-dump-hash.tracy-dump-highlight').forEach((el) => {
+				target.getRootNode().querySelectorAll('.tracy-dump-hash.tracy-dump-highlight').forEach((el) => {
 					el.classList.remove('tracy-dump-highlight');
 				});
 			}
@@ -392,6 +392,32 @@ function UnknownEntityException() {}
 
 let Tracy = window.Tracy = window.Tracy || {};
 Tracy.Dumper = Tracy.Dumper || Dumper;
+
+if (!customElements.get('tracy-dump')) {
+	customElements.define('tracy-dump', class extends HTMLElement {
+		connectedCallback() {
+			if (this.shadowRoot) {
+				return;
+			}
+			if (document.readyState === 'loading') { // parser-created element may not have its children yet
+				document.addEventListener('DOMContentLoaded', () => this.connectedCallback(), { once: true });
+				return;
+			}
+
+			let shadow = this.attachShadow({ mode: 'open' });
+			Tracy.adoptStyleSheets(shadow, ['shared']);
+
+			// move only non-style/script children into shadow root
+			Array.from(this.childNodes).forEach((child) => {
+				if (child.nodeType !== 1 || (child.tagName !== 'STYLE' && child.tagName !== 'SCRIPT')) {
+					shadow.appendChild(child);
+				}
+			});
+
+			Tracy.Dumper.init(shadow);
+		}
+	});
+}
 
 function init() {
 	Tracy.Dumper.init();

@@ -491,12 +491,12 @@ class Debugger
 
 		} elseif (!self::$productionMode) {
 			$html = Helpers::isHtmlMode();
-			echo $html ? '<tracy-div>' : '';
+			echo $html ? '<tracy-dump>' : '';
 			Dumper::dump($var, self::dumpOptions() + [
 				Dumper::LOCATION => self::$showLocation,
 				Dumper::THEME => self::$dumpTheme,
 			]);
-			echo $html ? '</tracy-div>' : '';
+			echo $html ? '</tracy-dump>' : '';
 
 			if ($html && Helpers::isAgent()) {
 				Helpers::consoleLog(Dumper::toText($var, self::agentDumpOptions()));

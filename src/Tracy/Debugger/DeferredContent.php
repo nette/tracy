@@ -122,36 +122,40 @@ final class DeferredContent
 
 	private function buildJsCss(): string
 	{
-		$css = array_map(file_get_contents(...), array_merge([
+		$sharedCss = array_map(file_get_contents(...), array_merge([
 			__DIR__ . '/../assets/reset.css',
-			__DIR__ . '/../Bar/assets/bar.css',
 			__DIR__ . '/../assets/toggle.css',
 			__DIR__ . '/../assets/table-sort.css',
 			__DIR__ . '/../assets/tabs.css',
 			__DIR__ . '/../Dumper/assets/dumper-light.css',
 			__DIR__ . '/../Dumper/assets/dumper-dark.css',
-			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
 		], Debugger::$customCssFiles));
+		$barCss = file_get_contents(__DIR__ . '/../Bar/assets/bar.css') ?: throw new \RuntimeException('Cannot read bar.css');
+		$bsCss = file_get_contents(__DIR__ . '/../BlueScreen/assets/bluescreen.css') ?: throw new \RuntimeException('Cannot read bluescreen.css');
 
 		$js1 = array_map(fn($file) => '(function() {' . file_get_contents($file) . '})();', [
+			__DIR__ . '/../assets/helpers.js', // must run first, defines the Tracy.css registry helpers
 			__DIR__ . '/../Bar/assets/bar.js',
 			__DIR__ . '/../assets/toggle.js',
 			__DIR__ . '/../assets/table-sort.js',
 			__DIR__ . '/../assets/tabs.js',
-			__DIR__ . '/../assets/helpers.js',
 			__DIR__ . '/../Dumper/assets/dumper.js',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.js',
 		]);
 		$js2 = array_map(file_get_contents(...), Debugger::$customJsFiles);
 
+		// CSS is exposed via the Tracy.css registry and applied through adoptedStyleSheets,
+		// nothing is ever injected into the host page's document.head
 		$str = "'use strict';
 (function(){
-	var el = document.createElement('style');
-	el.setAttribute('nonce', document.currentScript.getAttribute('nonce') || document.currentScript.nonce);
-	el.className='tracy-debug';
-	el.textContent=" . Helpers::jsonEncode(Helpers::minifyCss(implode('', $css))) . ";
-	document.head.appendChild(el);})
-();\n" . implode('', $js1) . implode('', $js2);
+	var Tracy = window.Tracy = window.Tracy || {};
+	Tracy.css = Object.assign(Tracy.css || {}, {
+		shared: " . json_encode(Helpers::minifyCss(implode('', $sharedCss))) . ',
+		bar: ' . json_encode(Helpers::minifyCss($barCss)) . ',
+		bluescreen: ' . json_encode(Helpers::minifyCss($bsCss)) . '
+	});})
+();
+' . implode('', $js1) . implode('', $js2);
 
 		return $str;
 	}

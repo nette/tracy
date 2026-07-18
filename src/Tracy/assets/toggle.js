@@ -40,13 +40,14 @@ class Toggle {
 
 		el.dispatchEvent(new CustomEvent('tracy-beforetoggle', {
 			bubbles: true,
+			composed: true,
 			detail: { collapsed: !expand, originalEvent: e },
 		}));
 
 		if (!ref || ref === '#') {
 			ref = '+';
 		} else if (ref.substr(0, 1) === '#') {
-			dest = document;
+			dest = el.getRootNode();
 		}
 		ref = ref.match(/(\^\s*([^+\s]*)\s*)?(\+\s*(\S*)\s*)?(.*)/);
 		dest = ref[1] ? dest.parentNode : dest;
@@ -59,6 +60,7 @@ class Toggle {
 
 		el.dispatchEvent(new CustomEvent('tracy-toggle', {
 			bubbles: true,
+			composed: true,
 			detail: { relatedTarget: dest, collapsed: !expand, originalEvent: e },
 		}));
 	}

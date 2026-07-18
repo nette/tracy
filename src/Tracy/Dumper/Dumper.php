@@ -179,17 +179,22 @@ class Dumper
 		$sent = true;
 
 		$nonceAttr = Helpers::getNonce(attr: true);
-		$s = (Debugger::$showBar ? '' : file_get_contents(__DIR__ . '/../assets/reset.css'))
-			. file_get_contents(__DIR__ . '/../assets/toggle.css')
+
+		// class-scoped styles for the light DOM before <tracy-dump> elements are upgraded;
+		// reset.css is deliberately not included, it must not leak into the host page
+		$s = file_get_contents(__DIR__ . '/../assets/toggle.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-light.css')
 			. file_get_contents(__DIR__ . '/assets/dumper-dark.css');
-		echo "<style{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
+		echo "<style class=\"tracy-dump-style\"{$nonceAttr}>", str_replace('</', '<\/', Helpers::minifyCss($s)), "</style>\n";
 
-		if (!Debugger::isEnabled() || !Debugger::$showBar) {
-			$s = '(function(){' . file_get_contents(__DIR__ . '/../assets/toggle.js') . '})();'
-				. '(function(){' . file_get_contents(__DIR__ . '/../assets/helpers.js') . '})();'
+		if (!Debugger::isEnabled() || !Debugger::$showBar) { // otherwise the deferred loader provides the registry & scripts
+			$css = file_get_contents(__DIR__ . '/../assets/reset.css') . $s;
+			$s = '(function(){' . file_get_contents(__DIR__ . '/../assets/helpers.js') . '})();'
+				. '(function(){' . file_get_contents(__DIR__ . '/../assets/toggle.js') . '})();'
 				. '(function(){' . file_get_contents(__DIR__ . '/../Dumper/assets/dumper.js') . '})();';
-			echo "<script{$nonceAttr}>", str_replace(['<!--', '</s'], ['<\!--', '<\/s'], Helpers::minifyJs($s)), "</script>\n";
+			$s = Helpers::minifyJs($s)
+				. 'window.Tracy.css.shared = ' . json_encode(Helpers::minifyCss($css)) . ';'; // dumper reads the registry lazily, after the minified code
+			echo "<script{$nonceAttr}>", str_replace(['<!--', '</s'], ['<\!--', '<\/s'], $s), "</script>\n";
 		}
 	}
 

@@ -16,8 +16,8 @@
 
 
 <body>
-<tracy-div id="tracy-bs" itemscope>
-	<a id="tracy-bs-toggle" href="#" class="tracy-toggle">&#xfeff;</a>
+<div class="tracy-bs" id="tracy-bs" itemscope>
+	<a href="#" class="tracy-bs-toggle tracy-toggle">&#xfeff;</a>
 
 	<div class="tracy-bs-main">
 
