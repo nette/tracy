@@ -6,11 +6,11 @@
 class Tabs {
 	static init() {
 		document.documentElement.addEventListener('click', (e) => {
-			let label, context;
+			let label, context, target = Tracy.retarget(e);
 			if (
 				!e.shiftKey && !e.ctrlKey && !e.metaKey
-				&& (label = e.target.closest('.tracy-tab-label'))
-				&& (context = e.target.closest('.tracy-tabs'))
+				&& (label = target.closest('.tracy-tab-label'))
+				&& (context = target.closest('.tracy-tabs'))
 			) {
 				Tabs.toggle(context, label);
 				e.preventDefault();
