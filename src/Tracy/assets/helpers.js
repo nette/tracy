@@ -5,7 +5,7 @@ function init() {
 		document.addEventListener(
 			'click',
 			(e) => {
-				e.target.closest('a[href^="editor:"]')?.setAttribute('target', '_blank');
+				Tracy.retarget(e).closest('a[href^="editor:"]')?.setAttribute('target', '_blank');
 			},
 			true,
 		);
@@ -14,6 +14,10 @@ function init() {
 
 
 let Tracy = window.Tracy = window.Tracy || {};
+
+// returns the real event target even when the event crossed a shadow DOM boundary
+Tracy.retarget = (e) => e.composedPath()[0] ?? e.target;
+
 if (!Tracy.helpers) {
 	init();
 	Tracy.helpers = true;
