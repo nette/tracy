@@ -25,8 +25,10 @@ $ipFormatter = static function (?string $ip): ?string {
 	return $ip;
 };
 
-$opcache = function_exists('opcache_get_status') ? @opcache_get_status() : null; // @ can be restricted
-$cachedFiles = isset($opcache['scripts']) ? array_intersect(array_keys($opcache['scripts']), get_included_files()) : [];
+$opcache = function_exists('opcache_get_status') ? @opcache_get_status(false) : null; // @ can be restricted
+$cachedFiles = $opcache && function_exists('opcache_is_script_cached')
+	? array_filter(get_included_files(), fn(string $file): bool => @opcache_is_script_cached($file))
+	: [];
 $jit = $opcache['jit'] ?? null;
 
 $info = [
