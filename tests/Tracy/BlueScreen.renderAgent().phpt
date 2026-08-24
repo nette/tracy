@@ -38,6 +38,29 @@ test('stack trace section with arguments', function () use ($blueScreen) {
 });
 
 
+test('stack trace argument dumps are limited', function () {
+	$blueScreen = new Tracy\BlueScreen;
+	$blueScreen->maxItems = 3;
+	$blueScreen->maxLength = 10;
+	$fn = function (array $items, string $text) {
+		throw new RuntimeException('Large arguments');
+	};
+	try {
+		$fn(range(1, 10), str_repeat('x', 50));
+	} catch (RuntimeException $e) {
+		$output = $blueScreen->renderAgent($e);
+	}
+
+	Assert::contains('$items = array (10)', $output);
+	Assert::contains('   0 => 1', $output);
+	Assert::contains('   1 => 2', $output);
+	Assert::contains('   2 => 3', $output);
+	Assert::contains('   ...', $output);
+	Assert::notContains('   3 => 4', $output);
+	Assert::contains('$text = \'xxxxxxxxxx ... xxxxxxxxxx\'', $output);
+});
+
+
 test('caused by section for chained exceptions', function () use ($blueScreen) {
 	$prev = new InvalidArgumentException('Root cause', 7);
 	$exception = new RuntimeException('Wrapper', 5, $prev);
