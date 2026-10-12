@@ -63,14 +63,6 @@ parameters:
 			identifier: ternary.alwaysTrue
 			path: src/Tracy/Dumper/Renderer.php
 
-		# PHP 8.4+ adds 'trace' key to error_get_last() return
-		-
-			identifier: empty.offset
-			path: src/Tracy/Debugger/Debugger.php
-		-
-			identifier: offsetAccess.notFound
-			path: src/Tracy/Debugger/Debugger.php
-
 		# Variable is always defined when used (same function_exists() condition guards both paths)
 		-
 			identifier: variable.undefined
