@@ -43,10 +43,10 @@ jobs:
               with:
                   php-version: 8.2
                   extensions: ds
-                  coverage: none
+                  coverage: pcov
 
             - run: composer install --no-progress --prefer-dist
-            - run: composer tester -- -p phpdbg ${{ env.php-options }} --coverage ./coverage.xml --coverage-src ./src
+            - run: composer tester -- ${{ env.php-options }} --coverage ./coverage.xml --coverage-src ./src
               continue-on-error: true
             - uses: coverallsapp/github-action@v2
               with:
