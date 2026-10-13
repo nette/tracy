@@ -86,7 +86,7 @@ final class CodeHighlighter
 		$code = str_replace("\r\n", "\n", $code);
 		$code = preg_replace('#(__halt_compiler\s*\(\)\s*;).*#is', '$1', $code);
 		$code = rtrim($code);
-		$code = preg_replace('#/\*sensitive\{\*/.*?/\*}\*/#s', Dumper\Describer::HiddenValue, $code);
+		$code = self::hideSensitive($code);
 
 		$last = $out = '';
 		foreach (\PhpToken::tokenize($code) as $token) {
@@ -117,6 +117,19 @@ final class CodeHighlighter
 			$out .= '</span>';
 		}
 		return $out;
+	}
+
+
+	/**
+	 * Replaces sensitive regions with a placeholder, keeping the line numbering intact.
+	 */
+	public static function hideSensitive(string $code): string
+	{
+		return preg_replace_callback(
+			'#/\*sensitive\{\*/.*?/\*}\*/#s',
+			fn($m) => Dumper\Describer::HiddenValue . str_repeat("\n", substr_count($m[0], "\n")),
+			$code,
+		);
 	}
 
 

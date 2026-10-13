@@ -47,7 +47,10 @@ template by comparing against that index. `CodeHighlighter` tokenizes PHP, shows
 `DisplayLines` (15) lines around the error — the public `$lines` parameters of the
 `highlight*` methods are ignored — highlights the line and column, and replaces
 `/*sensitive{*/…/*}*/` regions with `*****` (`Describer::HiddenValue`) before
-highlighting (PHP path only, not the plain-text one).
+highlighting (not for the `php: false` path). The markdown variant does
+not highlight, but its source snippets go through the same
+`CodeHighlighter::hideSensitive()`; any new place printing PHP source must too.
+The masking keeps the newlines of a multi-line region, so line numbers stay true.
 
 Two dumpers exist: `getDumper()` renders **HTML** (`BlueScreen::$maxDepth` etc.,
 `LOCATION_CLASS`, the shared `SNAPSHOT`, scrubber, `keysToHide`) and feeds the page

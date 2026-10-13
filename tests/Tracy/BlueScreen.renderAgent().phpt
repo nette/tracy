@@ -57,6 +57,16 @@ test('environment section hidden when disabled', function () {
 });
 
 
+test('sensitive regions are hidden in source', function () use ($blueScreen) {
+	$file = getTempDir() . '/sensitive.php';
+	$secret = bin2hex(random_bytes(8));
+	file_put_contents($file, "<?php\n\$password = /*sensitive{*/'$secret'/*}*/;\nreturn new Exception('Connection failed');\n");
+	$output = $blueScreen->renderAgent(require $file);
+	Assert::notContains($secret, $output);
+	Assert::contains('$password = *****;', $output);
+});
+
+
 test('ErrorException uses severity name', function () use ($blueScreen) {
 	$output = $blueScreen->renderAgent(new ErrorException('Bad value', 0, E_WARNING));
 	Assert::match('%A%# Warning: Bad value%A%', $output);
