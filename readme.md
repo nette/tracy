@@ -48,7 +48,7 @@ composer require tracy/tracy
 
 Alternatively, you can download the whole package or [tracy.phar](https://github.com/nette/tracy/releases) file.
 
-Tracy is compatible with PHP 8.2 to 8.5.
+Tracy is compatible with PHP 8.2 to 8.6.
 
  <!---->
 

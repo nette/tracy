@@ -21,7 +21,7 @@ Dumper, and a production error Logger. It auto-detects development vs production
 emits **markdown for agents** (automated browsers via `navigator.webdriver`, or any
 client sending an `X-Tracy-Agent` header) instead of HTML.
 
-- **PHP Version**: 8.2 - 8.5
+- **PHP Version**: 8.2 - 8.6
 - **Package**: `tracy/tracy` (currently v2.12)
 
 ## Essential Commands
