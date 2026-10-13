@@ -303,7 +303,7 @@ class Helpers
 
 		if (isset($replace)) {
 			$loc = Debugger::mapSource($e->getFile(), $e->getLine()) ?? ['file' => $e->getFile(), 'line' => $e->getLine()];
-			@$e->tracyAction = [ // dynamic properties are deprecated since PHP 8.2
+			@$e->tracyAction = [ // @ dynamic properties are deprecated
 				'link' => self::editorUri($loc['file'], $loc['line'], 'fix', $replace[0], $replace[1]),
 				'label' => 'fix it',
 			];
@@ -527,7 +527,7 @@ class Helpers
 		return match (true) {
 			extension_loaded('mbstring') => mb_strlen($s, 'UTF-8'),
 			extension_loaded('iconv') => iconv_strlen($s, 'UTF-8') ?: strlen($s),
-			default => strlen(@utf8_decode($s)), // deprecated
+			default => strlen(@utf8_decode($s)), // @ utf8_decode() is deprecated
 		};
 	}
 

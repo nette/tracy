@@ -41,5 +41,5 @@ function third($arg1)
 
 
 define('MY_CONST', 123);
-@hex2bin('a'); // E_WARNING
+@hex2bin('a'); // @ E_WARNING muted on purpose
 first(10, 'any string');

@@ -15,6 +15,6 @@ Debugger::$scream = E_USER_DEPRECATED;
 Debugger::enable();
 
 trigger_error('E_USER_WARNING that should be reported', E_USER_WARNING);
-@trigger_error('Muted E_USER_WARNING that should be ignored', E_USER_WARNING);
+@trigger_error('Muted E_USER_WARNING that should be ignored', E_USER_WARNING); // @ muted on purpose
 
-@trigger_error('Muted E_USER_DEPRECATED that should be reported', E_USER_DEPRECATED);
+@trigger_error('Muted E_USER_DEPRECATED that should be reported', E_USER_DEPRECATED); // @ muted on purpose
