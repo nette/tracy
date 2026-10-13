@@ -9,9 +9,7 @@ namespace Tracy;
 
 use Dom;
 use Ds;
-use Tracy\Dumper\Describer;
-use Tracy\Dumper\Exposer;
-use Tracy\Dumper\Renderer;
+use Tracy\Dumper\{Describer, Exposer, Renderer};
 use Uri;
 
 

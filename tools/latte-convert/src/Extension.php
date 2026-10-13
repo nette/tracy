@@ -3,14 +3,10 @@
 namespace Tracy\Tools\Compiler;
 
 use Latte;
-use Latte\Compiler\Node;
-use Latte\Compiler\Nodes\AuxiliaryNode;
+use Latte\Compiler\{Node, NodeTraverser, PrintContext};
+use Latte\Compiler\Nodes\{AuxiliaryNode, PrintNode, TemplateNode};
 use Latte\Compiler\Nodes\Html\ExpressionAttributeNode;
 use Latte\Compiler\Nodes\Php\Expression\ArrayNode;
-use Latte\Compiler\Nodes\PrintNode;
-use Latte\Compiler\Nodes\TemplateNode;
-use Latte\Compiler\NodeTraverser;
-use Latte\Compiler\PrintContext;
 use Latte\Essential\Nodes;
 use Latte\Runtime\HtmlHelpers;
 

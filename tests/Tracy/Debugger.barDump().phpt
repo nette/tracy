@@ -5,8 +5,7 @@
  * @outputMatch OK!
  */
 
-use Tester\Assert;
-use Tester\DomQuery;
+use Tester\{Assert, DomQuery};
 use Tracy\Debugger;
 
 require __DIR__ . '/../bootstrap.php';

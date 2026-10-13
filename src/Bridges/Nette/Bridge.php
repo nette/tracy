@@ -9,8 +9,7 @@ namespace Tracy\Bridges\Nette;
 
 use Nette;
 use Tracy;
-use Tracy\BlueScreen;
-use Tracy\Helpers;
+use Tracy\{BlueScreen, Helpers};
 
 
 /**

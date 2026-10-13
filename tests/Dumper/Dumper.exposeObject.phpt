@@ -5,9 +5,7 @@
  */
 
 use Tester\Assert;
-use Tracy\Dumper\Describer;
-use Tracy\Dumper\Exposer;
-use Tracy\Dumper\Value;
+use Tracy\Dumper\{Describer, Exposer, Value};
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/DumpClass.php';

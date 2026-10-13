@@ -11,8 +11,7 @@
  */
 
 use Tester\Assert;
-use Tracy\Debugger;
-use Tracy\Helpers;
+use Tracy\{Debugger, Helpers};
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/transparentWrapper.php';

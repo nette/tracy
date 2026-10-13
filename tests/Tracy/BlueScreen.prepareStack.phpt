@@ -5,8 +5,7 @@
  */
 
 use Tester\Assert;
-use Tracy\BlueScreen;
-use Tracy\Debugger;
+use Tracy\{BlueScreen, Debugger};
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/transparentWrapper.php';
