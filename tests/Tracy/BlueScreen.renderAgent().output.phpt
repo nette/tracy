@@ -26,6 +26,7 @@ function third($arg1)
 }
 
 
+error_clear_last(); // muted error raised while loading vendor would appear in the output
 $bs = new Tracy\BlueScreen;
 $bs->showEnvironment = false;
 
