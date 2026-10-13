@@ -5,8 +5,7 @@
  */
 
 use Tester\Assert;
-use Tracy\Debugger;
-use Tracy\Dumper;
+use Tracy\{Debugger, Dumper};
 
 require __DIR__ . '/../bootstrap.php';
 

@@ -4,8 +4,7 @@
  * Test: Tracy\Dumper::toHtml() live static snapshot
  */
 
-use Tester\Assert;
-use Tester\Expect;
+use Tester\{Assert, Expect};
 use Tracy\Dumper;
 
 require __DIR__ . '/../bootstrap.php';

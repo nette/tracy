@@ -4,8 +4,7 @@ namespace Tracy\Tools\Compiler;
 
 use Latte;
 use Latte\Compiler\Nodes\TemplateNode;
-use Latte\Compiler\PhpHelpers;
-use Latte\Compiler\PrintContext;
+use Latte\Compiler\{PhpHelpers, PrintContext};
 
 
 /**
