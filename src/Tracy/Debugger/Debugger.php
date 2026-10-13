@@ -8,7 +8,7 @@
 namespace Tracy;
 
 use ErrorException;
-use function in_array, is_bool, is_int, is_string;
+use function dirname, function_exists, in_array, ini_get, is_bool, is_int, is_string;
 use const PHP_VERSION;
 
 
@@ -280,7 +280,7 @@ class Debugger
 	public static function shutdownHandler(): void
 	{
 		$error = error_get_last();
-		if (in_array($error['type'] ?? null, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], strict: true)) {
+		if (in_array($error['type'] ?? null, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR], true)) {
 			$e = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
 			if (!empty($error['trace'])) {
 				(new \ReflectionClass(\Exception::class))->getProperty('trace')->setValue($e, $error['trace']);
@@ -368,7 +368,7 @@ class Debugger
 	{
 		while (ob_get_level() > self::$obLevel) {
 			$status = ob_get_status();
-			if (in_array($status['name'], ['ob_gzhandler', 'zlib output compression'], strict: true)) {
+			if (in_array($status['name'], ['ob_gzhandler', 'zlib output compression'], true)) {
 				break;
 			}
 
@@ -632,7 +632,7 @@ class Debugger
 			$list[] = '[::1]'; // workaround for PHP < 7.3.4
 		}
 
-		return in_array($addr, $list, strict: true) || in_array("$secret@$addr", $list, strict: true);
+		return in_array($addr, $list, true) || in_array("$secret@$addr", $list, true);
 	}
 
 

@@ -7,8 +7,8 @@
 
 namespace Tracy;
 
-use function in_array, is_string;
-use const DIRECTORY_SEPARATOR, FILE_APPEND, LOCK_EX, LOCK_UN, PHP_EOL;
+use function is_string;
+use const DIRECTORY_SEPARATOR, FILE_APPEND, LOCK_EX;
 
 
 /**
@@ -74,7 +74,7 @@ class Logger implements ILogger
 			$this->logException($message, $exceptionFile);
 		}
 
-		if (in_array($level, [self::ERROR, self::EXCEPTION, self::CRITICAL], strict: true)) {
+		if (in_array($level, [self::ERROR, self::EXCEPTION, self::CRITICAL], true)) {
 			$this->sendEmail($message);
 		}
 

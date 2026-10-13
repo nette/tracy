@@ -7,7 +7,6 @@
 
 namespace Tracy;
 
-use const PHP_SESSION_ACTIVE;
 
 
 /**

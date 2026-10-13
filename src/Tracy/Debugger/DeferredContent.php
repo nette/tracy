@@ -7,7 +7,7 @@
 
 namespace Tracy;
 
-use function array_slice, is_string, strlen;
+use function is_string, strlen;
 
 
 /**

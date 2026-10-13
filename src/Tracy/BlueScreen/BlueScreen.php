@@ -7,8 +7,8 @@
 
 namespace Tracy;
 
-use function count, in_array;
-use const ARRAY_FILTER_USE_KEY, ENT_IGNORE, PHP_VERSION_ID;
+use function count, function_exists, in_array;
+use const INFO_CONFIGURATION, INFO_MODULES, PHP_VERSION_ID;
 
 
 /**
@@ -72,7 +72,7 @@ class BlueScreen
 	public function addPanel(callable $panel): static
 	{
 		$panel = $panel(...);
-		if (!in_array($panel, $this->panels, strict: true)) {
+		if (!in_array($panel, $this->panels, true)) {
 			$this->panels[] = $panel;
 		}
 
@@ -290,7 +290,7 @@ class BlueScreen
 		if (preg_match('# ([\'"])(\w{3,}(?:\\\\\w{2,})+)\1#i', $ex->getMessage(), $m)) {
 			$class = $m[2];
 			if (
-				!class_exists($class, autoload: false) && !interface_exists($class, autoload: false) && !trait_exists($class, autoload: false)
+				!class_exists($class, false) && !interface_exists($class, autoload: false) && !trait_exists($class, autoload: false)
 				&& ($file = Helpers::guessClassFile($class)) && !@is_file($file) // @ - may trigger error
 			) {
 				[$content, $line] = $this->generateNewFileContents($file, $class);
@@ -481,7 +481,7 @@ class BlueScreen
 		$msg = preg_replace_callback(
 			'#(\w+\\\[\w\\\]+\w)(?:::(\w+))?#',
 			function ($m) {
-				$classLike = class_exists($m[1], autoload: false) || interface_exists($m[1], autoload: false) || trait_exists($m[1], autoload: false);
+				$classLike = class_exists($m[1], false) || interface_exists($m[1], autoload: false) || trait_exists($m[1], autoload: false);
 				if ($classLike && isset($m[2]) && method_exists($m[1], $m[2])) {
 					$r = new \ReflectionMethod($m[1], $m[2]);
 				} elseif ($classLike) {

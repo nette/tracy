@@ -8,7 +8,7 @@
 namespace Tracy\Dumper;
 
 use Tracy\Helpers;
-use function array_map, array_slice, class_exists, count, file, get_debug_type, get_resource_type, htmlspecialchars, implode, interface_exists, is_array, is_bool, is_float, is_int, is_object, is_resource, is_string, is_subclass_of, json_encode, method_exists, preg_match, spl_object_id, str_replace, strlen, strpos, strtolower, trim, uksort;
+use function count, is_array, is_bool, is_float, is_int, is_object, is_resource, is_string, strlen;
 
 
 /**
@@ -55,7 +55,7 @@ final class Describer
 	{
 		// exposers are sorted from the most specific type to the most general; '' acts as the universal supertype
 		$isSubtypeOf = fn(string $type, string $parent): bool => $parent === ''
-			|| ((class_exists($type, autoload: false) || interface_exists($type, autoload: false)) && is_subclass_of($type, $parent));
+			|| ((class_exists($type, false) || interface_exists($type, autoload: false)) && is_subclass_of($type, $parent));
 		uksort($this->objectExposers, fn($a, $b): int => $isSubtypeOf($b, $a) <=> $isSubtypeOf($a, $b));
 
 		try {

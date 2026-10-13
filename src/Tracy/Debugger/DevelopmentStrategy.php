@@ -8,7 +8,7 @@
 namespace Tracy;
 
 use ErrorException;
-use function is_bool;
+use function function_exists, is_bool;
 
 
 /**

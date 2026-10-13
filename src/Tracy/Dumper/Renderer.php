@@ -8,7 +8,7 @@
 namespace Tracy\Dumper;
 
 use Tracy\Helpers;
-use function count, htmlspecialchars, is_array, is_bool, is_float, is_int, is_object, is_string, str_repeat, str_replace, strlen, strrpos, substr, substr_count;
+use function count, is_array, is_bool, is_float, is_int, is_object, is_string, strlen;
 
 
 /**
