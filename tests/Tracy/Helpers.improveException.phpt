@@ -146,7 +146,7 @@ test('do not suggest anything when accessing anonymous class', function () {
 
 
 test('reading', function () use ($obj) {
-	@$val = $obj->publicX;
+	@$val = $obj->publicX; // @ the error is what the test reads
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
 	Helpers::improveException($e);
 	Assert::same('Undefined property: TestClass::$publicX, did you mean $public?', $e->getMessage());
@@ -155,7 +155,7 @@ test('reading', function () use ($obj) {
 });
 
 test('suggest only non-static property', function () use ($obj) {
-	@$val = $obj->publicStaticX;
+	@$val = $obj->publicStaticX; // @ the error is what the test reads
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
 	Helpers::improveException($e);
 	Assert::same('Undefined property: TestClass::$publicStaticX', $e->getMessage());
@@ -163,7 +163,7 @@ test('suggest only non-static property', function () use ($obj) {
 });
 
 test('suggest only public property', function () use ($obj) {
-	@$val = $obj->protectedX;
+	@$val = $obj->protectedX; // @ the error is what the test reads
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
 	Helpers::improveException($e);
 	Assert::same('Undefined property: TestClass::$protectedX', $e->getMessage());
@@ -196,7 +196,7 @@ test('suggest only public static property', function () use ($obj) {
 test('do not suggest anything when accessing anonymous class', function () {
 	$obj = new class {
 	};
-	@$val = $obj->property;
+	@$val = $obj->property; // @ the error is what the test reads
 	$e = new ErrorException(error_get_last()['message'], 0, error_get_last()['type']);
 	Helpers::improveException($e);
 	Assert::same('Undefined property: class@anonymous::$property', $e->getMessage());
@@ -207,7 +207,7 @@ test('do not suggest anything when accessing anonymous class', function () {
 	try {
 		$obj = new class {
 		};
-		@$val = $obj::$property;
+		$val = $obj::$property;
 	} catch (Error $e) {
 	}
 

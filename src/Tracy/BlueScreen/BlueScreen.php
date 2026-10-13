@@ -148,7 +148,7 @@ class BlueScreen
 	 */
 	public function renderToFile(\Throwable $exception, string $file, ?array $logLocation = null): bool
 	{
-		if ($handle = @fopen($file, 'x')) {
+		if ($handle = @fopen($file, 'x')) { // @ file may already exist
 			ob_start(); // double buffer prevents sending HTTP headers in some PHP
 			ob_start(function ($buffer) use ($handle) {
 				fwrite($handle, $buffer);
@@ -159,7 +159,7 @@ class BlueScreen
 			ob_end_clean();
 			fclose($handle);
 
-			if ($handle = @fopen(substr($file, 0, -5) . '.md', 'x')) {
+			if ($handle = @fopen(substr($file, 0, -5) . '.md', 'x')) { // @ file may already exist
 				fwrite($handle, $this->renderAgent($exception, $logLocation));
 				fclose($handle);
 			}

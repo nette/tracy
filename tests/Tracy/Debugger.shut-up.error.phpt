@@ -15,4 +15,4 @@ require __DIR__ . '/../bootstrap.php';
 Debugger::$productionMode = false;
 Debugger::enable();
 
-@missing_function();
+@missing_function(); // @ muted on purpose

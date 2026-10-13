@@ -177,7 +177,7 @@
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>
 <span class='tracy-line'>%d%:</span>    </span>define<span class='tracy-code-keyword'>(</span><span class='tracy-dump-string'>'MY_CONST'</span><span class='tracy-code-keyword'>, </span><span class='tracy-dump-number'>123</span><span class='tracy-code-keyword'>);
-<span class='tracy-line'>%d%:</span>    @</span>hex2bin<span class='tracy-code-keyword'>(</span><span class='tracy-dump-string'>'a'</span><span class='tracy-code-keyword'>); </span><span class='tracy-code-comment'>// E_WARNING
+<span class='tracy-line'>%d%:</span>    @</span>hex2bin<span class='tracy-code-keyword'>(</span><span class='tracy-dump-string'>'a'</span><span class='tracy-code-keyword'>); </span><span class='tracy-code-comment'>// @ E_WARNING muted on purpose
 </span><span class='tracy-line-highlight'>%d%:    first(10, 'any string');</span>
 </code></div></pre>
 

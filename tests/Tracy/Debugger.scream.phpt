@@ -14,7 +14,7 @@ Debugger::$productionMode = false;
 Debugger::$scream = true;
 Debugger::enable();
 
-@$x = &pi(); // E_NOTICE
-@hex2bin('a'); // E_WARNING
-@require __DIR__ . '/fixtures/E_COMPILE_WARNING.php'; // E_COMPILE_WARNING
+@$x = &pi(); // @ E_NOTICE muted on purpose
+@hex2bin('a'); // @ E_WARNING muted on purpose
+@require __DIR__ . '/fixtures/E_COMPILE_WARNING.php'; // @ E_COMPILE_WARNING muted on purpose
 // E_COMPILE_WARNING is handled in shutdownHandler() and does not know that @ was used

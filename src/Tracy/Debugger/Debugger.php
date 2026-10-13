@@ -314,7 +314,7 @@ class Debugger
 		self::$reserved = null;
 		self::$obStatus = ob_get_status(full_status: true);
 
-		@http_response_code(500);
+		@http_response_code(500); // @ headers may already be sent
 		Helpers::improveException($exception);
 		self::removeOutputBuffers(errorOccurred: true);
 
@@ -458,9 +458,9 @@ class Debugger
 	public static function getSessionStorage(): SessionStorage
 	{
 		if (empty(self::$sessionStorage)) {
-			self::$sessionStorage = @is_dir($dir = (string) session_save_path())
-				|| @is_dir($dir = (string) ini_get('upload_tmp_dir'))
-				|| @is_dir($dir = sys_get_temp_dir())
+			self::$sessionStorage = @is_dir($dir = (string) session_save_path()) // @ the path may be too long or outside open_basedir
+				|| @is_dir($dir = (string) ini_get('upload_tmp_dir')) // @ the path may be too long or outside open_basedir
+				|| @is_dir($dir = sys_get_temp_dir()) // @ the path may be too long or outside open_basedir
 				|| ($dir = (string) self::$logDirectory)
 				? new FileSession($dir)
 				: new NativeSession;

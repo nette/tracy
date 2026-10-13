@@ -72,7 +72,7 @@ final class DevelopmentStrategy
 			return;
 		}
 
-		if (Helpers::detectColors() && @is_file($exception->getFile())) {
+		if (Helpers::detectColors() && @is_file($exception->getFile())) { // @ the path may be too long or outside open_basedir
 			echo "\n\n" . CodeHighlighter::highlightPhpCli((string) file_get_contents($exception->getFile()), $exception->getLine()) . "\n";
 		}
 
@@ -99,7 +99,7 @@ final class DevelopmentStrategy
 			&& !isset($_GET['_tracy_skip_error'])
 		) {
 			$e = new ErrorException($message, 0, $severity, $file, $line);
-			@$e->skippable = true; // dynamic properties are deprecated since PHP 8.2
+			@$e->skippable = true; // @ dynamic properties are deprecated
 			Debugger::exceptionHandler($e);
 			exit(255);
 		}
