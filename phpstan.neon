@@ -63,11 +63,6 @@ parameters:
 			identifier: ternary.alwaysTrue
 			path: src/Tracy/Dumper/Renderer.php
 
-		# Variable is always defined when used (same function_exists() condition guards both paths)
-		-
-			identifier: variable.undefined
-			path: src/Tracy/Debugger/DevelopmentStrategy.php
-
 		# Deprecated property without type
 		-
 			identifier: missingType.property

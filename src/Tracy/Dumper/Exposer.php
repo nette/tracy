@@ -10,7 +10,7 @@ namespace Tracy\Dumper;
 use Dom;
 use Ds;
 use Uri;
-use function array_diff_key, array_key_exists, count, end, explode, get_debug_type, get_mangled_object_vars, implode, iterator_to_array, sort;
+use function array_key_exists, count;
 use const PHP_VERSION_ID;
 
 

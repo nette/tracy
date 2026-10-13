@@ -7,8 +7,8 @@
 
 namespace Tracy;
 
-use function array_filter, array_map, array_merge, array_pop, array_slice, array_unique, basename, bin2hex, class_exists, constant, count, dechex, defined, dirname, end, escapeshellarg, explode, extension_loaded, func_get_args, function_exists, get_class_methods, get_declared_classes, get_defined_functions, getenv, getmypid, headers_list, htmlspecialchars, htmlspecialchars_decode, iconv_strlen, implode, in_array, ini_set, is_a, is_array, is_callable, is_file, is_object, is_string, json_encode, levenshtein, ltrim, mb_strlen, mb_substr, method_exists, ob_end_clean, ob_get_clean, ob_start, ord, preg_match, preg_replace, preg_replace_callback, random_bytes, rawurlencode, rtrim, sapi_windows_vt100_support, spl_object_id, str_contains, str_pad, str_replace, strcasecmp, stream_isatty, strip_tags, strlen, strtoupper, strtr, substr, trait_exists, utf8_decode;
-use const DIRECTORY_SEPARATOR, ENT_HTML5, ENT_QUOTES, ENT_SUBSTITUTE, JSON_HEX_AMP, JSON_HEX_APOS, JSON_HEX_TAG, JSON_INVALID_UTF8_SUBSTITUTE, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE, PHP_EOL, PHP_SAPI, STDOUT, STR_PAD_LEFT;
+use function count, defined, extension_loaded, func_get_args, function_exists, is_array, is_object, is_string, strlen;
+use const ENT_HTML5, ENT_QUOTES, ENT_SUBSTITUTE, PHP_SAPI;
 
 
 /**
@@ -682,7 +682,7 @@ class Helpers
 	public static function getExceptionChain(\Throwable $ex): array
 	{
 		$res = [$ex];
-		while (($ex = $ex->getPrevious()) && !in_array($ex, $res, strict: true)) {
+		while (($ex = $ex->getPrevious()) && !in_array($ex, $res, true)) {
 			$res[] = $ex;
 		}
 

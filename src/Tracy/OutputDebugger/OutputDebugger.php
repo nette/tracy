@@ -7,8 +7,7 @@
 
 namespace Tracy;
 
-use function array_slice, count;
-use const PHP_OUTPUT_HANDLER_FINAL;
+use function count;
 
 
 /**

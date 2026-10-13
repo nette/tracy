@@ -3,7 +3,7 @@
 namespace Tracy;
 
 use Composer\Autoload\ClassLoader;
-use function count;
+use function count, extension_loaded, function_exists;
 use const PHP_VERSION, PHP_ZTS;
 
 /** @var DefaultBarPanel $this */
@@ -50,7 +50,7 @@ $info = [
 $info = array_map('strval', array_filter($info + (array) $this->data));
 
 $packages = $devPackages = [];
-if (class_exists(ClassLoader::class, autoload: false)) {
+if (class_exists(ClassLoader::class, false)) {
 	$baseDir = (function () {
 		$baseDir = null;
 		@include dirname((string) (new \ReflectionClass(ClassLoader::class))->getFileName()) . '/autoload_psr4.php'; // @ may not exist

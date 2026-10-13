@@ -8,7 +8,6 @@
 namespace Tracy;
 
 use function is_string;
-use const LOCK_EX, LOCK_UN;
 
 
 /**
