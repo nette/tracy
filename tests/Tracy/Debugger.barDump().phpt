@@ -32,7 +32,10 @@ register_shutdown_function(function () {
 });
 
 
-$arr = [10, 20.2, true, false, null, 'hello <!-- <script> </script>', ['key1' => 'val1', 'key2' => true], (object) ['key1' => 'val1', 'key2' => true]];
+$arr = [
+	10, 20.2, true, false, null, 'hello <!-- <script> </script>', ['key1' => 'val1', 'key2' => true],
+	(object) ['key1' => 'val1', 'key2' => true],
+];
 
 Debugger::barDump($arr);
 

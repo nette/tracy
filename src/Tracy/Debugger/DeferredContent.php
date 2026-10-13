@@ -122,7 +122,7 @@ final class DeferredContent
 
 	private function buildJsCss(): string
 	{
-		$css = array_map(file_get_contents(...), array_merge([
+		$css = array_map(file_get_contents(...), [
 			__DIR__ . '/../assets/reset.css',
 			__DIR__ . '/../Bar/assets/bar.css',
 			__DIR__ . '/../assets/toggle.css',
@@ -131,7 +131,8 @@ final class DeferredContent
 			__DIR__ . '/../Dumper/assets/dumper-light.css',
 			__DIR__ . '/../Dumper/assets/dumper-dark.css',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
-		], Debugger::$customCssFiles));
+			...Debugger::$customCssFiles,
+		]);
 
 		$js1 = array_map(fn($file) => '(function() {' . file_get_contents($file) . '})();', [
 			__DIR__ . '/../Bar/assets/bar.js',

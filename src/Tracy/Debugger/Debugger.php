@@ -67,7 +67,7 @@ class Debugger
 	/** determines whether any error will cause immediate death in development mode; if integer that it's matched against error severity */
 	public static bool|int $strictMode = false;
 
-	/** disables the @ (shut-up) operator so that notices and warnings are no longer hidden; if integer than it's matched against error severity */
+	/** disables the @ (shut-up) operator so notices and warnings are not hidden; if integer than it's matched against error severity */
 	public static bool|int $scream = false;
 
 	/** @var array<callable(\Throwable): void>  functions that are automatically called after fatal error */
@@ -139,7 +139,7 @@ class Debugger
 	/** @var string[] */
 	public static array $customJsFiles = [];
 
-	/** @var string[] path prefixes of "transparent" packages whose frames are skipped when locating user code and collapsed in stack traces */
+	/** @var string[] path prefixes of "transparent" packages whose frames are skipped when locating user code and collapsed in traces */
 	public static array $transparentPaths = [];
 
 	/** @var array<\Closure(string, int): ?array{file: string, label: string, line?: int, column?: int, active?: bool}> */
@@ -167,7 +167,7 @@ class Debugger
 
 	/**
 	 * Enables displaying or logging errors and exceptions.
-	 * @param  bool|string|string[]  $mode  use constant Debugger::Production, Development, Detect (autodetection) or IP address(es) whitelist.
+	 * @param  bool|string|string[]  $mode  Debugger::Production, Development, Detect (autodetection) or IP address(es) whitelist
 	 * @param  ?string  $logDirectory  error log directory
 	 * @param  string|string[]|null  $email  administrator email; enables email sending in production mode
 	 */
@@ -462,8 +462,8 @@ class Debugger
 				|| @is_dir($dir = (string) ini_get('upload_tmp_dir')) // @ the path may be too long or outside open_basedir
 				|| @is_dir($dir = sys_get_temp_dir()) // @ the path may be too long or outside open_basedir
 				|| ($dir = (string) self::$logDirectory)
-				? new FileSession($dir)
-				: new NativeSession;
+					? new FileSession($dir)
+					: new NativeSession;
 		}
 
 		return self::$sessionStorage;

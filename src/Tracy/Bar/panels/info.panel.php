@@ -16,7 +16,10 @@ if (isset($this->cpuUsage) && $this->time) {
 	$systemUsage = -round(($this->cpuUsage['ru_stime.tv_sec'] * 1e6 + $this->cpuUsage['ru_stime.tv_usec']) / $this->time / 10000);
 }
 
-$countClasses = fn(array $list): int => count(array_filter($list, fn(string $name): bool => (new \ReflectionClass($name))->isUserDefined()));
+$countClasses = fn(array $list): int => count(array_filter(
+	$list,
+	fn(string $name): bool => (new \ReflectionClass($name))->isUserDefined(),
+));
 
 $ipFormatter = static function (?string $ip): ?string {
 	if ($ip === '127.0.0.1' || $ip === '::1') {
@@ -31,13 +34,17 @@ $jit = $opcache['jit'] ?? null;
 
 $info = [
 	'Execution time' => number_format($this->time * 1000, 1, '.', "\u{202f}") . "\u{202f}ms",
-	'CPU usage user + system' => isset($userUsage, $systemUsage) ? (int) $userUsage . "\u{202f}% + " . (int) $systemUsage . "\u{202f}%" : null,
+	'CPU usage user + system' => isset($userUsage, $systemUsage)
+		? (int) $userUsage . "\u{202f}% + " . (int) $systemUsage . "\u{202f}%"
+		: null,
 	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1_000_000, 2, '.', "\u{202f}") . "\u{202f}MB",
 	'Included files' => count(get_included_files()),
 	'Classes + interfaces + traits' => $countClasses(get_declared_classes()) . ' + '
 		. $countClasses(get_declared_interfaces()) . ' + ' . $countClasses(get_declared_traits()),
 	'OPcache' => $opcache ? round(count($cachedFiles) * 100 / count(get_included_files())) . "\u{202f}% cached" : '–',
-	'JIT' => empty($jit['buffer_size']) ? '–' : round(($jit['buffer_size'] - $jit['buffer_free']) / $jit['buffer_size'] * 100) . "\u{202f}% used",
+	'JIT' => empty($jit['buffer_size'])
+		? '–'
+		: round(($jit['buffer_size'] - $jit['buffer_free']) / $jit['buffer_size'] * 100) . "\u{202f}% used",
 	'Your IP' => $ipFormatter($_SERVER['REMOTE_ADDR'] ?? null),
 	'Server IP' => $ipFormatter($_SERVER['SERVER_ADDR'] ?? null),
 	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : null,

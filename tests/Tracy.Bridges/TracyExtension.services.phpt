@@ -5,7 +5,6 @@ use Tester\Assert;
 use Tracy\Bridges\Nette\TracyExtension;
 use Tracy\ILogger;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 class CustomLogger implements ILogger
@@ -39,8 +38,8 @@ $container = new Container;
 $container->initialize();
 
 Assert::type('CustomLogger', $container->getService('tracy.logger'));
-Assert::type('Tracy\BlueScreen', $container->getService('tracy.blueScreen'));
-Assert::type('Tracy\Bar', $container->getService('tracy.bar'));
+Assert::type(Tracy\BlueScreen::class, $container->getService('tracy.blueScreen'));
+Assert::type(Tracy\Bar::class, $container->getService('tracy.bar'));
 
 Assert::same(Tracy\Debugger::getLogger(), $container->getService('tracy.logger'));
 Assert::same(Tracy\Debugger::getBlueScreen(), $container->getService('tracy.blueScreen'));

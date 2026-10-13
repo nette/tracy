@@ -53,7 +53,7 @@ final class Renderer
 				$html = $this->renderVar($value);
 				$json = $snapshot = null;
 
-			} elseif ($this->lazy && (is_array($value) && $value || is_object($value))) { // full lazy-loading
+			} elseif ($this->lazy && ((is_array($value) && $value) || is_object($value))) { // full lazy-loading
 				$html = '';
 				$snapshot = $this->collectingMode ? null : $this->snapshot;
 				$json = $value;
@@ -82,10 +82,10 @@ final class Renderer
 		}
 
 		return '<pre class="tracy-dump' . ($this->theme ? ' tracy-' . htmlspecialchars($this->theme) : '')
-				. ($json && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
-				. ($snapshot !== null ? " data-tracy-snapshot='" . Helpers::jsonEncode($snapshot) . "'" : '')
-				. ($json ? " data-tracy-dump='" . Helpers::jsonEncode($json) . "'" : '')
-				. ($location || strlen($html) > 100 ? "\n" : '')
+			. ($json && $this->collapseTop === true ? ' tracy-collapsed' : '') . '"'
+			. ($snapshot !== null ? " data-tracy-snapshot='" . Helpers::jsonEncode($snapshot) . "'" : '')
+			. ($json ? " data-tracy-dump='" . Helpers::jsonEncode($json) . "'" : '')
+			. ($location || strlen($html) > 100 ? "\n" : '')
 			. '>'
 			. $location
 			. $html
@@ -231,7 +231,11 @@ final class Renderer
 				if ($this->lazy !== false) {
 					$ref = new Value(Value::TypeRef, $array->id);
 					$this->copySnapshot($ref);
-					return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . Helpers::jsonEncode($ref) . "'>" . $out . '</span>';
+					return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\''
+						. Helpers::jsonEncode($ref)
+						. "'>"
+						. $out
+						. '</span>';
 
 				} elseif ($this->hash) {
 					return $out . (isset($this->above[$array->id]) ? ' <i>see above</i>' : ' <i>see below</i>');
@@ -314,7 +318,11 @@ final class Renderer
 			if ($this->lazy !== false) {
 				$ref = new Value(Value::TypeRef, $object->id);
 				$this->copySnapshot($ref);
-				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . Helpers::jsonEncode($ref) . "'>" . $out . '</span>';
+				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\''
+					. Helpers::jsonEncode($ref)
+					. "'>"
+					. $out
+					. '</span>';
 
 			} elseif ($this->hash) {
 				return $out . (isset($this->above[$object->id]) ? ' <i>see above</i>' : ' <i>see below</i>');
@@ -368,7 +376,11 @@ final class Renderer
 			if ($this->lazy !== false) {
 				$ref = new Value(Value::TypeRef, $resource->id);
 				$this->copySnapshot($ref);
-				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\'' . Helpers::jsonEncode($ref) . "'>" . $out . '</span>';
+				return '<span class="tracy-toggle tracy-collapsed" data-tracy-dump=\''
+					. Helpers::jsonEncode($ref)
+					. "'>"
+					. $out
+					. '</span>';
 			}
 
 			return $out . ' <i>see above</i>';

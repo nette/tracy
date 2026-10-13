@@ -8,7 +8,6 @@
 namespace Tracy;
 
 
-
 /**
  * Session storage backed by native PHP session ($_SESSION).
  */

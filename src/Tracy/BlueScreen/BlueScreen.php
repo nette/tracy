@@ -135,7 +135,10 @@ class BlueScreen
 	/** @internal */
 	public function renderToAjax(\Throwable $exception, DeferredContent $defer): void
 	{
-		$defer->addSetup('Tracy.BlueScreen.loadAjax', Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/dist/content.phtml')));
+		$defer->addSetup(
+			'Tracy.BlueScreen.loadAjax',
+			Helpers::capture(fn() => $this->renderTemplate($exception, __DIR__ . '/dist/content.phtml')),
+		);
 		if (Helpers::isAgent()) {
 			$defer->addSetup('console.error', $this->renderAgent($exception));
 		}
@@ -195,7 +198,10 @@ class BlueScreen
 			$httpHeaders = apache_request_headers();
 		} else {
 			$httpHeaders = array_filter($_SERVER, fn($k) => str_starts_with($k, 'HTTP_'), ARRAY_FILTER_USE_KEY);
-			$httpHeaders = array_combine(array_map(fn($k) => strtolower(strtr(substr($k, 5), '_', '-')), array_keys($httpHeaders)), $httpHeaders);
+			$httpHeaders = array_combine(
+				array_map(fn($k) => strtolower(strtr(substr($k, 5), '_', '-')), array_keys($httpHeaders)),
+				$httpHeaders,
+			);
 		}
 
 		$this->snapshot = [];
@@ -203,14 +209,15 @@ class BlueScreen
 		$dump = $this->getDumper();
 		$agentDump = $this->getAgentDumper();
 
-		$css = array_map(file_get_contents(...), array_merge([
+		$css = array_map(file_get_contents(...), [
 			__DIR__ . '/../assets/reset.css',
 			__DIR__ . '/assets/bluescreen.css',
 			__DIR__ . '/../assets/toggle.css',
 			__DIR__ . '/../assets/table-sort.css',
 			__DIR__ . '/../assets/tabs.css',
 			__DIR__ . '/../Dumper/assets/dumper-light.css',
-		], Debugger::$customCssFiles));
+			...Debugger::$customCssFiles,
+		]);
 		$css = Helpers::minifyCss(implode('', $css));
 
 		$js = array_map(fn($file) => '(function(){' . file_get_contents($file) . '})();', [
@@ -368,10 +375,17 @@ class BlueScreen
 
 		$source = $php
 			? CodeHighlighter::highlightPhp($source, $line, $column)
-			: '<pre class=tracy-code><div>' . CodeHighlighter::highlightLine(htmlspecialchars($source, ENT_IGNORE, 'UTF-8'), $line, $column) . '</div></pre>';
+			: '<pre class=tracy-code><div>'
+				. CodeHighlighter::highlightLine(htmlspecialchars($source, ENT_IGNORE, 'UTF-8'), $line, $column)
+				. '</div></pre>';
 
 		if ($editor = Helpers::editorUri($file, $line)) {
-			$source = substr_replace($source, ' title="Ctrl-Click to open in editor" data-tracy-href="' . Helpers::escapeHtml($editor) . '"', 4, 0);
+			$source = substr_replace(
+				$source,
+				' title="Ctrl-Click to open in editor" data-tracy-href="' . Helpers::escapeHtml($editor) . '"',
+				4,
+				0,
+			);
 		}
 
 		return $source;
@@ -417,10 +431,14 @@ class BlueScreen
 	public function prepareStack(\Throwable $ex): array
 	{
 		$stack = $ex->getTrace();
-		while ($stack && (
-			in_array($stack[0]['class'] ?? null, [DevelopmentStrategy::class, ProductionStrategy::class], true)
-			|| (($stack[0]['class'] ?? null) === Debugger::class && in_array($stack[0]['function'], ['shutdownHandler', 'errorHandler'], true))
-		)) {
+		while (
+			$stack
+			&& (
+				in_array($stack[0]['class'] ?? null, [DevelopmentStrategy::class, ProductionStrategy::class], true)
+				|| (($stack[0]['class'] ?? null) === Debugger::class
+					&& in_array($stack[0]['function'], ['shutdownHandler', 'errorHandler'], true))
+			)
+		) {
 			array_shift($stack);
 		}
 
@@ -429,7 +447,10 @@ class BlueScreen
 			!$ex instanceof \ErrorException
 			|| in_array($ex->getSeverity(), [E_USER_NOTICE, E_USER_WARNING, E_USER_DEPRECATED], true)
 		) {
-			$n = Helpers::countTransparentFrames([['file' => $ex->getFile(), 'line' => $ex->getLine()], ...$stack], [...$this->collapsePaths, ...Debugger::$transparentPaths]);
+			$n = Helpers::countTransparentFrames(
+				[['file' => $ex->getFile(), 'line' => $ex->getLine()], ...$stack],
+				[...$this->collapsePaths, ...Debugger::$transparentPaths],
+			);
 			$expanded = $n > 0 && $n <= count($stack) ? $n - 1 : null;
 		}
 
@@ -455,7 +476,10 @@ class BlueScreen
 	}
 
 
-	/** @return \Closure(mixed, int|string): string */
+	/**
+	 * @return \Closure(mixed, int|string): string
+	 * @internal
+	 */
 	public function getAgentDumper(): \Closure
 	{
 		return fn($v, $k = null): string => Dumper::toText($v, [
@@ -492,7 +516,11 @@ class BlueScreen
 					return $m[0];
 				}
 
-				return '<a href="' . Helpers::escapeHtml(Helpers::editorUri($r->getFileName(), $r->getStartLine() ?: null)) . '" class="tracy-editor">' . $m[0] . '</a>';
+				return '<a href="'
+					. Helpers::escapeHtml(Helpers::editorUri($r->getFileName(), $r->getStartLine() ?: null))
+					. '" class="tracy-editor">'
+					. $m[0]
+					. '</a>';
 			},
 			$msg,
 		);
@@ -501,7 +529,11 @@ class BlueScreen
 		$msg = preg_replace_callback(
 			'#([\w\\\/.:-]+\.(?:php|phpt|phtml|latte|neon))(?|:(\d+)| on line (\d+))?#',
 			fn($m) => @is_file($m[1]) // @ - may trigger error
-				? '<a href="' . Helpers::escapeHtml(Helpers::editorUri($m[1], isset($m[2]) ? (int) $m[2] : null)) . '" class="tracy-editor">' . $m[0] . '</a>'
+				? '<a href="'
+					. Helpers::escapeHtml(Helpers::editorUri($m[1], isset($m[2]) ? (int) $m[2] : null))
+					. '" class="tracy-editor">'
+					. $m[0]
+					. '</a>'
 				: $m[0],
 			$msg,
 		);

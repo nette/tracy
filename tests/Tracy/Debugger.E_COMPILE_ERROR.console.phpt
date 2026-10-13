@@ -33,13 +33,13 @@ register_shutdown_function(function () use (&$onFatalErrorCalled) {
 			Tracy is unable to log error: Logging directory is not specified.
 
 			XX : <<<'XX'
-			ErrorException: Cannot re-assign $this in %a%
-			Stack trace:
-			#0 [internal function]: Tracy\Debugger::shutdownHandler()
-			#1 {main}
-			Tracy is unable to log error: Logging directory is not specified.
+				ErrorException: Cannot re-assign $this in %a%
+				Stack trace:
+				#0 [internal function]: Tracy\Debugger::shutdownHandler()
+				#1 {main}
+				Tracy is unable to log error: Logging directory is not specified.
 
-			XX,
+				XX,
 		ob_get_clean(),
 	);
 	echo 'OK!'; // prevents PHP bug #62725

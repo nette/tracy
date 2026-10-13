@@ -115,7 +115,11 @@ test('', function () {
 
 	$storage = new MockSessionStorage;
 	$storage->data['redirect'] = [
-		['content' => ['bar' => '', 'panels' => ''], 'agent' => "Tracy Bar | 10.0 ms | 5.00 MB\n\n## Warnings\n\n- test\n", 'time' => time()],
+		[
+			'content' => ['bar' => '', 'panels' => ''],
+			'agent' => "Tracy Bar | 10.0 ms | 5.00 MB\n\n## Warnings\n\n- test\n",
+			'time' => time(),
+		],
 	];
 	$defer = createDefer($storage);
 

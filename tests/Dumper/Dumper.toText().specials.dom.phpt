@@ -11,7 +11,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $dom = new DOMDocument;
-$dom->loadHtml('<!doctype html><ul><li class="a">Ahoj</ul>');
+$dom->loadHTML('<!doctype html><ul><li class="a">Ahoj</ul>');
 
 $xpath = new DOMXPath($dom);
 $nodeList = $xpath->query('//li');

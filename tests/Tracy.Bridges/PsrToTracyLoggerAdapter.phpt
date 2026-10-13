@@ -8,7 +8,6 @@ use Tester\Assert;
 use Tracy\Bridges\Psr\PsrToTracyLoggerAdapter;
 use Tracy\ILogger;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 class DummyPsrLogger extends Psr\Log\AbstractLogger
@@ -39,5 +38,9 @@ Assert::same([
 	[Psr\Log\LogLevel::WARNING, 'warning', []],
 	[Psr\Log\LogLevel::INFO, '123', []],
 	[Psr\Log\LogLevel::INFO, "array (1)\n   'x' => 'y'", []],
-	[Psr\Log\LogLevel::INFO, 'Exception: Something went wrong #123 in ' . __DIR__ . DIRECTORY_SEPARATOR . 'PsrToTracyLoggerAdapter.phpt:29', ['exception' => $exception]],
+	[
+		Psr\Log\LogLevel::INFO,
+		'Exception: Something went wrong #123 in ' . __DIR__ . DIRECTORY_SEPARATOR . 'PsrToTracyLoggerAdapter.phpt:28',
+		['exception' => $exception],
+	],
 ], $psrLogger->entries);

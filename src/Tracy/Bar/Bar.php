@@ -65,6 +65,7 @@ class Bar
 
 	/**
 	 * Renders debug bar.
+	 * @internal
 	 */
 	public function render(DeferredContent $defer): void
 	{
@@ -89,7 +90,10 @@ class Bar
 			}
 		} elseif (Helpers::isHtmlMode()) {
 			if (preg_match('#^Content-Length:#im', implode("\n", headers_list()))) {
-				Debugger::log(new \LogicException('Tracy cannot display the Bar because the Content-Length header is being sent'), Debugger::EXCEPTION);
+				Debugger::log(
+					new \LogicException('Tracy cannot display the Bar because the Content-Length header is being sent'),
+					Debugger::EXCEPTION,
+				);
 			}
 
 			$content = $this->renderPartial('main');
@@ -180,6 +184,7 @@ class Bar
 
 	/**
 	 * Captures debug bar as plain text (markdown) for AI agents.
+	 * @internal
 	 */
 	public function renderAgent(): string
 	{

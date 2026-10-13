@@ -160,7 +160,6 @@ Assert::with($blueScreen, function () {
 });
 
 
-
 // isset() error
 class FooException extends Exception
 {

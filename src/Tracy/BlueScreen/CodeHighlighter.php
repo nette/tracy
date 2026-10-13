@@ -92,8 +92,8 @@ final class CodeHighlighter
 		foreach (\PhpToken::tokenize($code) as $token) {
 			$next = match ($token->id) {
 				T_COMMENT, T_DOC_COMMENT, T_INLINE_HTML => 'tracy-code-comment',
-				T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_LINE, T_FILE, T_DIR, T_TRAIT_C, T_METHOD_C, T_FUNC_C, T_NS_C, T_CLASS_C,
-				T_STRING, T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_NAME_RELATIVE => '',
+				T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_LINE, T_FILE, T_DIR, T_TRAIT_C, T_METHOD_C, T_FUNC_C,
+				T_NS_C, T_CLASS_C, T_STRING, T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_NAME_RELATIVE => '',
 				T_LNUMBER, T_DNUMBER => 'tracy-dump-number',
 				T_VARIABLE => 'tracy-code-var',
 				T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING => 'tracy-dump-string',

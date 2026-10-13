@@ -24,5 +24,8 @@ Debugger::enable(Debugger::Production, $logDirectory, 'admin@example.com');
 // throw error
 hex2bin('a'); // E_WARNING
 
-Assert::match('%a%Warning: hex2bin(): Hexadecimal input string must have an even length in %a%', file_get_contents($logDirectory . '/error.log'));
+Assert::match(
+	'%a%Warning: hex2bin(): Hexadecimal input string must have an even length in %a%',
+	file_get_contents($logDirectory . '/error.log'),
+);
 Assert::true(is_file($logDirectory . '/email-sent'));

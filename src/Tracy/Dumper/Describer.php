@@ -202,7 +202,14 @@ final class Describer
 				$described = $this->isSensitive((string) $k, $v, get_debug_type($obj)) // props come from user callbacks (__debugInfo, custom exposers)
 					? new Value(Value::TypeText, self::hideValue($v))
 					: null;
-				$this->addPropertyTo($value, (string) $k, $v, Value::PropertyVirtual, $this->getReferenceId($props ?? [], $k), described: $described);
+				$this->addPropertyTo(
+					$value,
+					(string) $k,
+					$v,
+					Value::PropertyVirtual,
+					$this->getReferenceId($props ?? [], $k),
+					described: $described,
+				);
 			}
 		}
 
