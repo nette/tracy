@@ -1,0 +1,76 @@
+use:
+	- nette
+	- modernizations
+
+typeAnalysis: phpstan
+
+mistakes:
+	# Tracy is where dump() comes from
+	debugOutput: keep
+
+paths:
+	- src
+	- tests
+	- tools
+
+excludePaths:
+	- tests/**/fixtures*
+
+fileExtensions:
+	- php
+	- phpt
+
+imports: {grouping: {class: grouped}}
+
+overrides:
+	-
+		paths: [src]
+		nameResolution: certain
+		use:
+			- compilerOptimizations
+			- deprecations
+
+	- # constants published in upper case, where the case is part of the API
+		paths:
+			- src/Tracy/Debugger/Debugger.php
+			- src/Tracy/Dumper/Dumper.php
+			- src/Tracy/Logger/ILogger.php
+			- src/Tracy/OutputDebugger/OutputDebugger.php
+		naming: {constant: keep}
+
+	- # $this_ holds the $this of a closure, a name PHP reserves
+		paths: [src/Tracy/Dumper/Exposer.php]
+		naming: {variable: keep}
+
+	- # the last fallback when neither mbstring nor iconv is loaded
+		paths: [src/Tracy/Helpers.php]
+		upgrading: {api: {replacedCalls: {'utf8_decode($string)': keep}}}
+
+	- # promotion would move the properties to the end, which changes how a Value is dumped
+		paths: [src/Tracy/Dumper/Value.php]
+		upgrading: {syntax: {promotedProperties: keep}}
+
+	- # the source of these functions is what the expected output shows
+		paths:
+			- 'tests/Tracy/BlueScreen.renderAgent().output.phpt'
+			- tests/Tracy/Debugger.exception.fiber.html.phpt
+			- tests/Tracy/Debugger.exception.generator.html.phpt
+			- tests/Tracy/Debugger.exception.html.phpt
+			- tests/Tracy/Debugger.exception.nonhtml.phpt
+		mistakes: {neverReturnType: keep}
+
+	- # the members are grouped by topic under divider comments
+		paths: [src/Tracy/Debugger/Debugger.php]
+		classes: {members: {order: keep}}
+
+	- # the deprecated property is still honored for BC
+		paths: [src/Tracy/BlueScreen/BlueScreen.php]
+		upgrading: {declarations: {deprecatedMember: keep}}
+
+	- # renaming the parameter would break calls naming the argument
+		paths: [src/Tracy/Logger/Logger.php]
+		classes: {overridingMethod: {parameterName: keep}}
+
+	- # the test reads the page of a User Error
+		paths: [tests/Tracy/Debugger.error-in-toString.phpt]
+		upgrading: {php: {deprecatedArgument: keep}}
