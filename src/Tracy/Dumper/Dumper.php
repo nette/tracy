@@ -101,8 +101,8 @@ class Dumper
 	/** @var array<string, array{bool, string[]}> */
 	private static array $enumProperties = [];
 
-	private Describer $describer;
-	private Renderer $renderer;
+	private readonly Describer $describer;
+	private readonly Renderer $renderer;
 
 
 	/**

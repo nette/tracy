@@ -26,7 +26,10 @@ Debugger::enable(Debugger::Production, null, 'admin@example.com');
 
 
 register_shutdown_function(function () {
-	Assert::match('%a%Error: Call to undefined function missing_function() in %a%', file_get_contents(Debugger::$logDirectory . '/exception.log'));
+	Assert::match(
+		'%a%Error: Call to undefined function missing_function() in %a%',
+		file_get_contents(Debugger::$logDirectory . '/exception.log'),
+	);
 	Assert::true(is_file(Debugger::$logDirectory . '/email-sent'));
 	echo 'OK!'; // prevents PHP bug #62725
 });

@@ -100,15 +100,15 @@ class Extension extends Latte\Extension
 					if (!$shouldEscape) {
 						$q = $hasJsonFilter ? "'" : '"';
 						return 'echo ($ʟ_tmp = (' . $value . ')) === null ? \'\' : '
-							. var_export($namePart . '=' . $q, true) . ' . $ʟ_tmp . ' . var_export($q, true) . " $line;\n";
+							. var_export($namePart . '=' . $q, return: true) . ' . $ʟ_tmp . ' . var_export($q, return: true) . " $line;\n";
 					}
 
 					return match ($type) {
-						'bool' => "echo ($value) ? " . var_export($namePart, true) . " : '' $line;\n",
+						'bool' => "echo ($value) ? " . var_export($namePart, return: true) . " : '' $line;\n",
 						'list' => 'echo ($ʟ_tmp = array_filter(' . $value . ')) ? '
-							. var_export($namePart . '="', true) . " . Tracy\\Helpers::escapeHtml(implode(' ', \$ʟ_tmp)) . '\"' : '' $line;\n",
+							. var_export($namePart . '="', return: true) . " . Tracy\\Helpers::escapeHtml(implode(' ', \$ʟ_tmp)) . '\"' : '' $line;\n",
 						default => 'echo ($ʟ_tmp = (' . $value . ')) === null ? \'\' : '
-							. var_export($namePart . '="', true) . " . Tracy\\Helpers::escapeHtml(\$ʟ_tmp) . '\"' $line;\n",
+							. var_export($namePart . '="', return: true) . " . Tracy\\Helpers::escapeHtml(\$ʟ_tmp) . '\"' $line;\n",
 					};
 				},
 				[$attr->value],

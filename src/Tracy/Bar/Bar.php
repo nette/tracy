@@ -65,6 +65,7 @@ class Bar
 
 	/**
 	 * Renders debug bar.
+	 * @internal
 	 */
 	public function render(DeferredContent $defer): void
 	{
@@ -89,7 +90,10 @@ class Bar
 			}
 		} elseif (Helpers::isHtmlMode()) {
 			if (preg_match('#^Content-Length:#im', implode("\n", headers_list()))) {
-				Debugger::log(new \LogicException('Tracy cannot display the Bar because the Content-Length header is being sent'), Debugger::EXCEPTION);
+				Debugger::log(
+					new \LogicException('Tracy cannot display the Bar because the Content-Length header is being sent'),
+					Debugger::EXCEPTION,
+				);
 			}
 
 			$content = $this->renderPartial('main');
@@ -180,10 +184,11 @@ class Bar
 
 	/**
 	 * Captures debug bar as plain text (markdown) for AI agents.
+	 * @internal
 	 */
 	public function renderAgent(): string
 	{
-		$time = number_format((microtime(true) - Debugger::$time) * 1000, 1);
+		$time = number_format((microtime(as_float: true) - Debugger::$time) * 1000, 1);
 		$memory = number_format(memory_get_peak_usage() / 1_000_000, 2);
 		$parts = ["Tracy Bar | $time ms | $memory MB"];
 		foreach ($this->panels as $panel) {

@@ -20,17 +20,17 @@ enum Suit
 
 enum Methods: string
 {
-	case GET = 'get';
-	case POST = 'post';
+	case Get = 'get';
+	case Post = 'post';
 }
 
 Assert::match(
 	<<<'XX'
 		array (3)
 		   0 => Suit::Clubs #%d%
-		   1 => Methods::GET #%d%
+		   1 => Methods::Get #%d%
 		   |  value: 'get'
-		   2 => Methods::GET #%d% see above
+		   2 => Methods::Get #%d% see above
 		XX,
-	Dumper::toText([Suit::Clubs, Methods::GET, Methods::GET]),
+	Dumper::toText([Suit::Clubs, Methods::Get, Methods::Get]),
 );

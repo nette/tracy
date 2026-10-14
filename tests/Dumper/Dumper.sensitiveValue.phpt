@@ -10,7 +10,8 @@ function sensitiveParameters(
 	#[SensitiveParameter]
 	string $secret,
 	string $normal,
-) {
+): never
+{
 	throw new Exception;
 }
 

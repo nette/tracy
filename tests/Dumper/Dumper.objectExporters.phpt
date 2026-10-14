@@ -128,7 +128,7 @@ Assert::match(
 		ArrayIterator #%d%
 		   type: 'Iterator'
 		XX,
-	Dumper::toText(new ArrayIterator([]), [Dumper::OBJECT_EXPORTERS => $exporters]),
+	Dumper::toText(new ArrayIterator, [Dumper::OBJECT_EXPORTERS => $exporters]),
 );
 
 Assert::match(
@@ -144,7 +144,7 @@ Assert::match(
 		ArrayIterator #%d%
 		   type: 'Default Iterator'
 		XX,
-	Dumper::toText(new ArrayIterator([])),
+	Dumper::toText(new ArrayIterator),
 );
 
 Assert::match(

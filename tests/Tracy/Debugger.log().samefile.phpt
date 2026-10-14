@@ -15,7 +15,7 @@ Tester\Helpers::purge(getTempDir());
 Debugger::$logDirectory = getTempDir();
 
 
-function foo($fp)
+function foo($fp): never
 {
 	throw new Exception;
 }

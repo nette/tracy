@@ -8,12 +8,10 @@ use Tester\Assert;
 use Tracy\Bridges\Psr\TracyToPsrLoggerAdapter;
 use Tracy\ILogger;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 class DummyTracyLogger implements ILogger
 {
-	/** @var array */
 	public array $entries = [];
 
 

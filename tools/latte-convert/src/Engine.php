@@ -16,7 +16,7 @@ class Engine extends Latte\Engine
 	public function __construct()
 	{
 		parent::__construct();
-		$this->setFeature(Latte\Feature::Dedent, true);
+		$this->setFeature(Latte\Feature::Dedent);
 	}
 
 

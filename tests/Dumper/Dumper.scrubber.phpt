@@ -3,7 +3,6 @@
 use Tester\Assert;
 use Tracy\Dumper;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

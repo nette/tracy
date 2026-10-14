@@ -14,7 +14,7 @@ $ds = DIRECTORY_SEPARATOR;
 
 Assert::same(null, Helpers::guessClassFile('A'));
 Assert::same(null, Helpers::guessClassFile('A\B'));
-Assert::same(__DIR__ . "{$ds}fixtures{$ds}C.php", Helpers::guessClassFile('A\B\C'));
+Assert::same(__DIR__ . "{$ds}fixtures{$ds}C.php", Helpers::guessClassFile(A\B\C::class));
 Assert::same(__DIR__ . "{$ds}fixtures{$ds}C{$ds}D.php", Helpers::guessClassFile('A\B\C\D'));
 
 Assert::same(null, Helpers::guessClassFile('X'));

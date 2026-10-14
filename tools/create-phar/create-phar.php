@@ -16,7 +16,10 @@ __HALT_COMPILER();
 ");
 
 $phar->startBuffering();
-foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../src', RecursiveDirectoryIterator::SKIP_DOTS)) as $file) {
+foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(
+	__DIR__ . '/../../src',
+	RecursiveDirectoryIterator::SKIP_DOTS,
+)) as $file) {
 	if (!in_array($file->getExtension(), ['php', 'phtml', 'js', 'css'], true)) {
 		continue;
 	}

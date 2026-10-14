@@ -130,7 +130,7 @@ class DefineNode extends StatementNode
 	public function print(PrintContext $context): string
 	{
 		$content = $this->content->print($context);
-		return '$_blocks[' . var_export($this->name, true) . '] = function (' . $this->params . ") use (&\$_blocks) {\n"
+		return '$_blocks[' . var_export($this->name, return: true) . '] = function (' . $this->params . ") use (&\$_blocks) {\n"
 			. $content
 			. "};\n";
 	}
@@ -189,10 +189,10 @@ class IncludeNode extends StatementNode
 	public function print(PrintContext $context): string
 	{
 		if ($this->isFile) {
-			return 'require __DIR__ . ' . var_export('/' . $this->name, true) . ";\n";
+			return 'require __DIR__ . ' . var_export('/' . $this->name, return: true) . ";\n";
 		}
 
-		return '$_blocks[' . var_export($this->name, true) . "]($this->args);\n";
+		return '$_blocks[' . var_export($this->name, return: true) . "]($this->args);\n";
 	}
 
 

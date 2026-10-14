@@ -17,7 +17,7 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/transparentWrapper.php';
 
 
-$opaque = ['class' => 'Tester\Assert', 'function' => 'same', 'file' => __FILE__];
+$opaque = ['class' => Assert::class, 'function' => 'same', 'file' => __FILE__];
 $inPath = ['file' => __DIR__ . '/fixtures/transparentWrapper.php'];
 $noFile = ['function' => 'array_map'];
 $annotated = ['function' => 'Tracy\TestFixtures\annotated', 'file' => __FILE__];

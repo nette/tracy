@@ -10,7 +10,6 @@ use Tracy\Logger;
 require __DIR__ . '/../bootstrap.php';
 
 
-
 class CustomLogger extends Logger
 {
 	public $collector = [];
@@ -32,7 +31,6 @@ class CustomLogger extends Logger
 		return $exceptionFile;
 	}
 }
-
 
 
 test('', function () {

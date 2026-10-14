@@ -17,8 +17,7 @@ class Escaper extends Latte\Compiler\Escaper
 			Latte\ContentType::Html => match ($this->getState()) {
 				self::HtmlText, self::HtmlAttribute, self::HtmlTag, self::HtmlBogusTag, self::HtmlComment
 					=> 'Tracy\Helpers::escapeHtml(' . $str . ')',
-				self::HtmlRawText
-					=> 'Tracy\Helpers::jsonEncode(' . $str . ', true)',
+				self::HtmlRawText => 'Tracy\Helpers::jsonEncode(' . $str . ', true)',
 				default => 'Tracy\Helpers::escapeHtml(' . $str . ')',
 			},
 			Latte\ContentType::Text => 'Tracy\Helpers::escapeMd(' . $str . ')',
