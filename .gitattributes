@@ -2,13 +2,14 @@
 .github/        export-ignore
 .gitignore      export-ignore
 AGENTS.md       export-ignore
-ncs.*           export-ignore
+dresscode.neon  export-ignore
 phpstan*.neon   export-ignore
 src/**/*.latte  export-ignore
 docs/           export-ignore
 tests/          export-ignore
 tools/latte-convert/    export-ignore
 
+*               text=auto
 *.php*          diff=php
 *.sh            text eol=lf
 tools/latte-convert/tests/fixtures/*.latte    text eol=lf

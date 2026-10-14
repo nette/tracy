@@ -45,8 +45,8 @@ composer compile-templates
 ## Conventions
 
 - Every PHP file starts with `declare(strict_types=1);`; **tabs**; return type and
-  opening brace on separate lines; Nette Coding Standard (`ncs.php`). JS is linted
-  with `@nette/eslint-plugin`.
+  opening brace on separate lines; the Nette coding standard, which
+  `dresscode.neon` applies. JS is linted with `@nette/eslint-plugin`.
 - Tests are Nette Tester `.phpt` using `test()` and `getTempDir()`. **CI runs both
   `php` and `php-cgi`**; UI-rendering tests need `php-cgi`.
 - Templates are `.latte` (HTML-escaping) / `*.agent.latte` (text/markdown, no

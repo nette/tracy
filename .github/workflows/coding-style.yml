@@ -17,18 +17,18 @@ jobs:
             - run: php temp/code-checker/code-checker --strict-types --no-progress -i tests/Tracy/fixtures -i examples/assets -i *.latte
 
 
-    nette_cs:
-        name: Nette Coding Standard
+    dresscode:
+        name: DressCode
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v6
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.3
+                  php-version: 8.4
                   coverage: none
 
-            - run: composer create-project nette/coding-standard temp/coding-standard ^3 --no-progress
-            - run: php temp/coding-standard/ecs check src tests tools
+            - run: composer create-project dresscode/dresscode temp/dresscode ^1.0 --no-progress
+            - run: php temp/dresscode/bin/dresscode check
 
 
     js:
