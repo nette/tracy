@@ -17,13 +17,23 @@ class Bar
 {
 	/** @var IBarPanel[] */
 	private array $panels = [];
+
+	/** @var array<string, true> panel ID => lazy flag */
+	private array $lazyPanels = [];
+
+	/** @var array<string, array{string, IBarPanel}> lazy token => [panel ID, panel] */
+	private array $pendingLazyPanels = [];
 	private bool $loaderRendered = false;
 
 
 	/**
 	 * Add custom panel.
+	 * @param bool $lazy  If true, panel content is rendered after the response is sent
+	 *                    and loaded via AJAX when the user opens the tab. Use for panels
+	 *                    whose getPanel() is expensive and not needed on every request.
+	 *                    Without session storage, the panel is rendered normally.
 	 */
-	public function addPanel(IBarPanel $panel, ?string $id = null): static
+	public function addPanel(IBarPanel $panel, ?string $id = null, bool $lazy = false): static
 	{
 		if ($id === null) {
 			$c = 0;
@@ -33,6 +43,12 @@ class Bar
 		}
 
 		$this->panels[$id] = $panel;
+		if ($lazy) {
+			$this->lazyPanels[$id] = true;
+		} else {
+			unset($this->lazyPanels[$id]);
+		}
+
 		return $this;
 	}
 
@@ -75,7 +91,7 @@ class Bar
 
 		if ($defer->isDeferred()) {
 			if ($defer->isAvailable()) {
-				$defer->addSetup('Tracy.Debug.loadAjax', $this->renderPartial('ajax', '-ajax:' . $requestId));
+				$defer->addSetup('Tracy.Debug.loadAjax', $this->renderPartial('ajax', $requestId, '-ajax:' . $requestId));
 				if (Helpers::isAgent()) {
 					$defer->addSetup('console.log', $this->renderAgent());
 				}
@@ -83,7 +99,7 @@ class Bar
 		} elseif (Helpers::isRedirect()) {
 			if ($defer->isAvailable()) {
 				$redirectQueue[] = [
-					'content' => $this->renderPartial('redirect', '-r' . count($redirectQueue)),
+					'content' => $this->renderPartial('redirect', $requestId, '-r' . count($redirectQueue)),
 					'agent' => Helpers::isAgent() ? $this->renderAgent() : null,
 					'time' => time(),
 				];
@@ -96,7 +112,7 @@ class Bar
 				);
 			}
 
-			$content = $this->renderPartial('main');
+			$content = $this->renderPartial('main', $requestId, canDeferLazy: $defer->isAvailable());
 
 			foreach (array_reverse($redirectQueue) as $item) {
 				$content['bar'] .= $item['content']['bar'];
@@ -131,9 +147,9 @@ class Bar
 
 
 	/** @return array{bar: string, panels: string} */
-	private function renderPartial(string $type, string $suffix = ''): array
+	private function renderPartial(string $type, string $requestId, string $suffix = '', bool $canDeferLazy = true): array
 	{
-		$panels = $this->renderPanels($suffix);
+		$panels = $this->renderPanels($requestId, $suffix, $canDeferLazy);
 
 		return [
 			'bar' => Helpers::capture(function () use ($type, $panels) {
@@ -147,7 +163,7 @@ class Bar
 
 
 	/** @return list<\stdClass> */
-	private function renderPanels(string $suffix = ''): array
+	private function renderPanels(string $requestId, string $suffix = '', bool $canDeferLazy = true): array
 	{
 		set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
 			if (error_reporting() & $severity) {
@@ -162,9 +178,16 @@ class Bar
 
 		foreach ($this->panels as $id => $panel) {
 			$idHtml = preg_replace('#[^a-z0-9]+#i', '-', $id) . $suffix;
+			$lazyToken = null;
 			try {
 				$tab = (string) $panel->getTab();
-				$panelHtml = $tab ? $panel->getPanel() : null;
+				if ($canDeferLazy && isset($this->lazyPanels[$id]) && $tab) {
+					$panelHtml = null; // deferred: content is rendered later and loaded on demand via AJAX
+					$lazyToken = $requestId . '.' . preg_replace('#[^a-z0-9]+#i', '-', $id);
+					$this->pendingLazyPanels[$lazyToken] = [$id, $panel];
+				} else {
+					$panelHtml = $tab ? $panel->getPanel() : null;
+				}
 
 			} catch (\Throwable $e) {
 				while (ob_get_level() > $obLevel) { // restore ob-level if broken
@@ -174,14 +197,66 @@ class Bar
 				$idHtml = "error-$idHtml";
 				$tab = "Error in $id";
 				$panelHtml = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(Helpers::escapeHtml($e)) . '</div>';
+				$lazyToken = null;
 				unset($e);
 			}
 
-			$panels[] = (object) ['id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml];
+			$panels[] = (object) ['id' => $idHtml, 'tab' => $tab, 'panel' => $panelHtml, 'lazy' => $lazyToken];
 		}
 
 		restore_error_handler();
 		return $panels;
+	}
+
+
+	/**
+	 * Renders the content of lazy panels and stores it in the session so it can be
+	 * fetched on demand via AJAX when the user opens the panel. Runs after render().
+	 * @internal
+	 */
+	public function renderLazyPanels(DeferredContent $defer): void
+	{
+		$pendingPanels = $this->pendingLazyPanels;
+		$this->pendingLazyPanels = [];
+		if (!$pendingPanels || !$defer->isAvailable()) {
+			return;
+		}
+
+		set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
+			if (error_reporting() & $severity) {
+				throw new \ErrorException($message, 0, $severity, $file, $line);
+			}
+
+			return true;
+		});
+
+		$obLevel = ob_get_level();
+		$icons = '<div class="tracy-icons">'
+			. '<a href="#" data-tracy-action="window" title="open in window">&curren;</a>'
+			. '<a href="#" data-tracy-action="close" title="close window">&times;</a>'
+			. '</div>';
+		$lazyItems = &$defer->getItems('lazy-panels');
+
+		foreach ($pendingPanels as $key => [$id, $panel]) {
+			try {
+				$panelHtml = $panel->getPanel();
+			} catch (\Throwable $e) {
+				while (ob_get_level() > $obLevel) {
+					ob_end_clean();
+				}
+
+				$panelHtml = "<h1>Error: $id</h1><div class='tracy-inner'>" . nl2br(Helpers::escapeHtml($e)) . '</div>';
+				unset($e);
+			}
+
+			if ($panelHtml !== null) {
+				[$requestId, $panelId] = explode('.', $key, 2);
+				$lazyItems[$requestId]['panels'][$panelId] = $panelHtml . "\n" . $icons;
+				$lazyItems[$requestId]['time'] = time();
+			}
+		}
+
+		restore_error_handler();
 	}
 
 

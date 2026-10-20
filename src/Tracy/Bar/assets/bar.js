@@ -41,11 +41,17 @@ class Panel {
 		let elem = this.elem;
 
 		this.init = function () {};
-		elem.tracyContent = elem.dataset.tracyContent;
-		elem.innerHTML = Tracy.trusted.html(elem.tracyContent);
-		delete elem.dataset.tracyContent;
-		Tracy.Dumper.init(Debug.shadow);
-		evalScripts(elem);
+		if (elem.dataset.tracyLazy && !elem.dataset.tracyContent) {
+			elem.tracyContent = '<h1>Loading…</h1><div class="tracy-inner"><p>Loading panel content…</p></div>';
+			elem.innerHTML = Tracy.trusted.html(elem.tracyContent);
+			this.fetchLazyContent();
+		} else {
+			elem.tracyContent = elem.dataset.tracyContent;
+			elem.innerHTML = Tracy.trusted.html(elem.tracyContent);
+			delete elem.dataset.tracyContent;
+			Tracy.Dumper.init(Debug.shadow);
+			evalScripts(elem);
+		}
 
 		draggable(elem, {
 			handles: elem.querySelectorAll('h1'),
@@ -95,6 +101,48 @@ class Panel {
 		if (this.is('tracy-panel-persist')) {
 			Tracy.Toggle.persist(elem);
 		}
+	}
+
+
+	fetchLazyContent() {
+		let elem = this.elem;
+		let lazyToken = elem.dataset.tracyLazy;
+		let url = baseUrl + '_tracy_bar=lazy-panel.' + encodeURIComponent(lazyToken) + '&XDEBUG_SESSION_STOP=1&v=' + Math.random();
+
+		fetch(url)
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.content !== null) {
+					elem.tracyContent = data.content;
+					elem.innerHTML = Tracy.trusted.html(elem.tracyContent);
+					delete elem.dataset.tracyLazy;
+					Tracy.Dumper.init(Debug.shadow);
+					evalScripts(elem);
+
+					elem.querySelectorAll('.tracy-icons a').forEach((link) => {
+						link.addEventListener('click', (e) => {
+							if (link.dataset.tracyAction === 'close') {
+								this.toPeek();
+							} else if (link.dataset.tracyAction === 'window') {
+								this.toWindow();
+							}
+							e.preventDefault();
+							e.stopImmediatePropagation();
+						});
+					});
+
+					if (this.is('tracy-panel-persist')) {
+						Tracy.Toggle.persist(elem);
+					}
+				} else {
+					elem.tracyContent = '<h1>Error</h1><div class="tracy-inner"><p>Lazy panel content is no longer available. It may have expired from the session.</p></div>';
+					elem.innerHTML = Tracy.trusted.html(elem.tracyContent);
+				}
+			})
+			.catch(() => {
+				elem.tracyContent = '<h1>Error</h1><div class="tracy-inner"><p>Failed to load lazy panel content.</p></div>';
+				elem.innerHTML = Tracy.trusted.html(elem.tracyContent);
+			});
 	}
 
 
