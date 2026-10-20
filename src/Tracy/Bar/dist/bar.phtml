@@ -27,11 +27,11 @@ echo "\n";
 foreach ($panels as $panel) /* pos 16:2 */ {
 	if ($panel->tab) /* pos 17:7 */ {
 		echo '	<li>';
-		if ($panel->panel) /* pos 17:26 */ {
+		if ($panel->panel || ($panel->lazy ?? false)) /* pos 17:26 */ {
 			echo '<a href="#" rel="tracy-debug-panel-';
-			echo Tracy\Helpers::escapeHtml($panel->id) /* pos 17:79 */;
+			echo Tracy\Helpers::escapeHtml($panel->id) /* pos 17:106 */;
 			echo '">';
-			echo trim($panel->tab) /* pos 17:93 */;
+			echo trim($panel->tab) /* pos 17:120 */;
 			echo '</a>
 ';
 		} else /* pos 18:3 */ {

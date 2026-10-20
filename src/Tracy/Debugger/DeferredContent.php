@@ -7,7 +7,7 @@
 
 namespace Tracy;
 
-use function is_string, strlen;
+use function array_slice, is_string, strlen;
 
 
 /**
@@ -106,6 +106,24 @@ final class DeferredContent
 			$data = &$this->getItems('setup');
 			$str .= $data[$requestId]['code'] ?? '';
 			unset($data[$requestId]);
+			header('Content-Length: ' . strlen($str));
+			echo $str;
+			flush();
+			return true;
+		}
+
+		if (is_string($asset) && preg_match('#^lazy-panel\.(\w{10,15})\.([a-z0-9-]+)$#Di', $asset, $m)) {
+			[, $requestId, $panelId] = $m;
+			header('Content-Type: application/json; charset=UTF-8');
+			header('Cache-Control: no-cache');
+			header_remove('Set-Cookie');
+			$lazyItems = &$this->getItems('lazy-panels');
+			$content = $lazyItems[$requestId]['panels'][$panelId] ?? null;
+			unset($lazyItems[$requestId]['panels'][$panelId]);
+			if (empty($lazyItems[$requestId]['panels'])) {
+				unset($lazyItems[$requestId]);
+			}
+			$str = Helpers::jsonEncode(['content' => $content]);
 			header('Content-Length: ' . strlen($str));
 			echo $str;
 			flush();
