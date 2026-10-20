@@ -18,7 +18,7 @@ jobs:
 
         name: PHP ${{ matrix.php }}/${{ matrix.sapi }} tests on ${{ matrix.os }}
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
@@ -28,7 +28,7 @@ jobs:
             - run: composer install --no-progress --prefer-dist
             - run: composer tester -- -p ${{ matrix.sapi }} ${{ env.php-options }}
             - if: failure()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: output ${{ matrix.php }}-${{ matrix.sapi }}-${{ matrix.os }}
                   path: tests/**/output
@@ -38,15 +38,15 @@ jobs:
         name: Code Coverage
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.2
                   extensions: ds
-                  coverage: none
+                  coverage: pcov
 
             - run: composer install --no-progress --prefer-dist
-            - run: composer tester -- -p phpdbg ${{ env.php-options }} --coverage ./coverage.xml --coverage-src ./src
+            - run: composer tester -- ${{ env.php-options }} --coverage ./coverage.xml --coverage-src ./src
               continue-on-error: true
             - uses: coverallsapp/github-action@v2
               with:
