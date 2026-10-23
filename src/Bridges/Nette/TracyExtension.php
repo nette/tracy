@@ -87,14 +87,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('logger'))
-			->setClass(Tracy\ILogger::class)
-			->setFactory([Tracy\Debugger::class, 'getLogger']);
+			->setType(Tracy\ILogger::class)
+			->setCreator([Tracy\Debugger::class, 'getLogger']);
 
 		$builder->addDefinition($this->prefix('blueScreen'))
-			->setFactory([Tracy\Debugger::class, 'getBlueScreen']);
+			->setCreator([Tracy\Debugger::class, 'getBlueScreen']);
 
 		$builder->addDefinition($this->prefix('bar'))
-			->setFactory([Tracy\Debugger::class, 'getBar']);
+			->setCreator([Tracy\Debugger::class, 'getBar']);
 	}
 
 
@@ -148,7 +148,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			));
 		}
 
-		if ($config->netteMailer && $builder->getByType(Nette\Mail\IMailer::class)) {
+		if ($config->netteMailer && $builder->getByType(Nette\Mail\Mailer::class)) {
 			$params = [];
 			$params['fromEmail'] = $config->fromEmail;
 			if (class_exists(Nette\Http\Request::class)) {
@@ -163,7 +163,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		if ($this->debugMode) {
 			foreach ($config->bar as $item) {
 				if (is_string($item) && str_starts_with($item, '@')) {
-					$item = new Statement(['@' . $builder::THIS_CONTAINER, 'getService'], [substr($item, 1)]);
+					$item = new Statement(['@' . $builder::ThisContainer, 'getService'], [substr($item, 1)]);
 				} elseif (is_string($item)) {
 					$item = new Statement($item);
 				}
