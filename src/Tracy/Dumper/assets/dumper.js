@@ -341,7 +341,7 @@ function createEl(el, attrs, content) {
 	}
 
 	if (content && content.html !== undefined) {
-		el.innerHTML = content.html;
+		el.innerHTML = Tracy.trusted.html(content.html);
 		return el;
 	}
 

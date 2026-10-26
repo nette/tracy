@@ -18,6 +18,26 @@ let Tracy = window.Tracy = window.Tracy || {};
 // returns the real event target even when the event crossed a shadow DOM boundary
 Tracy.retarget = (e) => e.composedPath()[0] ?? e.target;
 
+// passes Tracy's own markup and scripts to sinks that a page enforcing Trusted Types
+// (require-trusted-types-for 'script') refuses plain strings at
+Tracy.trusted = Tracy.trusted || (() => {
+	let policy;
+	try {
+		policy = window.trustedTypes?.createPolicy('tracy', {
+			createHTML: (s) => s,
+			createScript: (s) => s,
+			createScriptURL: (s) => s,
+		});
+	} catch {
+		// the page's trusted-types directive doesn't allow the name
+	}
+	return {
+		html: (s) => policy ? policy.createHTML(s) : s,
+		script: (s) => policy ? policy.createScript(s) : s,
+		scriptURL: (s) => policy ? policy.createScriptURL(s) : s,
+	};
+})();
+
 // registry of CSS sources filled by the loader (DeferredContent, Dumper::renderAssets)
 Tracy.css = Tracy.css || {};
 
