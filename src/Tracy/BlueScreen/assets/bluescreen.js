@@ -105,7 +105,7 @@ class BlueScreen {
 		if (host) {
 			host.remove();
 		}
-		document.body.insertAdjacentHTML('beforeend', content);
+		document.body.insertAdjacentHTML('beforeend', Tracy.trusted.html(content));
 		BlueScreen.init(true);
 	}
 }

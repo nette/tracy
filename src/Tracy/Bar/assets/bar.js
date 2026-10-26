@@ -41,7 +41,8 @@ class Panel {
 		let elem = this.elem;
 
 		this.init = function () {};
-		elem.innerHTML = elem.tracyContent = elem.dataset.tracyContent;
+		elem.tracyContent = elem.dataset.tracyContent;
+		elem.innerHTML = Tracy.trusted.html(elem.tracyContent);
 		delete elem.dataset.tracyContent;
 		Tracy.Dumper.init(Debug.shadow);
 		evalScripts(elem);
@@ -164,7 +165,7 @@ class Panel {
 		doc.body.id = 'tracy-debug';
 
 		let script = doc.createElement('script');
-		script.src = baseUrl + '_tracy_bar=js&XDEBUG_SESSION_STOP=1';
+		script.src = Tracy.trusted.scriptURL(baseUrl + '_tracy_bar=js&XDEBUG_SESSION_STOP=1');
 		script.async = true;
 		script.addEventListener('load', () => {
 			win.Tracy.adoptStyleSheets(doc, ['shared', 'bar']);
@@ -173,10 +174,10 @@ class Panel {
 		doc.head.appendChild(script);
 
 		let meta = this.elem.parentElement.lastElementChild;
-		doc.body.innerHTML = '<div itemscope>'
+		doc.body.innerHTML = Tracy.trusted.html('<div itemscope>'
 			+ '<div class="tracy-panel tracy-mode-window" id="' + this.elem.id + '">' + this.elem.tracyContent + '</div>'
 			+ meta.outerHTML
-			+ '</div>';
+			+ '</div>');
 		evalScripts(doc.body);
 		if (this.elem.querySelector('h1')) {
 			doc.title = this.elem.querySelector('h1').textContent;
@@ -417,7 +418,7 @@ class Debug {
 		// #tracy-debug wrapper is kept for backward compatibility of third-party panel CSS
 		Debug.layer = document.createElement('tracy-div');
 		Debug.layer.setAttribute('id', 'tracy-debug');
-		Debug.layer.innerHTML = content;
+		Debug.layer.innerHTML = Tracy.trusted.html(content);
 		shadow.appendChild(Debug.layer);
 
 		(document.body || document.documentElement).appendChild(host);
@@ -467,9 +468,9 @@ class Debug {
 			});
 		}
 
-		Debug.layer.insertAdjacentHTML('beforeend', content.panels);
+		Debug.layer.insertAdjacentHTML('beforeend', Tracy.trusted.html(content.panels));
 		evalScripts(Debug.layer);
-		Debug.bar.elem.insertAdjacentHTML('beforeend', content.bar);
+		Debug.bar.elem.insertAdjacentHTML('beforeend', Tracy.trusted.html(content.bar));
 		let ajaxBar = Debug.bar.elem.querySelector('.tracy-row:last-child');
 
 		Debug.shadow.querySelectorAll('.tracy-panel').forEach((panel) => {
@@ -556,7 +557,7 @@ class Debug {
 			Debug.scriptElem.remove();
 		}
 		Debug.scriptElem = document.createElement('script');
-		Debug.scriptElem.src = url;
+		Debug.scriptElem.src = Tracy.trusted.scriptURL(url);
 		(document.body || document.documentElement).appendChild(Debug.scriptElem);
 	}
 }
@@ -567,7 +568,7 @@ function evalScripts(elem) {
 		if ((!script.hasAttribute('type') || script.type === 'text/javascript' || script.type === 'application/javascript') && !script.tracyEvaluated) {
 			let document = script.ownerDocument;
 			let dolly = document.createElement('script');
-			dolly.textContent = script.textContent;
+			dolly.textContent = Tracy.trusted.script(script.textContent);
 			(document.body || document.documentElement).appendChild(dolly);
 			dolly.remove();
 			script.tracyEvaluated = true;
