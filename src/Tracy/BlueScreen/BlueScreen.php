@@ -157,10 +157,18 @@ class BlueScreen
 				fwrite($handle, $buffer);
 				return '';
 			}, 4096);
-			$this->renderTemplate($exception, __DIR__ . '/dist/page.phtml', toScreen: false, logLocation: $logLocation);
+			try {
+				$this->renderTemplate($exception, __DIR__ . '/dist/page.phtml', toScreen: false, logLocation: $logLocation);
+			} catch (\Throwable $e) {
+			}
+
 			ob_end_flush();
 			ob_end_clean();
 			fclose($handle);
+			if (isset($e)) {
+				@unlink($file); // @ file may have been deleted meanwhile
+				throw $e;
+			}
 
 			if ($handle = @fopen(substr($file, 0, -5) . '.md', 'x')) { // @ file may already exist
 				fwrite($handle, $this->renderAgent($exception, $logLocation));
