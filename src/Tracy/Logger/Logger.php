@@ -71,6 +71,9 @@ class Logger implements ILogger
 			: null;
 		$line = static::formatLogLine($message, $exceptionFile);
 		$file = $this->directory . '/' . strtolower($level ?: self::INFO) . '.log';
+		if (!is_dir($dir = dirname($file))) {
+			@mkdir($dir, recursive: true); // @ is escalated to exception below
+		}
 
 		if (!@file_put_contents($file, $line . PHP_EOL, FILE_APPEND | LOCK_EX)) { // @ is escalated to exception
 			throw new \RuntimeException("Unable to write to log file '$file'. Is directory writable?");
@@ -200,7 +203,7 @@ class Logger implements ILogger
 			}
 		}
 
-		return $dir . $level . '--' . date('Y-m-d--H-i') . "--$hash.html";
+		return $dir . strtr($level, '/\\', '--') . '--' . date('Y-m-d--H-i') . "--$hash.html";
 	}
 
 

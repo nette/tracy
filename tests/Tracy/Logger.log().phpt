@@ -80,6 +80,19 @@ test('markdown file is created alongside HTML', function () {
 });
 
 
+test('level with subdirectory', function () {
+	$logger = new Logger(getTempDir());
+	$logger->log('message', '2021-12/mails');
+	Assert::match('[%a%] message  @  %A%', file_get_contents($logger->directory . '/2021-12/mails.log'));
+
+	$e = new Exception('Subdirectory');
+	$file = $logger->log($e, '2021-12/errors');
+	Assert::match('2021-12-errors--%a%.html', basename($file));
+	Assert::true(is_file($logger->directory . '/' . basename($file)));
+	Assert::same($file, $logger->getExceptionFile($e, '2021-12/errors'));
+});
+
+
 test('logged-from location appears in HTML footer', function () {
 	$logger = new Logger(getTempDir());
 	$line = __LINE__ + 1;

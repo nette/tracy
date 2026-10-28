@@ -1,6 +1,8 @@
 # Logger
 
-`Logger::log()` appends a text line to `<level>.log` and, for a `Throwable` at
+`Logger::log()` appends a text line to `<level>.log` (a level may contain a
+subdirectory, which is created; the report below stays in the log directory, with
+slashes in the level turned into dashes) and, for a `Throwable` at
 **any** level, writes an HTML BlueScreen report (plus a `.md` companion) — but only
 once per distinct exception; then, for `ERROR`/`EXCEPTION`/`CRITICAL`, it sends the
 throttled email. The order matters: the log line is written first (carrying the
