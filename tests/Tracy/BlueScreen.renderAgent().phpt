@@ -15,6 +15,18 @@ function createException(string $message, int $code = 0, ?Throwable $prev = null
 }
 
 
+function throwWithLargeArguments(array $items, string $text): never
+{
+	throw new RuntimeException('Large arguments');
+}
+
+
+function throwWithSensitiveArguments(#[SensitiveParameter] string $password, string $token): never
+{
+	throw new RuntimeException('Sensitive arguments');
+}
+
+
 $blueScreen = new Tracy\BlueScreen;
 
 
@@ -35,6 +47,37 @@ test('stack trace section with arguments', function () use ($blueScreen) {
 	}
 
 	Assert::match("%A%## Stack Trace%A%#0 = 'hello'%A%#1 = 42%A%", $output);
+});
+
+
+test('stack trace argument dumps are limited', function () {
+	$blueScreen = new Tracy\BlueScreen;
+	$blueScreen->maxItems = 3;
+	$blueScreen->maxLength = 10;
+	try {
+		throwWithLargeArguments(range(1, 10), str_repeat('x', 50));
+	} catch (RuntimeException $e) {
+		$output = $blueScreen->renderAgent($e);
+	}
+
+	Assert::contains('$items = array (10)', $output);
+	Assert::contains('   2 => 3', $output);
+	Assert::contains('   ...', $output);
+	Assert::notContains('   3 => 4', $output);
+	Assert::contains('$text = \'xxxxxxxxxx ... xxxxxxxxxx\'', $output);
+});
+
+
+test('sensitive stack trace arguments are hidden', function () {
+	$blueScreen = new Tracy\BlueScreen;
+	$blueScreen->keysToHide = ['token'];
+	try {
+		throwWithSensitiveArguments('secret-password', 'secret-token');
+	} catch (RuntimeException $e) {
+		$output = $blueScreen->renderAgent($e);
+	}
+
+	Assert::contains('throwWithSensitiveArguments($password = \*\*\*\*\* (string), $token = \*\*\*\*\* (string))', $output);
 });
 
 

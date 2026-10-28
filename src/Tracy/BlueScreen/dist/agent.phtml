@@ -121,50 +121,51 @@ in ';
 				$allSimple = true /* pos 85:5 */;
 				$argParts = [] /* pos 86:5 */;
 				foreach ($row['args'] as $k => $v) /* pos 87:5 */ {
-					$name = isset($params[$k]) && !$params[$k]->isVariadic() ? '$' . $params[$k]->getName() : '#' . $k /* pos 88:6 */;
-					$dump = rtrim($agentDump($v)) /* pos 89:6 */;
+					$argName = isset($params[$k]) && !$params[$k]->isVariadic() ? $params[$k]->name : $k /* pos 88:6 */;
+					$name = (is_string($argName) ? '$' : '#') . $argName /* pos 89:6 */;
+					$dump = rtrim($agentDump($v, (string) $argName)) /* pos 90:6 */;
 					if (str_contains($dump, '
-') || strlen($dump) > 50) /* pos 90:6 */ {
-						$allSimple = false /* pos 91:7 */;
-					} else /* pos 92:6 */ {
-						$argParts[] = $name . ' = ' . $dump /* pos 93:7 */;
+') || strlen($dump) > 50) /* pos 91:6 */ {
+						$allSimple = false /* pos 92:7 */;
+					} else /* pos 93:6 */ {
+						$argParts[] = $name . ' = ' . $dump /* pos 94:7 */;
 					}
-					$complexArgs[] = $name . ' = ' . $dump /* pos 95:6 */;
+					$complexArgs[] = $name . ' = ' . $dump /* pos 96:6 */;
 				}
 
-				if ($allSimple) /* pos 97:5 */ {
-					$inlineArgs = implode(', ', $argParts) /* pos 98:6 */;
+				if ($allSimple) /* pos 98:5 */ {
+					$inlineArgs = implode(', ', $argParts) /* pos 99:6 */;
 				}
 			}
-			if ($inlineArgs) /* pos 101:4 */ {
-				echo Tracy\Helpers::escapeMd($j + 1) /* pos 102:5 */;
+			if ($inlineArgs) /* pos 102:4 */ {
+				echo Tracy\Helpers::escapeMd($j + 1) /* pos 103:5 */;
 				echo '. ';
-				echo Tracy\Helpers::escapeMd($funcName) /* pos 102:16 */;
+				echo Tracy\Helpers::escapeMd($funcName) /* pos 103:16 */;
 				echo '(';
-				echo Tracy\Helpers::escapeMd($inlineArgs) /* pos 102:28 */;
+				echo Tracy\Helpers::escapeMd($inlineArgs) /* pos 103:28 */;
 				echo ')
 ';
-			} elseif ($complexArgs) /* pos 103:4 */ {
-				echo Tracy\Helpers::escapeMd($j + 1) /* pos 104:5 */;
+			} elseif ($complexArgs) /* pos 104:4 */ {
+				echo Tracy\Helpers::escapeMd($j + 1) /* pos 105:5 */;
 				echo '. ';
-				echo Tracy\Helpers::escapeMd($funcName) /* pos 104:16 */;
+				echo Tracy\Helpers::escapeMd($funcName) /* pos 105:16 */;
 				echo '(';
 				echo Tracy\Helpers::escapeMd(implode(',
-', $complexArgs)) /* pos 104:28 */;
+', $complexArgs)) /* pos 105:28 */;
 				echo ')
 ';
-			} else /* pos 105:4 */ {
-				echo Tracy\Helpers::escapeMd($j + 1) /* pos 106:5 */;
+			} else /* pos 106:4 */ {
+				echo Tracy\Helpers::escapeMd($j + 1) /* pos 107:5 */;
 				echo '. ';
-				echo Tracy\Helpers::escapeMd($funcName) /* pos 106:16 */;
+				echo Tracy\Helpers::escapeMd($funcName) /* pos 107:16 */;
 				echo '()
 ';
 			}
 
 			echo '   in ';
-			echo Tracy\Helpers::escapeMd($location) /* pos 108:10 */;
+			echo Tracy\Helpers::escapeMd($location) /* pos 109:10 */;
 			echo "\n";
-			if (isset($row['file'], $row['line']) && @is_file($row['file'])) /* pos 109:4 */ {
+			if (isset($row['file'], $row['line']) && @is_file($row['file'])) /* pos 110:4 */ {
 				$_blocks['renderSource']($row['file'],$row['line']);
 			}
 			echo "\n";
@@ -176,106 +177,106 @@ in ';
 }
 
 echo "\n";
-if ($lastError) /* pos 117:1 */ {
+if ($lastError) /* pos 118:1 */ {
 	echo '
 ## Last Muted Error
 
 ';
-	echo Tracy\Helpers::escapeMd(Helpers::errorTypeToString($lastError['type'])) /* pos 121:2 */;
+	echo Tracy\Helpers::escapeMd(Helpers::errorTypeToString($lastError['type'])) /* pos 122:2 */;
 	echo ': ';
-	echo Tracy\Helpers::escapeMd($lastError['message']) /* pos 121:51 */;
+	echo Tracy\Helpers::escapeMd($lastError['message']) /* pos 122:51 */;
 	echo '
 in ';
-	echo Tracy\Helpers::escapeMd($lastError['file']) /* pos 122:5 */;
+	echo Tracy\Helpers::escapeMd($lastError['file']) /* pos 123:5 */;
 	echo ':';
-	echo Tracy\Helpers::escapeMd($lastError['line']) /* pos 122:24 */;
+	echo Tracy\Helpers::escapeMd($lastError['line']) /* pos 123:24 */;
 	echo "\n";
-	if (@is_file($lastError['file'])) /* pos 123:2 */ {
+	if (@is_file($lastError['file'])) /* pos 124:2 */ {
 		$_blocks['renderSource']($lastError['file'],$lastError['line']);
 	}
 }
 echo "\n";
-if (!Helpers::isCli() && isset($_SERVER['REQUEST_METHOD'])) /* pos 128:1 */ {
+if (!Helpers::isCli() && isset($_SERVER['REQUEST_METHOD'])) /* pos 129:1 */ {
 	echo '
 ## HTTP Request
 
 ';
-	echo Tracy\Helpers::escapeMd($_SERVER['REQUEST_METHOD']) /* pos 132:2 */;
+	echo Tracy\Helpers::escapeMd($_SERVER['REQUEST_METHOD']) /* pos 133:2 */;
 	echo ' ';
-	echo Tracy\Helpers::escapeMd($source) /* pos 132:31 */;
+	echo Tracy\Helpers::escapeMd($source) /* pos 133:31 */;
 	echo "\n";
-	if ($httpHeaders) /* pos 133:2 */ {
+	if ($httpHeaders) /* pos 134:2 */ {
 		echo '
 ### Headers
 
 ';
-		foreach ($httpHeaders as $k => $v) /* pos 137:3 */ {
+		foreach ($httpHeaders as $k => $v) /* pos 138:3 */ {
 			echo '- ';
-			echo Tracy\Helpers::escapeMd($k) /* pos 138:6 */;
+			echo Tracy\Helpers::escapeMd($k) /* pos 139:6 */;
 			echo ': ';
-			echo Tracy\Helpers::escapeMd($v) /* pos 138:12 */;
+			echo Tracy\Helpers::escapeMd($v) /* pos 139:12 */;
 			echo "\n";
 
 		}
 
 	}
 	echo "\n";
-	if (!empty($_GET)) /* pos 142:2 */ {
+	if (!empty($_GET)) /* pos 143:2 */ {
 		echo '
 ### $_GET
 
 ';
-		echo Tracy\Helpers::escapeMd($agentDump($_GET)) /* pos 146:3 */;
+		echo Tracy\Helpers::escapeMd($agentDump($_GET)) /* pos 147:3 */;
 		echo "\n";
 	}
 	echo "\n";
-	if (!empty($_POST)) /* pos 149:2 */ {
+	if (!empty($_POST)) /* pos 150:2 */ {
 		echo '
 ### $_POST
 
 ';
-		echo Tracy\Helpers::escapeMd($agentDump($_POST)) /* pos 153:3 */;
+		echo Tracy\Helpers::escapeMd($agentDump($_POST)) /* pos 154:3 */;
 		echo "\n";
 	}
 	echo "\n";
-	if (!empty($_COOKIE)) /* pos 156:2 */ {
+	if (!empty($_COOKIE)) /* pos 157:2 */ {
 		echo '
 ### $_COOKIE
 
 ';
-		echo Tracy\Helpers::escapeMd($agentDump($_COOKIE)) /* pos 160:3 */;
+		echo Tracy\Helpers::escapeMd($agentDump($_COOKIE)) /* pos 161:3 */;
 		echo "\n";
 	}
 }
 echo "\n";
-if ($showEnvironment) /* pos 164:1 */ {
+if ($showEnvironment) /* pos 165:1 */ {
 	echo '
 ## Environment
 
 | Key | Value |
 |-----|-------|
 | PHP | ';
-	echo Tracy\Helpers::escapeMd(\PHP_VERSION . ' (' . (\PHP_ZTS ? 'TS' : 'NTS') . ')') /* pos 170:10 */;
+	echo Tracy\Helpers::escapeMd(\PHP_VERSION . ' (' . (\PHP_ZTS ? 'TS' : 'NTS') . ')') /* pos 171:10 */;
 	echo ' |
 ';
-	if (isset($_SERVER['REQUEST_METHOD'])) /* pos 171:2 */ {
+	if (isset($_SERVER['REQUEST_METHOD'])) /* pos 172:2 */ {
 		echo '| Method | ';
-		echo Tracy\Helpers::escapeMd($_SERVER['REQUEST_METHOD']) /* pos 172:14 */;
+		echo Tracy\Helpers::escapeMd($_SERVER['REQUEST_METHOD']) /* pos 173:14 */;
 		echo ' |
 ';
 	}
 	echo '| Source | ';
-	echo Tracy\Helpers::escapeMd($source) /* pos 174:13 */;
+	echo Tracy\Helpers::escapeMd($source) /* pos 175:13 */;
 	echo ' |
 ';
-	if (isset($_SERVER['SERVER_SOFTWARE'])) /* pos 175:2 */ {
+	if (isset($_SERVER['SERVER_SOFTWARE'])) /* pos 176:2 */ {
 		echo '| Server | ';
-		echo Tracy\Helpers::escapeMd($_SERVER['SERVER_SOFTWARE']) /* pos 176:14 */;
+		echo Tracy\Helpers::escapeMd($_SERVER['SERVER_SOFTWARE']) /* pos 177:14 */;
 		echo ' |
 ';
 	}
 	echo '| Tracy | ';
-	echo Tracy\Helpers::escapeMd(Debugger::Version) /* pos 178:12 */;
+	echo Tracy\Helpers::escapeMd(Debugger::Version) /* pos 179:12 */;
 	echo ' |
 ';
 }

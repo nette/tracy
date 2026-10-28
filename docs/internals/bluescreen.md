@@ -55,8 +55,8 @@ The masking keeps the newlines of a multi-line region, so line numbers stay true
 Two dumpers exist: `getDumper()` renders **HTML** (`BlueScreen::$maxDepth` etc.,
 `LOCATION_CLASS`, the shared `SNAPSHOT`, scrubber, `keysToHide`) and feeds the page
 templates; `getAgentDumper()` renders **text/markdown** (depth 3, no snapshot, no
-location, but the same scrubber and `keysToHide`) and feeds only the `agent.phtml`
-markdown variant. Note `keysToHide` includes `BlueScreen::$snapshot` itself, so the
+location, but the same `maxLength`, `maxItems`, scrubber and `keysToHide`) and
+feeds only the `agent.phtml` markdown variant. Note `keysToHide` includes `BlueScreen::$snapshot` itself, so the
 internal snapshot never leaks into a dump. **BlueScreen limits are independent of
 `Debugger::$maxDepth/$maxLength/$maxItems/$keysToHide`** (`Debugger::dumpOptions()`
 feeds `dump()` only); `TracyExtension` pushes `keysToHide` into both, but depth and
