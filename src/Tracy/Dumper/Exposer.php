@@ -334,7 +334,7 @@ final class Exposer
 	{
 		$rc = new \ReflectionClass($obj);
 		foreach ($rc->getProperties() as $prop) {
-			if ($prop->isStatic() || $prop->isLazy($obj) || !$prop->isInitialized($obj)) {
+			if ($prop->isStatic()) {
 				continue;
 			}
 
@@ -343,14 +343,30 @@ final class Exposer
 				$prop->isProtected() => Value::PropertyProtected,
 				default => Value::PropertyPublic,
 			};
-			$v = $prop->getValue($obj);
+			$class = $prop->class;
+
+			if ($prop->isVirtual()) {
+				$describer->addPropertyTo(
+					$value,
+					$prop->getName(),
+					null,
+					$type,
+					class: $class,
+					described: new Value(Value::TypeText, '{virtual}'),
+				);
+				continue;
+			} elseif ($prop->isLazy($obj) || !$prop->isInitialized($obj)) {
+				continue;
+			}
+
+			$v = $prop->getRawValue($obj); // does not call get hook
 			$describer->addPropertyTo(
 				$value,
 				$prop->getName(),
 				$v,
 				$type,
-				class: $prop->getDeclaringClass()->getName(),
-				described: $describer->describeEnumProperty($prop->getDeclaringClass()->getName(), $prop->getName(), $v),
+				class: $class,
+				described: $describer->describeEnumProperty($class, $prop->getName(), $v),
 			);
 		}
 
